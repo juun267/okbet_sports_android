@@ -24,9 +24,11 @@ import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
@@ -195,9 +197,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             it.getContentIfNotHandled()?.let { result ->
                 showPromptDialog(
                     title = getString(R.string.prompt),
-                    message = if (result.success) getString(R.string.bet_info_add_bet_success) else result.msg,
+                    message = messageByResultCode(requireContext(), result),
                     success = result.success
-                ) {}
+                ) {
+                    changeBetInfoContentByMessage(result)
+                }
             }
         })
 
@@ -258,6 +262,14 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
             matchOddAdapter.matchOddList = list
         })
+    }
+
+
+    private fun changeBetInfoContentByMessage(result: BetAddResult) {
+        if (!result.success) {
+            val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+            errorData?.let { viewModel.updateMatchOddForParlay(it, getBetAddError(result.code)) }
+        }
     }
 
 

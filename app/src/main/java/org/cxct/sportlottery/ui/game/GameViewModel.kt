@@ -3,17 +3,17 @@ package org.cxct.sportlottery.ui.game
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
@@ -860,7 +860,7 @@ class GameViewModel(
         _oddsDetailMoreList.postValue(list)
     }
 
-    fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent){
+    fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {
         val newList = arrayListOf<OddsDetailListData>()
         matchOdd.odds?.forEach { map ->
             val key = map.key
@@ -884,7 +884,7 @@ class GameViewModel(
             updateItemForOddsDetail(it, newList)
         }
 
-        val list = _oddsDetailList.value?.peekContent()?: arrayListOf()
+        val list = _oddsDetailList.value?.peekContent() ?: arrayListOf()
         _oddsDetailList.postValue(Event(list))
 
     }
@@ -899,6 +899,33 @@ class GameViewModel(
                 }
             }
         }
+        updateBetInfoListByMatchOddChange(newList)
+    }
+
+    fun updateMatchOddForParlay(betAddErrorDataList: List<BetAddErrorData>, betAddError: BetAddError) {
+        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+        betAddErrorDataList.forEach { betAddErrorData ->
+            betAddErrorData.let { data ->
+                data.status?.let { status ->
+                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                        null,
+                        data.id,
+                        null,
+                        data.odds,
+                        data.hkOdds,
+                        data.producerId,
+                        data.spread,
+                        status,
+                    )
+                    newList.add(newOdd)
+                }
+            }
+        }
+
+        betInfoRepository.matchOddList.value?.forEach {
+            updateItemForBetAddError(it, newList, betAddError)
+        }
+
         updateBetInfoListByMatchOddChange(newList)
     }
 
@@ -943,6 +970,33 @@ class GameViewModel(
         betInfoRepository.notifyBetInfoChanged()
     }
 
+    fun updateMatchOdd(betAddErrorDataList: List<BetAddErrorData>, betAddError: BetAddError) {
+        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+        betAddErrorDataList.forEach { betAddErrorData ->
+            betAddErrorData.let { data ->
+                data.status?.let { status ->
+                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                        null,
+                        data.id,
+                        null,
+                        data.odds,
+                        data.hkOdds,
+                        data.producerId,
+                        data.spread,
+                        status,
+                    )
+                    newList.add(newOdd)
+                }
+            }
+        }
+
+        betInfoRepository.betInfoList.value?.forEach {
+            updateItemForBetAddError(it.matchOdd, newList, betAddError)
+        }
+        betInfoRepository.notifyBetInfoChanged()
+
+    }
+
     private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         //判斷當前有沒有關閉的賠率
         val sendRequest = betInfoRepository.matchOddList.value?.find {
@@ -969,7 +1023,7 @@ class GameViewModel(
         playCateName: String,
         playName: String,
         matchOdd: MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
@@ -991,7 +1045,7 @@ class GameViewModel(
         matchType: MatchType,
         sportType: SportType,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
@@ -1044,6 +1098,13 @@ class GameViewModel(
                         newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                         newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
                         newItem.status.let { status -> oldItem.status = status }
+
+                        //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
+                        if(oldItem.oddState != org.cxct.sportlottery.network.bet.info.MatchOdd.OddState.SAME.state &&
+                            oldItem.status == BetStatus.ACTIVATED.code){
+                            oldItem.betAddError = null
+                        }
+
                     }
                 }
             } catch (e: java.lang.Exception) {
@@ -1052,7 +1113,7 @@ class GameViewModel(
         }
     }
 
-    private fun updateItemForOddsDetail(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>){
+    private fun updateItemForOddsDetail(oddsDetail: OddsDetailListData, updatedOddsDetail: ArrayList<OddsDetailListData>) {
         val oldOddList = oddsDetail.oddArrayList
         var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd>()
 
@@ -1082,7 +1143,8 @@ class GameViewModel(
 
                     //先判斷大小
                     oldOddData.oddState = getOddState(
-                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU), newOddData)
+                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU), newOddData
+                    )
 
                     //再帶入新的賠率
                     oldOddData.odds = newOddData.odds
@@ -1091,6 +1153,38 @@ class GameViewModel(
                     oldOddData.status = newOddData.status
                     oldOddData.producerId = newOddData.producerId
                 }
+            }
+        }
+    }
+
+    private fun updateItemForBetAddError(
+        oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
+        newList: List<org.cxct.sportlottery.network.odds.detail.Odd>,
+        betAddError: BetAddError
+    ){
+        for (newItem in newList) {
+
+            //每次都先把字串清空
+            oldItem.betAddError = null
+
+            try {
+                newItem.let {
+                    if (it.id == oldItem.oddsId) {
+                        oldItem.oddState = getOddState(
+                            getOdds(
+                                oldItem,
+                                loginRepository.mOddsType.value ?: OddsType.EU
+                            ), newItem
+                        )
+                        newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
+                        newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                        newItem.status.let { status -> oldItem.status = status }
+
+                        oldItem.betAddError = betAddError
+                    }
+                }
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -1132,7 +1226,7 @@ class GameViewModel(
         betInfoRepository.clear()
     }
 
-    private suspend fun getOddsDetail(matchId: String){
+    private suspend fun getOddsDetail(matchId: String) {
         val result = doNetwork(androidContext) {
             OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
         }
@@ -1201,10 +1295,7 @@ class GameViewModel(
     fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
             val result = getBetApi(matchType, betAddRequest)
-            Event(result).let {
-                _betAddResult.postValue(it)
-            }
-
+            _betAddResult.postValue(Event(result))
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(matchType, result)
