@@ -117,9 +117,6 @@ class GameViewModel(
     val curDatePosition: LiveData<Int>
         get() = _curDatePosition
 
-//    val matchTypeCardForParlay: LiveData<Event<Pair<MatchType, SportType?>>?>
-//        get() = _matchTypeCardForParlay
-
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
@@ -155,7 +152,6 @@ class GameViewModel(
     private val _curDatePosition = MutableLiveData<Int>()
     private val _asStartCount = MutableLiveData<Int>()
 
-    //    private val _matchTypeCardForParlay = MutableLiveData<Event<Pair<MatchType, SportType?>>?>()
     private val _isNoHistory = MutableLiveData<Boolean>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
@@ -224,7 +220,6 @@ class GameViewModel(
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
-    var menuEntrance = false
 
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
@@ -351,7 +346,6 @@ class GameViewModel(
                 if (it.sportMenuData != null) {
                     initSportMenuSelectedState(it.sportMenuData)
                     updateSportMenuSelectedState(it.sportMenuData)
-//                    updateSportMenuSelectedState(it.sportMenuData)
                 }
                 it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
                     item.sortNum
@@ -402,49 +396,6 @@ class GameViewModel(
         }
     }
 
-//    private fun updateSportMenuSelectedState(sportMenuData: SportMenuData) {
-//        val matchType = _matchTypeCardForParlay.value?.peekContent()?.first
-//        val sportType = _matchTypeCardForParlay.value?.peekContent()?.second
-//
-//        sportType?.let {
-//            when (matchType) {
-//                MatchType.IN_PLAY -> {
-//                    sportMenuData.menu.inPlay.items.map { sport ->
-//                        sport.isSelected = (sport.code == sportType.code)
-//                    }
-//                }
-//                MatchType.TODAY -> {
-//                    sportMenuData.menu.today.items.map { sport ->
-//                        sport.isSelected = (sport.code == sportType.code)
-//                    }
-//                }
-//                MatchType.EARLY -> {
-//                    sportMenuData.menu.early.items.map { sport ->
-//                        sport.isSelected = (sport.code == sportType.code)
-//                    }
-//                }
-//                MatchType.PARLAY -> {
-//                    sportMenuData.menu.parlay.items.map { sport ->
-//                        sport.isSelected = (sport.code == sportType.code)
-//                    }
-//                }
-//                MatchType.OUTRIGHT -> {
-//                    sportMenuData.menu.outright.items.map { sport ->
-//                        sport.isSelected = (sport.code == sportType.code)
-//                    }
-//                }
-//                MatchType.AT_START -> {
-//                    sportMenuData.atStart.items.map { sport ->
-//                        sport.isSelected = (sport.code == sportType.code)
-//                    }
-//                }
-//                else -> {
-//                }
-//            }
-//        }
-//
-//        _matchTypeCardForParlay.value = null
-//    }
     private fun updateSportMenuSelectedState(sportMenuData: SportMenuData) {
         val matchType = specialEntrance.value?.matchType
         val sportType = specialEntrance.value?.sportType
@@ -522,34 +473,6 @@ class GameViewModel(
             }
             _userMoney.postValue(userMoneyResult?.money)
         }
-    }
-
-//    fun getGameHallList(
-//        matchType: MatchType,
-//        sportType: SportType?,
-//        isLeftMenu: Boolean = false,
-//        isPreloadTable: Boolean = false
-//    ) {
-//        if (sportType == null) {
-//            if (!haveAtStart())
-//                return
-//        }
-//        menuEntrance = (this.matchType != matchType) || isPreloadTable//標記為卡片或菜單跳轉不同的類別
-//
-//        if (isLeftMenu) {
-//            _sportMenuResult.value = _sportMenuResult.value
-//        }
-//
-//        _matchTypeCardForParlay.postValue(Event(matchType to sportType))
-//    }
-
-    //判斷即將開賽是否可以跳轉
-    private fun haveAtStart(): Boolean {
-        val haveGame = (asStartCount.value ?: 0) > 0
-        if (!haveGame)
-            _errorPromptMessage.value =
-                Event(androidContext.getString(R.string.message_no_at_start))
-        return haveGame
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
