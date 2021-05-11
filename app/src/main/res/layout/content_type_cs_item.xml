@@ -26,6 +26,8 @@
             android:gravity="bottom|center_horizontal"
             android:maxLines="1"
             app:autoSizeMaxTextSize="@dimen/textSize15sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
+            app:autoSizeTextType="uniform"
             android:paddingBottom="4dp"
             tools:text="1.52" />
 
