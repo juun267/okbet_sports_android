@@ -174,7 +174,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.errorPromptMessage.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+            it.getContentIfNotHandled()
+                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
         })
     }
@@ -195,17 +196,29 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateInPlayUI(gameCateList: List<GameCateData>?) {
         val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
-        val lotteryCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size } ?: 0
-        val liveCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size } ?: 0
-        val pokerCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.sumBy { it.gameList.size } ?: 0
-        val slotCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.DZ }?.tabDataList?.sumBy { it.gameList.size } ?: 0
-        val fishingCount = gameCateList?.find { it.categoryThird == ThirdGameCategory.BY }?.tabDataList?.sumBy { it.gameList.size } ?: 0
+        val lotteryCount =
+            gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size }
+                ?: 0
+        val liveCount =
+            gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size }
+                ?: 0
+        val pokerCount =
+            gameCateList?.find { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.sumBy { it.gameList.size }
+                ?: 0
+        val slotCount =
+            gameCateList?.find { it.categoryThird == ThirdGameCategory.DZ }?.tabDataList?.sumBy { it.gameList.size }
+                ?: 0
+        val fishingCount =
+            gameCateList?.find { it.categoryThird == ThirdGameCategory.BY }?.tabDataList?.sumBy { it.gameList.size }
+                ?: 0
 
-        card_lottery.visibility = if (isShowThirdGame && lotteryCount > 0) View.VISIBLE else View.GONE
+        card_lottery.visibility =
+            if (isShowThirdGame && lotteryCount > 0) View.VISIBLE else View.GONE
         card_live.visibility = if (isShowThirdGame && liveCount > 0) View.VISIBLE else View.GONE
         card_poker.visibility = if (isShowThirdGame && pokerCount > 0) View.VISIBLE else View.GONE
         card_slot.visibility = if (isShowThirdGame && slotCount > 0) View.VISIBLE else View.GONE
-        card_fishing.visibility = if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
+        card_fishing.visibility =
+            if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
     }
 
     private fun updateInPlayUI(result: MatchPreloadResult) {
@@ -220,7 +233,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         val inPlayCount = result.matchPreloadData?.num ?: 0
         drawer_in_play.setCount(inPlayCount.toString())
-        drawer_in_play.setRvGameData(result.matchPreloadData?.apply { matchType = MatchType.IN_PLAY })
+        drawer_in_play.setRvGameData(result.matchPreloadData?.apply {
+            matchType = MatchType.IN_PLAY
+        })
         drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
@@ -298,7 +313,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun navOddsDetailFragment(matchType:MatchType, sportTypeCode: String?, matchId: String?) {
+    private fun navOddsDetailFragment(
+        matchType: MatchType,
+        sportTypeCode: String?,
+        matchId: String?
+    ) {
         val sportType = when (sportTypeCode) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
             SportType.FOOTBALL.code -> SportType.FOOTBALL
@@ -308,13 +327,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             else -> null
         }
         sportType?.let {
-                matchId?.let {
-                    val action =
-                        HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                            matchType, sportType, matchId
-                        )
-                    findNavController().navigate(action)
-                }
+            matchId?.let {
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
+                        matchType, sportType, matchId
+                    )
+                findNavController().navigate(action)
+            }
         }
     }
 }
