@@ -21,6 +21,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
@@ -67,27 +68,47 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initEvent() {
         card_football.setOnClickListener {
-//            viewModel.getGameHallList(MatchType.TODAY, SportType.FOOTBALL)
+            viewModel.navSpecialEntrance(
+                SpecialEntranceSource.HOME,
+                MatchType.TODAY,
+                SportType.FOOTBALL
+            )
         }
 
         card_basketball.setOnClickListener {
-//            viewModel.getGameHallList(MatchType.TODAY, SportType.BASKETBALL)
+            viewModel.navSpecialEntrance(
+                SpecialEntranceSource.HOME,
+                MatchType.TODAY,
+                SportType.BASKETBALL
+            )
         }
 
         card_tennis.setOnClickListener {
-//            viewModel.getGameHallList(MatchType.TODAY, SportType.TENNIS)
+            viewModel.navSpecialEntrance(
+                SpecialEntranceSource.HOME,
+                MatchType.TODAY,
+                SportType.TENNIS
+            )
         }
 
         card_badminton.setOnClickListener {
-//            viewModel.getGameHallList(MatchType.TODAY, SportType.BADMINTON)
+            viewModel.navSpecialEntrance(
+                SpecialEntranceSource.HOME,
+                MatchType.TODAY,
+                SportType.BADMINTON
+            )
         }
 
         card_volleyball.setOnClickListener {
-//            viewModel.getGameHallList(MatchType.TODAY, SportType.VOLLEYBALL)
+            viewModel.navSpecialEntrance(
+                SpecialEntranceSource.HOME,
+                MatchType.TODAY,
+                SportType.VOLLEYBALL
+            )
         }
 
         card_game_soon.setOnClickListener {
-//            viewModel.getGameHallList(MatchType.AT_START, null)
+            viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.AT_START, null)
         }
 
         card_lottery.setOnClickListener {
@@ -217,7 +238,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     SportType.BADMINTON.code -> SportType.BADMINTON
                     else -> null
                 }
-//                viewModel.getGameHallList(MatchType.IN_PLAY, sportType, isPreloadTable = true)
+
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.HOME,
+                    MatchType.IN_PLAY,
+                    sportType
+                )
             }
         })
     }
@@ -244,7 +270,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     SportType.BADMINTON.code -> SportType.BADMINTON
                     else -> null
                 }
-//                viewModel.getGameHallList(MatchType.TODAY, sportType, isPreloadTable = true)
+
+                viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, sportType)
             }
         })
     }
