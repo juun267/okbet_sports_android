@@ -262,6 +262,7 @@ class GameViewModel(
                 if (targetItemCount == 0) {
                     when (matchType) {
                         MatchType.TODAY -> {
+                            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_today)))
                         }
                         MatchType.AT_START -> {
                             _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
