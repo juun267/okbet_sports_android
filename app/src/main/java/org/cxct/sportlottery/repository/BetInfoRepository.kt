@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -81,11 +80,6 @@ class BetInfoRepository {
                     matchOdd.oddsId == betInfoListData.matchOdd.oddsId
                 } ?: false
             }
-
-            Log.e("[aaa]", "${betList.size}")
-
-            Log.e("[aaa]", "${_betInfoList.value?.size}")
-
             _betInfoList.value = betList
         }
     }

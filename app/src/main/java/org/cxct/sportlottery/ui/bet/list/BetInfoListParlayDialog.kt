@@ -94,7 +94,18 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             keyboard?.hideKeyboard()
         }
 
-        tv_add_more.setOnClickListener { dismiss() }
+        tv_add_more.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("gameType", matchOddAdapter.matchOddList.first().gameType)
+                putString("matchType", MatchType.PARLAY.postValue)
+            }
+            val intent = Intent(context, GameActivity::class.java).apply {
+                putExtras(bundle)
+            }
+            context?.startActivity(intent)
+            dismiss()
+        }
+
         tv_bet.setOnClickListener(object : OnForbidClickListener() {
             override fun forbidClick(view: View?) {
                 addBet()
