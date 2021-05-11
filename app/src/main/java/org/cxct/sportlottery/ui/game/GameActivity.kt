@@ -385,6 +385,33 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             updateUiWithResult(it)
         })
 
+        viewModel.specialEntrance.observe(this, {
+            it?.let {
+                app_bar_layout.setExpanded(true, false)
+
+                when (it.matchType) {
+                    MatchType.IN_PLAY -> {
+                        tabLayout.getTabAt(1)?.select()
+                    }
+                    MatchType.TODAY -> {
+                        tabLayout.getTabAt(2)?.select()
+                    }
+                    MatchType.EARLY -> {
+                        tabLayout.getTabAt(3)?.select()
+                    }
+                    MatchType.PARLAY -> {
+                        tabLayout.getTabAt(4)?.select()
+                    }
+                    MatchType.OUTRIGHT -> {
+                        tabLayout.getTabAt(5)?.select()
+                    }
+                    MatchType.AT_START -> {
+                        toAtStart()
+                    }
+                }
+            }
+        })
+
         viewModel.sportMenuResult.observe(this, {
             hideLoading()
             updateUiWithResult(it)
