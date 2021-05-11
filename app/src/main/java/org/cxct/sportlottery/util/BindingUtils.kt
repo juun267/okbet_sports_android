@@ -100,18 +100,21 @@ fun TextView.setRecordStatusColor(status: Int?) {
 
 
 @BindingAdapter("moneyFormat")
-fun TextView.setMoneyFormat(money: Double ?= 0.0) {
+fun TextView.setMoneyFormat(money: Double? = 0.0) {
     money?.let {
         text = TextUtil.format(it)
     }
 }
 
 
-@BindingAdapter("profitFormat")
-fun TextView.setProfitFormat(money: Double?) {
+@BindingAdapter(value = ["bind:profitFormat", "bind:profitTotal"], requireAll = false)
+fun TextView.setProfitFormat(money: Double?, isTotal: Boolean? = false) {
     money?.let {
         text = if (it > 0.0) {
-            "+${TextUtil.format(it)}"
+            if (isTotal == true)
+                TextUtil.format(it)
+            else
+                "+${TextUtil.format(it)}"
         } else {
             TextUtil.format(it)
         }

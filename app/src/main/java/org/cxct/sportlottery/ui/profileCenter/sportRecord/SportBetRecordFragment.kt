@@ -120,7 +120,7 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
                 layout_total.apply {
                     tv_total_number.setMoneyFormat(it.other?.totalAmount ?: 0).toString()
-                    tv_total_bet_profit.setProfitFormat(it.other?.win)
+                    tv_total_bet_profit.setProfitFormat(it.other?.win, true)
                     tv_total_bet_profit.setMoneyColor(it.other?.win ?: 0.0)
                 }
             } else {
