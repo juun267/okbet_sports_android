@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -48,9 +49,13 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
     val settingNeedToCompleteProfileInfo: LiveData<Event<Boolean>> //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
         get() = _settingNeedToCompleteProfileInfo
 
-    private var _needToBindBankCard = MutableLiveData<Event<Boolean>>()
-    val needToBindBankCard: LiveData<Event<Boolean>>
-        get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+    private var _needToBindBankCard = MutableLiveData<Event<Int?>>()
+    val needToBindBankCard: LiveData<Event<Int?>>
+        get() = _needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+
+    private var mWithdrawOperation: SystemOperation? = null
+
+    data class SystemOperation(val bankSystem: Boolean, val cryptoSystem: Boolean)
 
     suspend fun checkWithdrawSystem(): Response<MoneyRechCfgResult> {
         val response = OneBoSportApi.moneyService.getRechCfg()
@@ -59,6 +64,8 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
 
             val bankWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
             val cryptoWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
+
+            mWithdrawOperation = SystemOperation(bankWithdrawSystemOperation, cryptoWithdrawSystemOperation)
 
             val operation = bankWithdrawSystemOperation || cryptoWithdrawSystemOperation
             _withdrawSystemOperation.value = Event(operation)
@@ -147,7 +154,22 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
         if (response.isSuccessful) {
             response.body()?.let { result ->
                 if (result.success) {
-                    _needToBindBankCard.value = Event(result.bankCardList.isNullOrEmpty())
+                    val promptMessageId: Int
+                    if (result.bankCardList.isNullOrEmpty()) {
+                        promptMessageId = when {
+                            mWithdrawOperation?.bankSystem ?: false && mWithdrawOperation?.cryptoSystem ?: false -> {
+                                R.string.please_setting_money_card
+                            }
+                            mWithdrawOperation?.cryptoSystem == true -> {
+                                R.string.please_setting_crypto
+                            }
+                            else -> {
+                                R.string.please_setting_bank_card
+                            }
+                        }
+                    } else
+                        promptMessageId = -1
+                    _needToBindBankCard.value = Event(promptMessageId)
                 }
             }
         }

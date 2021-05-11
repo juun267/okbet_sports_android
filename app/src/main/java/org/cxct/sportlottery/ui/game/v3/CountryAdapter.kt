@@ -25,6 +25,12 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
+    var searchText = ""
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     var countryLeagueListener: CountryLeagueListener? = null
 
     override fun getItemViewType(position: Int): Int {
@@ -54,7 +60,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
             else -> {
-                NoDataViewHolder.from(parent)
+                NoDataViewHolder.from(parent, searchText)
             }
         }
     }
@@ -134,10 +140,14 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(itemView) {
 
         companion object {
-            fun from(parent: ViewGroup): NoDataViewHolder {
+            fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
+                val noDataLayoutId = if (searchText.isBlank())
+                    R.layout.view_no_record
+                else
+                    R.layout.itemview_game_no_record
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_no_record, parent, false)
+                    .inflate(noDataLayoutId, parent, false)
 
                 return NoDataViewHolder(view)
             }
