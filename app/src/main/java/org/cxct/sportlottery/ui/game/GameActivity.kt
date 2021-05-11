@@ -678,7 +678,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private fun toAtStart() {
         nonSelectTab()
-        navGameFragment(MatchType.AT_START)
+        viewModel.getSportMenu(MatchType.AT_START)
     }
 
 }
