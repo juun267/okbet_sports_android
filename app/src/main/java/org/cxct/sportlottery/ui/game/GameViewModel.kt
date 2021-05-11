@@ -39,6 +39,8 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.game.data.Date
+import org.cxct.sportlottery.ui.game.data.SpecialEntrance
+import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -127,6 +129,9 @@ class GameViewModel(
     val errorPromptMessage: LiveData<Event<String>>
         get() = _errorPromptMessage
 
+    val specialEntrance: LiveData<SpecialEntrance?>
+        get() = _specialEntrance
+
 
     val betInfoList = betInfoRepository.betInfoList
 
@@ -154,6 +159,7 @@ class GameViewModel(
     private val _isNoHistory = MutableLiveData<Boolean>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
+    private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
@@ -220,6 +226,68 @@ class GameViewModel(
 
     var menuEntrance = false
 
+    fun navSpecialEntrance(
+        source: SpecialEntranceSource,
+        matchType: MatchType,
+        sportType: SportType?
+    ) {
+        val targetItemCount = when (matchType) {
+            MatchType.IN_PLAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.count { it.code == sportType?.code }
+            }
+            MatchType.TODAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.count { it.code == sportType?.code }
+            }
+            MatchType.EARLY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.count { it.code == sportType?.code }
+            }
+            MatchType.PARLAY -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.count { it.code == sportType?.code }
+            }
+            MatchType.OUTRIGHT -> {
+                _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.count { it.code == sportType?.code }
+            }
+            MatchType.AT_START -> {
+                _sportMenuResult.value?.sportMenuData?.atStart?.items?.count { it.code == sportType?.code }
+            }
+        }
+
+        val todayItemCount =
+            _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.count { it.code == sportType?.code }
+
+        var targetMatchType = matchType
+
+        when (source) {
+            SpecialEntranceSource.HOME -> {
+                if (targetItemCount == 0) {
+                    when (matchType) {
+                        MatchType.TODAY -> {
+                        }
+                        MatchType.AT_START -> {
+                            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
+                        }
+                        else -> {
+                        }
+                    }
+                    return
+                }
+            }
+
+            SpecialEntranceSource.LEFT_MENU -> {
+                targetMatchType = when {
+                    (targetItemCount != 0) -> matchType
+                    (todayItemCount != 0) -> MatchType.TODAY
+                    else -> MatchType.PARLAY
+                }
+            }
+
+            SpecialEntranceSource.SHOPPING_CART -> {
+            }
+        }
+
+        _specialEntrance.postValue(SpecialEntrance(targetMatchType, sportType))
+    }
+
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
         if (boolean) {
@@ -281,6 +349,7 @@ class GameViewModel(
             result?.let {
                 if (it.sportMenuData != null) {
                     initSportMenuSelectedState(it.sportMenuData)
+                    updateSportMenuSelectedState(it.sportMenuData)
 //                    updateSportMenuSelectedState(it.sportMenuData)
                 }
                 it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
@@ -375,6 +444,48 @@ class GameViewModel(
 //
 //        _matchTypeCardForParlay.value = null
 //    }
+    private fun updateSportMenuSelectedState(sportMenuData: SportMenuData) {
+        val matchType = specialEntrance.value?.matchType
+        val sportType = specialEntrance.value?.sportType
+
+        matchType?.let {
+            sportType?.let {
+                when (matchType) {
+                    MatchType.IN_PLAY -> {
+                        sportMenuData.menu.inPlay.items.map { sport ->
+                            sport.isSelected = (sport.code == sportType.code)
+                        }
+                    }
+                    MatchType.TODAY -> {
+                        sportMenuData.menu.today.items.map { sport ->
+                            sport.isSelected = (sport.code == sportType.code)
+                        }
+                    }
+                    MatchType.EARLY -> {
+                        sportMenuData.menu.early.items.map { sport ->
+                            sport.isSelected = (sport.code == sportType.code)
+                        }
+                    }
+                    MatchType.PARLAY -> {
+                        sportMenuData.menu.parlay.items.map { sport ->
+                            sport.isSelected = (sport.code == sportType.code)
+                        }
+                    }
+                    MatchType.OUTRIGHT -> {
+                        sportMenuData.menu.outright.items.map { sport ->
+                            sport.isSelected = (sport.code == sportType.code)
+                        }
+                    }
+                    MatchType.AT_START -> {
+                        sportMenuData.atStart.items.map { sport ->
+                            sport.isSelected = (sport.code == sportType.code)
+                        }
+                    }
+                }
+            }
+            _specialEntrance.value = null
+        }
+    }
 
     fun getInPlayMatchPreload() {
         viewModelScope.launch {
