@@ -191,9 +191,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun changeBetInfoContentByMessage(result: BetAddResult) {
-        if (!result.success) {
-            val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
-            errorData?.let { viewModel.updateMatchOdd(it, getBetAddError(result.code)) }
+        getBetAddError(result.code)?.let { betAddError ->
+            if (!result.success) {
+                val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+                errorData?.let { viewModel.updateMatchOdd(it, betAddError) }
+            }
         }
     }
 

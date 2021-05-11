@@ -29,7 +29,7 @@ fun messageByResultCode(context: Context, result: BetAddResult): String {
 }
 
 
-fun getBetAddError(resultCode: Int): BetAddError {
+fun getBetAddError(resultCode: Int): BetAddError? {
     return when (resultCode) {
         BetAddError.MATCH_NOT_EXIST.code -> BetAddError.MATCH_NOT_EXIST
         BetAddError.ODDS_NOT_EXIST.code -> BetAddError.ODDS_NOT_EXIST
@@ -38,7 +38,7 @@ fun getBetAddError(resultCode: Int): BetAddError {
         BetAddError.PARLAY_UN_SUPPORT.code -> BetAddError.PARLAY_UN_SUPPORT
         BetAddError.ODDS_ID_NOT_ALLOW_BET.code -> BetAddError.ODDS_ID_NOT_ALLOW_BET
         BetAddError.ODDS_HAVE_CHANGED.code -> BetAddError.ODDS_HAVE_CHANGED
-        else -> BetAddError.ODDS_HAVE_CHANGED
+        else -> null
     }
 }
 
