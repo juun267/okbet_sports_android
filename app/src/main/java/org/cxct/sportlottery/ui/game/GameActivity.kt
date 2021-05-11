@@ -98,11 +98,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun goToSportGame(sportType: SportType) {
-//        //規則：
-//        //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
-//        //2. 若此當前頁籤無該種球類比賽，則跳轉到"今日"頁籤下的對應球類賽事
-//        //3. 若"今日"也沒有則跳到"串關"
-//        //4. 若扔沒有則顯示無賽事的圖片
+        //規則：
+        //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
+        //2. 若此當前頁籤無該種球類比賽，則後續導入優先順序為 今日 > 早盤 > 串關
+        //3. 若扔沒有則顯示無賽事的圖片
+        //4. 若扔沒有則顯示無賽事的圖片
         val matchType = when (tabLayout.selectedTabPosition) {
             0, 2 -> MatchType.TODAY
             1 -> MatchType.IN_PLAY

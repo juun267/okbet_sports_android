@@ -254,6 +254,9 @@ class GameViewModel(
         val todayItemCount =
             _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.count { it.code == sportType?.code }
 
+        val earlyItemCount =
+            _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.count { it.code == sportType?.code }
+
         var targetMatchType = matchType
 
         when (source) {
@@ -277,6 +280,7 @@ class GameViewModel(
                 targetMatchType = when {
                     (targetItemCount != 0) -> matchType
                     (todayItemCount != 0) -> MatchType.TODAY
+                    (earlyItemCount != 0) -> MatchType.EARLY
                     else -> MatchType.PARLAY
                 }
             }
