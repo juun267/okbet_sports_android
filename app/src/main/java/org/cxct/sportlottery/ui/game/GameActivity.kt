@@ -376,33 +376,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             updateUiWithResult(it)
         })
 
-//        viewModel.matchTypeCardForParlay.observe(this, {
-//            val matchType = it?.getContentIfNotHandled()?.first
-//
-//            app_bar_layout.setExpanded(true, false)
-//
-//            when (matchType) {
-//                MatchType.IN_PLAY -> {
-//                    tabLayout.getTabAt(1)?.select()
-//                }
-//                MatchType.TODAY -> {
-//                    tabLayout.getTabAt(2)?.select()
-//                }
-//                MatchType.EARLY -> {
-//                    tabLayout.getTabAt(3)?.select()
-//                }
-//                MatchType.PARLAY -> {
-//                    tabLayout.getTabAt(4)?.select()
-//                }
-//                MatchType.OUTRIGHT -> {
-//                    tabLayout.getTabAt(5)?.select()
-//                }
-//                MatchType.AT_START -> {
-//                    toAtStart()
-//                }
-//            }
-//        })
-
         viewModel.userInfo.observe(this, {
             updateAvatar(it?.iconUrl)
         })
@@ -550,73 +523,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     sportType
                 )
             }
-        }
-    }
-
-    private fun navOddsDetailFragment(matchType: MatchType, sportType: SportType, matchId: String) {
-        val action = when (mNavController.currentDestination?.id) {
-            R.id.gameV3Fragment -> {
-                GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
-                    matchType,
-                    sportType,
-                    matchId
-                )
-            }
-            R.id.gameLeagueFragment -> {
-                GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
-                    matchType,
-                    sportType,
-                    matchId
-                )
-            }
-            R.id.oddsDetailLiveFragment -> {
-                OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
-                    sportType,
-                    matchId
-                )
-            }
-            R.id.oddsDetailFragment -> {
-                OddsDetailFragmentDirections.actionOddsDetailFragmentSelf(sportType, matchId, matchType)
-            }
-            else -> null
-        }
-
-        action?.let {
-            mNavController.navigate(action)
-        }
-    }
-
-    private fun navOddsDetailLiveFragment(sportType: SportType, matchId: String) {
-        val action = when (mNavController.currentDestination?.id) {
-            R.id.gameV3Fragment -> {
-                GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
-                    sportType,
-                    matchId
-                )
-            }
-            R.id.gameLeagueFragment -> {
-                GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
-                    sportType,
-                    matchId
-                )
-            }
-            R.id.oddsDetailFragment -> {
-                OddsDetailFragmentDirections.actionOddsDetailFragmentToOddsDetailLiveFragment(
-                    sportType,
-                    matchId
-                )
-            }
-            R.id.oddsDetailLiveFragment -> {
-                OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentSelf(
-                    sportType,
-                    matchId
-                )
-            }
-            else -> null
-        }
-
-        action?.let {
-            mNavController.navigate(action)
         }
     }
 
