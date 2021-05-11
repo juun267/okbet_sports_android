@@ -141,9 +141,13 @@ object ParlayLimitUtil {
             parlayComSOList.add(parlayCom)
         }
 
-        parlayComSOList.sortBy {
-            it.parlayType.split("C")[1].toInt()
+
+        parlayComSOList.apply {
+            sortBy { it.parlayType.split("C")[1].toInt() }
+            reverse()
         }
+
+        parlayComSOList.reverse()
 
         //N串M场景
         val nParlayM = ParlayCom()
