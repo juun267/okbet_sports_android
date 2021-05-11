@@ -195,6 +195,16 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
 
     class NoCardAddViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(transferAddSwitch: TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
+            itemView.apply {
+                tv_add_card.text = transferAddSwitch.run {
+                    when {
+                        cryptoTransfer && bankTransfer -> context.getString(R.string.add_credit_or_virtual)
+                        cryptoTransfer -> context.getString(R.string.add_crypto_card)
+                        bankTransfer -> context.getString(R.string.add_credit_card)
+                        else -> context.getString(R.string.add_new)
+                    }
+                }
+            }
             itemView.cv_add_no_card.setOnClickListener {
                 mBankListClickListener.onAdd(transferAddSwitch)
             }

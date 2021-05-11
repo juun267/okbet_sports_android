@@ -211,10 +211,15 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         private fun showTime(sec: Int?) {
-            itemView.tv_time.text = if (sec == null)
-                null
-            else
-                TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+            itemView.tv_time.apply {
+                text = if (sec == null) {
+                    visibility = View.GONE
+                    null
+                } else {
+                    visibility = View.VISIBLE
+                    TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+                }
+            }
         }
 
         private fun startFTTimer(matchClockCO: MatchClockCO?) {
