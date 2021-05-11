@@ -104,7 +104,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 //        //2. 若此當前頁籤無該種球類比賽，則跳轉到"今日"頁籤下的對應球類賽事
 //        //3. 若"今日"也沒有則跳到"串關"
 //        //4. 若扔沒有則顯示無賽事的圖片
-
         val matchType = when (tabLayout.selectedTabPosition) {
             0, 2 -> MatchType.TODAY
             1 -> MatchType.IN_PLAY
@@ -157,12 +156,14 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
             //選單選擇結束要收起選單
-            val menuFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
             //選單選擇結束要收起選單
-            val menuLeftFrag = supportFragmentManager.findFragmentById(R.id.fragment_menu_left) as MenuLeftFragment
+            val menuLeftFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu_left) as MenuLeftFragment
             menuLeftFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             menuLeftFrag.setMenuLeftListener(mMenuLeftListener)
             nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
@@ -382,7 +383,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.systemDelete.observe(this, {
             if (it) {
-                showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_system_close_incompatible_item)) {}
+                showErrorPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.bet_info_system_close_incompatible_item)
+                ) {}
             }
         })
 
