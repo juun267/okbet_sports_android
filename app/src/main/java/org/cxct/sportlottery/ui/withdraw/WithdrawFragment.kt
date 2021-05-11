@@ -10,6 +10,7 @@ import android.widget.BaseAdapter
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
@@ -336,6 +337,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
             view.tag = holder
 
             view.apply {
+                holder.imgCheck = img_check_bank
                 holder.ivBankIcon = iv_bank_icon
                 holder.tvBank = tv_bank_card
                 holder.llSelectBankCard = ll_select_bank_card
@@ -351,7 +353,8 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
 
     private fun setView(holder: ListViewHolder, data: BankCardList, position: Int, listener: BankCardAdapterListener) {
         holder.apply {
-            tvBank?.text = data.bankName
+            imgCheck?.visibility = if (position == selectedPosition) View.VISIBLE else View.GONE
+            tvBank?.text = tvBank?.context?.getString(R.string.selected_bank_card)?.let { String.format(it, data.bankName, data.cardNo) }
             val cardIcon = when (data.transferType) {
                 TransferType.BANK -> getBankIconByBankName(data.bankName)
                 TransferType.CRYPTO -> getCryptoIconByCryptoName(data.transferType.type)

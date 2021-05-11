@@ -197,12 +197,12 @@
                             android:layout_marginStart="4dp"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:gameStatus="@{row.status}"
                             app:layout_constraintEnd_toStartOf="@+id/guideline"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toEndOf="@+id/tv_status_money"
                             app:layout_constraintTop_toBottomOf="@+id/tv_bet_total_money"
                             app:layout_constraintTop_toTopOf="@+id/text_view4"
+                            app:status="@{row.status}"
                             tools:text="全输" />
 
                         <TextView
@@ -251,7 +251,7 @@
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
                             app:layout_constraintTop_toBottomOf="@+id/text_view5"
-                            app:text="@{row.cancelledBy == `mts`?@string/remark_by_mts:row.cancelledBy == `own`||row.cancelledBy == `source`?@string/remark_by_own_source:null}"
+                            app:text="@{row.cancelledBy.equals(`mts`)?@string/remark_by_mts:row.cancelledBy.equals(`own`)||row.cancelledBy.equals(`source`)?@string/remark_by_own_source:null}"
                             tools:text="@string/remark_by_mts" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

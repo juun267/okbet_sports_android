@@ -315,9 +315,9 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.needToBindBankCard.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_money_card)) {
+            it.getContentIfNotHandled()?.let { messageId ->
+                if (messageId != -1) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(messageId)) {
                         startActivity(Intent(this, BankActivity::class.java))
                     }
                 } else {

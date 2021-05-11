@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_game_league.view.*
-import kotlinx.android.synthetic.main.itemview_game_league.view.league_odd_count
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
@@ -22,6 +21,12 @@ class LeagueAdapter(private val matchType: MatchType) :
     }
 
     var data = listOf<LeagueOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var searchText = ""
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -68,7 +73,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                 }
             }
             else -> {
-                NoDataViewHolder.from(parent)
+                NoDataViewHolder.from(parent, searchText)
             }
         }
     }
@@ -202,10 +207,14 @@ class LeagueAdapter(private val matchType: MatchType) :
         RecyclerView.ViewHolder(itemView) {
 
         companion object {
-            fun from(parent: ViewGroup): NoDataViewHolder {
+            fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
+                val noDataLayoutId = if (searchText.isBlank())
+                    R.layout.view_no_record
+                else
+                    R.layout.itemview_game_no_record
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_no_record, parent, false)
+                    .inflate(noDataLayoutId, parent, false)
 
                 return NoDataViewHolder(view)
             }
