@@ -326,8 +326,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         spread.setSpan(ForegroundColorSpan(colorOrange), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spread.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        val oddsEnd = getOdds(matchOdd, oddsType).toString().length + 3
-        val odds = SpannableString(" @ ${getOdds(matchOdd, oddsType)}")
+        val oddsEnd = getOdds(matchOdd, oddsType).toString().length + 4
+        val odds = SpannableString(" @ ${TextUtil.formatForOdd(getOdds(matchOdd, oddsType))}")
         odds.setSpan(ForegroundColorSpan(colorOrange), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         odds.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
