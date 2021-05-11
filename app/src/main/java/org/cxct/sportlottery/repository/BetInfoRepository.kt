@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -53,7 +54,7 @@ class BetInfoRepository {
     fun addInBetInfoParlay() {
         val betList = _betInfoList.value ?: mutableListOf()
 
-        if (betList.size >= org.cxct.sportlottery.ui.game.BET_INFO_MAX_COUNT || betList.size == 0) {
+        if (betList.size == 0) {
             return
         }
 
@@ -80,6 +81,11 @@ class BetInfoRepository {
                     matchOdd.oddsId == betInfoListData.matchOdd.oddsId
                 } ?: false
             }
+
+            Log.e("[aaa]", "${betList.size}")
+
+            Log.e("[aaa]", "${_betInfoList.value?.size}")
+
             _betInfoList.value = betList
         }
     }
