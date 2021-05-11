@@ -268,6 +268,12 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             return
         }
 
+        val parlayType = if (betInfoListData.matchType == MatchType.OUTRIGHT) {
+            MatchType.OUTRIGHT.postValue
+        } else {
+            betInfoListData.parlayOdds?.parlayType
+        }
+
         betInfoListData.parlayOdds?.let {
             viewModel.addBet(
                 BetAddRequest(
@@ -277,7 +283,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                             getOdds(betInfoListData.matchOdd, oddsType)
                         )
                     ),
-                    listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+                    listOf(Stake(parlayType ?: "", stake)),
                     1,
                     oddsType.code
                 ), betInfoListData.matchType
