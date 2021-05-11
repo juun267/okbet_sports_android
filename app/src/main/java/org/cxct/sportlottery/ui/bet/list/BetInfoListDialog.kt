@@ -295,7 +295,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     override fun onAddMoreClick(betInfoList: BetInfoListData) {
         val bundle = Bundle().apply {
             putString("gameType", betInfoList.matchOdd.gameType)
-            putString("matchId", betInfoList.matchOdd.matchId)
             putString("matchType", betInfoList.matchType?.postValue)
         }
         val intent = Intent(context, GameActivity::class.java).apply {

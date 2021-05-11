@@ -53,7 +53,7 @@ class BetInfoRepository {
     fun addInBetInfoParlay() {
         val betList = _betInfoList.value ?: mutableListOf()
 
-        if (betList.size >= org.cxct.sportlottery.ui.game.BET_INFO_MAX_COUNT || betList.size == 0) {
+        if (betList.size >= BET_INFO_MAX_COUNT || betList.size == 0) {
             return
         }
 
