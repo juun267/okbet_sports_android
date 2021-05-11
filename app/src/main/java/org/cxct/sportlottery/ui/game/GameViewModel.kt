@@ -1086,9 +1086,13 @@ class GameViewModel(
                                 loginRepository.mOddsType.value ?: OddsType.EU
                             ), newItem
                         )
-                        newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
-                        newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+
                         newItem.status.let { status -> oldItem.status = status }
+
+                        if(oldItem.status == BetStatus.ACTIVATED.code){
+                            newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
+                            newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                        }
 
                         //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
                         if (oldItem.oddState != org.cxct.sportlottery.network.bet.info.MatchOdd.OddState.SAME.state &&
