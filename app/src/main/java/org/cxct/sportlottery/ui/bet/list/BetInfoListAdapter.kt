@@ -323,7 +323,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         private fun setChangeOdds(position: Int, matchOdd: MatchOdd) {
             when (matchOdd.oddState) {
                 OddState.LARGER.state, OddState.SMALLER.state -> {
-                    binding.betInfoAction.tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
                     binding.tvOddChange.visibility = View.VISIBLE
 
                     binding.betInfoDetail.tvOdds.apply {
@@ -337,7 +336,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     matchOdd.changeOddsTask?.let { mHandler.removeCallbacks(it) }
                     val changeOddsTask = Runnable {
                         matchOdd.changeOddsTask = null
-                        matchOdd.oddState = OddState.SAME.state
                         notifyItemChanged(position)
                     }
 

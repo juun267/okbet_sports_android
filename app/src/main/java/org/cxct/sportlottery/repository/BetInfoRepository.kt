@@ -8,6 +8,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
@@ -316,6 +317,7 @@ class BetInfoRepository {
             it.matchOdd.oddsId == matchOdd.oddsId
         }
         hasChanged?.matchOdd?.oddsHasChanged = true
+        hasChanged?.matchOdd?.oddState = OddState.SAME.state
     }
 
 
