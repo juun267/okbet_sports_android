@@ -480,30 +480,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
 
         when (matchType) {
-            MatchType.IN_PLAY.postValue -> {
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.IN_PLAY,
-                    sportType
-                )
-            }
-
-            MatchType.TODAY.postValue -> {
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.TODAY,
-                    sportType
-                )
-            }
-
-            MatchType.EARLY.postValue -> {
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.EARLY,
-                    sportType
-                )
-            }
-
             MatchType.PARLAY.postValue -> {
                 viewModel.navSpecialEntrance(
                     SpecialEntranceSource.SHOPPING_CART,
@@ -512,18 +488,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 )
             }
 
-            MatchType.AT_START.postValue -> {
+            else -> {
                 viewModel.navSpecialEntrance(
                     SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.AT_START,
-                    sportType
-                )
-            }
-
-            MatchType.OUTRIGHT.postValue -> {
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.OUTRIGHT,
+                    MatchType.TODAY,
                     sportType
                 )
             }
