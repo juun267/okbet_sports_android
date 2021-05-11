@@ -493,10 +493,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         val bundle = intent.extras
         val matchType = bundle?.getString("matchType")
-        val gameType = bundle?.getString("gameType")
-        val matchId = bundle?.getString("matchId")
-
-        val sportType = when (gameType) {
+        val sportType = when (bundle?.getString("gameType")) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
             SportType.TENNIS.code -> SportType.TENNIS
             SportType.BADMINTON.code -> SportType.BADMINTON
@@ -507,56 +504,52 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
         when (matchType) {
             MatchType.IN_PLAY.postValue -> {
-                tabLayout.getTabAt(1)?.select()
-
-                sportType?.let {
-                    matchId?.let {
-                        navOddsDetailLiveFragment(sportType, matchId)
-                    }
-                }
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.SHOPPING_CART,
+                    MatchType.IN_PLAY,
+                    sportType
+                )
             }
 
             MatchType.TODAY.postValue -> {
-                tabLayout.getTabAt(2)?.select()
-
-                sportType?.let {
-                    matchId?.let {
-                        navOddsDetailFragment(MatchType.TODAY, sportType, matchId)
-                    }
-                }
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.SHOPPING_CART,
+                    MatchType.TODAY,
+                    sportType
+                )
             }
 
             MatchType.EARLY.postValue -> {
-                tabLayout.getTabAt(3)?.select()
-
-                sportType?.let {
-                    matchId?.let {
-                        navOddsDetailFragment(MatchType.EARLY, sportType, matchId)
-                    }
-                }
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.SHOPPING_CART,
+                    MatchType.EARLY,
+                    sportType
+                )
             }
 
             MatchType.PARLAY.postValue -> {
-                tabLayout.getTabAt(4)?.select()
-
-                sportType?.let {
-                    matchId?.let {
-                        navOddsDetailFragment(MatchType.PARLAY, sportType, matchId)
-                    }
-                }
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.SHOPPING_CART,
+                    MatchType.PARLAY,
+                    sportType
+                )
             }
 
             MatchType.AT_START.postValue -> {
-                toAtStart()
-
-                sportType?.let {
-                    matchId?.let {
-                        navOddsDetailFragment(MatchType.AT_START, sportType, matchId)
-                    }
-                }
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.SHOPPING_CART,
+                    MatchType.AT_START,
+                    sportType
+                )
             }
 
-            MatchType.OUTRIGHT.postValue -> tabLayout.getTabAt(5)?.select()
+            MatchType.OUTRIGHT.postValue -> {
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.SHOPPING_CART,
+                    MatchType.OUTRIGHT,
+                    sportType
+                )
+            }
         }
     }
 
