@@ -113,13 +113,9 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         showHideTab()
         sv_protocol.setAdapter(protocolAdapter)
 
-//        Log.e(">>>", "args.editBankCard = ${args.editBankCard}")
-//        viewModel.getCryptoBindList(args.editBankCard)
-
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
-
     }
 
     private fun showHideTab() {
