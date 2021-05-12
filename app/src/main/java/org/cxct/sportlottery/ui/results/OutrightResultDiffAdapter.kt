@@ -39,10 +39,15 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             }
             is OutrightViewHolder -> {
                 holder.apply {
+                    setupBottomLine(position, holder.bottomLine)
                     bind(getItem(adapterPosition))
                 }
             }
         }
+    }
+
+    private fun setupBottomLine(position: Int, bottomLine: View) {
+        bottomLine.visibility = if (position + 1 < itemCount && getItemViewType(position + 1) != OutrightType.TITLE.ordinal) View.VISIBLE else View.GONE
     }
 
     class OutrightTitleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -92,6 +97,8 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
                 return OutrightViewHolder(view)
             }
         }
+
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
 
         fun bind(outrightResultData: OutrightResultData) {
             itemView.apply {
