@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/gameV3Fragment"
-        android:name="org.cxct.sportlottery.ui.game.v3.GameV3Fragment"
+        android:name="org.cxct.sportlottery.ui.game.hall.GameV3Fragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game_v3">
         <argument

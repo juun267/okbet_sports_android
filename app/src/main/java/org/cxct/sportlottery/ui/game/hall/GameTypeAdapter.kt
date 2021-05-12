@@ -1,24 +1,22 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.hall
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_country_league.view.*
+import kotlinx.android.synthetic.main.itemview_game_type2.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.outright.season.Season
+import org.cxct.sportlottery.ui.game.data.Date
 
-class OutrightCountryLeagueAdapter :
-    RecyclerView.Adapter<OutrightCountryLeagueAdapter.ViewHolder>() {
+class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
 
-    var data = listOf<Season>()
+    var data = listOf<Date>()
         set(value) {
             field = value
-
             notifyDataSetChanged()
         }
 
-    var outrightCountryLeagueListener: OutrightCountryLeagueListener? = null
+    var gameTypeListener: GameTypeListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
@@ -27,18 +25,18 @@ class OutrightCountryLeagueAdapter :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = data[position]
 
-        holder.bind(item, outrightCountryLeagueListener)
+        holder.bind(item, gameTypeListener)
     }
 
     override fun getItemCount(): Int = data.size
 
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Season, outrightCountryLeagueListener: OutrightCountryLeagueListener?) {
-            itemView.country_league_name.text = item.name
-            itemView.country_league_odd_count.text = item.num.toString()
+        fun bind(item: Date, gameTypeListener: GameTypeListener?) {
+            itemView.game_type_item_text.text = item.display
+            itemView.isSelected = item.isSelected
             itemView.setOnClickListener {
-                outrightCountryLeagueListener?.onClick(item)
+                gameTypeListener?.onClick(item)
             }
         }
 
@@ -46,7 +44,7 @@ class OutrightCountryLeagueAdapter :
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_country_league, parent, false)
+                    .inflate(R.layout.itemview_game_type2, parent, false)
 
                 return ViewHolder(view)
             }
@@ -54,6 +52,6 @@ class OutrightCountryLeagueAdapter :
     }
 }
 
-class OutrightCountryLeagueListener(val clickListener: (item: Season) -> Unit) {
-    fun onClick(item: Season) = clickListener(item)
+class GameTypeListener(val clickListener: (date: Date) -> Unit) {
+    fun onClick(date: Date) = clickListener(date)
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite1"
-    tools:context=".ui.game.v3.GameV3Fragment">
+    tools:context=".ui.game.hall.GameV3Fragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sport_type_list"
