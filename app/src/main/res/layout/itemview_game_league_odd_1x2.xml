@@ -163,7 +163,7 @@
         app:layout_constraintStart_toEndOf="@id/game_score_away_1x2"
         tools:text="利物浦" />
 
-    <org.cxct.sportlottery.ui.game.v3.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddButton
         android:id="@+id/match_odd_1"
         android:layout_width="65dp"
         android:layout_height="50dp"
@@ -172,7 +172,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <org.cxct.sportlottery.ui.game.v3.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddButton
         android:id="@+id/match_odd_x"
         android:layout_width="65dp"
         android:layout_height="50dp"
@@ -181,7 +181,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <org.cxct.sportlottery.ui.game.v3.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddButton
         android:id="@+id/match_odd_2"
         android:layout_width="65dp"
         android:layout_height="50dp"
