@@ -1042,19 +1042,10 @@ class GameViewModel(
     }
 
     private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
-        //判斷當前有沒有關閉的賠率
-        val sendRequest = betInfoRepository.matchOddList.value?.find {
-            it.status == BetStatus.LOCKED.code || it.status == BetStatus.DEACTIVATED.code
+        betInfoRepository.matchOddList.value?.forEach {
+            updateItem(it, newListFromSocket)
         }
-        if (sendRequest == null) {
-            betInfoRepository.matchOddList.value?.forEach {
-                updateItem(it, newListFromSocket)
-            }
-
-            getBetInfoListForParlay()
-        } else {
-            Timber.e("不執行 betInfo 計算")
-        }
+        getBetInfoListForParlay()
     }
 
     fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd) {
@@ -1139,13 +1130,18 @@ class GameViewModel(
                                 loginRepository.mOddsType.value ?: OddsType.EU
                             ), newItem
                         )
-                        newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
-                        newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+
                         newItem.status.let { status -> oldItem.status = status }
 
+                        if(oldItem.status == BetStatus.ACTIVATED.code){
+                            newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
+                            newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                        }
+
                         //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
-                        if(oldItem.oddState != org.cxct.sportlottery.network.bet.info.MatchOdd.OddState.SAME.state &&
-                            oldItem.status == BetStatus.ACTIVATED.code){
+                        if (oldItem.oddState != org.cxct.sportlottery.network.bet.info.MatchOdd.OddState.SAME.state &&
+                            oldItem.status == BetStatus.ACTIVATED.code
+                        ) {
                             oldItem.betAddError = null
                         }
 
@@ -1213,7 +1209,7 @@ class GameViewModel(
         oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
         newList: List<org.cxct.sportlottery.network.odds.detail.Odd>,
         betAddError: BetAddError
-    ){
+    ) {
         for (newItem in newList) {
 
             //每次都先把字串清空

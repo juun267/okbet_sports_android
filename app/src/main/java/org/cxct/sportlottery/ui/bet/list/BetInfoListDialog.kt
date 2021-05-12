@@ -191,9 +191,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun changeBetInfoContentByMessage(result: BetAddResult) {
-        if (!result.success) {
-            val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
-            errorData?.let { viewModel.updateMatchOdd(it, getBetAddError(result.code)) }
+        getBetAddError(result.code)?.let { betAddError ->
+            if (!result.success) {
+                val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+                errorData?.let { viewModel.updateMatchOdd(it, betAddError) }
+            }
         }
     }
 
@@ -323,8 +325,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         spread.setSpan(ForegroundColorSpan(colorOrange), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spread.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        val oddsEnd = getOdds(matchOdd, oddsType).toString().length + 3
-        val odds = SpannableString(" @ ${getOdds(matchOdd, oddsType)}")
+        val oddsEnd = TextUtil.formatForOdd(getOdds(matchOdd, oddsType)).length + 3
+        val odds = SpannableString(" @ ${TextUtil.formatForOdd(getOdds(matchOdd, oddsType))}")
         odds.setSpan(ForegroundColorSpan(colorOrange), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         odds.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
