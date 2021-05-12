@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.outright
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,8 +19,10 @@ import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.v3.OutrightOddAdapter
+import org.cxct.sportlottery.ui.game.v3.OutrightOddDividerDecoration
+import org.cxct.sportlottery.ui.game.v3.OutrightOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
 

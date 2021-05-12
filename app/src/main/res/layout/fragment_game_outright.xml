@@ -7,7 +7,7 @@
     android:background="@color/colorWhite1"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ui.game.v3.GameOutrightFragment">
+    tools:context=".ui.game.outright.GameOutrightFragment">
 
     <org.cxct.sportlottery.ui.game.v3.GameFilterRow
         android:id="@+id/outright_filter_row"

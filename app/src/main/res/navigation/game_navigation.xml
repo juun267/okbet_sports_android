@@ -196,7 +196,7 @@
 
     <fragment
         android:id="@+id/gameOutrightFragment"
-        android:name="org.cxct.sportlottery.ui.game.v3.GameOutrightFragment"
+        android:name="org.cxct.sportlottery.ui.game.outright.GameOutrightFragment"
         tools:layout="@layout/fragment_game_outright">
         <argument
             android:name="sportType"
