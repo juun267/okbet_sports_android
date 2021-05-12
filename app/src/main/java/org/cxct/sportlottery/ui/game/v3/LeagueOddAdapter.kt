@@ -669,7 +669,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                         item,
                                         odd,
                                         itemView.match_play_type_column2.text.toString(),
-                                        item.matchInfo?.homeName ?: ""
+                                        resources.getString(R.string.odd_button_ou_o)
                                     )
                                 }
                             }
@@ -817,7 +817,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                         item,
                                         odd,
                                         itemView.match_play_type_column2.text.toString(),
-                                        item.matchInfo?.awayName ?: ""
+                                        resources.getString(R.string.odd_button_ou_u)
                                     )
                                 }
                             }
