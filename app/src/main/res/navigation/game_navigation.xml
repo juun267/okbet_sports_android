@@ -137,7 +137,7 @@
 
     <fragment
         android:id="@+id/gameLeagueFragment"
-        android:name="org.cxct.sportlottery.ui.game.v3.GameLeagueFragment"
+        android:name="org.cxct.sportlottery.ui.game.league.GameLeagueFragment"
         tools:layout="@layout/fragment_game_league">
         <argument
             android:name="matchType"
