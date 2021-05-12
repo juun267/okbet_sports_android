@@ -56,8 +56,8 @@ fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
     status?.let {
         text = when (status) {
             0, 1, 7 -> context.getString(R.string.nothing)
-            2, 3 -> "+${TextUtil.formatMoney(money?:0.0)}"
-            4, 5 -> TextUtil.formatMoney(money?:0.0)
+            2, 3 -> "+${TextUtil.formatMoney(money ?: 0.0)}"
+            4, 5 -> TextUtil.formatMoney(money ?: 0.0)
             else -> context.getString(R.string.draw_or_cancel)
         }
 
@@ -100,10 +100,8 @@ fun TextView.setRecordStatusColor(status: Int?) {
 
 
 @BindingAdapter("moneyFormat")
-fun TextView.setMoneyFormat(money: Double ?= 0.0) {
-    money?.let {
-        text = TextUtil.format(it)
-    }
+fun TextView.setMoneyFormat(money: Double?) {
+    text = TextUtil.formatMoney(money ?: 0.0)
 }
 
 
