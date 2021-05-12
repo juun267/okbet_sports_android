@@ -6,6 +6,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MatchInfo(
+    @Json(name = "gameType")
+    val gameType: String?,
     @Json(name = "awayName")
     val awayName: String,
     @Json(name = "endTime")
@@ -19,7 +21,7 @@ data class MatchInfo(
     @Json(name = "startTime")
     val startTime: String,
     @Json(name = "status")
-    val status: Int
+    var status: Int
 ) {
     //Live
     var awayScore: Int? = null //客队分数
