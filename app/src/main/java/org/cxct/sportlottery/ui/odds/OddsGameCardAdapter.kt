@@ -106,6 +106,7 @@ class OddsGameCardAdapter(
                 when (matchClockCO.gameType) {
                     "BK" -> {
                         if (matchClockCO.stoppageTime == null) {
+                        if (matchClockCO.remainingTimeInPeriod == null) {
                             itemView.txv_time.text = null
                         } else {
                             itemView.txv_time.text = TimeUtil.timeFormat(
