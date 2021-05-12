@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.hall
+package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.outright.season.Row
+import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.hall.CountryLeagueAdapter
+import org.cxct.sportlottery.ui.game.hall.CountryLeagueListener
 
-class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
         ITEM, NO_DATA
@@ -25,7 +27,13 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    var outrightCountryLeagueListener: OutrightCountryLeagueListener? = null
+    var searchText = ""
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var countryLeagueListener: CountryLeagueListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when {
@@ -36,7 +44,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            CountryAdapter.ItemType.ITEM.ordinal -> {
+            ItemType.ITEM.ordinal -> {
                 ItemViewHolder.from(parent).apply {
                     this.itemView.league_list.apply {
                         this.layoutManager =
@@ -54,7 +62,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
             else -> {
-                NoDataViewHolder.from(parent)
+                NoDataViewHolder.from(parent, searchText)
             }
         }
     }
@@ -64,7 +72,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is ItemViewHolder -> {
                 val item = data[position]
 
-                holder.bind(item, outrightCountryLeagueListener)
+                holder.bind(item, countryLeagueListener)
             }
         }
     }
@@ -78,23 +86,20 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val countryLeagueAdapter by lazy {
-            OutrightCountryLeagueAdapter()
+            CountryLeagueAdapter()
         }
 
-        fun bind(item: Row, outrightCountryLeagueListener: OutrightCountryLeagueListener?) {
+        fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_name.text = item.name
 
-            setupLeagueList(item, outrightCountryLeagueListener)
+            setupLeagueList(item, countryLeagueListener)
             setupCountryExpand(item)
         }
 
-        private fun setupLeagueList(
-            item: Row,
-            outrightCountryLeagueListener: OutrightCountryLeagueListener?
-        ) {
+        private fun setupLeagueList(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.league_list.apply {
                 adapter = countryLeagueAdapter.apply {
-                    this.outrightCountryLeagueListener = outrightCountryLeagueListener
+                    this.countryLeagueListener = countryLeagueListener
 
                     data = if (item.searchList.isNotEmpty()) {
                         item.searchList
@@ -107,6 +112,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private fun setupCountryExpand(item: Row) {
             itemView.country_league_expand.setExpanded(item.isExpand, false)
+            updateArrowExpand()
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)
@@ -136,10 +142,14 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(itemView) {
 
         companion object {
-            fun from(parent: ViewGroup): NoDataViewHolder {
+            fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
+                val noDataLayoutId = if (searchText.isBlank())
+                    R.layout.view_no_record
+                else
+                    R.layout.itemview_game_no_record
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_no_record, parent, false)
+                    .inflate(noDataLayoutId, parent, false)
 
                 return NoDataViewHolder(view)
             }
