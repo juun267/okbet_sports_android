@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.v3.OutrightOddAdapter
-import org.cxct.sportlottery.ui.game.v3.OutrightOddDividerDecoration
 import org.cxct.sportlottery.ui.game.v3.OutrightOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
