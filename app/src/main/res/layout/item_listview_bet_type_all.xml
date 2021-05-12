@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:paddingVertical="4dp"
     android:paddingStart="24dp"
     android:paddingEnd="4dp"
@@ -27,7 +26,7 @@
             android:gravity="center"
             android:textSize="@dimen/textSize12sp"
             android:paddingHorizontal="24dp"
-            android:text="@string/cancel_select"
+            android:text="@string/select_cancel"
             android:textColor="@color/gray8" />
 
 

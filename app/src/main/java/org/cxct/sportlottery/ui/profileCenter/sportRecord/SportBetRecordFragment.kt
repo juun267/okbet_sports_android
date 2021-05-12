@@ -10,10 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.status_selector
 import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -88,7 +85,7 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
 
     private fun initView() {
         layout_total.tv_total.text = getString(R.string.total_bet_amount)
-        status_selector.setCloseBtnText(getString(R.string.cancel_select))
+        status_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
         status_selector.dataList = betStatusList
     }
 
