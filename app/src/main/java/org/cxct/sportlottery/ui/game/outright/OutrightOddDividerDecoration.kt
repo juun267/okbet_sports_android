@@ -20,7 +20,14 @@ class OutrightOddDividerDecoration(divider: Drawable?) : RecyclerView.ItemDecora
             val child = parent.getChildAt(i)
             val position = parent.getChildAdapterPosition(child)
             val viewType = parent.adapter?.getItemViewType(position)
-            val nextViewType = parent.adapter?.getItemViewType(position + 1)
+            val nextViewType =
+                if (position + 1 < parent.adapter?.itemCount ?: 0) {
+                    parent.adapter?.getItemViewType(
+                        position + 1
+                    )
+                } else {
+                    null
+                }
             val params = child.layoutParams as RecyclerView.LayoutParams
             val dividerTop = child.bottom + params.bottomMargin
             val dividerBottom: Int = dividerTop + mDivider.intrinsicHeight
