@@ -19,6 +19,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.Event
 
 
@@ -116,6 +117,11 @@ class MainViewModel(
                 thirdGameRepository.getThirdGame()
             }
         }
+    }
+
+    fun goToLottery() {
+        val lotteryData = gameCateDataList.value?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.first()?.gameList?.first()?.thirdGameData
+        requestEnterThirdGame(lotteryData)
     }
 
     fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {
