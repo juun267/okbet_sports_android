@@ -112,7 +112,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     }
 
     private fun setupBottomLine(position: Int, bottomLine: View) {
-        bottomLine.visibility = if (position + 1 < itemCount && getItemViewType(position + 1) != ListType.TITLE.ordinal) View.VISIBLE else View.GONE
+        bottomLine.visibility = if (position + 1 < itemCount && (getItemViewType(position + 1) != ListType.TITLE.ordinal || getItemViewType(position) == ListType.MATCH.ordinal)) View.VISIBLE else View.GONE
     }
 
     class MatchTitleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
