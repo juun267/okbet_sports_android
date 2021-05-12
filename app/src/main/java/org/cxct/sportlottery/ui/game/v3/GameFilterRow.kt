@@ -121,6 +121,10 @@ class GameFilterRow @JvmOverloads constructor(
     private fun init(attrs: AttributeSet?) {
         inflate(context, R.layout.row_game_filter, this).apply {
             this.game_filter_sport_type.isSelected = true
+
+            this.game_filter_search.findViewById<View>(R.id.search_src_text).apply {
+                setPadding(0, 0, 0, 0)
+            }
         }
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.GameFilterRow)
