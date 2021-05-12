@@ -68,7 +68,12 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             adapter = outrightOddAdapter
 
             addItemDecoration(
-                DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray))
+                OutrightOddDividerDecoration(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.divider_gray
+                    )
+                )
             )
         }
     }

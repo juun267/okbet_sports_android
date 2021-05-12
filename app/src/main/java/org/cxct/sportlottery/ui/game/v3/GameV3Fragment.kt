@@ -249,6 +249,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             } else {
                 View.GONE
             }
+
+        view.game_filter_divider.visibility = if (args.matchType == MatchType.OUTRIGHT) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
     }
 
     private fun setupGameListView(view: View) {
