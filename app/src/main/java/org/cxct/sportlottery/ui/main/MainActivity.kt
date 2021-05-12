@@ -87,6 +87,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             Timber.d("Jump screen: ${cate.name}")
             when (cate) {
                 ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
+                ThirdGameCategory.CGCP -> goToMainFragment()
                 else -> goToMainMoreFragment(cate.name)
             }
         } catch (e: Exception) {
@@ -229,6 +230,10 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             .load(iconUrl)
             .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head)
+    }
+
+    private fun goToMainFragment() {
+        viewModel.goToLottery()
     }
 
     private fun goToMainMoreFragment(cateCode: String?, firmCode: String? = null) {
