@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.common
 
 import android.os.Handler
 import android.view.View
