@@ -21,6 +21,7 @@
     </data>
 
     <FrameLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog">
@@ -34,7 +35,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite1">
+                android:background="@color/colorWhite1"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/tv_title"
