@@ -105,7 +105,6 @@ class OddsGameCardAdapter(
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
                 when (matchClockCO.gameType) {
                     "BK" -> {
-                        if (matchClockCO.stoppageTime == null) {
                         if (matchClockCO.remainingTimeInPeriod == null) {
                             itemView.txv_time.text = null
                         } else {
@@ -253,7 +252,6 @@ class OddsGameCardAdapter(
             if (matchInfo?.id == matchClockCO?.matchId) {
                 matchClockCO?.let {
                     matchClockCOList[index] = matchClockCO
-                    Timber.w("Bill====> setTimer updateGameCard matchClockCO : $matchClockCO ")
                 }
                 notifyItemChanged(index)
             }
