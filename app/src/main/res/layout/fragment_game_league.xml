@@ -7,9 +7,9 @@
     android:background="@color/colorWhite1"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".ui.game.v3.GameLeagueFragment">
+    tools:context=".ui.game.league.GameLeagueFragment">
 
-    <org.cxct.sportlottery.ui.game.v3.GameFilterRow
+    <org.cxct.sportlottery.ui.game.widget.GameFilterRow
         android:id="@+id/game_league_filter_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

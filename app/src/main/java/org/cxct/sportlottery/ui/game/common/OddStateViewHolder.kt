@@ -1,11 +1,11 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.common
 
 import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
-import timber.log.Timber
+import org.cxct.sportlottery.ui.game.widget.OddButton
 
 abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     interface OddStateChangeListener {

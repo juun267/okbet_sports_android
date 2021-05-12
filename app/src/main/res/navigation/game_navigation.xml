@@ -56,7 +56,7 @@
 
     <fragment
         android:id="@+id/gameV3Fragment"
-        android:name="org.cxct.sportlottery.ui.game.v3.GameV3Fragment"
+        android:name="org.cxct.sportlottery.ui.game.hall.GameV3Fragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game_v3">
         <argument
@@ -137,7 +137,7 @@
 
     <fragment
         android:id="@+id/gameLeagueFragment"
-        android:name="org.cxct.sportlottery.ui.game.v3.GameLeagueFragment"
+        android:name="org.cxct.sportlottery.ui.game.league.GameLeagueFragment"
         tools:layout="@layout/fragment_game_league">
         <argument
             android:name="matchType"
@@ -196,7 +196,7 @@
 
     <fragment
         android:id="@+id/gameOutrightFragment"
-        android:name="org.cxct.sportlottery.ui.game.v3.GameOutrightFragment"
+        android:name="org.cxct.sportlottery.ui.game.outright.GameOutrightFragment"
         tools:layout="@layout/fragment_game_outright">
         <argument
             android:name="sportType"

@@ -1,8 +1,9 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.outright
 
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import androidx.recyclerview.widget.RecyclerView
+import org.cxct.sportlottery.ui.game.hall.OutrightOddAdapter
 
 class OutrightOddDividerDecoration(divider: Drawable?) : RecyclerView.ItemDecoration() {
 

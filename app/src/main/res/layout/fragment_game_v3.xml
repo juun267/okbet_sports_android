@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite1"
-    tools:context=".ui.game.v3.GameV3Fragment">
+    tools:context=".ui.game.hall.GameV3Fragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/sport_type_list"
@@ -17,7 +17,7 @@
         tools:itemCount="1"
         tools:listitem="@layout/itemview_sport_type" />
 
-    <org.cxct.sportlottery.ui.game.v3.GameFilterRow
+    <org.cxct.sportlottery.ui.game.widget.GameFilterRow
         android:id="@+id/game_filter_row"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
