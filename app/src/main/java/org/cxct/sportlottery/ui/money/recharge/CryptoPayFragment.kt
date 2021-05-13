@@ -151,7 +151,6 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 e.printStackTrace()
             }
         }
-        et_transaction_id.setDigits("0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-@.")
     }
 
     private fun initView() {
@@ -475,6 +474,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
                     tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
+            }
+
+            //區塊鏈交易ID
+            et_transaction_id.afterTextChanged {
+                checkHashCode(it)
             }
         }
     }
