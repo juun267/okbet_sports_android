@@ -296,7 +296,7 @@
     <string name="updatable">可更新</string>
     <string name="internal_download">内部下载</string>
     <string name="denied_read_memory_card">读取内存卡权限被拒绝</string>
-    <string name="current_versionIs_the_latest_version">当前版本为最新版</string>
+    <string name="current_versionIs_the_latest_version">您的软体是最新的版本</string>
     <string name="external_download">外部下载</string>
     <string name="update_new">更新</string>
     <string name="install">安装</string>
