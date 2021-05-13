@@ -298,7 +298,8 @@
     <string name="denied_read_memory_card">读取内存卡权限被拒绝</string>
     <string name="current_versionIs_the_latest_version">您的软体是最新的版本</string>
     <string name="external_download">外部下载</string>
-    <string name="update_new">更新</string>
+    <string name="update">更新</string>
+    <string name="update_now">立即更新</string>
     <string name="install">安装</string>
 
     <!--  information center  -->
