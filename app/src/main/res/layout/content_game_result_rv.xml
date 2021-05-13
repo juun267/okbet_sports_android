@@ -6,8 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context="org.cxct.sportlottery.ui.results.GameResultRvAdapter">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -195,10 +194,10 @@
             tools:el_expanded="true">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:overScrollMode="never"
                 android:id="@+id/rv_time_line_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="5"
                 tools:listitem="@layout/content_game_detail_result_ft_rv" />

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +11,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.hall.CountryLeagueAdapter
+import org.cxct.sportlottery.ui.game.hall.CountryLeagueListener
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -22,6 +24,12 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         set(value) {
             field = value
 
+            notifyDataSetChanged()
+        }
+
+    var searchText = ""
+        set(value) {
+            field = value
             notifyDataSetChanged()
         }
 
@@ -54,7 +62,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
             }
             else -> {
-                NoDataViewHolder.from(parent)
+                NoDataViewHolder.from(parent, searchText)
             }
         }
     }
@@ -134,10 +142,14 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         RecyclerView.ViewHolder(itemView) {
 
         companion object {
-            fun from(parent: ViewGroup): NoDataViewHolder {
+            fun from(parent: ViewGroup, searchText: String): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
+                val noDataLayoutId = if (searchText.isBlank())
+                    R.layout.view_no_record
+                else
+                    R.layout.itemview_game_no_record
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_no_record, parent, false)
+                    .inflate(noDataLayoutId, parent, false)
 
                 return NoDataViewHolder(view)
             }

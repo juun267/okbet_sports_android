@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.scwang.smart.refresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite1"
-    android:clickable="true"
-    android:focusable="true"
-    tools:context=".ui.game.v3.GameLeagueFragment">
+    app:srlDragRate="0.3"
+    app:srlEnableLoadMore="true"
+    app:srlEnablePureScrollMode="true"
+    tools:context=".ui.game.league.GameLeagueFragment">
 
-    <org.cxct.sportlottery.ui.game.v3.GameFilterRow
-        android:id="@+id/game_league_filter_row"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:overScrollMode="never">
 
-    <com.scwang.smart.refresh.layout.SmartRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/game_league_filter_row"
-        app:srlDragRate="0.3"
-        app:srlEnableLoadMore="true"
-        app:srlEnablePureScrollMode="true">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/game_league_odd_list"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never"
-            tools:itemCount="2"
-            tools:listitem="@layout/itemview_game_league" />
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite1">
 
-    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+            <org.cxct.sportlottery.ui.game.widget.GameFilterRow
+                android:id="@+id/game_league_filter_row"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/game_league_odd_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toBottomOf="@id/game_league_filter_row"
+                tools:itemCount="2"
+                tools:listitem="@layout/itemview_game_league" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</com.scwang.smart.refresh.layout.SmartRefreshLayout>

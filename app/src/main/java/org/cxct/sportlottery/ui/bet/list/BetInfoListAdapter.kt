@@ -138,14 +138,13 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
         private fun componentStatusByOdds(
-            betVisible: Int, warningVisible: Int, warningString: Int,
+            betVisible: Int, warningVisible: Int,
             betTextBg: Int, clickable: Boolean,
             moreTextBg: Int, moreTextColor: Int, moreClickable: Boolean
         ) {
             binding.llBet.visibility = betVisible
             binding.tvCloseWarning.apply {
                 visibility = warningVisible
-                text = context.getString(warningString)
             }
             binding.betInfoAction.tv_bet.apply {
                 background = ContextCompat.getDrawable(binding.root.context, betTextBg)
@@ -263,18 +262,20 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             binding.etBet.addTextChangedListener(tw)
             binding.etBet.tag = tw
 
-            binding.etBet.setOnTouchListener { v, event ->
+            binding.etBet.setOnTouchListener { _, _ ->
                 onItemClickListener.onShowKeyboard(binding.etBet, matchOdd)
                 false
             }
 
+            binding.tvCloseWarning.text = context.getString(
+                matchOdd.betAddError?.string ?: R.string.bet_info_list_game_closed
+            )
 
             when (matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
                     componentStatusByOdds(
                         betVisible = View.GONE,
                         warningVisible = View.VISIBLE,
-                        warningString = R.string.bet_info_list_game_closed,
                         betTextBg = R.drawable.bg_radius_4_button_unselected,
                         clickable = false,
                         moreTextBg = R.drawable.bg_radius_4_button_unselected,
@@ -290,11 +291,11 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
                 }
 
+
                 BetStatus.ACTIVATED.code -> {
                     componentStatusByOdds(
                         betVisible = View.VISIBLE,
-                        warningVisible = View.GONE,
-                        warningString = R.string.bet_info_list_bet,
+                        warningVisible = if (matchOdd.betAddError == null) View.GONE else View.VISIBLE,
                         betTextBg = R.drawable.bg_radius_4_button_orangelight,
                         clickable = true,
                         moreTextBg = R.drawable.bg_radius_4_button_colorwhite6,
@@ -306,10 +307,9 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
                         isClickable = true
                         text = context.getString(
-                            if (data.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
+                            if (data.matchOdd.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
                         )
                     }
-
                     setChangeOdds(position, matchOdd)
                 }
             }
@@ -323,7 +323,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         private fun setChangeOdds(position: Int, matchOdd: MatchOdd) {
             when (matchOdd.oddState) {
                 OddState.LARGER.state, OddState.SMALLER.state -> {
-                    binding.betInfoAction.tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
                     binding.tvOddChange.visibility = View.VISIBLE
 
                     binding.betInfoDetail.tvOdds.apply {
@@ -337,7 +336,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     matchOdd.changeOddsTask?.let { mHandler.removeCallbacks(it) }
                     val changeOddsTask = Runnable {
                         matchOdd.changeOddsTask = null
-                        matchOdd.oddState = OddState.SAME.state
                         notifyItemChanged(position)
                     }
 

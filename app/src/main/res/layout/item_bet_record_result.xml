@@ -154,8 +154,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/textSize12sp"
-                app:moneyColor="@{row.win}"
-                app:profitFormatInRecord="@{row.win}"
+                app:betStatus="@{row.status}"
+                app:betStatusMoney="@{row.win}"
                 tools:text="+1,060.00"
                 tools:textColor="@color/green" />
 

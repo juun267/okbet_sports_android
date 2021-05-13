@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.hall
 
 import android.os.Handler
 import android.os.Looper
@@ -18,6 +18,8 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -297,14 +299,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         if (oddListHDP == null || oddListHDP.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddListHDP[0]?.status
+                            oddListHDP[0]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
                         if (oddList1x2 == null || oddList1x2.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddList1x2[0]?.status
+                            oddList1x2[0]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     else -> {
@@ -434,14 +436,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         if (oddListHDP == null || oddListHDP.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddListHDP[1]?.status
+                            oddListHDP[1]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
                         if (oddList1x2 == null || oddList1x2.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddList1x2[1]?.status
+                            oddList1x2[1]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     else -> {
@@ -578,14 +580,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         if (oddListOU == null || oddListOU.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddListOU[0]?.status
+                            oddListOU[0]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
                         if (oddListHDP == null || oddListHDP.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddListHDP[0]?.status
+                            oddListHDP[0]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     else -> {
@@ -669,7 +671,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                         item,
                                         odd,
                                         itemView.match_play_type_column2.text.toString(),
-                                        item.matchInfo?.homeName ?: ""
+                                        resources.getString(R.string.odd_button_ou_o)
                                     )
                                 }
                             }
@@ -726,14 +728,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         if (oddListOU == null || oddListOU.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddListOU[1]?.status
+                            oddListOU[1]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
                         if (oddListHDP == null || oddListHDP.size < 2) {
                             BetStatus.LOCKED.code
                         } else {
-                            oddListHDP[1]?.status
+                            oddListHDP[1]?.status ?: BetStatus.LOCKED.code
                         }
                     }
                     else -> {
@@ -817,7 +819,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                         item,
                                         odd,
                                         itemView.match_play_type_column2.text.toString(),
-                                        item.matchInfo?.awayName ?: ""
+                                        resources.getString(R.string.odd_button_ou_u)
                                     )
                                 }
                             }
@@ -980,7 +982,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 betStatus = if (oddList1X2 == null || oddList1X2.size < 2) {
                     BetStatus.LOCKED.code
                 } else {
-                    oddList1X2[0]?.status
+                    oddList1X2[0]?.status ?: BetStatus.LOCKED.code
                 }
 
                 this@ViewHolder1x2.setupOddState(this, oddList1X2?.get(0))
@@ -1031,7 +1033,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         BetStatus.LOCKED.code
                     }
                     (oddList1X2.size >= 3) -> {
-                        oddList1X2[1]?.status
+                        oddList1X2[1]?.status ?: BetStatus.LOCKED.code
                     }
                     else -> null
                 }
@@ -1094,10 +1096,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         BetStatus.LOCKED.code
                     }
                     (oddList1X2.size == 2) -> {
-                        oddList1X2[1]?.status
+                        oddList1X2[1]?.status ?: BetStatus.LOCKED.code
                     }
                     (oddList1X2.size >= 3) -> {
-                        oddList1X2[2]?.status
+                        oddList1X2[2]?.status ?: BetStatus.LOCKED.code
                     }
                     else -> {
                         null

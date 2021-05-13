@@ -133,6 +133,7 @@
     <string name="label_all_something_in_play">所有 %s 滚球</string>
 
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
+    <string name="message_no_today">目前没有今日的赛事</string>
 
 
     <string name="champion">冠军</string>
@@ -348,7 +349,6 @@
     <string name="settled_order">已结算注单</string>
     <string name="start_date">开始日期</string>
     <string name="end_date">结束日期</string>
-    <string name="cancel_select">取消选择</string>
     <string name="no_data">没有更多数据了</string>
     <string name="not_start_yet">未开始</string>
     <string name="game_playing">比赛中</string>
@@ -387,11 +387,11 @@
     <string name="date_row_live">滚球赛事</string>
     <string name="date_row_today">今日赛事</string>
     <string name="outright_row_entrance">冠军盘口</string>
-    <string name="ou_hdp_ou_title">大小</string>
+    <string name="ou_hdp_ou_title">大/小</string>
     <string name="ou_hdp_hdp_title">让球</string>
     <string name="ou_hdp_hdp_title_tennis">让盘</string>
     <string name="ou_hdp_hdp_title_v_b">让分</string>
-    <string name="ou_hdp_1x2_title">独赢</string>
+    <string name="ou_hdp_1x2_title">独赢盘</string>
     <string name="x12_x_play_name">和局</string>
     <string name="detail_outright_upper_bar_title">冠军</string>
     <string name="no_history">暂无任何内容</string>
@@ -610,7 +610,7 @@
     <string name="bet_info_list_hint">限额：%s</string>
     <string name="bet_info_list_bigger_than_zero">投注额必须大于零</string>
     <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
-    <string name="bet_info_list_less_than_minimum_limit">投注额小于最低限额</string>
+    <string name="bet_info_list_less_than_minimum_limit">投注额小于下注限额</string>
     <string name="bet_info_list">注单</string>
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
@@ -789,5 +789,15 @@
 
     <!-- Main page-->
     <string name="main_footer_desc">拥有欧洲马耳他博彩管理局（MGA）、英国GC监督委员会（Gambling Commission）和菲律宾政府博彩委员会（PAGCOR）颁发的合法执照。\n注册于英属维尔京群岛，是受国际博彩协会认可的合法博彩公司。进行注册并娱乐前，请确保您年满18周岁！</string>
+
+    <!--add odd error-->
+    <string name="match_not_exist">赛事不存在</string>
+    <string name="odds_not_exist">玩法赔率不存在</string>
+    <string name="match_invalid_status">赛事不能下注</string>
+    <string name="odds_locked">该玩法不能下注</string>
+    <string name="parlay_un_support">该赛事不支持连串</string>
+    <string name="odds_id_not_allow_bet">该赔率玩法不允许下注</string>
+    <string name="odds_have_changed">该盘口赔率已经变更,请重新投注</string>
+    <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
 
 </resources>

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -565,7 +564,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             val tvOther = itemView.findViewById<TextView>(R.id.tv_other)
-            val rlOdds = itemView.findViewById<RelativeLayout>(R.id.rl_odds)
 
             val homeList: MutableList<Odd> = mutableListOf()
             val drawList = ArrayList<Odd>()
@@ -625,9 +623,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             if (drawList.size == 0) {
                 rvDraw.visibility = View.GONE
-                val param = rlOdds.layoutParams as ConstraintLayout.LayoutParams
-                param.endToEnd = R.id.guideline_cs_other_2_list
-                rlOdds.layoutParams = param
+                val param = tvOdds?.layoutParams as ConstraintLayout.LayoutParams
+                param.startToStart = R.id.guideline_cs_other_2_list
+                tvOdds.layoutParams = param
             }
         }
 

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.hall
 
 import android.content.Intent
 import android.os.Bundle
@@ -27,6 +27,9 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.OutrightCountryAdapter
+import org.cxct.sportlottery.ui.game.widget.GameFilterRow
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -94,6 +97,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         MatchType.AT_START -> {
                             matchOdd.matchInfo?.id?.let {
+                                navOddsDetail(it)
                                 viewModel.setOddsDetailMoreList(
                                     data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList() ?: listOf<MatchOdd>()
                                 )
@@ -201,6 +205,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     newText?.let {
                         viewModel.searchLeague(args.matchType, it)
+                        countryAdapter.searchText = it
                     }
                     return true
                 }
@@ -247,6 +252,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             } else {
                 View.GONE
             }
+
+        view.game_filter_divider.visibility = if (args.matchType == MatchType.OUTRIGHT) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
     }
 
     private fun setupGameListView(view: View) {

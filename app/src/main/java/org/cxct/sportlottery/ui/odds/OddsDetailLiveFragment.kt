@@ -362,15 +362,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
 
         webView.webViewClient = object : WebViewClient() {
-
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-
-                live_web_preload?.visibility = View.INVISIBLE
-                view?.visibility = View.VISIBLE
-            }
-
+            
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (!url.startsWith("http")) {
                     try {
