@@ -10,9 +10,7 @@ import org.cxct.sportlottery.R
 
 class BtsRvAdapter(private val dataList: MutableList<SelectBank>, private val clickListener: BankAdapterListener): RecyclerView.Adapter<BtsRvAdapter.ViewHolder>(){
 
-    companion object {
-        var selectedPosition = 0
-    }
+    var selectedPosition = 0
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: SelectBank) {
@@ -20,15 +18,6 @@ class BtsRvAdapter(private val dataList: MutableList<SelectBank>, private val cl
                 itemView.iv_bank_icon.setImageResource(item.bankIcon ?: 0)
             else
                 itemView.iv_bank_icon.setImageResource(android.R.color.transparent)
-
-            if (adapterPosition == selectedPosition){
-                itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(this.itemView.context,R.color.blue2))
-                itemView.img_tick.visibility = View.VISIBLE
-            }
-            else{
-                itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(this.itemView.context,R.color.white))
-                itemView.img_tick.visibility = View.INVISIBLE
-            }
 
             itemView.tv_bank_card.text = item.bankName ?: ""
         }
@@ -52,6 +41,16 @@ class BtsRvAdapter(private val dataList: MutableList<SelectBank>, private val cl
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = dataList[position]
         holder.bind(item)
+
+        if (holder.adapterPosition == selectedPosition){
+            holder.itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.blue2))
+            holder.itemView.img_tick.visibility = View.VISIBLE
+        }
+        else{
+            holder.itemView.ll_select_bank_card.setBackgroundColor(ContextCompat.getColor(holder.itemView.context,R.color.white))
+            holder.itemView.img_tick.visibility = View.INVISIBLE
+        }
+
         holder.itemView.ll_select_bank_card.setOnClickListener {
             if (selectedPosition != position) {
                 selectedPosition = position
