@@ -30,6 +30,7 @@ open class BankBtsAdapter(
             view.tag = holder
 
             view.apply {
+                holder.imgCheck = img_check_bank
                 holder.ivBankIcon = iv_bank_icon
                 holder.tvBank = tv_bank_card
                 holder.llSelectBankCard = ll_select_bank_card
@@ -58,21 +59,24 @@ open class BankBtsAdapter(
                 ivBankIcon?.setImageResource(android.R.color.transparent)
             }
 
-            if (position == selectedPosition)
+            if (position == selectedPosition) {
+                imgCheck?.visibility = View.VISIBLE
                 this.llSelectBankCard?.setBackgroundColor(
                     ContextCompat.getColor(
                         context,
                         R.color.blue2
                     )
                 )
-            else
+            } else {
+                imgCheck?.visibility = View.GONE
                 llSelectBankCard?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
-            llSelectBankCard?.setOnClickListener {
-                if (selectedPosition != position) {
-                    //                data.isSelected = !data.isSelected
-                    selectedPosition = position
-                    notifyDataSetChanged()
-                    listener.onClick(data, position)
+                llSelectBankCard?.setOnClickListener {
+                    if (selectedPosition != position) {
+                        //                data.isSelected = !data.isSelected
+                        selectedPosition = position
+                        notifyDataSetChanged()
+                        listener.onClick(data, position)
+                    }
                 }
             }
         }
