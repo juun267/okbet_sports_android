@@ -41,7 +41,7 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
             log_detail_time.text = it.rechDateAndTime ?: ""
             log_detail_type.text = it.rechTypeDisplay ?: ""
             log_detail_status.text = it.rechState ?: ""
-            log_detail_amount.text = it.displayMoney ?: ""
+            log_detail_amount.text = getString(R.string.finance_rmb, it.displayMoney)
             log_detail_reason.text = it.reason ?: ""
 
 
