@@ -292,7 +292,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
                     }
                 } else {
@@ -304,7 +304,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToCompleteProfileInfo.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 } else {
@@ -316,7 +316,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToBindBankCard.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_money_card)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_money_card), getString(R.string.go_to_setting), true) {
                         startActivity(Intent(this, BankActivity::class.java))
                     }
                 } else {
@@ -328,7 +328,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
                     }
                 } else if (!b) {
@@ -340,7 +340,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.settingNeedToCompleteProfileInfo.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 } else if (!b) {
