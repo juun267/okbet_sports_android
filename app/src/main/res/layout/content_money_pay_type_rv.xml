@@ -42,4 +42,17 @@
         tools:text="银行卡转账"
         tools:ignore="RtlSymmetry" />
 
+    <ImageView
+        android:id="@+id/img_tri"
+        android:visibility="gone"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_tri"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
