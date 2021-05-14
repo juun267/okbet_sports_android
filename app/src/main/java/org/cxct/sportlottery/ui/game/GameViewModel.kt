@@ -1063,14 +1063,18 @@ class GameViewModel(
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType,
-                sportType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            if (matchType != MatchType.PARLAY || isSameSportTypeAdd(sportType)) {
+                betInfoRepository.addInBetInfo(
+                    matchType,
+                    sportType,
+                    playCateName,
+                    playName,
+                    matchOdd,
+                    odd
+                )
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_different_game_type)))
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
@@ -1108,12 +1112,22 @@ class GameViewModel(
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType, sportType, playCateName, matchOdd, odd
-            )
+            if (matchType != MatchType.PARLAY || isSameSportTypeAdd(sportType)) {
+                betInfoRepository.addInBetInfo(
+                    matchType, sportType, playCateName, matchOdd, odd
+                )
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_different_game_type)))
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
+    }
+
+    private fun isSameSportTypeAdd(sportType: SportType): Boolean {
+        val betList = betInfoList.value ?: mutableListOf()
+        val isSameSportTypeExist = (betList.firstOrNull()?.matchOdd?.gameType == sportType.code)
+        return betList.isEmpty() || isSameSportTypeExist
     }
 
     private fun updateItem(
