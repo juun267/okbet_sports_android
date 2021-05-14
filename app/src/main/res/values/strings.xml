@@ -238,6 +238,14 @@
     <string name="third">三</string>
     <string name="fourth">四</string>
     <string name="fifth">五</string>
+    <string name="add_time_first_plat">加时第一节</string>
+    <string name="add_time_second_plat">加时第二节</string>
+    <string name="first_session">第一节</string>
+    <string name="second_session">第二节</string>
+    <string name="third_session">第三节</string>
+    <string name="fourth_session">第四节</string>
+    <string name="fifth_session">第五节</string>
+    <string name="add_time">加时</string>
 
     <!-- Profile center page -->
     <string name="account_balance">账户余额</string>

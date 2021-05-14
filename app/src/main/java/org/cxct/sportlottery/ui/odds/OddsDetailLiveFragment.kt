@@ -116,7 +116,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun initRecyclerView() {
         rv_game_card.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter = OddsGameCardAdapter(this@OddsDetailLiveFragment.matchId, OddsGameCardAdapter.ItemClickListener {
+        oddsGameCardAdapter = OddsGameCardAdapter(context = context ,this@OddsDetailLiveFragment.matchId, OddsGameCardAdapter.ItemClickListener {
             it.let {
                 matchId = it.id
                 getData()
