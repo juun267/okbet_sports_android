@@ -807,7 +807,7 @@ class GameViewModel(
                 dateRow.add(
                     Date(
                         androidContext.getString(R.string.date_row_all),
-                        TimeUtil.getParlayAllTimeRangeParams()
+                        TimeUtil.getEarlyAllTimeRangeParams()
                     )
                 )
                 TimeUtil.getFutureDate(6).forEach {
