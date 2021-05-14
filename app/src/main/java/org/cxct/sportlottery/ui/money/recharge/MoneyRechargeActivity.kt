@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_money_recharge.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -124,10 +126,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                             )
                         })
                     }, {
-                        showPromptDialog(
-                            getString(R.string.prompt),
-                            getString(R.string.content_coming_soon)
-                        ) {}
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                     })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
@@ -146,6 +145,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                     setTitle(resources.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
+                    setTextColor(R.color.orangeRed)
                 }.let {
                     customAlertDialog.show()
                 }
@@ -163,10 +163,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                             )
                         })
                     }, {
-                        showPromptDialog(
-                            getString(R.string.prompt),
-                            getString(R.string.content_coming_soon)
-                        ) {}
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                     })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
@@ -190,10 +187,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                         )
                     })
                 }, {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.content_coming_soon)
-                    ) {}
+                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                 })
             )
 
@@ -203,7 +197,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
 
         //在線支付 - 虛擬幣
         viewModel.onlinePayCryptoResult.observe(this@MoneyRechargeActivity, Observer {
-            val payWay = this.getString(R.string.txv_crypto_pay)
+            val payWay = this.getString(R.string.txv_online_pay)
 
             //顯示成功彈窗
             val moneySubmitDialog = MoneySubmitDialog(
@@ -218,10 +212,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                         )
                     })
                 }, {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.content_coming_soon)
-                    ) {}
+                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                 })
             )
 
@@ -279,6 +270,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     private fun changePage() {
         when (currentTab) {
             RechargeType.TRANSFER_PAY -> {
+                btn_transfer_pay.isChecked = true
                 bankTypeAdapter?.data = transferPayList
                 switchFragment(
                     getPayFragment(transferPayList[0]),
@@ -286,6 +278,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                 )
             }
             RechargeType.ONLINE_PAY -> {
+                btn_online_pay.isChecked =true
                 bankTypeAdapter?.data = onlinePayList
                 switchFragment(
                     getPayFragment(onlinePayList[0]),

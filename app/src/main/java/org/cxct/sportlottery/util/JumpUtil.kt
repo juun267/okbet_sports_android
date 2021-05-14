@@ -4,7 +4,7 @@ import android.content.ClipDescription
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Patterns
+import android.webkit.URLUtil
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.WebActivity
 import org.cxct.sportlottery.ui.thirdGame.ThirdGameActivity
@@ -36,7 +36,7 @@ object JumpUtil {
     fun toThirdGameWeb(context: Context, href: String) {
         try {
             Timber.i("跳转到链接:$href")
-            if (Patterns.WEB_URL.matcher(href).matches()) {
+            if (URLUtil.isValidUrl(href)) {
                 context.startActivity(
                     Intent(context, ThirdGameActivity::class.java).putExtra(WebActivity.KEY_URL, href)
                 )

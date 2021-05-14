@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="61dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     android:gravity="center"
     android:orientation="horizontal"
@@ -11,14 +12,22 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingStart="29dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="29dp"
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/tv_odds"
             style="@style/OddsButton"
-            android:layout_width="65dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="bottom|center_horizontal"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/textSize15sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
+            app:autoSizeTextType="uniform"
             android:paddingBottom="4dp"
             tools:text="1.52" />
 

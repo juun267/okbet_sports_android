@@ -12,7 +12,10 @@ import kotlinx.android.synthetic.main.activity_info_center.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.infoCenter.InfoCenterData
+import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import timber.log.Timber
 
 class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
@@ -24,35 +27,32 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
 
     private val mDefaultShowPage by lazy { intent.getIntExtra(KEY_READ_PAGE, BEEN_READ) }
 
+    private var currentPage = BEEN_READ //當前頁籤
+
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
-        private fun scrollToTopControl(firstVisibleItemPosition: Int) {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            super.onScrollStateChanged(recyclerView, newState)
             iv_scroll_to_top.apply {
-                when {
-                    firstVisibleItemPosition > 0 && alpha == 0f -> {
+                //置頂按鈕
+                when (recyclerView.canScrollVertically(-1)) {
+                    true -> {
                         visibility = View.VISIBLE
-                        animate().alpha(1f).setDuration(300).setListener(null)
-                    }
-                    firstVisibleItemPosition <= 0 && alpha == 1f -> {
-                        animate().alpha(0f).setDuration(300).setListener(object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                visibility = View.GONE
+                        animate().alpha(1f).setDuration(1000).setListener(null)
+                            when (btn_read_letters.isChecked) {
+                                true -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.READ)
+                                false -> viewModel.getUserMsgList(false, adapter.data.size, InfoCenterViewModel.DataType.UNREAD)
                             }
-                        })
+                    }
+                    false -> {
+                        animate().alpha(0f).setDuration(1000)
+                            .setListener(object : AnimatorListenerAdapter() {
+                                override fun onAnimationEnd(animation: Animator) {
+                                    visibility = View.GONE
+                                }
+                            })
                     }
                 }
-            }
-        }
-
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            recyclerView.layoutManager?.let {
-                val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                when (btn_read_letters.isSelected) {
-                    true -> viewModel.getUserMsgList(false, adapter.itemCount, InfoCenterViewModel.DataType.READ)
-                    false -> viewModel.getUserMsgList(false, adapter.itemCount, InfoCenterViewModel.DataType.UNREAD)
-                }
-                scrollToTopControl(firstVisibleItemPosition)
             }
         }
     }
@@ -64,10 +64,9 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
                 detailDialog.show(supportFragmentManager, "")
 
                 //未讀的資料打開要變成已讀
-                if (btn_unread_letters.isSelected) {
+                if (currentPage == YET_READ) {
                     viewModel.setDataRead(data.id.toString())
                 }
-
             }
         })
     }
@@ -81,7 +80,6 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
         initToolbar()
         initLiveData()
         initRecyclerView()
-        initData()
         initButton()
     }
 
@@ -99,13 +97,18 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
 
         btn_read_letters.setOnClickListener {
             adapter.data = mutableListOf()//清空資料
-            viewModel.getMsgCount(InfoCenterViewModel.DataType.UNREAD)//未讀資料比數
+            viewModel.getMsgCount(MsgType.NOTICE_UNREAD)//未讀資料比數
             viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
+            currentPage = BEEN_READ
+            iv_scroll_to_top.visibility = View.INVISIBLE
+
         }
         btn_unread_letters.setOnClickListener {
             adapter.data = mutableListOf()//清空資料
-            viewModel.getMsgCount(InfoCenterViewModel.DataType.READ)//已讀資料筆數
+            viewModel.getMsgCount(MsgType.NOTICE_READED)//已讀資料筆數
             viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.UNREAD)//未讀
+            currentPage = YET_READ
+            iv_scroll_to_top.visibility = View.INVISIBLE
         }
 
         //default show page
@@ -113,25 +116,23 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
         else btn_unread_letters.performClick()
     }
 
-    private fun initData() {
-        viewModel.getUserMsgList(dataType = InfoCenterViewModel.DataType.READ)//已讀
-        viewModel.getMsgCount(InfoCenterViewModel.DataType.UNREAD)//未讀資料筆數
-    }
-
     private fun initLiveData() {
         //已讀訊息清單
         viewModel.userReadMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer
-            if (adapter.data.isNotEmpty()) {
-                adapter.addData(userMsgList)//上拉加載
-            } else {
-                if ((it.size == 0 || it.isNullOrEmpty()) && !mNowLoading) {
-                    image_no_message.visibility = View.VISIBLE
+            if (currentPage == BEEN_READ) {
+                if (adapter.data.isNotEmpty()) {
+                    adapter.addData(userMsgList)//上拉加載
                 } else {
-                    image_no_message.visibility = View.GONE
-                    adapter.data = userMsgList//重新載入
+                    if (it.isNullOrEmpty()) {
+                        image_no_message.visibility = View.VISIBLE
+                    } else {
+                        image_no_message.visibility = View.GONE
+                        adapter.data = userMsgList as MutableList<InfoCenterData>//重新載入
+                    }
                 }
             }
+            viewModel.getResult()
         })
         //已讀總筆數
         viewModel.totalReadMsgCount.observe(this@InfoCenterActivity, Observer {
@@ -140,16 +141,19 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
         //未讀訊息清單
         viewModel.userUnreadMsgList.observe(this@InfoCenterActivity, Observer {
             val userMsgList = it ?: return@Observer
-            if (adapter.data.isNotEmpty()) {
-                adapter.addData(userMsgList)//上拉加載
-            } else {
-                if ((it.size == 0 || it.isNullOrEmpty()) && !mNowLoading) {
-                    image_no_message.visibility = View.VISIBLE
-                } else {
-                    image_no_message.visibility = View.GONE
-                    adapter.data = userMsgList//重新載入
+            if (currentPage == YET_READ) {
+                when(userMsgList.isNullOrEmpty()){
+                    true ->{
+                        image_no_message.visibility = View.VISIBLE
+                        adapter.data = mutableListOf()
+                    }
+                    false ->{
+                        image_no_message.visibility = View.GONE
+                        adapter.data = userMsgList as MutableList<InfoCenterData> //重新載入
+                    }
                 }
             }
+            viewModel.getResult()
         })
         //未讀總筆數
         viewModel.totalUnreadMsgCount.observe(this@InfoCenterActivity, {

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
+import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
@@ -132,31 +133,39 @@ class MoneyRechViewModel(
                 moneyRepository.getRechCfg()
             }
             result?.rechCfg?.let { _rechargeConfigs.value = result.rechCfg }
-            result?.rechCfg?.rechCfgs?.let { filterBankList(it) }
+            result?.rechCfg?.let { filterBankList(it.rechTypes,it.rechCfgs) }
         }
     }
 
     //篩選List要顯示的資料
-    private fun filterBankList(rechConfigList: List<MoneyRechCfg.RechConfig>) {
+    private fun filterBankList(rechTypesList: List<MoneyRechCfg.RechType>, rechConfigList: List<MoneyRechCfg.RechConfig>) {
         try {
-
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
 
+            //篩選，後台有開"且"使用者有權限的充值方式
+            val filterRechargeDataList = mutableListOf<MoneyRechCfg.RechConfig>()
+            rechTypesList.forEach { rechTypes ->
+                rechConfigList.forEach { rechConfig ->
+                    if (rechTypes.value == rechConfig.rechType) {
+                        filterRechargeDataList.add(rechConfig)
+                    }
+                }
+            }
+
             val dataList: MutableList<MoneyPayWayData> = mutableListOf()
             MoneyManager.getMoneyPayWayList()?.forEach { moneyPayWay ->
-                if (rechConfigList.firstOrNull {
-                        it.rechType == "onlinePayment" && it.onlineType == moneyPayWay.onlineType
-                                || it.rechType != "onlinePayment" && it.rechType == moneyPayWay.rechType
+                if (filterRechargeDataList.firstOrNull {
+                        it.rechType == RechType.ONLINEPAYMENT.code && it.onlineType == moneyPayWay.onlineType
+                                || it.rechType != RechType.ONLINEPAYMENT.code && it.rechType == moneyPayWay.rechType
                     } != null) {
                     dataList.add(moneyPayWay)
                 }
             }
 
-
             dataList.forEach {
                 when (it.rechType) {
-                    "onlinePayment" -> onlineData.add(it)
+                    RechType.ONLINEPAYMENT.code -> onlineData.add(it)
                     else -> transferData.add(it)
                 }
             }
@@ -540,9 +549,9 @@ class MoneyRechViewModel(
     //轉帳充值帳戶選單名稱
     fun getPayTypeName(rechType: String?): String {
         return when (rechType) {
-            "alipay" -> androidContext.resources.getString(R.string.title_alipay)
-            "weixin" -> androidContext.resources.getString(R.string.title_weixin)
-            "cft" -> androidContext.resources.getString(R.string.title_cft)
+            RechType.ALIPAY.code -> androidContext.resources.getString(R.string.title_alipay)
+            RechType.WX.code  -> androidContext.resources.getString(R.string.title_weixin)
+            RechType.CFT.code  -> androidContext.resources.getString(R.string.title_cft)
             else -> ""
         }
     }

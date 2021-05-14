@@ -17,9 +17,11 @@ data class Odd(
     val spread: String? = null,
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code
-) {
+) : OddStateParams {
     var isSelected: Boolean? = false
-    var oddState: Int = OddState.SAME.state
+    override var oddState: Int = OddState.SAME.state
+    @Transient
+    override var runnable: Runnable? = null
     var outrightCateName: String? = null
 }
 

@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.hall
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
@@ -28,6 +27,9 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.OutrightCountryAdapter
+import org.cxct.sportlottery.ui.game.widget.GameFilterRow
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -95,6 +97,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         MatchType.AT_START -> {
                             matchOdd.matchInfo?.id?.let {
+                                navOddsDetail(it)
                                 viewModel.setOddsDetailMoreList(
                                     data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList() ?: listOf<MatchOdd>()
                                 )
@@ -202,6 +205,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 override fun onQueryTextChange(newText: String?): Boolean {
                     newText?.let {
                         viewModel.searchLeague(args.matchType, it)
+                        countryAdapter.searchText = it
                     }
                     return true
                 }
@@ -248,6 +252,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             } else {
                 View.GONE
             }
+
+        view.game_filter_divider.visibility = if (args.matchType == MatchType.OUTRIGHT) {
+            View.VISIBLE
+        } else {
+            View.INVISIBLE
+        }
     }
 
     private fun setupGameListView(view: View) {
@@ -271,7 +281,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getMatchTypeList(args.matchType, true)
+        viewModel.getGameHallList(args.matchType, true)
         loading()
     }
 
@@ -344,18 +354,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             data = leagueOdds
                             this.sportType = sportType
                         }
-
-                        when {
-                            (leagueOdds.isEmpty() && itemDecorationCount > 0) -> {
-                                removeItemDecorationAt(0)
-                            }
-
-                            (leagueOdds.isNotEmpty() && itemDecorationCount == 0) -> {
-                                addItemDecoration(
-                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                                )
-                            }
-                        }
                     }
                 }
             }
@@ -372,18 +370,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     game_list.apply {
                         adapter = countryAdapter.apply {
                             data = rows
-                        }
-
-                        when {
-                            (rows.isEmpty() && itemDecorationCount > 0) -> {
-                                removeItemDecorationAt(0)
-                            }
-
-                            (rows.isNotEmpty() && itemDecorationCount == 0) -> {
-                                addItemDecoration(
-                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                                )
-                            }
                         }
                     }
                 }
@@ -402,18 +388,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         adapter = outrightCountryAdapter.apply {
                             data = rows
                         }
-
-                        when {
-                            (rows.isEmpty() && itemDecorationCount > 0) -> {
-                                removeItemDecorationAt(0)
-                            }
-
-                            (rows.isNotEmpty() && itemDecorationCount == 0) -> {
-                                addItemDecoration(
-                                    DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                                )
-                            }
-                        }
                     }
                 }
             }
@@ -421,34 +395,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, Observer {
             countryAdapter.data = it
-
-            when {
-                (it.isEmpty() && game_list.itemDecorationCount > 0) -> {
-                    game_list.removeItemDecorationAt(0)
-                }
-
-                (it.isNotEmpty() && game_list.itemDecorationCount == 0) -> {
-                    game_list.addItemDecoration(
-                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                    )
-                }
-            }
         })
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, Observer {
             outrightCountryAdapter.data = it
-
-            when {
-                (it.isEmpty() && game_list.itemDecorationCount > 0) -> {
-                    game_list.removeItemDecorationAt(0)
-                }
-
-                (it.isNotEmpty() && game_list.itemDecorationCount == 0) -> {
-                    game_list.addItemDecoration(
-                        DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
-                    )
-                }
-            }
         })
 
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, Observer {

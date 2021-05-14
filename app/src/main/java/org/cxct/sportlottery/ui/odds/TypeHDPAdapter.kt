@@ -34,7 +34,7 @@ class TypeHDPAdapter(
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
-            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_END, oddsType, oddsDetail.gameType)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_END, oddsType)
         }
     }
 

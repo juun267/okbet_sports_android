@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.widget
 
 import android.content.Context
 import android.util.AttributeSet
@@ -37,13 +37,13 @@ class GameFilterRow @JvmOverloads constructor(
             field = value
 
             field?.let {
-                game_filter_1x2.visibility = if (it) {
+                game_filter_1x2.visibility = if (it && matchType == IN_PLAY) {
                     View.VISIBLE
                 } else {
                     View.GONE
                 }
 
-                game_filter_ou.visibility = if (it) {
+                game_filter_ou.visibility = if (it && matchType == IN_PLAY) {
                     View.VISIBLE
                 } else {
                     View.GONE
@@ -121,6 +121,10 @@ class GameFilterRow @JvmOverloads constructor(
     private fun init(attrs: AttributeSet?) {
         inflate(context, R.layout.row_game_filter, this).apply {
             this.game_filter_sport_type.isSelected = true
+
+            this.game_filter_search.findViewById<View>(R.id.search_src_text).apply {
+                setPadding(0, 0, 0, 0)
+            }
         }
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.GameFilterRow)

@@ -1,17 +1,20 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.league.Row
+import org.cxct.sportlottery.network.outright.season.Row
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.hall.OutrightCountryLeagueAdapter
+import org.cxct.sportlottery.ui.game.hall.OutrightCountryLeagueListener
 
-class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
         ITEM, NO_DATA
@@ -24,7 +27,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    var countryLeagueListener: CountryLeagueListener? = null
+    var outrightCountryLeagueListener: OutrightCountryLeagueListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when {
@@ -35,14 +38,19 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ItemType.ITEM.ordinal -> {
+            CountryAdapter.ItemType.ITEM.ordinal -> {
                 ItemViewHolder.from(parent).apply {
                     this.itemView.league_list.apply {
                         this.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
                         this.addItemDecoration(
-                            DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_gray
+                                )
+                            )
                         )
                     }
                 }
@@ -58,7 +66,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is ItemViewHolder -> {
                 val item = data[position]
 
-                holder.bind(item, countryLeagueListener)
+                holder.bind(item, outrightCountryLeagueListener)
             }
         }
     }
@@ -72,20 +80,23 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val countryLeagueAdapter by lazy {
-            CountryLeagueAdapter()
+            OutrightCountryLeagueAdapter()
         }
 
-        fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
+        fun bind(item: Row, outrightCountryLeagueListener: OutrightCountryLeagueListener?) {
             itemView.country_name.text = item.name
 
-            setupLeagueList(item, countryLeagueListener)
+            setupLeagueList(item, outrightCountryLeagueListener)
             setupCountryExpand(item)
         }
 
-        private fun setupLeagueList(item: Row, countryLeagueListener: CountryLeagueListener?) {
+        private fun setupLeagueList(
+            item: Row,
+            outrightCountryLeagueListener: OutrightCountryLeagueListener?
+        ) {
             itemView.league_list.apply {
                 adapter = countryLeagueAdapter.apply {
-                    this.countryLeagueListener = countryLeagueListener
+                    this.outrightCountryLeagueListener = outrightCountryLeagueListener
 
                     data = if (item.searchList.isNotEmpty()) {
                         item.searchList

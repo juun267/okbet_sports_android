@@ -4,10 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
-    android:divider="@drawable/divider_color_white6"
     android:gravity="center"
-    android:orientation="vertical"
-    android:showDividers="end">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,4 +57,9 @@
 
 
     </LinearLayout>
+    <View
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorWhite6" />
 </LinearLayout>

@@ -6,12 +6,20 @@ import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.ui.odds.OddViewHolder
 
 const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
 object OddButtonHighLight {
 
-    fun set(nameChangeColor: Boolean, tvName: TextView?, tvOdds: TextView, tvSpread: TextView?, odd: Odd) {
+    fun set(
+        nameChangeColor: Boolean,
+        tvName: TextView?,
+        tvOdds: TextView,
+        tvSpread: TextView?,
+        odd: Odd,
+        oddStateChangeListener: OddViewHolder.OddStateChangeListener
+    ) {
 
         when (odd.oddState) {
             OddState.LARGER.state -> {
@@ -30,6 +38,8 @@ object OddButtonHighLight {
         }
         Handler().postDelayed(
             {
+                oddStateChangeListener.refreshOddButton(odd)
+
                 when (odd.isSelect) {
                     true -> {
                         tvOdds.background = ContextCompat.getDrawable(tvOdds.context, R.drawable.bg_radius_4_button_orangelight)

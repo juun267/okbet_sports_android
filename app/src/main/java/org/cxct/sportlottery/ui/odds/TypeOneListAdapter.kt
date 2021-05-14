@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.TextUtil
 
 
 const val MORE_ITEM = 1
@@ -16,6 +18,7 @@ const val MORE_ITEM = 1
 const val OVER_COUNT = 5
 
 class TypeOneListAdapter(
+    private val sportCode: String,
     private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
@@ -66,10 +69,26 @@ class TypeOneListAdapter(
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(originOdd: Odd) {
             nameChangeColor = false
+
+            //玩法為進球球員時 spread為英數字id 所以強制轉為null
+            if (TextUtil.compareWithGameKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.SCO.value)) {
+                originOdd.spread = null
+            }
+
             setData(
                 oddsDetail, originOdd, onOddClickListener, betInfoList,
-                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType, null
+                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType
             )
+
+            when (sportCode) {
+                SportType.FOOTBALL.code,
+                SportType.BASKETBALL.code -> {}
+                else -> {
+                    //網羽排顯示為單列 需要顯示名稱
+                    showName(true)
+                }
+            }
+
         }
     }
 

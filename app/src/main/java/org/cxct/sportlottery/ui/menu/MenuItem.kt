@@ -19,6 +19,7 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
             view.tv_title.letterSpacing = 0.117f
             view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0))
+            view.iv_arrow.visibility = typedArray.getInt(R.styleable.CustomView_arrowSymbolVisibility, 0x00000008)
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {

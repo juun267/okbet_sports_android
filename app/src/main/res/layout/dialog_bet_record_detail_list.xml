@@ -21,6 +21,7 @@
     </data>
 
     <FrameLayout
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog">
@@ -34,7 +35,9 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite1">
+                android:background="@color/colorWhite1"
+                android:clickable="true"
+                android:focusable="true">
 
                 <TextView
                     android:id="@+id/tv_title"
@@ -71,238 +74,261 @@
                     app:layout_constraintBottom_toTopOf="@id/linearLayout2"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout2"
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@+id/view">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintTop_toBottomOf="@+id/view">
+                        android:background="@color/colorWhite"
+                        android:paddingVertical="10dp">
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintLayout"
+                        <TextView
+                            android:id="@+id/text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:gravity="end"
+                            android:minWidth="70dp"
+                            android:text="@string/bet_time"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_bet_time"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="5dp"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:dateTime="@{row.addTime}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toEndOf="@id/text_view"
+                            app:layout_constraintTop_toTopOf="@+id/text_view"
+                            tools:text="2020-12-12 19:58:22" />
+
+                        <TextView
+                            android:id="@+id/text_view2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
+                            android:text="@string/order_number_colon"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_bet_time" />
+
+                        <TextView
+                            android:id="@+id/tv_order_number"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@{row.orderNo}"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_bet_time"
+                            tools:text="b000003612091822030128" />
+
+                        <TextView
+                            android:id="@+id/text_view3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
+                            android:text="@string/total_bet_money_colon"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_order_number" />
+
+                        <TextView
+                            android:id="@+id/tv_bet_total_money"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@{TextUtil.formatMoney(row.totalAmount)}"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_order_number"
+                            tools:text="1,000.00" />
+
+
+                        <TextView
+                            android:id="@+id/text_view4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
+                            android:text="@string/status_colon"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_bet_total_money" />
+
+                        <TextView
+                            android:id="@+id/tv_status_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/textSize14sp"
+                            app:betStatus="@{row.status}"
+                            app:betStatusMoney="@{row.win}"
+                            app:layout_constraintEnd_toStartOf="@id/tv_status"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_bet_total_money"
+                            app:layout_constraintTop_toTopOf="@+id/text_view4"
+                            tools:text="-1,000.000"
+                            tools:textColor="@color/red2" />
+
+                        <TextView
+                            android:id="@+id/tv_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
+                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintStart_toEndOf="@+id/tv_status_money"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_bet_total_money"
+                            app:layout_constraintTop_toTopOf="@+id/text_view4"
+                            app:status="@{row.status}"
+                            tools:text="全输" />
+
+                        <TextView
+                            android:id="@+id/text_view5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
+                            android:text="@string/rebates"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+
+                        <TextView
+                            android:id="@+id/tv_rebates"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/text_view5"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
+                            app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
+                            app:layout_constraintTop_toBottomOf="@+id/text_view4"
+                            app:moneyFormat="@{row.rebateAmount}"
+                            tools:text="0.100" />
+
+                        <TextView
+                            android:id="@+id/text_view6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
+                            android:text="@string/remarks"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
+                            app:layout_constraintTop_toBottomOf="@+id/text_view5" />
+
+                        <TextView
+                            android:id="@+id/tv_remarks"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/text_view6"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
+                            app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
+                            app:layout_constraintTop_toBottomOf="@+id/text_view5"
+                            app:text="@{row.cancelledBy.equals(`mts`)?@string/remark_by_mts:row.cancelledBy.equals(`own`)||row.cancelledBy.equals(`source`)?@string/remark_by_own_source:null}"
+                            tools:text="@string/remark_by_mts" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"
-                            android:paddingVertical="10dp">
-
-                            <androidx.constraintlayout.widget.Guideline
-                                android:id="@+id/guideline"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                app:layout_constraintGuide_percent="0.95" />
+                            android:background="@color/colorWhite3"
+                            android:gravity="top"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="30dp"
+                            android:paddingVertical="8dp"
+                            app:layout_constraintTop_toTopOf="parent">
 
                             <TextView
-                                android:id="@+id/text_view"
+                                android:id="@+id/text"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
-                                android:text="@string/bet_time"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/tv_bet_time"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:dateTime="@{row.addTime}"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintStart_toEndOf="@id/text_view"
-                                app:layout_constraintTop_toTopOf="@+id/text_view"
-                                tools:text="2020-12-12 19:58:22" />
-
-                            <TextView
-                                android:id="@+id/text_view2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/order_number_colon"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintStart_toStartOf="@+id/text_view"
-                                app:layout_constraintTop_toBottomOf="@+id/text_view" />
-
-                            <TextView
-                                android:id="@+id/tv_order_number"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:text="@{row.orderNo}"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
-                                app:layout_constraintTop_toBottomOf="@+id/text_view"
-                                tools:text="b000003612091822030128" />
-
-                            <TextView
-                                android:id="@+id/text_view3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/total_bet_money_colon"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintStart_toStartOf="@+id/text_view"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_order_number" />
-
-                            <TextView
-                                android:id="@+id/tv_bet_total_money"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@{TextUtil.formatMoney(row.totalAmount)}"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
-                                app:layout_constraintTop_toBottomOf="@+id/tv_order_number"
-                                tools:text="1,000.00" />
-
-
-                            <TextView
-                                android:id="@+id/text_view4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/status_colon"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintStart_toStartOf="@+id/text_view"
-                                app:layout_constraintTop_toBottomOf="@+id/text_view3" />
-
-                            <TextView
-                                android:id="@+id/tv_status_money"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textSize="@dimen/textSize14sp"
-                                app:betStatus="@{row.status}"
-                                app:betStatusMoney="@{row.win}"
-                                app:layout_constraintBottom_toBottomOf="@+id/text_view4"
-                                app:layout_constraintEnd_toStartOf="@id/tv_status"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintHorizontal_chainStyle="packed"
-                                app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
-                                app:layout_constraintTop_toTopOf="@+id/text_view4"
-                                tools:text="-1,000.00"
-                                tools:textColor="@color/red2" />
-
-                            <TextView
-                                android:id="@+id/tv_status"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:gameStatus="@{row.status}"
-                                app:layout_constraintBottom_toBottomOf="@+id/text_view4"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintStart_toEndOf="@+id/tv_status_money"
-                                app:layout_constraintTop_toTopOf="@+id/text_view4"
-                                tools:text="全输" />
-
-                            <TextView
-                                android:id="@+id/text_view5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/rebates"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="@+id/text_view"
-                                app:layout_constraintTop_toBottomOf="@+id/text_view4" />
-
-                            <TextView
-                                android:id="@+id/tv_rebates"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/colorGray"
-                                android:textSize="@dimen/textSize14sp"
-                                app:layout_constraintBottom_toBottomOf="@+id/text_view5"
-                                app:layout_constraintEnd_toStartOf="@+id/guideline"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
-                                app:layout_constraintTop_toBottomOf="@+id/text_view4"
-                                app:moneyFormat="@{row.rebateAmount}"
-                                tools:text="0.100" />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/colorWhite"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:id="@+id/linearLayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="top"
-                                android:orientation="horizontal"
-                                android:paddingVertical="8dp"
-                                android:background="@color/colorWhite3"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <TextView
-                                    android:id="@+id/text"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_marginStart="30dp"
-                                    android:text="@string/bet_item"
-                                    android:textColor="@color/colorBlackLight"
-                                    android:textSize="@dimen/textSize14sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/tv_bet_title"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginEnd="30dp"
-                                    android:text="@{row.matchOdds.size() > 1 ? TextUtil.replaceParlayByC(row.parlayType) : row.matchOdds.size() == 1 ? row.matchOdds[0].playCateName:null}"
-                                    android:textColor="@color/colorBlackLight"
-                                    android:textSize="@dimen/textSize14sp"
-                                    android:textStyle="bold"
-                                    tools:text="土耳其足球超级联赛-谁排名更高-费内巴切vs加拉塔萨雷" />
-
-                            </LinearLayout>
-
-                            <com.scwang.smart.refresh.layout.SmartRefreshLayout
-                                android:id="@+id/refresh"
-                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                app:layout_constraintHeight_max="300dp"
-                                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:srlDragRate="0.3"
-                                app:srlEnableLoadMore="true"
-                                app:srlEnablePureScrollMode="true">
+                                android:text="@string/bet_item"
+                                android:textColor="@color/colorBlackLight"
+                                android:textSize="@dimen/textSize14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_bet_title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{row.matchOdds.size() > 1 ? TextUtil.replaceParlayByC(row.parlayType) : row.matchOdds.size() == 1 ? row.matchOdds[0].playCateName:null}"
+                                android:textColor="@color/colorBlackLight"
+                                android:textSize="@dimen/textSize14sp"
+                                android:textStyle="bold"
+                                tools:text="土耳其足球超级联赛-谁排名更高-费内巴切vs加拉塔萨雷" />
+
+                        </LinearLayout>
+
+                        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+                            android:id="@+id/refresh"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintHeight_max="300dp"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                            app:srlDragRate="0.3"
+                            app:srlEnableLoadMore="true"
+                            app:srlEnablePureScrollMode="true">
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_detail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintHeight_max="300dp"
                                 android:background="@color/colorWhite"
                                 android:overScrollMode="never"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                tools:itemCount="3"
-                                tools:listitem="@layout/item_bet_record_detail"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintHeight_max="300dp"
                                 app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-                                app:layout_constraintBottom_toBottomOf="parent"/>
+                                tools:itemCount="3"
+                                tools:listitem="@layout/item_bet_record_detail" />
 
+                        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
-                </com.scwang.smart.refresh.layout.SmartRefreshLayout>
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                    </LinearLayout>
-
-
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

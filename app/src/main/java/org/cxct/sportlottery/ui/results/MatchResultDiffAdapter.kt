@@ -112,7 +112,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     }
 
     private fun setupBottomLine(position: Int, bottomLine: View) {
-        bottomLine.visibility = if (position + 1 < itemCount && getItemViewType(position + 1) != ListType.TITLE.ordinal) View.VISIBLE else View.GONE
+        bottomLine.visibility = if (position + 1 < itemCount && (getItemViewType(position + 1) != ListType.TITLE.ordinal || getItemViewType(position) == ListType.MATCH.ordinal)) View.VISIBLE else View.GONE
     }
 
     class MatchTitleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -307,9 +307,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun setupFtDetailFirstItem(data: List<MatchStatus>?) {
             val firstHalf = data?.find { it.status == StatusType.FIRST_HALF.code }
             val fullGame = data?.find { it.status == StatusType.OVER_TIME.code } ?: data?.find { it.status == StatusType.END_GAME.code }
-            fun getSituation(matchStatus: MatchStatus?, situationType: GameResultDetailAdapter.SituationType): String {
+            fun getSituation(matchStatus: MatchStatus?, situationType: SituationType): String {
                 when (situationType) {
-                    GameResultDetailAdapter.SituationType.YELLOW_CARD -> {
+                    SituationType.YELLOW_CARD -> {
                         matchStatus.let {
                             return if (it?.homeYellowCards == null || it.awayYellowCards == null)
                                 ""
@@ -317,7 +317,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                                 "${it.homeYellowCards} - ${it.awayYellowCards}"
                         }
                     }
-                    GameResultDetailAdapter.SituationType.CORNER_KICK -> {
+                    SituationType.CORNER_KICK -> {
                         matchStatus.let {
                             return if (it?.homeCornerKicks == null || it.awayCornerKicks == null)
                                 ""
@@ -329,10 +329,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
             itemView.apply {
                 ll_game_detail_first_item.visibility = View.VISIBLE
-                tv_first_half_card.text = getSituation(firstHalf, GameResultDetailAdapter.SituationType.YELLOW_CARD)
-                tv_full_game_card.text = getSituation(fullGame, GameResultDetailAdapter.SituationType.YELLOW_CARD)
-                tv_first_half_corner.text = getSituation(firstHalf, GameResultDetailAdapter.SituationType.CORNER_KICK)
-                tv_full_game_corner.text = getSituation(fullGame, GameResultDetailAdapter.SituationType.CORNER_KICK)
+                tv_first_half_card.text = getSituation(firstHalf, SituationType.YELLOW_CARD)
+                tv_full_game_card.text = getSituation(fullGame, SituationType.YELLOW_CARD)
+                tv_first_half_corner.text = getSituation(firstHalf, SituationType.CORNER_KICK)
+                tv_full_game_corner.text = getSituation(fullGame, SituationType.CORNER_KICK)
             }
         }
     }

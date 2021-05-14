@@ -31,6 +31,10 @@ class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetR
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        rootLayout.setOnClickListener {
+            dismiss()
+        }
+
         img_close.setOnClickListener {
             dismiss()
         }

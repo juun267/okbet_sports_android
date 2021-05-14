@@ -1,13 +1,13 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.outright
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
@@ -20,6 +20,8 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.hall.OutrightOddAdapter
+import org.cxct.sportlottery.ui.game.hall.OutrightOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
@@ -67,9 +69,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             adapter = outrightOddAdapter
 
             addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
+                OutrightOddDividerDecoration(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.divider_gray
+                    )
                 )
             )
         }

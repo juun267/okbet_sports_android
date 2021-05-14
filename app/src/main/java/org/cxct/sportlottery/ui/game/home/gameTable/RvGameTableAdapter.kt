@@ -124,8 +124,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bindInPlay(data: GameEntity) {
             itemView.apply {
-                tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString()
-                tv_score2.text = data.matchStatusCO?.awayTotalScore?.toString()
+                tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString() ?: "-"
+                tv_score2.text = data.matchStatusCO?.awayTotalScore?.toString() ?: "-"
 
                 team1.text = data.match?.homeName
                 team2.text = data.match?.awayName
@@ -169,17 +169,13 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bindToday(data: GameEntity) {
             itemView.apply {
+                tv_score1.text = "–"
+                tv_score2.text = "–"
+
                 team1.text = data.match?.homeName
                 team2.text = data.match?.awayName
 
-                when (data.code) {
-                    "FT" -> { //足球
-                        showStartTime(data.match?.startTime)
-                    }
-                    "BK" -> { //籃球
-                        showStartTime(data.match?.startTime)
-                    }
-                }
+                showStartTime(data.match?.startTime)
 
                 if (data.itemType == ItemType.FOOTER) {
                     line_item.visibility = View.GONE
@@ -215,10 +211,15 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         private fun showTime(sec: Int?) {
-            itemView.tv_time.text = if (sec == null)
-                null
-            else
-                TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+            itemView.tv_time.apply {
+                text = if (sec == null) {
+                    visibility = View.GONE
+                    null
+                } else {
+                    visibility = View.VISIBLE
+                    TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+                }
+            }
         }
 
         private fun startFTTimer(matchClockCO: MatchClockCO?) {

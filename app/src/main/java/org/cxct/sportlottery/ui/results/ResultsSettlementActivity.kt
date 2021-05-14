@@ -9,6 +9,7 @@ import android.widget.BaseAdapter
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.activity_results_settlement.*
@@ -22,7 +23,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,7 +33,6 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     private lateinit var settlementGameTypeAdapter: SettlementGameTypeAdapter
     private var bottomSheetLeagueItemDataList = mutableListOf<LeagueItemData>()
 
-    private val settlementViewModel: SettlementViewModel by viewModel()
     private val settlementDateRvAdapter by lazy {
         SettlementDateRvAdapter()
     }
@@ -90,7 +89,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     }
 
     private fun initEvent() {
-        settlementViewModel.requestListener = object : RequestListener {
+        viewModel.requestListener = object : RequestListener {
             override fun requestIng(loading: Boolean) {
                 if (loading)
                     loading()
@@ -108,13 +107,13 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
         }
 
         et_key_word.afterTextChanged {
-            settlementViewModel.setKeyWordFilter(it)
+            viewModel.setKeyWordFilter(it)
         }
 
         btn_refresh.setOnClickListener {
             when (settleType) {
-                SettleType.OUTRIGHT -> settlementViewModel.getOutrightResultList(gameType)
-                SettleType.MATCH -> settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
+                SettleType.OUTRIGHT -> viewModel.getOutrightResultList(gameType)
+                SettleType.MATCH -> viewModel.getMatchResultList(gameType, null, timeRangeParams)
             }
         }
     }
@@ -125,7 +124,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
     }
 
     private fun observeData() {
-        settlementViewModel.apply {
+        viewModel.apply {
             //過濾後賽果資料
             showMatchResultData.observe(this@ResultsSettlementActivity, Observer {
                 matchResultDiffAdapter.gameType = gameType
@@ -170,24 +169,31 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                         refactor_rv.adapter = outrightResultDiffAdapter
                         refactor_rv.scrollToPosition(0)
                         settleType = SettleType.OUTRIGHT
-                        settlementViewModel.getOutrightResultList(gameType)
+                        viewModel.getOutrightResultList(gameType)
                     }
                     else -> {
                         refactor_rv.adapter = matchResultDiffAdapter
                         refactor_rv.scrollToPosition(0)
                         settleType = SettleType.MATCH
                         timeRangeParams = setupTimeApiFormat(date)
-                        settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
+                        viewModel.getMatchResultList(gameType, null, timeRangeParams)
                     }
                 }
+                dateSelected(date)
             }
         }
+    }
+
+    private fun dateSelected(datePosition: Int) {
+        (rv_date.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
+            datePosition, rv_date.width / 2
+        )
     }
 
     private fun initSettleGameTypeBottomSheet() {
         tv_game_type.text = getString(GameType.values()[0].string)
         gameType = GameType.values()[0].key
-        settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
+        viewModel.getMatchResultList(gameType, null, timeRangeParams)
     }
 
     private fun setupSettleGameTypeBottomSheet() {
@@ -206,10 +212,10 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                     this@ResultsSettlementActivity.tv_game_type.text = select.name
                     when (settleType) {
                         SettleType.MATCH -> {
-                            settlementViewModel.getMatchResultList(gameType, null, timeRangeParams)
+                            viewModel.getMatchResultList(gameType, null, timeRangeParams)
                         }
                         SettleType.OUTRIGHT -> {
-                            settlementViewModel.getOutrightResultList(gameType)
+                            viewModel.getOutrightResultList(gameType)
                         }
                     }
                     settlementGameTypeBottomSheet.dismiss()
@@ -256,7 +262,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                     leagueSelectedSet.remove(it.name)
                 }
             }
-            settlementViewModel.setLeagueFilter(leagueSelectedSet)
+            viewModel.setLeagueFilter(leagueSelectedSet)
             settlementLeagueAdapter.notifyDataSetChanged()
         }
 
@@ -269,7 +275,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                 it.isSelected = false
             }
             leagueSelectedSet.clear()
-            settlementViewModel.setLeagueFilter(leagueSelectedSet)
+            viewModel.setLeagueFilter(leagueSelectedSet)
             settlementLeagueAdapter.notifyDataSetChanged()
         }
     }
@@ -290,7 +296,7 @@ class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(Set
                     } else {
                         leagueSelectedSet.remove(select.name)
                     }
-                    settlementViewModel.setLeagueFilter(leagueSelectedSet)
+                    viewModel.setLeagueFilter(leagueSelectedSet)
                     //判斷全選按鈕是否需選取
                     var selectCount = 0
                     bottomSheetLeagueItemDataList.forEach {

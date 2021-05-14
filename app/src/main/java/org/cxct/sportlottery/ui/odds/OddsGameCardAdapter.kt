@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_odds_detail_game_card.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
@@ -17,6 +19,7 @@ import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
 class OddsGameCardAdapter(
+    private val context:Context?,
     private var matchId: String?,
     private val clickListener: ItemClickListener
 ) :
@@ -24,12 +27,16 @@ class OddsGameCardAdapter(
     private var mSelectedPosition = -1
     private var mTimerMap = mutableMapOf<Int, Timer?>()
 
-    var socketDataList: MutableList<MatchClockCO> = mutableListOf()
+    var matchClockCOList: MutableList<MatchClockCO> = mutableListOf()
+    var matchStatusCOList: MutableList<MatchStatusCO> = mutableListOf()
+
+
     var data: MutableList<MatchInfo?> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
-            socketDataList = MutableList(data.size) { MatchClockCO(0, "", "", 0, 0, 0, 0, 0, 0, 0) }
+            matchClockCOList = MutableList(data.size) { MatchClockCO(0, "", "", 0, 0, 0, 0, 0, 0, 0) }
+            matchStatusCOList = MutableList(data.size) { MatchStatusCO("", 0, 0, 0, 0, 0, "", 0, 0, 0) }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -71,6 +78,7 @@ class OddsGameCardAdapter(
         private val awayName: TextView = itemView.findViewById(R.id.txv_away_name)
 
         private val txvTime: TextView = itemView.findViewById(R.id.txv_time)
+        private val txvStatus: TextView = itemView.findViewById(R.id.txv_status)
         val gameCard: ConstraintLayout = itemView.findViewById(R.id.ll_game_card)
 
 
@@ -81,8 +89,9 @@ class OddsGameCardAdapter(
             awayScore.text = (item.awayScore ?: 0).toString()
             awayName.text = item.awayName
 
-            setTimer(position, socketDataList[position])
+            txvStatus.text =  getGameStatus(matchStatusCOList[position])
 
+            setTimer(position, matchClockCOList[position])
         }
 
         fun stopTimer() {
@@ -96,7 +105,7 @@ class OddsGameCardAdapter(
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
                 when (matchClockCO.gameType) {
                     "BK" -> {
-                        if (matchClockCO.stoppageTime == null) {
+                        if (matchClockCO.remainingTimeInPeriod == null) {
                             itemView.txv_time.text = null
                         } else {
                             itemView.txv_time.text = TimeUtil.timeFormat(
@@ -149,6 +158,76 @@ class OddsGameCardAdapter(
                 itemView.txv_time.text = ""
             }
         }
+
+        fun getGameStatus(matchStatusCO: MatchStatusCO?): String {
+            var status = ""
+
+            when (matchStatusCO?.gameType) {
+                SportType.FOOTBALL.code -> {
+                    when (matchStatusCO.status) {
+                        6 -> {
+                            status = context?.getString(R.string.first_half_game).toString()
+                        }
+                        7 -> {
+                            status = context?.getString(R.string.second_half_game).toString()
+                        }
+                        41 -> {
+                            status = context?.getString(R.string.add_time_first_plat).toString()
+                        }
+                        42 -> {
+                            status = context?.getString(R.string.add_time_second_plat).toString()
+                        }
+                    }
+                }
+                SportType.BASKETBALL.code -> {
+                    when (matchStatusCO.status) {
+                        6 -> {
+                            status = context?.getString(R.string.first_half_game).toString()
+                        }
+                        7 -> {
+                            status = context?.getString(R.string.second_half_game).toString()
+                        }
+                        13 -> {
+                            status = context?.getString(R.string.first_session).toString()
+                        }
+                        14 -> {
+                            status = context?.getString(R.string.second_session).toString()
+                        }
+                        15 -> {
+                            status = context?.getString(R.string.third_session).toString()
+                        }
+                        16 -> {
+                            status = context?.getString(R.string.fourth_session).toString()
+                        }
+                        40 -> {
+                            status = context?.getString(R.string.add_time).toString()
+                        }
+                    }
+                }
+                SportType.TENNIS.code, SportType.VOLLEYBALL.code, SportType.BADMINTON.code -> {
+                    when (matchStatusCO.status) {
+                        8 -> {
+                            status = context?.getString(R.string.first_plat).toString()
+                        }
+                        9 -> {
+                            status = context?.getString(R.string.second_plat).toString()
+                        }
+                        10 -> {
+                            status = context?.getString(R.string.third_plat).toString()
+                        }
+                        11 -> {
+                            status = context?.getString(R.string.fourth_plat).toString()
+                        }
+                        12 -> {
+                            status = context?.getString(R.string.fifth_plat).toString()
+                        }
+                    }
+                }
+            }
+
+            return status
+        }
+
     }
 
     private fun stopAllTimer() {
@@ -168,22 +247,26 @@ class OddsGameCardAdapter(
     }
 
     fun updateGameCard(matchClockCO: MatchClockCO?) {
+
         data.forEachIndexed { index, matchInfo ->
-            if (matchInfo?.id == matchId) {
+            if (matchInfo?.id == matchClockCO?.matchId) {
                 matchClockCO?.let {
-                    socketDataList[index] = matchClockCO
+                    matchClockCOList[index] = matchClockCO
                 }
                 notifyItemChanged(index)
             }
+
         }
     }
 
-    fun updateGameCard(MatchStatusCO: MatchStatusCO?) {
+    fun updateGameCard(matchStatusCO: MatchStatusCO?) {
         data.forEachIndexed { index, matchInfo ->
-            if (matchInfo?.id == matchId) {
-                MatchStatusCO?.let {
+            if (matchInfo?.id == matchStatusCO?.matchId) {
+                matchStatusCO?.let {
                     data[index]?.homeScore = it.homeScore
                     data[index]?.awayScore = it.awayScore
+                    matchStatusCOList[index] = matchStatusCO
+
                 }
                 notifyItemChanged(index)
             }

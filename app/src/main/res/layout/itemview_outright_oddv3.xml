@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="曼联" />
 
-    <org.cxct.sportlottery.ui.game.v3.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddButton
         android:id="@+id/outright_odd_btn"
         android:layout_width="96dp"
         android:layout_height="48dp"

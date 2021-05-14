@@ -19,6 +19,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.Event
 
 
@@ -30,7 +31,7 @@ class MainViewModel(
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseNoticeViewModel(userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin
@@ -40,7 +41,6 @@ class MainViewModel(
         get() = loginRepository.token
 
     val userId = loginRepository.userId
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     private val _promoteNoticeResult = MutableLiveData<Event<MessageListResult>>()
     val promoteNoticeResult: LiveData<Event<MessageListResult>>
@@ -72,7 +72,7 @@ class MainViewModel(
     val needToCompleteProfileInfo =
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
-        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
     //獲取系統公告及跑馬燈
     fun getAnnouncement() {
@@ -117,6 +117,11 @@ class MainViewModel(
                 thirdGameRepository.getThirdGame()
             }
         }
+    }
+
+    fun goToLottery() {
+        val lotteryData = gameCateDataList.value?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.first()?.gameList?.first()?.thirdGameData
+        requestEnterThirdGame(lotteryData)
     }
 
     fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {

@@ -281,12 +281,13 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.rechargeSystemOperation.observe(this, {
-            val operation = it.getContentIfNotHandled()
-            if (operation == false)
-                showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
-            else
-                startActivity(Intent(this, MoneyRechargeActivity::class.java))
-
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(this, MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
+                }
+            }
         })
 
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
@@ -314,9 +315,9 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.needToBindBankCard.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_money_card), getString(R.string.go_to_setting), true) {
+            it.getContentIfNotHandled()?.let { messageId ->
+                if (messageId != -1) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(messageId),getString(R.string.go_to_setting),  true) {
                         startActivity(Intent(this, BankActivity::class.java))
                     }
                 } else {

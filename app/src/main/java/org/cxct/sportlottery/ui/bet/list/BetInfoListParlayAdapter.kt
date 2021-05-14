@@ -75,20 +75,12 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
                 when {
                     quota > parlayOdd.max -> {
-                        binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
-                                TextUtil.formatMoneyNoDecimal(parlayOdd.max)
-                            )
+                        binding.tvErrorMessage.text =  binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit)
                         sendOutStatus = false
                     }
 
                     quota < parlayOdd.min -> {
-                        binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit),
-                                parlayOdd.min.toString()
-                            )
+                        binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit)
                         sendOutStatus = false
                     }
 

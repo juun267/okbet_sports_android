@@ -25,10 +25,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
@@ -37,10 +39,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailFragment
-import org.cxct.sportlottery.util.KeyBoardUtil
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 
 
 @SuppressLint("SetTextI18n")
@@ -134,6 +133,17 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
+    private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
+        list.forEach { listData ->
+            if (listData.matchType == MatchType.OUTRIGHT) {
+                service.unsubscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
+            } else {
+                service.unsubscribeEventChannel(listData.matchOdd.matchId)
+            }
+        }
+    }
+
+
     private fun observeData() {
 
         viewModel.userMoney.observe(this.viewLifecycleOwner, {
@@ -148,7 +158,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                     isSubScribe = true
                     subscribeChannel(it)
                 }
-                betInfoListAdapter.modify(it, deletePosition)
+                betInfoListAdapter.betInfoList = it
             }
         })
 
@@ -160,10 +170,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             it.getContentIfNotHandled()?.let { result ->
                 showPromptDialog(
                     title = getString(R.string.prompt),
-                    message = if (result.success) getString(R.string.bet_info_add_bet_success) else result.msg,
+                    message = messageByResultCode(requireContext(), result),
                     success = result.success
-                ) {}
-
+                ) {
+                    changeBetInfoContentByMessage(result)
+                }
             }
         })
 
@@ -176,7 +187,16 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             oddsType = it
             betInfoListAdapter.oddsType = it
         })
+    }
 
+
+    private fun changeBetInfoContentByMessage(result: BetAddResult) {
+        getBetAddError(result.code)?.let { betAddError ->
+            if (!result.success) {
+                val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+                errorData?.let { viewModel.updateMatchOdd(it, betAddError) }
+            }
+        }
     }
 
 
@@ -188,41 +208,12 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                mutableListOf()
-            it.odds?.forEach { map ->
-                val value = map.value
-                value.odds?.forEach { odd ->
-                    if (odd != null)
-                        newList.add(odd)
-                }
-            }
-            betInfoListAdapter.updatedBetInfoList = newList
+            viewModel.updateMatchOdd(it)
         })
 
         receiver.oddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
-                mutableListOf()
-            it.odds?.forEach { map ->
-                val value = map.value
-                value.forEach { odd ->
-                    odd?.let {
-                        val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
-                            null,
-                            odd.id,
-                            null,
-                            odd.odds,
-                            odd.hkOdds,
-                            odd.producerId,
-                            odd.spread,
-                            odd.status,
-                        )
-                        newList.add(newOdd)
-                    }
-                }
-            }
-            betInfoListAdapter.updatedBetInfoList = newList
+            viewModel.updateMatchOdd(it)
         })
 
         receiver.globalStop.observe(viewLifecycleOwner, Observer {
@@ -238,8 +229,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         receiver.producerUp.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            service.unsubscribeAllEventChannel()
-            service.unsubscribeAllHallChannel()
+
+            unsubscribeChannel(betInfoListAdapter.betInfoList)
             subscribeChannel(betInfoListAdapter.betInfoList)
         })
     }
@@ -279,6 +270,12 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             return
         }
 
+        val parlayType = if (betInfoListData.matchType == MatchType.OUTRIGHT) {
+            MatchType.OUTRIGHT.postValue
+        } else {
+            betInfoListData.parlayOdds?.parlayType
+        }
+
         betInfoListData.parlayOdds?.let {
             viewModel.addBet(
                 BetAddRequest(
@@ -288,7 +285,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                             getOdds(betInfoListData.matchOdd, oddsType)
                         )
                     ),
-                    listOf(Stake(betInfoListData.parlayOdds.parlayType, stake)),
+                    listOf(Stake(parlayType ?: "", stake)),
                     1,
                     oddsType.code
                 ), betInfoListData.matchType
@@ -300,7 +297,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     override fun onAddMoreClick(betInfoList: BetInfoListData) {
         val bundle = Bundle().apply {
             putString("gameType", betInfoList.matchOdd.gameType)
-            putString("matchId", betInfoList.matchOdd.matchId)
             putString("matchType", betInfoList.matchType?.postValue)
         }
         val intent = Intent(context, GameActivity::class.java).apply {
@@ -329,8 +325,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         spread.setSpan(ForegroundColorSpan(colorOrange), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         spread.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        val oddsEnd = getOdds(matchOdd, oddsType).toString().length + 3
-        val odds = SpannableString(" @ ${getOdds(matchOdd, oddsType)}")
+        val oddsEnd = TextUtil.formatForOdd(getOdds(matchOdd, oddsType)).length + 3
+        val odds = SpannableString(" @ ${TextUtil.formatForOdd(getOdds(matchOdd, oddsType))}")
         odds.setSpan(ForegroundColorSpan(colorOrange), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         odds.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
@@ -345,6 +341,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         keyboard?.showKeyboard(editText)
     }
+
 
     override fun saveOddsHasChanged(matchOdd: MatchOdd) {
         viewModel.saveOddsHasChanged(matchOdd)

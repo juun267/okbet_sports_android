@@ -8,6 +8,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
@@ -28,10 +29,6 @@ class BetInfoRepository {
     val matchOddList: LiveData<MutableList<MatchOdd>>
         get() = _matchOddList
 
-    private val _newMatchOddList = MutableLiveData<MutableList<MatchOdd>>()
-    val newMatchOddList: LiveData<MutableList<MatchOdd>>
-        get() = _newMatchOddList
-
     private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
@@ -45,10 +42,20 @@ class BetInfoRepository {
         get() = _removeItem
 
     var playQuotaComData: PlayQuotaComData? = null
+        set(value) {
+            field = value
+            field?.let {
+                notifyBetInfoChanged()
+            }
+        }
 
 
-    fun addInBetInfoParlay(sendList: MutableList<MatchOdd>) {
+    fun addInBetInfoParlay() {
         val betList = _betInfoList.value ?: mutableListOf()
+
+        if (betList.size == 0) {
+            return
+        }
 
         val sportType = when (betList[0].matchOdd.gameType) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
@@ -60,15 +67,39 @@ class BetInfoRepository {
         }
 
         sportType?.let {
-            _parlayList.value = getParlayOdd(MatchType.PARLAY, it, sendList).toMutableList()
-            _matchOddList.value = sendList
+            val groupList = groupBetInfoByMatchId()
+
+            _matchOddList.value = groupList
+
+            _parlayList.value = updateParlayOddOrder(
+                getParlayOdd(MatchType.PARLAY, it, groupList).toMutableList()
+            )
+
+            betList.filter { betInfoListData ->
+                _matchOddList.value?.any { matchOdd ->
+                    matchOdd.oddsId == betInfoListData.matchOdd.oddsId
+                } ?: false
+            }
+            _betInfoList.value = betList
         }
     }
 
-    fun updateParlayOddOrder() {
-        //將串起來的數量賠率移至第一項
-        val parlayOddList = _parlayList.value ?: mutableListOf()
+    private fun groupBetInfoByMatchId(): MutableList<MatchOdd> {
+        val betList = _betInfoList.value ?: mutableListOf()
 
+        val groupList = betList.groupBy { data ->
+            betList.find { d ->
+                data.matchOdd.matchId == d.matchOdd.matchId
+            }
+        }
+
+        return groupList.mapNotNull {
+            it.key?.matchOdd
+        }.toMutableList()
+    }
+
+    private fun updateParlayOddOrder(parlayOddList: MutableList<ParlayOdd>): MutableList<ParlayOdd> {
+        //將串起來的數量賠率移至第一項
         val pOdd = parlayOddList.find {
             matchOddList.value?.size.toString() + "C1" == it.parlayType
         }
@@ -79,7 +110,7 @@ class BetInfoRepository {
             parlayOddList.add(0, po)
         }
 
-        _parlayList.value = parlayOddList
+        return parlayOddList
     }
 
     fun getCurrentBetInfoList() {
@@ -104,7 +135,6 @@ class BetInfoRepository {
 
         betList.clear()
         _matchOddList.value?.clear()
-        _newMatchOddList.value?.clear()
         _parlayList.value?.clear()
 
         _betInfoList.postValue(betList)
@@ -286,11 +316,61 @@ class BetInfoRepository {
         val hasChanged = _betInfoList.value?.find {
             it.matchOdd.oddsId == matchOdd.oddsId
         }
-        hasChanged?.oddsHasChanged = true
+        hasChanged?.matchOdd?.oddsHasChanged = true
+        hasChanged?.matchOdd?.oddState = OddState.SAME.state
     }
 
-    //Temp
-    fun updateBetInfoList(newBetList: MutableList<BetInfoListData>) {
-        _betInfoList.postValue(newBetList)
+
+    private fun getSportType(gameType: String): SportType? {
+        return when (gameType) {
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            SportType.TENNIS.code -> SportType.TENNIS
+            else -> null
+        }
+    }
+
+
+    fun notifyBetInfoChanged() {
+        val updateBetInfoList = _betInfoList.value
+
+        if (updateBetInfoList.isNullOrEmpty()) return
+
+        when (_isParlayPage.value) {
+            true -> {
+                val sportType = getSportType(updateBetInfoList[0].matchOdd.gameType)
+                sportType?.let {
+                    matchOddList.value?.let {
+                        _parlayList.value =
+                            getParlayOdd(MatchType.PARLAY, sportType, it).toMutableList()
+                    }
+                }
+            }
+
+            false -> {
+                val newList = mutableListOf<BetInfoListData>()
+                updateBetInfoList.forEach { betInfoListData ->
+                    betInfoListData.matchType?.let { matchType ->
+                        val sportType = getSportType(betInfoListData.matchOdd.gameType)
+                        sportType?.let {
+                            val newBetInfoListData = BetInfoListData(
+                                betInfoListData.matchOdd,
+                                getParlayOdd(
+                                    matchType,
+                                    sportType,
+                                    mutableListOf(betInfoListData.matchOdd)
+                                ).first()
+                            )
+                            newBetInfoListData.matchType = betInfoListData.matchType
+                            newBetInfoListData.input = betInfoListData.input
+                            newList.add(newBetInfoListData)
+                        }
+                    }
+                }
+                _betInfoList.value = newList
+            }
+        }
     }
 }

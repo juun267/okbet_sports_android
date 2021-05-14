@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.v3
+package org.cxct.sportlottery.ui.game.hall
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +12,8 @@ import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 
@@ -36,6 +38,18 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var outrightOddListener: OutrightOddListener? = null
 
+    private val oddStateRefreshListener by lazy {
+        object : OddStateViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(data.indexOf(data.firstOrNull { data ->
+                    if (data is Odd)
+                        data == odd
+                    else false
+                }))
+            }
+        }
+    }
+
     private var data = listOf<Any>()
         set(value) {
             field = value
@@ -52,7 +66,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.SUB_TITLE.ordinal -> SubTitleViewHolder.from(parent)
-            else -> OddViewHolder.from(parent)
+            else -> OddViewHolder.from(parent, oddStateRefreshListener)
         }
     }
 
@@ -72,7 +86,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
-    class OddViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class OddViewHolder private constructor(itemView: View, private val refreshListener: OddStateChangeListener) : OddStateViewHolder(itemView) {
 
         fun bind(
             matchOdd: MatchOdd?,
@@ -101,7 +115,8 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 betStatus = item.status
 
-                oddStatus = item.oddState
+                /*oddStatus = item.oddState*/
+                this@OddViewHolder.setupOddState(this, item)
 
                 odd_outright_text.text = when (oddsType) {
                     OddsType.EU -> {
@@ -119,14 +134,17 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup): OddViewHolder {
+            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): OddViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.itemview_outright_oddv3, parent, false)
 
-                return OddViewHolder(view)
+                return OddViewHolder(view, refreshListener)
             }
         }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = refreshListener
     }
 
     class SubTitleViewHolder private constructor(itemView: View) :
