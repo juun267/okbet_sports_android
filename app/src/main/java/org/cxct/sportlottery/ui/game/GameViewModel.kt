@@ -218,10 +218,6 @@ class GameViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
-    private val _systemDelete = MutableLiveData<Boolean>()
-    val systemDelete: LiveData<Boolean>
-        get() = _systemDelete
-
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
 
@@ -308,7 +304,11 @@ class GameViewModel(
                 listWithOutOutright.add(it.matchOdd.oddsId)
             }
         }
-        if (listWithOutOutright.size > 0) _systemDelete.postValue(true)
+
+        if (listWithOutOutright.size > 0) {
+            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_system_close_incompatible_item)))
+        }
+
         listWithOutOutright.forEach {
             removeBetInfoItem(it)
         }
