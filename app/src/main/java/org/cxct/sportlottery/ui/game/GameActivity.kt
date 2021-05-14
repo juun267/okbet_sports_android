@@ -393,6 +393,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             tv_odds_type.text = getString(it.res)
         })
 
+        viewModel.errorPromptMessage.observe(this, {
+            it.getContentIfNotHandled()
+                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+
+        })
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
