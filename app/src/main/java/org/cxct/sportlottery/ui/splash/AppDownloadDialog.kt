@@ -47,7 +47,7 @@ class AppDownloadDialog(
         }
 
         btn_download.setOnClickListener {
-            if (btn_download.text == context.getString(R.string.update_new))
+            if (btn_download.text == context.getString(R.string.update))
                 doInternalDownload()
             else
                 doUpdate(mFileUrl)
@@ -83,7 +83,7 @@ class AppDownloadDialog(
 
                         override fun onError() {
                             btn_download.isEnabled = true
-                            btn_download.setText(R.string.update_new)
+                            btn_download.setText(R.string.update)
                             block_bottom_bar.visibility = View.VISIBLE
                             block_progress_bar.visibility = View.GONE
                             ToastUtil.showToastInCenter(context, context.getString(R.string.download_fail))

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -37,14 +38,20 @@ class BetDetailAdapter : ListAdapter<MatchOdd, BetDetailAdapter.ItemViewHolder>(
         else holder.binding.divider.visibility = View.VISIBLE
     }
 
-    class ItemViewHolder private constructor(val binding: ItemBetRecordDetailBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder private constructor(val binding: ItemBetRecordDetailBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(data: MatchOdd, oddsType: OddsType) {
             binding.data = data
 
             val odds = getOdds(data, oddsType)
-            binding.tvOdds.text = if (odds > 0) {
+            val oddStr = if (odds > 0)
                 String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
-            } else null
+            else
+                ""
+            binding.tvPlayOdd.text = HtmlCompat.fromHtml(
+                "${data.playName} ${data.spread} <font color=#E44438>${oddStr}</font>",
+                HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }

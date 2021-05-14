@@ -304,9 +304,10 @@
     <string name="updatable">可更新</string>
     <string name="internal_download">内部下载</string>
     <string name="denied_read_memory_card">读取内存卡权限被拒绝</string>
-    <string name="current_versionIs_the_latest_version">当前版本为最新版</string>
+    <string name="current_versionIs_the_latest_version">您的软体是最新的版本</string>
     <string name="external_download">外部下载</string>
-    <string name="update_new">更新</string>
+    <string name="update">更新</string>
+    <string name="update_now">立即更新</string>
     <string name="install">安装</string>
 
     <!--  information center  -->
@@ -337,9 +338,9 @@
     <string name="total_bet_money">总投注额</string>
     <string name="total_bet_money_colon">总投注额：</string>
     <string name="status">状态</string>
-    <string name="status_colon">状&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;态：</string>
-    <string name="rebates">返&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;水：</string>
-    <string name="remarks">备&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;注：</string>
+    <string name="status_colon">状&#12288;&#12288;态：</string>
+    <string name="rebates">返&#12288;&#12288;水：</string>
+    <string name="remarks">备&#12288;&#12288;注：</string>
     <string name="remark_by_mts">因系统审核不成立</string>
     <string name="remark_by_own_source">因机制审核不成立</string>
     <string name="bet_record">投注记录</string>
@@ -368,7 +369,7 @@
     <string name="bet_time">投注时间：</string>
     <string name="bet_time2">投注时间</string>
     <string name="league_name">联赛名称：</string>
-    <string name="game_match">赛&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;事：</string>
+    <string name="game_match">赛&#12288;&#12288;事：</string>
     <string name="play_type">投注玩法：</string>
     <string name="game_odds">盘口赔率：</string>
     <string name="match_names">(主) %s  vs  %s (客)</string>

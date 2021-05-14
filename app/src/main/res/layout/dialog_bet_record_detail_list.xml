@@ -88,18 +88,13 @@
                         android:background="@color/colorWhite"
                         android:paddingVertical="10dp">
 
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintGuide_percent="0.95" />
-
                         <TextView
                             android:id="@+id/text_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
+                            android:gravity="end"
+                            android:minWidth="70dp"
                             android:text="@string/bet_time"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
@@ -108,13 +103,13 @@
 
                         <TextView
                             android:id="@+id/tv_bet_time"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
+                            android:layout_marginHorizontal="5dp"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
                             app:dateTime="@{row.addTime}"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toEndOf="@id/text_view"
                             app:layout_constraintTop_toTopOf="@+id/text_view"
@@ -124,10 +119,12 @@
                             android:id="@+id/text_view2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
                             android:text="@string/order_number_colon"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintStart_toStartOf="@+id/text_view"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
                             app:layout_constraintTop_toBottomOf="@+id/tv_bet_time" />
 
                         <TextView
@@ -137,7 +134,7 @@
                             android:text="@{row.orderNo}"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
                             app:layout_constraintTop_toBottomOf="@+id/tv_bet_time"
@@ -147,20 +144,22 @@
                             android:id="@+id/text_view3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
                             android:text="@string/total_bet_money_colon"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintStart_toStartOf="@+id/text_view"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
                             app:layout_constraintTop_toBottomOf="@+id/tv_order_number" />
 
                         <TextView
                             android:id="@+id/tv_bet_total_money"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="@{TextUtil.formatMoney(row.totalAmount)}"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
                             app:layout_constraintTop_toBottomOf="@+id/tv_order_number"
@@ -171,10 +170,12 @@
                             android:id="@+id/text_view4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
                             android:text="@string/status_colon"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintStart_toStartOf="@+id/text_view"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
                             app:layout_constraintTop_toBottomOf="@+id/tv_bet_total_money" />
 
                         <TextView
@@ -200,7 +201,7 @@
                             android:layout_marginStart="4dp"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
                             app:layout_constraintHorizontal_bias="0"
                             app:layout_constraintStart_toEndOf="@+id/tv_status_money"
                             app:layout_constraintTop_toBottomOf="@+id/tv_bet_total_money"
@@ -212,21 +213,22 @@
                             android:id="@+id/text_view5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
                             android:text="@string/rebates"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
-                            app:layout_constraintStart_toStartOf="@+id/text_view"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
                             app:layout_constraintTop_toBottomOf="@+id/tv_status" />
 
                         <TextView
                             android:id="@+id/tv_rebates"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/text_view5"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline"
-                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
                             app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
                             app:layout_constraintTop_toBottomOf="@+id/text_view4"
                             app:moneyFormat="@{row.rebateAmount}"
@@ -236,22 +238,23 @@
                             android:id="@+id/text_view6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:minWidth="70dp"
                             android:text="@string/remarks"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="@+id/text_view"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view"
                             app:layout_constraintTop_toBottomOf="@+id/text_view5" />
 
                         <TextView
                             android:id="@+id/tv_remarks"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorGray"
                             android:textSize="@dimen/textSize14sp"
                             app:layout_constraintBottom_toBottomOf="@+id/text_view6"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline"
-                            app:layout_constraintHorizontal_bias="0"
+                            app:layout_constraintEnd_toEndOf="@id/tv_bet_time"
                             app:layout_constraintStart_toStartOf="@+id/tv_bet_time"
                             app:layout_constraintTop_toBottomOf="@+id/text_view5"
                             app:text="@{row.cancelledBy.equals(`mts`)?@string/remark_by_mts:row.cancelledBy.equals(`own`)||row.cancelledBy.equals(`source`)?@string/remark_by_own_source:null}"
@@ -272,6 +275,7 @@
                             android:background="@color/colorWhite3"
                             android:gravity="top"
                             android:orientation="horizontal"
+                            android:paddingHorizontal="30dp"
                             android:paddingVertical="8dp"
                             app:layout_constraintTop_toTopOf="parent">
 
@@ -279,7 +283,6 @@
                                 android:id="@+id/text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="30dp"
                                 android:text="@string/bet_item"
                                 android:textColor="@color/colorBlackLight"
                                 android:textSize="@dimen/textSize14sp"
@@ -289,7 +292,6 @@
                                 android:id="@+id/tv_bet_title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="30dp"
                                 android:text="@{row.matchOdds.size() > 1 ? TextUtil.replaceParlayByC(row.parlayType) : row.matchOdds.size() == 1 ? row.matchOdds[0].playCateName:null}"
                                 android:textColor="@color/colorBlackLight"
                                 android:textSize="@dimen/textSize14sp"
