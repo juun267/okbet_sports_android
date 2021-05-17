@@ -49,7 +49,6 @@ class BetInfoRepository {
             }
         }
 
-
     fun addInBetInfoParlay() {
         val betList = _betInfoList.value ?: mutableListOf()
 
@@ -67,35 +66,16 @@ class BetInfoRepository {
         }
 
         sportType?.let {
-            val groupList = groupBetInfoByMatchId()
+            val parlayMatchOddList = betList.map { betInfoListData ->
+                betInfoListData.matchOdd
+            }.toMutableList()
 
-            _matchOddList.value = groupList
+            _matchOddList.value = parlayMatchOddList
 
             _parlayList.value = updateParlayOddOrder(
-                getParlayOdd(MatchType.PARLAY, it, groupList).toMutableList()
+                getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
             )
-
-            betList.filter { betInfoListData ->
-                _matchOddList.value?.any { matchOdd ->
-                    matchOdd.oddsId == betInfoListData.matchOdd.oddsId
-                } ?: false
-            }
-            _betInfoList.value = betList
         }
-    }
-
-    private fun groupBetInfoByMatchId(): MutableList<MatchOdd> {
-        val betList = _betInfoList.value ?: mutableListOf()
-
-        val groupList = betList.groupBy { data ->
-            betList.find { d ->
-                data.matchOdd.matchId == d.matchOdd.matchId
-            }
-        }
-
-        return groupList.mapNotNull {
-            it.key?.matchOdd
-        }.toMutableList()
     }
 
     private fun updateParlayOddOrder(parlayOddList: MutableList<ParlayOdd>): MutableList<ParlayOdd> {
