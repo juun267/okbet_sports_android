@@ -238,6 +238,31 @@ object TimeUtil {
         }
     }
 
+
+    fun getEarlyAllTimeRangeParams(): TimeRangeParams {
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        val startTimeStamp = calendar.timeInMillis
+
+        calendar.add(Calendar.DAY_OF_MONTH, 29)
+        calendar.set(Calendar.HOUR_OF_DAY, 23)
+        calendar.set(Calendar.MINUTE, 59)
+        calendar.set(Calendar.SECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 59)
+        val endTimeStamp = calendar.timeInMillis
+
+        return object : TimeRangeParams {
+            override val startTime: String
+                get() = startTimeStamp.toString()
+            override val endTime: String
+                get() = endTimeStamp.toString()
+        }
+    }
+
     fun getOtherEarlyDateTimeRangeParams(): TimeRangeParams {
         //match type 早盤 串關 其他早盤 第7日00:00:00 ～ 第30日23:59:59
         //date : yyyy-MM-dd
@@ -246,10 +271,10 @@ object TimeUtil {
         c.set(Calendar.MINUTE, 0)
         c.set(Calendar.SECOND, 0)
         c.set(Calendar.MILLISECOND, 0)
-        c.add(Calendar.DAY_OF_MONTH, 8)
+        c.add(Calendar.DAY_OF_MONTH, 7)
         val startTimeStamp = c.timeInMillis
 
-        c.add(Calendar.DAY_OF_MONTH, 22)
+        c.add(Calendar.DAY_OF_MONTH, 23)
         c.set(Calendar.HOUR_OF_DAY, 23)
         c.set(Calendar.MINUTE, 59)
         c.set(Calendar.SECOND, 59)
