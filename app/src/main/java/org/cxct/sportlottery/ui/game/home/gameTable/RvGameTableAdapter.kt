@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home.gameTable
 
+import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -122,6 +123,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var timer: Timer? = null
 
+        @SuppressLint("SetTextI18n")
         fun bindInPlay(data: GameEntity) {
             itemView.apply {
                 tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString() ?: "-"
@@ -153,7 +155,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     line_footer.visibility = View.GONE
                 }
 
-                tv_footer_title.text = String.format(context.getString(R.string.label_all_something_in_play), data.name)
+                tv_footer_title.text = "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_in_play)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
@@ -167,6 +169,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bindToday(data: GameEntity) {
             itemView.apply {
                 tv_score1.text = "–"
@@ -187,7 +190,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     line_footer.visibility = View.GONE
                 }
 
-                tv_footer_title.text = String.format(context.getString(R.string.label_all_something_in_play), data.name)
+
+                tv_footer_title.text = "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_today)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
