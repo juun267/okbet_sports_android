@@ -93,8 +93,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onStart() {
         super.onStart()
 
-        service.subscribeHallChannel(args.sportType.code, CateMenuCode.OUTRIGHT.code, args.eventId)
-
         viewModel.getOutrightOddsList(args.eventId)
         loading()
     }
@@ -122,6 +120,12 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     outright_league_time.text = matchOdd?.startTime ?: ""
 
                     outrightOddAdapter.matchOdd = matchOdd
+
+                    service.subscribeHallChannel(
+                        args.sportType.code,
+                        CateMenuCode.OUTRIGHT.code,
+                        args.eventId
+                    )
                 }
             }
         })
