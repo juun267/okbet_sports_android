@@ -22,8 +22,8 @@
     <string name="error_wx_incompatible_format">微信ID格式错误</string>
 
     <!--notification-->
-    <string name="congratulation_win">恭喜您 注單尾碼:%1$s 中獎:%2$s</string>
-    <string name="warning_cancel">提醒您 注單尾碼:%s 已被取消</string>
+    <string name="congratulation_win">恭喜您 注单尾码:%1$s 中奖:%2$s</string>
+    <string name="warning_cancel">提醒您 注单尾码:%s 已被取消</string>
 
     <!-- Custom alert Dialog -->
     <string name="prompt">提示</string>
@@ -474,6 +474,7 @@
     <string name="error_wx">微信格式或数值错误</string>
     <string name="error_bank_id">银行卡号格式有错误</string>
     <string name="error_hashcode">区块链交易ID格式或数值有错误</string>
+    <string name="error_name">您输入姓名不正确</string>
     <string name="text_money_copy_success">复制成功</string>
 
     <string name="title_currency">协议/币种</string>

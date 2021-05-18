@@ -449,7 +449,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             //微信
             et_wx_id.afterTextChanged { checkWX(it) }
             //認證姓名
-            et_name.afterTextChanged { checkUserName(it) }
+            et_name.afterTextChanged {
+                when (mMoneyPayWay?.rechType) {
+                    MoneyType.BANK_TYPE.code -> {
+                        checkUserName(MoneyType.BANK_TYPE.code, it)
+                    }
+                    MoneyType.CTF_TYPE.code -> {
+                        checkUserName(MoneyType.CTF_TYPE.code, it)
+                    }
+                    MoneyType.ALI_TYPE.code -> {
+                        checkUserName(MoneyType.ALI_TYPE.code, it)
+                    }
+                }
+            }
             //認證銀行卡號
             et_bank_account.afterTextChanged { checkBankID(it) }
             //暱稱
@@ -464,7 +476,19 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             //微信
             setupEditTextFocusEvent(et_wx_id) { checkWX(it) }
             //認證姓名
-            setupEditTextFocusEvent(et_name) { checkUserName(it) }
+            setupEditTextFocusEvent(et_name) {
+                when (mMoneyPayWay?.rechType) {
+                    MoneyType.BANK_TYPE.code -> {
+                        checkUserName(MoneyType.BANK_TYPE.code, it)
+                    }
+                    MoneyType.CTF_TYPE.code -> {
+                        checkUserName(MoneyType.CTF_TYPE.code, it)
+                    }
+                    MoneyType.ALI_TYPE.code -> {
+                        checkUserName(MoneyType.ALI_TYPE.code, it)
+                    }
+                }
+            }
             //認證銀行卡號
             setupEditTextFocusEvent(et_bank_account) { checkBankID(it) }
             //暱稱

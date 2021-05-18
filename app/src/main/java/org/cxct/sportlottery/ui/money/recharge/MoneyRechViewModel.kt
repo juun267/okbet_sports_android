@@ -268,7 +268,7 @@ class MoneyRechViewModel(
     private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
         when (rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
-                checkUserName(moneyAddRequest.payerName)
+                checkUserName(MoneyType.BANK_TYPE.code,moneyAddRequest.payerName)
                 checkBankID(moneyAddRequest.payer ?: "")
             }
             MoneyType.WX_TYPE.code -> {
@@ -276,7 +276,7 @@ class MoneyRechViewModel(
             }
             MoneyType.ALI_TYPE.code -> {
                 checkNickName(moneyAddRequest.payerName)
-                checkUserName(moneyAddRequest.payerInfo ?: "")
+                checkUserName(MoneyType.ALI_TYPE.code,moneyAddRequest.payerInfo ?: "")
             }
             MoneyType.CRYPTO_TYPE.code ->{
                 checkHashCode(moneyAddRequest.txHashCode ?: "")
@@ -387,13 +387,16 @@ class MoneyRechViewModel(
     }
 
     //姓名認證
-    fun checkUserName(userName: String) {
+    fun checkUserName(moneyType: String, userName: String) {
         _nameErrorMsg.value = when {
             userName.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
             !VerifyConstUtil.verifyFullName(userName) -> {
-                androidContext.getString(R.string.error_incompatible_format)
+                when (moneyType) {
+                    MoneyType.ALI_TYPE.code -> androidContext.getString(R.string.error_create_name)
+                    else -> androidContext.getString(R.string.error_name)
+                }
             }
             else -> {
                 ""
@@ -410,7 +413,7 @@ class MoneyRechViewModel(
             !VerifyConstUtil.verifyNickname(
                 userName
             ) -> {
-                androidContext.getString(R.string.error_incompatible_format)
+                androidContext.getString(R.string.error_nickname)
             }
             else -> {
                 ""

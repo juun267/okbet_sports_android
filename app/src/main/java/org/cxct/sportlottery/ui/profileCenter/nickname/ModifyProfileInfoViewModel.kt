@@ -178,7 +178,7 @@ class ModifyProfileInfoViewModel(
     private fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
             fullName.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName) -> context.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyFullName(fullName) -> context.getString(R.string.error_create_name)
             else -> ""
         }
     }
