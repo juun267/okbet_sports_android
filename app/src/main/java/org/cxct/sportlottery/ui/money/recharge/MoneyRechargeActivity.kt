@@ -314,6 +314,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     private fun initRecyclerView() {
         bankTypeAdapter = MoneyBankTypeAdapter(MoneyBankTypeAdapter.ItemClickListener {
             switchFragment(getPayFragment(it), it.rechType)
+            this@MoneyRechargeActivity.currentFocus?.clearFocus()
             viewModel.clearnRechargeStatus()
         })
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)
