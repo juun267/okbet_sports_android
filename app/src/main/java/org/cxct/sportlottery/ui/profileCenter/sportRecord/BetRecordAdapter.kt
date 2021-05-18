@@ -33,19 +33,10 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
 
     fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
         adapterScope.launch {
-            val items = when (list) {
-                null -> listOf(DataItem.NoData)
-                else -> {
-                    when {
-                        list.isEmpty() -> listOf(DataItem.NoData)
-                        isLastPage -> {
-                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                        }
-                        else -> {
-                            list.map { DataItem.Item(it) }
-                        }
-                    }
-                }
+            val items = when {
+                list.isNullOrEmpty() -> listOf(DataItem.NoData)
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                else -> list.map { DataItem.Item(it) }
             }
 
             withContext(Dispatchers.Main) { //update in main ui thread
