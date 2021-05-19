@@ -21,7 +21,7 @@
             android:id="@+id/tv_game_type_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/select_bank_card"
+            android:text="@string/select_bank"
             android:textColor="@color/textColorDark"
             android:textSize="@dimen/textSize16sp"
             app:layout_constraintBottom_toBottomOf="parent"
