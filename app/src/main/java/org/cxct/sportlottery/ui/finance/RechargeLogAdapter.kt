@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.util.Event
 
 class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -79,7 +80,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             itemView.rech_log_state.text = item.rechState
             itemView.setOnClickListener {
-                rechargeLogListener?.onClick(item)
+                rechargeLogListener?.onClick(Event(item))
             }
 
             setupStateTextColor(item)
@@ -148,6 +149,6 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class RechargeLogListener(val clickListener: (row: Row) -> Unit) {
-    fun onClick(row: Row) = clickListener(row)
+class RechargeLogListener(val clickListener: (row: Event<Row>) -> Unit) {
+    fun onClick(row: Event<Row>) = clickListener(row)
 }

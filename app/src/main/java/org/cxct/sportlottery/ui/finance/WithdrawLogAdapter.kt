@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.list.Row
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
+import org.cxct.sportlottery.util.Event
 
 class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -73,7 +74,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             itemView.setOnClickListener {
-                withdrawLogListener?.onClick(item)
+                withdrawLogListener?.onClick(Event(item))
             }
 
             setupStateTextColor(item)
@@ -120,6 +121,6 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class WithdrawLogListener(val clickListener: (row: Row) -> Unit) {
-    fun onClick(row: Row) = clickListener(row)
+class WithdrawLogListener(val clickListener: (row: Event<Row>) -> Unit) {
+    fun onClick(row: Event<Row>) = clickListener(row)
 }

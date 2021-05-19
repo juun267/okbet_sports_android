@@ -130,12 +130,12 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             }
         })
 
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, {
-
-            if (logDetailDialog.dialog?.isShowing != true) {
-                logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                if (logDetailDialog.dialog?.isShowing != true) {
+                    logDetailDialog.show(parentFragmentManager, RechargeLogFragment::class.java.simpleName)
+                }
             }
-
         })
 
         viewModel.isFinalPage.observe(this.viewLifecycleOwner, {
