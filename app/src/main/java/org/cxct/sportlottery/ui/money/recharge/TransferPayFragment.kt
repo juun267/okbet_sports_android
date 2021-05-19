@@ -324,9 +324,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
         //地址QR code
         if (selectRechCfgs?.qrCode.isNullOrEmpty()) {
-            ll_qr_code.visibility = View.GONE
+            iv_address.visibility = View.GONE
         } else {
-            ll_qr_code.visibility = View.VISIBLE
+            iv_address.visibility = View.VISIBLE
             Glide.with(this).load(selectRechCfgs?.qrCode).into(iv_address)
         }
 
