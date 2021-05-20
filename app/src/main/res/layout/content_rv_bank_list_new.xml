@@ -29,7 +29,6 @@
             android:layout_height="36dp"
             android:layout_marginTop="26dp"
             android:src="@drawable/ic_add_credit_card"
-            app:layout_constraintBottom_toTopOf="@+id/tv_add_card"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
