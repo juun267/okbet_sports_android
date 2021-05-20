@@ -52,7 +52,6 @@ class LeagueAdapter(private val matchType: MatchType) :
 
     var leagueOddListener: LeagueOddListener? = null
 
-    var itemExpandListener: ItemExpandListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when {
@@ -89,7 +88,6 @@ class LeagueAdapter(private val matchType: MatchType) :
                     sportType,
                     playType,
                     leagueOddListener,
-                    itemExpandListener,
                     oddsType
                 )
             }
@@ -125,14 +123,13 @@ class LeagueAdapter(private val matchType: MatchType) :
             sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
-            itemExpandListener: ItemExpandListener?,
             oddsType: OddsType
         ) {
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
             setupLeagueOddList(item, sportType, playType, leagueOddListener, oddsType)
-            setupLeagueOddExpand(item, matchType, sportType, itemExpandListener)
+            setupLeagueOddExpand(item, matchType, sportType)
         }
 
         private fun setupLeagueOddList(
@@ -163,21 +160,16 @@ class LeagueAdapter(private val matchType: MatchType) :
             item: LeagueOdd,
             matchType: MatchType,
             sportType: SportType?,
-            itemExpandListener: ItemExpandListener?
         ) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
             updateTimer(matchType, sportType)
             updateArrowExpand()
-
-            itemExpandListener?.onItemExpand(item)
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_expand.setExpanded(item.isExpand, true)
                 updateTimer(matchType, sportType)
                 updateArrowExpand()
-
-                itemExpandListener?.onItemExpand(item)
             }
         }
 
@@ -220,8 +212,4 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
         }
     }
-}
-
-class ItemExpandListener(val expandListener: (leagueOdd: LeagueOdd) -> Unit) {
-    fun onItemExpand(leagueOdd: LeagueOdd) = expandListener(leagueOdd)
 }

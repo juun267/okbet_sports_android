@@ -61,30 +61,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     addOddsDialog(matchOdd, odd, playCateName, playName)
                 }
             )
-
-            itemExpandListener = ItemExpandListener {
-                when (it.isExpand) {
-                    true -> {
-                        it.matchOdds.forEach { matchOdd ->
-                            service.subscribeHallChannel(
-                                args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-
-                    false -> {
-                        it.matchOdds.forEach { matchOdd ->
-                            service.unsubscribeHallChannel(
-                                args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -162,6 +138,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         adapter = leagueAdapter.apply {
                             data = leagueOdds
                             sportType = args.sportType
+                        }
+                    }
+
+                    leagueOdds.forEach { leagueOdd ->
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                args.sportType.code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
                         }
                     }
                 }
