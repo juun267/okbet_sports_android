@@ -82,22 +82,28 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(
-                matchType,
-                item,
-                leagueOddListener,
-                isTimerEnable,
-                oddsType,
-                sportType
-            )
-            is ViewHolder1x2 -> holder.bind(
-                matchType,
-                item,
-                leagueOddListener,
-                isTimerEnable,
-                oddsType,
-                sportType
-            )
+            is ViewHolderHdpOu -> {
+                holder.stopTimer()
+                holder.bind(
+                    matchType,
+                    item,
+                    leagueOddListener,
+                    isTimerEnable,
+                    oddsType,
+                    sportType
+                )
+            }
+            is ViewHolder1x2 -> {
+                holder.stopTimer()
+                holder.bind(
+                    matchType,
+                    item,
+                    leagueOddListener,
+                    isTimerEnable,
+                    oddsType,
+                    sportType
+                )
+            }
         }
     }
 
