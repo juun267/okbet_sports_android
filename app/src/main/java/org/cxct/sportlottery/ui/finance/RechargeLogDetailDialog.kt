@@ -20,7 +20,7 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.dialog_log_recharge_detail, container, false).apply {
             setupConfirmButton(this)
@@ -36,24 +36,23 @@ class RechargeLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, {
-            log_detail_trans_num.text = it.orderNo
-            log_detail_time.text = it.rechDateAndTime ?: ""
-            log_detail_type.text = it.rechTypeDisplay ?: ""
-            log_detail_status.text = it.rechState ?: ""
-            log_detail_amount.text = it.displayMoney ?: ""
-            log_detail_reason.text = it.reason ?: ""
+        viewModel.rechargeLogDetail.observe(this.viewLifecycleOwner, { event ->
+            event.peekContent().let {
+                log_detail_trans_num.text = it.orderNo
+                log_detail_time.text = it.rechDateAndTime ?: ""
+                log_detail_type.text = it.rechTypeDisplay ?: ""
+                log_detail_status.text = it.rechState ?: ""
+                log_detail_amount.text = getString(R.string.finance_rmb, it.displayMoney)
+                log_detail_reason.text = it.reason ?: ""
 
+                (it.rebateMoney ?: 0.0).let { nonNullDisplayFee ->
+                    log_detail_rebate.text = getString(R.string.finance_rmb, TextUtil.format(abs(nonNullDisplayFee)))
+                    log_detail_rebate_subtitle.text = if (nonNullDisplayFee > 0.0) getString(R.string.log_detail_rebate_money)
+                    else getString(R.string.log_detail_handle_fee)
 
-            (it.rebateMoney?:0.0).let { nonNullDisplayFee ->
-                log_detail_rebate.text = getString(R.string.finance_rmb, TextUtil.format(abs(nonNullDisplayFee)))
-                log_detail_rebate_subtitle.text = if (nonNullDisplayFee > 0.0)
-                    getString(R.string.log_detail_rebate_money)
-                else
-                    getString(R.string.log_detail_handle_fee)
+                }
 
             }
-
         })
     }
 }

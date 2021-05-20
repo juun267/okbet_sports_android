@@ -31,6 +31,8 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
     private var mTextColor = R.color.gray6
+    private var isShowDivider: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +67,8 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
 
         tv_message.setTextColor(ContextCompat.getColor(context, mTextColor))
 
+        divider2.visibility = if (isShowDivider) View.VISIBLE else View.GONE
+
         btn_positive.setOnClickListener(mPositiveClickListener)
         btn_negative.setOnClickListener(mNegativeClickListener)
     }
@@ -75,6 +79,10 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     ////
     fun setTitle(title: String?) {
         mTitle = title
+    }
+
+    fun setShowDivider(show: Boolean?) {
+        isShowDivider = show?:false
     }
 
     fun setMessage(message: String?) {

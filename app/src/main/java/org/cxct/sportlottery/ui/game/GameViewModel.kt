@@ -38,6 +38,7 @@ import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
@@ -46,7 +47,6 @@ import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -218,10 +218,6 @@ class GameViewModel(
     val userMoney: LiveData<Double?> //使用者餘額
         get() = _userMoney
 
-    private val _systemDelete = MutableLiveData<Boolean>()
-    val systemDelete: LiveData<Boolean>
-        get() = _systemDelete
-
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
 
@@ -294,25 +290,32 @@ class GameViewModel(
 
     fun isParlayPage(boolean: Boolean) {
         betInfoRepository._isParlayPage.postValue(boolean)
+
         if (boolean) {
+            val betList = betInfoList.value ?: mutableListOf()
+
             //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
-            cleanOutrightBetOrder()
-            getBetInfoListForParlay()
+            val parlayList = betList.cleanOutrightBetOrder().groupBetInfoByMatchId()
+
+            if (betList.size != parlayList.size) {
+                betList.minus(parlayList.toHashSet()).forEach {
+                    removeBetInfoItem(it.matchOdd.oddsId)
+                }
+
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_system_close_incompatible_item)))
+            }
         }
     }
 
-    private fun cleanOutrightBetOrder() {
-        val listWithOutOutright = mutableListOf<String>()
-        betInfoRepository.betInfoList.value?.forEach {
-            if (it.matchType == MatchType.OUTRIGHT) {
-                listWithOutOutright.add(it.matchOdd.oddsId)
-            }
-        }
-        if (listWithOutOutright.size > 0) _systemDelete.postValue(true)
-        listWithOutOutright.forEach {
-            removeBetInfoItem(it)
-        }
-    }
+    private fun MutableList<BetInfoListData>.cleanOutrightBetOrder() = this.filter {
+        it.matchType != MatchType.OUTRIGHT
+    }.toMutableList()
+
+    private fun MutableList<BetInfoListData>.groupBetInfoByMatchId() = this.groupBy { data ->
+        this.find { d -> data.matchOdd.matchId == d.matchOdd.matchId }
+    }.mapNotNull {
+        it.key
+    }.toMutableList()
 
     //獲取系統公告
     fun getAnnouncement() {
@@ -807,7 +810,7 @@ class GameViewModel(
                 dateRow.add(
                     Date(
                         androidContext.getString(R.string.date_row_all),
-                        TimeUtil.getParlayAllTimeRangeParams()
+                        TimeUtil.getEarlyAllTimeRangeParams()
                     )
                 )
                 TimeUtil.getFutureDate(6).forEach {
@@ -1063,14 +1066,18 @@ class GameViewModel(
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType,
-                sportType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            if (matchType != MatchType.PARLAY || isSameSportTypeAdd(sportType)) {
+                betInfoRepository.addInBetInfo(
+                    matchType,
+                    sportType,
+                    playCateName,
+                    playName,
+                    matchOdd,
+                    odd
+                )
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_different_game_type)))
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
@@ -1108,12 +1115,22 @@ class GameViewModel(
         val betItem = betInfoRepository.betInfoList.value?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType, sportType, playCateName, matchOdd, odd
-            )
+            if (matchType != MatchType.PARLAY || isSameSportTypeAdd(sportType)) {
+                betInfoRepository.addInBetInfo(
+                    matchType, sportType, playCateName, matchOdd, odd
+                )
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_different_game_type)))
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
+    }
+
+    private fun isSameSportTypeAdd(sportType: SportType): Boolean {
+        val betList = betInfoList.value ?: mutableListOf()
+        val isSameSportTypeExist = (betList.firstOrNull()?.matchOdd?.gameType == sportType.code)
+        return betList.isEmpty() || isSameSportTypeExist
     }
 
     private fun updateItem(

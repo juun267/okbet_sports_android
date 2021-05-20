@@ -96,6 +96,8 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
         }
 
         date_search_bar.setOnClickSearchListener {
+            //每次查詢，清除資料重載，list 才會置頂
+            rvAdapter.addFooterAndSubmitList(null, true)
             viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString(), status_selector.selectedTag)
         }
 

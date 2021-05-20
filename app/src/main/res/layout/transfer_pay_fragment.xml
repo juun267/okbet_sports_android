@@ -232,33 +232,17 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/ll_qr_code"
+                    <ImageView
+                        android:id="@+id/iv_address"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:minHeight="40dp"
-                        android:orientation="horizontal">
-
-                        <Space
-                            android:layout_width="65dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"/>
-
-                        <ImageView
-                            android:id="@+id/iv_address"
-                            android:layout_width="110dp"
-                            android:layout_height="110dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="30dp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_weight="1"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitStart"
-                            tools:src="@drawable/ic_close_gray_blue" />
-
-                    </LinearLayout>
+                        android:layout_height="110dp"
+                        android:maxHeight="110dp"
+                        android:maxWidth="110dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter"
+                        tools:src="@drawable/ic_close_gray_blue" />
 
                 </LinearLayout>
 

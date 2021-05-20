@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home.gameTable
 
+import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -122,6 +123,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var timer: Timer? = null
 
+        @SuppressLint("SetTextI18n")
         fun bindInPlay(data: GameEntity) {
             itemView.apply {
                 tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString() ?: "-"
@@ -130,7 +132,13 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 team1.text = data.match?.homeName
                 team2.text = data.match?.awayName
 
-                tv_session.text = data.matchStatusCO?.statusName
+                val statusName = data.matchStatusCO?.statusName
+                if (statusName.isNullOrEmpty()) {
+                    tv_session.visibility = View.GONE
+                } else {
+                    tv_session.visibility = View.VISIBLE
+                    tv_session.text = statusName
+                }
 
                 when (data.code) {
                     "FT" -> { //足球
@@ -141,6 +149,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         showTime(data.matchClockCO?.remainingTimeInPeriod)
                         startBKTimer(data.matchClockCO)
                     }
+                    else -> showTime(null)
                 }
 
                 if (data.itemType == ItemType.FOOTER) {
@@ -153,7 +162,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     line_footer.visibility = View.GONE
                 }
 
-                tv_footer_title.text = String.format(context.getString(R.string.label_all_something_in_play), data.name)
+                tv_footer_title.text = "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_in_play)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
@@ -167,6 +176,7 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bindToday(data: GameEntity) {
             itemView.apply {
                 tv_score1.text = "–"
@@ -187,7 +197,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     line_footer.visibility = View.GONE
                 }
 
-                tv_footer_title.text = String.format(context.getString(R.string.label_all_something_in_play), data.name)
+
+                tv_footer_title.text = "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_today)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
@@ -203,22 +214,24 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private fun showStartTime(startTime: Long?) {
             itemView.apply {
-                startTime?.let {
-                    tv_session.text = TimeUtil.timeFormat(it, "MM/dd")
-                    tv_time.text = TimeUtil.timeFormat(it, "HH:mm")
+                if (startTime == null) {
+                    tv_session.visibility = View.GONE
+                    tv_time.visibility = View.GONE
+                } else {
+                    tv_session.visibility = View.VISIBLE
+                    tv_time.visibility = View.VISIBLE
+                    tv_session.text = TimeUtil.timeFormat(startTime, "MM/dd")
+                    tv_time.text = TimeUtil.timeFormat(startTime, "HH:mm")
                 }
             }
         }
 
         private fun showTime(sec: Int?) {
-            itemView.tv_time.apply {
-                text = if (sec == null) {
-                    visibility = View.GONE
-                    null
-                } else {
-                    visibility = View.VISIBLE
-                    TimeUtil.timeFormat(sec * 1000L, "mm:ss")
-                }
+            if (sec == null) {
+                itemView.tv_time.visibility = View.GONE
+            } else {
+                itemView.tv_time.visibility = View.VISIBLE
+                itemView.tv_time.text = TimeUtil.timeFormat(sec * 1000L, "mm:ss")
             }
         }
 

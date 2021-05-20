@@ -91,7 +91,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             mBankListAdapter.transferAddSwitch = it
             tv_no_bank_card.text = it.run {
                 when {
-                    cryptoTransfer && bankTransfer -> getString(R.string.add_credit_or_virtual)
+                    cryptoTransfer && bankTransfer -> getString(R.string.bind_credit_card_not_yet)
                     cryptoTransfer -> getString(R.string.add_crypto_card)
                     bankTransfer -> getString(R.string.add_credit_card)
                     else -> getString(R.string.add_new)

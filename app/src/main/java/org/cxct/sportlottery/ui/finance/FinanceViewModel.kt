@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.ui.finance.df.UWType
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -50,10 +51,10 @@ class FinanceViewModel(
     val recordType: LiveData<String>
         get() = _recordType
 
-    val withdrawLogDetail: LiveData<org.cxct.sportlottery.network.withdraw.list.Row>
+    val withdrawLogDetail: LiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>
         get() = _withdrawLogDetail
 
-    val rechargeLogDetail: LiveData<Row>
+    val rechargeLogDetail: LiveData<Event<Row>>
         get() = _rechargeLogDetail
 
     val isFinalPage: LiveData<Boolean>
@@ -67,8 +68,8 @@ class FinanceViewModel(
     private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
 
-    private val _withdrawLogDetail = MutableLiveData<org.cxct.sportlottery.network.withdraw.list.Row>()
-    private val _rechargeLogDetail = MutableLiveData<Row>()
+    private val _withdrawLogDetail = MutableLiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>()
+    private val _rechargeLogDetail = MutableLiveData<Event<Row>>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
@@ -259,11 +260,11 @@ class FinanceViewModel(
         }
     }
 
-    fun setLogDetail(row: Row) {
+    fun setLogDetail(row: Event<Row>) {
         _rechargeLogDetail.postValue(row)
     }
 
-    fun setWithdrawLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
+    fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
         _withdrawLogDetail.postValue(row)
     }
 }
