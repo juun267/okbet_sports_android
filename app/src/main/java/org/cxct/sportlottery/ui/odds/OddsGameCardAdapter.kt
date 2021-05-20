@@ -97,7 +97,6 @@ class OddsGameCardAdapter(
         fun stopTimer() {
             timer?.cancel()
         }
-
         private fun setTimer(position: Int, matchClockCO: MatchClockCO?) {
             mTimerMap[position]?.cancel()
             mTimerMap[position] = null
@@ -148,14 +147,28 @@ class OddsGameCardAdapter(
                             }
                         }, 1000L, 1000L)
                     }
-                    else -> {
-
-                    }
+                    else -> {}
                 }
                 mTimerMap[adapterPosition] = timer
-
             } else {
-                itemView.txv_time.text = ""
+                when (matchClockCO?.gameType) {
+                    "BK" -> {
+                        if (matchClockCO.remainingTimeInPeriod == null) {
+                            itemView.txv_time.text = null
+                        } else {
+                            itemView.txv_time.text = TimeUtil.timeFormat(
+                                matchClockCO.remainingTimeInPeriod?.times(1000L),
+                                "mm:ss"
+                            )
+                        }
+                    }
+                    "FT" -> {
+                        itemView.txv_time.text =
+                            TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
+                    }
+                    else -> {}
+                }
+                mTimerMap[adapterPosition]?.cancel()
             }
         }
 
