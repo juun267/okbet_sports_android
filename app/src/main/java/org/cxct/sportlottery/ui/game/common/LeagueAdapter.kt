@@ -149,7 +149,6 @@ class LeagueAdapter(private val matchType: MatchType) :
 
                     this.playType = playType
                     this.sportType = sportType
-                    this.isTimerDecrease = (sportType == SportType.BASKETBALL)
                     this.leagueOddListener = leagueOddListener
                     this.oddsType = oddsType
                 }
