@@ -22,7 +22,8 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.hall.*
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
 

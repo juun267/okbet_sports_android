@@ -27,6 +27,8 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.OutrightCountryAdapter
 import org.cxct.sportlottery.ui.game.widget.GameFilterRow
