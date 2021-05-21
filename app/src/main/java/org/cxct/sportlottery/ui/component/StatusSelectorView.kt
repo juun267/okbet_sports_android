@@ -276,7 +276,7 @@ class StatusSheetAdapter(private val checkedListener: ItemCheckedListener) : Rec
             itemView.apply {
                 checkbox.isChecked = data.isChecked
                 checkbox.text = data.showName
-                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.colorWhite6) else Color.WHITE)
+                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.colorWhite6) else ContextCompat.getColor(checkbox.context, R.color.colorWhite))
             }
         }
 
