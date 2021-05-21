@@ -55,8 +55,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var sport = ""
 
-    private var curHomeScore = 0
-    private var curAwayScore = 0
+    private var curHomeScore: Int? = null
+    private var curAwayScore: Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,15 +137,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
 
-            it?.matchStatusCO?.let { ms ->
-                if (ms.matchId == this.matchId) {
-                    ms.homeScore?.let { h ->
-                        ms.awayScore?.let { a ->
-                            curHomeScore = h
-                            curAwayScore = a
-                        }
-                    }
-                }
+            it?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
+                curHomeScore = homeScore
+                curAwayScore = awayScore
             }
         })
 

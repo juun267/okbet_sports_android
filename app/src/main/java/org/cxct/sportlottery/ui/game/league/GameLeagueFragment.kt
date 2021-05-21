@@ -59,6 +59,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 },
                 { matchOdd, odd, playCateName, playName ->
                     addOddsDialog(matchOdd, odd, playCateName, playName)
+                    hideKeyboard()
                 }
             )
         }
