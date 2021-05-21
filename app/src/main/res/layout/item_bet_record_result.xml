@@ -157,7 +157,7 @@
                 app:betStatus="@{row.status}"
                 app:betStatusMoney="@{row.win}"
                 tools:text="+1,060.00"
-                tools:textColor="@color/green" />
+                tools:textColor="@color/colorGreen" />
 
             <TextView
                 android:id="@+id/tv_bet_status2"

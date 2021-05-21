@@ -104,11 +104,11 @@ class WithdrawPassWordDialog(context: Context, private val listener: WithdrawPas
         val showBackground: Drawable?
         val showColor: Int
         if (!isError) {
-            showBackground = ContextCompat.getDrawable(context, R.color.main)
-            showColor = ContextCompat.getColor(context, R.color.main)
+            showBackground = ContextCompat.getDrawable(context, R.color.colorSilver)
+            showColor = ContextCompat.getColor(context, R.color.colorSilver)
         } else {
-            showBackground = ContextCompat.getDrawable(context, R.color.orangeRed)
-            showColor = ContextCompat.getColor(context, R.color.orangeRed)
+            showBackground = ContextCompat.getDrawable(context, R.color.colorRed)
+            showColor = ContextCompat.getColor(context, R.color.colorRed)
         }
         cv_frame.setCardBackgroundColor(showColor)
         line1.background = showBackground

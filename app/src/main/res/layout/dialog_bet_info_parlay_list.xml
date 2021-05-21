@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="120dp"
-                app:cardBackgroundColor="@color/light_gray"
+                app:cardBackgroundColor="@color/colorWhite"
                 app:cardCornerRadius="10dp">
 
                 <LinearLayout
@@ -149,7 +149,7 @@
                                         <View
                                             android:layout_width="match_parent"
                                             android:layout_height="1dp"
-                                            android:background="@color/light_gray" />
+                                            android:background="@color/colorWhite5" />
 
                                         <include
                                             android:id="@+id/bet_info_action"

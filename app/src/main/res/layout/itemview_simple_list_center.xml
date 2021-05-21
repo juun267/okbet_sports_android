@@ -6,6 +6,6 @@
     android:gravity="center"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:textColor="@color/textColorDark"
+    android:textColor="@color/colorBlackLight"
     android:textSize="@dimen/textSize14sp"
     tools:text="@string/recharge_state_all" />

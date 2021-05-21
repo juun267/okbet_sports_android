@@ -30,7 +30,7 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
-    private var mTextColor = R.color.gray6
+    private var mTextColor = R.color.colorBlackLight
     private var isShowDivider: Boolean = false
 
 

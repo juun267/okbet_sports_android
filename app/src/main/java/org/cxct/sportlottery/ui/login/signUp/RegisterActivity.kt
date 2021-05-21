@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.login.signUp
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.toast_top_bet_result.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
@@ -67,7 +67,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         btn_back.setOnClickListener { finish() }
     }
 
-    private fun setupEditTextFocusListener(editText: LoginEditText, doFun: (inputText: String) -> Unit) {
+    private fun setupEditTextFocusListener(
+        editText: LoginEditText,
+        doFun: (inputText: String) -> Unit
+    ) {
         editText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
                 doFun.invoke(editText.getText())
@@ -90,7 +93,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupConfirmPassword() {
-        setupEditTextFocusListener(et_confirm_password) { viewModel.checkConfirmPassword(et_login_password.getText(), it) }
+        setupEditTextFocusListener(et_confirm_password) {
+            viewModel.checkConfirmPassword(
+                et_login_password.getText(),
+                it
+            )
+        }
 
         //20210427 紀錄：當確認密碼下方的 label 都被關時，要動態調整 MarginBottom 高度，為了符合排版要求
         if (sConfigData?.enableFullName != FLAG_OPEN &&
@@ -195,7 +203,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupSmsValidCode() {
-        block_sms_valid_code.visibility = if (sConfigData?.enableSmsValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
+        block_sms_valid_code.visibility =
+            if (sConfigData?.enableSmsValidCode == FLAG_OPEN) View.VISIBLE else View.GONE
         if (sConfigData?.enableSmsValidCode == FLAG_OPEN) {
             //手機驗證碼開啟，必定需要手機號欄位輸入
             et_phone.visibility = View.VISIBLE
@@ -272,7 +281,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     private fun sendSms() {
         val phone = et_phone.getText()
         if (phone.isBlank())
-            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.hint_phone_number)) {}
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.hint_phone_number)
+            ) {}
         else {
             btn_send_sms.isEnabled = false
             viewModel.sendSms(phone)
@@ -317,7 +329,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         viewModel.agreementChecked.observe(this, {
             if (it?.not() == true) {
                 cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorRedDark))
-                cb_agreement.buttonTintList = ContextCompat.getColorStateList(this, R.color.colorRedDark)
+                cb_agreement.buttonTintList =
+                    ContextCompat.getColorStateList(this, R.color.colorRedDark)
             } else {
                 cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
                 cb_agreement.buttonTintList = null
@@ -344,7 +357,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             telegramMsg.observe(this@RegisterActivity, { et_telegram.setError(it) })
             securityCodeMsg.observe(this@RegisterActivity, { et_sms_valid_code.setError(it) })
             validCodeMsg.observe(this@RegisterActivity, { et_verification_code.setError(it) })
-            registerEnable.observe(this@RegisterActivity, { it?.let { btn_register.isEnabled = it } })
+            registerEnable.observe(
+                this@RegisterActivity,
+                { it?.let { btn_register.isEnabled = it } })
         }
 
     }
@@ -366,7 +381,10 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         } else {
             updateValidCode()
             et_verification_code.setVerificationCode(null)
-            ToastUtil.showToastInCenter(this@RegisterActivity, getString(R.string.get_valid_code_fail_point))
+            ToastUtil.showToastInCenter(
+                this@RegisterActivity,
+                getString(R.string.get_valid_code_fail_point)
+            )
         }
     }
 
@@ -393,12 +411,17 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         if (sec-- > 0) {
                             btn_send_sms.isEnabled = false
                             btn_send_sms.text = getString(R.string.send_timer, sec)
-                            btn_send_sms.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.colorPrimaryDark))
+                            btn_send_sms.setTextColor(
+                                ContextCompat.getColor(
+                                    this@RegisterActivity,
+                                    R.color.colorBlue
+                                )
+                            )
                         } else {
                             stopSmeTimer()
                             btn_send_sms.isEnabled = true
                             btn_send_sms.text = getString(R.string.get_verification_code)
-                            btn_send_sms.setTextColor(ContextCompat.getColor(this@RegisterActivity, R.color.white))
+                            btn_send_sms.setTextColor(Color.WHITE)
                         }
                     }
                 }

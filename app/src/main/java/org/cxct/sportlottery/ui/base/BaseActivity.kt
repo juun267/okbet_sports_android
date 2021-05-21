@@ -108,7 +108,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     return@Runnable
 
                 mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    setTextColor(R.color.orangeRed)
+                    setTextColor(R.color.colorRed)
                     setTitle(getString(R.string.prompt))
                     setMessage(errorMessage)
                     setPositiveButtonText(getString(R.string.btn_determine))
@@ -158,7 +158,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                 mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
                     if (isError) {
-                        setTextColor(R.color.orangeRed)
+                        setTextColor(R.color.colorRed)
                     }
                     setShowDivider(isShowDivider)
                     setTitle(title)
