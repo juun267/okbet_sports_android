@@ -123,7 +123,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 binding.tvErrorMessage.visibility = if (inputError) View.VISIBLE else View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (inputError) 0.dp else 11.dp
                 binding.etBet.setTextColor(
-                    if (inputError) ContextCompat.getColor(binding.root.context, R.color.colorRedDark) else ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                    if (inputError) ContextCompat.getColor(binding.root.context, R.color.colorRedDark) else ContextCompat.getColor(binding.root.context, R.color.colorBlackLight)
                 )
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = if (inputError) {
@@ -326,7 +326,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     binding.tvOddChange.visibility = View.VISIBLE
 
                     binding.betInfoDetail.tvOdds.apply {
-                        setBackgroundColor(ContextCompat.getColor(context, R.color.orangeRed))
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
                         setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
                         text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                     }

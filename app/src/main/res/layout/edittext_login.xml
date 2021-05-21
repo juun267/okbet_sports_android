@@ -115,7 +115,7 @@
                 android:id="@+id/iv_verification_code"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/gray1"
+                android:background="@color/colorSilverLight"
                 android:contentDescription="@null"
                 android:scaleType="fitXY"
                 android:visibility="gone" />

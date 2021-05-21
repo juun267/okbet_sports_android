@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="@string/platform_account_money"
         android:textStyle="bold"
-        android:textColor="@color/colorDarkBlack"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize12sp" />
 
     <TextView

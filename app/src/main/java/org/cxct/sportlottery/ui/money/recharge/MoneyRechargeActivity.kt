@@ -145,7 +145,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                     setTitle(resources.getString(R.string.prompt))
                     setMessage(cryptoResult.msg)
                     setNegativeButtonText(null)
-                    setTextColor(R.color.orangeRed)
+                    setTextColor(R.color.colorRed)
                 }.let {
                     customAlertDialog.show()
                 }

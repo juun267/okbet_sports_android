@@ -21,8 +21,8 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                android:gravity="center"
                 android:background="@color/colorWhite"
+                android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -36,8 +36,8 @@
                     android:gravity="center"
                     android:text="@string/title_pay_msg"
                     android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize16sp" />
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:id="@+id/img_close"
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorWhite6"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout"/>
+                app:layout_constraintTop_toBottomOf="@id/linearLayout" />
 
             <LinearLayout
                 android:id="@+id/ll_pay_way"
@@ -68,6 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_pay_way"
+                    android:textColor="@color/colorGrayDark"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -75,6 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="在线支付" />
 
@@ -94,6 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_pay_money"
+                    android:textColor="@color/colorGrayDark"
                     android:textSize="@dimen/textSize14sp" />
 
                 <TextView
@@ -101,6 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize14sp"
                     tools:text="100 RMB" />
 
@@ -110,6 +114,7 @@
                 android:id="@+id/ll_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="@+id/ll_pay_money"
@@ -119,12 +124,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hint_pay1"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/hint_pay2"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize12sp" />
 
             </LinearLayout>
@@ -145,7 +152,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -158,17 +165,17 @@
                         android:id="@+id/tv_view_log"
                         android:layout_width="wrap_content"
                         android:layout_height="44dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorBlueDark"
-                        android:textSize="@dimen/textSize14sp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/btn_look_for" />
+                        android:text="@string/btn_look_for"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
 
                     <View
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:background="@color/light_gray" />
+                        android:background="@color/colorWhite6" />
 
                     <TextView
                         android:id="@+id/tv_service"
@@ -177,9 +184,9 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/btn_service"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorBlueDark"
-                        android:textSize="@dimen/textSize14sp" />
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold" />
 
 
                 </LinearLayout>

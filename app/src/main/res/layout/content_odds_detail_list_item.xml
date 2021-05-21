@@ -23,7 +23,7 @@
         android:letterSpacing="0.1"
         tools:text="进球 : 大小"
         android:textStyle="bold"
-        android:textColor="@color/textColorDark"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize16sp" />
 
 </LinearLayout>
