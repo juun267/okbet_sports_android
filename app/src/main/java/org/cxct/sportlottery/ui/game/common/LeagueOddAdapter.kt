@@ -62,7 +62,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(data.indexOf(data.find { matchOdd -> matchOdd.odds.toList().find { map -> map.second.find { it == odd } != null } != null }))
+                notifyItemChanged(data.indexOf(data.find { matchOdd ->
+                    matchOdd.odds.toList()
+                        .find { map -> map.second.find { it == odd } != null } != null
+                }))
             }
         }
 
@@ -108,7 +111,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
     }
 
-    class ViewHolderHdpOu private constructor(itemView: View, private val refreshListener: OddStateChangeListener) : ViewHolderTimer(itemView) {
+    class ViewHolderHdpOu private constructor(
+        itemView: View,
+        private val refreshListener: OddStateChangeListener
+    ) : ViewHolderTimer(itemView) {
 
         fun bind(
             matchType: MatchType,
@@ -851,7 +857,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             get() = refreshListener
     }
 
-    class ViewHolder1x2 private constructor(itemView: View, private val refreshListener: OddStateChangeListener) : ViewHolderTimer(itemView) {
+    class ViewHolder1x2 private constructor(
+        itemView: View,
+        private val refreshListener: OddStateChangeListener
+    ) : ViewHolderTimer(itemView) {
         fun bind(
             matchType: MatchType,
             item: MatchOdd,
