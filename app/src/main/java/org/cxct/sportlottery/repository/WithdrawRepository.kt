@@ -89,16 +89,10 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao,private val userIn
         return response
     }
 
-    private suspend fun checkNeedUpdatePassWord(): Boolean? {
-        return when (userInfoFlow.firstOrNull()?.updatePayPw) {
-            1 -> true
-            0 -> false
-            else -> {
-                userInfoRepository.getUserInfo()
-                withdrawCheckPermissions()
-                null
-            }
-        }
+    private suspend fun checkNeedUpdatePassWord(): Boolean {
+        if (userInfoFlow.firstOrNull() == null)
+            userInfoRepository.getUserInfo()
+        return userInfoFlow.firstOrNull()?.updatePayPw == 1
     }
 
     //提款判斷權限

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.thirdGame
 
 import android.content.Intent
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_third_game.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
@@ -64,7 +63,7 @@ open class ThirdGameActivity : WebActivity() {
     }
 
     private fun initObserve() {
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this, {
             mUserInfo = it
         })
 
@@ -85,7 +84,7 @@ open class ThirdGameActivity : WebActivity() {
             }
         })
 
-        viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
+        viewModel.needToUpdateWithdrawPassword.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
@@ -98,7 +97,7 @@ open class ThirdGameActivity : WebActivity() {
             }
         })
 
-        viewModel.needToCompleteProfileInfo.observe(this, Observer {
+        viewModel.needToCompleteProfileInfo.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
@@ -110,7 +109,7 @@ open class ThirdGameActivity : WebActivity() {
             }
         })
 
-        viewModel.needToBindBankCard.observe(this, Observer {
+        viewModel.needToBindBankCard.observe(this, {
             it.getContentIfNotHandled()?.let { messageId ->
                 if (messageId != -1) {
                     showPromptDialog(getString(R.string.withdraw_setting), getString(messageId), getString(R.string.go_to_setting),  true) {
@@ -122,7 +121,7 @@ open class ThirdGameActivity : WebActivity() {
             }
         })
 
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
