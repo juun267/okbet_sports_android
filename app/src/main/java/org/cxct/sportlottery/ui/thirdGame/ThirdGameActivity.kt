@@ -36,14 +36,13 @@ open class ThirdGameActivity : WebActivity() {
 
             override fun onCashSave() {
                 if (checkLogin()) {
-                    startActivity(Intent(this@ThirdGameActivity, MoneyRechargeActivity::class.java))
-                    finish()
+                    viewModel.checkRechargeSystem()
                 }
             }
 
             override fun onCashGet() {
                 if (checkLogin()) {
-                    viewModel.withdrawCheckPermissions()
+                    viewModel.checkWithdrawSystem()
                 }
             }
         })
@@ -69,11 +68,29 @@ open class ThirdGameActivity : WebActivity() {
             mUserInfo = it
         })
 
+        viewModel.withdrawSystemOperation.observe(this, {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false) {
+                showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
+            }
+        })
+
+        viewModel.rechargeSystemOperation.observe(this, {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(this, MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
+                }
+            }
+        })
+
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
+                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(
+                            SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -84,7 +101,7 @@ open class ThirdGameActivity : WebActivity() {
         viewModel.needToCompleteProfileInfo.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 } else {
@@ -96,7 +113,7 @@ open class ThirdGameActivity : WebActivity() {
         viewModel.needToBindBankCard.observe(this, Observer {
             it.getContentIfNotHandled()?.let { messageId ->
                 if (messageId != -1) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(messageId)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(messageId), getString(R.string.go_to_setting),  true) {
                         startActivity(Intent(this, BankActivity::class.java))
                     }
                 } else {
@@ -108,8 +125,21 @@ open class ThirdGameActivity : WebActivity() {
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
+                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(
+                            SettingPasswordActivity.PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    }
+                } else if (!b) {
+                    startActivity(Intent(this, BankActivity::class.java))
+                }
+            }
+        })
+
+        viewModel.settingNeedToCompleteProfileInfo.observe(this, {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
+                        startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 } else if (!b) {
                     startActivity(Intent(this, BankActivity::class.java))
