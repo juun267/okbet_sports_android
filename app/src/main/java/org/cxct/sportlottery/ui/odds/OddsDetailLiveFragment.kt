@@ -205,8 +205,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         })
 
-        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            oddsDetailListAdapter?.betInfoList = it
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.peekContent().let {
+                oddsDetailListAdapter?.betInfoList = it
+            }
         })
 
         viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
