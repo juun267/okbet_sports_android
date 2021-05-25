@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.odds
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.SportType
 
 @JsonClass(generateAdapter = true)
 data class MatchInfo(
@@ -23,6 +24,8 @@ data class MatchInfo(
     @Json(name = "status")
     var status: Int
 ) {
+    var sportType: SportType? = null
+
     //Live
     var awayScore: Int? = null //客队分数
     var homeScore: Int? = null //主队分数

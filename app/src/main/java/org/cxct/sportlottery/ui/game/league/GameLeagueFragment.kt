@@ -22,7 +22,8 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.hall.*
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
@@ -137,8 +138,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
-                            data = leagueOdds
-                            sportType = args.sportType
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.sportType = args.sportType
+                            }
                         }
                     }
 
@@ -201,11 +203,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                         matchOdd.matchInfo?.id == matchId
                                     }
 
-                                    updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
-                                    updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
-                                    updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+                                    updateMatchOdd?.let {
+                                        updateMatchOdd.matchInfo?.homeScore =
+                                            matchStatusCO.homeScore
+                                        updateMatchOdd.matchInfo?.awayScore =
+                                            matchStatusCO.awayScore
+                                        updateMatchOdd.matchInfo?.statusName =
+                                            matchStatusCO.statusName
 
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
                                 }
                             }
                         }
@@ -230,17 +237,19 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                         matchOdd.matchInfo?.id == matchId
                                     }
 
-                                    updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
-                                        SportType.FOOTBALL.code -> {
-                                            matchClockCO.matchTime
+                                    updateMatchOdd?.let {
+                                        updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
+                                            SportType.FOOTBALL.code -> {
+                                                matchClockCO.matchTime
+                                            }
+                                            SportType.BASKETBALL.code -> {
+                                                matchClockCO.remainingTimeInPeriod
+                                            }
+                                            else -> null
                                         }
-                                        SportType.BASKETBALL.code -> {
-                                            matchClockCO.remainingTimeInPeriod
-                                        }
-                                        else -> null
-                                    }
 
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
                                 }
                             }
                         }

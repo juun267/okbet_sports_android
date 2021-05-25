@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.hall
+package org.cxct.sportlottery.ui.game.common
 
 import android.os.Handler
 import android.os.Looper
@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
-import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -36,32 +35,26 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     var playType: PlayType = PlayType.OU_HDP
         set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    var sportType: SportType? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var isTimerEnable = false
         set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    var isTimerDecrease = false
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var leagueOddListener: LeagueOddListener? = null
@@ -69,7 +62,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(data.indexOf(data.find { matchOdd -> matchOdd.odds.toList().find { map -> map.second.find { it == odd } != null } != null }))
+                notifyItemChanged(data.indexOf(data.find { matchOdd ->
+                    matchOdd.odds.toList()
+                        .find { map -> map.second.find { it == odd } != null } != null
+                }))
             }
         }
 
@@ -86,23 +82,26 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         val item = data[position]
 
         when (holder) {
-            is ViewHolderHdpOu -> holder.bind(
-                matchType,
-                item,
-                leagueOddListener,
-                isTimerEnable,
-                isTimerDecrease,
-                oddsType,
-                sportType
-            )
-            is ViewHolder1x2 -> holder.bind(
-                matchType,
-                item,
-                leagueOddListener,
-                isTimerEnable,
-                isTimerDecrease,
-                oddsType
-            )
+            is ViewHolderHdpOu -> {
+                holder.stopTimer()
+                holder.bind(
+                    matchType,
+                    item,
+                    leagueOddListener,
+                    isTimerEnable,
+                    oddsType
+                )
+            }
+            is ViewHolder1x2 -> {
+                holder.stopTimer()
+                holder.bind(
+                    matchType,
+                    item,
+                    leagueOddListener,
+                    isTimerEnable,
+                    oddsType
+                )
+            }
         }
     }
 
@@ -116,20 +115,21 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
     }
 
-    class ViewHolderHdpOu private constructor(itemView: View, private val refreshListener: OddStateChangeListener) : ViewHolderTimer(itemView) {
+    class ViewHolderHdpOu private constructor(
+        itemView: View,
+        private val refreshListener: OddStateChangeListener
+    ) : ViewHolderTimer(itemView) {
 
         fun bind(
             matchType: MatchType,
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
-            isTimerDecrease: Boolean,
             oddsType: OddsType,
-            sportType: SportType?
         ) {
-            setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
+            setupMatchInfo(item, matchType, isTimerEnable)
 
-            setupOddButton(item, leagueOddListener, oddsType, sportType)
+            setupOddButton(item, leagueOddListener, oddsType)
 
             setupLiveButton(item, matchType, leagueOddListener)
 
@@ -146,8 +146,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             matchType: MatchType,
             isTimerEnable: Boolean,
-            isTimerDecrease: Boolean
         ) {
+            val sportType = item.matchInfo?.sportType
+
             itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home.text = item.matchInfo?.homeName
@@ -184,7 +185,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                     }
 
-                    updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
+                    updateTimer(
+                        isTimerEnable,
+                        item.leagueTime ?: 0,
+                        sportType == SportType.BASKETBALL
+                    )
                 }
 
                 MatchType.AT_START -> {
@@ -235,8 +240,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType,
-            sportType: SportType?
         ) {
+            val sportType = item.matchInfo?.sportType
+
             val oddListHDP = when (sportType) {
                 SportType.TENNIS -> {
                     item.odds[PlayType.SET_HDP.code]
@@ -856,16 +862,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             get() = refreshListener
     }
 
-    class ViewHolder1x2 private constructor(itemView: View, private val refreshListener: OddStateChangeListener) : ViewHolderTimer(itemView) {
+    class ViewHolder1x2 private constructor(
+        itemView: View,
+        private val refreshListener: OddStateChangeListener
+    ) : ViewHolderTimer(itemView) {
         fun bind(
             matchType: MatchType,
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
-            isTimerDecrease: Boolean,
-            oddsType: OddsType
+            oddsType: OddsType,
         ) {
-            setupMatchInfo(item, matchType, isTimerEnable, isTimerDecrease)
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener, oddsType)
 
@@ -883,9 +891,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupMatchInfo(
             item: MatchOdd,
             matchType: MatchType,
-            isTimerEnable: Boolean,
-            isTimerDecrease: Boolean
+            isTimerEnable: Boolean
         ) {
+            val sportType = item.matchInfo?.sportType
+
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
@@ -922,7 +931,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                     }
 
-                    updateTimer(isTimerEnable, item.leagueTime ?: 0, isTimerDecrease)
+                    updateTimer(
+                        isTimerEnable,
+                        item.leagueTime ?: 0,
+                        sportType == SportType.BASKETBALL
+                    )
                 }
 
                 MatchType.AT_START -> {

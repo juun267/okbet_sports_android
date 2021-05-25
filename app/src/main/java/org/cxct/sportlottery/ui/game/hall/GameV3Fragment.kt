@@ -27,6 +27,8 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.OutrightCountryAdapter
 import org.cxct.sportlottery.ui.game.widget.GameFilterRow
@@ -99,7 +101,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             matchOdd.matchInfo?.id?.let {
                                 navOddsDetail(it)
                                 viewModel.setOddsDetailMoreList(
-                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList() ?: listOf<MatchOdd>()
+                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList()
+                                        ?: listOf<MatchOdd>()
                                 )
                             }
                         }
@@ -325,8 +328,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     game_list.apply {
                         adapter = leagueAdapter.apply {
-                            data = leagueOdds
-                            this.sportType = sportType
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.sportType = sportType
+                            }
                         }
                     }
 
@@ -447,11 +451,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     matchOdd.matchInfo?.id == matchId
                                 }
 
-                                updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
-                                updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
-                                updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+                                updateMatchOdd?.let {
+                                    updateMatchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
+                                    updateMatchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                                    updateMatchOdd.matchInfo?.statusName = matchStatusCO.statusName
 
-                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
                             }
                         }
                     }
@@ -473,17 +479,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     matchOdd.matchInfo?.id == matchId
                                 }
 
-                                updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
-                                    SportType.FOOTBALL.code -> {
-                                        matchClockCO.matchTime
+                                updateMatchOdd?.let {
+                                    updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
+                                        SportType.FOOTBALL.code -> {
+                                            matchClockCO.matchTime
+                                        }
+                                        SportType.BASKETBALL.code -> {
+                                            matchClockCO.remainingTimeInPeriod
+                                        }
+                                        else -> null
                                     }
-                                    SportType.BASKETBALL.code -> {
-                                        matchClockCO.remainingTimeInPeriod
-                                    }
-                                    else -> null
-                                }
 
-                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
                             }
                         }
                     }
