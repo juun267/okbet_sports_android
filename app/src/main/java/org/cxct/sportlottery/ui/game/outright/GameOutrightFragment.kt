@@ -20,8 +20,6 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.hall.OutrightOddAdapter
-import org.cxct.sportlottery.ui.game.hall.OutrightOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
