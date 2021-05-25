@@ -140,10 +140,11 @@ class LeagueAdapter(private val matchType: MatchType) :
                         item.searchMatchOdds
                     } else {
                         item.matchOdds
+                    }.onEach {
+                        it.matchInfo?.sportType = item.sportType
                     }
 
                     this.playType = playType
-                    this.sportType = item.sportType
                     this.leagueOddListener = leagueOddListener
                     this.oddsType = oddsType
                 }

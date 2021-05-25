@@ -39,12 +39,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             notifyDataSetChanged()
         }
 
-    var sportType: SportType? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
@@ -89,8 +83,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     item,
                     leagueOddListener,
                     isTimerEnable,
-                    oddsType,
-                    sportType
+                    oddsType
                 )
             }
             is ViewHolder1x2 -> {
@@ -100,8 +93,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     item,
                     leagueOddListener,
                     isTimerEnable,
-                    oddsType,
-                    sportType
+                    oddsType
                 )
             }
         }
@@ -128,11 +120,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
-            sportType: SportType?
         ) {
-            setupMatchInfo(item, matchType, sportType, isTimerEnable)
+            setupMatchInfo(item, matchType, isTimerEnable)
 
-            setupOddButton(item, leagueOddListener, oddsType, sportType)
+            setupOddButton(item, leagueOddListener, oddsType)
 
             setupLiveButton(item, matchType, leagueOddListener)
 
@@ -148,9 +139,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupMatchInfo(
             item: MatchOdd,
             matchType: MatchType,
-            sportType: SportType?,
             isTimerEnable: Boolean,
         ) {
+            val sportType = item.matchInfo?.sportType
+
             itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home.text = item.matchInfo?.homeName
@@ -242,8 +234,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType,
-            sportType: SportType?
         ) {
+            val sportType = item.matchInfo?.sportType
+
             val oddListHDP = when (sportType) {
                 SportType.TENNIS -> {
                     item.odds[PlayType.SET_HDP.code]
@@ -873,9 +866,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
-            sportType: SportType?
         ) {
-            setupMatchInfo(item, matchType, sportType, isTimerEnable)
+            setupMatchInfo(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener, oddsType)
 
@@ -893,9 +885,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupMatchInfo(
             item: MatchOdd,
             matchType: MatchType,
-            sportType: SportType?,
-            isTimerEnable: Boolean,
+            isTimerEnable: Boolean
         ) {
+            val sportType = item.matchInfo?.sportType
+
             itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
 
             itemView.game_name_home_1x2.text = item.matchInfo?.homeName
