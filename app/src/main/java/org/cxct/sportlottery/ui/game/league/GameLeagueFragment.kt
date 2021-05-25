@@ -138,8 +138,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
-                            data = leagueOdds
-                            sportType = args.sportType
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.sportType = args.sportType
+                            }
                         }
                     }
 
