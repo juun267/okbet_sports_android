@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true"
-        android:drawable="@drawable/home_choose_light"/>
-    <item
-        android:drawable="@drawable/home_not_choose_light">
-    </item>
-</selector>
