@@ -66,11 +66,13 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     private fun initOnclick() {
         ll_start_date.setOnClickListener {
             bottomSheetView.calendar.setDateSelectedType(DateSelectedType.START)
+            bottomSheetView.tv_calendar_title.setText(R.string.start_date)
             calendarBottomSheet.show()
         }
 
         ll_end_date.setOnClickListener {
             bottomSheetView.calendar.setDateSelectedType(DateSelectedType.END)
+            bottomSheetView.tv_calendar_title.setText(R.string.end_date)
             calendarBottomSheet.show()
         }
     }
