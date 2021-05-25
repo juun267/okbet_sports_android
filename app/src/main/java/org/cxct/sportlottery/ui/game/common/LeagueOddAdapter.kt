@@ -35,20 +35,26 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     var playType: PlayType = PlayType.OU_HDP
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var isTimerEnable = false
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var leagueOddListener: LeagueOddListener? = null
