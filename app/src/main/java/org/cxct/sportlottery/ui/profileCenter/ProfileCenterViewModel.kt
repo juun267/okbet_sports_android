@@ -85,13 +85,6 @@ class ProfileCenterViewModel(
         }
     }
 
-    //提款判斷權限
-    fun withdrawCheckPermissions() {
-        viewModelScope.launch {
-            withdrawRepository.withdrawCheckPermissions()
-        }
-    }
-
     //提款設置判斷權限
     fun settingCheckPermissions() {
         viewModelScope.launch {

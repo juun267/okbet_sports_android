@@ -162,7 +162,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     line_footer.visibility = View.GONE
                 }
 
-                tv_footer_title.text = "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_in_play)}"
+                val allStr = if (data.num > 2) context.getString(R.string.label_all) else ""
+                tv_footer_title.text = "$allStr ${data.name} ${context.getString(R.string.home_tab_in_play)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
