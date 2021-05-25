@@ -488,7 +488,6 @@ class GameViewModel(
 
     fun getGameHallList(matchType: MatchType, item: Item) {
         updateSportSelectedState(matchType, item)
-        getGameHallList(matchType, true)
     }
 
     fun getGameHallList(matchType: MatchType, date: Date) {
