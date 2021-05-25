@@ -6,12 +6,13 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_money_submit.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.util.ArithUtil
 
-class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogListener: MoneySubmitDialogListener)  : DialogFragment() {
-    val _payWay = payWay
-    val _payMoney = payMoney
+class MoneySubmitDialog(
+    private val payWay: String,
+    private val payMoney: String,
+    private val dialogListener: MoneySubmitDialogListener
+) : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,15 +32,14 @@ class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogList
         initButton()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
-        txv_pay_way.text = _payWay
-        txv_pay_money.text = "${ArithUtil.toMoneyFormat(_payMoney.toDouble())} ${getString(R.string.currency)}"
+        txv_pay_way.text = payWay
+        txv_pay_money.text =
+            "${ArithUtil.toMoneyFormat(payMoney.toDouble())} ${getString(R.string.currency)}"
     }
 
     fun initButton() {
-        img_close.setOnClickListener {
-            dismiss()
-        }
         tv_view_log.setOnClickListener { dialogListener.viewLog() }
         tv_service.setOnClickListener {
             dialogListener.contactService()
@@ -47,7 +47,10 @@ class MoneySubmitDialog(payWay: String, payMoney: String, private val dialogList
         }
     }
 
-    class MoneySubmitDialogListener(private val viewLogEvent: () -> Unit, private val contactServiceEvent: () -> Unit) {
+    class MoneySubmitDialogListener(
+        private val viewLogEvent: () -> Unit,
+        private val contactServiceEvent: () -> Unit
+    ) {
         fun viewLog() {
             viewLogEvent.invoke()
         }
