@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
+import org.cxct.sportlottery.util.ArithUtil
 
 class NotificationView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
     private val rootLayout: ConstraintLayout by lazy { findViewById(R.id.cl_root) }
@@ -85,7 +86,7 @@ class NotificationView @JvmOverloads constructor(context: Context, attrs: Attrib
                 Status.WIN.code, Status.WIN_HALF.code -> {
                     rootLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlue))
                     ivIcon.setImageResource(R.drawable.ic_good_news)
-                    tvMessage.text = String.format(context.getString(R.string.congratulation_win), tailOrderNo, notification.grossWin?.toString() ?: run { "" })
+                    tvMessage.text = String.format(context.getString(R.string.congratulation_win), tailOrderNo, ArithUtil.toMoneyFormat(notification.grossWin))
                     this.requestLayout()
                 }
                 Status.CANCEL.code -> {
