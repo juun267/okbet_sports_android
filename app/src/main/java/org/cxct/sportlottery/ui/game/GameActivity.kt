@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +46,35 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
+    private val navDestListener by lazy {
+        NavController.OnDestinationChangedListener { _, destination, arguments ->
+            when (destination.id) {
+                R.id.homeFragment -> {
+                    updateSelectTabState(0)
+                }
+
+                R.id.gameV3Fragment -> {
+                    updateSelectTabState(arguments?.get("matchType") as MatchType)
+                }
+
+                R.id.gameLeagueFragment -> {
+                    updateSelectTabState(arguments?.get("matchType") as MatchType)
+                }
+
+                R.id.gameOutrightFragment -> {
+                    updateSelectTabState(MatchType.OUTRIGHT)
+                }
+
+                R.id.oddsDetailFragment -> {
+                    updateSelectTabState(arguments?.get("matchType") as MatchType)
+                }
+
+                R.id.oddsDetailLiveFragment -> {
+                    updateSelectTabState(MatchType.IN_PLAY)
+                }
+            }
+        }
+    }
 
     private var mSportMenuResult: SportMenuResult? = null
     private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
@@ -90,11 +120,16 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
+
+        mNavController.addOnDestinationChangedListener(navDestListener)
+
     }
 
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
+
+        mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
     private fun goToSportGame(sportType: SportType) {
@@ -365,7 +400,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                         tabLayout.getTabAt(5)?.select()
                     }
                     MatchType.AT_START -> {
-                        toAtStart()
+                        viewModel.getSportMenu(MatchType.AT_START)
                     }
                 }
             }
@@ -493,17 +528,36 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun nonSelectTab() {
+    private fun updateSelectTabState(matchType: MatchType?) {
+        when (matchType) {
+            MatchType.IN_PLAY -> updateSelectTabState(1)
+            MatchType.TODAY -> updateSelectTabState(2)
+            MatchType.EARLY -> updateSelectTabState(3)
+            MatchType.PARLAY -> updateSelectTabState(4)
+            MatchType.OUTRIGHT -> updateSelectTabState(5)
+            MatchType.AT_START -> clearSelectTabState()
+            else -> {
+            }
+        }
+    }
+
+    private fun updateSelectTabState(position: Int) {
+        val tab = tabLayout.getTabAt(position)?.customView
+
+        tab?.let {
+            clearSelectTabState()
+
+            it.tv_title?.isSelected = true
+            it.tv_number?.isSelected = true
+        }
+    }
+
+    private fun clearSelectTabState() {
         for (i in 0 until tabLayout.tabCount) {
             val tab = tabLayout.getTabAt(i)?.customView
+
             tab?.tv_title?.isSelected = false
             tab?.tv_number?.isSelected = false
         }
     }
-
-    private fun toAtStart() {
-        nonSelectTab()
-        viewModel.getSportMenu(MatchType.AT_START)
-    }
-
 }
