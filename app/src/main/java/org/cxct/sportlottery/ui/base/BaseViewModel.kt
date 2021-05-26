@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import android.accounts.NetworkErrorException
 import android.content.Context
 import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
@@ -42,45 +43,34 @@ abstract class BaseViewModel(
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<String>()
 
+    //20210526 新增 exceptionHandle 參數，還判斷要不要在 BaseActivity 顯示，exception 錯誤訊息
     @Nullable
     suspend fun <T : BaseResult> doNetwork(
         context: Context,
+        exceptionHandle: Boolean = true,
         apiFun: suspend () -> Response<T>
     ): T? {
-        return when (NetworkUtil.isAvailable(context)) {
-            true -> {
-                doApiFun(context, apiFun)
-            }
-            false -> {
-                doNoConnect(context)
-            }
+        return try {
+            if (!NetworkUtil.isAvailable(context))
+                throw NetworkErrorException()
+            doApiFun(apiFun)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            if (exceptionHandle)
+                doOnException(context, e)
+             null
         }
     }
 
-    private suspend fun <T : BaseResult> doApiFun(
-        context: Context,
-        apiFun: suspend () -> Response<T>
-    ): T? {
+    private suspend fun <T : BaseResult> doApiFun(apiFun: suspend () -> Response<T>): T? {
         val apiResult = viewModelScope.async {
-            try {
-                val response = apiFun()
-                when (response.isSuccessful) {
-                    true -> return@async response.body()
-                    false -> return@async doResponseError(response)
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@async doOnException(context, e)
+            val response = apiFun()
+            when (response.isSuccessful) {
+                true -> return@async response.body()
+                false -> return@async doResponseError(response)
             }
         }
-
         return apiResult.await()
-    }
-
-    private fun <T : BaseResult> doNoConnect(context: Context): T? {
-        _networkUnavailableMsg.postValue(context.getString(R.string.message_network_no_connect))
-        return null
     }
 
     private fun <T : BaseResult> doResponseError(response: Response<T>): T? {
@@ -93,21 +83,16 @@ abstract class BaseViewModel(
         return errorResult
     }
 
-    fun doLogoutCleanUser(finishFunction: () -> Unit) {
-        viewModelScope.launch {
-            betInfoRepository.clear()
-            infoCenterRepository.clear()
-            loginRepository.logout()
-            finishFunction.invoke()
-        }
-    }
-
-    private fun <T : BaseResult> doOnException(context: Context, exception: Exception): T? {
+    private fun doOnException(context: Context, exception: Exception){
         when (exception) {
+            is NetworkErrorException -> doNoConnect(context)
             is SocketTimeoutException -> doOnTimeOutException(context)
             else -> doOnUnknownException(context)
         }
-        return null
+    }
+
+    private fun doNoConnect(context: Context) {
+        _networkUnavailableMsg.postValue(context.getString(R.string.message_network_no_connect))
     }
 
     private fun doOnTimeOutException(context: Context) {
@@ -116,5 +101,15 @@ abstract class BaseViewModel(
 
     private fun doOnUnknownException(context: Context) {
         _networkExceptionUnknown.postValue(context.getString(R.string.message_network_no_connect))
+    }
+
+
+    fun doLogoutCleanUser(finishFunction: () -> Unit) {
+        viewModelScope.launch {
+            betInfoRepository.clear()
+            infoCenterRepository.clear()
+            loginRepository.logout()
+            finishFunction.invoke()
+        }
     }
 }

@@ -66,6 +66,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         })
     }
 
+    //20210526 紀錄：call webAPI 的 exception 錯誤提示統一在 BackActivity 處理，若有需要 callback 再使用此 fun
     fun setOnNetworkExceptionListener(listener: View.OnClickListener?) {
         mOnNetworkExceptionListener = listener
     }
