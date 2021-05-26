@@ -50,7 +50,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun onNetworkException() {
-        viewModel.networkUnavailableMsg.observe(this, {
+        viewModel.networkExceptionUnavailable.observe(this, {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
         })

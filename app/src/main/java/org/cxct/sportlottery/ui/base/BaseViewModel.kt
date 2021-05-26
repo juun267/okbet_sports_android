@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.base
 
-import android.accounts.NetworkErrorException
 import android.content.Context
 import androidx.annotation.Nullable
 import androidx.lifecycle.LiveData
@@ -10,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.exception.DoNoConnectException
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.error.ErrorUtils
 import org.cxct.sportlottery.network.error.HttpError
@@ -29,8 +29,8 @@ abstract class BaseViewModel(
     val errorResultToken: LiveData<BaseResult>
         get() = _errorResultToken
 
-    val networkUnavailableMsg: LiveData<String>
-        get() = _networkUnavailableMsg
+    val networkExceptionUnavailable: LiveData<String>
+        get() = _networkExceptionUnavailable
 
     val networkExceptionTimeout: LiveData<String>
         get() = _networkExceptionTimeout
@@ -39,7 +39,7 @@ abstract class BaseViewModel(
         get() = _networkExceptionUnknown
 
     private val _errorResultToken = MutableLiveData<BaseResult>()
-    private val _networkUnavailableMsg = MutableLiveData<String>()
+    private val _networkExceptionUnavailable = MutableLiveData<String>()
     private val _networkExceptionTimeout = MutableLiveData<String>()
     private val _networkExceptionUnknown = MutableLiveData<String>()
 
@@ -52,13 +52,13 @@ abstract class BaseViewModel(
     ): T? {
         return try {
             if (!NetworkUtil.isAvailable(context))
-                throw NetworkErrorException()
+                throw DoNoConnectException()
             doApiFun(apiFun)
         } catch (e: Exception) {
             e.printStackTrace()
             if (exceptionHandle)
                 doOnException(context, e)
-             null
+            null
         }
     }
 
@@ -85,24 +85,17 @@ abstract class BaseViewModel(
 
     private fun doOnException(context: Context, exception: Exception){
         when (exception) {
-            is NetworkErrorException -> doNoConnect(context)
-            is SocketTimeoutException -> doOnTimeOutException(context)
-            else -> doOnUnknownException(context)
+            is DoNoConnectException -> {
+                _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))
+            }
+            is SocketTimeoutException -> {
+                _networkExceptionTimeout.postValue(context.getString(R.string.message_network_timeout))
+            }
+            else -> {
+                _networkExceptionUnknown.postValue(context.getString(R.string.message_network_no_connect))
+            }
         }
     }
-
-    private fun doNoConnect(context: Context) {
-        _networkUnavailableMsg.postValue(context.getString(R.string.message_network_no_connect))
-    }
-
-    private fun doOnTimeOutException(context: Context) {
-        _networkExceptionTimeout.postValue(context.getString(R.string.message_network_timeout))
-    }
-
-    private fun doOnUnknownException(context: Context) {
-        _networkExceptionUnknown.postValue(context.getString(R.string.message_network_no_connect))
-    }
-
 
     fun doLogoutCleanUser(finishFunction: () -> Unit) {
         viewModelScope.launch {
