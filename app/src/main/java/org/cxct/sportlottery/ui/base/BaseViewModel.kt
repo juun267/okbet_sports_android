@@ -34,13 +34,13 @@ abstract class BaseViewModel(
     val networkExceptionTimeout: LiveData<String>
         get() = _networkExceptionTimeout
 
-    val networkExceptionUnknown: LiveData<Exception>
+    val networkExceptionUnknown: LiveData<String>
         get() = _networkExceptionUnknown
 
     private val _errorResultToken = MutableLiveData<BaseResult>()
     private val _networkUnavailableMsg = MutableLiveData<String>()
     private val _networkExceptionTimeout = MutableLiveData<String>()
-    private val _networkExceptionUnknown = MutableLiveData<Exception>()
+    private val _networkExceptionUnknown = MutableLiveData<String>()
 
     @Nullable
     suspend fun <T : BaseResult> doNetwork(
@@ -105,7 +105,7 @@ abstract class BaseViewModel(
     private fun <T : BaseResult> doOnException(context: Context, exception: Exception): T? {
         when (exception) {
             is SocketTimeoutException -> doOnTimeOutException(context)
-            else -> doOnUnknownException(exception)
+            else -> doOnUnknownException(context)
         }
         return null
     }
@@ -114,7 +114,7 @@ abstract class BaseViewModel(
         _networkExceptionTimeout.postValue(context.getString(R.string.message_network_timeout))
     }
 
-    private fun doOnUnknownException(exception: Exception) {
-        _networkExceptionUnknown.postValue(exception)
+    private fun doOnUnknownException(context: Context) {
+        _networkExceptionUnknown.postValue(context.getString(R.string.message_network_no_connect))
     }
 }
