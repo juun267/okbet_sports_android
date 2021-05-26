@@ -21,6 +21,7 @@ import java.util.*
 class OddsGameCardAdapter(
     private val context:Context?,
     private var matchId: String?,
+    private var sportCode: String?,
     private val clickListener: ItemClickListener
 ) :
     RecyclerView.Adapter<OddsGameCardAdapter.ViewHolder>() {
@@ -30,13 +31,12 @@ class OddsGameCardAdapter(
     var matchClockCOList: MutableList<MatchClockCO> = mutableListOf()
     var matchStatusCOList: MutableList<MatchStatusCO> = mutableListOf()
 
-
     var data: MutableList<MatchInfo?> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
-            matchClockCOList = MutableList(data.size) { MatchClockCO(0, "", "", 0, 0, 0, 0, 0, 0, 0) }
-            matchStatusCOList = MutableList(data.size) { MatchStatusCO("", 0, 0, 0, 0, 0, "", 0, 0, 0) }
+            matchClockCOList = MutableList(data.size) { MatchClockCO(0, sportCode, "", null, 0, -1, 0, 0, 0, 0) }
+            matchStatusCOList = MutableList(data.size) { MatchStatusCO(sportCode, 0, 0, 0, 0, 0, "", 0, 0, 0) }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -61,7 +61,7 @@ class OddsGameCardAdapter(
                 mTimerMap = mutableMapOf()
                 notifyDataSetChanged()
 
-                item?.let { it -> clickListener.onClick(it) }
+                item?.let { matchInfo -> clickListener.onClick(matchInfo) }
             }
         }
     }
@@ -88,10 +88,11 @@ class OddsGameCardAdapter(
 
             awayScore.text = (item.awayScore ?: 0).toString()
             awayName.text = item.awayName
+            setDefaultUI()
 
             txvStatus.text =  getGameStatus(matchStatusCOList[position])
-
             setTimer(position, matchClockCOList[position])
+
         }
 
         fun stopTimer() {
@@ -104,9 +105,7 @@ class OddsGameCardAdapter(
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
                 when (matchClockCO.gameType) {
                     "BK" -> {
-                        if (matchClockCO.remainingTimeInPeriod == null) {
-                            itemView.txv_time.text = null
-                        } else {
+                        if (matchClockCO.remainingTimeInPeriod != null || matchClockCO.remainingTimeInPeriod != -1) {
                             itemView.txv_time.text = TimeUtil.timeFormat(
                                 matchClockCO.remainingTimeInPeriod?.times(1000L),
                                 "mm:ss"
@@ -130,31 +129,36 @@ class OddsGameCardAdapter(
                         }
                     }
                     "FT" -> {
-                        itemView.txv_time.text =
-                            TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
+                        if (matchClockCO.matchTime == null) {
+                            itemView.txv_time.text = "--:--"
+                        } else {
+                            itemView.txv_time.text =
+                                TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
 
-                        timer = Timer()
-                        timer?.schedule(object : TimerTask() {
-                            override fun run() {
-                                Handler(Looper.getMainLooper()).post {
-                                    matchClockCO.matchTime = matchClockCO.matchTime?.plus(1)
-                                    itemView.txv_time.text =
-                                        TimeUtil.timeFormat(
-                                            matchClockCO.matchTime?.times(1000L),
-                                            "mm:ss"
-                                        )
+                            timer = Timer()
+                            timer?.schedule(object : TimerTask() {
+                                override fun run() {
+                                    Handler(Looper.getMainLooper()).post {
+                                        matchClockCO.matchTime = matchClockCO.matchTime?.plus(1)
+                                        itemView.txv_time.text =
+                                            TimeUtil.timeFormat(
+                                                matchClockCO.matchTime?.times(1000L),
+                                                "mm:ss"
+                                            )
+                                    }
                                 }
-                            }
-                        }, 1000L, 1000L)
+                            }, 1000L, 1000L)
+                        }
                     }
-                    else -> {}
+                    else -> {
+                    }
                 }
                 mTimerMap[adapterPosition] = timer
             } else {
                 when (matchClockCO?.gameType) {
                     "BK" -> {
                         if (matchClockCO.remainingTimeInPeriod == null) {
-                            itemView.txv_time.text = null
+                            itemView.txv_time.text = "--:--"
                         } else {
                             itemView.txv_time.text = TimeUtil.timeFormat(
                                 matchClockCO.remainingTimeInPeriod?.times(1000L),
@@ -241,6 +245,28 @@ class OddsGameCardAdapter(
             return status
         }
 
+        private fun setDefaultUI() {
+            if (itemView.txv_time.text == "" || itemView.txv_time.text == "--:--") {
+                when (sportCode) {
+                    SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
+                        itemView.txv_time.text = "--:--"
+                    }
+                    SportType.BADMINTON.code, SportType.TENNIS.code, SportType.VOLLEYBALL.code -> {
+                        itemView.txv_time.text = ""
+                    }
+                }
+            }
+            if (itemView.txv_status.text == "") {
+                when (sportCode) {
+                    SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
+                        itemView.txv_status.text = ""
+                    }
+                    SportType.BADMINTON.code, SportType.TENNIS.code, SportType.VOLLEYBALL.code -> {
+                        itemView.txv_status.text = ""
+                    }
+                }
+            }
+        }
     }
 
     private fun stopAllTimer() {
