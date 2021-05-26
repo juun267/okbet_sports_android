@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 
@@ -19,10 +20,10 @@ const val BET_INFO_MAX_COUNT = 10
 class BetInfoRepository {
 
     //每個畫面都要觀察
-    private val _betInfoList = MutableLiveData<MutableList<BetInfoListData>>().apply {
-        value = mutableListOf()
+    private val _betInfoList = MutableLiveData<Event<MutableList<BetInfoListData>>>().apply {
+        value = Event(mutableListOf())
     }
-    val betInfoList: LiveData<MutableList<BetInfoListData>>
+    val betInfoList: LiveData<Event<MutableList<BetInfoListData>>>
         get() = _betInfoList
 
     private val _matchOddList = MutableLiveData<MutableList<MatchOdd>>()
@@ -50,7 +51,7 @@ class BetInfoRepository {
         }
 
     fun addInBetInfoParlay() {
-        val betList = _betInfoList.value ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         if (betList.size == 0) {
             return
@@ -94,30 +95,30 @@ class BetInfoRepository {
     }
 
     fun getCurrentBetInfoList() {
-        val betList = _betInfoList.value ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
-        _betInfoList.postValue(betList)
+        _betInfoList.postValue(Event(betList))
     }
 
 
     fun removeItem(oddId: String?) {
-        val betList = _betInfoList.value ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
         _removeItem.postValue(item?.matchOdd?.matchId)
-        _betInfoList.postValue(betList)
+        _betInfoList.postValue(Event(betList))
     }
 
 
     fun clear() {
-        val betList = _betInfoList.value ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         betList.clear()
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
 
-        _betInfoList.postValue(betList)
+        _betInfoList.postValue(Event(betList))
     }
 
     fun addInBetInfo(
@@ -128,7 +129,7 @@ class BetInfoRepository {
         matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
-        val betList = _betInfoList.value ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
@@ -151,7 +152,7 @@ class BetInfoRepository {
                 }
             )
 
-            _betInfoList.postValue(betList)
+            _betInfoList.postValue(Event(betList))
         }
     }
 
@@ -163,7 +164,7 @@ class BetInfoRepository {
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.list.Odd
     ) {
-        val betList = _betInfoList.value ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
@@ -186,7 +187,7 @@ class BetInfoRepository {
                 }
             )
 
-            _betInfoList.postValue(betList)
+            _betInfoList.postValue(Event(betList))
         }
     }
 
@@ -197,7 +198,7 @@ class BetInfoRepository {
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.detail.Odd
     ) {
-        val betList = _betInfoList.value ?: mutableListOf()
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
@@ -220,7 +221,7 @@ class BetInfoRepository {
                 }
             )
 
-            _betInfoList.postValue(betList)
+            _betInfoList.postValue(Event(betList))
         }
     }
 
@@ -293,7 +294,7 @@ class BetInfoRepository {
 
 
     fun saveOddsHasChanged(matchOdd: MatchOdd) {
-        val hasChanged = _betInfoList.value?.find {
+        val hasChanged = _betInfoList.value?.peekContent()?.find {
             it.matchOdd.oddsId == matchOdd.oddsId
         }
         hasChanged?.matchOdd?.oddsHasChanged = true
@@ -314,7 +315,7 @@ class BetInfoRepository {
 
 
     fun notifyBetInfoChanged() {
-        val updateBetInfoList = _betInfoList.value
+        val updateBetInfoList = _betInfoList.value?.peekContent()
 
         if (updateBetInfoList.isNullOrEmpty()) return
 
@@ -349,7 +350,7 @@ class BetInfoRepository {
                         }
                     }
                 }
-                _betInfoList.value = newList
+                _betInfoList.value = Event(newList)
             }
         }
     }

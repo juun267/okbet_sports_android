@@ -129,15 +129,17 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
-            val odds = outrightOddAdapter.matchOdd?.displayList?.filterIsInstance<Odd>()
+            it.peekContent().let {
+                val odds = outrightOddAdapter.matchOdd?.displayList?.filterIsInstance<Odd>()
 
-            odds?.forEach { odd ->
-                odd.isSelected = it.any {
-                    it.matchOdd.oddsId == odd.id
+                odds?.forEach { odd ->
+                    odd.isSelected = it.any {
+                        it.matchOdd.oddsId == odd.id
+                    }
                 }
-            }
 
-            outrightOddAdapter.notifyDataSetChanged()
+                outrightOddAdapter.notifyDataSetChanged()
+            }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
@@ -159,9 +161,10 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                             oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
                                 oddTypeSocketMapEntry.value.onEach { odd ->
                                     odd?.isSelected =
-                                        viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
-                                            betInfoListData.matchOdd.oddsId == odd?.id
-                                        }
+                                        viewModel.betInfoList.value?.peekContent()
+                                            ?.any { betInfoListData ->
+                                                betInfoListData.matchOdd.oddsId == odd?.id
+                                            }
                                 }
 
                                 val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->

@@ -151,14 +151,16 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            if (it.size == 0) {
-                dismiss()
-            } else {
-                if (!isSubScribe) {
-                    isSubScribe = true
-                    subscribeChannel(it)
+            it.getContentIfNotHandled()?.let {
+                if (it.size == 0) {
+                    dismiss()
+                } else {
+                    if (!isSubScribe) {
+                        isSubScribe = true
+                        subscribeChannel(it)
+                    }
+                    betInfoListAdapter.betInfoList = it
                 }
-                betInfoListAdapter.betInfoList = it
             }
         })
 

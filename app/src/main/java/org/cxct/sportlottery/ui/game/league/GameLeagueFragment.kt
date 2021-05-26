@@ -162,21 +162,23 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
-            val leagueOdds = leagueAdapter.data
+            it.peekContent().let {
+                val leagueOdds = leagueAdapter.data
 
-            leagueOdds.forEach { leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.odds.values.forEach { oddList ->
-                        oddList.forEach { odd ->
-                            odd?.isSelected = it.any {
-                                it.matchOdd.oddsId == odd?.id
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected = it.any {
+                                    it.matchOdd.oddsId == odd?.id
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            leagueAdapter.notifyDataSetChanged()
+                leagueAdapter.notifyDataSetChanged()
+            }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
@@ -266,7 +268,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                         oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
                             odd?.isSelected =
-                                viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
+                                viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                         }

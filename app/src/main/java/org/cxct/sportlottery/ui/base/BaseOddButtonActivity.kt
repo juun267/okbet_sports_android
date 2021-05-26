@@ -94,32 +94,33 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
+            it.peekContent().let {
+                if (it.size == 0) saveFirstBetFlag(true)
+                if (it.size == 0 || it.size == 1) saveFirstBetFlagForParlay(true)
 
-            if (it.size == 0) saveFirstBetFlag(true)
-            if (it.size == 0 || it.size == 1) saveFirstBetFlagForParlay(true)
-
-            when {
-                it.isNullOrEmpty() -> {
-                    updateOddButton(false, null)
-                }
-                oddListDialog is BetInfoListParlayDialog -> {
-                    updateOddButton(true, 1)
-                    if (!openFlag) return@observe
-                    if (getFirstBetFlagForParlay() == true && it.size == 2) {
-                        saveFirstBetFlagForParlay(false)
-                        showBetListDialog()
+                when {
+                    it.isNullOrEmpty() -> {
+                        updateOddButton(false, null)
+                    }
+                    oddListDialog is BetInfoListParlayDialog -> {
+                        updateOddButton(true, 1)
+                        if (!openFlag) return@observe
+                        if (getFirstBetFlagForParlay() == true && it.size == 2) {
+                            saveFirstBetFlagForParlay(false)
+                            showBetListDialog()
+                        }
+                    }
+                    oddListDialog is BetInfoListDialog -> {
+                        updateOddButton(true, it.size)
+                        if (!openFlag) return@observe
+                        if (getFirstBetFlag() == true && it.size == 1 && openFlag) {
+                            saveFirstBetFlag(false)
+                            showBetListDialog()
+                        }
                     }
                 }
-                oddListDialog is BetInfoListDialog -> {
-                    updateOddButton(true, it.size)
-                    if (!openFlag) return@observe
-                    if (getFirstBetFlag() == true && it.size == 1 && openFlag) {
-                        saveFirstBetFlag(false)
-                        showBetListDialog()
-                    }
-                }
+                openFlag = true
             }
-            openFlag = true
         })
     }
 
