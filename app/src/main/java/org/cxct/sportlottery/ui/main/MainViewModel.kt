@@ -160,16 +160,16 @@ class MainViewModel(
                     if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
                         autoTransfer(gameData)
 
-                    when (thirdLoginResult?.success) {
-                        true -> {
+                    //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
+                    thirdLoginResult?.let {
+                        if (it.success) {
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.SUCCESS,
                                     url = thirdLoginResult.msg
                                 )
                             )
-                        }
-                        else -> {
+                        } else {
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.FAIL,
@@ -179,6 +179,7 @@ class MainViewModel(
                             )
                         }
                     }
+
                 }
             }
         }
