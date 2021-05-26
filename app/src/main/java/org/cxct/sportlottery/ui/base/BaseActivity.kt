@@ -24,6 +24,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mLayoutHandler = Handler(Looper.getMainLooper())
     private var mPromptDialog: CustomAlertDialog? = null
     private var mTokenPromptDialog: CustomAlertDialog? = null
+    private var mOnNetworkExceptionListener: View.OnClickListener? = null
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -49,9 +50,25 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun onNetworkException() {
-        viewModel.networkExceptionUnknown.observe(this, Observer {
-            //TODO show network exception message
+        viewModel.networkExceptionUnavailable.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
         })
+
+        viewModel.networkExceptionTimeout.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
+        })
+
+        viewModel.networkExceptionUnknown.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
+        })
+    }
+
+    //20210526 紀錄：call webAPI 的 exception 錯誤提示統一在 BackActivity 處理，若有需要 callback 再使用此 fun
+    fun setOnNetworkExceptionListener(listener: View.OnClickListener?) {
+        mOnNetworkExceptionListener = listener
     }
 
     /*弹出加载界面*/
