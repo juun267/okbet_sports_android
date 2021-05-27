@@ -193,7 +193,7 @@
     <string name="title_rebates_rate">返水%数</string>
     <string name="rebates_rate">返水$1%s数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">充值 1 元可获得 %1$s 点成长值</string>
+    <string name="hint_recharge_growth">充值 3 元可获得 %1$s 点成长值</string>
     <string name="hint_bet_growth">投注 1 元可获得 %1$s 点成长值</string>
 
     <!--  HelpCenter  -->
