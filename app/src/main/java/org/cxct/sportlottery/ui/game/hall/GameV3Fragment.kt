@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.CountryLeagueListener
 import org.cxct.sportlottery.ui.game.hall.adapter.OutrightCountryAdapter
 import org.cxct.sportlottery.ui.game.widget.GameFilterRow
 import org.cxct.sportlottery.ui.main.MainActivity
