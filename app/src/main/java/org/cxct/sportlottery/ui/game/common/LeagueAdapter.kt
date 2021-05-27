@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.hall
+package org.cxct.sportlottery.ui.game.common
 
 import android.view.LayoutInflater
 import android.view.View
@@ -32,27 +32,24 @@ class LeagueAdapter(private val matchType: MatchType) :
             notifyDataSetChanged()
         }
 
-    var sportType: SportType? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     var playType: PlayType = PlayType.OU_HDP
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     var leagueOddListener: LeagueOddListener? = null
 
-    var itemExpandListener: ItemExpandListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when {
@@ -86,10 +83,8 @@ class LeagueAdapter(private val matchType: MatchType) :
                 holder.bind(
                     item,
                     matchType,
-                    sportType,
                     playType,
                     leagueOddListener,
-                    itemExpandListener,
                     oddsType
                 )
             }
@@ -122,22 +117,19 @@ class LeagueAdapter(private val matchType: MatchType) :
         fun bind(
             item: LeagueOdd,
             matchType: MatchType,
-            sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
-            itemExpandListener: ItemExpandListener?,
             oddsType: OddsType
         ) {
             itemView.league_name.text = item.league.name
             itemView.league_odd_count.text = item.matchOdds.size.toString()
 
-            setupLeagueOddList(item, sportType, playType, leagueOddListener, oddsType)
-            setupLeagueOddExpand(item, matchType, sportType, itemExpandListener)
+            setupLeagueOddList(item, playType, leagueOddListener, oddsType)
+            setupLeagueOddExpand(item, matchType)
         }
 
         private fun setupLeagueOddList(
             item: LeagueOdd,
-            sportType: SportType?,
             playType: PlayType,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
@@ -148,11 +140,11 @@ class LeagueAdapter(private val matchType: MatchType) :
                         item.searchMatchOdds
                     } else {
                         item.matchOdds
+                    }.onEach {
+                        it.matchInfo?.sportType = item.sportType
                     }
 
                     this.playType = playType
-                    this.sportType = sportType
-                    this.isTimerDecrease = (sportType == SportType.BASKETBALL)
                     this.leagueOddListener = leagueOddListener
                     this.oddsType = oddsType
                 }
@@ -162,22 +154,16 @@ class LeagueAdapter(private val matchType: MatchType) :
         private fun setupLeagueOddExpand(
             item: LeagueOdd,
             matchType: MatchType,
-            sportType: SportType?,
-            itemExpandListener: ItemExpandListener?
         ) {
             itemView.league_odd_expand.setExpanded(item.isExpand, false)
-            updateTimer(matchType, sportType)
+            updateTimer(matchType, item.sportType)
             updateArrowExpand()
-
-            itemExpandListener?.onItemExpand(item)
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_odd_expand.setExpanded(item.isExpand, true)
-                updateTimer(matchType, sportType)
+                updateTimer(matchType, item.sportType)
                 updateArrowExpand()
-
-                itemExpandListener?.onItemExpand(item)
             }
         }
 
@@ -220,8 +206,4 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
         }
     }
-}
-
-class ItemExpandListener(val expandListener: (leagueOdd: LeagueOdd) -> Unit) {
-    fun onItemExpand(leagueOdd: LeagueOdd) = expandListener(leagueOdd)
 }

@@ -27,6 +27,8 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.OutrightCountryAdapter
 import org.cxct.sportlottery.ui.game.widget.GameFilterRow
@@ -99,7 +101,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             matchOdd.matchInfo?.id?.let {
                                 navOddsDetail(it)
                                 viewModel.setOddsDetailMoreList(
-                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList() ?: listOf<MatchOdd>()
+                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList()
+                                        ?: listOf<MatchOdd>()
                                 )
                             }
                         }
@@ -111,32 +114,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     addOddsDialog(matchOdd, odd, playCateName, playName)
                 }
             )
-
-            itemExpandListener = ItemExpandListener {
-                val sportType = sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code
-
-                when (it.isExpand) {
-                    true -> {
-                        it.matchOdds.forEach { matchOdd ->
-                            service.subscribeHallChannel(
-                                sportType,
-                                CateMenuCode.HDP_AND_OU.code,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-
-                    false -> {
-                        it.matchOdds.forEach { matchOdd ->
-                            service.unsubscribeHallChannel(
-                                sportType,
-                                CateMenuCode.HDP_AND_OU.code,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -351,8 +328,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     game_list.apply {
                         adapter = leagueAdapter.apply {
-                            data = leagueOdds
-                            this.sportType = sportType
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.sportType = sportType
+                            }
+                        }
+                    }
+
+                    leagueOdds.forEach { leagueOdd ->
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                sportType?.code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
                         }
                     }
                 }
@@ -424,21 +412,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
-            val leagueOdds = leagueAdapter.data
+            it.peekContent()?.let {
+                val leagueOdds = leagueAdapter.data
 
-            leagueOdds.forEach { leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.odds.values.forEach { oddList ->
-                        oddList.forEach { odd ->
-                            odd?.isSelected = it.any {
-                                it.matchOdd.oddsId == odd?.id
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected = it.any {
+                                    it.matchOdd.oddsId == odd?.id
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            leagueAdapter.notifyDataSetChanged()
+                leagueAdapter.notifyDataSetChanged()
+            }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
@@ -463,11 +453,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     matchOdd.matchInfo?.id == matchId
                                 }
 
-                                updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
-                                updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
-                                updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+                                updateMatchOdd?.let {
+                                    updateMatchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
+                                    updateMatchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                                    updateMatchOdd.matchInfo?.statusName = matchStatusCO.statusName
 
-                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
                             }
                         }
                     }
@@ -489,17 +481,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     matchOdd.matchInfo?.id == matchId
                                 }
 
-                                updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
-                                    SportType.FOOTBALL.code -> {
-                                        matchClockCO.matchTime
+                                updateMatchOdd?.let {
+                                    updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
+                                        SportType.FOOTBALL.code -> {
+                                            matchClockCO.matchTime
+                                        }
+                                        SportType.BASKETBALL.code -> {
+                                            matchClockCO.remainingTimeInPeriod
+                                        }
+                                        else -> null
                                     }
-                                    SportType.BASKETBALL.code -> {
-                                        matchClockCO.remainingTimeInPeriod
-                                    }
-                                    else -> null
-                                }
 
-                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
                             }
                         }
                     }
@@ -515,7 +509,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                         oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
                             odd?.isSelected =
-                                viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
+                                viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                         }

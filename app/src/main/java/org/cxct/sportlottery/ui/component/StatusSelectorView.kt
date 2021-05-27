@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.component
 
 import android.content.Context
 import android.content.res.TypedArray
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -275,7 +276,7 @@ class StatusSheetAdapter(private val checkedListener: ItemCheckedListener) : Rec
             itemView.apply {
                 checkbox.isChecked = data.isChecked
                 checkbox.text = data.showName
-                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.colorWhite6) else ContextCompat.getColor(checkbox.context, R.color.white))
+                checkbox.setBackgroundColor(if (data.isChecked) ContextCompat.getColor(checkbox.context, R.color.colorWhite6) else ContextCompat.getColor(checkbox.context, R.color.colorWhite))
             }
         }
 

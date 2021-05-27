@@ -6,15 +6,15 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    tools:background="@color/transparent_black_50">
+    tools:background="@android:drawable/screen_background_dark_transparent">
 
     <ImageView
         android:id="@+id/img_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:contentDescription="@null"
         android:background="@drawable/bg_news_top"
+        android:contentDescription="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

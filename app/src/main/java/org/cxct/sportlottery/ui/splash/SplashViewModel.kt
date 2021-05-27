@@ -55,7 +55,7 @@ class SplashViewModel(
             if (hostUrl.isNotEmpty()) {
                 Timber.i("==> checkLocalHost: $hostUrl")
                 val retrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
-                val result = doNetwork(androidContext) {
+                val result = doNetwork(androidContext, exceptionHandle = false) {
                     retrofit.create(IndexService::class.java).getConfig()
                 }
                 if (result?.success == true) {
@@ -121,7 +121,7 @@ class SplashViewModel(
         viewModelScope.launch {
             Timber.i("==> checkHostByGettingConfig: $baseUrl")
             val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
-            val result = doNetwork(androidContext) {
+            val result = doNetwork(androidContext, exceptionHandle = false) {
                 val indexService = retrofit.create(IndexService::class.java)
                 indexService.getConfig()
             }

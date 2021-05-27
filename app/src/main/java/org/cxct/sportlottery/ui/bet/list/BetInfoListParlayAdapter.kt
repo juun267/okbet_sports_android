@@ -112,7 +112,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.etBet.setBackgroundResource(if (sendOutStatus) R.drawable.effect_select_bet_edit_text else R.drawable.bg_radius_4_edittext_error)
 
             binding.etBet.setTextColor(
-                if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.colorBlackLight)
                 else ContextCompat.getColor(binding.root.context, R.color.colorRedDark)
             )
             return sendOutStatus

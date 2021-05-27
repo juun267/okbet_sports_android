@@ -3,11 +3,9 @@ package org.cxct.sportlottery.ui.main
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -65,10 +63,16 @@ class MainViewModel(
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
 
+    val withdrawSystemOperation =
+        withdrawRepository.withdrawSystemOperation
+    val rechargeSystemOperation =
+        withdrawRepository.rechargeSystemOperation
     val needToUpdateWithdrawPassword =
         withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
     val settingNeedToUpdateWithdrawPassword =
         withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToCompleteProfileInfo =
+        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToCompleteProfileInfo =
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
@@ -156,16 +160,16 @@ class MainViewModel(
                     if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
                         autoTransfer(gameData)
 
-                    when (thirdLoginResult?.success) {
-                        true -> {
+                    //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
+                    thirdLoginResult?.let {
+                        if (it.success) {
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.SUCCESS,
                                     url = thirdLoginResult.msg
                                 )
                             )
-                        }
-                        else -> {
+                        } else {
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.FAIL,
@@ -175,6 +179,7 @@ class MainViewModel(
                             )
                         }
                     }
+
                 }
             }
         }
@@ -207,10 +212,21 @@ class MainViewModel(
     }
 
 
-    //提款判斷權限
-    fun withdrawCheckPermissions() {
+    //提款功能是否啟用
+    fun checkWithdrawSystem() {
         viewModelScope.launch {
-            withdrawRepository.withdrawCheckPermissions()
+            doNetwork(androidContext) {
+                withdrawRepository.checkWithdrawSystem()
+            }
+        }
+    }
+
+    //充值功能是否啟用
+    fun checkRechargeSystem() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkRechargeSystem()
+            }
         }
     }
 

@@ -22,7 +22,8 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.hall.*
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
@@ -62,30 +63,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     hideKeyboard()
                 }
             )
-
-            itemExpandListener = ItemExpandListener {
-                when (it.isExpand) {
-                    true -> {
-                        it.matchOdds.forEach { matchOdd ->
-                            service.subscribeHallChannel(
-                                args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-
-                    false -> {
-                        it.matchOdds.forEach { matchOdd ->
-                            service.unsubscribeHallChannel(
-                                args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -161,8 +138,19 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
-                            data = leagueOdds
-                            sportType = args.sportType
+                            data = leagueOdds.onEach { leagueOdd ->
+                                leagueOdd.sportType = args.sportType
+                            }
+                        }
+                    }
+
+                    leagueOdds.forEach { leagueOdd ->
+                        leagueOdd.matchOdds.forEach { matchOdd ->
+                            service.subscribeHallChannel(
+                                args.sportType.code,
+                                CateMenuCode.HDP_AND_OU.code,
+                                matchOdd.matchInfo?.id
+                            )
                         }
                     }
                 }
@@ -174,21 +162,23 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
-            val leagueOdds = leagueAdapter.data
+            it.peekContent().let {
+                val leagueOdds = leagueAdapter.data
 
-            leagueOdds.forEach { leagueOdd ->
-                leagueOdd.matchOdds.forEach { matchOdd ->
-                    matchOdd.odds.values.forEach { oddList ->
-                        oddList.forEach { odd ->
-                            odd?.isSelected = it.any {
-                                it.matchOdd.oddsId == odd?.id
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected = it.any {
+                                    it.matchOdd.oddsId == odd?.id
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            leagueAdapter.notifyDataSetChanged()
+                leagueAdapter.notifyDataSetChanged()
+            }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
@@ -215,11 +205,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                         matchOdd.matchInfo?.id == matchId
                                     }
 
-                                    updateMatchOdd?.matchInfo?.homeScore = matchStatusCO.homeScore
-                                    updateMatchOdd?.matchInfo?.awayScore = matchStatusCO.awayScore
-                                    updateMatchOdd?.matchInfo?.statusName = matchStatusCO.statusName
+                                    updateMatchOdd?.let {
+                                        updateMatchOdd.matchInfo?.homeScore =
+                                            matchStatusCO.homeScore
+                                        updateMatchOdd.matchInfo?.awayScore =
+                                            matchStatusCO.awayScore
+                                        updateMatchOdd.matchInfo?.statusName =
+                                            matchStatusCO.statusName
 
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
                                 }
                             }
                         }
@@ -244,17 +239,19 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                         matchOdd.matchInfo?.id == matchId
                                     }
 
-                                    updateMatchOdd?.leagueTime = when (matchClockCO.gameType) {
-                                        SportType.FOOTBALL.code -> {
-                                            matchClockCO.matchTime
+                                    updateMatchOdd?.let {
+                                        updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
+                                            SportType.FOOTBALL.code -> {
+                                                matchClockCO.matchTime
+                                            }
+                                            SportType.BASKETBALL.code -> {
+                                                matchClockCO.remainingTimeInPeriod
+                                            }
+                                            else -> null
                                         }
-                                        SportType.BASKETBALL.code -> {
-                                            matchClockCO.remainingTimeInPeriod
-                                        }
-                                        else -> null
-                                    }
 
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
                                 }
                             }
                         }
@@ -271,7 +268,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                         oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
                             odd?.isSelected =
-                                viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
+                                viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                         }

@@ -53,7 +53,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|left"
-                    android:textColor="@color/colorDarkBlack"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -109,7 +109,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="center_vertical|left"
-                    android:textColor="@color/colorDarkBlack"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize14sp" />
 
                 <ImageView
@@ -313,7 +313,7 @@
                     android:background="@null"
                     android:gravity="start|center_vertical"
                     android:singleLine="true"
-                    android:textColor="@color/colorDarkBlack"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="2020-13-25 19:35:35 (GMT+8)" />
 
@@ -398,7 +398,7 @@
                         android:orientation="vertical"
                         android:gravity="center"
                         android:layout_marginTop="10dp"
-                        android:background="@color/blue8">
+                        android:background="@drawable/bg_square_shape_5dp_crypto_pay_screen_shot">
 
                         <ImageView
                             android:id="@+id/ic_screen_shot"

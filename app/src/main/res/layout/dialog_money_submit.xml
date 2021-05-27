@@ -1,195 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.money.recharge.MoneyRechargeActivity">
+    android:layout_margin="10dp"
+    app:cardCornerRadius="8dp"
+    tools:context="ui.money.recharge.MoneySubmitDialog">
 
-    <androidx.cardview.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="8dp">
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <TextView
+            android:id="@+id/txv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite">
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:minHeight="44dp"
+            android:text="@string/title_pay_msg"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_pay_way"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize14sp" />
+
+            <TextView
+                android:id="@+id/txv_pay_way"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="在线支付" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_pay_money"
+                android:textColor="@color/colorGrayDark"
+                android:textSize="@dimen/textSize14sp" />
+
+            <TextView
+                android:id="@+id/txv_pay_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="100 RMB" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/hint_pay1"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="5dp"
+            android:text="@string/hint_pay2"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="14dp"
+            android:background="@color/colorWhite6" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_view_log"
+                android:layout_width="wrap_content"
                 android:layout_height="44dp"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/colorWhite"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/txv_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@string/title_pay_msg"
-                    android:textColor="@color/colorBlack"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize16sp" />
-
-                <ImageView
-                    android:id="@+id/img_close"
-                    android:layout_width="15dp"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_close" />
-
-            </LinearLayout>
+                android:text="@string/btn_look_for"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold" />
 
             <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorWhite6"
-                app:layout_constraintTop_toBottomOf="@id/linearLayout"/>
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-            <LinearLayout
-                android:id="@+id/ll_pay_way"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_pay_way"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <TextView
-                    android:id="@+id/txv_pay_way"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="在线支付" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_pay_money"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_pay_way">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_pay_money"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <TextView
-                    android:id="@+id/txv_pay_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="100 RMB" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_hint"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="@+id/ll_pay_money"
-                app:layout_constraintTop_toBottomOf="@+id/ll_pay_money">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hint_pay1"
-                    android:textSize="@dimen/textSize12sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/hint_pay2"
-                    android:textSize="@dimen/textSize12sp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+            <TextView
+                android:id="@+id/tv_service"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:minHeight="43dp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ll_hint">
+                android:text="@string/btn_service"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/light_gray" />
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_view_log"
-                        android:layout_width="wrap_content"
-                        android:layout_height="44dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorBlueDark"
-                        android:textSize="@dimen/textSize14sp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/btn_look_for" />
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/light_gray" />
-
-                    <TextView
-                        android:id="@+id/tv_service"
-                        android:layout_width="wrap_content"
-                        android:layout_height="44dp"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/btn_service"
-                        android:textStyle="bold"
-                        android:textColor="@color/colorBlueDark"
-                        android:textSize="@dimen/textSize14sp" />
-
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

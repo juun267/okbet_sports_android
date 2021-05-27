@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_circle_white"
-        android:backgroundTint="@color/blue7"
+        android:backgroundTint="@color/blueDeep"
         android:padding="10dp"
         android:src="@drawable/ic_soccer"
         android:contentDescription="@null" />

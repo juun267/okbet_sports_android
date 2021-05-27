@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.list
 
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
@@ -123,8 +124,8 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             OddState.LARGER.state -> {
                 tvOddChange.visibility = View.VISIBLE
                 tvOdds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tvOdds.context, R.color.orangeRed))
-                    setTextColor(ContextCompat.getColor(tvOdds.context, R.color.white))
+                    setBackgroundColor(ContextCompat.getColor(tvOdds.context, R.color.colorRed))
+                    setTextColor(Color.WHITE)
                     text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
                 onItemClickListener.onOddChange()
@@ -133,8 +134,8 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             OddState.SMALLER.state -> {
                 tvOddChange.visibility = View.VISIBLE
                 tvOdds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tvOdds.context, R.color.orangeRed))
-                    setTextColor(ContextCompat.getColor(tvOdds.context, R.color.white))
+                    setBackgroundColor(ContextCompat.getColor(tvOdds.context, R.color.colorRed))
+                    setTextColor(Color.WHITE)
                     text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
                 onItemClickListener.onOddChange()

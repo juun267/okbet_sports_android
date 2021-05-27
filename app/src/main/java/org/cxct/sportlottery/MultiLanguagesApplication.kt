@@ -87,7 +87,7 @@ class MultiLanguagesApplication : Application() {
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { ThirdGameRepository() }
-        single { WithdrawRepository(get()) }
+        single { WithdrawRepository(get(), get()) }
         single { PlayQuotaComRepository() }
     }
 

@@ -321,30 +321,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
 
                 LayoutType.CS.layout -> {
-                    rvHome.apply {
-                        addItemDecoration(
-                            SpaceItemDecoration(
-                                context,
-                                R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
-                            )
-                        )
-                    }
-                    rvDraw.apply {
-                        addItemDecoration(
-                            SpaceItemDecoration(
-                                context,
-                                R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
-                            )
-                        )
-                    }
-                    rvAway.apply {
-                        addItemDecoration(
-                            SpaceItemDecoration(
-                                context,
-                                R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_one_list
-                            )
-                        )
-                    }
                 }
 
                 LayoutType.ONE_LIST.layout -> {

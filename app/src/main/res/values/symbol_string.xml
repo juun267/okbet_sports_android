@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="colon">：</string>
     <string name="dot">・</string>
     <string name="greet">Hi!</string>
-    <string name="currency_symbol">¥</string>
     <string name="tilde">～</string>
     <string name="start">*</string>
     <string name="verse_lower">&#160;&#160;vs&#160;&#160;</string>
-    <string name="verse">VS</string>
     <string name="verse_">&#160;&#160;v&#160;&#160;</string>
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
@@ -23,8 +20,6 @@
 
     <!--bet record-->
     <string name="at_symbol">\u0040%s</string>
-    <string name="plus_symbol">+%s</string>
-    <string name="minus_symbol">%s</string>
     <string name="nothing">--</string>
     <string name="draw_or_cancel">0.000</string>
 
@@ -34,9 +29,6 @@
     <!--  Withdraw  -->
     <string name="currency">RMB</string>
     <string name="finance_rmb">%s RMB</string>
-
-    <!--bet info list-->
-    <string name="bet_info_list_odd">\＠&#160;%s</string>
 
     <!--keyboard-->
     <string name="keyboard_code_delete">-999</string>

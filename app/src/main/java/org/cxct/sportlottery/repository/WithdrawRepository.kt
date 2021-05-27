@@ -15,7 +15,7 @@ import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
-class WithdrawRepository(private val userInfoDao: UserInfoDao) {
+class WithdrawRepository(private val userInfoDao: UserInfoDao,private val userInfoRepository: UserInfoRepository) {
 
     private val userInfoFlow: Flow<UserInfo?>
         get() = userInfoDao.getUserInfo().map {
@@ -89,16 +89,14 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
         return response
     }
 
-    private suspend fun checkNeedUpdatePassWord(): Boolean? {
-        return when (userInfoFlow.firstOrNull()?.updatePayPw) {
-            1 -> true
-            0 -> false
-            else -> null
-        }
+    private suspend fun checkNeedUpdatePassWord(): Boolean {
+        if (userInfoFlow.firstOrNull() == null)
+            userInfoRepository.getUserInfo()
+        return userInfoFlow.firstOrNull()?.updatePayPw == 1
     }
 
     //提款判斷權限
-    suspend fun withdrawCheckPermissions() {
+    private suspend fun withdrawCheckPermissions() {
         this.checkNeedUpdatePassWord()?.let { _needToUpdateWithdrawPassword.value = Event(it) }
     }
 
@@ -154,9 +152,8 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
         if (response.isSuccessful) {
             response.body()?.let { result ->
                 if (result.success) {
-                    val promptMessageId: Int
-                    if (result.bankCardList.isNullOrEmpty()) {
-                        promptMessageId = when {
+                    val promptMessageId: Int = if (result.bankCardList.isNullOrEmpty()) {
+                        when {
                             mWithdrawOperation?.bankSystem ?: false && mWithdrawOperation?.cryptoSystem ?: false -> {
                                 R.string.please_setting_money_card
                             }
@@ -168,7 +165,7 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao) {
                             }
                         }
                     } else
-                        promptMessageId = -1
+                        -1
                     _needToBindBankCard.value = Event(promptMessageId)
                 }
             }

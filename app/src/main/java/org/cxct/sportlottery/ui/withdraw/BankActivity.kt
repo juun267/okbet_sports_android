@@ -3,10 +3,10 @@ package org.cxct.sportlottery.ui.withdraw
 import android.os.Bundle
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_bank.*
-import kotlinx.android.synthetic.main.activity_setting_password.btn_back
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+
 
 class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 

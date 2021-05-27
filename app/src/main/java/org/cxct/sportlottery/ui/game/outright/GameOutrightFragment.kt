@@ -20,8 +20,6 @@ import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.hall.OutrightOddAdapter
-import org.cxct.sportlottery.ui.game.hall.OutrightOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
@@ -93,8 +91,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onStart() {
         super.onStart()
 
-        service.subscribeHallChannel(args.sportType.code, CateMenuCode.OUTRIGHT.code, args.eventId)
-
         viewModel.getOutrightOddsList(args.eventId)
         loading()
     }
@@ -122,20 +118,28 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     outright_league_time.text = matchOdd?.startTime ?: ""
 
                     outrightOddAdapter.matchOdd = matchOdd
+
+                    service.subscribeHallChannel(
+                        args.sportType.code,
+                        CateMenuCode.OUTRIGHT.code,
+                        args.eventId
+                    )
                 }
             }
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
-            val odds = outrightOddAdapter.matchOdd?.displayList?.filterIsInstance<Odd>()
+            it.peekContent().let {
+                val odds = outrightOddAdapter.matchOdd?.displayList?.filterIsInstance<Odd>()
 
-            odds?.forEach { odd ->
-                odd.isSelected = it.any {
-                    it.matchOdd.oddsId == odd.id
+                odds?.forEach { odd ->
+                    odd.isSelected = it.any {
+                        it.matchOdd.oddsId == odd.id
+                    }
                 }
-            }
 
-            outrightOddAdapter.notifyDataSetChanged()
+                outrightOddAdapter.notifyDataSetChanged()
+            }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
@@ -157,9 +161,10 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                             oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
                                 oddTypeSocketMapEntry.value.onEach { odd ->
                                     odd?.isSelected =
-                                        viewModel.betInfoRepository.betInfoList.value?.any { betInfoListData ->
-                                            betInfoListData.matchOdd.oddsId == odd?.id
-                                        }
+                                        viewModel.betInfoList.value?.peekContent()
+                                            ?.any { betInfoListData ->
+                                                betInfoListData.matchOdd.oddsId == odd?.id
+                                            }
                                 }
 
                                 val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
