@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -96,7 +95,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun initObserve() {
-        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
@@ -128,13 +127,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
             it.peekContent().let {
                 val odds = outrightOddAdapter.matchOdd?.displayList?.filterIsInstance<Odd>()
 
                 odds?.forEach { odd ->
-                    odd.isSelected = it.any {
-                        it.matchOdd.oddsId == odd.id
+                    odd.isSelected = it.any { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == odd.id
                     }
                 }
 
@@ -142,7 +141,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
         })
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 outrightOddAdapter.oddsType = oddsType
             }
@@ -150,7 +149,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun initSocketReceiver() {
-        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
 
@@ -232,7 +231,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
         })
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, Observer {
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
 
                 val odds = outrightOddAdapter.matchOdd?.displayList?.filterIsInstance<Odd>()
@@ -256,7 +255,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
         })
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
                 service.subscribeHallChannel(

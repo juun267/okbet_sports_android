@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -127,7 +126,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initObserve() {
-        viewModel.oddsListResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
 
             it.getContentIfNotHandled()?.let { oddsListResult ->
@@ -157,11 +156,11 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
-        viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, {
             leagueAdapter.data = it
         })
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
 
@@ -169,8 +168,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.odds.values.forEach { oddList ->
                             oddList.forEach { odd ->
-                                odd?.isSelected = it.any {
-                                    it.matchOdd.oddsId == odd?.id
+                                odd?.isSelected = it.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
                                 }
                             }
                         }
@@ -181,7 +180,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
             }
@@ -189,7 +188,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initSocketReceiver() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
             it?.let { matchStatusChangeEvent ->
                 if (args.matchType == MatchType.IN_PLAY) {
 
@@ -223,7 +222,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
-        receiver.matchClock.observe(this.viewLifecycleOwner, Observer {
+        receiver.matchClock.observe(this.viewLifecycleOwner, {
             it?.let { matchClockEvent ->
                 if (args.matchType == MatchType.IN_PLAY) {
 
@@ -260,7 +259,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
 
@@ -365,7 +364,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, Observer {
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
 
                 val leagueOdds = leagueAdapter.data
@@ -396,7 +395,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, Observer {
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
 
