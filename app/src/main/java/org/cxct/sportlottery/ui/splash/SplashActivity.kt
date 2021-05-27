@@ -49,8 +49,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     //過程中任一流程請求失敗，點擊確定按鈕重試
-    private fun showErrorRetryDialog(message: String) {
+    private fun showErrorRetryDialog(title: String, message: String) {
         val dialog = CustomAlertDialog(this)
+        dialog.setTitle(title)
         dialog.setMessage(message)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
@@ -75,7 +76,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                     goMaintenancePage()
                 }
                 it?.success == true -> checkAppMinVersion()
-                else -> showErrorRetryDialog(getString(R.string.error_config))
+                else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
             }
         })
 
