@@ -72,7 +72,7 @@ class VipViewModel(
                     result.config?.userLevelConfigs?.forEachIndexed { index, config ->
                         Level.values()[index].apply {
                             levelRequirement.growthRequirement = config.growthThreshold
-                            levelRequirement.levelId = config.id
+                            levelRequirement.levelId = index
                             levelRequirement.levelName = config.name
                         }
                     }
