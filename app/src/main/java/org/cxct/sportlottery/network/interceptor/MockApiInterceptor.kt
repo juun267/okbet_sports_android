@@ -64,10 +64,6 @@ import kotlin.jvm.Throws
 
 class MockApiInterceptor(private val context: Context) : Interceptor {
 
-    companion object {
-        private val TAG = MockApiInterceptor::class.java.simpleName
-    }
-
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val path = chain.request().url.toUri().path
@@ -238,7 +234,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
         return response
     }
 
-    private fun getMockJsonData(request: Request, fileName: String): Response? {
+    private fun getMockJsonData(request: Request, fileName: String): Response {
         val assetManager = context.assets
         val path = "mock_api/$fileName"
         val data = readStringFromAssetManager(assetManager, path)
