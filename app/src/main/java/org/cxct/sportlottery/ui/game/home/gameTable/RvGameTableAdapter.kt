@@ -27,11 +27,13 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.HEADER.ordinal -> {
-                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_header, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.home_game_table_header, viewGroup, false)
                 HeaderViewHolder(layout)
             }
             else -> {
-                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_item, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.home_game_table_item, viewGroup, false)
                 ItemViewHolder(layout)
             }
         }
@@ -54,6 +56,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     when (data.matchType) {
                         MatchType.IN_PLAY -> viewHolder.bindInPlay(data)
                         MatchType.TODAY -> viewHolder.bindToday(data)
+                        else -> {
+                        }
                     }
                 }
             }
@@ -155,14 +159,16 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if (data.itemType == ItemType.FOOTER) {
                     line_item.visibility = View.GONE
                     card_footer.visibility = View.VISIBLE
-                    line_footer.visibility = if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
+                    line_footer.visibility =
+                        if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
                 } else {
                     line_item.visibility = View.VISIBLE
                     card_footer.visibility = View.GONE
                     line_footer.visibility = View.GONE
                 }
 
-                tv_footer_title.text = "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_in_play)}"
+                tv_footer_title.text =
+                    "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_in_play)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
@@ -190,7 +196,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 if (data.itemType == ItemType.FOOTER) {
                     line_item.visibility = View.GONE
                     card_footer.visibility = View.VISIBLE
-                    line_footer.visibility = if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
+                    line_footer.visibility =
+                        if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
                 } else {
                     line_item.visibility = View.VISIBLE
                     card_footer.visibility = View.GONE
@@ -198,7 +205,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
 
 
-                tv_footer_title.text = "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_today)}"
+                tv_footer_title.text =
+                    "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_today)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
@@ -246,7 +254,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun startBKTimer(matchClockCO: MatchClockCO?) {
             //籃球每秒時間倒數
             startTimer {
-                matchClockCO?.remainingTimeInPeriod = matchClockCO?.remainingTimeInPeriod?.let { it - 1 }
+                matchClockCO?.remainingTimeInPeriod =
+                    matchClockCO?.remainingTimeInPeriod?.let { it - 1 }
                 showTime(matchClockCO?.remainingTimeInPeriod)
             }
         }

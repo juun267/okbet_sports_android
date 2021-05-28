@@ -11,8 +11,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
-import org.cxct.sportlottery.ui.game.hall.CountryLeagueAdapter
-import org.cxct.sportlottery.ui.game.hall.CountryLeagueListener
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

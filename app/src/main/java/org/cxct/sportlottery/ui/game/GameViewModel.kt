@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -52,7 +52,7 @@ import kotlin.collections.ArrayList
 
 
 class GameViewModel(
-    private val androidContext: Context,
+    private val androidContext: Application,
     userInfoRepository: UserInfoRepository,
     private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
@@ -805,7 +805,7 @@ class GameViewModel(
 
         when (matchType) {
             MatchType.TODAY -> {
-                dateRow.add(Date("", TimeUtil.getTodayTimeRangeParams()))
+                dateRow.add(Date("", getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
                 dateRow.add(
