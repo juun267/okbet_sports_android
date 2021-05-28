@@ -25,6 +25,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.Bank
+import org.cxct.sportlottery.network.money.config.Detail
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MoneyManager
@@ -156,7 +158,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun updateSelectedBank(bank: MoneyRechCfg.Bank) {
+    private fun updateSelectedBank(bank: Bank) {
         tv_bank_name.text = bank.name
         iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(bank.name ?: ""))
     }
@@ -311,7 +313,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         }
     }
 
-    private fun setCryptoProtocol(protocol: MoneyRechCfg.DetailList?) {
+    private fun setCryptoProtocol(protocol: Detail?) {
         protocol?.contract?.let { sv_protocol.selectedText = it }
     }
 
@@ -415,7 +417,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     }
 }
 
-class BankSelectorAdapter(private val context: Context, private val dataList: List<MoneyRechCfg.Bank>, private val listener: BankSelectorAdapterListener) : BaseAdapter() {
+class BankSelectorAdapter(
+    private val context: Context,
+    private val dataList: List<Bank>,
+    private val listener: BankSelectorAdapterListener
+) : BaseAdapter() {
     private var selectedPosition = 0
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -443,7 +449,7 @@ class BankSelectorAdapter(private val context: Context, private val dataList: Li
         return convertView
     }
 
-    private fun setupView(holder: ListViewHolder, data: MoneyRechCfg.Bank, position: Int) {
+    private fun setupView(holder: ListViewHolder, data: Bank, position: Int) {
         holder.apply {
             tvBank?.text = data.name
             ivBankIcon?.setImageResource(MoneyManager.getBankIconByBankName(data.name ?: ""))
@@ -493,8 +499,8 @@ class ListViewHolder {
     var llSelectBankCard: LinearLayout? = null
 }
 
-class BankSelectorAdapterListener(private val selectListener: (item: MoneyRechCfg.Bank) -> Unit) {
-    fun onSelect(item: MoneyRechCfg.Bank) = selectListener(item)
+class BankSelectorAdapterListener(private val selectListener: (item: Bank) -> Unit) {
+    fun onSelect(item: Bank) = selectListener(item)
 }
 
 //虛擬幣 協議/渠道選擇
@@ -506,7 +512,7 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
         var selectedPosition = 0
     }
 
-    var dataList = listOf<MoneyRechCfg.DetailList>()
+    var dataList = listOf<Detail>()
         set(value) {
             field = value
             dataCheckedList = MutableList(value.size) { it == 0 }
@@ -530,7 +536,12 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
     }
 
     class ThirdGamesItemViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, dataList: List<MoneyRechCfg.DetailList>, position: Int, selectedListener: OnSelectProtocol) {
+        fun bind(
+            adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,
+            dataList: List<Detail>,
+            position: Int,
+            selectedListener: OnSelectProtocol
+        ) {
             val data = dataList[position]
             val itemChecked = dataCheckedList[position]
             itemView.apply {
@@ -579,6 +590,6 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
 
 }
 
-class OnSelectProtocol(val selectedListener: (protocol: MoneyRechCfg.DetailList) -> Unit) {
-    fun onSelected(protocol: MoneyRechCfg.DetailList) = selectedListener(protocol)
+class OnSelectProtocol(val selectedListener: (protocol: Detail) -> Unit) {
+    fun onSelected(protocol: Detail) = selectedListener(protocol)
 }

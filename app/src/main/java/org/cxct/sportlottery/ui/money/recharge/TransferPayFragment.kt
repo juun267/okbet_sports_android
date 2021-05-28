@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
@@ -49,11 +50,11 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
-    private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
+    private var mSelectRechCfgs: RechCfg? = null //選擇的入款帳號
 
     private val mBottomSheetList = mutableListOf<BtsRvAdapter.SelectBank>()
 
-    private var rechCfgsList = mutableListOf<MoneyRechCfg.RechConfig>()
+    private var rechCfgsList = mutableListOf<RechCfg>()
 
     private lateinit var bankBottomSheet: BottomSheetDialog
 
@@ -237,7 +238,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //支付類型的入款帳號清單
         rechCfgsList = (viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType
-        } ?: mutableListOf()) as MutableList<MoneyRechCfg.RechConfig>
+        } ?: mutableListOf()) as MutableList<RechCfg>
 
         var count = 1
 
@@ -315,7 +316,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     }
 
     //依據選擇的支付渠道，刷新UI
-    private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
+    private fun refreshSelectRechCfgs(selectRechCfgs: RechCfg?) {
         //姓名
         tv_name.text = selectRechCfgs?.payeeName
 

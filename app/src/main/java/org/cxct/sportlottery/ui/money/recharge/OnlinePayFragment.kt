@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.OnlineType
+import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
@@ -24,13 +25,13 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
-    private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
+    private var mSelectRechCfgs: RechCfg? = null //選擇的入款帳號
 
     private val mBankList: MutableList<BtsRvAdapter.SelectBank> by lazy {
         mutableListOf()
     }
 
-    private var rechCfgsList: List<MoneyRechCfg.RechConfig> = mutableListOf()
+    private var rechCfgsList: List<RechCfg> = mutableListOf()
 
     private var payRoadSpannerList = mutableListOf<BtsRvAdapter.SelectBank>()
 
@@ -136,7 +137,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         setupRebateFee()
     }
 
-    private fun refreshPayBank(rechCfgsList: MoneyRechCfg.RechConfig?) {
+    private fun refreshPayBank(rechCfgsList: RechCfg?) {
         mBankList.clear()
         rechCfgsList?.banks?.forEach {
             val data =

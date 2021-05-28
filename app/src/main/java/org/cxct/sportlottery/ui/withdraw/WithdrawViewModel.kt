@@ -18,6 +18,8 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.Detail
+import org.cxct.sportlottery.network.money.config.UwType
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.*
@@ -143,19 +145,19 @@ class WithdrawViewModel(
     private var _moneyCardExist = MutableLiveData<Set<MoneyCardExist>>()
 
     //可被增加的虛擬幣卡列表
-    val addCryptoCardList: LiveData<List<MoneyRechCfg.DetailList>>
+    val addCryptoCardList: LiveData<List<Detail>>
         get() = _addCryptoCardList
-    private var _addCryptoCardList = MutableLiveData<List<MoneyRechCfg.DetailList>>()
+    private var _addCryptoCardList = MutableLiveData<List<Detail>>()
 
     //判斷Tab是不是要顯示
     private var _withdrawTabIsShow = MutableLiveData<Event<Boolean>>()
     val withdrawSystemOperation: LiveData<Event<Boolean>>
         get() = _withdrawTabIsShow
 
-    private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
+    private var uwBankType: UwType? = null
 
     //資金卡片config
-    private var cardConfig: MoneyRechCfg.DetailList? = null
+    private var cardConfig: Detail? = null
 
     private var dealType: TransferType = TransferType.BANK
 
