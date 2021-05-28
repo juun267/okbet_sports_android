@@ -41,7 +41,7 @@ class MoneyTransferViewModel(
     private val allPlat = "ALL_PLAT"
     val platCode = "CG"
 
-    val statusList = androidContext.resources.getStringArray(R.array.recharge_state_array).map {
+    val statusList = androidContext.resources.getStringArray(R.array.transfer_state_array).map {
         when (it) {
             androidContext.getString(R.string.recharge_state_processing) -> {
                 StatusSheetData(Status.PROCESSING.code.toString(), it)

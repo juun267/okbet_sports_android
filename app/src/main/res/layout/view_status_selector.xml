@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="44dp"
     android:background="@color/colorWhite"
-    android:paddingHorizontal="5dp">
+    android:paddingHorizontal="5dp"
+    tools:context=".ui.component.StatusSelectorView">
 
     <TextView
         android:id="@+id/tv_selected"
@@ -21,7 +22,7 @@
         app:autoSizeMinTextSize="@dimen/textSize8sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="全部订单状态123123123" />
+        tools:text="@string/all_order_status" />
 
     <ImageView
         android:id="@+id/img_arrow"
@@ -30,8 +31,8 @@
         android:layout_marginHorizontal="10dp"
         android:src="@drawable/ic_arrow_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_selected"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/tv_selected"
         app:layout_constraintTop_toTopOf="@id/tv_selected" />
 

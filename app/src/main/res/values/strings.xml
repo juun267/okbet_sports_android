@@ -577,7 +577,7 @@
     <string name="recharge_state_success">成功</string>
     <string name="recharge_state_failed">失败</string>
     <string name="recharge_state_processing">处理中</string>
-    <string name="recharge_state_all">全部订单状态</string>
+    <string name="all_order_status">全部订单状态</string>
 
     <string name="recharge_channel_all">全部渠道类型</string>
     <string name="recharge_channel_online">在线支付</string>
@@ -595,7 +595,6 @@
 
     <string name="withdraw_log_withdraw_amount">提款金额</string>
 
-    <string name="withdraw_log_state_all">全部订单状态</string>
     <string name="withdraw_log_state_processing">处理中</string>
     <string name="withdraw_log_state_pass">通过</string>
     <string name="withdraw_log_state_un_pass">未通过</string>
@@ -688,7 +687,6 @@
     <string name="game_name">游戏名</string>
     <string name="all_out_plat">全部转出</string>
     <string name="all_in_plat">全部转入</string>
-    <string name="all_transfer_status">全部状态</string>
     <string name="write_suggestion">填写建议</string>
     <string name="can_input_1_to_500_word">可输入1–500字</string>
     <string name="must_fill_this_column">此栏位为必填栏位</string>
