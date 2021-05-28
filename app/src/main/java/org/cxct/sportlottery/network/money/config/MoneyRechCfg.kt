@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.money.config
 
 
 class MoneyRechCfg {
-    enum class Switch(val code: Int) { ON(1), CLOSE(0) }
+    enum class Switch(val code: Int) { ON(1) }
 }
 
 /**
