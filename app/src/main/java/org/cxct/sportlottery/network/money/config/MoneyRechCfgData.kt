@@ -1,7 +1,8 @@
-package org.cxct.sportlottery.network.money
+package org.cxct.sportlottery.network.money.config
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.money.MoneyRechCfg
 
 //TODO : 與MoneyRechCfg重複, 需整理移除冗余
 @JsonClass(generateAdapter = true)

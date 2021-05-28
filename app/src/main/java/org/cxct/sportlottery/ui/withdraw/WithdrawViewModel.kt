@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.MoneyRechCfg
-import org.cxct.sportlottery.network.money.MoneyRechCfgData
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult

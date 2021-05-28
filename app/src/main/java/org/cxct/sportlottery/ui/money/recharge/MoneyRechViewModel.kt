@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.*
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.*

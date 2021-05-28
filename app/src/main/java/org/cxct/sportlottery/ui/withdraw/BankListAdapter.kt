@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.content_rv_bank_list_new_no_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.MoneyRechCfg
-import org.cxct.sportlottery.network.money.MoneyRechCfgData
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.MoneyManager

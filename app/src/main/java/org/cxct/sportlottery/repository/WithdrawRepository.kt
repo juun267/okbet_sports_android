@@ -10,7 +10,7 @@ import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.my.BankMyResult
-import org.cxct.sportlottery.network.money.MoneyRechCfgResult
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.TransferType
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
