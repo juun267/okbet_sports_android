@@ -37,4 +37,8 @@
     <string name="keyboard_code_plus_100">-100</string>
     <string name="keyboard_code_plus_1000">-1000</string>
     <string name="keyboard_code_plus_10000">-10000</string>
+
+    <!--Time-->
+    <string name="time_null">--:--</string>
+
 </resources>

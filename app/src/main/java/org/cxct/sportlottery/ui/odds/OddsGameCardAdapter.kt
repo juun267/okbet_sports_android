@@ -104,7 +104,7 @@ class OddsGameCardAdapter(
             stopTimer()
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
                 when (matchClockCO.gameType) {
-                    "BK" -> {
+                    SportType.BASKETBALL.code -> {
                         if (matchClockCO.remainingTimeInPeriod != null || matchClockCO.remainingTimeInPeriod != -1) {
                             itemView.txv_time.text = TimeUtil.timeFormat(
                                 matchClockCO.remainingTimeInPeriod?.times(1000L),
@@ -128,9 +128,9 @@ class OddsGameCardAdapter(
                             }, 1000L, 1000L)
                         }
                     }
-                    "FT" -> {
+                    SportType.FOOTBALL.code -> {
                         if (matchClockCO.matchTime == null) {
-                            itemView.txv_time.text = "--:--"
+                            itemView.txv_time.text = context?.getString(R.string.time_null).toString()
                         } else {
                             itemView.txv_time.text =
                                 TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
@@ -156,9 +156,9 @@ class OddsGameCardAdapter(
                 mTimerMap[adapterPosition] = timer
             } else {
                 when (matchClockCO?.gameType) {
-                    "BK" -> {
+                    SportType.BASKETBALL.code -> {
                         if (matchClockCO.remainingTimeInPeriod == null) {
-                            itemView.txv_time.text = "--:--"
+                            itemView.txv_time.text = context?.getString(R.string.time_null).toString()
                         } else {
                             itemView.txv_time.text = TimeUtil.timeFormat(
                                 matchClockCO.remainingTimeInPeriod?.times(1000L),
@@ -166,7 +166,7 @@ class OddsGameCardAdapter(
                             )
                         }
                     }
-                    "FT" -> {
+                    SportType.FOOTBALL.code -> {
                         itemView.txv_time.text =
                             TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
                     }
@@ -246,10 +246,10 @@ class OddsGameCardAdapter(
         }
 
         private fun setDefaultUI() {
-            if (itemView.txv_time.text == "" || itemView.txv_time.text == "--:--") {
+            if (itemView.txv_time.text == "" || itemView.txv_time.text == context?.getString(R.string.time_null).toString()) {
                 when (sportCode) {
                     SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
-                        itemView.txv_time.text = "--:--"
+                        itemView.txv_time.text = context?.getString(R.string.time_null).toString()
                     }
                     SportType.BADMINTON.code, SportType.TENNIS.code, SportType.VOLLEYBALL.code -> {
                         itemView.txv_time.text = ""
