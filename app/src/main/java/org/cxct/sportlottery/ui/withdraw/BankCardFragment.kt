@@ -22,9 +22,8 @@ import kotlinx.android.synthetic.main.fragment_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.iv_bank_icon
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.MoneyRechCfg
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
-import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.network.money.config.Bank
 import org.cxct.sportlottery.network.money.config.Detail
 import org.cxct.sportlottery.ui.base.BaseFragment

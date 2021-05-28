@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.money
+package org.cxct.sportlottery.network.money.config
 
 
 class MoneyRechCfg {
