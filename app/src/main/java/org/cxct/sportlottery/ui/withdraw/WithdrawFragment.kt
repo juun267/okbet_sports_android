@@ -178,8 +178,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
             val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
             
-            block_tab.visibility = View.VISIBLE
-
             when {
                 bankCardExist == true -> {
                     tab_bank_card.isChecked = true
@@ -193,6 +191,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     jumpToMoneyCardSetting()
                 }
             }
+        })
+        //Tab 顯示判斷
+        viewModel.withdrawSystemOperation.observe(this.viewLifecycleOwner, Observer {
+            isShow ->
+            if (isShow.getContentIfNotHandled() == true)
+                block_tab.visibility = View.VISIBLE
+            else
+                block_tab.visibility = View.GONE
         })
 
         //資金設定

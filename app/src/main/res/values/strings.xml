@@ -182,7 +182,7 @@
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">充值 1 元可获得 %1$s 点成长值</string>
+    <string name="hint_recharge_growth">充值 3 元可获得 %1$s 点成长值</string>
     <string name="hint_bet_growth">投注 1 元可获得 %1$s 点成长值</string>
 
     <!--  HelpCenter  -->
@@ -433,8 +433,8 @@
     <string name="error_recharge_amount">充值金额格式或数值错误</string>
     <string name="error_recharge_account">充值个数或数值错误</string>
     <string name="error_bank_id">银行卡号格式有错误</string>
-    <string name="error_hashcode">区块链交易ID格式或数值有错误</string>
-    <string name="error_name">您输入姓名不正确</string>
+    <string name="error_hashcode">区块链交易ID格式有错误</string>
+    <string name="error_name">您输入的姓名不正确</string>
     <string name="text_money_copy_success">复制成功</string>
 
     <string name="title_currency">协议/币种</string>

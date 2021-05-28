@@ -13,6 +13,7 @@ import com.stx.xhb.androidx.transformers.Transformer
 import kotlinx.android.synthetic.main.activity_vip.*
 import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_BET_ID
@@ -123,19 +124,26 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
     private fun userInfoUpdateView(userInfo: UserInfoData) {
         updateUserVipLevel(userInfo.testFlag, userInfo.userLevelId)
         setupViewByUserInfo(userInfo)
-        updateUserLevelBlock()
+        updateUserLevelBlock(userInfo)
         updateUserGrowthBar(userInfo)
     }
 
     private fun updateUserGrowthBar(userInfo: UserInfoData) {
-        if (verifyMaxLevel()) {
-            tv_requirement_amount.text = getString(R.string.level_max)
-            return
+        when (StaticData.getTestFlag(userInfo.testFlag)) {
+            TestFlag.GUEST -> {
+                tv_requirement_amount.text = String.format(getString(R.string.next_level_tips), "1")
+            }
+            else -> {
+                if (verifyMaxLevel()) {
+                    tv_requirement_amount.text = getString(R.string.level_max)
+                    return
+                }
+                val growthRequirement = getUpgradeGrowthRequirement()
+                val userGrowth = userInfo.growth?.toInt() ?: 0
+                val nextLevelRequirement = (growthRequirement - userGrowth).let { if (it < 0) 0 else it }.toLong()
+                tv_requirement_amount.text = String.format(getString(R.string.next_level_tips), nextLevelRequirement)
+            }
         }
-        val growthRequirement = getUpgradeGrowthRequirement()
-        val userGrowth = userInfo.growth?.toInt() ?: 0
-        val nextLevelRequirement = (growthRequirement - userGrowth).let { if (it < 0) 0 else it }.toLong()
-        tv_requirement_amount.text = String.format(getString(R.string.next_level_tips), nextLevelRequirement)
     }
 
     private fun verifyMaxLevel(): Boolean {
@@ -153,30 +161,41 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
     private fun setupViewByUserInfo(userInfo: UserInfoData) {
         userInfo.let { user ->
-            tv_greet.text = if (user.nickName.isNotEmpty()) user.nickName else (TextUtil.maskUserName(user.userName))
+            when (StaticData.getTestFlag(userInfo.testFlag)) {
+                TestFlag.GUEST -> {
+                    tv_greet.text = if ((user.fullName ?: "").isNotEmpty()) user.fullName else (TextUtil.maskUserName(user.fullName ?: ""))
+                }
+                else -> {
+                    tv_greet.text = if (user.nickName.isNotEmpty()) user.nickName else (TextUtil.maskUserName(user.userName))
+                }
+            }
         }
     }
-
     private fun updateUserVipLevel(testFlag: Long, levelId: Int) {
         userVipLevel = when (StaticData.getTestFlag(testFlag)) {
-            TestFlag.GUEST -> {
-                Level.values().first()
-            }
+            TestFlag.GUEST -> null
             else -> {
                 Level.values().find { it.levelRequirement.levelId == levelId }
             }
         }
     }
 
-    private fun updateUserLevelBlock() {
+    private fun updateUserLevelBlock(userInfo: UserInfoData) {
         userVipLevel?.apply {
-            tv_vip_name.text = levelRequirement.levelName
-            iv_vip.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, levelRequirement.levelTitleIcon))
+            when (StaticData.getTestFlag(userInfo.testFlag)) {
+                TestFlag.GUEST -> tv_vip_name.text = ""
+                else ->  tv_vip_name.text = levelRequirement.levelName
+            }
+            iv_vip.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this@VipActivity,
+                    levelRequirement.levelTitleIcon
+                )
+            )
             updateLevelBar(ordinal)
             banner_vip_level.bannerCurrentItem = ordinal
         }
     }
-
     private fun updateLevelBar(levelIndex: Int) {
         //0: VIP1, 1: VIP2 ...
         val level = levelIndex + 1
@@ -199,7 +218,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
 
     private fun setupBannerData() {
         banner_vip_level.apply {
-            val layoutParams: android.widget.LinearLayout.LayoutParams? =
+            val layoutParams: android.widget.LinearLayout.LayoutParams =
                 android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT, (ScreenUtil.getScreenWidth(this@VipActivity) / 2.5).toInt())
             setLayoutParams(layoutParams)
             setBannerData(R.layout.item_banner_member_level, setupBannerLevelRequirement())

@@ -76,6 +76,19 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.666" />
 
+            <TextView
+                android:id="@+id/tv_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_cs_other_3_list"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText,SpUsage" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_cs_other_2_list"
                 android:layout_width="wrap_content"
@@ -84,26 +97,13 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <TextView
-                android:id="@+id/tv_other"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="14dp"
-                android:gravity="center"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_odds"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="HardcodedText,SpUsage" />
-
-            <TextView
                 android:id="@+id/tv_odds"
                 style="@style/OddsButton"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="29dp"
+                android:layout_marginStart="18dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginEnd="29dp"
+                android:layout_marginEnd="18dp"
                 android:layout_marginBottom="5dp"
                 android:maxLines="1"
                 app:autoSizeMaxTextSize="@dimen/textSize15sp"

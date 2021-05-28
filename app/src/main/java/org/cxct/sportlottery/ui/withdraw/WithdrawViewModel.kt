@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 import java.math.RoundingMode
@@ -145,6 +146,11 @@ class WithdrawViewModel(
     val addCryptoCardList: LiveData<List<MoneyRechCfg.DetailList>>
         get() = _addCryptoCardList
     private var _addCryptoCardList = MutableLiveData<List<MoneyRechCfg.DetailList>>()
+
+    //判斷Tab是不是要顯示
+    private var _withdrawTabIsShow = MutableLiveData<Event<Boolean>>()
+    val withdrawSystemOperation: LiveData<Event<Boolean>>
+        get() = _withdrawTabIsShow
 
     private var uwBankType: MoneyRechCfg.UwTypeCfg? = null
 
@@ -327,10 +333,17 @@ class WithdrawViewModel(
                 doNetwork(androidContext) {
                     moneyRepository.getRechCfg()
                 }?.let { result ->
-                    result.rechCfg?.let {
-                        uwBankType = it.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
-                        _rechargeConfigs.value = it
+                    result.rechCfg?.let { moneyRechCfgData ->
+                        uwBankType = moneyRechCfgData.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
+                        _rechargeConfigs.value = moneyRechCfgData
                         getWithdrawCardList()
+                        //判斷Tab要不要顯示
+                        val withdrawConfig = moneyRechCfgData.uwTypes
+                        val bankWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
+                        val cryptoWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
+                        val operation = bankWithdrawSystemOperation && cryptoWithdrawSystemOperation
+                        _withdrawTabIsShow.value = Event(operation)
+
                     }
                 }
             }

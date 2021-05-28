@@ -123,7 +123,6 @@
                                 android:id="@+id/tv_vip_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="@string/member_name_level_one"
                                 android:textColor="@color/colorBlueDark"
                                 android:textSize="@dimen/textSize14sp"
                                 android:textStyle="bold"
