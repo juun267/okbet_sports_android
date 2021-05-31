@@ -7,7 +7,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyAddResult
-import org.cxct.sportlottery.network.money.MoneyRechCfgResult
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import retrofit2.Response
 
 class MoneyRepository(private val userInfoDao: UserInfoDao) {

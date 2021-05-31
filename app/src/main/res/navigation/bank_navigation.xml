@@ -19,7 +19,7 @@
                 app:nullable="true" />
             <argument
                 android:name="transferType"
-                app:argType="org.cxct.sportlottery.network.money.TransferType" />
+                app:argType="org.cxct.sportlottery.network.money.config.TransferType" />
             <argument
                 android:name="transferTypeAddSwitch"
                 android:defaultValue="@null"
@@ -39,7 +39,7 @@
             app:nullable="true" />
         <argument
             android:name="transferType"
-            app:argType="org.cxct.sportlottery.network.money.TransferType" />
+            app:argType="org.cxct.sportlottery.network.money.config.TransferType" />
         <argument
             android:name="transferTypeAddSwitch"
             android:defaultValue="@null"
