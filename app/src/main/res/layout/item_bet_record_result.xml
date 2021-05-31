@@ -53,13 +53,11 @@
                 android:id="@+id/tv_order_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:gravity="center"
-                android:maxEms="11"
                 android:text="@{row.orderNo}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="b0000036120 91822030128" />
+                tools:text="b000003612091822030128" />
 
         </LinearLayout>
 
