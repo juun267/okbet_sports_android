@@ -67,10 +67,7 @@ class InfoCenterRepository {
                         }
 
                         _unreadList.value = moreUnreadList
-
-                        _unreadNoticeList.postValue(it.infoCenterData.filter { infoCenterData ->
-                            infoCenterData.isRead == MsgType.NOTICE_UNREAD.code
-                        })
+                        _unreadNoticeList.value = moreUnreadList
 
                         _totalUnreadMsgCount.postValue(it.total ?: 0)
                     }
@@ -99,6 +96,10 @@ class InfoCenterRepository {
             }
             noticeList?.remove(noticeRead)
             _unreadList.postValue(noticeList?.toList() ?: listOf())
+
+            _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
+
+            Timber.w("Bill====>setMsgRead,size:${noticeList?.size},noticeList:${noticeList?.toList() ?: listOf()}")
         }
 
         return response
@@ -125,6 +126,7 @@ class InfoCenterRepository {
     }
 
     fun setUserNoticeList(userNoticeList: List<UserNotice>) {
+
         val noticeList = _unreadNoticeList.value?.toMutableList()
         val unreadUserNoticeList = userNoticeList.map {
             InfoCenterData(
@@ -156,6 +158,10 @@ class InfoCenterRepository {
 
     fun clear() {
         _unreadNoticeList.postValue(listOf())
+    }
+
+    fun clearList() {
+        _unreadList.postValue(listOf())
         _readedList.postValue(listOf())
     }
 }
