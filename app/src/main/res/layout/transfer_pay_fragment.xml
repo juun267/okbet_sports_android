@@ -349,7 +349,7 @@
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cvHint="@string/edt_hint_real_name"
+            app:cvHint="@string/edt_hint_check_real_name"
             app:cvInputType="text"
             app:cvTitle="@string/title_real_name" />
 
