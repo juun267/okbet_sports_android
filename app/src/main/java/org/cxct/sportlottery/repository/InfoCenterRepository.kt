@@ -99,7 +99,6 @@ class InfoCenterRepository {
 
             _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
 
-            Timber.w("Bill====>setMsgRead,size:${noticeList?.size},noticeList:${noticeList?.toList() ?: listOf()}")
         }
 
         return response
