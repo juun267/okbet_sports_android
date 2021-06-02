@@ -163,6 +163,7 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
                     visibility = View.INVISIBLE
                     setOnClickListener(object : OnForbidClickListener() {
                         override fun forbidClick(view: View?) {
+                            hideSoftKeyboard(this@BaseOddButtonActivity)
                             oddListDialog?.show(
                                 supportFragmentManager,
                                 BaseOddButtonActivity::class.java.simpleName
