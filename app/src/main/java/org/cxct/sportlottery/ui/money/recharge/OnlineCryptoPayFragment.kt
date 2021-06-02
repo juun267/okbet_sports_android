@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.online_crypto_pay_fragment.txv_currency
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
@@ -35,9 +35,9 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
     private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
 
-    private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
+    private var mSelectRechCfgs: RechCfg? = null //選擇的入款帳號
 
-    private var rechCfgsList: List<MoneyRechCfg.RechConfig> = mutableListOf()
+    private var rechCfgsList: List<RechCfg> = mutableListOf()
 
     //幣種
     private lateinit var currencyBottomSheet: BottomSheetDialog
@@ -51,7 +51,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
     private var CurrentCurrency = ""
 
-    private var filterRechCfgsList = HashMap<String?,ArrayList<MoneyRechCfg.RechConfig>>()
+    private var filterRechCfgsList = HashMap<String?, ArrayList<RechCfg>>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,16 +69,17 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         setCurrencyBottomSheet()
         setAccountBottomSheet()
     }
+
     //幣種選項
     private fun initBottomSheetData() {
         rechCfgsList = (viewModel.rechargeConfigs.value?.rechCfgs?.filter {
-            it.rechType == mMoneyPayWay?.rechType && it.onlineType ==  mMoneyPayWay?.onlineType
-        } ?: mutableListOf()) as MutableList<MoneyRechCfg.RechConfig>
+            it.rechType == mMoneyPayWay?.rechType && it.onlineType == mMoneyPayWay?.onlineType
+        } ?: mutableListOf()) as MutableList<RechCfg>
 
         //幣種
         if (mMoneyPayWay?.rechType == RechType.ONLINEPAYMENT.code) {
             filterRechCfgsList =
-                rechCfgsList.groupBy { it.prodName } as HashMap<String?, ArrayList<MoneyRechCfg.RechConfig>>
+                rechCfgsList.groupBy { it.prodName } as HashMap<String?, ArrayList<RechCfg>>
             filterRechCfgsList.forEach {
                 val selectCurrency = BtsRvAdapter.SelectBank(
                     it.key.toString(),
@@ -245,7 +246,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
 
     //依據選擇的支付渠道，刷新UI
     @SuppressLint("SetTextI18n")
-    private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
+    private fun refreshSelectRechCfgs(selectRechCfgs: RechCfg?) {
         try {
             //匯率
             tv_rate.text = String.format(

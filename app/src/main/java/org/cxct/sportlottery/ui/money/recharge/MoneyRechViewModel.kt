@@ -10,8 +10,10 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
-import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.*
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
+import org.cxct.sportlottery.network.money.config.RechCfg
+import org.cxct.sportlottery.network.money.config.RechType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.*
@@ -138,13 +140,13 @@ class MoneyRechViewModel(
     }
 
     //篩選List要顯示的資料
-    private fun filterBankList(rechTypesList: List<MoneyRechCfg.RechType>, rechConfigList: List<MoneyRechCfg.RechConfig>) {
+    private fun filterBankList(rechTypesList: List<RechType>, rechConfigList: List<RechCfg>) {
         try {
             val onlineData: MutableList<MoneyPayWayData> = mutableListOf()
             val transferData: MutableList<MoneyPayWayData> = mutableListOf()
 
             //篩選，後台有開"且"使用者有權限的充值方式
-            val filterRechargeDataList = mutableListOf<MoneyRechCfg.RechConfig>()
+            val filterRechargeDataList = mutableListOf<RechCfg>()
             rechTypesList.forEach { rechTypes ->
                 rechConfigList.forEach { rechConfig ->
                     if (rechTypes.value == rechConfig.rechType) {
@@ -156,8 +158,8 @@ class MoneyRechViewModel(
             val dataList: MutableList<MoneyPayWayData> = mutableListOf()
             MoneyManager.getMoneyPayWayList()?.forEach { moneyPayWay ->
                 if (filterRechargeDataList.firstOrNull {
-                        it.rechType == RechType.ONLINEPAYMENT.code && it.onlineType == moneyPayWay.onlineType
-                                || it.rechType != RechType.ONLINEPAYMENT.code && it.rechType == moneyPayWay.rechType
+                        it.rechType == org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code && it.onlineType == moneyPayWay.onlineType
+                                || it.rechType != org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code && it.rechType == moneyPayWay.rechType
                     } != null) {
                     dataList.add(moneyPayWay)
                 }
@@ -165,7 +167,9 @@ class MoneyRechViewModel(
 
             dataList.forEach {
                 when (it.rechType) {
-                    RechType.ONLINEPAYMENT.code -> onlineData.add(it)
+                    org.cxct.sportlottery.network.common.RechType.ONLINEPAYMENT.code -> onlineData.add(
+                        it
+                    )
                     else -> transferData.add(it)
                 }
             }
@@ -179,7 +183,11 @@ class MoneyRechViewModel(
     }
 
     //充值頁面[轉帳充值]-[按鈕]提交申請
-    fun rechargeSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
+    fun rechargeSubmit(
+        moneyAddRequest: MoneyAddRequest,
+        rechType: String?,
+        rechConfig: RechCfg?
+    ) {
         checkAll(moneyAddRequest, rechType, rechConfig)
         if (checkTransferPayInput()) {
             rechargeAdd(moneyAddRequest)
@@ -187,7 +195,11 @@ class MoneyRechViewModel(
     }
 
     //充值頁面[虛擬幣充值]-[按鈕]提交申請
-    fun rechargeCryptoSubmit(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
+    fun rechargeCryptoSubmit(
+        moneyAddRequest: MoneyAddRequest,
+        rechType: String?,
+        rechConfig: RechCfg?
+    ) {
         checkAll(moneyAddRequest, rechType, rechConfig)
         if (checkTransferPayCryptoInput()) {
             rechargeAdd(
@@ -213,6 +225,7 @@ class MoneyRechViewModel(
             }
         }
     }
+
     //轉帳支付 - 虛擬幣充值 最後顯示的RMB要自己換算
     private fun rechargeAdd(moneyAddRequest: MoneyAddRequest, rechargeMoney:String) {
         if (checkTransferPayInput()) {
@@ -228,7 +241,12 @@ class MoneyRechViewModel(
     }
 
     //在線支付 - 一般充值
-    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: String, bankCode: String?) {
+    fun rechargeOnlinePay(
+        context: Context,
+        mSelectRechCfgs: RechCfg?,
+        depositMoney: String,
+        bankCode: String?
+    ) {
         checkRcgOnlineAmount(depositMoney, mSelectRechCfgs)
         if (onlinePayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
@@ -246,7 +264,13 @@ class MoneyRechViewModel(
     }
 
     //在線支付 - 虛擬幣充值
-    fun rechargeOnlinePay(context: Context, mSelectRechCfgs: MoneyRechCfg.RechConfig?, depositMoney: String, payee: String?,payeeName: String?) {
+    fun rechargeOnlinePay(
+        context: Context,
+        mSelectRechCfgs: RechCfg?,
+        depositMoney: String,
+        payee: String?,
+        payeeName: String?
+    ) {
         checkRcgOnlineAccount(depositMoney, mSelectRechCfgs)
         if (onlineCryptoPayInput()) {
             var url = Constants.getBaseUrl() + USER_RECHARGE_ONLINE_PAY
@@ -265,7 +289,11 @@ class MoneyRechViewModel(
     }
 
     //轉帳支付 - 送出前判斷全部
-    private fun checkAll(moneyAddRequest: MoneyAddRequest, rechType: String?, rechConfig: MoneyRechCfg.RechConfig?) {
+    private fun checkAll(
+        moneyAddRequest: MoneyAddRequest,
+        rechType: String?,
+        rechConfig: RechCfg?
+    ) {
         when (rechType) {
             MoneyType.BANK_TYPE.code, MoneyType.CTF_TYPE.code -> {
                 checkUserName(MoneyType.BANK_TYPE.code,moneyAddRequest.payerName)
@@ -288,7 +316,7 @@ class MoneyRechViewModel(
     }
 
     //充值金額驗證
-    fun checkRechargeAmount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+    fun checkRechargeAmount(rechargeAmount: String, rechConfig: RechCfg?) {
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAmountMsg.value = when {
@@ -309,7 +337,7 @@ class MoneyRechViewModel(
     }
 
     //充值個數驗證
-    fun checkRechargeAccount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+    fun checkRechargeAccount(rechargeAmount: String, rechConfig: RechCfg?) {
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAccountMsg.value = when {
@@ -330,7 +358,7 @@ class MoneyRechViewModel(
     }
 
     //在線充值金額
-    fun checkRcgOnlineAmount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+    fun checkRcgOnlineAmount(rechargeAmount: String, rechConfig: RechCfg?) {
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeOnlineAmountMsg.value = when {
@@ -351,7 +379,10 @@ class MoneyRechViewModel(
     }
 
     //在線充值 虛擬幣充值個數認證
-    private fun checkRcgOnlineAccount(rechargeAmount: String, rechConfig: MoneyRechCfg.RechConfig?) {
+    private fun checkRcgOnlineAccount(
+        rechargeAmount: String,
+        rechConfig: RechCfg?
+    ) {
         val channelMinMoney = rechConfig?.minMoney?.toLong() ?: 0
         val channelMaxMoney = rechConfig?.maxMoney?.toLong()
         _rechargeAccountMsg.value = when {
@@ -492,7 +523,7 @@ class MoneyRechViewModel(
             return false
         return true
     }
-    
+
     private fun checkTransferPayCryptoInput(): Boolean {
         if (!rechargeAccountMsg.value.isNullOrEmpty())
             return false
@@ -549,12 +580,19 @@ class MoneyRechViewModel(
             else -> ""
         }
     }
+
     //轉帳充值帳戶選單名稱
     fun getPayTypeName(rechType: String?): String {
         return when (rechType) {
-            RechType.ALIPAY.code -> androidContext.resources.getString(R.string.title_alipay)
-            RechType.WX.code  -> androidContext.resources.getString(R.string.title_weixin)
-            RechType.CFT.code  -> androidContext.resources.getString(R.string.title_cft)
+            org.cxct.sportlottery.network.common.RechType.ALIPAY.code -> androidContext.resources.getString(
+                R.string.title_alipay
+            )
+            org.cxct.sportlottery.network.common.RechType.WX.code -> androidContext.resources.getString(
+                R.string.title_weixin
+            )
+            org.cxct.sportlottery.network.common.RechType.CFT.code -> androidContext.resources.getString(
+                R.string.title_cft
+            )
             else -> ""
         }
     }

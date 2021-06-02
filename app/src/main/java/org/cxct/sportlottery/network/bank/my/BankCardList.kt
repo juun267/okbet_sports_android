@@ -5,7 +5,7 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
-import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.TransferType
 
 @Parcelize
 @JsonClass(generateAdapter = true)

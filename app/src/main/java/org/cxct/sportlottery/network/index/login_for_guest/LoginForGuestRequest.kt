@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.network.index.login_for_guest
 
-import android.os.Build
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

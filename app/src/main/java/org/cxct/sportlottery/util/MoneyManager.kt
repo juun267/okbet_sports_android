@@ -8,7 +8,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.TransferType
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.home_game_table.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO

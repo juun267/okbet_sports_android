@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_register.*
 import org.cxct.sportlottery.R
@@ -197,9 +196,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             et_verification_code.visibility = View.GONE
         }
 
-        et_verification_code.setVerificationCodeBtnOnClickListener(View.OnClickListener {
+        et_verification_code.setVerificationCodeBtnOnClickListener {
             updateValidCode()
-        })
+        }
     }
 
     private fun setupSmsValidCode() {
@@ -292,7 +291,6 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun updateValidCode() {
-        //TODO review structure
         viewModel.getValidCode()
         et_verification_code.setText(null)
     }
@@ -310,19 +308,19 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun initObserve() {
 
-        viewModel.registerResult.observe(this, Observer {
+        viewModel.registerResult.observe(this, {
             updateUiWithResult(it)
         })
 
-        viewModel.validCodeResult.observe(this, Observer {
+        viewModel.validCodeResult.observe(this, {
             updateUiWithResult(it)
         })
 
-        viewModel.smsResult.observe(this, Observer {
+        viewModel.smsResult.observe(this, {
             updateUiWithResult(it)
         })
 
-        viewModel.loginForGuestResult.observe(this, Observer {
+        viewModel.loginForGuestResult.observe(this, {
             updateUiWithResult(it)
         })
 

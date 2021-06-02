@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
@@ -157,11 +156,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initObserve() {
         //第三方遊戲清單
-        viewModel.gameCateDataList.observe(viewLifecycleOwner, Observer {
+        viewModel.gameCateDataList.observe(viewLifecycleOwner, {
             updateInPlayUI(it)
         })
 
-        viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, Observer {
+        viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 updateInPlayUI(result)
             }
@@ -175,11 +174,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun observeSocketData() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
             drawer_in_play.setMatchStatusData(it?.matchStatusCO)
         })
 
-        receiver.matchClock.observe(viewLifecycleOwner, Observer {
+        receiver.matchClock.observe(viewLifecycleOwner, {
             drawer_in_play.setMatchClockData(it?.matchClockCO)
         })
     }
@@ -264,7 +263,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
             override fun onClick(select: GameEntity) {
                 scroll_view.smoothScrollTo(0, 0)
-                navOddsDetailFragment(MatchType.TODAY, select.code, select.match?.id)
+                navOddsDetailFragment(select.code, select.match?.id)
 
             }
         })
@@ -308,9 +307,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun navOddsDetailFragment(
-        matchType: MatchType,
         sportTypeCode: String?,
-        matchId: String?
+        matchId: String?,
+        matchType: MatchType = MatchType.TODAY,
     ) {
         val sportType = when (sportTypeCode) {
             SportType.BASKETBALL.code -> SportType.BASKETBALL
