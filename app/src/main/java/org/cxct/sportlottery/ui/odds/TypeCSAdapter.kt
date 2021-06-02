@@ -11,13 +11,13 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 
 class TypeCSAdapter(
+    private val isLongest: Boolean,
     private val oddsDetail: OddsDetailListData,
     private val oddsList: List<Odd>,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType
-) :
-    RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,13 +31,18 @@ class TypeCSAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsList[position])
+        holder.bindModel(position, oddsList[position])
     }
 
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
 
-        fun bindModel(odd: Odd) {
+        fun bindModel(position: Int, odd: Odd) {
+            if (isLongest && position == itemCount - 1) {
+                itemView.findViewById<View>(R.id.divider).visibility = View.GONE
+            } else {
+                itemView.findViewById<View>(R.id.divider).visibility = View.VISIBLE
+            }
             setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_BOTTOM, oddsType)
 
             //波坦玩法在顯示上面 spread 位置內容用 name 取代
