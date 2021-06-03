@@ -73,7 +73,7 @@ class InfoCenterViewModel(
                 }
             }
             mIsReadNextRequestPage = 1
-            infoCenterRepository.clear()
+            infoCenterRepository.clearList()
         }
         when (dataType) {
             DataType.UNREAD -> {

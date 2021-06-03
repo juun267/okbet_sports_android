@@ -244,7 +244,7 @@ class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
                 getString(R.string.no_value)
             }
             requirement == null -> ""
-            else -> "$requirement ${getString(R.string.level_requirement_unit)}"
+            else -> "$requirement"
         }
     }
 
