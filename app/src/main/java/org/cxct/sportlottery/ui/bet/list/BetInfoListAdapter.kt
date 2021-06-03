@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -72,6 +73,12 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         return betInfoList.size
     }
 
+    //20210603 紀錄問題：修正 notifyDataSetChanged() 造成 EditText focus 錯亂問題
+    //https://blog.csdn.net/chenli_001/article/details/114752021
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
@@ -82,8 +89,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
         var inputError: Boolean = false
 
-        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd) {
-
+        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd?) {
             if (TextUtils.isEmpty(it)) {
                 binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
                 binding.betInfoAction.tv_bet_quota.text = "0.000"
@@ -97,12 +103,12 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             } else {
                 val quota = it.toLong()
                 when {
-                    quota > parlayOdd.max -> {
+                    quota > parlayOdd?.max ?: 0 -> {
                         inputError = true
                         binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit)
                         binding.etBet.setBackgroundResource(R.drawable.bg_radius_4_edittext_error)
                     }
-                    quota < parlayOdd.min -> {
+                    quota < parlayOdd?.min ?: 0 -> {
                         inputError = true
                         binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit)
                         binding.etBet.setBackgroundResource(R.drawable.bg_radius_4_edittext_error)
@@ -161,7 +167,6 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
 
         fun bind(position: Int) {
-
             /* fix focus */
             if (binding.etBet.tag is TextWatcher) {
                 binding.etBet.removeTextChangedListener(binding.etBet.tag as TextWatcher)
@@ -222,14 +227,15 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 } else matchOdd.playCateName
 
             binding.etBet.setText(data.input)
-            parlayOdd?.let {
-                check(binding.etBet.text.toString(), matchOdd, parlayOdd)
-            }
+
+            check(binding.etBet.text.toString(), matchOdd, parlayOdd)
 
             /* check input focus */
             if (position == focusPosition) {
                 binding.etBet.requestFocus()
                 binding.etBet.setSelection(binding.etBet.text.length)
+            } else {
+                binding.etBet.clearFocus()
             }
 
             /* set listener */
@@ -250,20 +256,19 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             }
 
             val fc = View.OnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    focusPosition = position
-                    binding.etBet.requestFocus()
-                } else {
+                if (hasFocus && position != focusPosition)
                     binding.etBet.clearFocus()
-                }
             }
 
             binding.etBet.onFocusChangeListener = fc
             binding.etBet.addTextChangedListener(tw)
             binding.etBet.tag = tw
 
-            binding.etBet.setOnTouchListener { _, _ ->
-                onItemClickListener.onShowKeyboard(binding.etBet, matchOdd)
+            binding.etBet.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    focusPosition = position
+                    onItemClickListener.onShowKeyboard(binding.etBet, matchOdd)
+                }
                 false
             }
 
