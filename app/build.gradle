@@ -60,7 +60,7 @@ android {
             applicationId "com.happysport.sl.test"
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "65670407e46038b18ee836ed", //JPush上注册的包名对应的appkey.
+                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
