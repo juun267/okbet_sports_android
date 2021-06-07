@@ -247,12 +247,31 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 SportType.TENNIS -> {
                     item.odds[PlayType.SET_HDP.code]
                 }
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.HDP_INCL_OT.code]
+                }
                 else -> {
                     item.odds[PlayType.HDP.code]
                 }
             }
-            val oddListOU = item.odds[PlayType.OU.code]
-            val oddList1x2 = item.odds[PlayType.X12.code]
+
+            val oddListOU = when (sportType) {
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.OU_INCL_OT.code]
+                }
+                else -> {
+                    item.odds[PlayType.OU.code]
+                }
+            }
+
+            val oddList1x2 = when (sportType) {
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.X12_INCL_OT.code]
+                }
+                else -> {
+                    item.odds[PlayType.X12.code]
+                }
+            }
 
             itemView.match_play_type_column1.text = when (sportType) {
                 SportType.FOOTBALL, SportType.BASKETBALL -> {
@@ -985,7 +1004,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
-            val oddList1X2 = item.odds[PlayType.X12.code]
+            val sportType = item.matchInfo?.sportType
+
+            val oddList1X2 = when (sportType) {
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.X12_INCL_OT.code]
+                }
+                else -> {
+                    item.odds[PlayType.X12.code]
+                }
+            }
 
             itemView.match_odd_1.apply {
                 playType = PlayType.X12
@@ -1042,6 +1070,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 betStatus = when {
+                    (sportType == SportType.BASKETBALL) -> {
+                        BetStatus.DEACTIVATED.code
+                    }
                     (oddList1X2 == null || oddList1X2.size < 3) -> {
                         BetStatus.LOCKED.code
                     }
