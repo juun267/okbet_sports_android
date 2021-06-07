@@ -1232,23 +1232,24 @@ class GameViewModel(
         betAddError: BetAddError
     ) {
         for (newItem in newList) {
-
             //每次都先把字串清空
             oldItem.betAddError = null
 
             try {
                 newItem.let {
                     if (it.id == oldItem.oddsId) {
-                        oldItem.oddState = getOddState(
-                            getOdds(
-                                oldItem,
-                                loginRepository.mOddsType.value ?: OddsType.EU
-                            ), newItem
-                        )
-                        newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
-                        newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
-                        newItem.status.let { status -> oldItem.status = status }
+                        if (betAddError == BetAddError.ODDS_HAVE_CHANGED) {
+                            oldItem.oddState = getOddState(
+                                getOdds(
+                                    oldItem,
+                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                ), newItem
+                            )
+                            newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
+                            newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                        }
 
+                        newItem.status.let { status -> oldItem.status = status }
                         oldItem.betAddError = betAddError
                     }
                 }
