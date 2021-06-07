@@ -13,5 +13,5 @@ data class Season(
     @Json(name = "name")
     val name: String,
     @Json(name = "start")
-    val start: String
+    val start: Long
 )

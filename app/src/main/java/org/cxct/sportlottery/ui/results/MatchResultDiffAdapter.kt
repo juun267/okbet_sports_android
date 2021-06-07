@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.results
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +29,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.matchresult.list.Match
 import org.cxct.sportlottery.network.matchresult.list.MatchStatus
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
-import java.text.SimpleDateFormat
-import java.util.*
+import org.cxct.sportlottery.util.TimeUtil
 
 class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickListener) : ListAdapter<MatchResultData, RecyclerView.ViewHolder>(MatchResultDiffCallBack()) {
     var gameType: String = ""
@@ -131,7 +131,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
         private fun setupData(itemView: View, gameType: String, item: MatchResultData) {
             itemView.apply {
-
                 titleArrowRotate(itemView, item)
 
                 tv_type.text = item.titleData?.name
@@ -154,7 +153,12 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
                     }
-                    else -> ""
+                    else -> {
+                        tv_first_half.visibility = View.GONE
+                        tv_second_half.visibility = View.GONE
+                        tv_end_game.visibility = View.GONE
+                        tv_full_game.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -186,7 +190,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
-        val bottomLine = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
             setupView(itemView, item)
@@ -225,7 +229,12 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
                     }
-                    else -> ""
+                    else -> {
+                        tv_first_half_score.visibility = View.GONE
+                        tv_second_half_score.visibility = View.GONE
+                        tv_end_game_score.visibility = View.GONE
+                        tv_full_game_score.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -239,14 +248,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 matchInfo?.let {
                     tv_home_name.text = matchInfo.homeName
                     tv_away_name.text = matchInfo.awayName
-
-                    //TODO Dean : 之後可以寫成Util
-                    val calendar = Calendar.getInstance()
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
-                    tv_time.text = dateFormat.format(matchInfo.startTime.let {
-                        calendar.timeInMillis = it.toLong()
-                        calendar.time
-                    })
+                    tv_time.text = TimeUtil.timeFormat(matchInfo.startTime, "yyyy-MM-dd HH:mm")
                 }
 
                 matchStatusList?.let {
@@ -261,19 +263,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                     tv_end_game_score.text = endGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                     tv_full_game_score.text = fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                 }
-
-
-/*                //判斷詳情展開或關閉
-                el_game_result_detail.setExpanded(mIsOpenList[position], false)
-
-                when (mIsOpenList[position]) {
-                    true -> {
-                        iv_switch.setImageResource(R.drawable.ic_more_on)
-                    }
-                    false -> {
-                        iv_switch.setImageResource(R.drawable.ic_more)
-                    }
-                }*/
             }
         }
 
@@ -298,7 +287,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
-        val bottomLine = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(data: List<MatchStatus>?) {
             setupFtDetailFirstItem(data)
@@ -661,6 +650,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             setupDetailItem(detailData)
         }
 
+        @SuppressLint("SetTextI18n")
         private fun setupDetailItem(detailData: MatchResultPlayList?) {
             itemView.apply {
                 tv_play_cate_name.text = "${detailData?.playCateName} ${detailData?.spread}"
