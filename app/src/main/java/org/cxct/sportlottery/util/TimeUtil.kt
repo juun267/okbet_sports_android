@@ -9,7 +9,6 @@ import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 object TimeUtil {
-    private const val TAG = "TimeUtil"
     private val ymdhmsFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     private val ymdFormat = SimpleDateFormat("yyyy-MM-dd")
 
@@ -26,12 +25,6 @@ object TimeUtil {
     }
 
     @JvmStatic
-    fun stampToDate(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm")
-        return simpleDateFormat.format(Date(time))
-    }
-
-    @JvmStatic
     fun stampToDateInOddsDetail(time: Long): String {
         val simpleDateFormat = SimpleDateFormat("MM/dd  HH:mm")
         return simpleDateFormat.format(Date(time))
@@ -43,84 +36,35 @@ object TimeUtil {
         return simpleDateFormat.format(Date(time))
     }
 
-    @JvmStatic
-    fun stampToDateHMS(time: Date): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-        return simpleDateFormat.format(time)
-    }
-
-    @JvmStatic
-    fun stampToTimeHMS(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("HH:mm:ss")
-        return simpleDateFormat.format(Date(time))
-    }
-
     fun stampToDateHMSTimeZone(time: Long): String {
         try {
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
-            val currentLocalTime = calendar.time
             //Android 6.0以下會Crash
             val timeZoneFormat: SimpleDateFormat?
             val timeZoneGTM: Int?
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 timeZoneFormat = SimpleDateFormat("Z")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
+                timeZoneGTM = timeZoneFormat.format(time).toInt()
             } else {
                 timeZoneFormat = SimpleDateFormat("X")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
+                timeZoneGTM = timeZoneFormat.format(time).toInt()
             }
-            return simpleDateFormat.format(Date(time)) + " (GMT+" + timeZoneGTM + ")"
-        }catch (e: Exception){
+            return timeFormat(time, "yyyy-MM-dd  HH:mm:ss") + " (GMT+" + timeZoneGTM + ")"
+        } catch (e: Exception) {
             e.printStackTrace()
             return ""
         }
     }
 
     fun stampToDateHMSTimeZone(time: Date): String {
-        try {
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
-            val currentLocalTime = calendar.time
-            //Android 6.0以下會Crash
-            val timeZoneFormat: SimpleDateFormat?
-            val timeZoneGTM: Int?
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                timeZoneFormat = SimpleDateFormat("Z")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
-            } else {
-                timeZoneFormat = SimpleDateFormat("X")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
-            }
-            return simpleDateFormat.format(time) + " (GMT+" + timeZoneGTM + ")"
-        }catch (e: Exception){
-            e.printStackTrace()
-            return ""
-        }
+        return stampToDateHMSTimeZone(time.time)
     }
 
-    @JvmStatic
-    fun dateToStamp(date: String): Long {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date).time
-    }
-
-    @JvmStatic
-    fun stampToDateTime(date: Date): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return simpleDateFormat.format(date)
-    }
-
-    @JvmStatic
-    fun timeFormat(
-        time: Long?,
-        format: String,
-        timeZone: TimeZone = TimeZone.getDefault()
-    ): String {
+    fun timeFormat(time: Long?, format: String, timeZone: TimeZone = TimeZone.getDefault()): String {
         var formattedTime = ""
         try {
             val dateFormat = SimpleDateFormat(format, Locale.getDefault())
             dateFormat.timeZone = timeZone
-            formattedTime = dateFormat.format(Date(time!!))
+            formattedTime = dateFormat.format(time)
         } catch (e: Exception) {
             Timber.e("解析日期失敗!!! \n$e")
             e.printStackTrace()
@@ -335,21 +279,13 @@ object TimeUtil {
 
         repeat(day) {
             calendar.add(Calendar.DATE, 1)
-            weekDateList.add(timeFormat(calendar.time.time, format))
+            weekDateList.add(timeFormat(calendar.timeInMillis, format))
         }
         return weekDateList
     }
 
     fun getRemainTime(timeStamp: Long): Long {
-        val calendar = Calendar.getInstance()
-        val startTimeStamp = calendar.timeInMillis
-
-        return timeStamp - startTimeStamp
+        return timeStamp - System.currentTimeMillis()
     }
 
-    fun toCalendar(date: Date?): Calendar? {
-        val c = Calendar.getInstance()
-        c.time = date
-        return c
-    }
 }
