@@ -47,9 +47,8 @@ class WithdrawViewModel(
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
 
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
+
+    val userMoney = userInfoRepository.userMoney
 
     val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList
@@ -328,37 +327,29 @@ class WithdrawViewModel(
     fun getMoneyConfigs() {
         viewModelScope.launch {
             loading()
+            userInfoRepository.getMoney()
             doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }.let { userMoneyResult ->
-                _userMoney.postValue(userMoneyResult?.money)
-                doNetwork(androidContext) {
-                    moneyRepository.getRechCfg()
-                }?.let { result ->
-                    result.rechCfg?.let { moneyRechCfgData ->
-                        uwBankType = moneyRechCfgData.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
-                        _rechargeConfigs.value = moneyRechCfgData
-                        getWithdrawCardList()
-                        //判斷Tab要不要顯示
-                        val withdrawConfig = moneyRechCfgData.uwTypes
-                        val bankWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
-                        val cryptoWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
-                        val operation = bankWithdrawSystemOperation && cryptoWithdrawSystemOperation
-                        _withdrawTabIsShow.value = Event(operation)
+                moneyRepository.getRechCfg()
+            }?.let { result ->
+                result.rechCfg?.let { moneyRechCfgData ->
+                    uwBankType = moneyRechCfgData.uwTypes.firstOrNull { config -> config.type == TransferType.BANK.type }
+                    _rechargeConfigs.value = moneyRechCfgData
+                    getWithdrawCardList()
+                    //判斷Tab要不要顯示
+                    val withdrawConfig = moneyRechCfgData.uwTypes
+                    val bankWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
+                    val cryptoWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
+                    val operation = bankWithdrawSystemOperation && cryptoWithdrawSystemOperation
+                    _withdrawTabIsShow.value = Event(operation)
 
-                    }
                 }
             }
-
         }
     }
 
     fun getMoney() {
         viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoney.postValue(userMoneyResult?.money)
+            userInfoRepository.getMoney()
         }
     }
 

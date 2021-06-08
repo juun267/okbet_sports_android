@@ -8,14 +8,12 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.USER_RECHARGE_ONLINE_PAY
-import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.*
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgData
 import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.network.money.config.RechType
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
-import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -116,9 +114,7 @@ class MoneyRechViewModel(
     private var _rechargeOnlineAmountMsg = MutableLiveData<String>()
 
     //使用者餘額
-    val userMoneyResult: LiveData<UserMoneyResult?>
-        get() = _userMoneyResult
-    private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
+    val userMoney = userInfoRepository.userMoney
 
     //銀行卡號錯誤訊息
     val bankIDErrorMsg: LiveData<String>
@@ -503,10 +499,7 @@ class MoneyRechViewModel(
     //獲取使用者餘額
     fun getMoney() {
         viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoneyResult.postValue(userMoneyResult)
+            userInfoRepository.getMoney()
         }
     }
 

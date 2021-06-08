@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.third_game.query_transfers.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.TimeUtil
@@ -28,6 +29,7 @@ class MoneyTransferViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
+    val userInfoRepository: UserInfoRepository
 ) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
@@ -83,8 +85,7 @@ class MoneyTransferViewModel(
     val queryTransfersResult: LiveData<QueryTransfersResult>
         get() = _queryTransfersResult
 
-    val userMoney: LiveData<Double?>
-        get() = _userMoney
+    val userMoney = userInfoRepository.userMoney
 
     val isShowTitleBar: LiveData<Boolean>
         get() = _isShowTitleBar
@@ -102,7 +103,6 @@ class MoneyTransferViewModel(
     private val _isShowTitleBar = MutableLiveData<Boolean>().apply { this.value = true }
     private val _loading = MutableLiveData<Boolean>()
     private val _toolbarName = MutableLiveData<String>()
-    private val _userMoney = MutableLiveData<Double?>()
     private var _allBalanceResultList = MutableLiveData<List<GameData>>()
     private var _recycleAllMoneyResult = MutableLiveData<Event<BlankResult?>>()
     private var _transferResult = MutableLiveData<Event<BlankResult?>>()
@@ -116,12 +116,8 @@ class MoneyTransferViewModel(
     fun getMoney() {
         loading()
         viewModelScope.launch {
-            doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }?.let {
-                hideLoading()
-                _userMoney.postValue(it.money)
-            }
+            userInfoRepository.getMoney()
+            hideLoading()
         }
     }
 
