@@ -6,9 +6,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class RechCfg(
     @Json(name = "banks")
-    val banks: List<RechBank>,
+    val banks: List<RechBank>?,
     @Json(name = "exchangeList")
-    val exchangeList: List<Exchange>,
+    val exchangeList: List<Exchange>?,
     @Json(name = "exchangeRate")
     val exchangeRate: Double?,
     @Json(name = "id")
