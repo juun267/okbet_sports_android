@@ -109,7 +109,19 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun setWebView() {
-        web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${matchId?.replace("sr:match:", "")}&lang=${LanguageManager.getSelectLanguage(context).key}")
+        if (sConfigData?.sportAnimation.isNullOrBlank()) {
+            web_view_layout.visibility = View.GONE
+        } else {
+            web_view_layout.visibility = View.VISIBLE
+            web_view.loadUrl(
+                "${sConfigData?.sportAnimation}?matchId=${
+                    matchId?.replace(
+                        "sr:match:",
+                        ""
+                    )
+                }&lang=${LanguageManager.getSelectLanguage(context).key}"
+            )
+        }
     }
 
 
@@ -300,6 +312,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun setupWebView(webView: WebView) {
+        //是否需要載入滾球動畫
+        if (sConfigData?.sportAnimation.isNullOrBlank())
+            return
+
         if (BuildConfig.DEBUG)
             WebView.setWebContentsDebuggingEnabled(true)
 
