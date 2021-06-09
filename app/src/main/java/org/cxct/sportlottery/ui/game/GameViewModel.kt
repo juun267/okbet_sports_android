@@ -1305,25 +1305,11 @@ class GameViewModel(
             val list: ArrayList<OddsDetailListData> = ArrayList()
             if (success) {
                 result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
-                    var odd: org.cxct.sportlottery.network.odds.detail.Odd?
                     betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
-                        for (i in list.indices) {
-
-                            //server目前可能會回傳null
-                            try {
-                                odd = value.odds.find { v ->
-                                    v?.id?.let { id ->
-                                        id == betInfoRepository.betInfoList.value?.peekContent()
-                                            ?.get(
-                                                i
-                                            )?.matchOdd?.oddsId
-                                    } ?: return@find false
-                                }
-                                odd?.isSelect = true
-                            } catch (e: Exception) {
-                                e.printStackTrace()
+                        value.odds.forEach { odd ->
+                            odd?.isSelect = list.any {
+                                it.matchOdd.oddsId == odd?.id
                             }
-
                         }
                     }
                     val filteredOddList =
