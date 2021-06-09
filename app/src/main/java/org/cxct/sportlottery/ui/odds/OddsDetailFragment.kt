@@ -114,7 +114,11 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        tv_more.visibility = View.GONE
+        tv_more.visibility = if (args.matchInfoList.size > 1) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
         tv_more.setOnClickListener {
             parentFragmentManager.let {
                 matchId?.let { id ->
@@ -234,13 +238,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 } else {
                     navGameInPlay()
                 }
-            }
-        })
-
-        viewModel.oddsDetailMoreList.observe(this.viewLifecycleOwner, {
-            //扣除當前的賽事
-            it?.size?.let { count ->
-                tv_more.visibility = if (count - 1 == 0) View.GONE else View.VISIBLE
             }
         })
 

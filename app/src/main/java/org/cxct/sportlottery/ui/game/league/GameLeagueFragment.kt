@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -38,16 +39,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         navOddsDetailLive(it)
                     }
                 },
-                { matchOdd ->
+                { matchId, matchInfoList ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
-                            matchOdd.matchInfo?.id?.let {
+                            matchId?.let {
                                 navOddsDetailLive(it)
                             }
                         }
                         else -> {
-                            matchOdd.matchInfo?.id?.let {
-                                navOddsDetail(it)
+                            matchId?.let {
+                                navOddsDetail(it, matchInfoList)
                                 /*
                                  * UI上呈現只會有一項,故直接使用data[0]
                                  * 添加至投注細項(更多)
@@ -417,13 +418,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
     }
 
-    private fun navOddsDetail(matchId: String) {
+    private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
         val action =
             GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
                 args.matchType,
                 args.sportType,
                 matchId,
-                arrayOf()
+                matchInfoList.toTypedArray()
             )
 
         findNavController().navigate(action)
