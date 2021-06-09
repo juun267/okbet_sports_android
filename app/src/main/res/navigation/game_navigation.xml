@@ -50,6 +50,9 @@
                 android:name="matchId"
                 app:argType="string" />
 
+            <argument
+                android:name="matchOddList"
+                app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd[]" />
         </action>
 
     </fragment>
@@ -118,6 +121,10 @@
             <argument
                 android:name="matchId"
                 app:argType="string" />
+
+            <argument
+                android:name="matchOddList"
+                app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd[]" />
         </action>
 
         <action
@@ -168,6 +175,10 @@
             <argument
                 android:name="matchId"
                 app:argType="string" />
+
+            <argument
+                android:name="matchOddList"
+                app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd[]" />
         </action>
 
         <action
@@ -232,6 +243,10 @@
         <argument
             android:name="matchId"
             app:argType="string" />
+
+        <argument
+            android:name="matchOddList"
+            app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd[]" />
 
         <action
             android:id="@+id/action_oddsDetailFragment_self"
@@ -314,6 +329,10 @@
             <argument
                 android:name="matchId"
                 app:argType="string" />
+
+            <argument
+                android:name="matchOddList"
+                app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd[]" />
         </action>
 
         <action

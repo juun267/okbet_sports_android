@@ -422,7 +422,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
                 args.matchType,
                 args.sportType,
-                matchId
+                matchId,
+                arrayOf()
             )
 
         findNavController().navigate(action)
