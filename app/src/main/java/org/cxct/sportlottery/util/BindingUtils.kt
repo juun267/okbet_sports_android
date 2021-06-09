@@ -7,19 +7,17 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
-    timeStamp?.let {
-        text = TimeUtil.timeStampToDate(timeStamp)
-    }
+    text = TimeUtil.timeFormat(timeStamp, YMD_HMS_FORMAT)
 }
 
 @BindingAdapter("date")
 fun TextView.setDate(timeStamp: Long?) {
-    timeStamp?.let {
-        text = TimeUtil.timeStampToDay(timeStamp)
-    }
+    text = TimeUtil.timeFormat(timeStamp, YMD_FORMAT)
 }
 
 @BindingAdapter("gameStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
