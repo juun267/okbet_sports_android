@@ -82,6 +82,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onStart() {
         super.onStart()
+
+        //TODO if args.matchInfoList is empty than need to get match list to find same league match for more button used.
         getData()
     }
 
