@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -128,21 +127,23 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun initRecyclerView() {
         rv_game_card.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter = OddsGameCardAdapter(context = context ,this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
-            it.let {
-                matchId = it.id
-                getData()
-                setWebView()
-            }
-        })
+        oddsGameCardAdapter =
+            OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
+                it.let {
+                    matchId = it.id
+                    getData()
+                    setWebView()
+                }
+            })
         rv_game_card.adapter = oddsGameCardAdapter
     }
 
 
     private fun observeSocketData() {
-        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            viewModel.updateOddForOddsDetail(it)
+        receiver.matchOddsChange.observe(viewLifecycleOwner, {
+            it?.let {
+                viewModel.updateOddForOddsDetail(it)
+            }
         })
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
@@ -155,12 +156,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         })
 
-        receiver.matchClock.observe(viewLifecycleOwner, Observer {
+        receiver.matchClock.observe(viewLifecycleOwner, {
             oddsGameCardAdapter?.updateGameCard(it?.matchClockCO)
         })
 
-        receiver.producerUp.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
+        receiver.producerUp.observe(viewLifecycleOwner, {
             service.unsubscribeAllHallChannel()
             service.unsubscribeAllEventChannel()
 
@@ -218,8 +218,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
-            it.peekContent().let {
-                oddsDetailListAdapter?.betInfoList = it
+            it.peekContent().let { list ->
+                oddsDetailListAdapter?.betInfoList = list
             }
         })
 
@@ -232,7 +232,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         })
 
-        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, {
             hideLoading()
             unsubscribeAllHallChannel()
 
@@ -311,6 +311,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView(webView: WebView) {
         //是否需要載入滾球動畫
         if (sConfigData?.sportAnimation.isNullOrBlank())
@@ -374,7 +375,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
 
         webView.webViewClient = object : WebViewClient() {
-            
+
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (!url.startsWith("http")) {
                     try {
