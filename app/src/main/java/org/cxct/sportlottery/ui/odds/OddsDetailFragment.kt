@@ -27,7 +27,6 @@ import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -105,35 +104,35 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun initUI() {
 
-        (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
             sportCode = mSportCode
         }
 
         dataBinding.rvDetail.apply {
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        tv_more.visibility = if (args.matchInfoList.size > 1) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        tv_more.setOnClickListener {
-            parentFragmentManager.let {
-                matchId?.let { id ->
-                    OddsDetailMoreFragment.newInstance(
-                        id,
-                        args.matchInfoList,
-                        object : OddsDetailMoreFragment.ChangeGameListener {
-                            override fun refreshData(mid: String) {
-                                matchId = mid
-                                getData()
-                            }
-                        }).apply {
-                        show(it, OddsDetailMoreFragment::class.java.simpleName)
+        tv_more.apply {
+            visibility = if (args.matchInfoList.size > 1) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+            setOnClickListener {
+                parentFragmentManager.let {
+                    matchId?.let { id ->
+                        OddsDetailMoreFragment.newInstance(
+                            id,
+                            object : OddsDetailMoreFragment.ChangeGameListener {
+                                override fun refreshData(matchId: String) {
+                                    this@OddsDetailFragment.matchId = matchId
+                                    getData()
+                                }
+                            }).apply {
+                            show(it, OddsDetailMoreFragment::class.java.simpleName)
+                        }
                     }
                 }
             }
@@ -149,9 +148,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
                     viewModel.playCateListResult.value?.peekContent()?.rows?.get(t)?.code?.let {
-                        (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(
-                            it
-                        )
+                        oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
                     }
                 }
             }
@@ -186,12 +183,13 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
 
-                when(result.success){
+                when (result.success) {
                     true -> {
                         matchOdd = result.oddsDetailData?.matchOdd
                         result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
                             val strTime = TimeUtil.stampToDateInOddsDetail(time.toLong())
-                            val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
+                            val color =
+                                ContextCompat.getColor(requireContext(), R.color.colorRedDark)
                             val startPosition = strTime.length - TIME_LENGTH
                             val endPosition = strTime.length
                             val style = SpannableStringBuilder(strTime)
@@ -207,8 +205,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                             result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                                 val strVerse = getString(R.string.verse_)
-                                val strMatch = "$home${strVerse}$away"
-                                val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+                                val strMatch = "$home$strVerse$away"
+                                val color =
+                                    ContextCompat.getColor(requireContext(), R.color.colorOrange)
                                 val startPosition = strMatch.indexOf(strVerse)
                                 val endPosition = startPosition + strVerse.length
                                 val style = SpannableStringBuilder(strMatch)
@@ -245,8 +244,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
-            it.peekContent().let {
-                oddsDetailListAdapter?.betInfoList = it
+            it.peekContent().let { list ->
+                oddsDetailListAdapter?.betInfoList = list
             }
         })
 
