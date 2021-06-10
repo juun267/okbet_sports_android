@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
-import android.os.Build
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -9,118 +8,36 @@ import java.util.*
 
 @SuppressLint("SimpleDateFormat")
 object TimeUtil {
-    private const val TAG = "TimeUtil"
-    private val ymdhmsFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    private val ymdFormat = SimpleDateFormat("yyyy-MM-dd")
+    const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
+    const val YMD_FORMAT = "yyyy-MM-dd"
 
-    fun timeStampToDate(time: Long?): String? {
-        if (time == null) return null
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        return simpleDateFormat.format(time)
-    }
-
-    fun timeStampToDay(time: Long?): String? {
-        if (time == null) return null
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return simpleDateFormat.format(time)
-    }
-
-    @JvmStatic
-    fun stampToDate(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm")
-        return simpleDateFormat.format(Date(time))
-    }
-
-    @JvmStatic
-    fun stampToDateInOddsDetail(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("MM/dd  HH:mm")
-        return simpleDateFormat.format(Date(time))
-    }
-
-    @JvmStatic
     fun stampToDateHMS(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-        return simpleDateFormat.format(Date(time))
-    }
-
-    @JvmStatic
-    fun stampToDateHMS(time: Date): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-        return simpleDateFormat.format(time)
-    }
-
-    @JvmStatic
-    fun stampToTimeHMS(time: Long): String {
-        val simpleDateFormat = SimpleDateFormat("HH:mm:ss")
-        return simpleDateFormat.format(Date(time))
+        return timeFormat(time, YMD_HMS_FORMAT)
     }
 
     fun stampToDateHMSTimeZone(time: Long): String {
-        try {
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
-            val currentLocalTime = calendar.time
-            //Android 6.0以下會Crash
-            val timeZoneFormat: SimpleDateFormat?
-            val timeZoneGTM: Int?
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                timeZoneFormat = SimpleDateFormat("Z")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
-            } else {
-                timeZoneFormat = SimpleDateFormat("X")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
-            }
-            return simpleDateFormat.format(Date(time)) + " (GMT+" + timeZoneGTM + ")"
-        }catch (e: Exception){
-            e.printStackTrace()
-            return ""
+        val timeZoneGTM = try {
+            val gtm = SimpleDateFormat("Z").format(time).toInt().div(100)
+            if (gtm < 0)
+                "$gtm"
+            else
+                "+$gtm"
+        } catch (e: NumberFormatException) {
+            ""
         }
+        return timeFormat(time, YMD_HMS_FORMAT) + " (GMT$timeZoneGTM)"
     }
 
     fun stampToDateHMSTimeZone(time: Date): String {
-        try {
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd  HH:mm:ss")
-            val calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"), Locale.getDefault())
-            val currentLocalTime = calendar.time
-            //Android 6.0以下會Crash
-            val timeZoneFormat: SimpleDateFormat?
-            val timeZoneGTM: Int?
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                timeZoneFormat = SimpleDateFormat("Z")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
-            } else {
-                timeZoneFormat = SimpleDateFormat("X")
-                timeZoneGTM = timeZoneFormat.format(currentLocalTime).toInt()
-            }
-            return simpleDateFormat.format(time) + " (GMT+" + timeZoneGTM + ")"
-        }catch (e: Exception){
-            e.printStackTrace()
-            return ""
-        }
+        return stampToDateHMSTimeZone(time.time)
     }
 
-    @JvmStatic
-    fun dateToStamp(date: String): Long {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm").parse(date).time
-    }
-
-    @JvmStatic
-    fun stampToDateTime(date: Date): String {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return simpleDateFormat.format(date)
-    }
-
-    @JvmStatic
-    fun timeFormat(
-        time: Long?,
-        format: String,
-        timeZone: TimeZone = TimeZone.getDefault()
-    ): String {
+    fun timeFormat(time: Long?, format: String, timeZone: TimeZone = TimeZone.getDefault()): String {
         var formattedTime = ""
         try {
             val dateFormat = SimpleDateFormat(format, Locale.getDefault())
             dateFormat.timeZone = timeZone
-            formattedTime = dateFormat.format(Date(time!!))
+            formattedTime = dateFormat.format(time)
         } catch (e: Exception) {
             Timber.e("解析日期失敗!!! \n$e")
             e.printStackTrace()
@@ -132,38 +49,36 @@ object TimeUtil {
         START_OF_DAY, END_OF_DAY
     }
 
-    fun dateToTimeStamp(date: String, timeType: TimeType = TimeType.START_OF_DAY): Long? {
-        if (date.isEmpty()) return null
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        val startTimeStamp = formatter.parse("$date 00:00:00")?.time
-        val endTimeStamp = formatter.parse("$date 23:59:59")?.time
+    fun dateToTimeStamp(date: String?, timeType: TimeType = TimeType.START_OF_DAY): Long? {
+        if (date.isNullOrEmpty()) return null
+        val formatter = SimpleDateFormat("$YMD_HMS_FORMAT S", Locale.getDefault())
+        val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
+        val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
 
     fun getDefaultTimeStamp(): TimeRangeParams {
-        val minusDay = ymdFormat.format(getCalendarForDates(6).first.time)
-        val today = ymdFormat.format(getCalendarForDates(6).second.time)
-        val startTimeStamp = ymdhmsFormat.parse("$minusDay 00:00:00")?.time
-        val endTimeStamp = ymdhmsFormat.parse("$today 23:59:59")?.time
-
+        val cPair = getCalendarForDates(6)
+        val minusDayTimeStamp = cPair.first.timeInMillis
+        val todayTimeStamp = cPair.second.timeInMillis
         return object : TimeRangeParams {
+            //TODO simon review: TimeRangeParams 裡的 startTime、endTime 同時可能代表 timeStamp 也可能代表 日期(yyyy-MM-dd)，感覺最好拆開定義
             override val startTime: String
-                get() = startTimeStamp.toString()
+                get() = minusDayTimeStamp.toString()
             override val endTime: String
-                get() = endTimeStamp.toString()
-
+                get() = todayTimeStamp.toString()
         }
     }
 
     fun getDefaultDate(): TimeRangeParams {
-        val minusDay = ymdFormat.format(getCalendarForDates(6).first.time)
-        val today = ymdFormat.format(getCalendarForDates(6).second.time)
+        val cPair = getCalendarForDates(6)
+        val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT)
+        val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT)
         return object : TimeRangeParams {
             override val startTime: String
-                get() = minusDay.toString()
+                get() = minusDay
             override val endTime: String
-                get() = today.toString()
-
+                get() = today
         }
     }
 
@@ -185,26 +100,16 @@ object TimeUtil {
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
-        calendar.set(Calendar.MILLISECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
         return calendar
     }
 
     fun getTodayStartTimeStamp(): Long {
-        val c = Calendar.getInstance()
-        c.set(Calendar.HOUR_OF_DAY, 0)
-        c.set(Calendar.MINUTE, 0)
-        c.set(Calendar.SECOND, 0)
-        c.set(Calendar.MILLISECOND, 0)
-        return c.timeInMillis
+        return getTodayStartTimeCalendar().timeInMillis
     }
 
     fun getTodayEndTimeStamp(): Long {
-        val c = Calendar.getInstance()
-        c.set(Calendar.HOUR_OF_DAY, 23)
-        c.set(Calendar.MINUTE, 59)
-        c.set(Calendar.SECOND, 59)
-        c.set(Calendar.MILLISECOND, 59)
-        return c.timeInMillis
+        return getTodayEndTimeCalendar().timeInMillis
     }
 
     fun getTodayTimeRangeParams(): TimeRangeParams {
@@ -227,14 +132,11 @@ object TimeUtil {
     fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
         //指定日期 00:00:00 ~ 23:59:59:59
         //date : yyyy-MM-dd
-        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val startTimeStamp = formatter.parse("$date 00:00:00")?.time
-        val endTimeStamp = formatter.parse("$date 23:59:59")?.time
         return object : TimeRangeParams {
             override val startTime: String
-                get() = startTimeStamp.toString()
+                get() = dateToTimeStamp(date, TimeType.START_OF_DAY).toString()
             override val endTime: String
-                get() = endTimeStamp.toString()
+                get() = dateToTimeStamp(date, TimeType.END_OF_DAY).toString()
         }
     }
 
@@ -252,7 +154,7 @@ object TimeUtil {
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
-        calendar.set(Calendar.MILLISECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
         val endTimeStamp = calendar.timeInMillis
 
         return object : TimeRangeParams {
@@ -278,7 +180,7 @@ object TimeUtil {
         c.set(Calendar.HOUR_OF_DAY, 23)
         c.set(Calendar.MINUTE, 59)
         c.set(Calendar.SECOND, 59)
-        c.set(Calendar.MILLISECOND, 59)
+        c.set(Calendar.MILLISECOND, 0)
         val endTimeStamp = c.timeInMillis
 
         return object : TimeRangeParams {
@@ -295,7 +197,7 @@ object TimeUtil {
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
-        calendar.set(Calendar.MILLISECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
 
         return object : TimeRangeParams {
             override val startTime: String?
@@ -331,25 +233,16 @@ object TimeUtil {
     fun getFutureDate(day: Int): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
-        val format = "yyyy-MM-dd"
 
         repeat(day) {
             calendar.add(Calendar.DATE, 1)
-            weekDateList.add(timeFormat(calendar.time.time, format))
+            weekDateList.add(timeFormat(calendar.timeInMillis, YMD_FORMAT))
         }
         return weekDateList
     }
 
     fun getRemainTime(timeStamp: Long): Long {
-        val calendar = Calendar.getInstance()
-        val startTimeStamp = calendar.timeInMillis
-
-        return timeStamp - startTimeStamp
+        return timeStamp - System.currentTimeMillis()
     }
 
-    fun toCalendar(date: Date?): Calendar? {
-        val c = Calendar.getInstance()
-        c.time = date
-        return c
-    }
 }

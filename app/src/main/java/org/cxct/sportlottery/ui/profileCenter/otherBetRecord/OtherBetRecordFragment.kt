@@ -10,10 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_other_bet_record.*
-import kotlinx.android.synthetic.main.fragment_other_bet_record.date_search_bar
-import kotlinx.android.synthetic.main.fragment_other_bet_record.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_other_bet_record.layout_total
-import kotlinx.android.synthetic.main.fragment_other_bet_record.status_selector
 import kotlinx.android.synthetic.main.view_total_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -58,7 +54,12 @@ class OtherBetRecordFragment : BaseSocketFragment<OtherBetRecordViewModel>(Other
     private val rvAdapter by lazy {
         OtherBetRecordAdapter(ItemClickListener {
             it.let { data ->
-                findNavController().navigate(OtherBetRecordFragmentDirections.actionOtherBetRecordFragmentToOtherBetRecordDetailFragment(status_selector.selectedTag.toString(), TimeUtil.timeStampToDay(data.statDate)))
+                findNavController().navigate(
+                    OtherBetRecordFragmentDirections.actionOtherBetRecordFragmentToOtherBetRecordDetailFragment(
+                        status_selector.selectedTag.toString(),
+                        TimeUtil.timeFormat(data.statDate, TimeUtil.YMD_FORMAT)
+                    )
+                )
             }
         })
     }
