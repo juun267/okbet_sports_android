@@ -125,6 +125,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     matchId?.let { id ->
                         OddsDetailMoreFragment.newInstance(
                             id,
+                            args.matchInfoList,
                             object : OddsDetailMoreFragment.ChangeGameListener {
                                 override fun refreshData(matchId: String) {
                                     this@OddsDetailFragment.matchId = matchId
