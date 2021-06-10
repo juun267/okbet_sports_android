@@ -118,11 +118,10 @@ class OtherBetRecordViewModel(
         }
     }
 
-    fun querySecondOrders(firmType: String?= null, today: String? = null) {
-        querySecondOrders(startTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).startTime },
-            endTime = today?.let { TimeUtil.getDayDateTimeRangeParams(it).endTime },
-                          firmType = firmType
-        )
+    fun querySecondOrders(firmType: String? = null, today: String? = null) {
+        val startTime = TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.START_OF_DAY).toString()
+        val endTime = TimeUtil.dateToTimeStamp(today, TimeUtil.TimeType.END_OF_DAY).toString()
+        querySecondOrders(startTime = startTime, endTime = endTime, firmType = firmType)
     }
 
     private fun querySecondOrders(page: Int? = 1, startTime: String? = null, endTime: String? = null, firmType: String? = null) {

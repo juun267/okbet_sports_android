@@ -49,11 +49,11 @@ object TimeUtil {
         START_OF_DAY, END_OF_DAY
     }
 
-    fun dateToTimeStamp(date: String, timeType: TimeType = TimeType.START_OF_DAY): Long? {
-        if (date.isEmpty()) return null
-        val formatter = SimpleDateFormat(YMD_HMS_FORMAT, Locale.getDefault())
-        val startTimeStamp = formatter.parse("$date 00:00:00")?.time
-        val endTimeStamp = formatter.parse("$date 23:59:59")?.time
+    fun dateToTimeStamp(date: String?, timeType: TimeType = TimeType.START_OF_DAY): Long? {
+        if (date.isNullOrEmpty()) return null
+        val formatter = SimpleDateFormat("$YMD_HMS_FORMAT S", Locale.getDefault())
+        val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
+        val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
 
@@ -62,6 +62,7 @@ object TimeUtil {
         val minusDayTimeStamp = cPair.first.timeInMillis
         val todayTimeStamp = cPair.second.timeInMillis
         return object : TimeRangeParams {
+            //TODO simon review: TimeRangeParams 裡的 startTime、endTime 同時可能代表 timeStamp 也可能代表 日期(yyyy-MM-dd)，感覺最好拆開定義
             override val startTime: String
                 get() = minusDayTimeStamp.toString()
             override val endTime: String
@@ -99,7 +100,7 @@ object TimeUtil {
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
-        calendar.set(Calendar.MILLISECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 999)
         return calendar
     }
 
@@ -108,12 +109,7 @@ object TimeUtil {
     }
 
     fun getTodayEndTimeStamp(): Long {
-        val c = Calendar.getInstance()
-        c.set(Calendar.HOUR_OF_DAY, 23)
-        c.set(Calendar.MINUTE, 59)
-        c.set(Calendar.SECOND, 59)
-        c.set(Calendar.MILLISECOND, 59)
-        return c.timeInMillis
+        return getTodayEndTimeCalendar().timeInMillis
     }
 
     fun getTodayTimeRangeParams(): TimeRangeParams {
@@ -136,14 +132,11 @@ object TimeUtil {
     fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
         //指定日期 00:00:00 ~ 23:59:59:59
         //date : yyyy-MM-dd
-        val formatter = SimpleDateFormat(YMD_HMS_FORMAT)
-        val startTimeStamp = formatter.parse("$date 00:00:00")?.time
-        val endTimeStamp = formatter.parse("$date 23:59:59")?.time
         return object : TimeRangeParams {
             override val startTime: String
-                get() = startTimeStamp.toString()
+                get() = dateToTimeStamp(date, TimeType.START_OF_DAY).toString()
             override val endTime: String
-                get() = endTimeStamp.toString()
+                get() = dateToTimeStamp(date, TimeType.END_OF_DAY).toString()
         }
     }
 
@@ -161,7 +154,7 @@ object TimeUtil {
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
-        calendar.set(Calendar.MILLISECOND, 59)
+        calendar.set(Calendar.MILLISECOND, 999)
         val endTimeStamp = calendar.timeInMillis
 
         return object : TimeRangeParams {
@@ -204,7 +197,7 @@ object TimeUtil {
         calendar.set(Calendar.HOUR_OF_DAY, 23)
         calendar.set(Calendar.MINUTE, 59)
         calendar.set(Calendar.SECOND, 59)
-        calendar.set(Calendar.MILLISECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 999)
 
         return object : TimeRangeParams {
             override val startTime: String?

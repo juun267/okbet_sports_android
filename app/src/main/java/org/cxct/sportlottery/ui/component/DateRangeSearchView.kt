@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.finance.data.RechargeTime
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import java.util.*
 
 class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
@@ -95,15 +96,11 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun setRecordStartTime(start: Calendar) {
-        val startDateStr = TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd")
-        val startDate = RechargeTime(startDateStr, TimeUtil.getDayDateTimeRangeParams(startDateStr))
-        tv_start_date.text = startDate.date
+        tv_start_date.text = TimeUtil.timeFormat(start.timeInMillis, YMD_FORMAT)
     }
 
     private fun setRecordEndTime(end: Calendar) {
-        val endDateStr = TimeUtil.timeFormat(end.timeInMillis, "yyyy-MM-dd")
-        val endDate = RechargeTime(endDateStr, TimeUtil.getDayDateTimeRangeParams(endDateStr))
-        tv_end_date.text = endDate.date
+        tv_end_date.text = TimeUtil.timeFormat(end.timeInMillis, YMD_FORMAT)
     }
 
     private fun setupCalendarBottomSheet() {
