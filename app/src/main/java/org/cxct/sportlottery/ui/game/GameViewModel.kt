@@ -184,10 +184,6 @@ class GameViewModel(
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
 
-    private val _oddsDetailMoreList = MutableLiveData<List<*>>()
-    val oddsDetailMoreList: LiveData<List<*>?>
-        get() = _oddsDetailMoreList
-
     private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
     val betInfoResult: LiveData<Event<BetInfoResult?>>
         get() = _betInfoResult
@@ -902,10 +898,6 @@ class GameViewModel(
 
     fun setPlayType(playType: PlayType) {
         _curPlayType.postValue(playType)
-    }
-
-    fun setOddsDetailMoreList(list: List<*>) {
-        _oddsDetailMoreList.postValue(list)
     }
 
     fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {

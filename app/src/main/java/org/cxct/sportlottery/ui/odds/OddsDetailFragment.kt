@@ -81,6 +81,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onStart() {
         super.onStart()
+
+        //TODO if args.matchInfoList is empty than need to get match list to find same league match for more button used.
         getData()
     }
 
@@ -112,14 +114,18 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-
         tv_more.apply {
-            visibility = View.GONE
+            visibility = if (args.matchInfoList.size > 1) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
             setOnClickListener {
                 parentFragmentManager.let {
                     matchId?.let { id ->
                         OddsDetailMoreFragment.newInstance(
                             id,
+                            args.matchInfoList,
                             object : OddsDetailMoreFragment.ChangeGameListener {
                                 override fun refreshData(matchId: String) {
                                     this@OddsDetailFragment.matchId = matchId
@@ -200,7 +206,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
                                 val strVerse = getString(R.string.verse_)
                                 val strMatch = "$home$strVerse$away"
-                                val color = ContextCompat.getColor(requireContext(), R.color.colorOrange)
+                                val color =
+                                    ContextCompat.getColor(requireContext(), R.color.colorOrange)
                                 val startPosition = strMatch.indexOf(strVerse)
                                 val endPosition = startPosition + strVerse.length
                                 val style = SpannableStringBuilder(strMatch)
@@ -233,13 +240,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 } else {
                     navGameInPlay()
                 }
-            }
-        })
-
-        viewModel.oddsDetailMoreList.observe(this.viewLifecycleOwner, {
-            //扣除當前的賽事
-            it?.size?.let { count ->
-                tv_more.visibility = if (count - 1 == 0) View.GONE else View.VISIBLE
             }
         })
 
