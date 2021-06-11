@@ -484,6 +484,7 @@ class GameViewModel(
 
     fun getGameHallList(matchType: MatchType, item: Item) {
         updateSportSelectedState(matchType, item)
+        setPlayType(PlayType.OU_HDP)
     }
 
     fun getGameHallList(matchType: MatchType, date: Date) {
