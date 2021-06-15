@@ -329,7 +329,7 @@ class WithdrawViewModel(
     fun getMoneyConfigs() {
         viewModelScope.launch {
             loading()
-            userInfoRepository.getMoney()
+            getMoney()
             doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }?.let { result ->
