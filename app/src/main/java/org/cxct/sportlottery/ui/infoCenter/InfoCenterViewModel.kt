@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.infoCenter
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,11 +13,16 @@ import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class InfoCenterViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     infoCenterRepository: InfoCenterRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     enum class DataType { UNREAD, READ }//未讀,已讀
 

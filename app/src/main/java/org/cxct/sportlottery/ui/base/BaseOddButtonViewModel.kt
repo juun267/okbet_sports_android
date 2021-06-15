@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -7,10 +8,11 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.menu.OddsType
 
 abstract class BaseOddButtonViewModel(
+    protected val androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseSocketViewModel(loginRepository, betInfoRepository, infoCenterRepository){
+) : BaseSocketViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val oddsType: LiveData<OddsType> = loginRepository.mOddsType
 

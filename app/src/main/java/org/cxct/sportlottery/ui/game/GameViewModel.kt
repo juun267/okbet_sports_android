@@ -52,7 +52,7 @@ import kotlin.collections.ArrayList
 
 
 class GameViewModel(
-    private val androidContext: Application,
+    androidContext: Application,
     userInfoRepository: UserInfoRepository,
     private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
@@ -60,6 +60,7 @@ class GameViewModel(
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
 ) : BaseNoticeViewModel(
+    androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,

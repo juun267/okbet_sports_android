@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,14 +29,19 @@ import org.cxct.sportlottery.util.QueryUtil.toUrlParamsFormat
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class MoneyRechViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val userInfoRepository: UserInfoRepository,
     private val moneyRepository: MoneyRepository,
     private val avatarRepository: AvatarRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val token = loginRepository.token
 

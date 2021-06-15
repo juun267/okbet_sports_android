@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.main
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -22,14 +22,20 @@ import org.cxct.sportlottery.util.Event
 
 
 class MainViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseNoticeViewModel(userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseNoticeViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val isLogin: LiveData<Boolean> by lazy {
         loginRepository.isLogin

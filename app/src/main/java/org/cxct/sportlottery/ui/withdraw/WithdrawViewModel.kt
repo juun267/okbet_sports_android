@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -31,15 +31,20 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 import java.math.RoundingMode
 import kotlin.math.min
 
+
 class WithdrawViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val moneyRepository: MoneyRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
