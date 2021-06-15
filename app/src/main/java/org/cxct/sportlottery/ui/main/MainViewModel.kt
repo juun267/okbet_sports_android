@@ -36,11 +36,6 @@ class MainViewModel(
     betInfoRepository,
     infoCenterRepository
 ) {
-
-    val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin
-    }
-
     val token
         get() = loginRepository.token
 

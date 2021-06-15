@@ -61,10 +61,6 @@ class GameViewModel(
     betInfoRepository,
     infoCenterRepository
 ) {
-    val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin
-    }
-
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
