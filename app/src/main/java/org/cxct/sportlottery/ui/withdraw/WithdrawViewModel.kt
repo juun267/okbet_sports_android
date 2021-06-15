@@ -52,9 +52,6 @@ class WithdrawViewModel(
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
 
-
-    val userMoney = userInfoRepository.userMoney
-
     val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList
     private var _bankCardList = MutableLiveData<List<BankCardList>>()
@@ -351,13 +348,7 @@ class WithdrawViewModel(
             }
         }
     }
-
-    fun getMoney() {
-        viewModelScope.launch {
-            userInfoRepository.getMoney()
-        }
-    }
-
+    
     fun clearBankCardFragmentStatus() {
         //若不清除下一次進入編輯銀行卡頁面時會直接觸發觀察判定編輯成功
         _bankDeleteResult = MutableLiveData()

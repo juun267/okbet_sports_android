@@ -30,7 +30,6 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 class MoneyRechViewModel(
     androidContext: Application,
-    private val userInfoRepository: UserInfoRepository,
     private val moneyRepository: MoneyRepository,
     private val avatarRepository: AvatarRepository,
     loginRepository: LoginRepository,
@@ -118,9 +117,6 @@ class MoneyRechViewModel(
     val rechargeOnlineAmountMsg: LiveData<String>
         get() = _rechargeOnlineAmountMsg
     private var _rechargeOnlineAmountMsg = MutableLiveData<String>()
-
-    //使用者餘額
-    val userMoney = userInfoRepository.userMoney
 
     //銀行卡號錯誤訊息
     val bankIDErrorMsg: LiveData<String>
@@ -499,13 +495,6 @@ class MoneyRechViewModel(
                     Event("")
                 }
             }
-        }
-    }
-
-    //獲取使用者餘額
-    fun getMoney() {
-        viewModelScope.launch {
-            userInfoRepository.getMoney()
         }
     }
 

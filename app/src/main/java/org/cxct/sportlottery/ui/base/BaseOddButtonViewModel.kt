@@ -24,17 +24,33 @@ import org.cxct.sportlottery.util.getOdds
 
 
 abstract class BaseOddButtonViewModel(
-    protected val androidContext: Application,
+    val androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseSocketViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val oddsType: LiveData<OddsType> = loginRepository.mOddsType
+
     val betAddResult: LiveData<Event<BetAddResult?>>
         get() = _betAddResult
 
+    private val _userMoney = MutableLiveData<Double?>()
+    val userMoney: LiveData<Double?> //使用者餘額
+        get() = _userMoney
+
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
+
+    fun getMoney() {
+        if (isLogin.value == false) return
+
+        viewModelScope.launch {
+            val userMoneyResult = doNetwork(androidContext) {
+                OneBoSportApi.userService.getMoney()
+            }
+            _userMoney.postValue(userMoneyResult?.money)
+        }
+    }
 
     fun saveOddsType(oddsType: OddsType) {
         loginRepository.sOddsType = oddsType.code

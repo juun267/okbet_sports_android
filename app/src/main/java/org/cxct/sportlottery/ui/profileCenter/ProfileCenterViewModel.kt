@@ -32,10 +32,6 @@ class ProfileCenterViewModel(
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
 
-    private val _userMoney = MutableLiveData<String?>()
-    val userMoney: LiveData<String?>
-        get() = _userMoney
-
     val withdrawSystemOperation =
         withdrawRepository.withdrawSystemOperation
     val rechargeSystemOperation =
@@ -53,19 +49,6 @@ class ProfileCenterViewModel(
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-
-            val formatMoney = userMoneyResult?.money?.let {
-                TextUtil.format(it)
-            }
-
-            _userMoney.postValue(formatMoney)
-        }
-    }
 
     fun getUserInfo() {
         viewModelScope.launch {

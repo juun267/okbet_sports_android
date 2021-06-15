@@ -45,10 +45,6 @@ class MainViewModel(
     val promoteNoticeResult: LiveData<Event<MessageListResult>>
         get() = _promoteNoticeResult
 
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
-
     private val _bannerList = MutableLiveData<List<ImageData>?>()
     val bannerList: LiveData<List<ImageData>?>
         get() = _bannerList
@@ -104,15 +100,6 @@ class MainViewModel(
         //H5彈窗圖: imageType = 7
         sConfigData?.imageList?.filter { it.imageType == 7 }.apply {
             _popImageList.postValue(this)
-        }
-    }
-
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 

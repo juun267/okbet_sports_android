@@ -41,9 +41,6 @@ class FinanceViewModel(
     val isLoading: LiveData<Boolean> //使用者餘額
         get() = _isLoading
 
-    val userMoney: LiveData<Double?>
-        get() = _userMoney
-
     val userRechargeListResult: LiveData<MutableList<Row>?>
         get() = _userRechargeListResult
 
@@ -82,15 +79,6 @@ class FinanceViewModel(
 
     fun setRecordType(recordType: String) {
         _recordType.postValue(recordType)
-    }
-
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoney.postValue(userMoneyResult?.money)
-        }
     }
 
     fun getRecordList() {

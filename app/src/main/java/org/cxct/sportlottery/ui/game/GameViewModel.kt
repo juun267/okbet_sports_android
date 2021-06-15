@@ -193,10 +193,6 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
-
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
     fun navSpecialEntrance(
@@ -451,16 +447,6 @@ class GameViewModel(
             }?.let { result ->
                 _matchPreloadEarly.postValue(Event(result))
             }
-        }
-    }
-
-    fun getMoney() {
-        if (isLogin.value == false) return
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 

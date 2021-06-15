@@ -89,8 +89,6 @@ class MoneyTransferViewModel(
     val queryTransfersResult: LiveData<QueryTransfersResult>
         get() = _queryTransfersResult
 
-    val userMoney = userInfoRepository.userMoney
-
     val isShowTitleBar: LiveData<Boolean>
         get() = _isShowTitleBar
 
@@ -114,15 +112,6 @@ class MoneyTransferViewModel(
 
     fun showTitleBar(visible: Boolean) {
         _isShowTitleBar.value = visible
-    }
-
-    @SuppressLint("NullSafeMutableLiveData")
-    fun getMoney() {
-        loading()
-        viewModelScope.launch {
-            userInfoRepository.getMoney()
-            hideLoading()
-        }
     }
 
     fun setToolbarName(name: String) {
