@@ -49,10 +49,10 @@ import kotlin.collections.ArrayList
 class GameViewModel(
     androidContext: Application,
     userInfoRepository: UserInfoRepository,
-    private val sportMenuRepository: SportMenuRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
+    private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
 ) : BaseNoticeViewModel(
     androidContext,
@@ -61,19 +61,21 @@ class GameViewModel(
     betInfoRepository,
     infoCenterRepository
 ) {
+    val betInfoList = betInfoRepository.betInfoList
+
+    val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
+        get() = betInfoRepository.matchOddList
+
+    val parlayList: LiveData<MutableList<ParlayOdd>>
+        get() = betInfoRepository.parlayList
+
+    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
+
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
-
-    private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
-    val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
-        get() = _matchPreloadInPlay
-
-    private val _matchPreloadEarly = MutableLiveData<Event<MatchPreloadResult>>()
-    val matchPreloadEarly: LiveData<Event<MatchPreloadResult>>
-        get() = _matchPreloadEarly
 
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
@@ -120,8 +122,8 @@ class GameViewModel(
     val specialEntrance: LiveData<SpecialEntrance?>
         get() = _specialEntrance
 
-
-    val betInfoList = betInfoRepository.betInfoList
+    val asStartCount: LiveData<Int> //即將開賽的數量
+        get() = _asStartCount
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -130,26 +132,28 @@ class GameViewModel(
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
-
     private val _countryListSearchResult = MutableLiveData<List<Row>>()
-    private val _outrightCountryListSearchResult =
-        MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueListSearchResult = MutableLiveData<List<LeagueOdd>>()
-
-    private val _curPlayType = MutableLiveData<PlayType>().apply {
-        value = PlayType.OU_HDP
-    }
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curDatePosition = MutableLiveData<Int>()
     private val _asStartCount = MutableLiveData<Int>()
-
     private val _isNoHistory = MutableLiveData<Boolean>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
+    private val _outrightCountryListSearchResult =
+        MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
+    private val _curPlayType = MutableLiveData<PlayType>().apply {
+        value = PlayType.OU_HDP
+    }
 
-    val asStartCount: LiveData<Int> //即將開賽的數量
-        get() = _asStartCount
+    private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
+        get() = _matchPreloadInPlay
+
+    private val _matchPreloadEarly = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadEarly: LiveData<Event<MatchPreloadResult>>
+        get() = _matchPreloadEarly
 
     private val _allFootballCount = MutableLiveData<Int>()
     val allFootballCount: LiveData<Int> //全部足球比賽的數量
@@ -175,12 +179,6 @@ class GameViewModel(
     val betInfoResult: LiveData<Event<BetInfoResult?>>
         get() = _betInfoResult
 
-    val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
-        get() = betInfoRepository.matchOddList
-
-    val parlayList: LiveData<MutableList<ParlayOdd>>
-        get() = betInfoRepository.parlayList
-
     private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>>()
     val oddsDetailResult: LiveData<Event<OddsDetailResult?>>
         get() = _oddsDetailResult
@@ -192,8 +190,6 @@ class GameViewModel(
     private val _oddsDetailList = MutableLiveData<Event<ArrayList<OddsDetailListData>>>()
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
-
-    val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
@@ -303,7 +299,6 @@ class GameViewModel(
         } else {
             _messageListResult.value = null
         }
-
     }
 
     //獲取體育菜單
