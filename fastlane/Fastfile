@@ -13,7 +13,7 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-require_relative "./app_config.rb"
+require "./app_config.rb"
 
 default_platform(:android)
 
@@ -23,45 +23,42 @@ platform :android do
     skip_docs
   end
 
+  desc "Lane envoked by jenkins"
+  lane :jenkins do |options|
+    config_url = options[:config_url]
+    begin
+      configurator = AppConfig.new(mode: URLMode::HTTP_LINK, url: config_url)
+    rescue JSON::ParserError => e
+      UI.user_error!("Fail to parse json: " + e.message + "\n" + "json url: #{config_url}")
+    end
+    configurator.mapped_platforms_properties.map { |properties| go_gradle(properties: properties) }
+  end
+
   desc "Primary lane for build app(s)"
   lane :build_all_app do |options|
+
     platforms = options[:platforms]
 
-    configurator = AppConfig.new
-    if configurator.zero_platform_mapped(platforms)
-      arr_platforms = configurator.split_platform(platforms)
-      puts "無法對映到任何平台，打包中止: #{arr_platforms}"
+    begin
+      configurator = AppConfig.new(mode: URLMode::FILE_PATH, url: "./config.json", str_platforms: platforms)
+    rescue JSON::ParserError => e
+      UI.user_error!("Fail to parse json: " + e.message)
+    end
+    
+    if configurator.zero_platform_mapped
+      arr_platforms = configurator.split_platform
+      UI.user_error!("無法對映到任何平台，打包中止: #{arr_platforms}")
     else
-      configurator.mapping_platforms(platforms).each do |platform_info|
-        properties = {}
-        # add keystore info
-        properties = properties.merge(AppConfig::KEY_STORE)
-        properties = properties.merge({
-          "fastlane_version_name" => configurator.dictionary_version,
-          "fastlane_version_code" => configurator.short_version,
-          "fastlane_app_code" => platform_info["app_code"],
-          "fastlane_app_name" => platform_info["app_name"], 
-          "fastlane_application_id" => platform_info["appid"], 
-          "fastlane_jpush_appkey" => platform_info["jpush_appKey"],
-          "fastlane_jpush_channel" => "developer-default",
-          "fastlane_jpush_provider" => platform_info["appid"] + ".DataProvider",
-          "fastlane_jpush_permission" => platform_info["appid"] + ".permission.JPUSH_MESSAGE", 
-          "fastlane_security_config" => "@xml/test_network_security_config", 
-          "fastlane_res_src_dir" => "src/platform/#{platform_info["app_code"]}/res",
-          "fastlane_executor" => "fastlane"
-        })
-
-        go_gradle(properties: properties)
-      end
+      configurator.mapped_platforms_properties.map { |properties| go_gradle(properties: properties) }
     end
   end
 
   desc "A demo lane for check"
-  lane :app do |options|
+  lane :spplat1 do |options|
     build_android_app(
       task: "assemble",
       build_type: "Release",
-      flavor: "app",
+      flavor: "spplat1",
       project_dir: File.realpath("#{Dir.pwd}/../"),
       print_command: true,
       properties: {
@@ -69,6 +66,8 @@ platform :android do
         "android.injected.signing.store.password" => "desheng@2020",
         "android.injected.signing.key.alias" => "fungame",
         "android.injected.signing.key.password" => "desheng@2020",
+        "versionCode" => 100,
+        "versionName" => "1.2.3",
       }
     )
   end
