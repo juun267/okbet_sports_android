@@ -65,10 +65,6 @@ class GameViewModel(
         loginRepository.isLogin
     }
 
-    val token = loginRepository.token
-    val userId = loginRepository.userId
-    var matchType: MatchType? = null
-
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
@@ -485,7 +481,6 @@ class GameViewModel(
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
-        this.matchType = matchType
         if (isReloadDate) {
             getDateRow(matchType)
 
