@@ -315,21 +315,8 @@ class GameViewModel(
                     initSportMenuSelectedState(it.sportMenuData)
                     updateSportMenuSelectedState(it.sportMenuData)
                 }
-                it.sportMenuData?.menu?.inPlay?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.today?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.early?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.parlay?.items?.sortedBy { item ->
-                    item.sortNum
-                }
-                it.sportMenuData?.menu?.outright?.items?.sortedBy { item ->
-                    item.sortNum
-                }
+
+                it.sportMenuData?.sortSport()
 
                 it.sportMenuData?.matchType = matchType
 
@@ -380,6 +367,29 @@ class GameViewModel(
                 sportMenuResult
             )
         )
+    }
+
+    private fun SportMenuData.sortSport(): SportMenuData {
+        this.menu.inPlay.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.today.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.early.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.parlay.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.outright.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.atStart.items.sortedBy { sport ->
+            sport.sortNum
+        }
+
+        return this
     }
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
