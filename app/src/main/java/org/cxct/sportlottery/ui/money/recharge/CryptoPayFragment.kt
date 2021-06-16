@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
@@ -65,7 +66,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private var filterRechCfgsList = HashMap<String?, ArrayList<RechCfg>>()
 
-    private var CurrentCurrency = ""
+    private var currentCurrency = ""
 
     private var voucherUrl: String? = null
 
@@ -131,7 +132,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         //上傳照片
         cv_upload.setOnClickListener {
             this.activity?.let { activity ->
-                fragmentManager?.let { fragmentManager ->
+                activity.supportFragmentManager.let { fragmentManager ->
                     RechargePicSelectorDialog(activity, mSelectMediaListener).show(
                         fragmentManager, null
                     )
@@ -159,7 +160,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         setupFocusEvent()
         getMoney()
         updateMoneyRange()
-        refreshCurrencyType(CurrentCurrency)
+        refreshCurrencyType(currentCurrency)
 
         tv_recharge_money.text = String.format(resources.getString(R.string.txv_recharge_money), "0.000")
         
@@ -191,14 +192,14 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         //支付截圖錯誤訊息
         viewModel.voucherPathErrorMsg.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { url ->
-                if (!url.isNullOrEmpty()) {
+                if (url.isNotEmpty()) {
                     cv_upload.isActivated = true
                     tv_upload.text = url
-                    tv_upload.setTextColor(resources.getColor(R.color.colorRedDark))
+                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorRedDark))
                 } else {
                     cv_upload.isActivated = false
                     tv_upload.text = resources.getString(R.string.title_reupload_pic)
-                    tv_upload.setTextColor(resources.getColor(R.color.colorBlackLight))
+                    tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorBlackLight))
                 }
             }
         })
@@ -236,8 +237,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             .setTimeSelectChangeListener {  }
             .setType(booleanArrayOf(true, true, true, true, true, false))
             .setTitleText(resources.getString(R.string.title_recharge_time))
-            .setSubmitColor(resources.getColor(R.color.colorGrayLight))
-            .setCancelColor(resources.getColor(R.color.colorGrayLight))
+            .setSubmitColor(ContextCompat.getColor(txv_recharge_time.context,R.color.colorGrayLight))
+            .setCancelColor(ContextCompat.getColor(txv_recharge_time.context,R.color.colorGrayLight))
             .isDialog(true)
             .addOnCancelClickListener { }
             .build() as TimePickerView
@@ -262,11 +263,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         if (url.isNotEmpty()) {
             cv_upload.isActivated = false
             tv_upload.text = resources.getString(R.string.title_reupload_pic)
-            tv_upload.setTextColor(resources.getColor(R.color.colorBlackLight))
+            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorBlackLight))
         } else {
             cv_upload.isActivated = true
             tv_upload.text = resources.getString(R.string.title_upload_pic_plz)
-            tv_upload.setTextColor(resources.getColor(R.color.colorRedDark))
+            tv_upload.setTextColor(ContextCompat.getColor(tv_upload.context,R.color.colorRedDark))
         }
     }
 
@@ -284,8 +285,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 currencyBtsAdapter = BtsRvAdapter(
                     mCurrencyBottomSheetList,
                     BtsRvAdapter.BankAdapterListener { bankCard, _ ->
-                        CurrentCurrency = bankCard.bankName.toString()
-                        refreshCurrencyType(CurrentCurrency)
+                        currentCurrency = bankCard.bankName.toString()
+                        refreshCurrencyType(currentCurrency)
                         resetEvent()
                         dismiss()
                     })
@@ -375,7 +376,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             }
         }
         //預設幣種
-        CurrentCurrency = filterRechCfgsList.keys.first().toString()
+        currentCurrency = filterRechCfgsList.keys.first().toString()
 
         rechCfgsList[0].prodName?.let { getAccountBottomSheetList(it) }
 
@@ -420,11 +421,11 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                     tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), "0.000") + "%"
                     tv_fee_amount.text = String.format(getString(R.string.hint_fee_amount), "0.000")
                 }
-                selectRechCfgs.rebateFee ?: 0.0 > 0.0 ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toMoneyFormat(selectRechCfgs.rebateFee?.times(100))) + "%"
+                selectRechCfgs.rebateFee > 0.0 ->{
+                    tv_fee_rate.text = String.format(getString(R.string.hint_feeback_rate), ArithUtil.toMoneyFormat(selectRechCfgs.rebateFee.times(100))) + "%"
                 }
                 else ->{
-                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toMoneyFormat(ArithUtil.mul(abs(selectRechCfgs.rebateFee ?: 0.0), 100.0))) + "%"
+                    tv_fee_rate.text = String.format(getString(R.string.hint_fee_rate), ArithUtil.toMoneyFormat(ArithUtil.mul(abs(selectRechCfgs.rebateFee), 100.0))) + "%"
                 }
             }
 
@@ -650,7 +651,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         if (mAccountBottomSheetList.size > 0) {
             txv_account.text = mAccountBottomSheetList[position].bankName
         }
-        mSelectRechCfgs = filterRechCfgsList[CurrentCurrency]?.get(position)
+        mSelectRechCfgs = filterRechCfgsList[currentCurrency]?.get(position)
         refreshSelectRechCfgs(mSelectRechCfgs)
     }
 }
