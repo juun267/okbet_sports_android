@@ -311,13 +311,47 @@ class GameViewModel(
                 )
             }
 
-            val asStartCount = result?.sportMenuData?.atStart?.num ?: 0
-            _asStartCount.postValue(asStartCount)
-            _allFootballCount.postValue(getTodayCount(SportType.FOOTBALL, result))
-            _allBasketballCount.postValue(getTodayCount(SportType.BASKETBALL, result))
-            _allTennisCount.postValue(getTodayCount(SportType.TENNIS, result))
-            _allBadmintonCount.postValue(getTodayCount(SportType.BADMINTON, result))
-            _allVolleyballCount.postValue(getTodayCount(SportType.VOLLEYBALL, result))
+            _asStartCount.postValue(
+                getMatchCount(
+                    MatchType.AT_START,
+                    result
+                )
+            )
+            _allFootballCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.FOOTBALL,
+                    result
+                )
+            )
+            _allBasketballCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.BASKETBALL,
+                    result
+                )
+            )
+            _allTennisCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.TENNIS,
+                    result
+                )
+            )
+            _allBadmintonCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.BADMINTON,
+                    result
+                )
+            )
+            _allVolleyballCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.VOLLEYBALL,
+                    result
+                )
+            )
 
             result?.let {
                 if (it.sportMenuData != null) {
@@ -346,11 +380,6 @@ class GameViewModel(
             }
         }
     }
-
-    private fun getTodayCount(sportType: SportType, sportMenuResult: SportMenuResult?): Int =
-        sportMenuResult?.sportMenuData?.menu?.today?.items?.find {
-            it.code == sportType.code
-        }?.num ?: 0
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
         sportMenuData.menu.inPlay.items.map { sport ->
