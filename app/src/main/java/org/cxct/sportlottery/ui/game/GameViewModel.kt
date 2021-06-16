@@ -308,47 +308,7 @@ class GameViewModel(
                 )
             }
 
-            _asStartCount.postValue(
-                getMatchCount(
-                    MatchType.AT_START,
-                    result
-                )
-            )
-            _allFootballCount.postValue(
-                getSportCount(
-                    MatchType.TODAY,
-                    SportType.FOOTBALL,
-                    result
-                )
-            )
-            _allBasketballCount.postValue(
-                getSportCount(
-                    MatchType.TODAY,
-                    SportType.BASKETBALL,
-                    result
-                )
-            )
-            _allTennisCount.postValue(
-                getSportCount(
-                    MatchType.TODAY,
-                    SportType.TENNIS,
-                    result
-                )
-            )
-            _allBadmintonCount.postValue(
-                getSportCount(
-                    MatchType.TODAY,
-                    SportType.BADMINTON,
-                    result
-                )
-            )
-            _allVolleyballCount.postValue(
-                getSportCount(
-                    MatchType.TODAY,
-                    SportType.VOLLEYBALL,
-                    result
-                )
-            )
+            postHomeCardCount(result)
 
             result?.let {
                 if (it.sportMenuData != null) {
@@ -376,6 +336,50 @@ class GameViewModel(
                 _sportMenuResult.value = it
             }
         }
+    }
+
+    private fun postHomeCardCount(sportMenuResult: SportMenuResult?) {
+        _asStartCount.postValue(
+            getMatchCount(
+                MatchType.AT_START,
+                sportMenuResult
+            )
+        )
+        _allFootballCount.postValue(
+            getSportCount(
+                MatchType.TODAY,
+                SportType.FOOTBALL,
+                sportMenuResult
+            )
+        )
+        _allBasketballCount.postValue(
+            getSportCount(
+                MatchType.TODAY,
+                SportType.BASKETBALL,
+                sportMenuResult
+            )
+        )
+        _allTennisCount.postValue(
+            getSportCount(
+                MatchType.TODAY,
+                SportType.TENNIS,
+                sportMenuResult
+            )
+        )
+        _allBadmintonCount.postValue(
+            getSportCount(
+                MatchType.TODAY,
+                SportType.BADMINTON,
+                sportMenuResult
+            )
+        )
+        _allVolleyballCount.postValue(
+            getSportCount(
+                MatchType.TODAY,
+                SportType.VOLLEYBALL,
+                sportMenuResult
+            )
+        )
     }
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
