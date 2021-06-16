@@ -195,67 +195,64 @@ class GameViewModel(
         source: SpecialEntranceSource,
         matchType: MatchType,
         sportType: SportType?
-    ) {
-        val targetItemCount = when (matchType) {
-            MatchType.IN_PLAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.TODAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.EARLY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.PARLAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.OUTRIGHT -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.AT_START -> {
-                _sportMenuResult.value?.sportMenuData?.atStart?.items?.size
+    ) = when (source) {
+        SpecialEntranceSource.HOME -> {
+            getSpecEntranceFromHome(matchType, sportType)
+        }
+        SpecialEntranceSource.LEFT_MENU -> {
+            getSpecEntranceFromLeftMenu(matchType, sportType)
+        }
+        SpecialEntranceSource.SHOPPING_CART -> {
+            SpecialEntrance(matchType, sportType)
+        }
+    }?.let {
+        _specialEntrance.postValue(it)
+    }
+
+    private fun getSpecEntranceFromHome(
+        matchType: MatchType,
+        sportType: SportType?
+    ): SpecialEntrance? = when (matchType) {
+        MatchType.TODAY -> {
+            if (sportType != null && getSportCount(MatchType.TODAY, sportType) != 0) {
+                SpecialEntrance(MatchType.TODAY, sportType)
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_today)))
+                null
             }
         }
-
-        val todayItemCount =
-            _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.count { it.code == sportType?.code }
-
-        val earlyItemCount =
-            _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.count { it.code == sportType?.code }
-
-        var targetMatchType = matchType
-
-        when (source) {
-            SpecialEntranceSource.HOME -> {
-                if (targetItemCount == 0) {
-                    when (matchType) {
-                        MatchType.TODAY -> {
-                            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_today)))
-                        }
-                        MatchType.AT_START -> {
-                            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
-                        }
-                        else -> {
-                        }
-                    }
-                    return
-                }
-            }
-
-            SpecialEntranceSource.LEFT_MENU -> {
-                targetMatchType = when {
-                    (targetItemCount != 0) -> matchType
-                    (todayItemCount != 0) -> MatchType.TODAY
-                    (earlyItemCount != 0) -> MatchType.EARLY
-                    else -> MatchType.PARLAY
-                }
-            }
-
-            SpecialEntranceSource.SHOPPING_CART -> {
+        MatchType.AT_START -> {
+            if (getMatchCount(MatchType.AT_START) != 0) {
+                SpecialEntrance(MatchType.AT_START, sportType)
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
+                null
             }
         }
+        else -> {
+            null
+        }
+    }
 
-        _specialEntrance.postValue(SpecialEntrance(targetMatchType, sportType))
+    private fun getSpecEntranceFromLeftMenu(
+        matchType: MatchType,
+        sportType: SportType?
+    ): SpecialEntrance? = when {
+        (sportType != null && getSportCount(matchType, sportType) != 0) -> {
+            SpecialEntrance(matchType, sportType)
+        }
+        (sportType != null && getSportCount(MatchType.TODAY, sportType) != 0) -> {
+            SpecialEntrance(MatchType.TODAY, sportType)
+        }
+        (sportType != null && getSportCount(MatchType.EARLY, sportType) != 0) -> {
+            SpecialEntrance(MatchType.EARLY, sportType)
+        }
+        (sportType != null) -> {
+            SpecialEntrance(MatchType.PARLAY, sportType)
+        }
+        else -> {
+            null
+        }
     }
 
     fun isParlayPage(boolean: Boolean) {
