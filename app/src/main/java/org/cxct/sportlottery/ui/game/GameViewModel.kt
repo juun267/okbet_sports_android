@@ -300,14 +300,11 @@ class GameViewModel(
 
     //獲取體育菜單
     fun getSportMenu(matchType: MatchType? = null) {
-        val now = TimeUtil.getNowTimeStamp()
-        val todayStart = TimeUtil.getTodayStartTimeStamp()
-
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
-                    now.toString(),
-                    todayStart.toString()
+                    TimeUtil.getNowTimeStamp().toString(),
+                    TimeUtil.getTodayStartTimeStamp().toString()
                 )
             }
 
