@@ -1179,4 +1179,39 @@ class GameViewModel(
             }
         }
     }
+
+    private fun getSportCount(
+        matchType: MatchType,
+        sportType: SportType,
+        sportMenuResult: SportMenuResult? = null
+    ): Int {
+        val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
+
+        return when (matchType) {
+            MatchType.IN_PLAY -> {
+                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.TODAY -> {
+                sportMenuRes?.sportMenuData?.menu?.today?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.EARLY -> {
+                sportMenuRes?.sportMenuData?.menu?.early?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.PARLAY -> {
+                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.OUTRIGHT -> {
+                sportMenuRes?.sportMenuData?.menu?.outright?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.AT_START -> {
+                sportMenuRes?.sportMenuData?.atStart?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+        }
+    }
 }
