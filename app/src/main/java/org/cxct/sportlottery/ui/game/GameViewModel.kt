@@ -429,13 +429,17 @@ class GameViewModel(
     }
 
     fun switchSportType(matchType: MatchType, item: Item) {
-        val sportMenuResult = _sportMenuResult.value
-        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
-        _sportMenuResult.postValue(sportMenuResult)
+        updateSportSelectState(matchType, item)
 
         setPlayType(PlayType.OU_HDP)
 
         getGameHallList(matchType, true)
+    }
+
+    private fun updateSportSelectState(matchType: MatchType, item: Item) {
+        val sportMenuResult = _sportMenuResult.value
+        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
+        _sportMenuResult.postValue(sportMenuResult)
     }
 
     fun getGameHallList(matchType: MatchType, date: Date) {
