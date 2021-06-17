@@ -195,67 +195,64 @@ class GameViewModel(
         source: SpecialEntranceSource,
         matchType: MatchType,
         sportType: SportType?
-    ) {
-        val targetItemCount = when (matchType) {
-            MatchType.IN_PLAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.TODAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.EARLY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.PARLAY -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.OUTRIGHT -> {
-                _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.count { it.code == sportType?.code }
-            }
-            MatchType.AT_START -> {
-                _sportMenuResult.value?.sportMenuData?.atStart?.items?.size
+    ) = when (source) {
+        SpecialEntranceSource.HOME -> {
+            getSpecEntranceFromHome(matchType, sportType)
+        }
+        SpecialEntranceSource.LEFT_MENU -> {
+            getSpecEntranceFromLeftMenu(matchType, sportType)
+        }
+        SpecialEntranceSource.SHOPPING_CART -> {
+            SpecialEntrance(matchType, sportType)
+        }
+    }?.let {
+        _specialEntrance.postValue(it)
+    }
+
+    private fun getSpecEntranceFromHome(
+        matchType: MatchType,
+        sportType: SportType?
+    ): SpecialEntrance? = when (matchType) {
+        MatchType.TODAY -> {
+            if (sportType != null && getSportCount(MatchType.TODAY, sportType) != 0) {
+                SpecialEntrance(MatchType.TODAY, sportType)
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_today)))
+                null
             }
         }
-
-        val todayItemCount =
-            _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.count { it.code == sportType?.code }
-
-        val earlyItemCount =
-            _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.count { it.code == sportType?.code }
-
-        var targetMatchType = matchType
-
-        when (source) {
-            SpecialEntranceSource.HOME -> {
-                if (targetItemCount == 0) {
-                    when (matchType) {
-                        MatchType.TODAY -> {
-                            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_today)))
-                        }
-                        MatchType.AT_START -> {
-                            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
-                        }
-                        else -> {
-                        }
-                    }
-                    return
-                }
-            }
-
-            SpecialEntranceSource.LEFT_MENU -> {
-                targetMatchType = when {
-                    (targetItemCount != 0) -> matchType
-                    (todayItemCount != 0) -> MatchType.TODAY
-                    (earlyItemCount != 0) -> MatchType.EARLY
-                    else -> MatchType.PARLAY
-                }
-            }
-
-            SpecialEntranceSource.SHOPPING_CART -> {
+        MatchType.AT_START -> {
+            if (getMatchCount(MatchType.AT_START) != 0) {
+                SpecialEntrance(MatchType.AT_START, sportType)
+            } else {
+                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
+                null
             }
         }
+        else -> {
+            null
+        }
+    }
 
-        _specialEntrance.postValue(SpecialEntrance(targetMatchType, sportType))
+    private fun getSpecEntranceFromLeftMenu(
+        matchType: MatchType,
+        sportType: SportType?
+    ): SpecialEntrance? = when {
+        (sportType != null && getSportCount(matchType, sportType) != 0) -> {
+            SpecialEntrance(matchType, sportType)
+        }
+        (sportType != null && getSportCount(MatchType.TODAY, sportType) != 0) -> {
+            SpecialEntrance(MatchType.TODAY, sportType)
+        }
+        (sportType != null && getSportCount(MatchType.EARLY, sportType) != 0) -> {
+            SpecialEntrance(MatchType.EARLY, sportType)
+        }
+        (sportType != null) -> {
+            SpecialEntrance(MatchType.PARLAY, sportType)
+        }
+        else -> {
+            null
+        }
     }
 
     fun isParlayPage(boolean: Boolean) {
@@ -314,13 +311,47 @@ class GameViewModel(
                 )
             }
 
-            val asStartCount = result?.sportMenuData?.atStart?.num ?: 0
-            _asStartCount.postValue(asStartCount)
-            _allFootballCount.postValue(getTodayCount(SportType.FOOTBALL, result))
-            _allBasketballCount.postValue(getTodayCount(SportType.BASKETBALL, result))
-            _allTennisCount.postValue(getTodayCount(SportType.TENNIS, result))
-            _allBadmintonCount.postValue(getTodayCount(SportType.BADMINTON, result))
-            _allVolleyballCount.postValue(getTodayCount(SportType.VOLLEYBALL, result))
+            _asStartCount.postValue(
+                getMatchCount(
+                    MatchType.AT_START,
+                    result
+                )
+            )
+            _allFootballCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.FOOTBALL,
+                    result
+                )
+            )
+            _allBasketballCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.BASKETBALL,
+                    result
+                )
+            )
+            _allTennisCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.TENNIS,
+                    result
+                )
+            )
+            _allBadmintonCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.BADMINTON,
+                    result
+                )
+            )
+            _allVolleyballCount.postValue(
+                getSportCount(
+                    MatchType.TODAY,
+                    SportType.VOLLEYBALL,
+                    result
+                )
+            )
 
             result?.let {
                 if (it.sportMenuData != null) {
@@ -349,11 +380,6 @@ class GameViewModel(
             }
         }
     }
-
-    private fun getTodayCount(sportType: SportType, sportMenuResult: SportMenuResult?): Int =
-        sportMenuResult?.sportMenuData?.menu?.today?.items?.find {
-            it.code == sportType.code
-        }?.num ?: 0
 
     private fun initSportMenuSelectedState(sportMenuData: SportMenuData) {
         sportMenuData.menu.inPlay.items.map { sport ->
@@ -1151,6 +1177,66 @@ class GameViewModel(
                 Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
                     _settlementNotificationMsg.value = Event(it)
                 }
+            }
+        }
+    }
+
+    private fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
+        val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
+
+        return when (matchType) {
+            MatchType.IN_PLAY -> {
+                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.size ?: 0
+            }
+            MatchType.TODAY -> {
+                sportMenuRes?.sportMenuData?.menu?.today?.items?.size ?: 0
+            }
+            MatchType.EARLY -> {
+                sportMenuRes?.sportMenuData?.menu?.early?.items?.size ?: 0
+            }
+            MatchType.PARLAY -> {
+                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.size ?: 0
+            }
+            MatchType.OUTRIGHT -> {
+                sportMenuRes?.sportMenuData?.menu?.outright?.items?.size ?: 0
+            }
+            MatchType.AT_START -> {
+                sportMenuRes?.sportMenuData?.atStart?.items?.size ?: 0
+            }
+        }
+    }
+
+    private fun getSportCount(
+        matchType: MatchType,
+        sportType: SportType,
+        sportMenuResult: SportMenuResult? = null
+    ): Int {
+        val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
+
+        return when (matchType) {
+            MatchType.IN_PLAY -> {
+                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.TODAY -> {
+                sportMenuRes?.sportMenuData?.menu?.today?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.EARLY -> {
+                sportMenuRes?.sportMenuData?.menu?.early?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.PARLAY -> {
+                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.OUTRIGHT -> {
+                sportMenuRes?.sportMenuData?.menu?.outright?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
+            MatchType.AT_START -> {
+                sportMenuRes?.sportMenuData?.atStart?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
             }
         }
     }
