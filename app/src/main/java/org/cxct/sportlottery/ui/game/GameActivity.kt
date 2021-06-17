@@ -76,7 +76,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private var mSportMenuResult: SportMenuResult? = null
     private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
         override fun onClick(id: Int) {
             when (id) {
@@ -277,30 +276,28 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun selectTab(position: Int?) {
-        viewModel.isParlayPage(position == 4)
-
         when (position) {
             0 -> {
                 mNavController.popBackStack(R.id.homeFragment, false)
             }
             1 -> {
-                viewModel.getSportMenu(MatchType.IN_PLAY)
+                viewModel.switchMatchType(MatchType.IN_PLAY)
                 loading()
             }
             2 -> {
-                viewModel.getSportMenu(MatchType.TODAY)
+                viewModel.switchMatchType(MatchType.TODAY)
                 loading()
             }
             3 -> {
-                viewModel.getSportMenu(MatchType.EARLY)
+                viewModel.switchMatchType(MatchType.EARLY)
                 loading()
             }
             4 -> {
-                viewModel.getSportMenu(MatchType.PARLAY)
+                viewModel.switchMatchType(MatchType.PARLAY)
                 loading()
             }
             5 -> {
-                viewModel.getSportMenu(MatchType.OUTRIGHT)
+                viewModel.switchMatchType(MatchType.OUTRIGHT)
                 loading()
             }
         }
@@ -400,7 +397,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                         tabLayout.getTabAt(5)?.select()
                     }
                     MatchType.AT_START -> {
-                        viewModel.getSportMenu(MatchType.AT_START)
+                        viewModel.switchMatchType(MatchType.AT_START)
                     }
                 }
             }
@@ -465,8 +462,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 navGameFragment(it)
             }
         }
-
-        mSportMenuResult = sportMenuResult
     }
 
     private fun updateAvatar(iconUrl: String?) {
@@ -479,7 +474,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun queryData() {
         getAnnouncement()
         getSportMenu()
-        defaultPage()
     }
 
     private fun getAnnouncement() {
@@ -489,10 +483,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun getSportMenu() {
         loading()
         viewModel.getSportMenu()
-    }
-
-    private fun defaultPage() {
-        viewModel.isParlayPage(false)
     }
 
     override fun onNewIntent(intent: Intent) {
