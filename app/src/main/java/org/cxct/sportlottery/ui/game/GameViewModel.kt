@@ -464,8 +464,6 @@ class GameViewModel(
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
         if (isReloadDate) {
             getDateRow(matchType)
-
-            _curDatePosition.postValue(0)
         }
 
         val sportItem = getSportSelected(matchType)
@@ -762,6 +760,7 @@ class GameViewModel(
         }
 
         _curDate.value = dateRow
+        _curDatePosition.postValue(0)
     }
 
     private fun getCurrentTimeRangeParams(): TimeRangeParams? {
