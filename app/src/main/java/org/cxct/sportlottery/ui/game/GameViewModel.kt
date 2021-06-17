@@ -311,7 +311,12 @@ class GameViewModel(
             postHomeCardCount(result)
 
             result?.let {
-                it.sportMenuData?.sortSport()?.updateSportSelectState()
+                it.sportMenuData?.sortSport()?.updateSportSelectState(
+                    specialEntrance.value?.matchType,
+                    specialEntrance.value?.sportType?.code
+                )?.run {
+                    _specialEntrance.value = null
+                }
 
                 it.sportMenuData?.matchType = matchType
 
@@ -387,58 +392,6 @@ class GameViewModel(
         return this
     }
 
-    private fun SportMenuData.updateSportSelectState(): SportMenuData {
-        val matchType = specialEntrance.value?.matchType
-        val sportType = specialEntrance.value?.sportType
-
-        this.menu.inPlay.items.map { sport ->
-            sport.isSelected = if ((matchType == MatchType.IN_PLAY) && sportType != null) {
-                sport.code == sportType.code
-            } else {
-                this.menu.inPlay.items.indexOf(sport) == 0
-            }
-        }
-        this.menu.today.items.map { sport ->
-            sport.isSelected = if ((matchType == MatchType.TODAY) && sportType != null) {
-                sport.code == sportType.code
-            } else {
-                this.menu.today.items.indexOf(sport) == 0
-            }
-        }
-        this.menu.early.items.map { sport ->
-            sport.isSelected = if ((matchType == MatchType.EARLY) && sportType != null) {
-                sport.code == sportType.code
-            } else {
-                this.menu.early.items.indexOf(sport) == 0
-            }
-        }
-        this.menu.parlay.items.map { sport ->
-            sport.isSelected = if ((matchType == MatchType.PARLAY) && sportType != null) {
-                sport.code == sportType.code
-            } else {
-                this.menu.parlay.items.indexOf(sport) == 0
-            }
-        }
-        this.menu.outright.items.map { sport ->
-            sport.isSelected = if ((matchType == MatchType.OUTRIGHT) && sportType != null) {
-                sport.code == sportType.code
-            } else {
-                this.menu.outright.items.indexOf(sport) == 0
-            }
-        }
-        this.atStart.items.map { sport ->
-            sport.isSelected = if ((matchType == MatchType.AT_START) && sportType != null) {
-                sport.code == sportType.code
-            } else {
-                this.atStart.items.indexOf(sport) == 0
-            }
-        }
-
-        _specialEntrance.value = null
-
-        return this
-    }
-
     fun getInPlayMatchPreload() {
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -466,7 +419,10 @@ class GameViewModel(
     }
 
     fun getGameHallList(matchType: MatchType, item: Item) {
-        updateSportSelectedState(matchType, item)
+        val sportMenuResult = _sportMenuResult.value
+        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
+        _sportMenuResult.postValue(sportMenuResult)
+
         setPlayType(PlayType.OU_HDP)
     }
 
@@ -654,45 +610,6 @@ class GameViewModel(
                 _outrightOddsListResult.postValue(Event(result))
             }
         }
-    }
-
-    private fun updateSportSelectedState(matchType: MatchType, item: Item) {
-        val result = _sportMenuResult.value
-
-        when (matchType) {
-            MatchType.IN_PLAY -> {
-                result?.sportMenuData?.menu?.inPlay?.items?.map {
-                    it.isSelected = (it == item)
-                }
-            }
-            MatchType.TODAY -> {
-                result?.sportMenuData?.menu?.today?.items?.map {
-                    it.isSelected = (it == item)
-                }
-            }
-            MatchType.EARLY -> {
-                result?.sportMenuData?.menu?.early?.items?.map {
-                    it.isSelected = (it == item)
-                }
-            }
-            MatchType.PARLAY -> {
-                result?.sportMenuData?.menu?.parlay?.items?.map {
-                    it.isSelected = (it == item)
-                }
-            }
-            MatchType.OUTRIGHT -> {
-                result?.sportMenuData?.menu?.outright?.items?.map {
-                    it.isSelected = (it == item)
-                }
-            }
-            MatchType.AT_START -> {
-                result?.sportMenuData?.atStart?.items?.map {
-                    it.isSelected = (it == item)
-                }
-            }
-        }
-
-        _sportMenuResult.value = result
     }
 
     fun getOddsList(
@@ -1233,5 +1150,73 @@ class GameViewModel(
                     ?: 0
             }
         }
+    }
+
+    private fun SportMenuData.updateSportSelectState(
+        matchType: MatchType?,
+        sportTypeCode: String?
+    ): SportMenuData {
+        this.menu.inPlay.items.map { sport ->
+            sport.isSelected = when {
+                ((matchType == MatchType.IN_PLAY) && sportTypeCode != null) -> {
+                    sport.code == sportTypeCode
+                }
+                else -> {
+                    this.menu.inPlay.items.indexOf(sport) == 0
+                }
+            }
+        }
+        this.menu.today.items.map { sport ->
+            sport.isSelected = when {
+                ((matchType == MatchType.TODAY) && sportTypeCode != null) -> {
+                    sport.code == sportTypeCode
+                }
+                else -> {
+                    this.menu.today.items.indexOf(sport) == 0
+                }
+            }
+        }
+        this.menu.early.items.map { sport ->
+            sport.isSelected = when {
+                ((matchType == MatchType.EARLY) && sportTypeCode != null) -> {
+                    sport.code == sportTypeCode
+                }
+                else -> {
+                    this.menu.early.items.indexOf(sport) == 0
+                }
+            }
+        }
+        this.menu.parlay.items.map { sport ->
+            sport.isSelected = when {
+                ((matchType == MatchType.PARLAY) && sportTypeCode != null) -> {
+                    sport.code == sportTypeCode
+                }
+                else -> {
+                    this.menu.parlay.items.indexOf(sport) == 0
+                }
+            }
+        }
+        this.menu.outright.items.map { sport ->
+            sport.isSelected = when {
+                ((matchType == MatchType.OUTRIGHT) && sportTypeCode != null) -> {
+                    sport.code == sportTypeCode
+                }
+                else -> {
+                    this.menu.outright.items.indexOf(sport) == 0
+                }
+            }
+        }
+        this.atStart.items.map { sport ->
+            sport.isSelected = when {
+                ((matchType == MatchType.AT_START) && sportTypeCode != null) -> {
+                    sport.code == sportTypeCode
+                }
+                else -> {
+                    this.atStart.items.indexOf(sport) == 0
+                }
+            }
+        }
+
+        return this
     }
 }
