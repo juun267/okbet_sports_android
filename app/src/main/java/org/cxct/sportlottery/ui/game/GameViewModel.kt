@@ -468,79 +468,50 @@ class GameViewModel(
             _curDatePosition.postValue(0)
         }
 
-        when (matchType) {
-            MatchType.IN_PLAY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
-                        it.isSelected
-                    }?.code
+        val sportItem = getSportSelected(matchType)
 
-                gameType?.let {
-                    getOddsList(gameType, matchType.postValue)
+        sportItem?.let { item ->
+            when (matchType) {
+                MatchType.IN_PLAY -> {
+                    getOddsList(item.code, matchType.postValue)
                 }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.TODAY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
+                MatchType.TODAY -> {
+                    getLeagueList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams()
+                    )
                 }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.EARLY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
+                MatchType.EARLY -> {
+                    getLeagueList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams()
+                    )
                 }
+                MatchType.PARLAY -> {
+                    getLeagueList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams(),
+                        date
+                    )
 
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.PARLAY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
-                        it.isSelected
-                    }?.code
-                gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams(), date)
                 }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.OUTRIGHT -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getOutrightSeasonList(it)
+                MatchType.OUTRIGHT -> {
+                    getOutrightSeasonList(item.code)
                 }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.AT_START -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.atStart?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getOddsList(gameType, matchType.postValue, getCurrentTimeRangeParams())
+                MatchType.AT_START -> {
+                    getOddsList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams()
+                    )
                 }
-
-                _isNoHistory.postValue(gameType == null)
             }
         }
+
+        _isNoHistory.postValue(sportItem == null)
     }
 
     fun getLeagueOddsList(matchType: MatchType, leagueId: String) {
@@ -548,17 +519,9 @@ class GameViewModel(
             listOf(leagueId)
         }
 
-        val gameType = when (matchType) {
-            MatchType.TODAY -> _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }?.code
-            MatchType.EARLY -> _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
-            MatchType.PARLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
-            MatchType.IN_PLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
-            else -> null
-        }
-
-        gameType?.let {
+        getSportSelected(matchType)?.let { item ->
             getOddsList(
-                gameType,
+                item.code,
                 matchType.postValue,
                 getCurrentTimeRangeParams(),
                 leagueIdList
@@ -567,17 +530,12 @@ class GameViewModel(
     }
 
     fun getOutrightOddsList(leagueId: String) {
-        val gameType =
-            _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
-                it.isSelected
-            }?.code
-
-        gameType?.let {
+        getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
-                            gameType,
+                            item.code,
                             leagueIdList = listOf(leagueId)
                         )
                     )
@@ -1165,6 +1123,27 @@ class GameViewModel(
                 sportMenuRes?.sportMenuData?.atStart?.items?.find { it.code == sportType.code }?.num
                     ?: 0
             }
+        }
+    }
+
+    private fun getSportSelected(matchType: MatchType): Item? = when (matchType) {
+        MatchType.IN_PLAY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }
+        }
+        MatchType.TODAY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }
+        }
+        MatchType.EARLY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }
+        }
+        MatchType.PARLAY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }
+        }
+        MatchType.OUTRIGHT -> {
+            sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find { it.isSelected }
+        }
+        MatchType.AT_START -> {
+            sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }
         }
     }
 
