@@ -26,6 +26,10 @@ abstract class BaseViewModel(
     val betInfoRepository: BetInfoRepository,
     val infoCenterRepository: InfoCenterRepository
 ) : ViewModel() {
+    val isLogin: LiveData<Boolean> by lazy {
+        loginRepository.isLogin
+    }
+
     val errorResultToken: LiveData<BaseResult>
         get() = _errorResultToken
 
@@ -83,7 +87,7 @@ abstract class BaseViewModel(
         return errorResult
     }
 
-    private fun doOnException(context: Context, exception: Exception){
+    private fun doOnException(context: Context, exception: Exception) {
         when (exception) {
             is DoNoConnectException -> {
                 _networkExceptionUnavailable.postValue(context.getString(R.string.message_network_no_connect))

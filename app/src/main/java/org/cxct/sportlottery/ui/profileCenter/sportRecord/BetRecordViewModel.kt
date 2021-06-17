@@ -1,11 +1,10 @@
 package org.cxct.sportlottery.ui.profileCenter.sportRecord
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
@@ -14,15 +13,20 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.util.TimeUtil
 
+
 class BetRecordViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -45,11 +49,21 @@ class BetRecordViewModel(
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
         status: String? = null,
     ) {
-        val statusFilter = { item: String? -> if (item.isNullOrEmpty()) listOf(1, 2, 3, 4, 5, 6, 7) else item.toList().map { Character.getNumericValue(it)
+        val statusFilter = { item: String? ->
+            if (item.isNullOrEmpty()) listOf(1, 2, 3, 4, 5, 6, 7) else item.toList().map {
+                Character.getNumericValue(it)
 
-        } }
+            }
+        }
         val championOnly = if (isChampionChecked == true) 1 else 0
-        mBetListRequest = BetListRequest(championOnly = championOnly, statusList = statusFilter(status), startTime = startTime, endTime = endTime, page = 1, pageSize = PAGE_SIZE)
+        mBetListRequest = BetListRequest(
+            championOnly = championOnly,
+            statusList = statusFilter(status),
+            startTime = startTime,
+            endTime = endTime,
+            page = 1,
+            pageSize = PAGE_SIZE
+        )
         mBetListRequest?.let { getBetList(it) }
     }
 
@@ -62,7 +76,14 @@ class BetRecordViewModel(
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loading()
                 mBetListRequest?.let {
-                    mBetListRequest = BetListRequest(championOnly = it.championOnly, statusList = it.statusList, startTime = it.startTime, endTime = it.endTime, page = it.page?.plus(1), pageSize = PAGE_SIZE)
+                    mBetListRequest = BetListRequest(
+                        championOnly = it.championOnly,
+                        statusList = it.statusList,
+                        startTime = it.startTime,
+                        endTime = it.endTime,
+                        page = it.page?.plus(1),
+                        pageSize = PAGE_SIZE
+                    )
                     getBetList(mBetListRequest!!)
                 }
             }

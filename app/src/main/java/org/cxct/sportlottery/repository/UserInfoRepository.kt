@@ -12,7 +12,6 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult
-import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import retrofit2.Response
 
 class UserInfoRepository(private val userInfoDao: UserInfoDao) {
@@ -24,16 +23,6 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             }
             return@map null
         }
-
-    val userMoney: LiveData<Double?>
-        get() = _userMoney
-    private val _userMoney = MutableLiveData<Double?>()
-
-    suspend fun getMoney() {
-        OneBoSportApi.userService.getMoney().let{
-            _userMoney.postValue(it.body()?.money)
-        }
-    }
 
     suspend fun getUserInfo(): Response<UserInfoResult> {
         val userInfoResponse = OneBoSportApi.userService.getUserInfo()

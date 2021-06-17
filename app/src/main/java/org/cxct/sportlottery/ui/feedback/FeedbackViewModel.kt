@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.feedback
 
-import android.content.Context
+import android.app.Application
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,13 +14,18 @@ import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 class FeedbackViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val feedbackRepository: FeedbackRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
 

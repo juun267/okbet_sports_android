@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -31,24 +31,26 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 import java.math.RoundingMode
 import kotlin.math.min
 
+
 class WithdrawViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val moneyRepository: MoneyRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
-
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
         get() = _loading
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
-
-
-    val userMoney = userInfoRepository.userMoney
 
     val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList
@@ -327,7 +329,7 @@ class WithdrawViewModel(
     fun getMoneyConfigs() {
         viewModelScope.launch {
             loading()
-            userInfoRepository.getMoney()
+            getMoney()
             doNetwork(androidContext) {
                 moneyRepository.getRechCfg()
             }?.let { result ->
@@ -346,13 +348,7 @@ class WithdrawViewModel(
             }
         }
     }
-
-    fun getMoney() {
-        viewModelScope.launch {
-            userInfoRepository.getMoney()
-        }
-    }
-
+    
     fun clearBankCardFragmentStatus() {
         //若不清除下一次進入編輯銀行卡頁面時會直接觸發觀察判定編輯成功
         _bankDeleteResult = MutableLiveData()

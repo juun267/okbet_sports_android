@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.results
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,12 +20,17 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 
 class SettlementViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val settlementRepository: SettlementRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     private var matchResultReformatted = mutableListOf<MatchResultData>() //重構後的資料結構
     private val _showMatchResultData = MutableLiveData<List<MatchResultData>>() //過濾後的資料

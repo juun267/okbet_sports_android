@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.main
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -22,19 +22,20 @@ import org.cxct.sportlottery.util.Event
 
 
 class MainViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseNoticeViewModel(userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
-
-    val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin
-    }
-
+) : BaseNoticeViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
     val token
         get() = loginRepository.token
 
@@ -43,10 +44,6 @@ class MainViewModel(
     private val _promoteNoticeResult = MutableLiveData<Event<MessageListResult>>()
     val promoteNoticeResult: LiveData<Event<MessageListResult>>
         get() = _promoteNoticeResult
-
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
 
     private val _bannerList = MutableLiveData<List<ImageData>?>()
     val bannerList: LiveData<List<ImageData>?>
@@ -103,15 +100,6 @@ class MainViewModel(
         //H5彈窗圖: imageType = 7
         sConfigData?.imageList?.filter { it.imageType == 7 }.apply {
             _popImageList.postValue(this)
-        }
-    }
-
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 
