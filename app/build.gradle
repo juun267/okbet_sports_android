@@ -54,6 +54,21 @@ android {
     flavorDimensions "single"
 
     productFlavors {
+        fastlane {
+            versionName fastlane_version_name
+            versionCode Integer.parseInt("${fastlane_version_code}")
+            buildConfigField "String", "CHANNEL_NAME", "\"${fastlane_app_code}\""
+            applicationId fastlane_application_id
+            manifestPlaceholders = [
+                    app_name               : fastlane_app_name,
+                    JPUSH_PKGNAME          : fastlane_application_id,
+                    JPUSH_APPKEY           : fastlane_jpush_appkey, //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : fastlane_jpush_channel, //暂时填写默认值即可.
+                    JPUSH_PRIVODER         : fastlane_jpush_provider,
+                    JPUSH_PERMISSION       : fastlane_jpush_permission,
+                    NETWORK_SECURITY_CONFIG: fastlane_security_config,
+            ]
+        }        
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             resValue "string", "app_name", "1bo sports"
@@ -68,6 +83,7 @@ android {
     }
 
     sourceSets {
+        fastlane.res.srcDirs  = ["${fastlane_res_src_dir}"]        
         forqa.res.srcDirs = ['src/platform/test/res']
     }
 
@@ -105,7 +121,7 @@ android {
         if (variant.buildType.name == 'release') {
             //改輸出名稱
             variant.outputs.all { output ->
-                def name = variant.flavorName
+                def name = fastlane_app_code == "" ? variant.flavorName : fastlane_app_code
                 def date = new SimpleDateFormat("yyyyMMdd").format(new Date())
                 outputFileName = name + '_' + getVersionCode() + '_' + getVersionName() + '_' + date + '.apk'
             }
@@ -113,6 +129,16 @@ android {
             //強制改寫 apk 輸出路徑, ex: ..\app\build/outputs/releaseAPK
             //方便不同平台的 apk 可以在同一層級的資料夾整理
             variant.getPackageApplication().outputDirectory = new File(project.buildDir.absolutePath + "/outputs/releaseAPK")
+        }
+    }
+
+    variantFilter { variant ->
+        //如果不是從 fastlane 執行的，會接到預設值 gradle 裡 (gradle.properties)
+        if (fastlane_executor != 'fastlane') {
+            def names = variant.flavors*.name
+            if (names.contains("fastlane")) {
+                setIgnore(true)
+            }
         }
     }
 }
