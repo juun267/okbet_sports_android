@@ -46,7 +46,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             sportTypeListener = SportTypeListener {
                 service.unsubscribeAllHallChannel()
 
-                viewModel.getGameHallList(args.matchType, it)
+                viewModel.switchSportType(args.matchType, it)
                 loading()
             }
 
