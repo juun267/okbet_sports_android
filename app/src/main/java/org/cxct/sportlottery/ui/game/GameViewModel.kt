@@ -255,22 +255,25 @@ class GameViewModel(
         }
     }
 
-    fun isParlayPage(boolean: Boolean) {
-        betInfoRepository._isParlayPage.postValue(boolean)
+    fun switchMatchType(matchType: MatchType) {
+        betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
+        if (matchType == MatchType.PARLAY) {
+            checkShoppingCart()
+        }
 
-        if (boolean) {
-            val betList = betInfoList.value?.peekContent() ?: mutableListOf()
+        getSportMenu(matchType)
+    }
 
-            //冠軍不加入串關, 離開串關後也不顯示, 直接將冠軍類注單移除
-            val parlayList = betList.cleanOutrightBetOrder().groupBetInfoByMatchId()
+    private fun checkShoppingCart() {
+        val betList = betInfoList.value?.peekContent() ?: mutableListOf()
+        val parlayList = betList.cleanOutrightBetOrder().groupBetInfoByMatchId()
 
-            if (betList.size != parlayList.size) {
-                betList.minus(parlayList.toHashSet()).forEach {
-                    removeBetInfoItem(it.matchOdd.oddsId)
-                }
-
-                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_system_close_incompatible_item)))
+        if (betList.size != parlayList.size) {
+            betList.minus(parlayList.toHashSet()).forEach {
+                removeBetInfoItem(it.matchOdd.oddsId)
             }
+
+            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_system_close_incompatible_item)))
         }
     }
 
