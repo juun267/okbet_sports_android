@@ -442,7 +442,7 @@ class GameViewModel(
         _sportMenuResult.postValue(sportMenuResult)
     }
 
-    fun getGameHallList(matchType: MatchType, date: Date) {
+    fun switchMatchDate(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
         getGameHallList(matchType, false, date.date)
 

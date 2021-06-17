@@ -59,7 +59,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val gameTypeAdapter by lazy {
         GameTypeAdapter().apply {
             gameTypeListener = GameTypeListener {
-                viewModel.getGameHallList(args.matchType, it)
+                viewModel.switchMatchDate(args.matchType, it)
                 loading()
             }
         }
