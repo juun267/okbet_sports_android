@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_gameFragment"
-            app:destination="@id/gameV3Fragment">
+            app:destination="@id/gameV3Fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
@@ -94,7 +96,9 @@
 
         <action
             android:id="@+id/action_gameV3Fragment_to_gameOutrightFragment"
-            app:destination="@id/gameOutrightFragment">
+            app:destination="@id/gameOutrightFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
                 app:argType="org.cxct.sportlottery.network.common.SportType" />
