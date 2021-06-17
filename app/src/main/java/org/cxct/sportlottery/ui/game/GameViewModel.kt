@@ -74,6 +74,9 @@ class GameViewModel(
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
+    val curMatchType: LiveData<MatchType?>
+        get() = _curMatchType
+
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
@@ -126,6 +129,7 @@ class GameViewModel(
         get() = _asStartCount
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
+    private val _curMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -302,7 +306,11 @@ class GameViewModel(
     }
 
     //獲取體育菜單
-    fun getSportMenu(matchType: MatchType? = null) {
+    fun getSportMenu() {
+        getSportMenu(null)
+    }
+
+    private fun getSportMenu(matchType: MatchType?) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 sportMenuRepository.getSportMenu(
@@ -321,8 +329,7 @@ class GameViewModel(
                     _specialEntrance.value = null
                 }
 
-                it.sportMenuData?.matchType = matchType
-
+                _curMatchType.value = matchType
                 _sportMenuResult.value = it
             }
         }
@@ -427,6 +434,8 @@ class GameViewModel(
         _sportMenuResult.postValue(sportMenuResult)
 
         setPlayType(PlayType.OU_HDP)
+
+        getGameHallList(matchType, true)
     }
 
     fun getGameHallList(matchType: MatchType, date: Date) {

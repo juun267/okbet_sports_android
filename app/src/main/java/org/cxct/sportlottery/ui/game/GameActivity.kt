@@ -403,6 +403,12 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        viewModel.curMatchType.observe(this, {
+            it?.let {
+                navGameFragment(it)
+            }
+        })
+
         viewModel.sportMenuResult.observe(this, {
             hideLoading()
             updateUiWithResult(it)
@@ -457,10 +463,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
         if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
-
-            sportMenuResult.sportMenuData?.matchType?.let {
-                navGameFragment(it)
-            }
         }
     }
 
