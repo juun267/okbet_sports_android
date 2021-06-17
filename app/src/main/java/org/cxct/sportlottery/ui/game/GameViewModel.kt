@@ -444,9 +444,21 @@ class GameViewModel(
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
-        getGameHallList(matchType, false, date.date)
 
-        _curDatePosition.postValue(_curDate.value?.indexOf(date))
+        getGameHallList(matchType, false, date.date)
+    }
+
+    private fun updateDateSelectedState(date: Date) {
+        val dateRow = _curDate.value
+
+        dateRow?.forEach {
+            it.isSelected = (it == date)
+        }
+
+        dateRow?.let {
+            _curDate.postValue(it)
+            _curDatePosition.postValue(_curDate.value?.indexOf(date))
+        }
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
@@ -792,18 +804,6 @@ class GameViewModel(
         }
 
         _curDate.value = dateRow
-    }
-
-    private fun updateDateSelectedState(date: Date) {
-        val dateRow = _curDate.value
-
-        dateRow?.forEach {
-            it.isSelected = (it == date)
-        }
-
-        dateRow?.let {
-            _curDate.postValue(it)
-        }
     }
 
     private fun getCurrentTimeRangeParams(): TimeRangeParams? {
