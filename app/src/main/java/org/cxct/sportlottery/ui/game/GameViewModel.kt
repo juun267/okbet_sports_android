@@ -533,13 +533,7 @@ class GameViewModel(
                 result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.odds.values.forEach { oddList ->
-                            oddList.forEach { odd ->
-                                odd?.isSelected =
-                                    betInfoRepository.betInfoList.value?.peekContent()
-                                        ?.any { betInfoListData ->
-                                            betInfoListData.matchOdd.oddsId == odd?.id
-                                        }
-                            }
+                            oddList.updateOddSelectState()
                         }
                     }
                 }
@@ -619,12 +613,7 @@ class GameViewModel(
                     }
 
                     matchOdd.odds.forEach { map ->
-                        map.value.forEach { odd ->
-                            odd?.isSelected =
-                                betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd?.id
-                                }
-                        }
+                        map.value.updateOddSelectState()
                     }
                 }
             }
@@ -1213,6 +1202,15 @@ class GameViewModel(
         dateRow?.let {
             _curDate.postValue(it)
             _curDatePosition.postValue(_curDate.value?.indexOf(date))
+        }
+    }
+
+    private fun List<Odd?>.updateOddSelectState() {
+        this.forEach { odd ->
+            odd?.isSelected = betInfoRepository.betInfoList.value?.peekContent()
+                ?.any { betInfoListData ->
+                    betInfoListData.matchOdd.oddsId == odd?.id
+                }
         }
     }
 }
