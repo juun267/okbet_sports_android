@@ -468,16 +468,16 @@ class GameViewModel(
             postHomeCardCount(result)
 
             result?.let {
-                it.sportMenuData?.sortSport()?.updateSportSelectState(
+                it.sportMenuData?.sortSport()
+                it.updateSportSelectState(
                     specialEntrance.value?.matchType,
                     specialEntrance.value?.sportType?.code
-                )?.run {
+                ).run {
                     _specialEntrance.value = null
                 }
-
-                _curMatchType.value = matchType
-                _sportMenuResult.value = it
             }
+
+            _curMatchType.value = matchType
         }
         _isLoading.value = false
     }
@@ -607,7 +607,7 @@ class GameViewModel(
     }
 
     fun switchSportType(matchType: MatchType, item: Item) {
-        updateSportSelectState(matchType, item)
+        _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
 
         getGameHallList(matchType, true, isReloadPlayCate = true)
     }
@@ -1427,10 +1427,12 @@ class GameViewModel(
         return this
     }
 
-    private fun updateSportSelectState(matchType: MatchType, item: Item) {
-        val sportMenuResult = _sportMenuResult.value
-        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
-        _sportMenuResult.postValue(sportMenuResult)
+    private fun SportMenuResult.updateSportSelectState(
+        matchType: MatchType?,
+        sportTypeCode: String?
+    ) {
+        this.sportMenuData?.updateSportSelectState(matchType, sportTypeCode)
+        _sportMenuResult.postValue(this)
     }
 
     private fun List<Date>.updateDateSelectedState(date: Date) {
