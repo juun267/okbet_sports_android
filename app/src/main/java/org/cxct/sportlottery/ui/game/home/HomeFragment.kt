@@ -323,7 +323,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             matchId?.let {
                 val action =
                     HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                        matchType, sportType, matchId
+                        matchType, sportType, matchId, arrayOf()
                     )
                 findNavController().navigate(action)
             }

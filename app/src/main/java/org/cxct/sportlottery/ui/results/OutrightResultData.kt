@@ -1,8 +1,5 @@
 package org.cxct.sportlottery.ui.results
 
-import org.cxct.sportlottery.network.matchresult.list.League
-import org.cxct.sportlottery.network.matchresult.list.Match
-import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
 import org.cxct.sportlottery.network.outright.Result
 import org.cxct.sportlottery.network.outright.Season
 

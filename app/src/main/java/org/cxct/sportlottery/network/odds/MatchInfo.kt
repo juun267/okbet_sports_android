@@ -1,10 +1,13 @@
 package org.cxct.sportlottery.network.odds
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.network.common.SportType
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class MatchInfo(
     @Json(name = "gameType")
@@ -23,7 +26,7 @@ data class MatchInfo(
     val startTime: String,
     @Json(name = "status")
     var status: Int
-) {
+) : Parcelable {
     var sportType: SportType? = null
 
     //Live

@@ -15,16 +15,15 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigkoo.pickerview.builder.TimePickerBuilder
-import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
-import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.crypto_pay_fragment.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
+import kotlinx.android.synthetic.main.edittext_login.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.common.RechType
@@ -223,17 +222,16 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         yesterday.add(Calendar.DAY_OF_MONTH, -30)
         val tomorrow = Calendar.getInstance()
         tomorrow.add(Calendar.DAY_OF_MONTH, +30)
-        dateTimePicker = TimePickerBuilder(activity,
-            OnTimeSelectListener { date, _ ->
-                try {
-                    depositDate = date
-                    txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(date)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            })
+        dateTimePicker = TimePickerBuilder(activity) { date, _ ->
+            try {
+                depositDate = date
+                txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
             .setRangDate(yesterday, tomorrow)
-            .setDate(TimeUtil.toCalendar(Date()))
+            .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener {  }
             .setType(booleanArrayOf(true, true, true, true, true, false))
             .setTitleText(resources.getString(R.string.title_recharge_time))

@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_outright_result_outright.view.*
 import kotlinx.android.synthetic.main.item_outright_result_title.view.*
 import org.cxct.sportlottery.R
-import java.text.SimpleDateFormat
-import java.util.*
+import org.cxct.sportlottery.util.TimeUtil
 
 class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightItemClickListener) : ListAdapter<OutrightResultData, RecyclerView.ViewHolder>(OutrightResultDiffCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -98,25 +97,14 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             }
         }
 
-        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(outrightResultData: OutrightResultData) {
             itemView.apply {
                 val seasonData = outrightResultData.seasonData
                 val outrightData = outrightResultData.outrightData
-
-                //TODO Dean : 之後多國語要check要怎麼顯示
-                val calendar = Calendar.getInstance()
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
-                tv_date.text = seasonData?.start?.let {
-                    calendar.timeInMillis = it.toLong()
-                    calendar.time
-                }?.let { date ->
-                    dateFormat.format(date)
-                }
-
+                tv_date.text = TimeUtil.timeFormat(seasonData?.start, "yyyy-MM-dd HH:mm")
                 tv_content.text = outrightData?.playCateName
-
                 tv_winner.text = outrightData?.playName
             }
         }

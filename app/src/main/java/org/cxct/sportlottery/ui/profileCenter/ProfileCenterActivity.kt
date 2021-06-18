@@ -264,8 +264,10 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun initObserve() {
         viewModel.userMoney.observe(this, Observer {
-            refreshMoneyHideLoading()
-            tv_account_balance.text = it ?: ""
+            it?.let {
+                refreshMoneyHideLoading()
+                tv_account_balance.text = TextUtil.format(it)
+            }
         })
 
         viewModel.userInfo.observe(this, Observer {

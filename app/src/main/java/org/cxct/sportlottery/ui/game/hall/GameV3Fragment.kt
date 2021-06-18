@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -88,20 +89,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         navOddsDetailLive(it)
                     }
                 },
-                { matchOdd ->
+                { matchId, matchInfoList ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
-                            matchOdd.matchInfo?.id?.let {
+                            matchId?.let {
                                 navOddsDetailLive(it)
                             }
                         }
                         MatchType.AT_START -> {
-                            matchOdd.matchInfo?.id?.let {
-                                navOddsDetail(it)
-                                viewModel.setOddsDetailMoreList(
-                                    data.find { dataList -> dataList.matchOdds.find { dataMatchOdds -> dataMatchOdds == matchOdd } == matchOdd }?.matchOdds?.toList()
-                                        ?: listOf<MatchOdd>()
-                                )
+                            matchId?.let {
+                                navOddsDetail(it, matchInfoList)
                             }
                         }
                         else -> {
@@ -672,8 +669,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             isPlayTypeVisible =
                 (selectedSportType?.code == SportType.FOOTBALL.code) || (selectedSportType?.code == SportType.BASKETBALL.code)
         }
-
-        viewModel.setPlayType(PlayType.OU_HDP)
     }
 
     private fun clearSearchView() {
@@ -761,7 +756,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun navOddsDetail(matchId: String) {
+    private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
         val sportType =
             when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
                 SportType.FOOTBALL.code -> SportType.FOOTBALL
@@ -776,7 +771,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailFragment(
                 args.matchType,
                 sportType,
-                matchId
+                matchId,
+                matchInfoList.toTypedArray()
             )
 
             findNavController().navigate(action)

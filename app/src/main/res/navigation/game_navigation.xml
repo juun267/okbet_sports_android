@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_gameFragment"
-            app:destination="@id/gameV3Fragment">
+            app:destination="@id/gameV3Fragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
@@ -50,6 +52,9 @@
                 android:name="matchId"
                 app:argType="string" />
 
+            <argument
+                android:name="matchInfoList"
+                app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
         </action>
 
     </fragment>
@@ -91,7 +96,9 @@
 
         <action
             android:id="@+id/action_gameV3Fragment_to_gameOutrightFragment"
-            app:destination="@id/gameOutrightFragment">
+            app:destination="@id/gameOutrightFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
             <argument
                 android:name="sportType"
                 app:argType="org.cxct.sportlottery.network.common.SportType" />
@@ -118,6 +125,10 @@
             <argument
                 android:name="matchId"
                 app:argType="string" />
+
+            <argument
+                android:name="matchInfoList"
+                app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
         </action>
 
         <action
@@ -168,6 +179,10 @@
             <argument
                 android:name="matchId"
                 app:argType="string" />
+
+            <argument
+                android:name="matchInfoList"
+                app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
         </action>
 
         <action
@@ -232,6 +247,10 @@
         <argument
             android:name="matchId"
             app:argType="string" />
+
+        <argument
+            android:name="matchInfoList"
+            app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
 
         <action
             android:id="@+id/action_oddsDetailFragment_self"
@@ -314,6 +333,10 @@
             <argument
                 android:name="matchId"
                 app:argType="string" />
+
+            <argument
+                android:name="matchInfoList"
+                app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
         </action>
 
         <action

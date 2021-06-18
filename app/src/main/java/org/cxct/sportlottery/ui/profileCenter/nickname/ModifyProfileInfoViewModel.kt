@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.nickname
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,12 +20,17 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class ModifyProfileInfoViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     private val _loading = MutableLiveData<Boolean>()
     private val _nicknameResult = MutableLiveData<NicknameResult?>()

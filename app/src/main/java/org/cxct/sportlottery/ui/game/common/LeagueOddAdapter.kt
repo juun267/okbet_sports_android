@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -80,6 +81,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = data[position]
+        val matchInfoList = data.mapNotNull {
+            it.matchInfo
+        }
 
         when (holder) {
             is ViewHolderHdpOu -> {
@@ -89,7 +93,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     item,
                     leagueOddListener,
                     isTimerEnable,
-                    oddsType
+                    oddsType,
+                    matchInfoList
                 )
             }
             is ViewHolder1x2 -> {
@@ -99,7 +104,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     item,
                     leagueOddListener,
                     isTimerEnable,
-                    oddsType
+                    oddsType,
+                    matchInfoList
                 )
             }
         }
@@ -126,6 +132,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
+            matchInfoList: List<MatchInfo>
         ) {
             setupMatchInfo(item, matchType, isTimerEnable)
 
@@ -134,11 +141,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item)
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
 
             itemView.match_odd_block_info.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item)
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
         }
 
@@ -247,12 +254,31 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 SportType.TENNIS -> {
                     item.odds[PlayType.SET_HDP.code]
                 }
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.HDP_INCL_OT.code]
+                }
                 else -> {
                     item.odds[PlayType.HDP.code]
                 }
             }
-            val oddListOU = item.odds[PlayType.OU.code]
-            val oddList1x2 = item.odds[PlayType.X12.code]
+
+            val oddListOU = when (sportType) {
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.OU_INCL_OT.code]
+                }
+                else -> {
+                    item.odds[PlayType.OU.code]
+                }
+            }
+
+            val oddList1x2 = when (sportType) {
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.X12_INCL_OT.code]
+                }
+                else -> {
+                    item.odds[PlayType.X12.code]
+                }
+            }
 
             itemView.match_play_type_column1.text = when (sportType) {
                 SportType.FOOTBALL, SportType.BASKETBALL -> {
@@ -872,6 +898,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
+            matchInfoList: List<MatchInfo>
         ) {
             setupMatchInfo(item, matchType, isTimerEnable)
 
@@ -880,11 +907,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupLiveButton(item, matchType, leagueOddListener)
 
             itemView.match_play_type_block_1x2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item)
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
 
             itemView.match_odd_block_info_1x2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item)
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
         }
 
@@ -985,7 +1012,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
-            val oddList1X2 = item.odds[PlayType.X12.code]
+            val sportType = item.matchInfo?.sportType
+
+            val oddList1X2 = when (sportType) {
+                SportType.BASKETBALL -> {
+                    item.odds[PlayType.X12_INCL_OT.code]
+                }
+                else -> {
+                    item.odds[PlayType.X12.code]
+                }
+            }
 
             itemView.match_odd_1.apply {
                 playType = PlayType.X12
@@ -1042,6 +1078,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 betStatus = when {
+                    (sportType == SportType.BASKETBALL) -> {
+                        BetStatus.DEACTIVATED.code
+                    }
                     (oddList1X2 == null || oddList1X2.size < 3) -> {
                         BetStatus.LOCKED.code
                     }
@@ -1250,14 +1289,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
 class LeagueOddListener(
     val clickListenerLive: (item: MatchOdd) -> Unit,
-    val clickListenerPlayType: (item: MatchOdd) -> Unit,
+    val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String) -> Unit
 ) {
     fun onClickLive(item: MatchOdd) =
         clickListenerLive(item)
 
-    fun onClickPlayType(item: MatchOdd) =
-        clickListenerPlayType(item)
+    fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
+        clickListenerPlayType(matchId, matchInfoList)
 
     fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String = "", playName: String = "") =
         clickListenerBet(matchOdd, odd, playCateName, playName)

@@ -49,6 +49,7 @@
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
+                tools:itemCount="5"
                 tools:listitem="@layout/content_type_cs_item" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -61,8 +62,12 @@
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
                 tools:listitem="@layout/content_type_cs_item" />
-
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorWhite6" />
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

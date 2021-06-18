@@ -107,6 +107,13 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
         betInfoListAdapter = BetInfoListAdapter(requireContext(), this@BetInfoListDialog)
 
+
+        //20210603 紀錄問題：修正 notifyDataSetChanged() 造成 EditText focus 錯亂問題
+        //https://blog.csdn.net/chenli_001/article/details/114752021
+        betInfoListAdapter.setHasStableIds(true)
+        rv_bet_list.itemAnimator = null
+
+
         rv_bet_list.apply {
             adapter = betInfoListAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -151,15 +158,15 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {
-                if (it.size == 0) {
+            it.getContentIfNotHandled()?.let { list ->
+                if (list.isNullOrEmpty()) {
                     dismiss()
                 } else {
                     if (!isSubScribe) {
                         isSubScribe = true
-                        subscribeChannel(it)
+                        subscribeChannel(list)
                     }
-                    betInfoListAdapter.betInfoList = it
+                    betInfoListAdapter.betInfoList = list
                 }
             }
         })

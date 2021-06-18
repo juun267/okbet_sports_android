@@ -281,7 +281,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 }
             })
             .setRangDate(yesterday, tomorrow)
-            .setDate(TimeUtil.toCalendar(Date()))
+            .setDate(Calendar.getInstance())
             .setTimeSelectChangeListener {  }
             .setType(booleanArrayOf(true, true, true, true, true, false))
             .setTitleText(resources.getString(R.string.title_recharge_time))

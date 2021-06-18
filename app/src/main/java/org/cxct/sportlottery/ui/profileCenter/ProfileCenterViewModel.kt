@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -15,21 +15,22 @@ import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
-
-    private val _userMoney = MutableLiveData<String?>()
-    val userMoney: LiveData<String?>
-        get() = _userMoney
 
     val withdrawSystemOperation =
         withdrawRepository.withdrawSystemOperation
@@ -48,19 +49,6 @@ class ProfileCenterViewModel(
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-
-            val formatMoney = userMoneyResult?.money?.let {
-                TextUtil.format(it)
-            }
-
-            _userMoney.postValue(formatMoney)
-        }
-    }
 
     fun getUserInfo() {
         viewModelScope.launch {

@@ -582,18 +582,22 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 it.name?.split(" - ")?.get(1)?.toInt()
             }
 
+
             rvHome.apply {
-                adapter = TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
+                val isLongest = homeList.size >= drawList.size && homeList.size >= awayList.size
+                adapter = TypeCSAdapter(isLongest, oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvDraw.apply {
-                adapter = TypeCSAdapter(oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
+                val isLongest = drawList.size >= homeList.size && drawList.size >= awayList.size
+                adapter = TypeCSAdapter(isLongest, oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvAway.apply {
-                adapter = TypeCSAdapter(oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
+                val isLongest = awayList.size >= homeList.size && awayList.size >= homeList.size
+                adapter = TypeCSAdapter(isLongest, oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
