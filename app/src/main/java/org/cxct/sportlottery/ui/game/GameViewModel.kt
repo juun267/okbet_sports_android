@@ -721,38 +721,6 @@ class GameViewModel(
 
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
-                    it.odds.forEach { mapSubTitleOdd ->
-                        val dynamicMarket = matchOdd.dynamicMarkets[mapSubTitleOdd.key]
-
-                        //add subtitle
-                        if (!matchOdd.displayList.contains(mapSubTitleOdd.key)) {
-                            dynamicMarket?.let {
-                                when (LanguageManager.getSelectLanguage(androidContext)) {
-                                    LanguageManager.Language.ZH -> {
-                                        matchOdd.displayList.add(dynamicMarket.zh)
-                                    }
-                                    else -> {
-                                        matchOdd.displayList.add(dynamicMarket.en)
-                                    }
-                                }
-                            }
-                        }
-
-                        //add odd
-                        mapSubTitleOdd.value.forEach { odd ->
-                            odd?.outrightCateName =
-                                when (LanguageManager.getSelectLanguage(androidContext)) {
-                                    LanguageManager.Language.ZH -> {
-                                        dynamicMarket?.zh
-                                    }
-                                    else -> {
-                                        dynamicMarket?.en
-                                    }
-                                }
-                            odd?.let { it1 -> matchOdd.displayList.add(it1) }
-                        }
-                    }
-
                     matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
                     matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
                 }
@@ -1045,11 +1013,22 @@ class GameViewModel(
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
+        val outrightCateName = matchOdd.dynamicMarkets[odd.outrightCateKey].let {
+            when (LanguageManager.getSelectLanguage(androidContext)) {
+                LanguageManager.Language.ZH -> {
+                    it?.zh
+                }
+                else -> {
+                    it?.en
+                }
+            }
+        }
+
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
                 matchType,
                 sportType,
-                odd.outrightCateName,
+                outrightCateName,
                 odd.spread,
                 matchOdd,
                 odd
