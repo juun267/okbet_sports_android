@@ -619,7 +619,7 @@ class GameViewModel(
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
-        updateDateSelectedState(date)
+        _curDate.value?.updateDateSelectedState(date)
 
         getGameHallList(matchType, false, date.date)
     }
@@ -636,9 +636,6 @@ class GameViewModel(
 
         if (isReloadDate) {
             getDateRow(matchType)
-            _curDate.value?.firstOrNull()?.let {
-                updateDateSelectedState(it)
-            }
         }
 
         val sportItem = getSportSelected(matchType)
@@ -880,7 +877,10 @@ class GameViewModel(
                 listOf()
             }
         }
-        _curDate.value = dateRow
+
+        dateRow.firstOrNull()?.let {
+            dateRow.updateDateSelectedState(it)
+        }
     }
 
     private fun getDateRowEarly(): List<Date> {
@@ -1433,17 +1433,13 @@ class GameViewModel(
         _sportMenuResult.postValue(sportMenuResult)
     }
 
-    private fun updateDateSelectedState(date: Date) {
-        val dateRow = _curDate.value
-
-        dateRow?.forEach {
+    private fun List<Date>.updateDateSelectedState(date: Date) {
+        this.forEach {
             it.isSelected = (it == date)
         }
 
-        dateRow?.let {
-            _curDate.postValue(it)
-            _curDatePosition.postValue(_curDate.value?.indexOf(date))
-        }
+        _curDate.postValue(this)
+        _curDatePosition.postValue(this.indexOf(date))
     }
 
     private fun updatePlayCateSelectedState(play: Play) {
