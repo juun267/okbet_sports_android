@@ -436,34 +436,18 @@ class GameViewModel(
         getGameHallList(matchType, true)
     }
 
-    private fun updateSportSelectState(matchType: MatchType, item: Item) {
-        val sportMenuResult = _sportMenuResult.value
-        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
-        _sportMenuResult.postValue(sportMenuResult)
-    }
-
     fun switchMatchDate(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
 
         getGameHallList(matchType, false, date.date)
     }
 
-    private fun updateDateSelectedState(date: Date) {
-        val dateRow = _curDate.value
-
-        dateRow?.forEach {
-            it.isSelected = (it == date)
-        }
-
-        dateRow?.let {
-            _curDate.postValue(it)
-            _curDatePosition.postValue(_curDate.value?.indexOf(date))
-        }
-    }
-
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
         if (isReloadDate) {
             getDateRow(matchType)
+            _curDate.value?.firstOrNull()?.let {
+                updateDateSelectedState(it)
+            }
         }
 
         val sportItem = getSportSelected(matchType)
@@ -681,86 +665,78 @@ class GameViewModel(
     }
 
     private fun getDateRow(matchType: MatchType) {
-        val dateRow = mutableListOf<Date>()
-
-        when (matchType) {
+        val dateRow = when (matchType) {
             MatchType.TODAY -> {
-                dateRow.add(Date("", getTodayTimeRangeParams()))
+                listOf(Date("", getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_all),
-                        TimeUtil.getEarlyAllTimeRangeParams()
-                    )
-                )
-                TimeUtil.getFutureDate(6).forEach {
-                    dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
-                }
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams()
-                    )
-                )
+                getDateRowEarly()
             }
             MatchType.PARLAY -> {
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_all),
-                        TimeUtil.getParlayAllTimeRangeParams()
-                    )
-                )
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_live),
-                        object : TimeRangeParams {
-                            override val startTime: String?
-                                get() = null
-                            override val endTime: String?
-                                get() = null
-                        },
-                        MatchType.IN_PLAY.postValue
-                    )
-                )
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_today),
-                        TimeUtil.getParlayTodayTimeRangeParams(),
-                        MatchType.TODAY.postValue
-                    )
-                )
-                TimeUtil.getFutureDate(6).forEach {
-                    dateRow.add(
-                        Date(
-                            it,
-                            TimeUtil.getDayDateTimeRangeParams(it),
-                            MatchType.EARLY.postValue
-                        )
-                    )
-                }
-
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams(),
-                        MatchType.EARLY.postValue
-                    )
-                )
+                getDateRowParlay()
             }
             MatchType.AT_START -> {
-                dateRow.add(Date("", TimeUtil.getAtStartTimeRangeParams()))
+                listOf(Date("", TimeUtil.getAtStartTimeRangeParams()))
             }
             else -> {
+                listOf()
             }
         }
-
-        dateRow.map {
-            it.isSelected = (dateRow.indexOf(it) == 0)
-        }
-
         _curDate.value = dateRow
-        _curDatePosition.postValue(0)
+    }
+
+    private fun getDateRowEarly(): List<Date> {
+        val dateRow = mutableListOf(
+            Date(
+                androidContext.getString(R.string.date_row_all),
+                TimeUtil.getEarlyAllTimeRangeParams()
+            ), Date(
+                androidContext.getString(R.string.date_row_other),
+                TimeUtil.getOtherEarlyDateTimeRangeParams()
+            )
+        )
+
+        dateRow.addAll(1, TimeUtil.getFutureDate(6).map {
+            Date(it, TimeUtil.getDayDateTimeRangeParams(it))
+        })
+
+        return dateRow
+    }
+
+    private fun getDateRowParlay(): List<Date> {
+        val dateRow = mutableListOf(
+            Date(
+                androidContext.getString(R.string.date_row_all),
+                TimeUtil.getParlayAllTimeRangeParams()
+            ), Date(
+                androidContext.getString(R.string.date_row_live),
+                object : TimeRangeParams {
+                    override val startTime: String?
+                        get() = null
+                    override val endTime: String?
+                        get() = null
+                },
+                MatchType.IN_PLAY.postValue
+            ), Date(
+                androidContext.getString(R.string.date_row_today),
+                TimeUtil.getParlayTodayTimeRangeParams(),
+                MatchType.TODAY.postValue
+            ), Date(
+                androidContext.getString(R.string.date_row_other),
+                TimeUtil.getOtherEarlyDateTimeRangeParams(),
+                MatchType.EARLY.postValue
+            )
+        )
+
+        dateRow.addAll(3, TimeUtil.getFutureDate(6).map {
+            Date(
+                it,
+                TimeUtil.getDayDateTimeRangeParams(it),
+                MatchType.EARLY.postValue
+            )
+        })
+
+        return dateRow
     }
 
     private fun getCurrentTimeRangeParams(): TimeRangeParams? {
@@ -1212,5 +1188,24 @@ class GameViewModel(
         }
 
         return this
+    }
+
+    private fun updateSportSelectState(matchType: MatchType, item: Item) {
+        val sportMenuResult = _sportMenuResult.value
+        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
+        _sportMenuResult.postValue(sportMenuResult)
+    }
+
+    private fun updateDateSelectedState(date: Date) {
+        val dateRow = _curDate.value
+
+        dateRow?.forEach {
+            it.isSelected = (it == date)
+        }
+
+        dateRow?.let {
+            _curDate.postValue(it)
+            _curDatePosition.postValue(_curDate.value?.indexOf(date))
+        }
     }
 }
