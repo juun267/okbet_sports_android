@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.feedback
 import android.os.Bundle
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_feedback_main.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
@@ -41,6 +42,7 @@ class FeedbackMainActivity : BaseOddButtonActivity<FeedbackViewModel>(FeedbackVi
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.text = getString(R.string.feedback_toolbar_title)
         btn_toolbar_back.setOnClickListener {
             onBackPressed()
         }
