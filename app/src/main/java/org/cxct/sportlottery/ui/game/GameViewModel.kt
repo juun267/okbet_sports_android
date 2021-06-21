@@ -435,103 +435,72 @@ class GameViewModel(
         }
     }
 
-    fun getGameHallList(matchType: MatchType, item: Item) {
-        val sportMenuResult = _sportMenuResult.value
-        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
-        _sportMenuResult.postValue(sportMenuResult)
+    fun switchSportType(matchType: MatchType, item: Item) {
+        updateSportSelectState(matchType, item)
 
         setPlayType(PlayType.OU_HDP)
 
         getGameHallList(matchType, true)
     }
 
-    fun getGameHallList(matchType: MatchType, date: Date) {
+    fun switchMatchDate(matchType: MatchType, date: Date) {
         updateDateSelectedState(date)
-        getGameHallList(matchType, false, date.date)
 
-        _curDatePosition.postValue(_curDate.value?.indexOf(date))
+        getGameHallList(matchType, false, date.date)
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
         if (isReloadDate) {
             getDateRow(matchType)
-
-            _curDatePosition.postValue(0)
-        }
-
-        when (matchType) {
-            MatchType.IN_PLAY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getOddsList(gameType, matchType.postValue)
-                }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.TODAY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
-                }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.EARLY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams())
-                }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.PARLAY -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find {
-                        it.isSelected
-                    }?.code
-                gameType?.let {
-                    getLeagueList(gameType, matchType.postValue, getCurrentTimeRangeParams(), date)
-                }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.OUTRIGHT -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getOutrightSeasonList(it)
-                }
-
-                _isNoHistory.postValue(gameType == null)
-            }
-            MatchType.AT_START -> {
-                val gameType =
-                    _sportMenuResult.value?.sportMenuData?.atStart?.items?.find {
-                        it.isSelected
-                    }?.code
-
-                gameType?.let {
-                    getOddsList(gameType, matchType.postValue, getCurrentTimeRangeParams())
-                }
-
-                _isNoHistory.postValue(gameType == null)
+            _curDate.value?.firstOrNull()?.let {
+                updateDateSelectedState(it)
             }
         }
+
+        val sportItem = getSportSelected(matchType)
+
+        sportItem?.let { item ->
+            when (matchType) {
+                MatchType.IN_PLAY -> {
+                    getOddsList(item.code, matchType.postValue)
+                }
+                MatchType.TODAY -> {
+                    getLeagueList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams()
+                    )
+                }
+                MatchType.EARLY -> {
+                    getLeagueList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams()
+                    )
+                }
+                MatchType.PARLAY -> {
+                    getLeagueList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams(),
+                        date
+                    )
+
+                }
+                MatchType.OUTRIGHT -> {
+                    getOutrightSeasonList(item.code)
+                }
+                MatchType.AT_START -> {
+                    getOddsList(
+                        item.code,
+                        matchType.postValue,
+                        getCurrentTimeRangeParams()
+                    )
+                }
+            }
+        }
+
+        _isNoHistory.postValue(sportItem == null)
     }
 
     fun getLeagueOddsList(matchType: MatchType, leagueId: String) {
@@ -539,17 +508,9 @@ class GameViewModel(
             listOf(leagueId)
         }
 
-        val gameType = when (matchType) {
-            MatchType.TODAY -> _sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }?.code
-            MatchType.EARLY -> _sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
-            MatchType.PARLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
-            MatchType.IN_PLAY -> _sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
-            else -> null
-        }
-
-        gameType?.let {
+        getSportSelected(matchType)?.let { item ->
             getOddsList(
-                gameType,
+                item.code,
                 matchType.postValue,
                 getCurrentTimeRangeParams(),
                 leagueIdList
@@ -558,17 +519,12 @@ class GameViewModel(
     }
 
     fun getOutrightOddsList(leagueId: String) {
-        val gameType =
-            _sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find {
-                it.isSelected
-            }?.code
-
-        gameType?.let {
+        getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
-                            gameType,
+                            item.code,
                             leagueIdList = listOf(leagueId)
                         )
                     )
@@ -716,97 +672,78 @@ class GameViewModel(
     }
 
     private fun getDateRow(matchType: MatchType) {
-        val dateRow = mutableListOf<Date>()
-
-        when (matchType) {
+        val dateRow = when (matchType) {
             MatchType.TODAY -> {
-                dateRow.add(Date("", getTodayTimeRangeParams()))
+                listOf(Date("", getTodayTimeRangeParams()))
             }
             MatchType.EARLY -> {
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_all),
-                        TimeUtil.getEarlyAllTimeRangeParams()
-                    )
-                )
-                TimeUtil.getFutureDate(6).forEach {
-                    dateRow.add(Date(it, TimeUtil.getDayDateTimeRangeParams(it)))
-                }
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams()
-                    )
-                )
+                getDateRowEarly()
             }
             MatchType.PARLAY -> {
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_all),
-                        TimeUtil.getParlayAllTimeRangeParams()
-                    )
-                )
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_live),
-                        object : TimeRangeParams {
-                            override val startTime: String?
-                                get() = null
-                            override val endTime: String?
-                                get() = null
-                        },
-                        MatchType.IN_PLAY.postValue
-                    )
-                )
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_today),
-                        TimeUtil.getParlayTodayTimeRangeParams(),
-                        MatchType.TODAY.postValue
-                    )
-                )
-                TimeUtil.getFutureDate(6).forEach {
-                    dateRow.add(
-                        Date(
-                            it,
-                            TimeUtil.getDayDateTimeRangeParams(it),
-                            MatchType.EARLY.postValue
-                        )
-                    )
-                }
-
-                dateRow.add(
-                    Date(
-                        androidContext.getString(R.string.date_row_other),
-                        TimeUtil.getOtherEarlyDateTimeRangeParams(),
-                        MatchType.EARLY.postValue
-                    )
-                )
+                getDateRowParlay()
             }
             MatchType.AT_START -> {
-                dateRow.add(Date("", TimeUtil.getAtStartTimeRangeParams()))
+                listOf(Date("", TimeUtil.getAtStartTimeRangeParams()))
             }
             else -> {
+                listOf()
             }
         }
-
-        dateRow.map {
-            it.isSelected = (dateRow.indexOf(it) == 0)
-        }
-
         _curDate.value = dateRow
     }
 
-    private fun updateDateSelectedState(date: Date) {
-        val dateRow = _curDate.value
+    private fun getDateRowEarly(): List<Date> {
+        val dateRow = mutableListOf(
+            Date(
+                androidContext.getString(R.string.date_row_all),
+                TimeUtil.getEarlyAllTimeRangeParams()
+            ), Date(
+                androidContext.getString(R.string.date_row_other),
+                TimeUtil.getOtherEarlyDateTimeRangeParams()
+            )
+        )
 
-        dateRow?.forEach {
-            it.isSelected = (it == date)
-        }
+        dateRow.addAll(1, TimeUtil.getFutureDate(6).map {
+            Date(it, TimeUtil.getDayDateTimeRangeParams(it))
+        })
 
-        dateRow?.let {
-            _curDate.postValue(it)
-        }
+        return dateRow
+    }
+
+    private fun getDateRowParlay(): List<Date> {
+        val dateRow = mutableListOf(
+            Date(
+                androidContext.getString(R.string.date_row_all),
+                TimeUtil.getParlayAllTimeRangeParams()
+            ), Date(
+                androidContext.getString(R.string.date_row_live),
+                object : TimeRangeParams {
+                    override val startTime: String?
+                        get() = null
+                    override val endTime: String?
+                        get() = null
+                },
+                MatchType.IN_PLAY.postValue
+            ), Date(
+                androidContext.getString(R.string.date_row_today),
+                TimeUtil.getParlayTodayTimeRangeParams(),
+                MatchType.TODAY.postValue
+            ), Date(
+                androidContext.getString(R.string.date_row_other),
+                TimeUtil.getOtherEarlyDateTimeRangeParams(),
+                MatchType.EARLY.postValue
+            )
+        )
+
+        dateRow.addAll(3, TimeUtil.getFutureDate(6).map {
+            Date(
+                it,
+                TimeUtil.getDayDateTimeRangeParams(it),
+                MatchType.EARLY.postValue
+            )
+        })
+
+        return dateRow
     }
 
     private fun getCurrentTimeRangeParams(): TimeRangeParams? {
@@ -1171,6 +1108,27 @@ class GameViewModel(
         }
     }
 
+    private fun getSportSelected(matchType: MatchType): Item? = when (matchType) {
+        MatchType.IN_PLAY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }
+        }
+        MatchType.TODAY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }
+        }
+        MatchType.EARLY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }
+        }
+        MatchType.PARLAY -> {
+            sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }
+        }
+        MatchType.OUTRIGHT -> {
+            sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find { it.isSelected }
+        }
+        MatchType.AT_START -> {
+            sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }
+        }
+    }
+
     private fun SportMenuData.updateSportSelectState(
         matchType: MatchType?,
         sportTypeCode: String?
@@ -1237,5 +1195,24 @@ class GameViewModel(
         }
 
         return this
+    }
+
+    private fun updateSportSelectState(matchType: MatchType, item: Item) {
+        val sportMenuResult = _sportMenuResult.value
+        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
+        _sportMenuResult.postValue(sportMenuResult)
+    }
+
+    private fun updateDateSelectedState(date: Date) {
+        val dateRow = _curDate.value
+
+        dateRow?.forEach {
+            it.isSelected = (it == date)
+        }
+
+        dateRow?.let {
+            _curDate.postValue(it)
+            _curDatePosition.postValue(_curDate.value?.indexOf(date))
+        }
     }
 }
