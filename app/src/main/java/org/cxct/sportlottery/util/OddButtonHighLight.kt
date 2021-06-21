@@ -42,13 +42,13 @@ object OddButtonHighLight {
 
                 when (odd.isSelect) {
                     true -> {
-                        tvOdds.background = ContextCompat.getDrawable(tvOdds.context, R.drawable.bg_radius_4_button_orangelight)
+                        tvOdds.background = ContextCompat.getDrawable(tvOdds.context, R.drawable.bg_radius_4_button_orange_light)
                         tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.colorWhite))
                         tvSpread?.setTextColor(ContextCompat.getColor(tvSpread.context, R.color.colorWhite))
                         if (nameChangeColor) tvName?.setTextColor(ContextCompat.getColor(tvName.context, R.color.colorWhite))
                     }
                     false -> {
-                        tvOdds.background = ContextCompat.getDrawable(tvOdds.context, R.drawable.bg_radius_4_button_white_white6)
+                        tvOdds.background = ContextCompat.getDrawable(tvOdds.context, R.drawable.bg_radius_4_button_white_silver_light)
                         tvOdds.setTextColor(ContextCompat.getColor(tvOdds.context, R.color.colorBlackLight))
                         tvSpread?.setTextColor(ContextCompat.getColor(tvSpread.context, R.color.colorRedDark))
                         if (nameChangeColor) tvName?.setTextColor(ContextCompat.getColor(tvName.context, R.color.colorBlackLight))

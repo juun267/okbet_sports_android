@@ -104,7 +104,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/bg_radius_4_button_white_white6"
+                android:background="@drawable/bg_radius_4_button_white_silver_light"
                 android:drawablePadding="4dp"
                 android:gravity="center"
                 android:paddingStart="10dp"

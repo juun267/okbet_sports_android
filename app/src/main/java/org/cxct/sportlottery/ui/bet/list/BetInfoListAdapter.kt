@@ -98,7 +98,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = 11.dp
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = true
-                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
+                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange_light)
                 }
             } else {
                 val quota = it.toLong()
@@ -136,7 +136,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_unselected)
                         false
                     } else {
-                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
+                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange_light)
                         true
                     }
                 }
@@ -301,7 +301,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     componentStatusByOdds(
                         betVisible = View.VISIBLE,
                         warningVisible = if (matchOdd.betAddError == null) View.GONE else View.VISIBLE,
-                        betTextBg = R.drawable.bg_radius_4_button_orangelight,
+                        betTextBg = R.drawable.bg_radius_4_button_orange_light,
                         clickable = true,
                         moreTextBg = R.drawable.bg_radius_4_button_colorwhite6,
                         moreTextColor = R.color.colorGray,
@@ -309,7 +309,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     )
 
                     binding.betInfoAction.tv_bet.apply {
-                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
+                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orange_light)
                         isClickable = true
                         text = context.getString(
                             if (data.matchOdd.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
@@ -364,7 +364,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         }
                         false -> {
                             binding.betInfoAction.tv_bet.apply {
-                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orangelight)
+                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orange_light)
                                 setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
                                 isClickable = true
                             }
