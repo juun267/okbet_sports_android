@@ -217,6 +217,13 @@ class GameViewModel(
         matchType: MatchType,
         sportType: SportType?
     ): SpecialEntrance? = when (matchType) {
+        MatchType.IN_PLAY -> {
+            if (sportType != null && getSportCount(MatchType.IN_PLAY, sportType) != 0) {
+                SpecialEntrance(MatchType.IN_PLAY, sportType)
+            } else {
+                null
+            }
+        }
         MatchType.TODAY -> {
             if (sportType != null && getSportCount(MatchType.TODAY, sportType) != 0) {
                 SpecialEntrance(MatchType.TODAY, sportType)
