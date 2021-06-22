@@ -26,7 +26,6 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
         fun refreshOddButton(odd: Odd)
     }
 
-    private val rlOddItem = itemView.findViewById<RelativeLayout>(R.id.rl_odd_item)
     private val vCover = itemView.findViewById<View>(R.id.iv_disable_cover)
     private val tvName: TextView? = itemView.findViewById(R.id.tv_name)
     private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
@@ -50,7 +49,6 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             }
         }
 
-        setItemVisibility(odd)
         setOdds(odd, oddsType)
         setName(odd)
         setSpread(odd, spreadType)
@@ -109,15 +107,6 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     fun showName(visible: Boolean) {
         if (tvName != null) {
             tvName.visibility = if (visible) View.VISIBLE else View.GONE
-        }
-    }
-
-
-    private fun setItemVisibility(odd: Odd) {
-        if (rlOddItem != null) rlOddItem.visibility = if (odd.itemViewVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
         }
     }
 

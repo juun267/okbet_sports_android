@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +14,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import kotlin.collections.ArrayList
 
-const val DEFAULT_ITEM_VISIBLE_POSITION = 4
 
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
@@ -130,12 +129,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         when {
             TextUtil.compareWithGameKey(type, GameType.HDP.value) -> {
 
-                when (sportCode) {
+                return when (sportCode) {
                     SportType.FOOTBALL.code,
-                    SportType.BASKETBALL.code -> return GameType.HDP.type
-                    else -> return GameType.HDP_ONE_LIST.type
+                    SportType.BASKETBALL.code -> GameType.HDP.type
+                    else -> GameType.HDP_ONE_LIST.type
                 }
-
 
             }
 
@@ -326,11 +324,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 LayoutType.ONE_LIST.layout -> {
                     rvBet.apply {
                         addItemDecoration(
-                            DividerItemDecorator(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.divider_straight
-                                )
+                            CustomForOddDetailVerticalDivider(
+                                context,
+                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
                             )
                         )
                     }
@@ -387,12 +383,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun setVisibility(visible: Boolean) {
             val param = itemView.layoutParams as RecyclerView.LayoutParams
             if (visible) {
-                param.bottomMargin = 5.dp
                 param.height = LinearLayout.LayoutParams.WRAP_CONTENT
                 param.width = LinearLayout.LayoutParams.MATCH_PARENT
                 itemView.visibility = View.VISIBLE
             } else {
-                param.bottomMargin = 0
                 param.height = 0
                 param.width = 0
                 itemView.visibility = View.GONE
@@ -400,10 +394,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.layoutParams = param
         }
 
+        private fun controlExpandBottom(expand: Boolean) {
+            val param = itemView.layoutParams as RecyclerView.LayoutParams
+            param.bottomMargin = if (expand) 0.dp else 8.dp
+            itemView.layoutParams = param
+        }
+
         private val tvGameName = itemView.findViewById<TextView>(R.id.tv_game_name)
-        private val llItem = itemView.findViewById<LinearLayout>(R.id.ll_item)
-        private val ivArrowUp = itemView.findViewById<ImageView>(R.id.iv_arrow_up)
-        private val vLine = itemView.findViewById<View>(R.id.v_line)
+        private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
 
         val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
 
@@ -423,17 +421,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 tvGameName.text = oddsDetail.name
             }
 
-            llItem.setOnClickListener {
+            controlExpandBottom(oddsDetail.isExpand)
+
+            clItem.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(position)
-            }
-
-            if (oddsDetail.isExpand) {
-                ivArrowUp.animate().rotation(180f).setDuration(200).start()
-                vLine.visibility = View.VISIBLE
-            } else {
-                ivArrowUp.animate().rotation(0f).setDuration(200).start()
-                vLine.visibility = View.GONE
             }
 
 
@@ -507,29 +499,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun oneList(oddsDetail: OddsDetailListData, sportCode: String?) {
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            for (i in oddsDetail.oddArrayList.indices) {
-                if (!oddsDetail.isMoreExpand && i > DEFAULT_ITEM_VISIBLE_POSITION) {
-                    oddsDetail.oddArrayList[i].itemViewVisible = false
-                }
-            }
-
             rvBet.apply {
                 adapter = TypeOneListAdapter(
-                    sportCode ?: "",
                     oddsDetail,
                     onOddClickListener,
                     betInfoList,
-                    object : TypeOneListAdapter.OnMoreClickListener {
-                        override fun click() {
-                            for (i in oddsDetail.oddArrayList.indices) {
-                                if (i > DEFAULT_ITEM_VISIBLE_POSITION) {
-                                    oddsDetail.oddArrayList[i].itemViewVisible = !oddsDetail.oddArrayList[i].itemViewVisible
-                                }
-                            }
-                            oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
-                            adapter?.notifyItemRangeChanged(OVER_COUNT, oddsDetail.oddArrayList.size - 1)
-                        }
-                    },
                     oddsType
                 )
                 layoutManager = LinearLayoutManager(itemView.context)

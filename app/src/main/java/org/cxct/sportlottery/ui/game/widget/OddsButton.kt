@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.widget
 
 import android.content.Context
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -17,17 +18,13 @@ import org.cxct.sportlottery.util.getOdds
 /**
  * @author Kevin
  * @create 2021/06/21
+ * @description
  */
-class OddDetailButton @JvmOverloads constructor(
+class OddsButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
-
-
-    interface OnOddStatusChangedListener {
-        fun onOddStateChangedFinish()
-    }
 
 
     var betStatus: Int? = null
@@ -48,9 +45,6 @@ class OddDetailButton @JvmOverloads constructor(
         }
 
 
-    var onOddStatusChangedListener: OnOddStatusChangedListener? = null
-
-
     init {
         init()
     }
@@ -65,6 +59,7 @@ class OddDetailButton @JvmOverloads constructor(
         tv_name.text = odd.name
         tv_spread.text = odd.spread
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+        betStatus = odd.status
     }
 
 
@@ -105,5 +100,16 @@ class OddDetailButton @JvmOverloads constructor(
         }
     }
 
+
+    /*設置中間線*/
+    fun setupSpreadCenterLine() {
+        tv_spread?.paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG
+    }
+
+
+    /*設置賠率顏色*/
+    fun setupOddsTextColor(color: Int){
+        tv_odds?.setTextColor(ContextCompat.getColor(context, color))
+    }
 
 }
