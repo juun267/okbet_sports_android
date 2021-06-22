@@ -10,23 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.crypto_pay_fragment.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.transfer_pay_fragment.*
-import kotlinx.android.synthetic.main.transfer_pay_fragment.btn_submit
-import kotlinx.android.synthetic.main.transfer_pay_fragment.cv_recharge_time
-import kotlinx.android.synthetic.main.transfer_pay_fragment.et_recharge_amount
-import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_amount
-import kotlinx.android.synthetic.main.transfer_pay_fragment.tv_fee_rate
-import kotlinx.android.synthetic.main.transfer_pay_fragment.txv_recharge_time
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.common.RechType
@@ -40,7 +34,6 @@ import org.cxct.sportlottery.util.MoneyManager.getBankAccountIcon
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
-import java.math.RoundingMode
 import java.util.*
 import kotlin.math.abs
 
@@ -274,9 +267,9 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
     //充值時間
     private fun initTimePicker() {
-        var yesterday = Calendar.getInstance()
+        val yesterday = Calendar.getInstance()
         yesterday.add(Calendar.DAY_OF_MONTH, -30)
-        var tomorrow = Calendar.getInstance()
+        val tomorrow = Calendar.getInstance()
         tomorrow.add(Calendar.DAY_OF_MONTH, +30)
         dateTimePicker = TimePickerBuilder(activity,
             OnTimeSelectListener { date, _ ->
@@ -292,8 +285,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             .setTimeSelectChangeListener {  }
             .setType(booleanArrayOf(true, true, true, true, true, false))
             .setTitleText(resources.getString(R.string.title_recharge_time))
-            .setSubmitColor(resources.getColor(R.color.colorGrayLight))
-            .setCancelColor(resources.getColor(R.color.colorGrayLight))
+            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context,R.color.colorGrayLight))
+            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context,R.color.colorGrayLight))
             .isDialog(true)
             .addOnCancelClickListener { }
             .build() as TimePickerView
@@ -350,10 +343,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         }
         when (mMoneyPayWay?.rechType) {
             MoneyType.BANK_TYPE.code -> {
-                ll_qr.visibility = View.GONE
+                hideEditText()
                 ll_address.visibility = View.VISIBLE
-                et_wx_id.visibility = View.GONE
-                et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
                 ll_hit2.visibility = View.VISIBLE
@@ -362,36 +353,26 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                 tv_hint2.text = getString(R.string.money_recharge_hint2)
             }
             MoneyType.CTF_TYPE.code -> {
+                hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                ll_address.visibility = View.GONE
-                et_wx_id.visibility = View.GONE
-                et_nickname.visibility = View.GONE
                 et_bank_account.visibility = View.VISIBLE
                 et_name.visibility = View.VISIBLE
-                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.cft_recharge_hint)
             }
             MoneyType.WX_TYPE.code -> {
+                hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                ll_address.visibility = View.GONE
                 et_wx_id.visibility = View.VISIBLE
-                et_nickname.visibility = View.GONE
-                et_bank_account.visibility = View.GONE
-                et_name.visibility = View.GONE
-                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.wx_recharge_hint)
 
             }
             MoneyType.ALI_TYPE.code -> {
+                hideEditText()
                 ll_qr.visibility = View.VISIBLE
-                ll_address.visibility = View.GONE
-                et_wx_id.visibility = View.GONE
                 et_nickname.visibility = View.VISIBLE
-                et_bank_account.visibility = View.GONE
                 et_name.visibility = View.VISIBLE
-                ll_hit2.visibility = View.GONE
 
                 tv_hint1.text = getString(R.string.ali_recharge_hint)
             }
@@ -419,6 +400,16 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         //存款時間
         txv_recharge_time.text = TimeUtil.stampToDateHMSTimeZone(Date().time)
 
+    }
+
+    private fun hideEditText(){
+        ll_qr.visibility = View.GONE
+        ll_address.visibility = View.GONE
+        et_wx_id.visibility = View.GONE
+        et_nickname.visibility = View.GONE
+        et_bank_account.visibility = View.GONE
+        et_name.visibility = View.GONE
+        ll_hit2.visibility = View.GONE
     }
 
     private fun setupTextChangeEvent() {
