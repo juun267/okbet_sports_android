@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -45,6 +46,10 @@ class TypeTwoSpanCountGridAdapter(
                     override fun refreshOddButton(odd: Odd) {
                         odd.oddState = OddState.SAME.state
                     }
+                }
+
+                if (odd.name?.length ?: 0 > 8) {
+                    tv_name.text = odd.name?.substring(0, 8).plus("...")
                 }
             }
 
