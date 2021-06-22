@@ -59,7 +59,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     enum class LayoutType(val layout: Int) {
         HDP(R.layout.content_odds_detail_list_hdp),
-        TWO_SIDES(R.layout.content_odds_detail_list_two_sides),
         CS(R.layout.content_odds_detail_list_cs),
         ONE_LIST(R.layout.content_odds_detail_list_one),
         SINGLE(R.layout.content_odds_detail_list_single),
@@ -68,6 +67,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     enum class GameType(val value: String, val type: Int) {
+
+        UNCHECK("UNCHECK", -1),//未確定
+
         HDP("HDP", 0),//让球
         OU("O/U", 1),//大小
         OU_1ST("O/U-1ST", 2),//大/小-上半场
@@ -117,7 +119,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         HWMG_SINGLE("HWMG&1X2", 41),
 
-        HDP_ONE_LIST("HDP", 42)
+        HDP_ONE_LIST("HDP", 42),
+
+        NGOAL_1("NGOAL:1", 43) //第1个进球
 
     }
 
@@ -229,8 +233,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE_SEG.type
             }
 
+            type == GameType.NGOAL_1.value -> return GameType.NGOAL_1.type
+
             else -> {
-                return -1
+                return GameType.UNCHECK.type
             }
         }
     }
@@ -240,14 +246,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         val layout: Int = when (viewType) {
             GameType.HDP.type -> LayoutType.HDP.layout
-            GameType.OU.type -> LayoutType.TWO_SIDES.layout
-            GameType.OU_1ST.type -> LayoutType.TWO_SIDES.layout
-            GameType.OU_2ST.type -> LayoutType.TWO_SIDES.layout
+            GameType.OU.type -> LayoutType.HDP.layout
+            GameType.OU_1ST.type -> LayoutType.HDP.layout
+            GameType.OU_2ST.type -> LayoutType.HDP.layout
             GameType.CS.type -> LayoutType.CS.layout
             GameType.FG.type -> LayoutType.SINGLE.layout
             GameType.LG.type -> LayoutType.SINGLE.layout
             GameType.DC.type -> LayoutType.ONE_LIST.layout
-            GameType.OE.type -> LayoutType.TWO_SIDES.layout
+            GameType.OE.type -> LayoutType.HDP.layout
             GameType.SCO.type -> LayoutType.ONE_LIST.layout
             GameType.TG.type -> LayoutType.ONE_LIST.layout
             GameType.TG_.type -> LayoutType.ONE_LIST.layout
@@ -260,11 +266,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.CLSH.type -> LayoutType.HDP.layout
             GameType.HTFT.type -> LayoutType.ONE_LIST.layout
             GameType.W3.type -> LayoutType.ONE_LIST.layout
-            GameType.TG_OU.type -> LayoutType.TWO_SIDES.layout
-            GameType.C_OU.type -> LayoutType.TWO_SIDES.layout
-            GameType.C_OE.type -> LayoutType.TWO_SIDES.layout
-            GameType.OU_I_OT.type -> LayoutType.TWO_SIDES.layout
-            GameType.OU_SEG.type -> LayoutType.TWO_SIDES.layout
+            GameType.TG_OU.type -> LayoutType.HDP.layout
+            GameType.C_OU.type -> LayoutType.HDP.layout
+            GameType.C_OE.type -> LayoutType.HDP.layout
+            GameType.OU_I_OT.type -> LayoutType.HDP.layout
+            GameType.OU_SEG.type -> LayoutType.HDP.layout
             GameType.SINGLE_OU.type -> LayoutType.ONE_LIST.layout
             GameType.SINGLE_FLG.type -> LayoutType.ONE_LIST.layout
             GameType.OU_BTS.type -> LayoutType.ONE_LIST.layout
@@ -299,19 +305,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                                 context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_horizontal),
                                 context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_vertical),
                                 ContextCompat.getColor(context, R.color.colorWhite),
-                                false
-                            )
-                        )
-                    }
-                }
-
-                LayoutType.TWO_SIDES.layout -> {
-                    rvBet.apply {
-                        addItemDecoration(
-                            GridItemDecoration(
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_two_side),
-                                ContextCompat.getColor(context, R.color.colorWhite6),
                                 false
                             )
                         )
@@ -430,9 +423,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
             when (viewType) {
-                GameType.BTS.type,
-                GameType.HDP.type -> forHDP(oddsDetail)
-
+                GameType.SBH.type,
+                GameType.WBH.type,
+                GameType.WEH.type,
+                GameType.CLSH.type,
                 GameType.OU.type,
                 GameType.OU_1ST.type,
                 GameType.OU_2ST.type,
@@ -441,7 +435,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.C_OU.type,
                 GameType.C_OE.type,
                 GameType.OU_I_OT.type,
-                GameType.OU_SEG.type -> twoSides(oddsDetail)
+                GameType.OU_SEG.type,
+                GameType.BTS.type,
+                GameType.HDP.type -> forHDP(oddsDetail)
 
                 GameType.CS.type -> forCS(oddsDetail)
 
@@ -460,11 +456,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE_2ST_2.type,
                 GameType.SINGLE_2.type -> forSingle2Item(oddsDetail)
 
-                GameType.SBH.type,
-                GameType.WBH.type,
-                GameType.WEH.type,
-                GameType.CLSH.type -> forChangeHDP(oddsDetail)
-
+                GameType.NGOAL_1.type,
                 GameType.HDP_ONE_LIST.type,
                 GameType.SCO.type,
                 GameType.DC_OU.type,
@@ -479,6 +471,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.GT1ST.type,
                 GameType.WM.type,
                 GameType.HTFT.type -> oneList(oddsDetail, sportCode)
+
+                //臨時新增或尚未確定的排版 以單行列表作為排版
+                GameType.UNCHECK.type -> oneList(oddsDetail, sportCode)
 
             }
 
@@ -609,35 +604,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         }
 
-        private fun forChangeHDP(oddsDetail: OddsDetailListData) {
-            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
-            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
-            itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
-            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            rvBet.apply {
-                adapter = TypeOnlyOddHDPAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
-                layoutManager = GridLayoutManager(itemView.context, 2)
-            }
-        }
-
         private fun forHDP(oddsDetail: OddsDetailListData) {
-
-            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
-            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
-            itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
                 adapter = TypeHDPAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
-                layoutManager = GridLayoutManager(itemView.context, 2)
-            }
-        }
-
-        private fun twoSides(oddsDetail: OddsDetailListData) {
-            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            rvBet.apply {
-                adapter = TypeTwoSidesAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
