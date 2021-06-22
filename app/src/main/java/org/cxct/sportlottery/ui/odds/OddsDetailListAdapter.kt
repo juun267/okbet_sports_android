@@ -121,8 +121,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         HDP_ONE_LIST("HDP", 42),
 
-        NGOAL_1("NGOAL:1", 43) //第1个进球
+        NGOAL_1("NGOAL:1", 43), //第1个进球
 
+        TWTN("TWTN", 44) //零失球獲勝
     }
 
 
@@ -227,6 +228,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == GameType.NGOAL_1.value -> return GameType.NGOAL_1.type
 
+            type == GameType.TWTN.value -> return GameType.TWTN.type
+
             else -> {
                 return GameType.UNCHECK.type
             }
@@ -283,6 +286,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.SINGLE_SEG_2.type -> LayoutType.SINGLE_2_ITEM.layout
 
             GameType.HDP_ONE_LIST.type -> LayoutType.ONE_LIST.layout
+
+            GameType.NGOAL_1.type -> LayoutType.ONE_LIST.layout
+
+            GameType.TWTN.type -> LayoutType.TWO_SPAN_COUNT.layout
 
             else -> LayoutType.ONE_LIST.layout
 
@@ -415,6 +422,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
             when (viewType) {
+                GameType.TWTN.type,
                 GameType.CLSH.type,
                 GameType.OU.type,
                 GameType.OU_1ST.type,
