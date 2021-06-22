@@ -255,13 +255,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.DC.type -> LayoutType.ONE_LIST.layout
             GameType.OE.type -> LayoutType.HDP.layout
             GameType.SCO.type -> LayoutType.ONE_LIST.layout
-            GameType.TG.type -> LayoutType.ONE_LIST.layout
-            GameType.TG_.type -> LayoutType.ONE_LIST.layout
+            GameType.TG.type -> LayoutType.HDP.layout
+            GameType.TG_.type -> LayoutType.HDP.layout
             GameType.BTS.type -> LayoutType.HDP.layout
             GameType.GT1ST.type -> LayoutType.ONE_LIST.layout
-            GameType.SBH.type -> LayoutType.HDP.layout
-            GameType.WBH.type -> LayoutType.HDP.layout
-            GameType.WEH.type -> LayoutType.HDP.layout
+            GameType.SBH.type -> LayoutType.ONE_LIST.layout
+            GameType.WBH.type -> LayoutType.ONE_LIST.layout
+            GameType.WEH.type -> LayoutType.ONE_LIST.layout
             GameType.WM.type -> LayoutType.ONE_LIST.layout
             GameType.CLSH.type -> LayoutType.HDP.layout
             GameType.HTFT.type -> LayoutType.ONE_LIST.layout
@@ -423,14 +423,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
             when (viewType) {
-                GameType.SBH.type,
-                GameType.WBH.type,
-                GameType.WEH.type,
                 GameType.CLSH.type,
                 GameType.OU.type,
                 GameType.OU_1ST.type,
                 GameType.OU_2ST.type,
                 GameType.OE.type,
+                GameType.TG.type,
+                GameType.TG_.type,
                 GameType.TG_OU.type,
                 GameType.C_OU.type,
                 GameType.C_OE.type,
@@ -456,6 +455,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE_2ST_2.type,
                 GameType.SINGLE_2.type -> forSingle2Item(oddsDetail)
 
+                GameType.WBH.type,
+                GameType.WEH.type,
+                GameType.SBH.type,
                 GameType.NGOAL_1.type,
                 GameType.HDP_ONE_LIST.type,
                 GameType.SCO.type,
@@ -466,8 +468,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.W3.type,
                 GameType.SINGLE_OU.type,
                 GameType.DC.type,
-                GameType.TG.type,
-                GameType.TG_.type,
                 GameType.GT1ST.type,
                 GameType.WM.type,
                 GameType.HTFT.type -> oneList(oddsDetail, sportCode)
