@@ -14,16 +14,16 @@ import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
-class TypeHDPAdapter(
+class TypeTwoSpanCountGridAdapter(
     private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType
-) : RecyclerView.Adapter<TypeHDPAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<TypeTwoSpanCountGridAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_hdp_item, parent, false))
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_2_span_count_item, parent, false))
 
 
     override fun getItemCount(): Int = oddsDetail.oddArrayList.size

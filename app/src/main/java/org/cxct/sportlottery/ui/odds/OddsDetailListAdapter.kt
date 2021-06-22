@@ -58,7 +58,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     enum class LayoutType(val layout: Int) {
-        HDP(R.layout.content_odds_detail_list_hdp),
+        TWO_SPAN_COUNT(R.layout.content_odds_detail_list_2_span_count),
         CS(R.layout.content_odds_detail_list_cs),
         ONE_LIST(R.layout.content_odds_detail_list_one),
         SINGLE(R.layout.content_odds_detail_list_single),
@@ -131,15 +131,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         val type = oddsDetailDataList[position].gameType
 
         when {
-            TextUtil.compareWithGameKey(type, GameType.HDP.value) -> {
-
-                return when (sportCode) {
-                    SportType.FOOTBALL.code,
-                    SportType.BASKETBALL.code -> GameType.HDP.type
-                    else -> GameType.HDP_ONE_LIST.type
-                }
-
-            }
+            TextUtil.compareWithGameKey(type, GameType.HDP.value) -> return GameType.HDP.type
 
             type == GameType.OU.value -> return GameType.OU.type
 
@@ -245,32 +237,32 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val layout: Int = when (viewType) {
-            GameType.HDP.type -> LayoutType.HDP.layout
-            GameType.OU.type -> LayoutType.HDP.layout
-            GameType.OU_1ST.type -> LayoutType.HDP.layout
-            GameType.OU_2ST.type -> LayoutType.HDP.layout
+            GameType.HDP.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_1ST.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_2ST.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.CS.type -> LayoutType.CS.layout
             GameType.FG.type -> LayoutType.SINGLE.layout
             GameType.LG.type -> LayoutType.SINGLE.layout
             GameType.DC.type -> LayoutType.ONE_LIST.layout
-            GameType.OE.type -> LayoutType.HDP.layout
+            GameType.OE.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.SCO.type -> LayoutType.ONE_LIST.layout
-            GameType.TG.type -> LayoutType.HDP.layout
-            GameType.TG_.type -> LayoutType.HDP.layout
-            GameType.BTS.type -> LayoutType.HDP.layout
+            GameType.TG.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.TG_.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.BTS.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.GT1ST.type -> LayoutType.ONE_LIST.layout
             GameType.SBH.type -> LayoutType.ONE_LIST.layout
             GameType.WBH.type -> LayoutType.ONE_LIST.layout
             GameType.WEH.type -> LayoutType.ONE_LIST.layout
             GameType.WM.type -> LayoutType.ONE_LIST.layout
-            GameType.CLSH.type -> LayoutType.HDP.layout
+            GameType.CLSH.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.HTFT.type -> LayoutType.ONE_LIST.layout
             GameType.W3.type -> LayoutType.ONE_LIST.layout
-            GameType.TG_OU.type -> LayoutType.HDP.layout
-            GameType.C_OU.type -> LayoutType.HDP.layout
-            GameType.C_OE.type -> LayoutType.HDP.layout
-            GameType.OU_I_OT.type -> LayoutType.HDP.layout
-            GameType.OU_SEG.type -> LayoutType.HDP.layout
+            GameType.TG_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.C_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.C_OE.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_I_OT.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_SEG.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.SINGLE_OU.type -> LayoutType.ONE_LIST.layout
             GameType.SINGLE_FLG.type -> LayoutType.ONE_LIST.layout
             GameType.OU_BTS.type -> LayoutType.ONE_LIST.layout
@@ -298,7 +290,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType).apply {
             when (layout) {
-                LayoutType.HDP.layout -> {
+                LayoutType.TWO_SPAN_COUNT.layout -> {
                     rvBet.apply {
                         addItemDecoration(
                             GridItemDecoration(
@@ -436,7 +428,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.OU_I_OT.type,
                 GameType.OU_SEG.type,
                 GameType.BTS.type,
-                GameType.HDP.type -> forHDP(oddsDetail)
+                GameType.HDP.type -> for2SpanCount(oddsDetail)
 
                 GameType.CS.type -> forCS(oddsDetail)
 
@@ -604,10 +596,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         }
 
-        private fun forHDP(oddsDetail: OddsDetailListData) {
+        private fun for2SpanCount(oddsDetail: OddsDetailListData) {
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
-                adapter = TypeHDPAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
+                adapter = TypeTwoSpanCountGridAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
