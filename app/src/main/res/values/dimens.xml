@@ -31,8 +31,6 @@
 
     <dimen name="recyclerview_item_dec_spec_odds_detail_game_type_grid_3">10dp</dimen>
 
-    <dimen name="recyclerview_item_dec_spec_odds_detail_game_type_two_side">16dp</dimen>
-
     <dimen name="recyclerview_item_dec_spec_odds_detail_odds">16dp</dimen>
     <dimen name="recyclerview_item_dec_spec_odds_detail_odds_list_bottom">8dp</dimen>
 
