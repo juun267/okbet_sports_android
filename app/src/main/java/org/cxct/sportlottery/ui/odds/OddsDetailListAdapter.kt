@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -195,34 +196,34 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(type, GameType.SINGLE_FLG.value) -> return GameType.SINGLE_FLG.type
 
 
-            type == GameType.SINGLE.value -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
-                GameType.SINGLE_2.type
-            } else {
+            type == GameType.SINGLE.value -> return if (sportCode == SportType.FOOTBALL.code) {
                 GameType.SINGLE.type
+            } else {
+                GameType.SINGLE_2.type
             }
 
-            TextUtil.compareWithGameKey(type, GameType.SINGLE_1ST.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
-                GameType.SINGLE_1ST_2.type
-            } else {
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_1ST.value) -> return if (sportCode == SportType.FOOTBALL.code) {
                 GameType.SINGLE_1ST.type
+            } else {
+                GameType.SINGLE_1ST_2.type
             }
 
-            TextUtil.compareWithGameKey(type, GameType.SINGLE_2ST.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
-                GameType.SINGLE_2ST_2.type
-            } else {
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_2ST.value) -> return if (sportCode == SportType.FOOTBALL.code) {
                 GameType.SINGLE_2ST.type
+            } else {
+                GameType.SINGLE_2ST_2.type
             }
 
-            type == GameType.SINGLE_OT.value -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
-                GameType.SINGLE_OT_2.type
-            } else {
+            type == GameType.SINGLE_OT.value -> return if (sportCode == SportType.FOOTBALL.code) {
                 GameType.SINGLE_OT.type
+            } else {
+                GameType.SINGLE_OT_2.type
             }
 
-            TextUtil.compareWithGameKey(type, GameType.SINGLE_SEG.value) -> return if (oddsDetailDataList[position].oddArrayList.size == 2) {
-                GameType.SINGLE_SEG_2.type
-            } else {
+            TextUtil.compareWithGameKey(type, GameType.SINGLE_SEG.value) -> return if (sportCode == SportType.FOOTBALL.code) {
                 GameType.SINGLE_SEG.type
+            } else {
+                GameType.SINGLE_SEG_2.type
             }
 
             type == GameType.NGOAL_1.value -> return GameType.NGOAL_1.type
@@ -239,44 +240,50 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val layout: Int = when (viewType) {
-            GameType.HDP.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU_1ST.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU_2ST.type -> LayoutType.TWO_SPAN_COUNT.layout
+
             GameType.CS.type -> LayoutType.CS.layout
-            GameType.FG.type -> LayoutType.SINGLE.layout
-            GameType.LG.type -> LayoutType.SINGLE.layout
+
+            GameType.FG.type -> LayoutType.ONE_LIST.layout
+            GameType.LG.type -> LayoutType.ONE_LIST.layout
             GameType.DC.type -> LayoutType.ONE_LIST.layout
-            GameType.OE.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.SCO.type -> LayoutType.ONE_LIST.layout
-            GameType.TG.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.TG_.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.BTS.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.GT1ST.type -> LayoutType.ONE_LIST.layout
             GameType.SBH.type -> LayoutType.ONE_LIST.layout
             GameType.WBH.type -> LayoutType.ONE_LIST.layout
             GameType.WEH.type -> LayoutType.ONE_LIST.layout
             GameType.WM.type -> LayoutType.ONE_LIST.layout
-            GameType.CLSH.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.HTFT.type -> LayoutType.ONE_LIST.layout
             GameType.W3.type -> LayoutType.ONE_LIST.layout
-            GameType.TG_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.C_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.C_OE.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU_I_OT.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU_SEG.type -> LayoutType.TWO_SPAN_COUNT.layout
             GameType.SINGLE_OU.type -> LayoutType.ONE_LIST.layout
             GameType.SINGLE_FLG.type -> LayoutType.ONE_LIST.layout
             GameType.OU_BTS.type -> LayoutType.ONE_LIST.layout
             GameType.SINGLE_BTS.type -> LayoutType.ONE_LIST.layout
             GameType.DC_OU.type -> LayoutType.ONE_LIST.layout
+            GameType.HDP_ONE_LIST.type -> LayoutType.ONE_LIST.layout
+            GameType.NGOAL_1.type -> LayoutType.ONE_LIST.layout
+            GameType.TWTN.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.HWMG_SINGLE.type -> LayoutType.ONE_LIST.layout
+
+            GameType.HDP.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_1ST.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_2ST.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OE.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.TG.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.TG_.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.BTS.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.CLSH.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.TG_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.C_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.C_OE.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_I_OT.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.OU_SEG.type -> LayoutType.TWO_SPAN_COUNT.layout
 
             GameType.SINGLE.type -> LayoutType.SINGLE.layout
             GameType.SINGLE_1ST.type -> LayoutType.SINGLE.layout
             GameType.SINGLE_2ST.type -> LayoutType.SINGLE.layout
             GameType.SINGLE_OT.type -> LayoutType.SINGLE.layout
             GameType.SINGLE_SEG.type -> LayoutType.SINGLE.layout
-            GameType.HWMG_SINGLE.type -> LayoutType.SINGLE.layout
 
             GameType.SINGLE_2.type -> LayoutType.SINGLE_2_ITEM.layout
             GameType.SINGLE_1ST_2.type -> LayoutType.SINGLE_2_ITEM.layout
@@ -284,24 +291,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.SINGLE_OT_2.type -> LayoutType.SINGLE_2_ITEM.layout
             GameType.SINGLE_SEG_2.type -> LayoutType.SINGLE_2_ITEM.layout
 
-            GameType.HDP_ONE_LIST.type -> LayoutType.ONE_LIST.layout
-
-            GameType.NGOAL_1.type -> LayoutType.ONE_LIST.layout
-
-            GameType.TWTN.type -> LayoutType.TWO_SPAN_COUNT.layout
-
             else -> LayoutType.ONE_LIST.layout
 
         }
 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType).apply {
+
             when (layout) {
                 LayoutType.TWO_SPAN_COUNT.layout -> {
                     rvBet.apply {
                         addItemDecoration(
                             GridItemDecoration(
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_horizontal),
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_2_vertical),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
                                 ContextCompat.getColor(context, R.color.colorWhite),
                                 false
                             )
@@ -323,25 +325,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
 
-                LayoutType.SINGLE.layout -> {
-                    rvBet.apply {
-                        addItemDecoration(
-                            GridItemDecoration(
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                                ContextCompat.getColor(context, R.color.colorWhite),
-                                false
-                            )
-                        )
-                    }
-                }
-
+                LayoutType.SINGLE.layout,
                 LayoutType.SINGLE_2_ITEM.layout -> {
                     rvBet.apply {
                         addItemDecoration(
                             GridItemDecoration(
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
-                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_game_type_grid_3),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
+                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
                                 ContextCompat.getColor(context, R.color.colorWhite),
                                 false
                             )
@@ -446,13 +436,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE_SEG.type,
                 GameType.SINGLE_1ST.type,
                 GameType.SINGLE_2ST.type,
-                GameType.SINGLE.type -> forSingle(oddsDetail)
+                GameType.SINGLE.type -> forSingle(oddsDetail, 3)
 
                 GameType.SINGLE_OT_2.type,
                 GameType.SINGLE_SEG_2.type,
                 GameType.SINGLE_1ST_2.type,
                 GameType.SINGLE_2ST_2.type,
-                GameType.SINGLE_2.type -> forSingle2Item(oddsDetail)
+                GameType.SINGLE_2.type -> forSingle(oddsDetail, 2)
 
                 GameType.WBH.type,
                 GameType.WEH.type,
@@ -577,31 +567,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun forSingle(oddsDetail: OddsDetailListData) {
-            itemView.findViewById<TextView>(R.id.tv_home_name).text = oddsDetail.oddArrayList[0].name
-            itemView.findViewById<TextView>(R.id.tv_draw).text = oddsDetail.oddArrayList[1].name
-            itemView.findViewById<TextView>(R.id.tv_away_name).text = oddsDetail.oddArrayList[2].name
-            itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
+        private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet.apply {
                 adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
-                layoutManager = GridLayoutManager(itemView.context, 3)
+                layoutManager = GridLayoutManager(itemView.context, spanCount)
             }
         }
 
-        private fun forSingle2Item(oddsDetail: OddsDetailListData) {
-            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
-            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
-            itemView.findViewById<LinearLayout>(R.id.ll_game).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
-            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            rvBet.apply {
-                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
-                layoutManager = GridLayoutManager(itemView.context, 2)
-            }
-
-        }
 
         private fun for2SpanCount(oddsDetail: OddsDetailListData) {
             rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE

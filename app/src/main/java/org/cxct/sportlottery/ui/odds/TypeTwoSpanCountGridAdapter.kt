@@ -24,7 +24,7 @@ class TypeTwoSpanCountGridAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_2_span_count_item, parent, false))
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_grid_item, parent, false))
 
 
     override fun getItemCount(): Int = oddsDetail.oddArrayList.size
