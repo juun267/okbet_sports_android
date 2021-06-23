@@ -1,17 +1,21 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
+import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 
+
 class TypeCSAdapter(
-    private val isLongest: Boolean,
     private val oddsDetail: OddsDetailListData,
     private val oddsList: List<Odd>,
     private val onOddClickListener: OnOddClickListener,
@@ -20,33 +24,39 @@ class TypeCSAdapter(
 ) : RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_cs_item, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_grid_item, parent, false))
 
 
-    override fun getItemCount(): Int {
-        return oddsList.size
-    }
+    override fun getItemCount(): Int = oddsList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(position, oddsList[position])
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsList[position])
 
 
-    inner class ViewHolder(view: View) : OddViewHolder(view) {
+    inner class ViewHolder(view: View) : OddDetailStateViewHolder(view) {
 
-        fun bindModel(position: Int, odd: Odd) {
-            if (isLongest && position == itemCount - 1) {
-                itemView.findViewById<View>(R.id.divider).visibility = View.GONE
-            } else {
-                itemView.findViewById<View>(R.id.divider).visibility = View.VISIBLE
+        private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
+
+        fun bindModel(odd: Odd) {
+            btnOdds?.apply {
+                setupOdd(odd, oddsType)
+                setupOddState(this, odd)
+                isSelected = betInfoList.any { it.matchOdd.oddsId == odd.id }
+                oddStateChangeListener = object : OddStateChangeListener {
+                    override fun refreshOddButton(odd: Odd) {
+                        odd.oddState = OddState.SAME.state
+                    }
+                }
+
+                if (odd.name?.length ?: 0 > 8) {
+                    tv_name.text = odd.name?.substring(0, 8).plus("...")
+                }
             }
-            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_BOTTOM, oddsType)
 
-            //波坦玩法在顯示上面 spread 位置內容用 name 取代
-            itemView.findViewById<TextView>(R.id.tv_spread).text = odd.name
+            itemView.setOnClickListener {
+                onOddClickListener.getBetInfoList(odd, oddsDetail)
+            }
         }
     }
 

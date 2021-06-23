@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -299,7 +300,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             when (layout) {
                 LayoutType.TWO_SPAN_COUNT.layout -> {
-                    rvBet.apply {
+                    rvBet?.apply {
                         addItemDecoration(
                             GridItemDecoration(
                                 context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
@@ -312,10 +313,34 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
 
                 LayoutType.CS.layout -> {
+                    rvHome?.apply {
+                        addItemDecoration(
+                            CustomForOddDetailVerticalDivider(
+                                context,
+                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
+                            )
+                        )
+                    }
+                    rvDraw?.apply {
+                        addItemDecoration(
+                            CustomForOddDetailVerticalDivider(
+                                context,
+                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
+                            )
+                        )
+                    }
+                    rvAway?.apply {
+                        addItemDecoration(
+                            CustomForOddDetailVerticalDivider(
+                                context,
+                                R.dimen.recyclerview_item_dec_spec_odds_detail_odds
+                            )
+                        )
+                    }
                 }
 
                 LayoutType.ONE_LIST.layout -> {
-                    rvBet.apply {
+                    rvBet?.apply {
                         addItemDecoration(
                             CustomForOddDetailVerticalDivider(
                                 context,
@@ -327,7 +352,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 LayoutType.SINGLE.layout,
                 LayoutType.SINGLE_2_ITEM.layout -> {
-                    rvBet.apply {
+                    rvBet?.apply {
                         addItemDecoration(
                             GridItemDecoration(
                                 context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
@@ -359,7 +384,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     }
 
 
-    inner class ViewHolder(itemView: View, var viewType: Int) : OddViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, var viewType: Int) : OddDetailStateViewHolder(itemView) {
 
         private fun setVisibility(visible: Boolean) {
             val param = itemView.layoutParams as RecyclerView.LayoutParams
@@ -384,12 +409,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private val tvGameName = itemView.findViewById<TextView>(R.id.tv_game_name)
         private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
 
-        val rvBet = itemView.findViewById<RecyclerView>(R.id.rv_bet)
+        val rvBet: RecyclerView? = itemView.findViewById(R.id.rv_bet)
 
         //cs
-        val rvHome = itemView.findViewById<RecyclerView>(R.id.rv_home)
-        val rvDraw = itemView.findViewById<RecyclerView>(R.id.rv_draw)
-        val rvAway = itemView.findViewById<RecyclerView>(R.id.rv_away)
+        val rvHome: RecyclerView? = itemView.findViewById(R.id.rv_home)
+        val rvDraw: RecyclerView? = itemView.findViewById(R.id.rv_draw)
+        val rvAway: RecyclerView? = itemView.findViewById(R.id.rv_away)
 
 
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
@@ -459,10 +484,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.DC.type,
                 GameType.GT1ST.type,
                 GameType.WM.type,
-                GameType.HTFT.type -> oneList(oddsDetail, sportCode)
+                GameType.HTFT.type -> oneList(oddsDetail)
 
                 //臨時新增或尚未確定的排版 以單行列表作為排版
-                GameType.UNCHECK.type -> oneList(oddsDetail, sportCode)
+                GameType.UNCHECK.type -> oneList(oddsDetail)
 
             }
 
@@ -480,10 +505,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun oneList(oddsDetail: OddsDetailListData, sportCode: String?) {
-            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+        private fun oneList(oddsDetail: OddsDetailListData) {
+            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            rvBet.apply {
+            rvBet?.apply {
                 adapter = TypeOneListAdapter(
                     oddsDetail,
                     onOddClickListener,
@@ -495,33 +520,46 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun forCS(oddsDetail: OddsDetailListData) {
-            itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
-            val tvOther = itemView.findViewById<TextView>(R.id.tv_other)
+            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
+            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
+
+            itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             val homeList: MutableList<Odd> = mutableListOf()
             val drawList = ArrayList<Odd>()
             val awayList: MutableList<Odd> = mutableListOf()
 
             for (odd in oddsDetail.oddArrayList) {
-
-                if (odd.name != null) {
-                    if (odd.name?.contains(" - ") == true) {
-                        val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
-                        if (stringArray[0].toInt() > stringArray[1].toInt()) {
-                            homeList.add(odd)
-                        }
-                        if (stringArray[0].toInt() == stringArray[1].toInt()) {
-                            drawList.add(odd)
-                        }
-                        if (stringArray[0].toInt() < stringArray[1].toInt()) {
-                            awayList.add(odd)
-                        }
-                    } else {
-                        tvOther.text = itemView.context.getString(R.string.odds_detail_cs_other)
-                        setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_CENTER, oddsType)
-
+                if (odd.name?.contains(" - ") == true) {
+                    val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
+                    if (stringArray[0].toInt() > stringArray[1].toInt()) {
+                        homeList.add(odd)
                     }
+                    if (stringArray[0].toInt() == stringArray[1].toInt()) {
+                        drawList.add(odd)
+                    }
+                    if (stringArray[0].toInt() < stringArray[1].toInt()) {
+                        awayList.add(odd)
+                    }
+                } else {
+
+                    val list: MutableList<Odd> = mutableListOf()
+                    list.add(odd)
+                    val od = OddsDetailListData(
+                        oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list
+                    )
+
+                    rvBet?.apply {
+                        adapter = TypeOneListAdapter(
+                            od,
+                            onOddClickListener,
+                            betInfoList,
+                            oddsType
+                        )
+                        layoutManager = LinearLayoutManager(itemView.context)
+                    }
+
                 }
             }
 
@@ -541,35 +579,29 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
 
-            rvHome.apply {
-                val isLongest = homeList.size >= drawList.size && homeList.size >= awayList.size
-                adapter = TypeCSAdapter(isLongest, oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
+            rvHome?.apply {
+                adapter = TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
-            rvDraw.apply {
-                val isLongest = drawList.size >= homeList.size && drawList.size >= awayList.size
-                adapter = TypeCSAdapter(isLongest, oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
+            rvDraw?.apply {
+                adapter = TypeCSAdapter(oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
-            rvAway.apply {
-                val isLongest = awayList.size >= homeList.size && awayList.size >= homeList.size
-                adapter = TypeCSAdapter(isLongest, oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
+            rvAway?.apply {
+                adapter = TypeCSAdapter(oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             if (drawList.size == 0) {
-                rvDraw.visibility = View.GONE
-                val param = tvOdds?.layoutParams as ConstraintLayout.LayoutParams
-                param.startToStart = R.id.guideline_cs_other_2_list
-                tvOdds.layoutParams = param
+                rvDraw?.visibility = View.GONE
             }
         }
 
         private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
-            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            rvBet.apply {
+            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet?.apply {
                 adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
             }
@@ -577,8 +609,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
         private fun for2SpanCount(oddsDetail: OddsDetailListData) {
-            rvBet.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            rvBet.apply {
+            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet?.apply {
                 adapter = TypeTwoSpanCountGridAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
