@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="224dp">
+
+    <View
+        android:id="@+id/league_odd_match_border"
+        android:layout_width="176dp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/league_odd_match_border_row1"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_time" />
+
+    <View
+        android:id="@+id/league_odd_match_border_row2"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row1" />
+
+    <View
+        android:id="@+id/league_odd_match_border_row3"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row2" />
+
+    <TextView
+        android:id="@+id/league_odd_match_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="15dp"
+        android:drawablePadding="10dp"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize12sp"
+        app:drawableEndCompat="@drawable/ic_inplay_v4"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border"
+        tools:text="周三 16/06 21:00" />
+
+    <TextView
+        android:id="@+id/league_odd_match_score_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_home"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
+        tools:text="1" />
+
+    <TextView
+        android:id="@+id/league_odd_match_score_set_home"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row1"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_name_home"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_name_home"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_name_home"
+        tools:text="0"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/league_odd_match_name_home"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/league_odd_match_score_set_home"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_border_row1"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_score_home"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row1"
+        tools:text="俄罗斯" />
+
+    <TextView
+        android:id="@+id/league_odd_match_score_away"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_away"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row2"
+        tools:text="0" />
+
+    <TextView
+        android:id="@+id/league_odd_match_score_set_away"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row2"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_name_away"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_name_away"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_name_away"
+        tools:text="0"
+        tools:visibility="gone" />
+
+    <TextView
+        android:id="@+id/league_odd_match_name_away"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row2"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_border_row2"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_score_away"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row2"
+        tools:text="芬兰" />
+
+    <ImageView
+        android:id="@+id/league_odd_match_price_boost"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_price_v4"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row3"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/league_odd_game_time"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/selector_btn_game_time_v4"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_price_boost"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/league_odd_match_play_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:drawablePadding="6dp"
+        android:gravity="center"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize12sp"
+        android:textStyle="bold"
+        app:drawableEndCompat="@drawable/ic_arrow_dark_right_v4"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+        app:layout_constraintStart_toEndOf="@id/league_odd_game_time"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        tools:text="6" />
+
+    <ImageView
+        android:id="@+id/league_odd_match_chart"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_chart_v4"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_match_favorite"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/league_odd_match_favorite"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="6dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/selector_star_v4"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_match_border_row3"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
