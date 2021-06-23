@@ -12,6 +12,13 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <View
+        android:id="@+id/league_odd_button_border"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_border" />
+
+    <View
         android:id="@+id/league_odd_match_border_row1"
         android:layout_width="0dp"
         android:layout_height="48dp"
@@ -202,5 +209,26 @@
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border_row3"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/league_odd_button_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toTopOf="@id/league_odd_button_pager_indicate"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_button_border"
+        app:layout_constraintStart_toStartOf="@id/league_odd_button_border"
+        app:layout_constraintTop_toTopOf="@id/league_odd_button_border" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/league_odd_button_pager_indicate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_button_border"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_button_border"
+        app:layout_constraintStart_toStartOf="@id/league_odd_button_border"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_button_pager" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
