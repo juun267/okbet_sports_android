@@ -45,7 +45,7 @@ class TypeCSAdapter(
                 isSelected = betInfoList.any { it.matchOdd.oddsId == odd.id }
                 oddStateChangeListener = object : OddStateChangeListener {
                     override fun refreshOddButton(odd: Odd) {
-                        odd.oddState = OddState.SAME.state
+                        notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
                     }
                 }
 

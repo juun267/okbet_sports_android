@@ -384,7 +384,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     }
 
 
-    inner class ViewHolder(itemView: View, var viewType: Int) : OddDetailStateViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, var viewType: Int) : RecyclerView.ViewHolder(itemView) {
 
         private fun setVisibility(visible: Boolean) {
             val param = itemView.layoutParams as RecyclerView.LayoutParams
@@ -454,9 +454,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 GameType.CS.type -> forCS(oddsDetail)
 
-                GameType.FG.type,
-                GameType.LG.type,
-                GameType.HWMG_SINGLE.type,
                 GameType.SINGLE_OT.type,
                 GameType.SINGLE_SEG.type,
                 GameType.SINGLE_1ST.type,
@@ -469,6 +466,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE_2ST_2.type,
                 GameType.SINGLE_2.type -> forSingle(oddsDetail, 2)
 
+                GameType.FG.type,
+                GameType.LG.type,
+                GameType.HWMG_SINGLE.type,
                 GameType.WBH.type,
                 GameType.WEH.type,
                 GameType.SBH.type,

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+
 
 class TypeSingleAdapter (
     private val oddsDetail: OddsDetailListData,
@@ -42,7 +44,7 @@ class TypeSingleAdapter (
                 isSelected = betInfoList.any { it.matchOdd.oddsId == odd.id }
                 oddStateChangeListener = object : OddStateChangeListener {
                     override fun refreshOddButton(odd: Odd) {
-                        odd.oddState = OddState.SAME.state
+                        notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
                     }
                 }
 
