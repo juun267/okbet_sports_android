@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
-import kotlinx.android.synthetic.main.row_game_filter.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -30,7 +27,6 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
-import org.cxct.sportlottery.ui.game.widget.GameFilterRow
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -119,7 +115,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
             setupSportTypeList(this)
-            setupGameFilterRow(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -138,51 +133,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     R.dimen.recyclerview_item_dec_spec
                 )
             )
-        }
-    }
-
-    private fun setupGameFilterRow(view: View) {
-        view.game_filter_row.apply {
-            matchType = when (args.matchType) {
-                MatchType.IN_PLAY -> GameFilterRow.IN_PLAY
-                MatchType.TODAY -> GameFilterRow.TODAY
-                MatchType.EARLY -> GameFilterRow.EARLY
-                MatchType.PARLAY -> GameFilterRow.PARLAY
-                MatchType.OUTRIGHT -> GameFilterRow.OUTRIGHT
-                MatchType.AT_START -> GameFilterRow.AT_START
-                else -> null
-            }
-
-            isSearchViewVisible =
-                (args.matchType != MatchType.IN_PLAY && args.matchType != MatchType.AT_START)
-
-            searchHint = getString(R.string.game_filter_row_search_hint)
-
-            backClickListener = View.OnClickListener {
-                activity?.onBackPressed()
-            }
-
-            ouHDPClickListener = View.OnClickListener {
-                viewModel.setPlayType(PlayType.OU_HDP)
-            }
-
-            x12ClickListener = View.OnClickListener {
-                viewModel.setPlayType(PlayType.X12)
-            }
-
-            queryTextListener = object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    newText?.let {
-                        viewModel.searchLeague(args.matchType, it)
-                        countryAdapter.searchText = it
-                    }
-                    return true
-                }
-            }
         }
     }
 
@@ -294,7 +244,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curPlayType.observe(viewLifecycleOwner, {
-            game_filter_row.playType = it
             leagueAdapter.playType = it
         })
 
@@ -348,7 +297,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { leagueListResult ->
                 hideLoading()
-                clearSearchView()
 
                 if (leagueListResult.success) {
                     val rows = leagueListResult.rows ?: listOf()
@@ -365,7 +313,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                 hideLoading()
-                clearSearchView()
 
                 if (outrightSeasonListResult.success) {
                     val rows = outrightSeasonListResult.rows ?: listOf()
@@ -659,23 +606,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateSportType(sportTypeList: List<Item>) {
-        val selectedSportType = sportTypeList.find { sportType -> sportType.isSelected }
-
         sportTypeAdapter.dataSport = sportTypeList
-
-        game_filter_row.apply {
-            sportName = selectedSportType?.name
-
-            isPlayTypeVisible =
-                (selectedSportType?.code == SportType.FOOTBALL.code) || (selectedSportType?.code == SportType.BASKETBALL.code)
-        }
-    }
-
-    private fun clearSearchView() {
-        game_filter_row.game_filter_search.apply {
-            setQuery("", false)
-            clearFocus()
-        }
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {

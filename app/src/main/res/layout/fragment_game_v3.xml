@@ -32,13 +32,6 @@
                 tools:itemCount="1"
                 tools:listitem="@layout/itemview_sport_type" />
 
-            <org.cxct.sportlottery.ui.game.widget.GameFilterRow
-                android:id="@+id/game_filter_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/sport_type_list"
-                tools:layout="@layout/row_game_filter" />
-
             <TextView
                 android:id="@+id/game_filter_game"
                 android:layout_width="match_parent"
@@ -50,7 +43,7 @@
                 android:text="@string/date_row_league"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize16sp"
-                app:layout_constraintTop_toBottomOf="@id/game_filter_row" />
+                app:layout_constraintTop_toBottomOf="@id/sport_type_list" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_filter_type_list"
