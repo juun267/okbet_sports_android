@@ -125,6 +125,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         NGOAL_1("NGOAL:1", 43), //第1个进球
 
         TWTN("TWTN", 44) //零失球獲勝
+
     }
 
 
@@ -132,6 +133,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         val type = oddsDetailDataList[position].gameType
 
+        /*比對時先判斷完整字串 再比對部分字串(由長至短)*/
         when {
             TextUtil.compareWithGameKey(type, GameType.HDP.value) -> return GameType.HDP.type
 
@@ -147,10 +149,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == GameType.LG.value -> return GameType.LG.type
 
-            //先判斷完整字串 再比對部分字串(由長至短)
+
+            /**/
             TextUtil.compareWithGameKey(type, GameType.DC_OU.value) -> return GameType.DC_OU.type
             TextUtil.compareWithGameKey(type, GameType.DC.value) -> return GameType.DC.type
 
+            /**/
+            TextUtil.compareWithGameKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
             TextUtil.compareWithGameKey(type, GameType.OE.value) -> return GameType.OE.type
 
             TextUtil.compareWithGameKey(type, GameType.SCO.value) -> return GameType.SCO.type
@@ -159,7 +164,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             TextUtil.compareWithGameKey(type, GameType.TG_.value) -> return GameType.TG_.type
 
-            //先判斷完整字串 再比對部分字串(由長至短)
+            /**/
             type == GameType.SINGLE_BTS.value -> return GameType.SINGLE_BTS.type
             TextUtil.compareWithGameKey(type, GameType.OU_BTS.value) -> return GameType.OU_BTS.type
             TextUtil.compareWithGameKey(type, GameType.BTS.value) -> return GameType.BTS.type
@@ -172,7 +177,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == GameType.WEH.value -> return GameType.WEH.type
 
-            //先判斷完整字串 再比對部分字串(由長至短)
+            /**/
             type == GameType.HWMG_SINGLE.value -> return GameType.HWMG_SINGLE.type
             TextUtil.compareWithGameKey(type, GameType.WM.value) -> return GameType.WM.type
 
@@ -185,8 +190,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(type, GameType.TG_OU.value) -> return GameType.TG_OU.type
 
             TextUtil.compareWithGameKey(type, GameType.C_OU.value) -> return GameType.C_OU.type
-
-            TextUtil.compareWithGameKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
 
             TextUtil.compareWithGameKey(type, GameType.OU_I_OT.value) -> return GameType.OU_I_OT.type
 
@@ -527,7 +530,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             val homeList: MutableList<Odd> = mutableListOf()
-            val drawList = ArrayList<Odd>()
+            val drawList: MutableList<Odd> = mutableListOf()
             val awayList: MutableList<Odd> = mutableListOf()
 
             for (odd in oddsDetail.oddArrayList) {
@@ -596,6 +599,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             if (drawList.size == 0) {
                 rvDraw?.visibility = View.GONE
+                itemView.findViewById<TextView>(R.id.tv_draw).visibility = View.GONE
             }
         }
 
