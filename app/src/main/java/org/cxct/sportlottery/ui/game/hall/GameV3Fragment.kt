@@ -195,37 +195,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             )
         }
 
-        view.game_filter_game.visibility =
-            if (args.matchType == MatchType.EARLY || args.matchType == MatchType.PARLAY || args.matchType == MatchType.OUTRIGHT) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-        view.game_filter_game.text = when (args.matchType) {
-            MatchType.EARLY, MatchType.PARLAY -> {
-                resources.getString(R.string.date_row_league)
-            }
-            MatchType.OUTRIGHT -> {
-                resources.getString(R.string.outright_row_entrance)
-            }
-            else -> {
-                null
-            }
-        }
-
         view.game_filter_type_list.visibility =
             if (args.matchType == MatchType.EARLY || args.matchType == MatchType.PARLAY) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
-
-        view.game_filter_divider.visibility = if (args.matchType == MatchType.OUTRIGHT) {
-            View.VISIBLE
-        } else {
-            View.INVISIBLE
-        }
     }
 
     private fun setupGameListView(view: View) {
