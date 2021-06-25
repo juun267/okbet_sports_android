@@ -383,7 +383,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 false
             } else {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_orangelight)
+                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_orange_light)
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 true
             }

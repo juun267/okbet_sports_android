@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.list.OddStateParams
 
 @JsonClass(generateAdapter = true)
 data class Odd(
@@ -23,8 +24,12 @@ data class Odd(
     var spread: String?, //让分或大小分值 (如果是球员玩法，则表示球员ID)
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code, //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
-) {
+) : OddStateParams {
     var isSelect: Boolean? = false
-    var oddState: Int? = OddState.SAME.state
+    override var oddState: Int = OddState.SAME.state
+    @Transient
+    override var runnable: Runnable? = null
     var itemViewVisible = true
 }
+
+

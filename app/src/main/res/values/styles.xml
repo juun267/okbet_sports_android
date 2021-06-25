@@ -46,7 +46,7 @@
     </style>
 
     <style name="OddsButton" parent="Widget.AppCompat.TextView">
-        <item name="android:background">@drawable/select_button_radius_4_odds</item>
+        <item name="android:background">@drawable/selector_button_radius_4_odds</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_select_text_odds</item>
         <item name="android:textSize">@dimen/textSize16sp</item>
