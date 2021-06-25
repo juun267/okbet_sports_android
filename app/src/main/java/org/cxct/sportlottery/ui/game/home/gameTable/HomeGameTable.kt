@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 
+@Deprecated("待 v4 版本做完後移除")
 class HomeGameTable @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     private val homeGameDrawerAdapter = RvGameTableAdapter()

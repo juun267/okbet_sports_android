@@ -129,7 +129,7 @@
     <string name="label_all">所有</string>
 
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
-    <string name="message_no_today">目前没有今日的赛事</string>
+    <string name="message_no_in_play">目前没有滚球的赛事</string>
 
 
     <string name="champion">冠军</string>
