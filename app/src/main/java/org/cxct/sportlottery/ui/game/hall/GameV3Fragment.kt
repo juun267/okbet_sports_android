@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -174,6 +175,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 isSelected = !isSelected
                 Toast.makeText(context, "click toolbar calendar", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        //TODO add all match type after ui design finish
+        view.game_bg_layer2.visibility = when (args.matchType) {
+            else -> View.VISIBLE
         }
 
         view.game_toolbar_back.setOnClickListener {
@@ -623,7 +629,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateSportType(sportTypeList: List<Item>) {
         sportTypeAdapter.dataSport = sportTypeList
-        game_toolbar_sport_type.text = sportTypeList.find { it.isSelected }?.name ?: ""
+
+        sportTypeList.find { it.isSelected }?.let {
+            game_toolbar_sport_type.text = it.name
+
+            Glide.with(requireContext()).load(
+                when (it.code) {
+                    SportType.FOOTBALL.code -> R.drawable.soccer108
+                    SportType.BASKETBALL.code -> R.drawable.basketball108
+                    SportType.TENNIS.code -> R.drawable.tennis108
+                    SportType.VOLLEYBALL.code -> R.drawable.volleyball108
+                    else -> null
+                }
+            ).into(game_bg_layer2)
+        }
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
