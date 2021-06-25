@@ -23,14 +23,16 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/sport_type_list"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite2"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
                 android:nestedScrollingEnabled="false"
-                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="1"
-                tools:listitem="@layout/itemview_sport_type" />
+                tools:listitem="@layout/itemview_sport_type_v4" />
 
             <include
                 android:id="@+id/game_toolbar_v4"

@@ -134,7 +134,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
-                    R.dimen.recyclerview_item_dec_spec
+                    R.dimen.recyclerview_item_dec_spec_sport_type
                 )
             )
         }
@@ -282,10 +282,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 else -> {
                 }
             }
-        })
-
-        viewModel.gameCateDataList.observe(this.viewLifecycleOwner, {
-            sportTypeAdapter.dataThirdGame = it
         })
 
         viewModel.curPlayType.observe(viewLifecycleOwner, {
