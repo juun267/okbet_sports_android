@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -115,6 +118,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
             setupSportTypeList(this)
+            setupToolbar(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -133,6 +137,47 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     R.dimen.recyclerview_item_dec_spec
                 )
             )
+        }
+    }
+
+    private fun setupToolbar(view: View) {
+        view.game_toolbar_match_type.text = when (args.matchType) {
+            MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
+            MatchType.TODAY -> getString(R.string.home_tab_today)
+            MatchType.EARLY -> getString(R.string.home_tab_early)
+            MatchType.PARLAY -> getString(R.string.home_tab_parlay)
+            MatchType.AT_START -> getString(R.string.home_tab_at_start)
+            MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
+            else -> ""
+        }
+
+        //TODO add all match type after ui design finish
+        view.game_toolbar_champion.apply {
+            visibility = when (args.matchType) {
+                MatchType.IN_PLAY -> View.VISIBLE
+                else -> View.GONE
+            }
+
+            setOnClickListener {
+                Toast.makeText(context, "click toolbar champion", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        //TODO add all match type after ui design finish
+        view.game_toolbar_calendar.apply {
+            visibility = when (args.matchType) {
+                MatchType.EARLY -> View.VISIBLE
+                else -> View.GONE
+            }
+
+            setOnClickListener {
+                isSelected = !isSelected
+                Toast.makeText(context, "click toolbar calendar", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        view.game_toolbar_back.setOnClickListener {
+            activity?.onBackPressed()
         }
     }
 
@@ -607,6 +652,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateSportType(sportTypeList: List<Item>) {
         sportTypeAdapter.dataSport = sportTypeList
+        game_toolbar_sport_type.text = sportTypeList.find { it.isSelected }?.name ?: ""
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
