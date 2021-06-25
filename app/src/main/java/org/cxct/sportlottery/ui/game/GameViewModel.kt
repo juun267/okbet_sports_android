@@ -155,10 +155,6 @@ class GameViewModel(
     val matchPreloadAtStart: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadAtStart
 
-    private val _matchPreloadEarly = MutableLiveData<Event<MatchPreloadResult>>()
-    val matchPreloadEarly: LiveData<Event<MatchPreloadResult>>
-        get() = _matchPreloadEarly
-
     private val _allFootballCount = MutableLiveData<Int>()
     val allFootballCount: LiveData<Int> //全部足球比賽的數量
         get() = _allFootballCount
@@ -441,6 +437,7 @@ class GameViewModel(
         }
     }
 
+    //遊戲大廳首頁: 滾球盤、即將開賽盤
     fun getMatchPreload() {
         viewModelScope.launch {
             doNetwork(androidContext) {
@@ -458,20 +455,6 @@ class GameViewModel(
                 )
             }?.let { result ->
                 _matchPreloadAtStart.postValue(Event(result))
-            }
-        }
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                val nowTimeStamp = getTodayTimeRangeParams()
-                OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(
-                        MatchType.TODAY.postValue,
-                        startTime = nowTimeStamp.startTime,
-                        endTime = nowTimeStamp.endTime
-                    )
-                )
-            }?.let { result ->
-                _matchPreloadEarly.postValue(Event(result))
             }
         }
     }
