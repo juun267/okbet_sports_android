@@ -300,27 +300,62 @@
 
                 </LinearLayout>
 
-                <org.cxct.sportlottery.ui.game.home.gameTable.HomeGameTable
-                    android:id="@+id/drawer_in_play"
+                <RadioGroup
+                    android:id="@+id/table_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginBottom="6dp"
-                    android:nestedScrollingEnabled="false"
-                    app:cvCount="0"
-                    app:cvTitle="@string/label_in_play_games" />
+                    android:layout_height="28dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <org.cxct.sportlottery.ui.game.home.gameTable.HomeGameTable
-                    android:id="@+id/drawer_today"
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                    <RadioButton
+                        android:id="@+id/rb_in_play"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:background="@null"
+                        android:button="@null"
+                        android:checked="true"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/home_tab_in_play"
+                        android:textColor="@color/selector_blue_gray"
+                        android:textSize="@dimen/textSize20sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/rb_soon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:background="@null"
+                        android:button="@null"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/game_soon"
+                        android:textColor="@color/selector_blue_gray"
+                        android:textSize="@dimen/textSize20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                </RadioGroup>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_game_table"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:layout_marginBottom="6dp"
-                    android:nestedScrollingEnabled="false"
-                    app:cvCount="0"
-                    app:cvTitle="@string/date_row_today" />
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/home_game_table_4" />
 
             </LinearLayout>
 
