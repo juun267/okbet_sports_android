@@ -125,7 +125,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                 adapter.setOnSelectItemListener(mOnSelectItemListener)
                 view_pager.adapter = adapter
 
-                indicator_view2.setupWithViewPager2(view_pager)
+                indicator_view.setupWithViewPager2(view_pager)
             }
         }
 
