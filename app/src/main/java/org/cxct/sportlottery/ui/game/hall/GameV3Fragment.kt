@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -134,7 +135,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
-                    R.dimen.recyclerview_item_dec_spec
+                    R.dimen.recyclerview_item_dec_spec_sport_type
                 )
             )
         }
@@ -176,6 +177,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
+        //TODO add all match type after ui design finish
+        view.game_bg_layer2.visibility = when (args.matchType) {
+            else -> View.VISIBLE
+        }
+
         view.game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -195,37 +201,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             )
         }
 
-        view.game_filter_game.visibility =
-            if (args.matchType == MatchType.EARLY || args.matchType == MatchType.PARLAY || args.matchType == MatchType.OUTRIGHT) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-        view.game_filter_game.text = when (args.matchType) {
-            MatchType.EARLY, MatchType.PARLAY -> {
-                resources.getString(R.string.date_row_league)
-            }
-            MatchType.OUTRIGHT -> {
-                resources.getString(R.string.outright_row_entrance)
-            }
-            else -> {
-                null
-            }
-        }
-
         view.game_filter_type_list.visibility =
             if (args.matchType == MatchType.EARLY || args.matchType == MatchType.PARLAY) {
                 View.VISIBLE
             } else {
                 View.GONE
             }
-
-        view.game_filter_divider.visibility = if (args.matchType == MatchType.OUTRIGHT) {
-            View.VISIBLE
-        } else {
-            View.INVISIBLE
-        }
     }
 
     private fun setupGameListView(view: View) {
@@ -282,10 +263,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 else -> {
                 }
             }
-        })
-
-        viewModel.gameCateDataList.observe(this.viewLifecycleOwner, {
-            sportTypeAdapter.dataThirdGame = it
         })
 
         viewModel.curPlayType.observe(viewLifecycleOwner, {
@@ -652,7 +629,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateSportType(sportTypeList: List<Item>) {
         sportTypeAdapter.dataSport = sportTypeList
-        game_toolbar_sport_type.text = sportTypeList.find { it.isSelected }?.name ?: ""
+
+        sportTypeList.find { it.isSelected }?.let {
+            game_toolbar_sport_type.text = it.name
+
+            Glide.with(requireContext()).load(
+                when (it.code) {
+                    SportType.FOOTBALL.code -> R.drawable.soccer108
+                    SportType.BASKETBALL.code -> R.drawable.basketball108
+                    SportType.TENNIS.code -> R.drawable.tennis108
+                    SportType.VOLLEYBALL.code -> R.drawable.volleyball108
+                    else -> null
+                }
+            ).into(game_bg_layer2)
+        }
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {

@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.hall.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sport_type.view.*
 import org.cxct.sportlottery.R
@@ -66,8 +65,6 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setupSportTypeImage(item)
 
-            itemView.sport_type_count.text = item.num.toString()
-
             itemView.sport_type_text.text = item.name
 
             itemView.isSelected = item.isSelected
@@ -80,29 +77,17 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun setupSportTypeImage(item: Item) {
             when (item.code) {
                 SportType.FOOTBALL.code -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_gametype_row_ft)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_ft_v4)
                 }
                 SportType.BASKETBALL.code -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_gametype_row_bk)
-                }
-                SportType.BADMINTON.code -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_gametype_row_bm)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bk_v4)
                 }
                 SportType.TENNIS.code -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_gametype_row_tn)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_tn_v4)
                 }
                 SportType.VOLLEYBALL.code -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_gametype_row_vb)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_vb_v4)
                 }
-            }
-
-            if (item.isSelected) {
-                itemView.sport_type_img.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        itemView.context,
-                        R.anim.rotate_sport
-                    )
-                )
             }
         }
 
@@ -110,7 +95,7 @@ class SportTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_sport_type, parent, false)
+                    .inflate(R.layout.itemview_sport_type_v4, parent, false)
 
                 return ViewHolderSport(view)
             }

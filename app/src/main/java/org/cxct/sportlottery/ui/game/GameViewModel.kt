@@ -155,9 +155,9 @@ class GameViewModel(
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadInPlay
 
-    private val _matchPreloadEarly = MutableLiveData<Event<MatchPreloadResult>>()
-    val matchPreloadEarly: LiveData<Event<MatchPreloadResult>>
-        get() = _matchPreloadEarly
+    private val _matchPreloadAtStart = MutableLiveData<Event<MatchPreloadResult>>()
+    val matchPreloadAtStart: LiveData<Event<MatchPreloadResult>>
+        get() = _matchPreloadAtStart
 
     private val _allFootballCount = MutableLiveData<Int>()
     val allFootballCount: LiveData<Int> //全部足球比賽的數量
@@ -216,32 +216,17 @@ class GameViewModel(
     private fun getSpecEntranceFromHome(
         matchType: MatchType,
         sportType: SportType?
-    ): SpecialEntrance? = when (matchType) {
-        MatchType.IN_PLAY -> {
-            if (sportType != null && getSportCount(MatchType.IN_PLAY, sportType) != 0) {
-                SpecialEntrance(MatchType.IN_PLAY, sportType)
-            } else {
-                null
-            }
+    ): SpecialEntrance? = when {
+        matchType == MatchType.IN_PLAY && getSportCount(matchType, sportType) == 0 -> {
+            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_in_play)))
+            null
         }
-        MatchType.TODAY -> {
-            if (sportType != null && getSportCount(MatchType.TODAY, sportType) != 0) {
-                SpecialEntrance(MatchType.TODAY, sportType)
-            } else {
-                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_today)))
-                null
-            }
-        }
-        MatchType.AT_START -> {
-            if (getMatchCount(MatchType.AT_START) != 0) {
-                SpecialEntrance(MatchType.AT_START, sportType)
-            } else {
-                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
-                null
-            }
+        matchType == MatchType.AT_START && getMatchCount(matchType) == 0 -> {
+            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
+            null
         }
         else -> {
-            null
+            SpecialEntrance(matchType, sportType)
         }
     }
 
@@ -249,16 +234,16 @@ class GameViewModel(
         matchType: MatchType,
         sportType: SportType?
     ): SpecialEntrance? = when {
-        (sportType != null && getSportCount(matchType, sportType) != 0) -> {
+        getSportCount(matchType, sportType) != 0 -> {
             SpecialEntrance(matchType, sportType)
         }
-        (sportType != null && getSportCount(MatchType.TODAY, sportType) != 0) -> {
+        getSportCount(MatchType.TODAY, sportType) != 0 -> {
             SpecialEntrance(MatchType.TODAY, sportType)
         }
-        (sportType != null && getSportCount(MatchType.EARLY, sportType) != 0) -> {
+        getSportCount(MatchType.EARLY, sportType) != 0 -> {
             SpecialEntrance(MatchType.EARLY, sportType)
         }
-        (sportType != null) -> {
+        sportType != null -> {
             SpecialEntrance(MatchType.PARLAY, sportType)
         }
         else -> {
@@ -409,7 +394,8 @@ class GameViewModel(
         return this
     }
 
-    fun getInPlayMatchPreload() {
+    //遊戲大廳首頁: 滾球盤、即將開賽盤
+    fun getMatchPreload() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
@@ -421,16 +407,11 @@ class GameViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
-                val nowTimeStamp = getTodayTimeRangeParams()
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(
-                        MatchType.TODAY.postValue,
-                        startTime = nowTimeStamp.startTime,
-                        endTime = nowTimeStamp.endTime
-                    )
+                    MatchPreloadRequest(MatchType.AT_START.postValue)
                 )
             }?.let { result ->
-                _matchPreloadEarly.postValue(Event(result))
+                _matchPreloadAtStart.postValue(Event(result))
             }
         }
     }
@@ -1075,9 +1056,12 @@ class GameViewModel(
 
     private fun getSportCount(
         matchType: MatchType,
-        sportType: SportType,
+        sportType: SportType?,
         sportMenuResult: SportMenuResult? = null
     ): Int {
+        if (sportType == null)
+            return 0
+
         val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
 
         return when (matchType) {

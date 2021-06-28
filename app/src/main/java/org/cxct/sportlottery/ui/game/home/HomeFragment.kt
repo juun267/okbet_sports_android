@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
@@ -21,7 +22,9 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
-import org.cxct.sportlottery.ui.game.home.gameTable.GameEntity
+import org.cxct.sportlottery.ui.game.home.gameTable4.GameBean
+import org.cxct.sportlottery.ui.game.home.gameTable4.GameEntity4
+import org.cxct.sportlottery.ui.game.home.gameTable4.RvGameTable4Adapter
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -29,8 +32,19 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivit
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 
 
+/**
+ * TODO:
+ * 1. 上下滑動 ToolBar 固定
+ * 2. 即將開賽盤 時間倒數
+ * 3. 賠率串接、玩法數
+ */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
+
+    private val mRvGameTable4Adapter = RvGameTable4Adapter()
+    private var mSelectMatchType: MatchType = MatchType.IN_PLAY
+    private var mInPlayResult: MatchPreloadResult? = null
+    private var mAtStartResult: MatchPreloadResult? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +62,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initTable()
         initEvent()
         initObserve()
         observeSocketData()
@@ -63,6 +78,56 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onStop()
 
         unsubscribeAllHallChannel()
+    }
+
+    private fun initTable() {
+        rv_game_table.adapter = mRvGameTable4Adapter
+
+        rb_in_play.setOnClickListener {
+            mSelectMatchType = MatchType.IN_PLAY
+            refreshTable(mSelectMatchType, mInPlayResult)
+        }
+
+        rb_soon.setOnClickListener {
+            mSelectMatchType = MatchType.AT_START
+            refreshTable(mSelectMatchType, mAtStartResult)
+        }
+    }
+
+    private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
+        if (selectMatchType == MatchType.IN_PLAY) {
+            unsubscribeAllHallChannel() //先清除之前訂閱項目
+
+            //訂閱所有滾球賽事
+            result?.matchPreloadData?.datas?.forEach { data ->
+                data.matchs.forEach { match ->
+                    subscribeHallChannel(data.code, match)
+                }
+            }
+        }
+
+        mRvGameTable4Adapter.setRvGameData(result?.matchPreloadData?.apply {
+            matchType = selectMatchType
+        })
+        mRvGameTable4Adapter.setOnSelectItemListener(object : OnSelectItemListener<GameBean> {
+            override fun onClick(select: GameBean) {
+                scroll_view.smoothScrollTo(0, 0)
+                navOddsDetailLive(select.code, select.match?.id)
+
+                //TODO simon test 今日 使用下方跳轉
+//                navOddsDetailFragment(select.code, select.match?.id)
+            }
+        })
+        mRvGameTable4Adapter.setOnSelectAllListener(object : OnSelectItemListener<GameEntity4> {
+            override fun onClick(select: GameEntity4) {
+                scroll_view.smoothScrollTo(0, 0)
+                viewModel.navSpecialEntrance(
+                    SpecialEntranceSource.HOME,
+                    selectMatchType,
+                    getSportType(select.code)
+                )
+            }
+        })
     }
 
     private fun initEvent() {
@@ -162,29 +227,35 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                updateInPlayUI(result)
+                mInPlayResult = result
+                if (mSelectMatchType == MatchType.IN_PLAY)
+                    refreshTable(mSelectMatchType, mInPlayResult)
             }
         })
 
-        viewModel.matchPreloadEarly.observe(viewLifecycleOwner, {
+        viewModel.matchPreloadAtStart.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                updateTodayUI(result)
+                mAtStartResult = result
+                if (mSelectMatchType == MatchType.AT_START)
+                    refreshTable(mSelectMatchType, mAtStartResult)
             }
         })
     }
 
     private fun observeSocketData() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
-            drawer_in_play.setMatchStatusData(it?.matchStatusCO)
+            if (mSelectMatchType == MatchType.IN_PLAY)
+                mRvGameTable4Adapter.setMatchStatusData(it?.matchStatusCO)
         })
 
         receiver.matchClock.observe(viewLifecycleOwner, {
-            drawer_in_play.setMatchClockData(it?.matchClockCO)
+            if (mSelectMatchType == MatchType.IN_PLAY)
+                mRvGameTable4Adapter.setMatchClockData(it?.matchClockCO)
         })
     }
 
     private fun queryData() {
-        viewModel.getInPlayMatchPreload()
+        viewModel.getMatchPreload()
     }
 
     private fun updateInPlayUI(gameCateList: List<GameCateData>?) {
@@ -214,74 +285,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
     }
 
-    private fun updateInPlayUI(result: MatchPreloadResult) {
-        unsubscribeAllHallChannel() //先清除之前訂閱項目
-
-        //訂閱所有滾球賽事
-        result.matchPreloadData?.datas?.forEach { data ->
-            data.matchs.forEach { match ->
-                subscribeHallChannel(data.code, match)
-            }
+    private fun getSportType(sportCode: String?): SportType? {
+        return when (sportCode) {
+            SportType.FOOTBALL.code -> SportType.FOOTBALL
+            SportType.BASKETBALL.code -> SportType.BASKETBALL
+            SportType.TENNIS.code -> SportType.TENNIS
+            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
+            SportType.BADMINTON.code -> SportType.BADMINTON
+            else -> null
         }
-
-        val inPlayCount = result.matchPreloadData?.num ?: 0
-        drawer_in_play.setCount(inPlayCount.toString())
-        drawer_in_play.setRvGameData(result.matchPreloadData?.apply {
-            matchType = MatchType.IN_PLAY
-        })
-        drawer_in_play.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-            override fun onClick(select: GameEntity) {
-                scroll_view.smoothScrollTo(0, 0)
-                navOddsDetailLive(select.code, select.match?.id)
-            }
-        })
-        drawer_in_play.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
-            override fun onClick(select: GameEntity) {
-                scroll_view.smoothScrollTo(0, 0)
-                val sportType = when (select.code) {
-                    SportType.FOOTBALL.code -> SportType.FOOTBALL
-                    SportType.BASKETBALL.code -> SportType.BASKETBALL
-                    SportType.TENNIS.code -> SportType.TENNIS
-                    SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-                    SportType.BADMINTON.code -> SportType.BADMINTON
-                    else -> null
-                }
-
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.HOME,
-                    MatchType.IN_PLAY,
-                    sportType
-                )
-            }
-        })
-    }
-
-    private fun updateTodayUI(result: MatchPreloadResult) {
-        val todayCount = result.matchPreloadData?.num ?: 0
-        drawer_today.setCount(todayCount.toString())
-        drawer_today.setRvGameData(result.matchPreloadData?.apply { matchType = MatchType.TODAY })
-        drawer_today.setOnSelectItemListener(object : OnSelectItemListener<GameEntity> {
-            override fun onClick(select: GameEntity) {
-                scroll_view.smoothScrollTo(0, 0)
-                navOddsDetailFragment(select.code, select.match?.id)
-
-            }
-        })
-        drawer_today.setOnSelectFooterListener(object : OnSelectItemListener<GameEntity> {
-            override fun onClick(select: GameEntity) {
-                scroll_view.smoothScrollTo(0, 0)
-                val sportType = when (select.code) {
-                    SportType.FOOTBALL.code -> SportType.FOOTBALL
-                    SportType.BASKETBALL.code -> SportType.BASKETBALL
-                    SportType.TENNIS.code -> SportType.TENNIS
-                    SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-                    SportType.BADMINTON.code -> SportType.BADMINTON
-                    else -> null
-                }
-
-                viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, sportType)
-            }
-        })
     }
 
     private fun navOddsDetailLive(sportTypeCode: String?, matchId: String?) {
