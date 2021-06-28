@@ -71,12 +71,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="292dp"
                     android:layout_marginTop="10dp"
+                    android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@id/rv_game_card">
 
                     <WebView
                         android:id="@+id/web_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <org.cxct.sportlottery.ui.component.LiveViewToolbar
+                        android:id="@+id/live_view_tool_bar"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"/>
+
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

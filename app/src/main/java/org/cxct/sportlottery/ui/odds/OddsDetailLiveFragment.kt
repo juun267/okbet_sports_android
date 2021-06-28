@@ -99,7 +99,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         setWebView()
     }
 
-
     override fun onStop() {
         super.onStop()
         unsubscribeAllHallChannel()
