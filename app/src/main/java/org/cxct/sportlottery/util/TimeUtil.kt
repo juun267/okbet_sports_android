@@ -10,6 +10,7 @@ import java.util.*
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_FORMAT = "yyyy-MM-dd"
+    private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
 
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
@@ -32,10 +33,15 @@ object TimeUtil {
         return stampToDateHMSTimeZone(time.time)
     }
 
-    fun timeFormat(time: Long?, format: String, timeZone: TimeZone = TimeZone.getDefault()): String {
+    fun timeFormat(
+        time: Long?,
+        format: String,
+        timeZone: TimeZone = TimeZone.getDefault(),
+        locale: Locale = Locale.getDefault()
+    ): String {
         var formattedTime = ""
         try {
-            val dateFormat = SimpleDateFormat(format, Locale.getDefault())
+            val dateFormat = SimpleDateFormat(format, locale)
             dateFormat.timeZone = timeZone
             formattedTime = dateFormat.format(time)
         } catch (e: Exception) {
@@ -49,9 +55,13 @@ object TimeUtil {
         START_OF_DAY, END_OF_DAY
     }
 
-    fun dateToTimeStamp(date: String?, timeType: TimeType = TimeType.START_OF_DAY): Long? {
+    fun dateToTimeStamp(
+        date: String?,
+        timeType: TimeType = TimeType.START_OF_DAY,
+        dateFormatPattern: String = "$YMD_HMS_FORMAT S"
+    ): Long? {
         if (date.isNullOrEmpty()) return null
-        val formatter = SimpleDateFormat("$YMD_HMS_FORMAT S", Locale.getDefault())
+        val formatter = SimpleDateFormat(dateFormatPattern, Locale.getDefault())
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
@@ -134,9 +144,17 @@ object TimeUtil {
         //date : yyyy-MM-dd
         return object : TimeRangeParams {
             override val startTime: String
-                get() = dateToTimeStamp(date, TimeType.START_OF_DAY).toString()
+                get() = dateToTimeStamp(
+                    date,
+                    TimeType.START_OF_DAY,
+                    dateFormatPattern = YMDE_FORMAT
+                ).toString()
             override val endTime: String
-                get() = dateToTimeStamp(date, TimeType.END_OF_DAY).toString()
+                get() = dateToTimeStamp(
+                    date,
+                    TimeType.END_OF_DAY,
+                    dateFormatPattern = YMDE_FORMAT
+                ).toString()
         }
     }
 
@@ -230,13 +248,13 @@ object TimeUtil {
         }
     }
 
-    fun getFutureDate(day: Int): List<String> {
+    fun getFutureDate(day: Int, locale: Locale = Locale.getDefault()): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
 
         repeat(day) {
             calendar.add(Calendar.DATE, 1)
-            weekDateList.add(timeFormat(calendar.timeInMillis, YMD_FORMAT))
+            weekDateList.add(timeFormat(calendar.timeInMillis, YMDE_FORMAT, locale = locale))
         }
         return weekDateList
     }

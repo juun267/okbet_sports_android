@@ -684,8 +684,18 @@ class GameViewModel(
             )
         )
 
-        dateRow.addAll(1, TimeUtil.getFutureDate(6).map {
-            Date(it, TimeUtil.getDayDateTimeRangeParams(it))
+        dateRow.addAll(1, TimeUtil.getFutureDate(
+            6,
+            when (LanguageManager.getSelectLanguage(androidContext)) {
+                LanguageManager.Language.ZH -> {
+                    Locale.CHINA
+                }
+                else -> {
+                    Locale.getDefault()
+                }
+            }
+        ).map {
+            Date(it, TimeUtil.getDayDateTimeRangeParams(it), isDateFormat = true)
         })
 
         return dateRow
@@ -716,11 +726,22 @@ class GameViewModel(
             )
         )
 
-        dateRow.addAll(3, TimeUtil.getFutureDate(6).map {
+        dateRow.addAll(3, TimeUtil.getFutureDate(
+            6,
+            when (LanguageManager.getSelectLanguage(androidContext)) {
+                LanguageManager.Language.ZH -> {
+                    Locale.CHINA
+                }
+                else -> {
+                    Locale.getDefault()
+                }
+            }
+        ).map {
             Date(
                 it,
                 TimeUtil.getDayDateTimeRangeParams(it),
-                MatchType.EARLY.postValue
+                MatchType.EARLY.postValue,
+                isDateFormat = true
             )
         })
 

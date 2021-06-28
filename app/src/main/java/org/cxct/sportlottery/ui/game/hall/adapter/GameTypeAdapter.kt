@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_game_type2.view.*
+import kotlinx.android.synthetic.main.itemview_date_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.game.data.Date
 
@@ -33,18 +33,33 @@ class GameTypeAdapter : RecyclerView.Adapter<GameTypeAdapter.ViewHolder>() {
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Date, gameTypeListener: GameTypeListener?) {
-            itemView.game_type_item_text.text = item.display
+            when (item.isDateFormat) {
+                true -> setupCalendarView(item)
+                false -> setupOtherView(item)
+            }
             itemView.isSelected = item.isSelected
             itemView.setOnClickListener {
                 gameTypeListener?.onClick(item)
             }
         }
 
+        private fun setupCalendarView(item: Date) {
+            itemView.date_text_other.visibility = View.GONE
+            itemView.date_text_month.text = item.display.split("-")[1]
+            itemView.date_text_date.text = item.display.split("-")[2]
+            itemView.date_text_week.text = item.display.split("-")[3]
+        }
+
+        private fun setupOtherView(item: Date) {
+            itemView.date_text_other.visibility = View.VISIBLE
+            itemView.date_text_other.text = item.display
+        }
+
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_type2, parent, false)
+                    .inflate(R.layout.itemview_date_v4, parent, false)
 
                 return ViewHolder(view)
             }
