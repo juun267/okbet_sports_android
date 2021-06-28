@@ -11,11 +11,11 @@ import kotlinx.android.synthetic.main.activity_info_center.*
 import kotlinx.android.synthetic.main.activity_info_center.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_feedback_record_list.*
 import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
-import timber.log.Timber
 
 class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenterViewModel::class) {
 
@@ -84,6 +84,7 @@ class InfoCenterActivity : BaseOddButtonActivity<InfoCenterViewModel>(InfoCenter
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.text = getString(R.string.news_center)
         btn_toolbar_back.setOnClickListener {
             finish()
         }

@@ -124,6 +124,7 @@
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
     <string name="home_tab_outright">冠军</string>
+    <string name="home_tab_at_start">即将</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>

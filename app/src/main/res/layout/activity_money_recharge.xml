@@ -8,42 +8,8 @@
     android:orientation="vertical"
     tools:context=".ui.money.recharge.MoneyRechargeActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/money_rech_app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlue">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/btn_toolbar_back"
-                android:layout_width="@dimen/tool_bar_height"
-                android:layout_height="@dimen/tool_bar_height"
-                android:contentDescription="@null"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/colorWhite" />
-
-            <TextView
-                android:id="@+id/tv_toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/recharge"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/textSize16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.appbar.AppBarLayout>
+    <include
+        layout="@layout/view_base_tool_bar_no_drawer"/>
 
     <LinearLayout
         android:id="@+id/block_tab"

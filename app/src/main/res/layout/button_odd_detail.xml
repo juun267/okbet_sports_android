@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/button_odd_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/selector_button_radius_4_odds"
+    tools:ignore="SpUsage">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/selector_button_odd_top_text2"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_odds"
+        app:layout_constraintEnd_toStartOf="@id/tv_spread"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="义大利"
+        tools:textColor="@color/colorGrayLight" />
+
+    <TextView
+        android:id="@+id/tv_spread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/selector_button_odd_top_text"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_name"
+        app:layout_constraintTop_toTopOf="@id/tv_name"
+        tools:text="-0.5/1"
+        tools:textColor="@color/colorRedDark" />
+
+    <TextView
+        android:id="@+id/tv_odds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:textColor="@color/selector_button_odd_bottom_text"
+        android:textSize="@dimen/textSize15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="1.067"
+        tools:textColor="@color/colorBlack" />
+
+
+
+
+    <ImageView
+        android:id="@+id/img_odd_lock"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_radius_4_button_odds_lock"
+        android:scaleType="center"
+        android:src="@drawable/ic_iconlock"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
