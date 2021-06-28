@@ -509,9 +509,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun oneList(oddsDetail: OddsDetailListData) {
-            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
             rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeOneListAdapter(
                     oddsDetail,
                     onOddClickListener,
@@ -604,8 +603,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
-            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
             }
@@ -613,8 +612,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
         private fun for2SpanCount(oddsDetail: OddsDetailListData) {
-            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeTwoSpanCountGridAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
@@ -622,10 +621,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
         private fun forFGLG(oddsDetail: OddsDetailListData) {
-            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             itemView.findViewById<View>(R.id.divider).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeOneListAdapter(
                     selectFGLG(oddsDetail),
                     onOddClickListener,
