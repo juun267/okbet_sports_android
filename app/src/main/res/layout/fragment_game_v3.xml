@@ -29,6 +29,7 @@
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/game_toolbar_v4"
                 app:layout_constraintTop_toTopOf="@id/sport_type_list"
+                tools:ignore="ContentDescription"
                 tools:src="@drawable/soccer108"
                 tools:visibility="visible" />
 
@@ -55,16 +56,15 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_filter_type_list"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:nestedScrollingEnabled="false"
-                android:paddingStart="10dp"
-                android:paddingTop="6dp"
-                android:paddingEnd="10dp"
-                android:paddingBottom="6dp"
+                android:padding="16dp"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/game_toolbar_v4"
                 tools:itemCount="1"
-                tools:listitem="@layout/itemview_game_type2" />
+                tools:listitem="@layout/itemview_date_v4"
+                tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_list"

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -164,7 +165,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        //TODO add all match type after ui design finish
         view.game_toolbar_calendar.apply {
             visibility = when (args.matchType) {
                 MatchType.EARLY -> View.VISIBLE
@@ -173,7 +173,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             setOnClickListener {
                 isSelected = !isSelected
-                Toast.makeText(context, "click toolbar calendar", Toast.LENGTH_SHORT).show()
+
+                view.game_filter_type_list.visibility = when (isSelected) {
+                    true -> View.VISIBLE
+                    false -> View.GONE
+                }
             }
         }
 
@@ -196,13 +200,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
-                    R.dimen.recyclerview_item_dec_spec
+                    R.dimen.recyclerview_item_dec_spec_date
                 )
             )
         }
 
         view.game_filter_type_list.visibility =
-            if (args.matchType == MatchType.EARLY || args.matchType == MatchType.PARLAY) {
+            if (args.matchType == MatchType.EARLY && view.game_toolbar_calendar.isSelected) {
                 View.VISIBLE
             } else {
                 View.GONE
