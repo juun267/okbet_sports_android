@@ -35,11 +35,13 @@
                         android:id="@+id/cl_message"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <include layout="@layout/view_message" />
+
                         <org.cxct.sportlottery.ui.common.NotificationView
                             android:id="@+id/view_notification"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent" />
                     </RelativeLayout>
 
                     <!-- 遊戲類別列表 -->
@@ -119,13 +121,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/colorWhite2" />
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/game_container"
@@ -135,8 +132,6 @@
                     app:navGraph="@navigation/game_navigation"
                     tools:layout="@layout/fragment_home" />
             </LinearLayout>
-
-
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
