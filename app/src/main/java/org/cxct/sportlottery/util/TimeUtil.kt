@@ -11,6 +11,7 @@ object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_FORMAT = "yyyy-MM-dd"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
+    private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
 
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
@@ -58,10 +59,10 @@ object TimeUtil {
     fun dateToTimeStamp(
         date: String?,
         timeType: TimeType = TimeType.START_OF_DAY,
-        dateFormatPattern: String = "$YMD_HMS_FORMAT S"
+        dateFormatPattern: String = YMD_HMS_FORMAT
     ): Long? {
         if (date.isNullOrEmpty()) return null
-        val formatter = SimpleDateFormat(dateFormatPattern, Locale.getDefault())
+        val formatter = SimpleDateFormat("$dateFormatPattern S", Locale.getDefault())
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
@@ -147,13 +148,13 @@ object TimeUtil {
                 get() = dateToTimeStamp(
                     date,
                     TimeType.START_OF_DAY,
-                    dateFormatPattern = YMDE_FORMAT
+                    dateFormatPattern = YMDE_HMS_FORMAT
                 ).toString()
             override val endTime: String
                 get() = dateToTimeStamp(
                     date,
                     TimeType.END_OF_DAY,
-                    dateFormatPattern = YMDE_FORMAT
+                    dateFormatPattern = YMDE_HMS_FORMAT
                 ).toString()
         }
     }
