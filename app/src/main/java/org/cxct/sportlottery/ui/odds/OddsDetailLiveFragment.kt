@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
+import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
@@ -36,8 +37,7 @@ import org.cxct.sportlottery.util.LanguageManager
 
 
 @Suppress("DEPRECATION")
-class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener {
+class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), OnOddClickListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
@@ -69,10 +69,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail_live, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail_live, container, false)
         dataBinding.apply {
             view = this@OddsDetailLiveFragment
             gameViewModel = this@OddsDetailLiveFragment.viewModel
@@ -97,7 +96,25 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         super.onStart()
         getData()
         setWebView()
+        setToolbar()
     }
+
+    //測試
+    private fun setToolbar() {
+//        live_view_tool_bar.setOnExpandListener(expand_layout.isExpanded)
+        live_view_tool_bar.iv_arrow.apply {
+            setOnClickListener {
+                if (expand_layout.isExpanded) {
+                    iv_arrow.animate().rotation(0f).setDuration(100).start()
+                    expand_layout.collapse()
+                } else {
+                    iv_arrow.animate().rotation(180f).setDuration(100).start()
+                    expand_layout.expand()
+                }
+            }
+        }
+    }
+
 
     override fun onStop() {
         super.onStop()
@@ -111,29 +128,22 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             web_view_layout.visibility = View.GONE
         } else {
             web_view_layout.visibility = View.VISIBLE
-            web_view.loadUrl(
-                "${sConfigData?.sportAnimation}?matchId=${
-                    matchId?.replace(
-                        "sr:match:",
-                        ""
-                    )
-                }&lang=${LanguageManager.getSelectLanguage(context).key}"
-            )
+            web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${
+                matchId?.replace("sr:match:", "")
+            }&lang=${LanguageManager.getSelectLanguage(context).key}")
         }
     }
 
 
     private fun initRecyclerView() {
-        rv_game_card.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter =
-            OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
-                it.let {
-                    matchId = it.id
-                    getData()
-                    setWebView()
-                }
-            })
+        rv_game_card.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        oddsGameCardAdapter = OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
+            it.let {
+                matchId = it.id
+                getData()
+                setWebView()
+            }
+        })
         rv_game_card.adapter = oddsGameCardAdapter
     }
 
@@ -288,13 +298,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             matchOdd.matchInfo.homeScore = curHomeScore
             matchOdd.matchInfo.awayScore = curAwayScore
-            viewModel.updateMatchBetList(
-                matchType = MatchType.IN_PLAY,
-                args.sportType,
-                playCateName = oddsDetail.name,
-                matchOdd = matchOdd,
-                odd = odd
-            )
+            viewModel.updateMatchBetList(matchType = MatchType.IN_PLAY, args.sportType, playCateName = oddsDetail.name, matchOdd = matchOdd, odd = odd)
 
         }
     }
@@ -313,11 +317,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView(webView: WebView) {
         //是否需要載入滾球動畫
-        if (sConfigData?.sportAnimation.isNullOrBlank())
-            return
+        if (sConfigData?.sportAnimation.isNullOrBlank()) return
 
-        if (BuildConfig.DEBUG)
-            WebView.setWebContentsDebuggingEnabled(true)
+        if (BuildConfig.DEBUG) WebView.setWebContentsDebuggingEnabled(true)
 
         val settings: WebSettings = webView.settings
         settings.javaScriptEnabled = true
@@ -338,7 +340,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 view: WebView,
                 isDialog: Boolean,
                 isUserGesture: Boolean,
-                resultMsg: Message
+                resultMsg: Message,
             ): Boolean {
                 val newWebView = WebView(view.context)
                 newWebView.webViewClient = object : WebViewClient() {
@@ -348,8 +350,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         try {
                             //使用系統默認外部瀏覽器跳轉
                             val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            i.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
                             startActivity(i)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -367,7 +368,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             override fun onShowFileChooser(
                 webView: WebView,
                 filePathCallback: ValueCallback<Array<Uri>>,
-                fileChooserParams: FileChooserParams
+                fileChooserParams: FileChooserParams,
             ): Boolean {
                 return true
             }
@@ -394,7 +395,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             override fun onReceivedSslError(
                 view: WebView,
                 handler: SslErrorHandler,
-                error: SslError
+                error: SslError,
             ) {
                 //此方法是为了处理在5.0以上Https的问题，必须加上
                 handler.proceed()

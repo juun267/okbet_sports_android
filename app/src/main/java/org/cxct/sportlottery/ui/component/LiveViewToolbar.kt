@@ -34,13 +34,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
     private fun initOnclick() {
 
-        iv_arrow.setOnClickListener {
-            iv_arrow.animate().rotation(180f).setDuration(100).start()
-
-            if (expand_layout.isExpanded) expand_layout.collapse()
-            else expand_layout.expand()
-        }
-
         tab_layout.addOnTabSelectedListener( object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (!calendarBottomSheet.isShowing) calendarBottomSheet.show()
@@ -66,6 +59,5 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     fun loadUrl(url: String) {
         bottomSheetView.web_view.loadUrl(url)
     }
-
 
 }

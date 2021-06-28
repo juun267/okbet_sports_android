@@ -77,21 +77,4 @@
             android:layout_gravity="center_vertical|end"
             android:src="@drawable/ic_icon_arrow_gray" />
     </LinearLayout>
-
-    <net.cachapa.expandablelayout.ExpandableLayout
-        android:id="@+id/expand_layout"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:el_duration="500"
-        app:el_expanded="true"
-        app:el_parallax="0.5"
-        tools:el_expanded="true">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/colorWhite4"/>
-
-    </net.cachapa.expandablelayout.ExpandableLayout>
-
 </LinearLayout>
