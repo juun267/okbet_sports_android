@@ -99,6 +99,8 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(leagueList: List<League>, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_border.visibility = View.GONE
+            itemView.country_text.visibility = View.GONE
+            itemView.country_img.visibility = View.GONE
             itemView.country_expand.setExpanded(true, false)
 
             setupLeagueList(leagueList, countryLeagueListener)
