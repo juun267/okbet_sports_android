@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_country_league.view.*
+import kotlinx.android.synthetic.main.itemview_country_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.League
 
@@ -35,7 +35,7 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
 
         fun bind(item: League, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_league_name.text = item.name
-            itemView.country_league_odd_count.text = item.num.toString()
+            itemView.country_league_count.text = item.num.toString()
 
             itemView.setOnClickListener {
                 countryLeagueListener?.onClick(item)
@@ -46,7 +46,7 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_country_league, parent, false)
+                    .inflate(R.layout.itemview_country_league_v4, parent, false)
 
                 return ViewHolder(view)
             }
