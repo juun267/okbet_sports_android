@@ -10,4 +10,9 @@ data class OddsDetailListData(
 ) {
     var isExpand: Boolean = true
     var isMoreExpand: Boolean = false
+    var gameTypeFgLgSelect = FGLGType.FG
+}
+
+enum class FGLGType {
+    FG, LG
 }

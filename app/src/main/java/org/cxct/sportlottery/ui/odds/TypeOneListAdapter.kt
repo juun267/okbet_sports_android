@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
@@ -15,12 +14,18 @@ import org.cxct.sportlottery.ui.menu.OddsType
 
 
 class TypeOneListAdapter(
-    private val oddsDetail: OddsDetailListData,
+    private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
 
+    var mOddsDetail: OddsDetailListData? = null
+        set(value) {
+            field = value
+            oddsDetail = value as OddsDetailListData
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
