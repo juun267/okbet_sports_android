@@ -36,6 +36,7 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
         fun bind(item: League, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_league_name.text = item.name
             itemView.country_league_count.text = item.num.toString()
+            itemView.country_league_pin.isActivated = item.isPin
 
             itemView.setOnClickListener {
                 countryLeagueListener?.onClick(item)
