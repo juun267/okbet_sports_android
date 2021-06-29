@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:ignore="SpUsage">
+
+
+    <include layout="@layout/content_odds_detail_list_item" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_tab"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/tv_fg"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/odds_detail_play_type_fg"
+            android:textColor="@color/color_select_blue_black"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_lg"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_lg"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/odds_detail_play_type_lg"
+            android:textColor="@color/color_select_blue_black"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_fg" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorSilverLight" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:nestedScrollingEnabled="false"
+        android:overScrollMode="never"
+        tools:listitem="@layout/content_type_one_list_item" />
+
+
+</LinearLayout>
+

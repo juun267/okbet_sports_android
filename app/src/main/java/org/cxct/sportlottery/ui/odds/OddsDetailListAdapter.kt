@@ -14,7 +14,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -63,7 +62,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         CS(R.layout.content_odds_detail_list_cs),
         ONE_LIST(R.layout.content_odds_detail_list_one),
         SINGLE(R.layout.content_odds_detail_list_single),
-        SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item)
+        SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item),
+        FG_LG(R.layout.content_odds_detail_list_fg_lg)
     }
 
 
@@ -76,8 +76,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         OU_1ST("O/U-1ST", 2),//大/小-上半场
         OU_2ST("O/U-2ST", 3),//大/小-下半场
         CS("CS", 4),//波胆
-        FG("FG", 5),//首先进球
-        LG("LG", 6),//最后进球
+        FGLG("FG/LG", 5),//最先进球/最后进球
         DC("DC", 8),//双重机会
         OE("O/E", 9),//单/双
         SCO("SCO", 10),//进球球员
@@ -145,10 +144,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             TextUtil.compareWithGameKey(type, GameType.CS.value) -> return GameType.CS.type
 
-            type == GameType.FG.value -> return GameType.FG.type
-
-            type == GameType.LG.value -> return GameType.LG.type
-
+            type == GameType.FGLG.value -> return GameType.FGLG.type
 
             /**/
             TextUtil.compareWithGameKey(type, GameType.DC_OU.value) -> return GameType.DC_OU.type
@@ -247,8 +243,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             GameType.CS.type -> LayoutType.CS.layout
 
-            GameType.FG.type -> LayoutType.ONE_LIST.layout
-            GameType.LG.type -> LayoutType.ONE_LIST.layout
+            GameType.FGLG.type -> LayoutType.FG_LG.layout
+
             GameType.DC.type -> LayoutType.ONE_LIST.layout
             GameType.SCO.type -> LayoutType.ONE_LIST.layout
             GameType.GT1ST.type -> LayoutType.ONE_LIST.layout
@@ -342,7 +338,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
 
-                LayoutType.ONE_LIST.layout -> {
+                LayoutType.ONE_LIST.layout,
+                LayoutType.FG_LG.layout -> {
                     rvBet?.apply {
                         addItemDecoration(
                             CustomForOddDetailVerticalDivider(
@@ -419,6 +416,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         val rvDraw: RecyclerView? = itemView.findViewById(R.id.rv_draw)
         val rvAway: RecyclerView? = itemView.findViewById(R.id.rv_away)
 
+        //FGLG
+        val tvFg: TextView? = itemView.findViewById(R.id.tv_fg)
+        val tvLg: TextView? = itemView.findViewById(R.id.tv_lg)
 
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
 
@@ -469,8 +469,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SINGLE_2ST_2.type,
                 GameType.SINGLE_2.type -> forSingle(oddsDetail, 2)
 
-                GameType.FG.type,
-                GameType.LG.type,
+                GameType.FGLG.type -> forFGLG(oddsDetail)
+
                 GameType.HWMG_SINGLE.type,
                 GameType.WBH.type,
                 GameType.WEH.type,
@@ -509,9 +509,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun oneList(oddsDetail: OddsDetailListData) {
-            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
             rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeOneListAdapter(
                     oddsDetail,
                     onOddClickListener,
@@ -604,8 +603,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
-            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
             }
@@ -613,10 +612,80 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
         private fun for2SpanCount(oddsDetail: OddsDetailListData) {
-            rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = TypeTwoSpanCountGridAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
+            }
+        }
+
+
+        private fun forFGLG(oddsDetail: OddsDetailListData) {
+            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            itemView.findViewById<View>(R.id.divider).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+                adapter = TypeOneListAdapter(
+                    selectFGLG(oddsDetail),
+                    onOddClickListener,
+                    betInfoList,
+                    oddsType
+                )
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+
+            tvFg?.apply {
+                isSelected = oddsDetail.gameTypeFgLgSelect == FGLGType.FG
+                setOnClickListener {
+                    (rvBet?.adapter as TypeOneListAdapter).mOddsDetail = selectFGLG(oddsDetail.apply {
+                        gameTypeFgLgSelect = FGLGType.FG
+                    })
+                }
+            }
+
+            tvLg?.apply {
+                isSelected = oddsDetail.gameTypeFgLgSelect == FGLGType.LG
+                setOnClickListener {
+                    (rvBet?.adapter as TypeOneListAdapter).mOddsDetail = selectFGLG(oddsDetail.apply {
+                        gameTypeFgLgSelect = FGLGType.LG
+                    })
+                }
+            }
+        }
+
+        private fun selectFGLG(oddsDetail: OddsDetailListData): OddsDetailListData {
+            val oddArrayList: MutableList<Odd> = mutableListOf()
+
+            //回傳順序固定為首个进球主队,首个进球客队,无进球,最后进球主队,最后进球客队
+            when (oddsDetail.gameTypeFgLgSelect) {
+                FGLGType.FG -> {
+                    tvFg?.isSelected = true
+                    tvLg?.isSelected = false
+                    oddArrayList.apply {
+                        add(oddsDetail.oddArrayList[0])
+                        add(oddsDetail.oddArrayList[1])
+                        add(oddsDetail.oddArrayList[2])
+                    }
+                }
+                else -> {
+                    tvFg?.isSelected = false
+                    tvLg?.isSelected = true
+                    oddArrayList.apply {
+                        add(oddsDetail.oddArrayList[3])
+                        add(oddsDetail.oddArrayList[4])
+                        add(oddsDetail.oddArrayList[2])
+                    }
+                }
+            }
+            return OddsDetailListData(
+                oddsDetail.gameType,
+                oddsDetail.typeCodes,
+                oddsDetail.name,
+                oddArrayList
+            ).apply {
+                isExpand = oddsDetail.isExpand
+                isMoreExpand = oddsDetail.isMoreExpand
+                gameTypeFgLgSelect = oddsDetail.gameTypeFgLgSelect
             }
         }
 

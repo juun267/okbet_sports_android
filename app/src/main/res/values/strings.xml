@@ -118,7 +118,7 @@
     <string name="fishing">捕鱼</string>
     <string name="more">更多</string>
 
-    <string name="home_tab_all">全部</string>
+    <string name="home_tan_main">主页</string>
     <string name="home_tab_in_play">滚球</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
@@ -375,7 +375,8 @@
     <string name="odds_detail_more">更多</string>
     <string name="odds_detail_less">显示更少</string>
     <string name="odds_detail_cs_other">其他比分</string>
-
+    <string name="odds_detail_play_type_fg">最先进球</string>
+    <string name="odds_detail_play_type_lg">最后进球</string>
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
