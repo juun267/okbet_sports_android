@@ -40,6 +40,10 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
             itemView.setOnClickListener {
                 countryLeagueListener?.onClick(item)
             }
+
+            itemView.country_league_pin.setOnClickListener {
+                countryLeagueListener?.onClickPin(item)
+            }
         }
 
         companion object {
@@ -54,6 +58,10 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
     }
 }
 
-class CountryLeagueListener(val clickListener: (item: League) -> Unit) {
+class CountryLeagueListener(
+    val clickListener: (item: League) -> Unit,
+    val clickListenerPin: (item: League) -> Unit
+) {
     fun onClick(item: League) = clickListener(item)
+    fun onClickPin(item: League) = clickListenerPin(item)
 }

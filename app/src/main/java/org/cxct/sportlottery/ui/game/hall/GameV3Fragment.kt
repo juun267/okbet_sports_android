@@ -68,9 +68,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val countryAdapter by lazy {
         CountryAdapter().apply {
-            countryLeagueListener = CountryLeagueListener { league ->
-                navGameLeague(league.id)
-            }
+            countryLeagueListener = CountryLeagueListener(
+                { league ->
+                    navGameLeague(league.id)
+                },
+                { league ->
+                    //TODO pin league
+                })
         }
     }
 
