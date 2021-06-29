@@ -3,13 +3,11 @@ package org.cxct.sportlottery.ui.game.hall.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_country.view.*
+import kotlinx.android.synthetic.main.itemview_country_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.Row
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -44,18 +42,9 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
                 ItemViewHolder.from(parent).apply {
-                    this.itemView.league_list.apply {
+                    this.itemView.country_league_list.apply {
                         this.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-
-                        this.addItemDecoration(
-                            DividerItemDecorator(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.divider_gray
-                                )
-                            )
-                        )
                     }
                 }
             }
@@ -88,14 +77,14 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
-            itemView.country_name.text = item.name
+            itemView.country_text.text = item.name
 
             setupLeagueList(item, countryLeagueListener)
             setupCountryExpand(item)
         }
 
         private fun setupLeagueList(item: Row, countryLeagueListener: CountryLeagueListener?) {
-            itemView.league_list.apply {
+            itemView.country_league_list.apply {
                 adapter = countryLeagueAdapter.apply {
                     this.countryLeagueListener = countryLeagueListener
 
@@ -109,19 +98,10 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         private fun setupCountryExpand(item: Row) {
-            itemView.country_league_expand.setExpanded(item.isExpand, false)
-            updateArrowExpand()
+            itemView.country_expand.setExpanded(item.isExpand, false)
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
-                itemView.country_league_expand.setExpanded(item.isExpand, true)
-                updateArrowExpand()
-            }
-        }
-
-        private fun updateArrowExpand() {
-            when (itemView.country_league_expand.isExpanded) {
-                true -> itemView.country_arrow.setImageResource(R.drawable.ic_arrow_dark)
-                false -> itemView.country_arrow.setImageResource(R.drawable.ic_arrow_down_dark)
+                itemView.country_expand.setExpanded(item.isExpand, true)
             }
         }
 
@@ -129,7 +109,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_country, parent, false)
+                    .inflate(R.layout.itemview_country_v4, parent, false)
 
                 return ItemViewHolder(view)
             }
