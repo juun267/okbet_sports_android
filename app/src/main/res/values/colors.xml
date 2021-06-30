@@ -6,6 +6,7 @@
     <color name="colorBlueLight">#1463CF</color>
     <color name="colorBlue">#1053AF</color>
     <color name="colorBlueDark">#1F4780</color>
+    <color name="colorSilverBlue">#A9BEDF</color>
 
     <color name="colorOrangeLight">#FF9E3C</color>
     <color name="colorOrange">#FF8000</color>
@@ -14,6 +15,7 @@
     <color name="colorRedDark">#B73A20</color>
 
     <color name="colorGreen">#08DC6E</color>
+    <color name="colorSeaGreen">#08AB74</color>
 
     <color name="colorWhite">#FCFCFC</color>
     <color name="colorWhite1">#F3F4F5</color>

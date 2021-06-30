@@ -1,40 +1,52 @@
 package org.cxct.sportlottery.ui.game.record
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_transaction_recrod.*
 import org.cxct.sportlottery.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.GameViewModel
 
 /**
  * A simple [Fragment] subclass.
  * Use the [TransactionRecordFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TransactionRecordFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class TransactionRecordFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
+    private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
+        initRecyclerView()
+        initObserve()
+        getBetListData()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_transaction_recrod, container, false)
+    }
+
+    private fun initRecyclerView() {
+        rv_record.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = recordDiffAdapter
+        }
+    }
+
+    private fun initObserve() {
+        //TODO observe data
+    }
+
+    private fun getBetListData() {
+        //TODO 設置投注列表資料
+        recordDiffAdapter.submitList(listOf())
     }
 }
