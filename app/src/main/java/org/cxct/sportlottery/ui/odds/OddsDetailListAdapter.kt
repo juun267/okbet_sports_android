@@ -562,8 +562,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 } else {
 
-                    val list: MutableList<Odd> = mutableListOf()
-                    odd?.let { list.add(it) }
+                    val list: MutableList<Odd?> = mutableListOf()
+                    list.add(odd)
                     val od = OddsDetailListData(
                         oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list
                     )
