@@ -181,6 +181,12 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
 
+        //TODO Dean : 交易狀況測試入口
+        test_record_entrance.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToTransactionRecordFragment()
+            mNavController.navigate(action)
+        }
+
     }
 
     private fun initMenu() {
