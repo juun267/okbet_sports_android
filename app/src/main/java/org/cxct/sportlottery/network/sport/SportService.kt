@@ -28,5 +28,5 @@ interface SportService {
     @POST(MYFAVORITE_SAVE)
     suspend fun saveMyFavorite(
         @Body saveMyFavoriteRequest: SaveMyFavoriteRequest
-    ):Response<BaseResult>
+    ):Response<MyFavoriteBaseResult>
 }

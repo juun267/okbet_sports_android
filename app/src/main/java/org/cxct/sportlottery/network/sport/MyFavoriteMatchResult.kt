@@ -6,17 +6,17 @@ import org.cxct.sportlottery.network.common.BaseResult
 
 @JsonClass(generateAdapter = true)
 data class MyFavoriteMatchResult(
-    @Json(name = "msg")
-    override val msg: String,
-    @Json(name = "total")
-    val total: Int,
     @Json(name = "code")
     override val code: Int,
+    @Json(name = "msg")
+    override val msg: String,
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "rows")
-    val rows: List<RowsItem>?
-): BaseResult()
+    val rows: List<RowsItem>?,
+    @Json(name = "total")
+    val total: Int?
+) : BaseResult()
 
 data class RowsItem(
     val league: League,

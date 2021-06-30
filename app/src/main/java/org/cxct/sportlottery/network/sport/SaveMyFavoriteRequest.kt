@@ -2,17 +2,7 @@ package org.cxct.sportlottery.network.sport
 
 
 data class SaveMyFavoriteRequest(
-    val code: FavoriteType,
-    val type: String
+    val type: Int, //1:sport,2:league,3:match,4:outright,5:playCate
+    val code: Array<String>
 )
-
-data class FavoriteType(
-    val sport: String,
-    val league: String,
-    val match: String,
-    val outright: String,
-    val playCate: String,
-)
-
-
 

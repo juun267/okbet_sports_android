@@ -23,7 +23,7 @@ class SportMenuRepository {
         return OneBoSportApi.sportService.getMyFavoriteMatch(myFavoriteMatchRequest)
     }
 
-    suspend fun saveMyFavorite(saveMyFavoriteRequest: SaveMyFavoriteRequest): Response<BaseResult> {
+    suspend fun saveMyFavorite(saveMyFavoriteRequest: SaveMyFavoriteRequest): Response<MyFavoriteBaseResult> {
         return OneBoSportApi.sportService.saveMyFavorite(saveMyFavoriteRequest)
     }
 
