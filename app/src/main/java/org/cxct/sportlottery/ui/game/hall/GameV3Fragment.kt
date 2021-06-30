@@ -12,8 +12,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
@@ -188,6 +190,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun setupOddTab(view: View) {
+        view.game_tabs.apply {
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    //TODO add odd tab switch behavior
+                    Toast.makeText(requireContext(), "${tab?.text} is selected", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+            })
+        }
+
         view.game_tab_odd_v4.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
             else -> View.GONE
