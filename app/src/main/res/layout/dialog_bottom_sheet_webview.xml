@@ -59,23 +59,8 @@
         layout="@layout/item_listview_bet_type_all"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
-            android:id="@+id/sheet_rv_more"
-            android:layout_width="match_parent"
-            android:layout_height="144dp"
-            app:layout_constraintVertical_weight="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sheet_tv_title"
-            android:gravity="top"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="4"
-            tools:listitem="@layout/content_bottom_sheet_item" />
-    -->
-
     <WebView
-        android:id="@+id/web_view"
+        android:id="@+id/bottom_sheet_web_view"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         app:layout_constraintVertical_weight="1"
