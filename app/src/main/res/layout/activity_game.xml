@@ -35,17 +35,20 @@
                         android:id="@+id/cl_message"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
+
                         <include layout="@layout/view_message" />
+
                         <org.cxct.sportlottery.ui.common.NotificationView
                             android:id="@+id/view_notification"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent" />
                     </RelativeLayout>
 
                     <!-- 遊戲類別列表 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/colorWhite1"
                         android:gravity="center"
                         android:orientation="horizontal">
 
@@ -60,11 +63,11 @@
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/tabLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="52dp"
-                            android:background="@color/colorWhite"
+                            android:layout_height="56dp"
                             app:tabGravity="fill"
                             app:tabIndicatorHeight="0dp"
-                            app:tabMode="fixed">
+                            app:tabMaxWidth="54dp"
+                            app:tabMode="scrollable">
 
                             <com.google.android.material.tabs.TabItem
                                 android:id="@+id/tab_all"
@@ -74,6 +77,12 @@
 
                             <com.google.android.material.tabs.TabItem
                                 android:id="@+id/tab_inPlay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout="@layout/home_cate_tab" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:id="@+id/tab_at_start"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout="@layout/home_cate_tab" />
@@ -106,11 +115,6 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/colorWhite1" />
-
                 </LinearLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
@@ -118,13 +122,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:orientation="vertical">
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="@color/colorWhite2" />
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/game_container"
