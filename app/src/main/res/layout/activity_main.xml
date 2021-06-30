@@ -49,7 +49,6 @@
 
         </LinearLayout>
 
-
         <!-- 側邊導覽列 -->
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_right"
