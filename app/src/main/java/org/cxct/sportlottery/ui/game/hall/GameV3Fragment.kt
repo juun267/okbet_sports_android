@@ -75,6 +75,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     pinLeague(league)
                 },
                 { league ->
+                    //TODO save selected league and show submit button
+                    league.isSelected = !league.isSelected
+                    this.notifyDataSetChanged()
                 })
         }
     }
