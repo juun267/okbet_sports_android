@@ -37,6 +37,7 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
             itemView.country_league_name.text = item.name
             itemView.country_league_count.text = item.num.toString()
             itemView.country_league_pin.isActivated = item.isPin
+            itemView.country_league_choose.isSelected = item.isSelected
 
             itemView.setOnClickListener {
                 countryLeagueListener?.onClick(item)
@@ -44,6 +45,9 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
 
             itemView.country_league_pin.setOnClickListener {
                 countryLeagueListener?.onClickPin(item)
+            }
+            itemView.country_league_choose.setOnClickListener {
+                countryLeagueListener?.onClickSelect(item)
             }
         }
 
@@ -61,8 +65,10 @@ class CountryLeagueAdapter : RecyclerView.Adapter<CountryLeagueAdapter.ViewHolde
 
 class CountryLeagueListener(
     val clickListener: (item: League) -> Unit,
-    val clickListenerPin: (item: League) -> Unit
+    val clickListenerPin: (item: League) -> Unit,
+    val clickListenerSelect: (item: League) -> Unit
 ) {
     fun onClick(item: League) = clickListener(item)
     fun onClickPin(item: League) = clickListenerPin(item)
+    fun onClickSelect(item: League) = clickListenerSelect(item)
 }

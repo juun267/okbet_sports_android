@@ -73,6 +73,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 },
                 { league ->
                     pinLeague(league)
+                },
+                { league ->
                 })
         }
     }

@@ -14,4 +14,5 @@ data class League(
     val num: Int
 ) {
     var isPin = false
+    var isSelected = false
 }
