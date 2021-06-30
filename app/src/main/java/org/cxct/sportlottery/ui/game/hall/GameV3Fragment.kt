@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -68,9 +67,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val countryAdapter by lazy {
         CountryAdapter().apply {
-            countryLeagueListener = CountryLeagueListener { league ->
-                navGameLeague(league.id)
-            }
+            countryLeagueListener = CountryLeagueListener(
+                { league ->
+                    navGameLeague(league.id)
+                },
+                { league ->
+                    pinLeague(league)
+                },
+                { league ->
+                    //TODO save selected league and show submit button
+                    league.isSelected = !league.isSelected
+                    this.notifyDataSetChanged()
+                })
         }
     }
 
@@ -646,6 +654,25 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     else -> null
                 }
             ).into(game_bg_layer2)
+        }
+    }
+
+    private fun pinLeague(league: org.cxct.sportlottery.network.league.League) {
+        league.isPin = !countryAdapter.datePin.any {
+            it == league
+        }
+
+        when (league.isPin) {
+            true -> {
+                val list = countryAdapter.datePin.toMutableList()
+                list.add(league)
+                countryAdapter.datePin = list
+            }
+            false -> {
+                val list = countryAdapter.datePin.toMutableList()
+                list.remove(league)
+                countryAdapter.datePin = list
+            }
         }
     }
 
