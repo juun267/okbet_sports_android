@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
