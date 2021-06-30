@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -10,9 +12,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -25,10 +29,10 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
-import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -109,6 +113,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
+        initBottomNavigation()
         initRvMarquee()
         initTabLayout()
         initObserve()
@@ -209,6 +214,50 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun initBottomNavigation(){
+        initNavigationView()
+        initNavigationListener()
+    }
+
+    private fun initNavigationView(){
+        try {
+                //TODO 投注單的文字顏色調整
+            (bottom_navigation_sport[0] as BottomNavigationMenuView).let{ navigationMenuView ->
+                navigationMenuView[2].setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlue))
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
+    private fun initNavigationListener(){
+        bottom_navigation_sport.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.home_page -> {
+                    //TODO navigate sport home
+                    true
+                }
+                R.id.game_page -> {
+                    //TODO navigate sport game
+                    false
+                }
+                R.id.bet_list -> {
+                    //TODO open bet list page
+                    false
+                }
+                R.id.account_history -> {
+                    //TODO navigate account_history
+                    true
+                }
+                R.id.transaction_status -> {
+                    //TODO navigate transaction_status
+                    true
+                }
+                else -> false
+            }
         }
     }
 
