@@ -121,6 +121,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
             setupSportTypeList(this)
             setupToolbar(this)
+            setupOddTab(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -188,6 +189,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         view.game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
+        }
+    }
+
+    private fun setupOddTab(view: View) {
+        view.game_tab_odd_v4.visibility = when (args.matchType) {
+            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
+            else -> View.GONE
         }
     }
 

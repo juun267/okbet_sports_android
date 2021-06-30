@@ -369,6 +369,10 @@
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
 
+    <string name="game_tab_league_odd">赛事</string>
+    <string name="game_tab_outright_odd">冠军</string>
+    <string name="game_tab_price_boosts_odd">特优赔率</string>
+
     <string name="total_bet_amount">总投注额：</string>
 
     <!--odds detail-->
