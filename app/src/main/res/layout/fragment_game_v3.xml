@@ -30,7 +30,18 @@
                 app:layout_constraintBottom_toBottomOf="@id/game_toolbar_v4"
                 app:layout_constraintTop_toTopOf="@id/sport_type_list"
                 tools:ignore="ContentDescription"
-                tools:src="@drawable/soccer108"
+                tools:src="@drawable/soccer108" />
+
+            <ImageView
+                android:id="@+id/game_bg_layer3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/game_tab_odd_v4"
+                app:layout_constraintTop_toTopOf="@id/sport_type_list"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/soccer140"
                 tools:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView

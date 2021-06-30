@@ -122,6 +122,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             setupSportTypeList(this)
             setupToolbar(this)
             setupOddTab(this)
+            setupSportBackground(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -154,7 +155,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             else -> ""
         }
 
-        //TODO add all match type after ui design finish
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
                 MatchType.IN_PLAY -> View.VISIBLE
@@ -182,11 +182,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        //TODO add all match type after ui design finish
-        view.game_bg_layer2.visibility = when (args.matchType) {
-            else -> View.VISIBLE
-        }
-
         view.game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
         }
@@ -194,6 +189,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun setupOddTab(view: View) {
         view.game_tab_odd_v4.visibility = when (args.matchType) {
+            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
+            else -> View.GONE
+        }
+    }
+
+    private fun setupSportBackground(view: View) {
+        view.game_bg_layer2.visibility = when (args.matchType) {
+            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT -> View.VISIBLE
+            else -> View.GONE
+        }
+
+        view.game_bg_layer3.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
             else -> View.GONE
         }
@@ -642,18 +649,51 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun updateSportType(sportTypeList: List<Item>) {
         sportTypeAdapter.dataSport = sportTypeList
 
-        sportTypeList.find { it.isSelected }?.let {
-            game_toolbar_sport_type.text = it.name
+        sportTypeList.find { it.isSelected }?.let { item ->
+            game_toolbar_sport_type.text = item.name
+            updateSportBackground(item)
+        }
+    }
 
+    private fun updateSportBackground(sport: Item) {
+        when {
+            game_bg_layer2.isVisible -> game_bg_layer2
+            game_bg_layer3.isVisible -> game_bg_layer3
+            else -> null
+        }?.let {
             Glide.with(requireContext()).load(
-                when (it.code) {
-                    SportType.FOOTBALL.code -> R.drawable.soccer108
-                    SportType.BASKETBALL.code -> R.drawable.basketball108
-                    SportType.TENNIS.code -> R.drawable.tennis108
-                    SportType.VOLLEYBALL.code -> R.drawable.volleyball108
+                when (sport.code) {
+                    SportType.FOOTBALL.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.soccer108
+                            game_bg_layer3.isVisible -> R.drawable.soccer140
+                            else -> null
+                        }
+                    }
+                    SportType.BASKETBALL.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.basketball108
+                            game_bg_layer3.isVisible -> R.drawable.basketball140
+                            else -> null
+                        }
+                    }
+                    SportType.TENNIS.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.tennis108
+                            game_bg_layer3.isVisible -> R.drawable.tennis140
+                            else -> null
+                        }
+                    }
+                    SportType.VOLLEYBALL.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.volleyball108
+                            game_bg_layer3.isVisible -> R.drawable.volleyball140
+                            else -> null
+                        }
+                    }
                     else -> null
                 }
-            ).into(game_bg_layer2)
+            ).into(it)
         }
     }
 
