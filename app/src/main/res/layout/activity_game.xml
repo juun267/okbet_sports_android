@@ -129,13 +129,21 @@
                     android:id="@+id/game_container"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     app:navGraph="@navigation/game_navigation"
                     tools:layout="@layout/fragment_home" />
+
+                <!-- 預留下方導覽列的高度 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"/>
             </LinearLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+
+        <include layout="@layout/view_bottom_navigation_sport"/>
         <!-- 左側導覽列 -->
         <include layout="@layout/view_nav_left" />
 
