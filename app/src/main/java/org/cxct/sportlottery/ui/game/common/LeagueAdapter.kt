@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -30,14 +29,6 @@ class LeagueAdapter(private val matchType: MatchType) :
         set(value) {
             field = value
             notifyDataSetChanged()
-        }
-
-    var playType: PlayType = PlayType.OU_HDP
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
         }
 
     var oddsType: OddsType = OddsType.EU
@@ -83,7 +74,6 @@ class LeagueAdapter(private val matchType: MatchType) :
                 holder.bind(
                     item,
                     matchType,
-                    playType,
                     leagueOddListener,
                     oddsType
                 )
@@ -117,19 +107,17 @@ class LeagueAdapter(private val matchType: MatchType) :
         fun bind(
             item: LeagueOdd,
             matchType: MatchType,
-            playType: PlayType,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
             itemView.league_text.text = item.league.name
 
-            setupLeagueOddList(item, playType, leagueOddListener, oddsType)
+            setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType)
         }
 
         private fun setupLeagueOddList(
             item: LeagueOdd,
-            playType: PlayType,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
@@ -143,7 +131,6 @@ class LeagueAdapter(private val matchType: MatchType) :
                         it.matchInfo?.sportType = item.sportType
                     }
 
-                    this.playType = playType
                     this.leagueOddListener = leagueOddListener
                     this.oddsType = oddsType
                 }
