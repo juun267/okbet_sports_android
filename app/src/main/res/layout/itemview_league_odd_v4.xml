@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="224dp">
+    android:layout_height="224dp"
+    android:background="@android:color/white">
 
     <View
         android:id="@+id/league_odd_match_border"
@@ -51,13 +52,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
-        android:drawablePadding="10dp"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
-        app:drawableEndCompat="@drawable/ic_inplay_v4"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border"
         tools:text="周三 16/06 21:00" />
+
+    <ImageView
+        android:id="@+id/league_odd_match_remain_time_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/ic_inplay_v4"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_time"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_time"
+        app:layout_constraintTop_toTopOf="@id/league_odd_match_time" />
 
     <TextView
         android:id="@+id/league_odd_match_score_home"
