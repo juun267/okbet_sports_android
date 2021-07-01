@@ -3,18 +3,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
-    <include layout="@layout/content_odds_detail_list_item" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:overScrollMode="never"
-        android:id="@+id/rv_bet"
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"/>
-
+    <include layout="@layout/content_odds_detail_list_one_include" />
 
 </LinearLayout>
 
