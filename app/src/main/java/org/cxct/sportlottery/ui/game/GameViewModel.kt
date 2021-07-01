@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
@@ -128,6 +129,9 @@ class GameViewModel(
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
 
+    val leagueSelectedList: LiveData<List<League>>
+        get() = _leagueSelectedList
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -150,6 +154,7 @@ class GameViewModel(
     private val _curPlayType = MutableLiveData<PlayType>().apply {
         value = PlayType.OU_HDP
     }
+    private val _leagueSelectedList = MutableLiveData<List<League>>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -636,6 +641,8 @@ class GameViewModel(
                     )
                 )
             }
+
+            _leagueSelectedList.postValue(mutableListOf())
             _leagueListResult.postValue(Event(result))
         }
     }
@@ -756,6 +763,21 @@ class GameViewModel(
 
     fun setPlayType(playType: PlayType) {
         _curPlayType.postValue(playType)
+    }
+
+    fun selectLeague(league: League) {
+        val list = _leagueSelectedList.value?.toMutableList() ?: mutableListOf()
+
+        when (list.contains(league)) {
+            true -> {
+                list.remove(league)
+            }
+            false -> {
+                list.add(league)
+            }
+        }
+
+        _leagueSelectedList.postValue(list)
     }
 
     fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".ui.game.GameActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -20,102 +22,56 @@
                 android:layout_height="wrap_content"
                 app:elevation="0dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
-                    android:orientation="vertical"
                     app:layout_scrollFlags="scroll">
 
                     <!-- toolBar -->
-                    <include layout="@layout/view_toolbar_main" />
+                    <include
+                        android:id="@+id/game_toolbar"
+                        layout="@layout/view_toolbar_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <!-- 公告輪播跑馬燈 -->
-                    <RelativeLayout
-                        android:id="@+id/cl_message"
+                    <include
+                        android:id="@+id/game_message"
+                        layout="@layout/view_message"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="20dp"
+                        app:layout_constraintTop_toBottomOf="@id/game_toolbar" />
 
-                        <include layout="@layout/view_message" />
+                    <org.cxct.sportlottery.ui.common.NotificationView
+                        android:id="@+id/view_notification"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/game_message"
+                        app:layout_constraintTop_toTopOf="@id/game_message" />
 
-                        <org.cxct.sportlottery.ui.common.NotificationView
-                            android:id="@+id/view_notification"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </RelativeLayout>
+                    <ImageView
+                        android:id="@+id/btn_menu_left"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@color/colorWhite1"
+                        android:contentDescription="@null"
+                        android:padding="16dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_menu_left_side"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/view_notification" />
 
                     <!-- 遊戲類別列表 -->
-                    <LinearLayout
+                    <include
+                        layout="@layout/view_game_tab_match_type_v4"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorWhite1"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:layout_height="56dp"
+                        android:layout_marginStart="56dp"
+                        app:layout_constraintTop_toBottomOf="@id/view_notification" />
 
-                        <ImageView
-                            android:id="@+id/btn_menu_left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:contentDescription="@null"
-                            android:src="@drawable/ic_menu_left_side" />
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/tabLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="56dp"
-                            app:tabGravity="fill"
-                            app:tabIndicatorHeight="0dp"
-                            app:tabMaxWidth="54dp"
-                            app:tabMode="scrollable">
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_all"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout="@layout/home_cate_tab" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_inPlay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout="@layout/home_cate_tab" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_at_start"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout="@layout/home_cate_tab" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_today"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout="@layout/home_cate_tab" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_early"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout="@layout/home_cate_tab" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_parlay"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout="@layout/home_cate_tab" />
-
-                            <com.google.android.material.tabs.TabItem
-                                android:id="@+id/tab_outright"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout="@layout/home_cate_tab" />
-
-                        </com.google.android.material.tabs.TabLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -137,13 +93,11 @@
                 <!-- 預留下方導覽列的高度 -->
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"/>
+                    android:layout_height="55dp" />
             </LinearLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-        <include layout="@layout/view_bottom_navigation_sport"/>
         <!-- 左側導覽列 -->
         <include layout="@layout/view_nav_left" />
 
@@ -152,4 +106,26 @@
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
-</layout>
+    <Button
+        android:id="@+id/game_submit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorOrangeLight"
+        android:text="@string/button_league_submit"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/textSize14sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/game_bottom_navigation"
+        layout="@layout/view_bottom_navigation_sport"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
@@ -217,25 +218,30 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun initBottomNavigation(){
+    private fun initBottomNavigation() {
         initNavigationView()
         initNavigationListener()
     }
 
-    private fun initNavigationView(){
+    private fun initNavigationView() {
         try {
-                //TODO 投注單的文字顏色調整
-            (bottom_navigation_sport[0] as BottomNavigationMenuView).let{ navigationMenuView ->
-                navigationMenuView[2].setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlue))
+            //TODO 投注單的文字顏色調整
+            (bottom_navigation_sport[0] as BottomNavigationMenuView).let { navigationMenuView ->
+                navigationMenuView[2].setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorBlue
+                    )
+                )
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun initNavigationListener(){
+    private fun initNavigationListener() {
         bottom_navigation_sport.setOnNavigationItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.home_page -> {
                     //TODO navigate sport home
                     true
@@ -485,6 +491,18 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             it.getContentIfNotHandled()
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
+        })
+
+        viewModel.leagueSelectedList.observe(this, {
+            game_submit.apply {
+                visibility = if (it.isEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+                text = getString(R.string.button_league_submit, it.size)
+            }
         })
     }
 
