@@ -373,6 +373,8 @@
     <string name="game_tab_outright_odd">冠军</string>
     <string name="game_tab_price_boosts_odd">特优赔率</string>
 
+    <string name="button_league_submit">提交 (%d)</string>
+
     <string name="total_bet_amount">总投注额：</string>
 
     <!--odds detail-->
