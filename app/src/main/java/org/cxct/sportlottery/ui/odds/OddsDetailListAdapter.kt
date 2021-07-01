@@ -549,7 +549,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val awayList: MutableList<Odd> = mutableListOf()
 
             for (odd in oddsDetail.oddArrayList) {
-                if (odd.name?.contains(" - ") == true) {
+                if (odd?.name?.contains(" - ") == true) {
                     val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
                     if (stringArray[0].toInt() > stringArray[1].toInt()) {
                         homeList.add(odd)
@@ -562,7 +562,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 } else {
 
-                    val list: MutableList<Odd> = mutableListOf()
+                    val list: MutableList<Odd?> = mutableListOf()
                     list.add(odd)
                     val od = OddsDetailListData(
                         oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list
@@ -668,7 +668,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun selectFGLG(oddsDetail: OddsDetailListData): OddsDetailListData {
-            val oddArrayList: MutableList<Odd> = mutableListOf()
+            val oddArrayList: MutableList<Odd?> = mutableListOf()
 
             //回傳順序固定為首个进球主队,首个进球客队,无进球,最后进球主队,最后进球客队
             when (oddsDetail.gameTypeFgLgSelect) {
@@ -708,7 +708,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = Type6GroupAdapter(
-                    oddsDetail.apply { group6Item = oddsDetail.oddArrayList.groupBy { it.spread } as HashMap<String, List<Odd>> },
+                    oddsDetail.apply { group6Item = oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>> },
                     onOddClickListener,
                     betInfoList,
                     oddsType
@@ -726,7 +726,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
                 adapter = Type6GroupAdapter(
-                    oddsDetail.apply { group6Item = oddsDetail.oddArrayList.groupBy { it.spread } as HashMap<String, List<Odd>> },
+                    oddsDetail.apply { group6Item = oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>> },
                     onOddClickListener,
                     betInfoList,
                     oddsType

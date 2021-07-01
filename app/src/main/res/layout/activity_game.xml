@@ -85,9 +85,15 @@
                     android:id="@+id/game_container"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     app:navGraph="@navigation/game_navigation"
                     tools:layout="@layout/fragment_home" />
+
+                <!-- 預留下方導覽列的高度 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp" />
             </LinearLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
@@ -112,7 +118,14 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/game_bottom_navigation"
         tools:visibility="visible" />
+
+    <include
+        android:id="@+id/game_bottom_navigation"
+        layout="@layout/view_bottom_navigation_sport"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

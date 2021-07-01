@@ -785,10 +785,9 @@ class GameViewModel(
         matchOdd.odds?.forEach { map ->
             val key = map.key
             val value = map.value
-            val filteredOddList = mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd>()
+            val filteredOddList = mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
             value.odds?.forEach { odd ->
-                if (odd != null)
-                    filteredOddList.add(odd)
+                filteredOddList.add(odd)
             }
             newList.add(
                 OddsDetailListData(
@@ -895,7 +894,7 @@ class GameViewModel(
         updatedOddsDetail: ArrayList<OddsDetailListData>
     ) {
         val oldOddList = oddsDetail.oddArrayList
-        var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd>()
+        var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
 
         for (item in updatedOddsDetail) {
             if (item.gameType == oddsDetail.gameType) {
@@ -906,37 +905,40 @@ class GameViewModel(
 
         oldOddList.forEach { oldOddData ->
             newOddList.forEach { newOddData ->
-                if (oldOddData.id == newOddData.id) {
 
-                    //如果是球員 忽略名字替換
-                    if (!TextUtil.compareWithGameKey(
-                            oddsDetail.gameType,
-                            OddsDetailListAdapter.GameType.SCO.value
-                        )
-                    ) {
-                        if (newOddData.name?.isNotEmpty() == true) {
-                            oldOddData.name = newOddData.name
+                if (oldOddData != null && newOddData != null) {
+                    if (oldOddData.id == newOddData.id) {
+
+                        //如果是球員 忽略名字替換
+                        if (!TextUtil.compareWithGameKey(
+                                oddsDetail.gameType,
+                                OddsDetailListAdapter.GameType.SCO.value
+                            )
+                        ) {
+                            if (newOddData.name?.isNotEmpty() == true) {
+                                oldOddData.name = newOddData.name
+                            }
                         }
+
+                        if (newOddData.extInfo?.isNotEmpty() == true) {
+                            oldOddData.extInfo = newOddData.extInfo
+                        }
+
+                        oldOddData.spread = newOddData.spread
+
+                        //先判斷大小
+                        oldOddData.oddState = getOddState(
+                            getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU),
+                            newOddData
+                        )
+
+                        //再帶入新的賠率
+                        oldOddData.odds = newOddData.odds
+                        oldOddData.hkOdds = newOddData.hkOdds
+
+                        oldOddData.status = newOddData.status
+                        oldOddData.producerId = newOddData.producerId
                     }
-
-                    if (newOddData.extInfo?.isNotEmpty() == true) {
-                        oldOddData.extInfo = newOddData.extInfo
-                    }
-
-                    oldOddData.spread = newOddData.spread
-
-                    //先判斷大小
-                    oldOddData.oddState = getOddState(
-                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU),
-                        newOddData
-                    )
-
-                    //再帶入新的賠率
-                    oldOddData.odds = newOddData.odds
-                    oldOddData.hkOdds = newOddData.hkOdds
-
-                    oldOddData.status = newOddData.status
-                    oldOddData.producerId = newOddData.producerId
                 }
             }
         }
@@ -959,10 +961,10 @@ class GameViewModel(
                         }
                     }
                     val filteredOddList =
-                        mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd>()
+                        mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
                     value.odds.forEach { detailOdd ->
-                        if (detailOdd != null)
-                            filteredOddList.add(detailOdd)
+                        //因排版問題 null也需要添加
+                        filteredOddList.add(detailOdd)
                     }
                     list.add(
                         OddsDetailListData(

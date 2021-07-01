@@ -58,16 +58,16 @@ class Type6GroupAdapter(
 
     inner class ViewHolder(view: View) : OddDetailStateViewHolder(view) {
 
-        fun bindModel(oddsList: List<Odd>) {
+        fun bindModel(oddsList: List<Odd?>) {
 
             itemView.findViewById<TextView>(R.id.tv_left_name).text = leftName
             itemView.findViewById<TextView>(R.id.tv_center_name).text = centerName
             itemView.findViewById<TextView>(R.id.tv_right_name).text = rightName
 
             //順序 前兩項左列 中間兩項中列 後兩項右列
-            val homeList: MutableList<Odd> = mutableListOf()
-            val drawList: MutableList<Odd> = mutableListOf()
-            val awayList: MutableList<Odd> = mutableListOf()
+            val homeList: MutableList<Odd?> = mutableListOf()
+            val drawList: MutableList<Odd?> = mutableListOf()
+            val awayList: MutableList<Odd?> = mutableListOf()
 
             homeList.apply {
                 add(oddsList[0])
@@ -90,7 +90,7 @@ class Type6GroupAdapter(
 
         }
 
-        private fun setupRecyclerView(rv: RecyclerView?, list: MutableList<Odd>){
+        private fun setupRecyclerView(rv: RecyclerView?, list: MutableList<Odd?>){
             rv?.apply {
                 adapter = TypeCSAdapter(oddsDetail, list, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
