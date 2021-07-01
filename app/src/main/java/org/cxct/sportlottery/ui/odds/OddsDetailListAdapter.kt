@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -63,7 +64,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         ONE_LIST(R.layout.content_odds_detail_list_one),
         SINGLE(R.layout.content_odds_detail_list_single),
         SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item),
-        FG_LG(R.layout.content_odds_detail_list_fg_lg)
+        FG_LG(R.layout.content_odds_detail_list_fg_lg),
+        GROUP_6(R.layout.content_odds_detail_list_group_6_item)
     }
 
 
@@ -118,13 +120,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         SINGLE_SEG_2("1X2-SEG", 40),
 
         HWMG_SINGLE("HWMG&1X2", 41),
-
         HDP_ONE_LIST("HDP", 42),
-
-        NGOAL_1("NGOAL:1", 43), //第1个进球
-
-        TWTN("TWTN", 44) //零失球獲勝
-
+        NGOAL_1("NGOAL:1", 43),//第1个进球
+        TWTN("TWTN", 44),//零失球獲勝
+        DC_FLG("DC-FLG", 45),//双重机会&首次进球队伍
+        DC_BTS("DC-BTS", 46),//双重机会&双方球队进球
     }
 
 
@@ -147,6 +147,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             type == GameType.FGLG.value -> return GameType.FGLG.type
 
             /**/
+            type == GameType.DC_BTS.value -> return GameType.DC_BTS.type
+            type == GameType.DC_FLG.value -> return GameType.DC_FLG.type
             TextUtil.compareWithGameKey(type, GameType.DC_OU.value) -> return GameType.DC_OU.type
             TextUtil.compareWithGameKey(type, GameType.DC.value) -> return GameType.DC.type
 
@@ -241,6 +243,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         val layout: Int = when (viewType) {
 
+            GameType.DC_OU.type -> LayoutType.GROUP_6.layout
+            GameType.DC_BTS.type -> LayoutType.GROUP_6.layout
+            GameType.DC_FLG.type -> LayoutType.GROUP_6.layout
+            GameType.SINGLE_FLG.type -> LayoutType.GROUP_6.layout
+            GameType.SINGLE_BTS.type -> LayoutType.GROUP_6.layout
+            GameType.SINGLE_OU.type -> LayoutType.GROUP_6.layout
+
             GameType.CS.type -> LayoutType.CS.layout
 
             GameType.FGLG.type -> LayoutType.FG_LG.layout
@@ -254,11 +263,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.WM.type -> LayoutType.ONE_LIST.layout
             GameType.HTFT.type -> LayoutType.ONE_LIST.layout
             GameType.W3.type -> LayoutType.ONE_LIST.layout
-            GameType.SINGLE_OU.type -> LayoutType.ONE_LIST.layout
-            GameType.SINGLE_FLG.type -> LayoutType.ONE_LIST.layout
             GameType.OU_BTS.type -> LayoutType.ONE_LIST.layout
-            GameType.SINGLE_BTS.type -> LayoutType.ONE_LIST.layout
-            GameType.DC_OU.type -> LayoutType.ONE_LIST.layout
             GameType.HDP_ONE_LIST.type -> LayoutType.ONE_LIST.layout
             GameType.NGOAL_1.type -> LayoutType.ONE_LIST.layout
             GameType.TWTN.type -> LayoutType.TWO_SPAN_COUNT.layout
@@ -298,6 +303,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType).apply {
 
             when (layout) {
+
+                LayoutType.GROUP_6.layout -> {
+                    rvBet?.apply {
+                        addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_white4_2dp)))
+                    }
+                }
+
                 LayoutType.TWO_SPAN_COUNT.layout -> {
                     rvBet?.apply {
                         addItemDecoration(
@@ -478,16 +490,20 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.NGOAL_1.type,
                 GameType.HDP_ONE_LIST.type,
                 GameType.SCO.type,
-                GameType.DC_OU.type,
-                GameType.SINGLE_BTS.type,
                 GameType.OU_BTS.type,
-                GameType.SINGLE_FLG.type,
                 GameType.W3.type,
-                GameType.SINGLE_OU.type,
                 GameType.DC.type,
                 GameType.GT1ST.type,
                 GameType.WM.type,
                 GameType.HTFT.type -> oneList(oddsDetail)
+
+                GameType.DC_OU.type,
+                GameType.DC_BTS.type,
+                GameType.DC_FLG.type -> group6ItemForDC(oddsDetail)
+
+                GameType.SINGLE_FLG.type,
+                GameType.SINGLE_BTS.type,
+                GameType.SINGLE_OU.type -> group6Item(oddsDetail)
 
                 //臨時新增或尚未確定的排版 以單行列表作為排版
                 GameType.UNCHECK.type -> oneList(oddsDetail)
@@ -533,7 +549,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val awayList: MutableList<Odd> = mutableListOf()
 
             for (odd in oddsDetail.oddArrayList) {
-                if (odd.name?.contains(" - ") == true) {
+                if (odd?.name?.contains(" - ") == true) {
                     val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
                     if (stringArray[0].toInt() > stringArray[1].toInt()) {
                         homeList.add(odd)
@@ -546,7 +562,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 } else {
 
-                    val list: MutableList<Odd> = mutableListOf()
+                    val list: MutableList<Odd?> = mutableListOf()
                     list.add(odd)
                     val od = OddsDetailListData(
                         oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list
@@ -610,7 +626,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-
         private fun for2SpanCount(oddsDetail: OddsDetailListData) {
             rvBet?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -618,7 +633,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
-
 
         private fun forFGLG(oddsDetail: OddsDetailListData) {
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -654,7 +668,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun selectFGLG(oddsDetail: OddsDetailListData): OddsDetailListData {
-            val oddArrayList: MutableList<Odd> = mutableListOf()
+            val oddArrayList: MutableList<Odd?> = mutableListOf()
 
             //回傳順序固定為首个进球主队,首个进球客队,无进球,最后进球主队,最后进球客队
             when (oddsDetail.gameTypeFgLgSelect) {
@@ -686,6 +700,42 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isExpand = oddsDetail.isExpand
                 isMoreExpand = oddsDetail.isMoreExpand
                 gameTypeFgLgSelect = oddsDetail.gameTypeFgLgSelect
+            }
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        private fun group6Item(oddsDetail: OddsDetailListData) {
+            rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+                adapter = Type6GroupAdapter(
+                    oddsDetail.apply { group6Item = oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>> },
+                    onOddClickListener,
+                    betInfoList,
+                    oddsType
+                ).apply {
+                    leftName = homeName
+                    centerName = itemView.context.getString(R.string.draw)
+                    rightName = awayName
+                }
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+        }
+
+        @Suppress("UNCHECKED_CAST")
+        private fun group6ItemForDC(oddsDetail: OddsDetailListData) {
+            rvBet?.apply {
+                visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+                adapter = Type6GroupAdapter(
+                    oddsDetail.apply { group6Item = oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>> },
+                    onOddClickListener,
+                    betInfoList,
+                    oddsType
+                ).apply {
+                    leftName = "1/X"
+                    centerName = "2/X"
+                    rightName = "1/2"
+                }
+                layoutManager = LinearLayoutManager(itemView.context)
             }
         }
 

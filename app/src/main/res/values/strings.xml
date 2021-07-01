@@ -129,6 +129,10 @@
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
 
+    <string name="label_sport_game">赛程</string>
+    <string name="label_account_history">账戶历史</string>
+    <string name="label_transaction_status">交易状况</string>
+
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
     <string name="message_no_in_play">目前没有滚球的赛事</string>
 
@@ -368,6 +372,10 @@
     <string name="no_history_search">您搜寻或筛选项目查无对应资料</string>
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
+
+    <string name="game_tab_league_odd">赛事</string>
+    <string name="game_tab_outright_odd">冠军</string>
+    <string name="game_tab_price_boosts_odd">特优赔率</string>
 
     <string name="total_bet_amount">总投注额：</string>
 

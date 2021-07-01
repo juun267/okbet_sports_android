@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_game_league.view.*
+import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
@@ -121,8 +121,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
-            itemView.league_name.text = item.league.name
-            itemView.league_odd_count.text = item.matchOdds.size.toString()
+            itemView.league_text.text = item.league.name
 
             setupLeagueOddList(item, playType, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType)
@@ -155,34 +154,25 @@ class LeagueAdapter(private val matchType: MatchType) :
             item: LeagueOdd,
             matchType: MatchType,
         ) {
-            itemView.league_odd_expand.setExpanded(item.isExpand, false)
+            itemView.league_expand.setExpanded(item.isExpand, false)
             updateTimer(matchType, item.sportType)
-            updateArrowExpand()
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
-                itemView.league_odd_expand.setExpanded(item.isExpand, true)
+                itemView.league_expand.setExpanded(item.isExpand, true)
                 updateTimer(matchType, item.sportType)
-                updateArrowExpand()
-            }
-        }
-
-        private fun updateArrowExpand() {
-            when (itemView.league_odd_expand.isExpanded) {
-                true -> itemView.league_arrow.setImageResource(R.drawable.ic_arrow_dark)
-                false -> itemView.league_arrow.setImageResource(R.drawable.ic_arrow_down_dark)
             }
         }
 
         private fun updateTimer(matchType: MatchType, sportType: SportType?) {
             leagueOddAdapter.isTimerEnable =
-                itemView.league_odd_expand.isExpanded && (sportType == SportType.FOOTBALL || sportType == SportType.BASKETBALL || matchType == MatchType.AT_START)
+                itemView.league_expand.isExpanded && (sportType == SportType.FOOTBALL || sportType == SportType.BASKETBALL || matchType == MatchType.AT_START)
         }
 
         companion object {
             fun from(matchType: MatchType, parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.itemview_game_league, parent, false)
+                val view = layoutInflater.inflate(R.layout.itemview_league_v4, parent, false)
 
                 return ItemViewHolder(matchType, view)
             }

@@ -37,24 +37,24 @@ class TypeSingleAdapter (
 
         private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
 
-        fun bindModel(odd: Odd) {
+        fun bindModel(odd: Odd?) {
             btnOdds?.apply {
                 setupOdd(odd, oddsType)
                 setupOddState(this, odd)
-                isSelected = betInfoList.any { it.matchOdd.oddsId == odd.id }
+                isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
                 oddStateChangeListener = object : OddStateChangeListener {
                     override fun refreshOddButton(odd: Odd) {
                         notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
                     }
                 }
 
-                if (odd.name?.length ?: 0 > 8) {
-                    tv_name.text = odd.name?.substring(0, 8).plus("...")
+                if (odd?.name?.length ?: 0 > 8) {
+                    tv_name.text = odd?.name?.substring(0, 8).plus("...")
                 }
             }
 
             itemView.setOnClickListener {
-                onOddClickListener.getBetInfoList(odd, oddsDetail)
+                odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
             }
         }
     }
