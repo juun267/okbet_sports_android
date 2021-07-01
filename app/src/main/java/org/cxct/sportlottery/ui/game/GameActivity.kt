@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -10,9 +12,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -25,10 +29,10 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
-import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -82,10 +86,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 R.id.btn_lobby -> iv_logo.performClick()
                 R.id.menu_sport_game -> tabLayout.getTabAt(0)?.select()
                 R.id.menu_in_play -> tabLayout.getTabAt(1)?.select()
-                R.id.menu_date_row_today -> tabLayout.getTabAt(2)?.select()
-                R.id.menu_early -> tabLayout.getTabAt(3)?.select()
-                R.id.menu_parlay -> tabLayout.getTabAt(4)?.select()
-                R.id.menu_champion -> tabLayout.getTabAt(5)?.select()
+                R.id.menu_date_row_today -> tabLayout.getTabAt(3)?.select()
+                R.id.menu_early -> tabLayout.getTabAt(4)?.select()
+                R.id.menu_parlay -> tabLayout.getTabAt(5)?.select()
+                R.id.menu_champion -> tabLayout.getTabAt(6)?.select()
                 R.id.menu_soccer -> goToSportGame(SportType.FOOTBALL)
                 R.id.menu_basketball -> goToSportGame(SportType.BASKETBALL)
                 R.id.menu_tennis -> goToSportGame(SportType.TENNIS)
@@ -109,6 +113,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
+        initBottomNavigation()
         initRvMarquee()
         initTabLayout()
         initObserve()
@@ -138,11 +143,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         //3. 若扔沒有則顯示無賽事的圖片
         //4. 若扔沒有則顯示無賽事的圖片
         val matchType = when (tabLayout.selectedTabPosition) {
-            0, 2 -> MatchType.TODAY
+            0, 3 -> MatchType.TODAY
             1 -> MatchType.IN_PLAY
-            3 -> MatchType.EARLY
-            4 -> MatchType.PARLAY
-            5 -> MatchType.OUTRIGHT
+            4 -> MatchType.EARLY
+            5 -> MatchType.PARLAY
+            6 -> MatchType.OUTRIGHT
             else -> MatchType.AT_START
         }
 
@@ -212,6 +217,50 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun initBottomNavigation(){
+        initNavigationView()
+        initNavigationListener()
+    }
+
+    private fun initNavigationView(){
+        try {
+                //TODO 投注單的文字顏色調整
+            (bottom_navigation_sport[0] as BottomNavigationMenuView).let{ navigationMenuView ->
+                navigationMenuView[2].setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlue))
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
+    private fun initNavigationListener(){
+        bottom_navigation_sport.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.home_page -> {
+                    //TODO navigate sport home
+                    true
+                }
+                R.id.game_page -> {
+                    //TODO navigate sport game
+                    false
+                }
+                R.id.bet_list -> {
+                    //TODO open bet list page
+                    false
+                }
+                R.id.account_history -> {
+                    //TODO navigate account_history
+                    true
+                }
+                R.id.transaction_status -> {
+                    //TODO navigate transaction_status
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
     //公告
     private fun initRvMarquee() {
         rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -237,6 +286,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         try {
             val countInPlay =
                 sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+            val countAtStart =
+                sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             val countToday =
                 sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             val countEarly =
@@ -247,26 +298,30 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
-            tabAll?.tv_title?.setText(R.string.home_tab_all)
+            tabAll?.tv_title?.setText(R.string.home_tan_main)
             tabAll?.tv_number?.text = countParlay.toString() //等於串關數量
 
             val tabInPlay = tabLayout.getTabAt(1)?.customView
             tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
             tabInPlay?.tv_number?.text = countInPlay.toString()
 
-            val tabToday = tabLayout.getTabAt(2)?.customView
+            val tabAtStart = tabLayout.getTabAt(2)?.customView
+            tabAtStart?.tv_title?.setText(R.string.home_tab_at_start)
+            tabAtStart?.tv_number?.text = countAtStart.toString()
+
+            val tabToday = tabLayout.getTabAt(3)?.customView
             tabToday?.tv_title?.setText(R.string.home_tab_today)
             tabToday?.tv_number?.text = countToday.toString()
 
-            val tabEarly = tabLayout.getTabAt(3)?.customView
+            val tabEarly = tabLayout.getTabAt(4)?.customView
             tabEarly?.tv_title?.setText(R.string.home_tab_early)
             tabEarly?.tv_number?.text = countEarly.toString()
 
-            val tabParlay = tabLayout.getTabAt(4)?.customView
+            val tabParlay = tabLayout.getTabAt(5)?.customView
             tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
             tabParlay?.tv_number?.text = countParlay.toString()
 
-            val tabOutright = tabLayout.getTabAt(5)?.customView
+            val tabOutright = tabLayout.getTabAt(6)?.customView
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
 
@@ -285,18 +340,22 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 loading()
             }
             2 -> {
-                viewModel.switchMatchType(MatchType.TODAY)
+                viewModel.switchMatchType(MatchType.AT_START)
                 loading()
             }
             3 -> {
-                viewModel.switchMatchType(MatchType.EARLY)
+                viewModel.switchMatchType(MatchType.TODAY)
                 loading()
             }
             4 -> {
-                viewModel.switchMatchType(MatchType.PARLAY)
+                viewModel.switchMatchType(MatchType.EARLY)
                 loading()
             }
             5 -> {
+                viewModel.switchMatchType(MatchType.PARLAY)
+                loading()
+            }
+            6 -> {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
                 loading()
             }
@@ -384,20 +443,20 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()
                     }
-                    MatchType.TODAY -> {
+                    MatchType.AT_START -> {
                         tabLayout.getTabAt(2)?.select()
                     }
-                    MatchType.EARLY -> {
+                    MatchType.TODAY -> {
                         tabLayout.getTabAt(3)?.select()
                     }
-                    MatchType.PARLAY -> {
+                    MatchType.EARLY -> {
                         tabLayout.getTabAt(4)?.select()
                     }
-                    MatchType.OUTRIGHT -> {
+                    MatchType.PARLAY -> {
                         tabLayout.getTabAt(5)?.select()
                     }
-                    MatchType.AT_START -> {
-                        viewModel.switchMatchType(MatchType.AT_START)
+                    MatchType.OUTRIGHT -> {
+                        tabLayout.getTabAt(6)?.select()
                     }
                 }
             }
@@ -523,13 +582,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
     private fun updateSelectTabState(matchType: MatchType?) {
         when (matchType) {
             MatchType.IN_PLAY -> updateSelectTabState(1)
-            MatchType.TODAY -> updateSelectTabState(2)
-            MatchType.EARLY -> updateSelectTabState(3)
-            MatchType.PARLAY -> updateSelectTabState(4)
-            MatchType.OUTRIGHT -> updateSelectTabState(5)
-            MatchType.AT_START -> clearSelectTabState()
-            else -> {
-            }
+            MatchType.AT_START -> updateSelectTabState(2)
+            MatchType.TODAY -> updateSelectTabState(3)
+            MatchType.EARLY -> updateSelectTabState(4)
+            MatchType.PARLAY -> updateSelectTabState(5)
+            MatchType.OUTRIGHT -> updateSelectTabState(6)
         }
     }
 

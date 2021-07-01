@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
+import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
@@ -32,12 +33,10 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.LanguageManager
 
 
 @Suppress("DEPRECATION")
-class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener {
+class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), OnOddClickListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
@@ -69,10 +68,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail_live, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail_live, container, false)
         dataBinding.apply {
             view = this@OddsDetailLiveFragment
             gameViewModel = this@OddsDetailLiveFragment.viewModel
@@ -88,17 +86,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         observeData()
         observeSocketData()
         initRecyclerView()
-
-        setupWebView(web_view)
     }
 
 
     override fun onStart() {
         super.onStart()
         getData()
-        setWebView()
+        live_view_tool_bar.setWebViewUrl(matchId)
     }
-
 
     override fun onStop() {
         super.onStop()
@@ -106,35 +101,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         service.unsubscribeAllEventChannel()
     }
 
-
-    private fun setWebView() {
-        if (sConfigData?.sportAnimation.isNullOrBlank()) {
-            web_view_layout.visibility = View.GONE
-        } else {
-            web_view_layout.visibility = View.VISIBLE
-            web_view.loadUrl(
-                "${sConfigData?.sportAnimation}?matchId=${
-                    matchId?.replace(
-                        "sr:match:",
-                        ""
-                    )
-                }&lang=${LanguageManager.getSelectLanguage(context).key}"
-            )
-        }
-    }
-
-
     private fun initRecyclerView() {
-        rv_game_card.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter =
-            OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
-                it.let {
-                    matchId = it.id
-                    getData()
-                    setWebView()
-                }
-            })
+        rv_game_card.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        oddsGameCardAdapter = OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
+            it.let {
+                matchId = it.id
+                getData()
+                live_view_tool_bar.setWebViewUrl(matchId)
+            }
+        })
         rv_game_card.adapter = oddsGameCardAdapter
     }
 
@@ -289,13 +264,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             matchOdd.matchInfo.homeScore = curHomeScore
             matchOdd.matchInfo.awayScore = curAwayScore
-            viewModel.updateMatchBetList(
-                matchType = MatchType.IN_PLAY,
-                args.sportType,
-                playCateName = oddsDetail.name,
-                matchOdd = matchOdd,
-                odd = odd
-            )
+            viewModel.updateMatchBetList(matchType = MatchType.IN_PLAY, args.sportType, playCateName = oddsDetail.name, matchOdd = matchOdd, odd = odd)
 
         }
     }
@@ -309,100 +278,5 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     fun back() {
         findNavController().navigateUp()
     }
-
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun setupWebView(webView: WebView) {
-        //是否需要載入滾球動畫
-        if (sConfigData?.sportAnimation.isNullOrBlank())
-            return
-
-        if (BuildConfig.DEBUG)
-            WebView.setWebContentsDebuggingEnabled(true)
-
-        val settings: WebSettings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.blockNetworkImage = false
-        settings.domStorageEnabled = true //对H5支持
-        settings.useWideViewPort = true //将图片调整到适合webview的大小
-        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
-        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        settings.javaScriptCanOpenWindowsAutomatically = true
-        settings.defaultTextEncodingName = "utf-8"
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.databaseEnabled = false
-        settings.setAppCacheEnabled(false)
-        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-
-        webView.webChromeClient = object : WebChromeClient() {
-            override fun onCreateWindow(
-                view: WebView,
-                isDialog: Boolean,
-                isUserGesture: Boolean,
-                resultMsg: Message
-            ): Boolean {
-                val newWebView = WebView(view.context)
-                newWebView.webViewClient = object : WebViewClient() {
-                    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                        //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-                        //在此处进行跳转URL的处理, 一般情况下_black需要重新打开一个页面
-                        try {
-                            //使用系統默認外部瀏覽器跳轉
-                            val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            i.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            startActivity(i)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                        }
-                        return true
-                    }
-                }
-                val transport = resultMsg.obj as WebView.WebViewTransport
-                transport.webView = newWebView
-                resultMsg.sendToTarget()
-                return true
-            }
-
-            // For Android 5.0+
-            override fun onShowFileChooser(
-                webView: WebView,
-                filePathCallback: ValueCallback<Array<Uri>>,
-                fileChooserParams: FileChooserParams
-            ): Boolean {
-                return true
-            }
-        }
-
-        webView.webViewClient = object : WebViewClient() {
-
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                if (!url.startsWith("http")) {
-                    try {
-                        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        i.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        startActivity(i)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    return true
-                }
-
-                view.loadUrl(url)
-                return true
-            }
-
-            override fun onReceivedSslError(
-                view: WebView,
-                handler: SslErrorHandler,
-                error: SslError
-            ) {
-                //此方法是为了处理在5.0以上Https的问题，必须加上
-                handler.proceed()
-            }
-        }
-
-    }
-
 
 }
