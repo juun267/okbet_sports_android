@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.record
+package org.cxct.sportlottery.ui.transactionStatus
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_transaction_recrod.*
+import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -22,16 +22,20 @@ class TransactionRecordFragment : BaseFragment<GameViewModel>(GameViewModel::cla
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initRecyclerView()
         initObserve()
         getBetListData()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_transaction_recrod, container, false)
+        return inflater.inflate(R.layout.fragment_transaction_status, container, false)
     }
 
     private fun initRecyclerView() {

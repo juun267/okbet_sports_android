@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.record
+package org.cxct.sportlottery.ui.transactionStatus
 
 import android.view.LayoutInflater
 import android.view.View

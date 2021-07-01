@@ -18,7 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.game.record.TransactionRecordFragment">
+            tools:context=".ui.transactionStatus.TransactionRecordFragment">
 
             <LinearLayout
                 android:id="@+id/block_scroll"
