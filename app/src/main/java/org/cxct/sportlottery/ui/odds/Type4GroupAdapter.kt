@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,8 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GridItemDecoration
+import java.util.*
+
 
 /**
  * @author Kevin
@@ -34,10 +37,11 @@ class Type4GroupAdapter(
 
 
     private val keys = mutableListOf<String>().apply {
-        oddsDetail.group6Item.forEach {
+        oddsDetail.groupItem.forEach {
             add(it.key)
         }
     }
+
 
     var isShowSpreadWithName = false
 
@@ -47,11 +51,11 @@ class Type4GroupAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        oddsDetail.group6Item[keys[position]]?.let { holder.bindModel(it, keys[position]) }
+        oddsDetail.groupItem[keys[position]]?.let { holder.bindModel(it, keys[position]) }
     }
 
 
-    override fun getItemCount(): Int = oddsDetail.group6Item.size
+    override fun getItemCount(): Int = oddsDetail.groupItem.size
 
 
     inner class ViewHolder(view: View) : OddDetailStateViewHolder(view) {
