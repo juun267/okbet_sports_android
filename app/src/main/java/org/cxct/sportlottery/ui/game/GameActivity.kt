@@ -438,6 +438,18 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
         })
+
+        viewModel.leagueSelectedList.observe(this, {
+            game_submit.apply {
+                visibility = if (it.isEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+                text = getString(R.string.button_league_submit, it.size)
+            }
+        })
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {

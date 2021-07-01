@@ -78,9 +78,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     pinLeague(league)
                 },
                 { league ->
-                    //TODO save selected league and show submit button
-                    league.isSelected = !league.isSelected
-                    this.notifyDataSetChanged()
+                    viewModel.selectLeague(league)
                 })
         }
     }
@@ -447,6 +445,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
+            }
+        })
+
+        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner, {
+            countryAdapter.apply {
+                data.forEach { row ->
+                    row.list.forEach { league ->
+                        league.isSelected = it.any { it.id == league.id }
+                    }
+                }
+
+                notifyDataSetChanged()
             }
         })
     }
