@@ -140,14 +140,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupMatchTime(item, matchType, isTimerEnable)
 
 //            setupOddButton(item, leagueOddListener, oddsType)
-
-            itemView.league_odd_match_border_row1.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
-            }
-
-            itemView.league_odd_match_border_row2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
-            }
         }
 
         private fun setupMatchInfo(
@@ -186,6 +178,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnClickListener {
                     leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
                 }
+            }
+
+            itemView.league_odd_match_border_row1.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+            }
+
+            itemView.league_odd_match_border_row2.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
         }
 
