@@ -252,23 +252,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     View.INVISIBLE
                 }
         }
-
-        private fun setupLiveButton(
-            item: MatchOdd,
-            matchType: MatchType,
-            leagueOddListener: LeagueOddListener?
-        ) {
-            itemView.match_live.visibility = if (matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.INVISIBLE
-            }
-
-            itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
-            }
-        }
-
+        
         private fun setupOddButton(
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
