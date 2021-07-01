@@ -726,5 +726,13 @@
     <string name="odds_id_not_allow_bet">该赔率玩法不允许下注</string>
     <string name="odds_have_changed">该盘口赔率已经变更,请重新投注</string>
     <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
+    <string name="account_history_overview">账户历史总览</string>
+
+<!--    account history-->
+    <string name="date">日期</string>
+    <string name="bet_amount">投注金额</string>
+    <string name="available_amount">有效金额</string>
+    <string name="win_lose">赢 / 输</string>
+    <string name="all_sport">所有体育</string>
 
 </resources>
