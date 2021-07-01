@@ -135,7 +135,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             oddsType: OddsType,
             matchInfoList: List<MatchInfo>
         ) {
-            setupMatchInfo(item, matchType, isTimerEnable, matchInfoList, leagueOddListener)
+            setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
+
+            setupMatchTime(item, matchType, isTimerEnable)
 
 //            setupOddButton(item, leagueOddListener, oddsType)
 
@@ -151,7 +153,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupMatchInfo(
             item: MatchOdd,
             matchType: MatchType,
-            isTimerEnable: Boolean,
             matchInfoList: List<MatchInfo>,
             leagueOddListener: LeagueOddListener?
         ) {
@@ -186,51 +187,23 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
                 }
             }
+        }
 
-//            itemView.match_status = when(matchType){
-//              MatchType.IN_PLAY -> {
-//                  item.matchInfo?.statusName
-//              }
-//            else->{
-//                item.matchInfo?.startDateDisplay
-//            }
-//            }
-
-            itemView.league_odd_match_remain_time_icon.visibility =
-                if (matchType == MatchType.AT_START) {
-                    View.VISIBLE
-                } else {
-                    View.INVISIBLE
-                }
-
-            listener = when (matchType) {
+        private fun setupMatchTime(
+            item: MatchOdd,
+            matchType: MatchType,
+            isTimerEnable: Boolean
+        ) {
+            when (matchType) {
                 MatchType.IN_PLAY -> {
-                    object : TimerListener {
+                    listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
                             itemView.league_odd_match_time.text =
                                 TimeUtil.timeFormat(timeMillis, "mm:ss")
                             item.leagueTime = (timeMillis / 1000).toInt()
                         }
                     }
-                }
 
-                MatchType.AT_START -> {
-                    object : TimerListener {
-                        override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.league_odd_match_time.text = String.format(
-                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                TimeUtil.timeFormat(timeMillis, "mm")
-                            )
-                            item.matchInfo?.remainTime = timeMillis
-                        }
-                    }
-                }
-
-                else -> null
-            }
-
-            when (matchType) {
-                MatchType.IN_PLAY -> {
                     updateTimer(
                         isTimerEnable,
                         item.leagueTime ?: 0,
@@ -239,6 +212,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 MatchType.AT_START -> {
+                    listener = object : TimerListener {
+                        override fun onTimerUpdate(timeMillis: Long) {
+                            itemView.league_odd_match_time.text = String.format(
+                                itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                TimeUtil.timeFormat(timeMillis, "mm")
+                            )
+                            item.matchInfo?.remainTime = timeMillis
+                        }
+                    }
+
                     item.matchInfo?.remainTime?.let { remainTime ->
                         updateTimer(
                             isTimerEnable,
@@ -252,6 +235,22 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     itemView.league_odd_match_time.text = item.matchInfo?.startTimeDisplay
                 }
             }
+
+            itemView.league_odd_match_status.text = when (matchType) {
+                MatchType.IN_PLAY -> {
+                    item.matchInfo?.statusName
+                }
+                else -> {
+                    item.matchInfo?.startDateDisplay
+                }
+            }
+
+            itemView.league_odd_match_remain_time_icon.visibility =
+                if (matchType == MatchType.AT_START) {
+                    View.VISIBLE
+                } else {
+                    View.INVISIBLE
+                }
         }
 
         private fun setupLiveButton(

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="224dp"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:paddingStart="16dp">
 
     <View
         android:id="@+id/league_odd_match_border"
@@ -47,15 +48,26 @@
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row2" />
 
     <TextView
-        android:id="@+id/league_odd_match_time"
+        android:id="@+id/league_odd_match_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="15dp"
-        android:textColor="@color/colorGray"
+        android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border"
+        tools:text="比赛延期" />
+
+    <TextView
+        android:id="@+id/league_odd_match_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_status"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_status"
         tools:text="周三 16/06 21:00" />
 
     <ImageView
@@ -72,7 +84,6 @@
         android:id="@+id/league_odd_match_score_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_home"
@@ -116,7 +127,6 @@
         android:id="@+id/league_odd_match_score_away"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_away"
@@ -159,7 +169,6 @@
         android:id="@+id/league_odd_match_price_boost"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:layout_marginStart="16dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_price_v4"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
