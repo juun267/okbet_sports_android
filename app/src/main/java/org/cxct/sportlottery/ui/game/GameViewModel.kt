@@ -412,8 +412,18 @@ class GameViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
+                //即將開賽 query 參數：
+                //"matchType": "ATSTART",
+                //"startTime": 現在時間戳,
+                //"endTime": 一小時後時間戳
+                val startTime = System.currentTimeMillis()
+                val endTime = startTime + 60*60*1000
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(MatchType.AT_START.postValue)
+                    MatchPreloadRequest(
+                        MatchType.AT_START.postValue,
+                        startTime = startTime.toString(),
+                        endTime = endTime.toString()
+                    )
                 )
             }?.let { result ->
                 _matchPreloadAtStart.postValue(Event(result))
