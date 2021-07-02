@@ -546,28 +546,4 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
     }
-
-    private fun navOddsDetailFragment(
-        sportTypeCode: String?,
-        matchId: String?,
-        matchType: MatchType = MatchType.TODAY,
-    ) {
-        val sportType = when (sportTypeCode) {
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            SportType.TENNIS.code -> SportType.TENNIS
-            else -> null
-        }
-        sportType?.let {
-            matchId?.let {
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                        matchType, sportType, matchId, arrayOf()
-                    )
-                findNavController().navigate(action)
-            }
-        }
-    }
 }
