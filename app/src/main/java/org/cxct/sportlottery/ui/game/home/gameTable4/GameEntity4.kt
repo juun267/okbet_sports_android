@@ -1,22 +1,10 @@
 package org.cxct.sportlottery.ui.game.home.gameTable4
 
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.match.Match
-import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 
 class GameEntity4(
-    val code: String?,
-    val name: String?,
-    val num: Int,
-    val gameBeanList: List<GameBean>
+    val code: String?, //球種 code
+    val name: String?, //球種名稱
+    val num: Int, //該球種的比賽場次數量
+    val matchOdds: List<MatchOdd> = listOf()
 )
-
-class GameBean(
-    val code: String?,
-    val match: Match?,
-    val matchType: MatchType?
-) {
-    var matchStatusCO: MatchStatusCO? = null
-    var matchClockCO: MatchClockCO? = null
-}

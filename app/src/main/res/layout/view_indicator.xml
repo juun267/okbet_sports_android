@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tabLayout"
     android:layout_width="match_parent"
-    android:layout_height="4dp"
+    android:layout_height="16dp"
     app:tabGravity="center"
     app:tabIndicatorHeight="0dp"
     app:tabMaxWidth="26dp"

@@ -8,41 +8,66 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.MatchPreloadData
-import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
-import java.util.*
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHolder>() {
 
-    private var mOnSelectItemListener: OnSelectItemListener<GameBean>? = null
-    private var mOnSelectAllListener: OnSelectItemListener<GameEntity4>? = null
-    private var mDataList: List<GameEntity4> = mutableListOf()
-    private val mTimerMap = mutableMapOf<Int, Timer?>()
+    private var mDataList = listOf<GameEntity4>()
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ItemViewHolder {
-        val layout = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.home_game_table_4, viewGroup, false)
+    fun setData(matchPreloadData: MatchPreloadData?) {
+        mDataList = matchPreloadData?.datas?.map { data ->
+            data.matchOdds.forEach {
+                it.matchInfo?.sportType = SportType.getSportType(data.code)
+            }
+            GameEntity4(data.code, data.name, data.num, data.matchOdds)
+        } ?: listOf()
+
+        notifyDataSetChanged()
+    }
+
+    fun getData() = mDataList
+
+    var matchType: MatchType = MatchType.IN_PLAY
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
+
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
+
+    var onClickOddListener: OnClickOddListener? = null
+
+    var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null
+
+    var onClickTotalMatchListener: OnSelectItemListener<GameEntity4>? = null
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+        val layout = LayoutInflater.from(parent.context)
+            .inflate(R.layout.home_game_table_4, parent, false)
         return ItemViewHolder(layout)
     }
 
-    override fun getItemCount(): Int {
-        return mDataList.size
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+        val data = mDataList[position]
+        holder.bind(data, oddsType)
     }
 
-    override fun onBindViewHolder(viewHolder: ItemViewHolder, position: Int) {
-        try {
-            val data = mDataList[position]
-            viewHolder.bind(data)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+    override fun getItemCount(): Int = mDataList.size
 
     override fun onViewRecycled(holder: ItemViewHolder) {
         super.onViewRecycled(holder)
-
         //當 viewHolder 被回收就 stopTimer
         holder.itemView.apply {
             val adapter = view_pager.adapter
@@ -51,69 +76,19 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
         }
     }
 
-    fun setOnSelectItemListener(onSelectItemListener: OnSelectItemListener<GameBean>?) {
-        mOnSelectItemListener = onSelectItemListener
-    }
-
-    fun setOnSelectAllListener(onSelectAllListener: OnSelectItemListener<GameEntity4>?) {
-        mOnSelectAllListener = onSelectAllListener
-    }
-
-    fun setRvGameData(matchPreloadData: MatchPreloadData?) {
-        mDataList = matchPreloadData?.datas?.map { data ->
-            val gameBeanList: List<GameBean> = data.matchs.map { match ->
-                GameBean(data.code, match, matchPreloadData.matchType)
-            }
-            GameEntity4(data.code, data.name, data.num, gameBeanList)
-        } ?: listOf()
-
-        notifyDataSetChanged()
-    }
-
-    //TODO simon test  review 刷新邏輯有沒有問題
-    fun setMatchStatusData(matchStatusCO: MatchStatusCO?) {
-        mDataList.forEachIndexed { index, gameEntity ->
-            gameEntity.gameBeanList
-                .find { it.match?.id == matchStatusCO?.matchId }
-                ?.let {
-                    it.matchStatusCO = matchStatusCO
-                    notifyItemChanged(index)
-                    return
-                }
-        }
-    }
-
-    //TODO simon test  review 刷新邏輯有沒有問題
-    fun setMatchClockData(matchClockCO: MatchClockCO?) {
-        mDataList.forEachIndexed { index, gameEntity ->
-            gameEntity.gameBeanList
-                .find { it.match?.id == matchClockCO?.matchId }
-                ?.let {
-                    it.matchClockCO = matchClockCO
-                    notifyItemChanged(index)
-                    return
-                }
-        }
-    }
-
-    fun stopAllTimer() {
-        mTimerMap.forEach {
-            val timer = it.value
-            timer?.cancel()
-        }
-        mTimerMap.clear()
-    }
-
-
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(data: GameEntity4) {
+
+        fun bind(
+            data: GameEntity4,
+            oddsType: OddsType
+        ) {
             itemView.apply {
                 iv_game_icon.setImageResource(getGameIcon(data.code))
                 tv_game_name.text = data.name
                 tv_game_num.text = data.num.toString()
                 titleBar.setBackgroundResource(getTitleBarBackground(data.code))
                 titleBar.setOnClickListener {
-                    mOnSelectAllListener?.onClick(data)
+                    onClickTotalMatchListener?.onClick(data)
                 }
 
                 val adapter = if (view_pager.adapter is Vp2GameTable4Adapter)
@@ -121,8 +96,11 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                 else
                     Vp2GameTable4Adapter()
 
-                adapter.setData(data.gameBeanList)
-                adapter.setOnSelectItemListener(mOnSelectItemListener)
+                adapter.onClickMatchListener = onClickMatchListener
+                adapter.onClickOddListener = onClickOddListener
+                adapter.matchType = matchType
+                adapter.oddsType = oddsType
+                adapter.dataList = data.matchOdds
                 view_pager.adapter = adapter
 
                 indicator_view.setupWithViewPager2(view_pager)
@@ -152,7 +130,6 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                 else -> -1
             }
         }
-
     }
 
 }
