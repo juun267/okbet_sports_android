@@ -3,21 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:background="@drawable/ic_rectangle_today_v4">
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_rectangle_match_category_v4"
+    android:maxHeight="48dp">
 
     <ImageView
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="20dp"
-        android:src="@drawable/ic_calendar_today_v4"
+        android:src="@drawable/ic_calendar_white_v4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/today_match_type"
+        android:id="@+id/match_category_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
@@ -31,7 +32,7 @@
         tools:text="今日赛事" />
 
     <TextView
-        android:id="@+id/today_match_count"
+        android:id="@+id/match_category_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
