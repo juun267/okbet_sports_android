@@ -256,6 +256,14 @@ class GameViewModel(
         }
     }
 
+    //賽事首頁 - 滾球盤、即將開賽盤 切換
+    fun switchMatchTypeByHome(matchType: MatchType) {
+        betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
+        if (matchType == MatchType.PARLAY) {
+            checkShoppingCart()
+        }
+    }
+
     fun switchMatchType(matchType: MatchType) {
         betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
         if (matchType == MatchType.PARLAY) {

@@ -180,6 +180,13 @@
             android:textSize="@dimen/textSize12sp"
             tools:text="54" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_iconarrow" />
+
         <View
             android:id="@+id/padding"
             android:layout_width="0dp"

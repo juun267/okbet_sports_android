@@ -33,14 +33,13 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
-import timber.log.Timber
 
 
 /**
  * TODO:
  * 1. 上下滑動 ToolBar 固定
- * 2. 即將開賽盤 時間倒數
- * 3. 賠率串接、玩法數
+ * 2. 滾球盤、即將開賽盤 賽事為零隱藏 tab
+ * 3. 賽事推薦
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
@@ -90,11 +89,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
             refreshTable(mSelectMatchType, mInPlayResult)
+            viewModel.switchMatchTypeByHome(mSelectMatchType)
         }
 
         rb_soon.setOnClickListener {
             mSelectMatchType = MatchType.AT_START
             refreshTable(mSelectMatchType, mAtStartResult)
+            viewModel.switchMatchTypeByHome(mSelectMatchType)
         }
     }
 
@@ -117,7 +118,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 playCateName: String,
                 playName: String
             ) {
-                Timber.e("simon test 首頁下注") //TODO simon test review 下注有問題
                 addOddsDialog(matchOdd, odd, playCateName, playName)
             }
         }
@@ -130,13 +130,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
         mRvGameTable4Adapter.onClickTotalMatchListener =
-            object : OnSelectItemListener<GameEntity4> {
-                override fun onClick(select: GameEntity4) {
+            object : OnSelectItemListener<GameEntity> {
+                override fun onClick(select: GameEntity) {
                     scroll_view.smoothScrollTo(0, 0)
                     viewModel.navSpecialEntrance(
                         SpecialEntranceSource.HOME,
                         selectMatchType,
-                        getSportType(select.code)
+                        SportType.getSportType(select.code)
                     )
                 }
             }
@@ -269,6 +269,26 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 mAtStartResult = result
                 if (mSelectMatchType == MatchType.AT_START)
                     refreshTable(mSelectMatchType, mAtStartResult)
+            }
+        })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.peekContent().let {
+                val dataList = mRvGameTable4Adapter.getData()
+
+                dataList.forEach { gameEntity ->
+                    gameEntity.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected = it.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                            }
+                        }
+                    }
+                }
+
+                mRvGameTable4Adapter.notifyDataSetChanged()
             }
         })
 
@@ -509,17 +529,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         card_slot.visibility = if (isShowThirdGame && slotCount > 0) View.VISIBLE else View.GONE
         card_fishing.visibility =
             if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
-    }
-
-    private fun getSportType(sportCode: String?): SportType? {
-        return when (sportCode) {
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.TENNIS.code -> SportType.TENNIS
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            else -> null
-        }
     }
 
     private fun navOddsDetailFragment(sportTypeCode: String?, matchId: String?, matchType: MatchType) {

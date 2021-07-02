@@ -16,14 +16,14 @@ import org.cxct.sportlottery.ui.menu.OddsType
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHolder>() {
 
-    private var mDataList = listOf<GameEntity4>()
+    private var mDataList = listOf<GameEntity>()
 
     fun setData(matchPreloadData: MatchPreloadData?) {
         mDataList = matchPreloadData?.datas?.map { data ->
             data.matchOdds.forEach {
                 it.matchInfo?.sportType = SportType.getSportType(data.code)
             }
-            GameEntity4(data.code, data.name, data.num, data.matchOdds)
+            GameEntity(data.code, data.name, data.num, data.matchOdds)
         } ?: listOf()
 
         notifyDataSetChanged()
@@ -51,7 +51,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null
 
-    var onClickTotalMatchListener: OnSelectItemListener<GameEntity4>? = null
+    var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layout = LayoutInflater.from(parent.context)
@@ -79,7 +79,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(
-            data: GameEntity4,
+            data: GameEntity,
             oddsType: OddsType
         ) {
             itemView.apply {
