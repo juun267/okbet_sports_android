@@ -55,11 +55,11 @@ class OddsButton @JvmOverloads constructor(
     }
 
 
-    fun setupOdd(odd: Odd, oddsType: OddsType) {
-        tv_name.text = odd.name
-        tv_spread.text = odd.spread
+    fun setupOdd(odd: Odd?, oddsType: OddsType) {
+        tv_name.text = odd?.name
+        tv_spread.text = odd?.spread
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        betStatus = odd.status
+        betStatus = odd?.status ?: BetStatus.LOCKED.code
     }
 
 

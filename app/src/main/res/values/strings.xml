@@ -118,7 +118,7 @@
     <string name="fishing">捕鱼</string>
     <string name="more">更多</string>
 
-    <string name="home_tab_all">全部</string>
+    <string name="home_tan_main">主页</string>
     <string name="home_tab_in_play">滚球</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
@@ -128,6 +128,10 @@
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
+
+    <string name="label_sport_game">赛程</string>
+    <string name="label_account_history">账戶历史</string>
+    <string name="label_transaction_status">交易状况</string>
 
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
     <string name="message_no_in_play">目前没有滚球的赛事</string>
@@ -369,13 +373,27 @@
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
 
+    <string name="game_tab_league_odd">赛事</string>
+    <string name="game_tab_outright_odd">冠军</string>
+    <string name="game_tab_price_boosts_odd">特优赔率</string>
+
+    <string name="button_league_submit">提交 (%d)</string>
+
     <string name="total_bet_amount">总投注额：</string>
 
     <!--odds detail-->
     <string name="odds_detail_more">更多</string>
     <string name="odds_detail_less">显示更少</string>
     <string name="odds_detail_cs_other">其他比分</string>
-
+    <string name="odds_detail_play_type_fg">最先进球</string>
+    <string name="odds_detail_play_type_lg">最后进球</string>
+    <string name="odds_detail_play_type_bts_y">双方球队进球</string>
+    <string name="odds_detail_play_type_bts_n">并非双方球队进球</string>
+    <string name="odds_detail_play_type_dc_1X">1&#047;X</string>
+    <string name="odds_detail_play_type_dc_2X">2&#047;X</string>
+    <string name="odds_detail_play_type_dc_12">1&#047;2</string>
+    <string name="odds_detail_play_type_ou_o">大</string>
+    <string name="odds_detail_play_type_ou_u">小</string>
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
@@ -717,5 +735,13 @@
     <string name="odds_id_not_allow_bet">该赔率玩法不允许下注</string>
     <string name="odds_have_changed">该盘口赔率已经变更,请重新投注</string>
     <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
+    <string name="account_history_overview">账户历史总览</string>
+
+<!--    account history-->
+    <string name="date">日期</string>
+    <string name="bet_amount">投注金额</string>
+    <string name="available_amount">有效金额</string>
+    <string name="win_lose">赢 / 输</string>
+    <string name="all_sport">所有体育</string>
 
 </resources>

@@ -6,8 +6,14 @@ data class OddsDetailListData(
     var gameType: String, //GameType.HDP ...
     var typeCodes: MutableList<String>, //POPULAR,ALL,HDP&OU,GOAL,QATest
     var name: String, //大/小
-    var oddArrayList: List<Odd>, //odds[]
+    var oddArrayList: List<Odd?>, //odds[]
 ) {
     var isExpand: Boolean = true
     var isMoreExpand: Boolean = false
+    var gameTypeFgLgSelect = FGLGType.FG
+    var groupItem = HashMap<String, List<Odd?>>()
+}
+
+enum class FGLGType {
+    FG, LG
 }
