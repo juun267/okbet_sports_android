@@ -11,7 +11,7 @@ data class OddsDetailListData(
     var isExpand: Boolean = true
     var isMoreExpand: Boolean = false
     var gameTypeFgLgSelect = FGLGType.FG
-    var group6Item = HashMap<String, List<Odd?>>()
+    var groupItem = HashMap<String, List<Odd?>>()
 }
 
 enum class FGLGType {

@@ -38,7 +38,7 @@ class Type6GroupAdapter(
 
 
     val key = mutableListOf<String>().apply {
-        oddsDetail.group6Item.forEach{
+        oddsDetail.groupItem.forEach{
             add(it.key)
         }
     }
@@ -49,11 +49,11 @@ class Type6GroupAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
-        oddsDetail.group6Item[key[position]]?.let { holder.bindModel(it) }
+        oddsDetail.groupItem[key[position]]?.let { holder.bindModel(it) }
     }
 
 
-    override fun getItemCount(): Int = oddsDetail.group6Item.size
+    override fun getItemCount(): Int = oddsDetail.groupItem.size
 
 
     inner class ViewHolder(view: View) : OddDetailStateViewHolder(view) {
