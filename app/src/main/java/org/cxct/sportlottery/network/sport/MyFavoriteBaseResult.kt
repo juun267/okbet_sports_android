@@ -12,4 +12,6 @@ data class MyFavoriteBaseResult (
     override val msg: String,
     @Json(name = "success")
     override val success: Boolean,
+    @Json(name = "t")
+    val t: MyFavorite?
     ): BaseResult()

@@ -8,6 +8,7 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterRequest
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.service.user_notice.UserNotice
 import retrofit2.Response
+import timber.log.Timber
 
 enum class MsgType(var code: Int) {
     NOTICE_UNREAD(0),
@@ -47,6 +48,7 @@ class InfoCenterRepository {
 
     suspend fun getUserNoticeList(infoCenterRequest: InfoCenterRequest): Response<InfoCenterResult> {
         val response = OneBoSportApi.infoCenterService.getInfoList(infoCenterRequest)
+        Timber.w("Bill=====>getUserNoticeList")
 
         if (response.isSuccessful) {
             when (infoCenterRequest.isRead) {
@@ -99,6 +101,8 @@ class InfoCenterRepository {
 
             _unreadNoticeList.postValue(noticeList?.toList() ?: listOf())
 
+            Timber.i("Bill=====>setMsgRead")
+
         }
 
         return response
@@ -108,6 +112,8 @@ class InfoCenterRepository {
     suspend fun getMsgCount(dataType: Int) {
         val infoCenterRequest = InfoCenterRequest(1, 1, dataType)
         val response = OneBoSportApi.infoCenterService.getInfoList(infoCenterRequest)
+        Timber.d("Bill=====>getMsgCount")
+
         if (response.isSuccessful) {
             when (dataType) {
                 MsgType.NOTICE_UNREAD.code -> {

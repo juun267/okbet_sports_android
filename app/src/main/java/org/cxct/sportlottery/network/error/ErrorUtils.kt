@@ -199,7 +199,7 @@ object ErrorUtils {
                     }
                     (url.contains(Constants.MYFAVORITE_SAVE)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return MyFavoriteBaseResult(it.code, it.msg, it.success) as T
+                        return MyFavoriteBaseResult(it.code, it.msg, it.success,null) as T
                     }
                     (url.contains(LEAGUE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

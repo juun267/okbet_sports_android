@@ -145,6 +145,12 @@
         <!-- 右側導覽列 -->
         <include layout="@layout/view_nav_right" />
 
+        <!--左側邊攔v4-->
+        <FrameLayout
+            android:id="@+id/fl_left_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
     </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

@@ -159,6 +159,8 @@
     <string name="poker_game">棋牌游戏</string>
     <string name="slot_game">电子游戏</string>
     <string name="fish_game">捕鱼游戏</string>
+    <string name="price">价格</string>
+
 
     <!-- MenuFragment -->
     <string name="profile_center">个人中心</string>

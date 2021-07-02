@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -25,10 +26,11 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
+import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
-import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -202,10 +204,11 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
             btn_menu_left.setOnClickListener {
-                if (drawer_layout.isDrawerOpen(nav_left)) drawer_layout.closeDrawers()
-                else {
-                    drawer_layout.openDrawer(nav_left)
-                }
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
+                    .add(R.id.fl_left_menu,LeftMenuFragment())
+                    .addToBackStack(null)
+                    .commit()
             }
         } catch (e: Exception) {
             e.printStackTrace()
