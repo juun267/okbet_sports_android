@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -66,6 +67,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 loading()
             }
         }
+    }
+
+    private val matchCategoryPagerAdapter by lazy {
+        MatchCategoryViewPagerAdapter()
     }
 
     private val countryAdapter by lazy {
@@ -132,6 +137,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             setupToolbar(this)
             setupOddTab(this)
             setupSportBackground(this)
+            setupMatchCategoryPager(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -228,6 +234,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         view.game_bg_layer3.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
             else -> View.GONE
+        }
+    }
+
+    private fun setupMatchCategoryPager(view: View) {
+        view.match_category_pager.adapter = matchCategoryPagerAdapter
+        view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
+        view.game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
     }
 
