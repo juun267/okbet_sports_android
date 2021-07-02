@@ -126,10 +126,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 scroll_view.smoothScrollTo(0, 0)
                 val code = select.matchInfo?.sportType?.code
                 val matchId = select.matchInfo?.id
-                navOddsDetailLive(code, matchId)
-
-                //TODO simon test 今日 使用下方跳轉; review 即將開賽跳轉方式
-//                navOddsDetailFragment(select.code, select.match?.id)
+                navOddsDetailFragment(code, matchId, mSelectMatchType)
             }
         }
         mRvGameTable4Adapter.onClickTotalMatchListener =
@@ -525,25 +522,18 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun navOddsDetailLive(sportTypeCode: String?, matchId: String?) {
-        val sportType = when (sportTypeCode) {
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            SportType.TENNIS.code -> SportType.TENNIS
-            else -> null
-        }
-
-        sportType?.let {
-            matchId?.let {
-                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
-                    sportType,
-                    matchId,
-                )
-
-                findNavController().navigate(action)
+    private fun navOddsDetailFragment(sportTypeCode: String?, matchId: String?, matchType: MatchType) {
+        val sportType = SportType.getSportType(sportTypeCode)
+        if (sportType != null && matchId != null) {
+            val action = if (matchType == MatchType.IN_PLAY) {
+                HomeFragmentDirections
+                    .actionHomeFragmentToOddsDetailLiveFragment(sportType, matchId)
+            } else {
+                HomeFragmentDirections
+                    .actionHomeFragmentToOddsDetailFragment(matchType, sportType, matchId, arrayOf())
             }
+            findNavController().navigate(action)
         }
     }
+
 }

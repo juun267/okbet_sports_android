@@ -9,7 +9,7 @@ enum class SportType(val code: String) {
 
 
     companion object {
-        fun getSportType(code: String): SportType? {
+        fun getSportType(code: String?): SportType? {
             return when (code) {
                 FOOTBALL.code -> FOOTBALL
                 BASKETBALL.code -> BASKETBALL
