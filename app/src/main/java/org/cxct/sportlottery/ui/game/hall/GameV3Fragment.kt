@@ -309,10 +309,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.curPlayType.observe(viewLifecycleOwner, {
-            leagueAdapter.playType = it
-        })
-
         viewModel.curDate.observe(this.viewLifecycleOwner, {
             gameTypeAdapter.data = it
         })
