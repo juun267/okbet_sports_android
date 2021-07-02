@@ -426,6 +426,15 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
+                //計算且賦值 即將開賽 的倒數時間
+                result.matchPreloadData?.datas?.forEach { data ->
+                    data.matchOdds.forEach { matchOdd ->
+                        matchOdd.matchInfo?.apply {
+                            remainTime = TimeUtil.getRemainTime(startTime.toLong())
+                        }
+                    }
+                }
+
                 _matchPreloadAtStart.postValue(Event(result))
             }
         }
