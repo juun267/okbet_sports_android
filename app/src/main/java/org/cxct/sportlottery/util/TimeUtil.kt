@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -10,6 +11,7 @@ import java.util.*
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_FORMAT = "yyyy-MM-dd"
+    const val MD_FORMAT = "MM-dd"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
 
@@ -68,6 +70,24 @@ object TimeUtil {
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
 
+    /**
+     * return : 星期幾
+     */
+    fun setupDayOfWeek(todayMillis: Long?): Int {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = todayMillis ?:0
+
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            else -> R.string.sunday
+        }
+
+    }
     fun getDefaultTimeStamp(): TimeRangeParams {
         val cPair = getCalendarForDates(6)
         val minusDayTimeStamp = cPair.first.timeInMillis

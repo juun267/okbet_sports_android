@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:layout_gravity="bottom">
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_sport"
         android:layout_width="match_parent"
@@ -11,5 +13,5 @@
         android:background="@color/colorWhite"
         app:itemIconTint="@color/selector_blue_silver"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation_sport"/>
+        app:menu="@menu/bottom_navigation_sport" />
 </FrameLayout>

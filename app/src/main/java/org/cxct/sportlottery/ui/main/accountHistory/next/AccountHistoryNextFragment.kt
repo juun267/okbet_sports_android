@@ -1,47 +1,47 @@
-package org.cxct.sportlottery.ui.main.accountHistory
+package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_account_history.*
-import kotlinx.android.synthetic.main.fragment_account_history.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_account_history.status_selector
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
+import kotlinx.android.synthetic.main.fragment_account_history_next.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.component.StatusSheetData
-import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 
-class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
+class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(AccountHistoryNextViewModel::class) {
 
-//    private val mNavController by lazy { findNavController(R.id.game_container) }
+//    private val args: AccountHistoryNextFragmentArgs by navArgs()
 
-    private val betStatusList by lazy {
+    private val dateStatusList by lazy {
+        listOf(StatusSheetData("0", context?.getString(R.string.sunday)),
+               StatusSheetData("1", context?.getString(R.string.monday)),
+               StatusSheetData("2", context?.getString(R.string.tuesday)),
+               StatusSheetData("3", context?.getString(R.string.wednesday)),
+               StatusSheetData("4", context?.getString(R.string.thursday)),
+               StatusSheetData("5", context?.getString(R.string.friday)),
+               StatusSheetData("6", context?.getString(R.string.saturday)))
+    }
+
+    private val sportStatusList by lazy {
         listOf(StatusSheetData("0", context?.getString(R.string.all_sport)),
                StatusSheetData("1", context?.getString(R.string.all_sport)),
                StatusSheetData("2", context?.getString(R.string.all_sport)))
     }
 
-    private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
+    private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
         it.let { data ->
-            Log.e(">>>", "clicked, data = $data")
-            val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data)
-            findNavController().navigate(action)
         }
     })
+/*
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
 
@@ -74,11 +74,10 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
             }
         }
     }
+*/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_account_history, container, false).apply {
-            viewModel.searchBetRecord()
-        }
+        return inflater.inflate(R.layout.fragment_account_history_next, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,15 +90,20 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     }
 
     private fun initView() {
-        status_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
-        status_selector.dataList = betStatusList
+        sport_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
+        sport_selector.dataList = sportStatusList
+
+        date_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
+        date_selector.dataList = dateStatusList
     }
 
     private fun initOnclick() {
+/*
 
         iv_scroll_to_top.setOnClickListener {
             rv_account_history.smoothScrollToPosition(0)
         }
+*/
 
     }
 
@@ -127,7 +131,7 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
         rv_account_history.apply {
             adapter = rvAdapter
             addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
-            addOnScrollListener(recyclerViewOnScrollListener)
+//            addOnScrollListener(recyclerViewOnScrollListener)
         }
 
     }

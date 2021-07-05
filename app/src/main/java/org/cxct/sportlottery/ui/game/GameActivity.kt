@@ -255,7 +255,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     false
                 }
                 R.id.account_history -> {
-                    //TODO navigate account_history
+                    val action = HomeFragmentDirections.actionHomeFragmentToAccountHistoryFragment()
+                    mNavController.navigate(action)
                     true
                 }
                 R.id.transaction_status -> {

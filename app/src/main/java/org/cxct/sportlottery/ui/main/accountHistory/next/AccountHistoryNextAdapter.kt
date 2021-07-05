@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main.accountHistory
+package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +11,16 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
+import org.cxct.sportlottery.databinding.ItemBetRecordResultBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
-class AccountHistoryAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class AccountHistoryNextAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        ITEM, FOOTER, NO_DATA
+        ITEM, TITLE_1, TITLE_2, FOOTER, NO_DATA
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -48,6 +48,8 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
+            ItemType.TITLE_1.ordinal -> Title1ViewHolder.from(parent)
+            ItemType.TITLE_2.ordinal -> Title2ViewHolder.from(parent)
             ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
@@ -76,23 +78,28 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
         }
     }
 
-    class ItemViewHolder private constructor(val binding: ItemAccountHistoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(data: Row, clickListener: ItemClickListener, oddsType: OddsType) {
-            binding.row = data
-            binding.clickListener = clickListener
-            binding.textUtil = TextUtil
 
-            binding.executePendingBindings()
         }
-
         companion object {
-            fun from(parent: ViewGroup): RecyclerView.ViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemAccountHistoryBinding.inflate(layoutInflater, parent, false)
-                return ItemViewHolder(binding)
-            }
+            fun from(parent: ViewGroup) =
+                Title1ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_account_history_next_content, parent, false))
         }
+    }
 
+    class Title1ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup) =
+                Title1ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_account_history_next_title_1, parent, false))
+        }
+    }
+
+    class Title2ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup) =
+                Title2ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_account_history_next_title_2, parent, false))
+        }
     }
 
     class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
