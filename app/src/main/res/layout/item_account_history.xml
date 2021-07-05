@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    android:background="@color/colorWhite"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingHorizontal="4dp"
+    tools:ignore="SpUsage">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
+            tools:text="12-29" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{row.orderNo}"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="星期一" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:id="@+id/tv_parlay_type"
+        android:layout_height="wrap_content"
+        tools:text="8,117,500.000"
+        android:gravity="center"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize12sp" />
+
+    <TextView
+        android:id="@+id/tv_bet_total_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        tools:text="9,959,500.000"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize12sp" />
+
+    <TextView
+        android:id="@+id/tv_tv_win_lose_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        tools:text="-9,959,500.000"
+        android:textColor="@color/colorRed"
+        android:textSize="@dimen/textSize12sp" />
+
+</LinearLayout>

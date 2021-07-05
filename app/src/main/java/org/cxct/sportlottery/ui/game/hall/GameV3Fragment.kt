@@ -12,10 +12,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -66,11 +69,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private val matchCategoryPagerAdapter by lazy {
+        MatchCategoryViewPagerAdapter()
+    }
+
     private val countryAdapter by lazy {
         CountryAdapter().apply {
-            countryLeagueListener = CountryLeagueListener { league ->
-                navGameLeague(league.id)
-            }
+            countryLeagueListener = CountryLeagueListener(
+                { league ->
+                    navGameLeague(league.id)
+                },
+                { league ->
+                    pinLeague(league)
+                },
+                { league ->
+                    viewModel.selectLeague(league)
+                })
         }
     }
 
@@ -121,6 +135,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         return inflater.inflate(R.layout.fragment_game_v3, container, false).apply {
             setupSportTypeList(this)
             setupToolbar(this)
+            setupOddTab(this)
+            setupSportBackground(this)
+            setupMatchCategoryPager(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -153,7 +170,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             else -> ""
         }
 
-        //TODO add all match type after ui design finish
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
                 MatchType.IN_PLAY -> View.VISIBLE
@@ -181,13 +197,53 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        //TODO add all match type after ui design finish
-        view.game_bg_layer2.visibility = when (args.matchType) {
-            else -> View.VISIBLE
-        }
-
         view.game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
+        }
+    }
+
+    private fun setupOddTab(view: View) {
+        view.game_tabs.apply {
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    //TODO add odd tab switch behavior
+                    Toast.makeText(requireContext(), "${tab?.text} is selected", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+            })
+        }
+
+        view.game_tab_odd_v4.visibility = when (args.matchType) {
+            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
+            else -> View.GONE
+        }
+    }
+
+    private fun setupSportBackground(view: View) {
+        view.game_bg_layer2.visibility = when (args.matchType) {
+            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT -> View.VISIBLE
+            else -> View.GONE
+        }
+
+        view.game_bg_layer3.visibility = when (args.matchType) {
+            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
+            else -> View.GONE
+        }
+    }
+
+    private fun setupMatchCategoryPager(view: View) {
+        view.match_category_pager.adapter = matchCategoryPagerAdapter
+        view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
+        view.game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
     }
 
@@ -267,10 +323,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 else -> {
                 }
             }
-        })
-
-        viewModel.curPlayType.observe(viewLifecycleOwner, {
-            leagueAdapter.playType = it
         })
 
         viewModel.curDate.observe(this.viewLifecycleOwner, {
@@ -405,6 +457,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
+            }
+        })
+
+        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner, {
+            countryAdapter.apply {
+                data.forEach { row ->
+                    row.list.forEach { league ->
+                        league.isSelected = it.any { it.id == league.id }
+                    }
+                }
+
+                notifyDataSetChanged()
             }
         })
     }
@@ -634,18 +698,70 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun updateSportType(sportTypeList: List<Item>) {
         sportTypeAdapter.dataSport = sportTypeList
 
-        sportTypeList.find { it.isSelected }?.let {
-            game_toolbar_sport_type.text = it.name
+        sportTypeList.find { it.isSelected }?.let { item ->
+            game_toolbar_sport_type.text = item.name
+            updateSportBackground(item)
+        }
+    }
 
+    private fun updateSportBackground(sport: Item) {
+        when {
+            game_bg_layer2.isVisible -> game_bg_layer2
+            game_bg_layer3.isVisible -> game_bg_layer3
+            else -> null
+        }?.let {
             Glide.with(requireContext()).load(
-                when (it.code) {
-                    SportType.FOOTBALL.code -> R.drawable.soccer108
-                    SportType.BASKETBALL.code -> R.drawable.basketball108
-                    SportType.TENNIS.code -> R.drawable.tennis108
-                    SportType.VOLLEYBALL.code -> R.drawable.volleyball108
+                when (sport.code) {
+                    SportType.FOOTBALL.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.soccer108
+                            game_bg_layer3.isVisible -> R.drawable.soccer140
+                            else -> null
+                        }
+                    }
+                    SportType.BASKETBALL.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.basketball108
+                            game_bg_layer3.isVisible -> R.drawable.basketball140
+                            else -> null
+                        }
+                    }
+                    SportType.TENNIS.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.tennis108
+                            game_bg_layer3.isVisible -> R.drawable.tennis140
+                            else -> null
+                        }
+                    }
+                    SportType.VOLLEYBALL.code -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.volleyball108
+                            game_bg_layer3.isVisible -> R.drawable.volleyball140
+                            else -> null
+                        }
+                    }
                     else -> null
                 }
-            ).into(game_bg_layer2)
+            ).into(it)
+        }
+    }
+
+    private fun pinLeague(league: org.cxct.sportlottery.network.league.League) {
+        league.isPin = !countryAdapter.datePin.any {
+            it == league
+        }
+
+        when (league.isPin) {
+            true -> {
+                val list = countryAdapter.datePin.toMutableList()
+                list.add(league)
+                countryAdapter.datePin = list
+            }
+            false -> {
+                val list = countryAdapter.datePin.toMutableList()
+                list.remove(league)
+                countryAdapter.datePin = list
+            }
         }
     }
 

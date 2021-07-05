@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
@@ -104,9 +105,6 @@ class GameViewModel(
     val leagueListSearchResult: LiveData<List<LeagueOdd>>
         get() = _leagueListSearchResult
 
-    val curPlayType: LiveData<PlayType>
-        get() = _curPlayType
-
     val curDate: LiveData<List<Date>>
         get() = _curDate
 
@@ -128,6 +126,9 @@ class GameViewModel(
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
 
+    val leagueSelectedList: LiveData<List<League>>
+        get() = _leagueSelectedList
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -147,9 +148,7 @@ class GameViewModel(
     private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
-    private val _curPlayType = MutableLiveData<PlayType>().apply {
-        value = PlayType.OU_HDP
-    }
+    private val _leagueSelectedList = MutableLiveData<List<League>>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -576,8 +575,6 @@ class GameViewModel(
     fun switchSportType(matchType: MatchType, item: Item) {
         updateSportSelectState(matchType, item)
 
-        setPlayType(PlayType.OU_HDP)
-
         getGameHallList(matchType, true)
     }
 
@@ -793,6 +790,8 @@ class GameViewModel(
                     )
                 )
             }
+
+            _leagueSelectedList.postValue(mutableListOf())
             _leagueListResult.postValue(Event(result))
         }
     }
@@ -911,8 +910,19 @@ class GameViewModel(
         }?.timeRangeParams
     }
 
-    fun setPlayType(playType: PlayType) {
-        _curPlayType.postValue(playType)
+    fun selectLeague(league: League) {
+        val list = _leagueSelectedList.value?.toMutableList() ?: mutableListOf()
+
+        when (list.contains(league)) {
+            true -> {
+                list.remove(league)
+            }
+            false -> {
+                list.add(league)
+            }
+        }
+
+        _leagueSelectedList.postValue(list)
     }
 
     fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {
@@ -920,10 +930,9 @@ class GameViewModel(
         matchOdd.odds?.forEach { map ->
             val key = map.key
             val value = map.value
-            val filteredOddList = mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd>()
+            val filteredOddList = mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
             value.odds?.forEach { odd ->
-                if (odd != null)
-                    filteredOddList.add(odd)
+                filteredOddList.add(odd)
             }
             newList.add(
                 OddsDetailListData(
@@ -1030,7 +1039,7 @@ class GameViewModel(
         updatedOddsDetail: ArrayList<OddsDetailListData>
     ) {
         val oldOddList = oddsDetail.oddArrayList
-        var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd>()
+        var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
 
         for (item in updatedOddsDetail) {
             if (item.gameType == oddsDetail.gameType) {
@@ -1041,37 +1050,40 @@ class GameViewModel(
 
         oldOddList.forEach { oldOddData ->
             newOddList.forEach { newOddData ->
-                if (oldOddData.id == newOddData.id) {
 
-                    //如果是球員 忽略名字替換
-                    if (!TextUtil.compareWithGameKey(
-                            oddsDetail.gameType,
-                            OddsDetailListAdapter.GameType.SCO.value
-                        )
-                    ) {
-                        if (newOddData.name?.isNotEmpty() == true) {
-                            oldOddData.name = newOddData.name
+                if (oldOddData != null && newOddData != null) {
+                    if (oldOddData.id == newOddData.id) {
+
+                        //如果是球員 忽略名字替換
+                        if (!TextUtil.compareWithGameKey(
+                                oddsDetail.gameType,
+                                OddsDetailListAdapter.GameType.SCO.value
+                            )
+                        ) {
+                            if (newOddData.name?.isNotEmpty() == true) {
+                                oldOddData.name = newOddData.name
+                            }
                         }
+
+                        if (newOddData.extInfo?.isNotEmpty() == true) {
+                            oldOddData.extInfo = newOddData.extInfo
+                        }
+
+                        oldOddData.spread = newOddData.spread
+
+                        //先判斷大小
+                        oldOddData.oddState = getOddState(
+                            getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU),
+                            newOddData
+                        )
+
+                        //再帶入新的賠率
+                        oldOddData.odds = newOddData.odds
+                        oldOddData.hkOdds = newOddData.hkOdds
+
+                        oldOddData.status = newOddData.status
+                        oldOddData.producerId = newOddData.producerId
                     }
-
-                    if (newOddData.extInfo?.isNotEmpty() == true) {
-                        oldOddData.extInfo = newOddData.extInfo
-                    }
-
-                    oldOddData.spread = newOddData.spread
-
-                    //先判斷大小
-                    oldOddData.oddState = getOddState(
-                        getOdds(oldOddData, loginRepository.mOddsType.value ?: OddsType.EU),
-                        newOddData
-                    )
-
-                    //再帶入新的賠率
-                    oldOddData.odds = newOddData.odds
-                    oldOddData.hkOdds = newOddData.hkOdds
-
-                    oldOddData.status = newOddData.status
-                    oldOddData.producerId = newOddData.producerId
                 }
             }
         }
@@ -1094,10 +1106,10 @@ class GameViewModel(
                         }
                     }
                     val filteredOddList =
-                        mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd>()
+                        mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
                     value.odds.forEach { detailOdd ->
-                        if (detailOdd != null)
-                            filteredOddList.add(detailOdd)
+                        //因排版問題 null也需要添加
+                        filteredOddList.add(detailOdd)
                     }
                     list.add(
                         OddsDetailListData(
