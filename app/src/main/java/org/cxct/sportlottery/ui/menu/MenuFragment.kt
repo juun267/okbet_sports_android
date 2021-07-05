@@ -110,6 +110,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_profile_center)
         }
 
+        //我的賽事
+        menu_my_favorite.setOnClickListener {
+            //TODO 我的賽事入口
+        }
+
+        //TODO v4版沒有，待刪除
         //體育投注記錄
         menu_sport_bet_record.setOnClickListener {
             startActivity(Intent(context, BetRecordActivity::class.java))

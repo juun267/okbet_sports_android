@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
@@ -203,16 +202,37 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             menuLeftFrag.setMenuLeftListener(mMenuLeftListener)
             nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
+            //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
+                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
+                    override fun onClick(menuStatus: Int) {
+                        when(menuStatus){
+                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
+                            MenuStatusType.ISNTCLICKABLE.ordinal -> fl_left_menu.isClickable = false
+                        }
+                    }
+                })
+
+                fl_left_menu.isClickable = true
+
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
-                    .add(R.id.fl_left_menu,LeftMenuFragment())
+                    .add(R.id.fl_left_menu,leftMenuFragment)
                     .addToBackStack(null)
                     .commit()
+
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    enum class MenuStatusType{
+        CLOSE,ISNTCLICKABLE
+    }
+
+    interface OnMenuClickListener{
+        fun onClick(menuStatus: Int)
     }
 
     //公告

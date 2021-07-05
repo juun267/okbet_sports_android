@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_left_menu.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 
-class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
+class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : BaseFragment<GameViewModel>(GameViewModel::class) {
 
-    //點擊置頂後 //sportType加到favoriteItemList
+    //點擊置頂後
     var unselectedAdapter = LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { sportType ->
         viewModel.saveMyFavorite(sportType)
     })
@@ -24,8 +23,6 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { sportType ->
             viewModel.saveMyFavorite(sportType)
         })
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +36,21 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
         initObserve()
         initRecyclerView()
         initData()
+        initButton()
+    }
+
+    //TODO
+    private fun initButton() {
+        // 返回
+        btn_close.setOnClickListener {
+            clickListener.onClick(GameActivity.MenuStatusType.CLOSE.ordinal)
+        }
+        //滾球
+        ct_inplay.setOnClickListener {  }
+        //特優賠率
+        ct_premium_odds.setOnClickListener {  }
+        //遊戲規則
+        ct_game_rule.setOnClickListener {  }
     }
 
     private fun initData() {
@@ -75,7 +87,6 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
             }
         rv_unselect.adapter = unselectedAdapter
 
-        //讓RecyclerView不可滑動
         rv_selected.layoutManager =
             object : LinearLayoutManager(rv_selected.context, VERTICAL, false) {
                 override fun canScrollVertically(): Boolean {
@@ -84,4 +95,10 @@ class LeftMenuFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
             }
         rv_selected.adapter = selectedAdapter
     }
+
+    override fun onPause() {
+        super.onPause()
+        clickListener.onClick(GameActivity.MenuStatusType.ISNTCLICKABLE.ordinal)
+    }
+
 }

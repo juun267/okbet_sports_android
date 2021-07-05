@@ -11,7 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F3F4F5"
+        android:background="@color/colorWhite1"
         android:minHeight="44dp">
 
         <ImageView
@@ -33,9 +33,9 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="12dp"
             android:singleLine="true"
-            android:text="全部"
-            android:textColor="#333333"
-            android:textSize="14dp"
+            android:text="@string/menu"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
@@ -53,7 +53,7 @@
             android:background="@null"
             android:contentDescription="@null"
             android:padding="11dp"
-            android:src="@drawable/ic_close"
+            android:src="@drawable/ic_close_menu_v4"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,6 +61,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ct_inplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="44dp">
@@ -84,9 +85,9 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="12dp"
             android:singleLine="true"
-            android:text="全部"
-            android:textColor="#333333"
-            android:textSize="14dp"
+            android:text="@string/match_type_row_in_play"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,6 +99,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ct_premium_odds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="44dp">
@@ -121,9 +123,9 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="12dp"
             android:singleLine="true"
-            android:text="價格"
-            android:textColor="#333333"
-            android:textSize="14dp"
+            android:text="@string/premium_odds"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -136,7 +138,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E2E2E2"
+        android:background="@color/colorWhite6"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent" />
@@ -148,7 +150,7 @@
         tools:orientation="vertical"
         tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="2"
-        tools:listitem="@layout/content_left_menu_item"/>
+        tools:listitem="@layout/content_left_menu_item" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_unselect"
@@ -167,12 +169,13 @@
         android:paddingHorizontal="20dp"
         android:paddingVertical="14dp"
         android:singleLine="true"
-        android:text="信息中心"
-        android:textColor="#333333"
-        android:textSize="14dp"
+        android:text="@string/infomation_center"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
         android:textStyle="bold" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ct_game_rule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="44dp">
@@ -196,16 +199,15 @@
             android:paddingHorizontal="16dp"
             android:paddingVertical="12dp"
             android:singleLine="true"
-            android:text="規則"
-            android:textColor="#333333"
-            android:textSize="14dp"
+            android:text="@string/game_rule"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="10"
             app:layout_constraintStart_toEndOf="@+id/img_game_rule"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
