@@ -195,6 +195,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
+            //TODO 舊的側邊攔待刪除
             //選單選擇結束要收起選單
             val menuLeftFrag =
                 supportFragmentManager.findFragmentById(R.id.fragment_menu_left) as MenuLeftFragment
