@@ -13,10 +13,10 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TransactionRecordFragment.newInstance] factory method to
+ * Use the [TransactionStatusFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TransactionRecordFragment : BaseFragment<GameViewModel>(GameViewModel::class) {
+class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,17 +40,19 @@ class TransactionRecordFragment : BaseFragment<GameViewModel>(GameViewModel::cla
 
     private fun initRecyclerView() {
         rv_record.apply {
-            layoutManager = LinearLayoutManager(context)
             adapter = recordDiffAdapter
         }
     }
 
     private fun initObserve() {
         //TODO observe data
+        viewModel.betListData.observe(this, {
+            recordDiffAdapter.setupBetList(it)
+        })
     }
 
     private fun getBetListData() {
         //TODO 設置投注列表資料
-        recordDiffAdapter.submitList(listOf())
+        viewModel.getBetList(true)
     }
 }

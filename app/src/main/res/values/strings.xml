@@ -134,6 +134,8 @@
     <string name="label_sport_game">赛程</string>
     <string name="label_account_history">账戶历史</string>
     <string name="label_transaction_status">交易状况</string>
+    <string name="label_title_parlay">综合过关</string>
+    <string name="conspire">串</string>
 
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
     <string name="message_no_in_play">目前没有滚球的赛事</string>

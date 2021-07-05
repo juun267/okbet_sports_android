@@ -57,7 +57,7 @@
                 <fragment
                     android:id="@+id/fragment_transaction_status"
                     android:layout_width="match_parent"
-                    class="org.cxct.sportlottery.ui.transactionStatus.TransactionRecordFragment"
+                    class="org.cxct.sportlottery.ui.transactionStatus.TransactionStatusFragment"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     tools:layout="@layout/fragment_transaction_status"/>
