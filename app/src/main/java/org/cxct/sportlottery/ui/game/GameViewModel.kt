@@ -32,6 +32,8 @@ import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -129,6 +131,9 @@ class GameViewModel(
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
+    val playCategoryList: LiveData<List<Play>>
+        get() = _playCategoryList
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -149,6 +154,7 @@ class GameViewModel(
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
+    private val _playCategoryList = MutableLiveData<List<Play>>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -417,7 +423,7 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         updateSportSelectState(matchType, item)
-
+        getSportPlayCategory(matchType)
         getGameHallList(matchType, true)
     }
 
@@ -425,6 +431,32 @@ class GameViewModel(
         updateDateSelectedState(date)
 
         getGameHallList(matchType, false, date.date)
+    }
+
+    fun getSportPlayCategory(matchType: MatchType) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getQuery(
+                    SportQueryRequest(
+                        TimeUtil.getNowTimeStamp().toString(),
+                        TimeUtil.getTodayStartTimeStamp().toString(),
+                        matchType.postValue
+                    )
+                )
+            }
+
+            result?.sportQueryData?.let { sportQueryData ->
+                val playCategoryList = sportQueryData.items?.find { item ->
+                    item.code == getSportSelected(matchType)?.code
+                }?.play?.filter { play ->
+                    play.num != 0
+                }
+
+                playCategoryList?.let {
+                    _playCategoryList.postValue(it)
+                }
+            }
+        }
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
