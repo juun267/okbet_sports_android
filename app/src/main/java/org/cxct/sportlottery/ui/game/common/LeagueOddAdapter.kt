@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.itemview_game_league_odd_1x2.view.*
 import kotlinx.android.synthetic.main.itemview_game_league_odd_hdp_ou.view.*
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.OUType
@@ -32,14 +33,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         set(value) {
             field = value
             notifyDataSetChanged()
-        }
-
-    var playType: PlayType = PlayType.OU_HDP
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
         }
 
     var oddsType: OddsType = OddsType.EU
@@ -73,10 +66,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (playType) {
-            PlayType.OU_HDP -> ViewHolderHdpOu.from(parent, oddStateRefreshListener)
-            else -> ViewHolder1x2.from(parent, oddStateRefreshListener)
-        }
+        return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -87,17 +77,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         when (holder) {
             is ViewHolderHdpOu -> {
-                holder.stopTimer()
-                holder.bind(
-                    matchType,
-                    item,
-                    leagueOddListener,
-                    isTimerEnable,
-                    oddsType,
-                    matchInfoList
-                )
-            }
-            is ViewHolder1x2 -> {
                 holder.stopTimer()
                 holder.bind(
                     matchType,
@@ -134,60 +113,71 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             oddsType: OddsType,
             matchInfoList: List<MatchInfo>
         ) {
-            setupMatchInfo(item, matchType, isTimerEnable)
+            setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
 
-            setupOddButton(item, leagueOddListener, oddsType)
+            setupMatchTime(item, matchType, isTimerEnable)
 
-            setupLiveButton(item, matchType, leagueOddListener)
-
-            itemView.match_play_type_block.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
-            }
-
-            itemView.match_odd_block_info.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
-            }
+//            setupOddButton(item, leagueOddListener, oddsType)
         }
 
         private fun setupMatchInfo(
             item: MatchOdd,
             matchType: MatchType,
-            isTimerEnable: Boolean,
+            matchInfoList: List<MatchInfo>,
+            leagueOddListener: LeagueOddListener?
         ) {
-            val sportType = item.matchInfo?.sportType
+            itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
 
-            itemView.match_play_type_count.text = item.matchInfo?.playCateNum.toString()
+            itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
 
-            itemView.game_name_home.text = item.matchInfo?.homeName
-            itemView.game_name_away.text = item.matchInfo?.awayName
+            itemView.league_odd_match_score_home.apply {
+                visibility = if (matchType == MatchType.IN_PLAY) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
 
-            itemView.icon_remain_time.visibility = if (matchType == MatchType.AT_START) {
-                View.VISIBLE
-            } else {
-                View.INVISIBLE
+                text = (item.matchInfo?.homeScore ?: 0).toString()
             }
 
-            itemView.game_score_home.visibility = if (matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.GONE
+            itemView.league_odd_match_score_away.apply {
+                visibility = if (matchType == MatchType.IN_PLAY) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                text = (item.matchInfo?.awayScore ?: 0).toString()
             }
 
-            itemView.game_score_away.visibility = if (matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.GONE
+            itemView.league_odd_match_play_count.apply {
+                text = item.matchInfo?.playCateNum.toString()
+
+                setOnClickListener {
+                    leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+                }
             }
 
+            itemView.league_odd_match_border_row1.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+            }
+
+            itemView.league_odd_match_border_row2.setOnClickListener {
+                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+            }
+        }
+
+        private fun setupMatchTime(
+            item: MatchOdd,
+            matchType: MatchType,
+            isTimerEnable: Boolean
+        ) {
             when (matchType) {
                 MatchType.IN_PLAY -> {
-                    itemView.game_score_home.text = (item.matchInfo?.homeScore ?: 0).toString()
-                    itemView.game_score_away.text = (item.matchInfo?.awayScore ?: 0).toString()
-                    itemView.match_status.text = item.matchInfo?.statusName
-
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.match_time.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                            itemView.league_odd_match_time.text =
+                                TimeUtil.timeFormat(timeMillis, "mm:ss")
                             item.leagueTime = (timeMillis / 1000).toInt()
                         }
                     }
@@ -195,18 +185,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     updateTimer(
                         isTimerEnable,
                         item.leagueTime ?: 0,
-                        sportType == SportType.BASKETBALL
+                        item.matchInfo?.sportType == SportType.BASKETBALL
                     )
                 }
 
                 MatchType.AT_START -> {
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.match_time.text = String.format(
+                            itemView.league_odd_match_time.text = String.format(
                                 itemView.context.resources.getString(R.string.at_start_remain_minute),
                                 TimeUtil.timeFormat(timeMillis, "mm")
                             )
-
                             item.matchInfo?.remainTime = timeMillis
                         }
                     }
@@ -221,26 +210,25 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 else -> {
-                    itemView.match_status.text = item.matchInfo?.startDateDisplay
-                    itemView.match_time.text = item.matchInfo?.startTimeDisplay
+                    itemView.league_odd_match_time.text = item.matchInfo?.startTimeDisplay
                 }
             }
-        }
 
-        private fun setupLiveButton(
-            item: MatchOdd,
-            matchType: MatchType,
-            leagueOddListener: LeagueOddListener?
-        ) {
-            itemView.match_live.visibility = if (matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.INVISIBLE
+            itemView.league_odd_match_status.text = when (matchType) {
+                MatchType.IN_PLAY -> {
+                    item.matchInfo?.statusName
+                }
+                else -> {
+                    item.matchInfo?.startDateDisplay
+                }
             }
 
-            itemView.match_live.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
-            }
+            itemView.league_odd_match_remain_time_icon.visibility =
+                if (matchType == MatchType.AT_START) {
+                    View.VISIBLE
+                } else {
+                    View.INVISIBLE
+                }
         }
 
         private fun setupOddButton(
@@ -878,355 +866,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): ViewHolderHdpOu {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_league_odd_hdp_ou, parent, false)
+                    .inflate(R.layout.itemview_league_odd_v4, parent, false)
 
                 return ViewHolderHdpOu(view, refreshListener)
-            }
-        }
-
-        override val oddStateChangeListener: OddStateChangeListener
-            get() = refreshListener
-    }
-
-    class ViewHolder1x2 private constructor(
-        itemView: View,
-        private val refreshListener: OddStateChangeListener
-    ) : ViewHolderTimer(itemView) {
-        fun bind(
-            matchType: MatchType,
-            item: MatchOdd,
-            leagueOddListener: LeagueOddListener?,
-            isTimerEnable: Boolean,
-            oddsType: OddsType,
-            matchInfoList: List<MatchInfo>
-        ) {
-            setupMatchInfo(item, matchType, isTimerEnable)
-
-            setupOddButton(item, leagueOddListener, oddsType)
-
-            setupLiveButton(item, matchType, leagueOddListener)
-
-            itemView.match_play_type_block_1x2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
-            }
-
-            itemView.match_odd_block_info_1x2.setOnClickListener {
-                leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
-            }
-        }
-
-        private fun setupMatchInfo(
-            item: MatchOdd,
-            matchType: MatchType,
-            isTimerEnable: Boolean
-        ) {
-            val sportType = item.matchInfo?.sportType
-
-            itemView.match_play_type_count_1x2.text = item.matchInfo?.playCateNum.toString()
-
-            itemView.game_name_home_1x2.text = item.matchInfo?.homeName
-            itemView.game_name_away_1x2.text = item.matchInfo?.awayName
-
-            itemView.icon_remain_time_1x2.visibility = if (matchType == MatchType.AT_START) {
-                View.VISIBLE
-            } else {
-                View.INVISIBLE
-            }
-
-            itemView.game_score_home_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-            itemView.game_score_away_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-            when (matchType) {
-                MatchType.IN_PLAY -> {
-                    itemView.game_score_home_1x2.text = (item.matchInfo?.homeScore ?: 0).toString()
-                    itemView.game_score_away_1x2.text = (item.matchInfo?.awayScore ?: 0).toString()
-                    itemView.match_status_1x2.text = item.matchInfo?.statusName
-
-                    listener = object : TimerListener {
-                        override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.match_time_1x2.text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-                            item.leagueTime = (timeMillis / 1000).toInt()
-                        }
-                    }
-
-                    updateTimer(
-                        isTimerEnable,
-                        item.leagueTime ?: 0,
-                        sportType == SportType.BASKETBALL
-                    )
-                }
-
-                MatchType.AT_START -> {
-                    listener = object : TimerListener {
-                        override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.match_time_1x2.text = String.format(
-                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                TimeUtil.timeFormat(timeMillis, "mm")
-                            )
-
-                            item.matchInfo?.remainTime = timeMillis
-                        }
-                    }
-
-                    item.matchInfo?.remainTime?.let { remainTime ->
-                        updateTimer(
-                            isTimerEnable,
-                            (remainTime / 1000).toInt(),
-                            true
-                        )
-                    }
-                }
-
-                else -> {
-                }
-            }
-        }
-
-        private fun setupLiveButton(
-            item: MatchOdd,
-            matchType: MatchType,
-            leagueOddListener: LeagueOddListener?
-        ) {
-            itemView.match_live_1x2.visibility = if (matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.INVISIBLE
-            }
-
-            itemView.match_live_1x2.setOnClickListener {
-                leagueOddListener?.onClickLive(item)
-            }
-        }
-
-        private fun setupOddButton(
-            item: MatchOdd,
-            leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType
-        ) {
-            val sportType = item.matchInfo?.sportType
-
-            val oddList1X2 = when (sportType) {
-                SportType.BASKETBALL -> {
-                    item.odds[PlayType.X12_INCL_OT.code]
-                }
-                else -> {
-                    item.odds[PlayType.X12.code]
-                }
-            }
-
-            itemView.match_odd_1.apply {
-                playType = PlayType.X12
-
-                isSelected = oddList1X2?.get(0)?.isSelected ?: false
-
-                betStatus = if (oddList1X2 == null || oddList1X2.size < 2) {
-                    BetStatus.LOCKED.code
-                } else {
-                    oddList1X2[0]?.status ?: BetStatus.LOCKED.code
-                }
-
-                this@ViewHolder1x2.setupOddState(this, oddList1X2?.get(0))
-
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        oddList1X2?.get(0)?.oddState = OddState.SAME.state
-                    }
-                }
-
-                odd_1x2_top_text.text = "1"
-
-                odd_1x2_bottom_text.text = when {
-                    (oddList1X2 != null && oddList1X2.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddList1X2[0]?.odds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    (oddList1X2 != null && oddList1X2.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddList1X2[0]?.hkOdds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    else -> ""
-                }
-
-                setOnClickListener {
-                    if (oddList1X2 != null && oddList1X2.size >= 2) {
-                        oddList1X2[0]?.let { odd ->
-                            leagueOddListener?.onClickBet(
-                                item,
-                                odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title),
-                                item.matchInfo?.homeName ?: ""
-                            )
-                        }
-                    }
-                }
-            }
-
-            itemView.match_odd_x.apply {
-                playType = PlayType.X12
-
-                isSelected = if (oddList1X2 != null && oddList1X2.size >= 3) {
-                    oddList1X2[1]?.isSelected ?: false
-                } else {
-                    false
-                }
-
-                betStatus = when {
-                    (sportType == SportType.BASKETBALL) -> {
-                        BetStatus.DEACTIVATED.code
-                    }
-                    (oddList1X2 == null || oddList1X2.size < 3) -> {
-                        BetStatus.LOCKED.code
-                    }
-                    (oddList1X2.size >= 3) -> {
-                        oddList1X2[1]?.status ?: BetStatus.LOCKED.code
-                    }
-                    else -> null
-                }
-
-                this@ViewHolder1x2.setupOddState(
-                    this, if (oddList1X2 != null && oddList1X2.size >= 3) {
-                        oddList1X2[1]
-                    } else {
-                        null
-                    }
-                )
-
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        if (oddList1X2 != null && oddList1X2.size >= 3) {
-                            oddList1X2[1]?.oddState = OddState.SAME.state
-                        }
-                    }
-                }
-
-                odd_1x2_top_text.text = "X"
-
-                odd_1x2_bottom_text.text = when {
-                    (oddList1X2 != null && oddList1X2.size >= 3 && oddsType == OddsType.EU) -> {
-                        oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    (oddList1X2 != null && oddList1X2.size >= 3 && oddsType == OddsType.HK) -> {
-                        oddList1X2[1]?.hkOdds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    else -> ""
-                }
-
-                setOnClickListener {
-                    if (oddList1X2 != null && oddList1X2.size >= 3) {
-                        oddList1X2[1]?.let { odd ->
-                            leagueOddListener?.onClickBet(
-                                item,
-                                odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title),
-                                itemView.context.getString(R.string.x12_x_play_name)
-                            )
-                        }
-                    }
-                }
-            }
-
-            itemView.match_odd_2.apply {
-                playType = PlayType.X12
-
-                isSelected = if (oddList1X2 != null && oddList1X2.size == 2) {
-                    oddList1X2[1]?.isSelected ?: false
-                } else if (oddList1X2 != null && oddList1X2.size >= 3) {
-                    oddList1X2[2]?.isSelected ?: false
-                } else {
-                    false
-                }
-
-                betStatus = when {
-                    (oddList1X2 == null || oddList1X2.size < 2) -> {
-                        BetStatus.LOCKED.code
-                    }
-                    (oddList1X2.size == 2) -> {
-                        oddList1X2[1]?.status ?: BetStatus.LOCKED.code
-                    }
-                    (oddList1X2.size >= 3) -> {
-                        oddList1X2[2]?.status ?: BetStatus.LOCKED.code
-                    }
-                    else -> {
-                        null
-                    }
-                }
-
-                this@ViewHolder1x2.setupOddState(
-                    this, if (oddList1X2 != null && oddList1X2.size == 2) {
-                        oddList1X2[1]
-                    } else if (oddList1X2 != null && oddList1X2.size >= 3) {
-                        oddList1X2[2]
-                    } else {
-                        null
-                    }
-                )
-
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        if (oddList1X2 != null && oddList1X2.size == 2) {
-                            oddList1X2[1]?.oddState = OddState.SAME.state
-                        } else if (oddList1X2 != null && oddList1X2.size >= 3) {
-                            oddList1X2[2]?.oddState = OddState.SAME.state
-                        }
-                    }
-                }
-
-                odd_1x2_top_text.text = "2"
-
-                odd_1x2_bottom_text.text = when {
-                    (oddList1X2 != null && oddList1X2.size == 2 && oddsType == OddsType.EU) -> {
-                        oddList1X2[1]?.odds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    (oddList1X2 != null && oddList1X2.size == 2 && oddsType == OddsType.HK) -> {
-                        oddList1X2[1]?.hkOdds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    (oddList1X2 != null && oddList1X2.size > 2 && oddsType == OddsType.EU) -> {
-                        oddList1X2[2]?.odds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    (oddList1X2 != null && oddList1X2.size > 2 && oddsType == OddsType.HK) -> {
-                        oddList1X2[2]?.hkOdds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    else -> ""
-                }
-
-                setOnClickListener {
-                    if (oddList1X2 != null && oddList1X2.size == 2) {
-                        oddList1X2[1]?.let { odd ->
-                            leagueOddListener?.onClickBet(
-                                item,
-                                odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title),
-                                item.matchInfo?.awayName ?: ""
-                            )
-                        }
-                    } else if (oddList1X2 != null && oddList1X2.size >= 3) {
-                        oddList1X2[2]?.let { odd ->
-                            leagueOddListener?.onClickBet(
-                                item,
-                                odd,
-                                itemView.context.getString(R.string.ou_hdp_1x2_title),
-                                item.matchInfo?.awayName ?: ""
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-        companion object {
-            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): ViewHolder1x2 {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.itemview_game_league_odd_1x2, parent, false)
-
-                return ViewHolder1x2(view, refreshListener)
             }
         }
 

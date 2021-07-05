@@ -291,7 +291,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                     listOf(
                         Odd(
                             betInfoListData.matchOdd.oddsId,
-                            getOdds(betInfoListData.matchOdd, oddsType)
+                            getOdds(betInfoListData.matchOdd, oddsType),
+                            stake
                         )
                     ),
                     listOf(Stake(parlayType ?: "", stake)),

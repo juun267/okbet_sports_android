@@ -105,9 +105,6 @@ class GameViewModel(
     val leagueListSearchResult: LiveData<List<LeagueOdd>>
         get() = _leagueListSearchResult
 
-    val curPlayType: LiveData<PlayType>
-        get() = _curPlayType
-
     val curDate: LiveData<List<Date>>
         get() = _curDate
 
@@ -151,9 +148,6 @@ class GameViewModel(
     private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
-    private val _curPlayType = MutableLiveData<PlayType>().apply {
-        value = PlayType.OU_HDP
-    }
     private val _leagueSelectedList = MutableLiveData<List<League>>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
@@ -450,8 +444,6 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         updateSportSelectState(matchType, item)
-
-        setPlayType(PlayType.OU_HDP)
 
         getGameHallList(matchType, true)
     }
@@ -786,10 +778,6 @@ class GameViewModel(
         return _curDate.value?.find {
             it.isSelected
         }?.timeRangeParams
-    }
-
-    fun setPlayType(playType: PlayType) {
-        _curPlayType.postValue(playType)
     }
 
     fun selectLeague(league: League) {
