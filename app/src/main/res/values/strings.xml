@@ -380,7 +380,7 @@
     <string name="total_bet_amount">总投注额：</string>
 
     <!--odds detail-->
-    <string name="odds_detail_more">更多</string>
+    <string name="odds_detail_more">显示更多</string>
     <string name="odds_detail_less">显示更少</string>
     <string name="odds_detail_cs_other">其他比分</string>
     <string name="odds_detail_play_type_fg">最先进球</string>
