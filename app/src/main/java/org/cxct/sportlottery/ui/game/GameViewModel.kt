@@ -352,7 +352,7 @@ class GameViewModel(
         viewModelScope.launch {
             _isLoading.value = true
             val result = doNetwork(androidContext) {
-                sportMenuRepository.getMyFavorite()
+                OneBoSportApi.favoriteService.getMyFavorite()
             }
             var favoriteList = listOf<String>()
             if (!result?.t?.sport.isNullOrEmpty()) {

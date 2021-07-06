@@ -104,10 +104,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <!--TODO 舊的側邊攔待刪除-->
-        <!-- 左側導覽列 -->
-        <include layout="@layout/view_nav_left" />
-
         <!-- 右側導覽列 -->
         <include layout="@layout/view_nav_right" />
 

@@ -15,16 +15,12 @@ class SportMenuRepository {
         )
     }
 
-    suspend fun getMyFavorite(): Response<SportMenuFavoriteResult> {
-        return OneBoSportApi.sportService.getMyFavorite()
-    }
-
     suspend fun getMyFavoriteMatch(myFavoriteMatchRequest: MyFavoriteMatchRequest): Response<MyFavoriteMatchResult> {
-        return OneBoSportApi.sportService.getMyFavoriteMatch(myFavoriteMatchRequest)
+        return OneBoSportApi.favoriteService.getMyFavoriteMatch(myFavoriteMatchRequest)
     }
 
     suspend fun saveMyFavorite(saveMyFavoriteRequest: SaveMyFavoriteRequest): Response<MyFavoriteBaseResult> {
-        return OneBoSportApi.sportService.saveMyFavorite(saveMyFavoriteRequest)
+        return OneBoSportApi.favoriteService.saveMyFavorite(saveMyFavoriteRequest)
     }
 
 }
