@@ -10,4 +10,6 @@ data class Play(
     val name: String?,
     @Json(name = "num")
     val num: Int?
-)
+) {
+    var isSelected = false
+}
