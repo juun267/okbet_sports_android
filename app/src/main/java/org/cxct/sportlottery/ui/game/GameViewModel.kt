@@ -29,6 +29,11 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
+import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
@@ -129,6 +134,9 @@ class GameViewModel(
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
+    val playCategoryList: LiveData<List<Play>>
+        get() = _playCategoryList
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -149,6 +157,7 @@ class GameViewModel(
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
+    private val _playCategoryList = MutableLiveData<List<Play>>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -335,7 +344,7 @@ class GameViewModel(
             _favoriteItemList.value?.peekContent()?.forEach {
                 if (it.sportType == sportType) {
                     myNewFavoriteList.remove(sportType)
-                }else{
+                } else {
                     myNewFavoriteList.add(it.sportType)
                 }
             }
@@ -345,10 +354,10 @@ class GameViewModel(
                 OneBoSportApi.favoriteService.saveMyFavorite(saveMyFavoriteRequest)
             }
 
-            if (result?.success == true){
+            if (result?.success == true) {
                 var favoriteList = listOf<String>()
                 if (!result.t?.sport.isNullOrEmpty()) {
-                   favoriteList=TextUtil.split(result.t?.sport ?: "")
+                    favoriteList = TextUtil.split(result.t?.sport ?: "")
                 }
                 refreshMenu(favoriteList)
             }
@@ -370,7 +379,7 @@ class GameViewModel(
         }
     }
 
-    fun  refreshMenu(favoriteList: List<String>) {
+    fun refreshMenu(favoriteList: List<String>) {
         viewModelScope.launch {
             var myFavoriteList: ArrayList<MenuItemData> = ArrayList()
             //新增置頂
@@ -563,7 +572,7 @@ class GameViewModel(
                 //"startTime": 現在時間戳,
                 //"endTime": 一小時後時間戳
                 val startTime = System.currentTimeMillis()
-                val endTime = startTime + 60*60*1000
+                val endTime = startTime + 60 * 60 * 1000
                 OneBoSportApi.matchService.getMatchPreload(
                     MatchPreloadRequest(
                         MatchType.AT_START.postValue,
@@ -588,7 +597,7 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         updateSportSelectState(matchType, item)
-
+        getSportPlayCategory(matchType)
         getGameHallList(matchType, true)
     }
 
@@ -596,6 +605,32 @@ class GameViewModel(
         updateDateSelectedState(date)
 
         getGameHallList(matchType, false, date.date)
+    }
+
+    fun getSportPlayCategory(matchType: MatchType) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getQuery(
+                    SportQueryRequest(
+                        TimeUtil.getNowTimeStamp().toString(),
+                        TimeUtil.getTodayStartTimeStamp().toString(),
+                        matchType.postValue
+                    )
+                )
+            }
+
+            result?.sportQueryData?.let { sportQueryData ->
+                val playCategoryList = sportQueryData.items?.find { item ->
+                    item.code == getSportSelected(matchType)?.code
+                }?.play?.filter { play ->
+                    play.num != 0
+                }
+
+                playCategoryList?.let {
+                    _playCategoryList.postValue(it)
+                }
+            }
+        }
     }
 
     fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
