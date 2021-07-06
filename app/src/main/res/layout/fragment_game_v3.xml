@@ -84,6 +84,19 @@
                 app:layout_constraintTop_toBottomOf="@id/game_tab_odd_v4" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/game_play_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintTop_toBottomOf="@id/game_match_category_pager"
+                tools:itemCount="1"
+                tools:listitem="@layout/itemview_play_category_v4" />
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_filter_type_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,7 +104,7 @@
                 android:nestedScrollingEnabled="false"
                 android:padding="16dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/game_match_category_pager"
+                app:layout_constraintTop_toBottomOf="@id/game_play_category"
                 tools:itemCount="1"
                 tools:listitem="@layout/itemview_date_v4"
                 tools:visibility="visible" />
@@ -110,8 +123,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/colorWhite"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sport_type_list"
+                app:layout_constraintTop_toBottomOf="@id/game_filter_type_list"
                 tools:visibility="gone" />
 
             <include

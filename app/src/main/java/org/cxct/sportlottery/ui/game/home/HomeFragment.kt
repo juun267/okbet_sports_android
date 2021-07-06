@@ -17,17 +17,20 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.match.MatchPreloadResult
+import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
-import org.cxct.sportlottery.ui.game.home.gameTable4.GameBean
-import org.cxct.sportlottery.ui.game.home.gameTable4.GameEntity4
-import org.cxct.sportlottery.ui.game.home.gameTable4.RvGameTable4Adapter
+import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 
@@ -35,8 +38,8 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 /**
  * TODO:
  * 1. 上下滑動 ToolBar 固定
- * 2. 即將開賽盤 時間倒數
- * 3. 賠率串接、玩法數
+ * 2. 滾球盤、即將開賽盤 賽事為零隱藏 tab
+ * 3. 賽事推薦
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
@@ -86,11 +89,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
             refreshTable(mSelectMatchType, mInPlayResult)
+            viewModel.switchMatchTypeByHome(mSelectMatchType)
         }
 
         rb_soon.setOnClickListener {
             mSelectMatchType = MatchType.AT_START
             refreshTable(mSelectMatchType, mAtStartResult)
+            viewModel.switchMatchTypeByHome(mSelectMatchType)
         }
     }
 
@@ -105,29 +110,55 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         }
-
-        mRvGameTable4Adapter.setRvGameData(result?.matchPreloadData?.apply {
-            matchType = selectMatchType
-        })
-        mRvGameTable4Adapter.setOnSelectItemListener(object : OnSelectItemListener<GameBean> {
-            override fun onClick(select: GameBean) {
-                scroll_view.smoothScrollTo(0, 0)
-                navOddsDetailLive(select.code, select.match?.id)
-
-                //TODO simon test 今日 使用下方跳轉
-//                navOddsDetailFragment(select.code, select.match?.id)
+        mRvGameTable4Adapter.matchType = selectMatchType
+        mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
+            override fun onClickBet(
+                matchOdd: MatchOdd,
+                odd: Odd,
+                playCateName: String,
+                playName: String
+            ) {
+                addOddsDialog(matchOdd, odd, playCateName, playName)
             }
-        })
-        mRvGameTable4Adapter.setOnSelectAllListener(object : OnSelectItemListener<GameEntity4> {
-            override fun onClick(select: GameEntity4) {
+        }
+        mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
+            override fun onClick(select: MatchOdd) {
                 scroll_view.smoothScrollTo(0, 0)
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.HOME,
-                    selectMatchType,
-                    getSportType(select.code)
-                )
+                val code = select.matchInfo?.sportType?.code
+                val matchId = select.matchInfo?.id
+                navOddsDetailFragment(code, matchId, mSelectMatchType)
             }
-        })
+        }
+        mRvGameTable4Adapter.onClickTotalMatchListener =
+            object : OnSelectItemListener<GameEntity> {
+                override fun onClick(select: GameEntity) {
+                    scroll_view.smoothScrollTo(0, 0)
+                    viewModel.navSpecialEntrance(
+                        SpecialEntranceSource.HOME,
+                        selectMatchType,
+                        SportType.getSportType(select.code)
+                    )
+                }
+            }
+        mRvGameTable4Adapter.setData(result?.matchPreloadData)
+    }
+
+    private fun addOddsDialog(
+        matchOdd: MatchOdd,
+        odd: Odd,
+        playCateName: String,
+        playName: String
+    ) {
+        matchOdd.matchInfo?.sportType?.let { sportType ->
+            viewModel.updateMatchBetList(
+                mSelectMatchType,
+                sportType,
+                playCateName,
+                playName,
+                matchOdd,
+                odd
+            )
+        }
     }
 
     private fun initEvent() {
@@ -240,17 +271,232 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     refreshTable(mSelectMatchType, mAtStartResult)
             }
         })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.peekContent().let {
+                val dataList = mRvGameTable4Adapter.getData()
+
+                dataList.forEach { gameEntity ->
+                    gameEntity.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected = it.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                            }
+                        }
+                    }
+                }
+
+                mRvGameTable4Adapter.notifyDataSetChanged()
+            }
+        })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            it?.let { oddsType ->
+                mRvGameTable4Adapter.oddsType = oddsType
+            }
+        })
     }
 
     private fun observeSocketData() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
-            if (mSelectMatchType == MatchType.IN_PLAY)
-                mRvGameTable4Adapter.setMatchStatusData(it?.matchStatusCO)
+            it?.let { matchStatusChangeEvent ->
+                matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+                    matchStatusCO.matchId?.let { matchId ->
+
+                        val dataList = mRvGameTable4Adapter.getData()
+
+                        dataList.forEachIndexed { index, gameEntity ->
+                            val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == matchId
+                            }
+
+                            updateMatchOdd?.let {
+                                updateMatchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
+                                updateMatchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                                updateMatchOdd.matchInfo?.statusName = matchStatusCO.statusName
+
+                                mRvGameTable4Adapter.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                }
+            }
         })
 
-        receiver.matchClock.observe(viewLifecycleOwner, {
-            if (mSelectMatchType == MatchType.IN_PLAY)
-                mRvGameTable4Adapter.setMatchClockData(it?.matchClockCO)
+        receiver.matchClock.observe(this.viewLifecycleOwner, {
+            it?.let { matchClockEvent ->
+                matchClockEvent.matchClockCO?.let { matchClockCO ->
+                    matchClockCO.matchId?.let { matchId ->
+
+                        val dataList = mRvGameTable4Adapter.getData()
+
+                        dataList.forEachIndexed { index, gameEntity ->
+                            val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == matchId
+                            }
+
+                            updateMatchOdd?.let {
+                                updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
+                                    SportType.FOOTBALL.code -> {
+                                        matchClockCO.matchTime
+                                    }
+                                    SportType.BASKETBALL.code -> {
+                                        matchClockCO.remainingTimeInPeriod
+                                    }
+                                    else -> null
+                                }
+
+                                mRvGameTable4Adapter.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { oddsChangeEvent ->
+                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+
+                    @Suppress("NAME_SHADOWING")
+                    val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                        oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
+                            odd?.isSelected =
+                                viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                        }
+                    }
+
+                    val dataList = mRvGameTable4Adapter.getData()
+                    val oddsType = mRvGameTable4Adapter.oddsType
+
+                    dataList.forEachIndexed { index, gameEntity ->
+                        val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
+                            matchOdd.matchInfo?.id == oddsChangeEvent.eventId
+                        }
+
+                        if (updateMatchOdd?.odds.isNullOrEmpty()) {
+                            updateMatchOdd?.odds = oddTypeSocketMap.toMutableMap()
+
+                        } else {
+                            updateMatchOdd?.odds?.forEach { oddTypeMap ->
+
+                                val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
+                                val odds = oddTypeMap.value
+
+                                odds.forEach { odd ->
+                                    odd?.let { oddNonNull ->
+                                        val oddSocket = oddsSocket?.find { oddSocket ->
+                                            oddSocket?.id == odd.id
+                                        }
+
+                                        oddSocket?.let { oddSocketNonNull ->
+                                            when (oddsType) {
+                                                OddsType.EU -> {
+                                                    oddNonNull.odds?.let { oddValue ->
+                                                        oddSocketNonNull.odds?.let { oddSocketValue ->
+                                                            when {
+                                                                oddValue > oddSocketValue -> {
+                                                                    oddNonNull.oddState =
+                                                                        OddState.SMALLER.state
+                                                                }
+                                                                oddValue < oddSocketValue -> {
+                                                                    oddNonNull.oddState =
+                                                                        OddState.LARGER.state
+                                                                }
+                                                                oddValue == oddSocketValue -> {
+                                                                    oddNonNull.oddState =
+                                                                        OddState.SAME.state
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                OddsType.HK -> {
+                                                    oddNonNull.hkOdds?.let { oddValue ->
+                                                        oddSocketNonNull.hkOdds?.let { oddSocketValue ->
+                                                            when {
+                                                                oddValue > oddSocketValue -> {
+                                                                    oddNonNull.oddState =
+                                                                        OddState.SMALLER.state
+                                                                }
+                                                                oddValue < oddSocketValue -> {
+                                                                    oddNonNull.oddState =
+                                                                        OddState.LARGER.state
+                                                                }
+                                                                oddValue == oddSocketValue -> {
+                                                                    oddNonNull.oddState =
+                                                                        OddState.SAME.state
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            oddNonNull.odds = oddSocketNonNull.odds
+                                            oddNonNull.hkOdds = oddSocketNonNull.hkOdds
+
+                                            oddNonNull.status = oddSocketNonNull.status
+
+                                            mRvGameTable4Adapter.notifyItemChanged(index)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+
+                val dataList = mRvGameTable4Adapter.getData()
+
+                dataList.forEachIndexed { index, gameEntity ->
+                    gameEntity.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { odds ->
+                            odds.forEach { odd ->
+                                when (globalStopEvent.producerId) {
+                                    null -> {
+                                        odd?.status = BetStatus.DEACTIVATED.code
+                                    }
+                                    else -> {
+                                        odd?.producerId?.let { producerId ->
+                                            if (producerId == globalStopEvent.producerId) {
+                                                odd.status = BetStatus.DEACTIVATED.code
+                                            }
+                                        }
+                                    }
+                                }
+
+                                mRvGameTable4Adapter.notifyItemChanged(index)
+                            }
+                        }
+
+                    }
+                }
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let { _ ->
+                unsubscribeAllHallChannel()
+
+                val result =
+                    if (mSelectMatchType == MatchType.IN_PLAY) mInPlayResult else mAtStartResult
+                result?.matchPreloadData?.datas?.forEach { data ->
+                    data.matchs.forEach { match ->
+                        subscribeHallChannel(data.code, match)
+                    }
+                }
+            }
         })
     }
 
@@ -285,60 +531,18 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
     }
 
-    private fun getSportType(sportCode: String?): SportType? {
-        return when (sportCode) {
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.TENNIS.code -> SportType.TENNIS
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            else -> null
-        }
-    }
-
-    private fun navOddsDetailLive(sportTypeCode: String?, matchId: String?) {
-        val sportType = when (sportTypeCode) {
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            SportType.TENNIS.code -> SportType.TENNIS
-            else -> null
-        }
-
-        sportType?.let {
-            matchId?.let {
-                val action = HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
-                    sportType,
-                    matchId,
-                )
-
-                findNavController().navigate(action)
+    private fun navOddsDetailFragment(sportTypeCode: String?, matchId: String?, matchType: MatchType) {
+        val sportType = SportType.getSportType(sportTypeCode)
+        if (sportType != null && matchId != null) {
+            val action = if (matchType == MatchType.IN_PLAY) {
+                HomeFragmentDirections
+                    .actionHomeFragmentToOddsDetailLiveFragment(sportType, matchId)
+            } else {
+                HomeFragmentDirections
+                    .actionHomeFragmentToOddsDetailFragment(matchType, sportType, matchId, arrayOf())
             }
+            findNavController().navigate(action)
         }
     }
 
-    private fun navOddsDetailFragment(
-        sportTypeCode: String?,
-        matchId: String?,
-        matchType: MatchType = MatchType.TODAY,
-    ) {
-        val sportType = when (sportTypeCode) {
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            SportType.TENNIS.code -> SportType.TENNIS
-            else -> null
-        }
-        sportType?.let {
-            matchId?.let {
-                val action =
-                    HomeFragmentDirections.actionHomeFragmentToOddsDetailFragment(
-                        matchType, sportType, matchId, arrayOf()
-                    )
-                findNavController().navigate(action)
-            }
-        }
-    }
 }

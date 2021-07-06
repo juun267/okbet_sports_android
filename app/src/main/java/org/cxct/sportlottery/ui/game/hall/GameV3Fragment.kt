@@ -73,6 +73,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         MatchCategoryViewPagerAdapter()
     }
 
+    private val playCategoryAdapter by lazy {
+        PlayCategoryAdapter()
+    }
+
     private val countryAdapter by lazy {
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
@@ -138,6 +142,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             setupOddTab(this)
             setupSportBackground(this)
             setupMatchCategoryPager(this)
+            setupPlayCategory(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -247,6 +252,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun setupPlayCategory(view: View) {
+        view.game_play_category.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            this.adapter = playCategoryAdapter
+
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_play_category
+                )
+            )
+
+            visibility = if (args.matchType == MatchType.IN_PLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
+    }
+
     private fun setupGameRow(view: View) {
         view.game_filter_type_list.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -290,6 +316,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
+        viewModel.getSportPlayCategory(args.matchType)
         viewModel.getGameHallList(args.matchType, true)
         loading()
     }
@@ -342,14 +369,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
-                    val sportType = when (oddsListResult.oddsListData?.sport?.code) {
-                        SportType.FOOTBALL.code -> SportType.FOOTBALL
-                        SportType.BASKETBALL.code -> SportType.BASKETBALL
-                        SportType.BADMINTON.code -> SportType.BADMINTON
-                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-                        SportType.TENNIS.code -> SportType.TENNIS
-                        else -> null
-                    }
+                    val sportType = SportType.getSportType(oddsListResult.oddsListData?.sport?.code)
 
                     game_list.apply {
                         adapter = leagueAdapter.apply {
@@ -470,6 +490,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 notifyDataSetChanged()
             }
+        })
+
+        viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.data = it
         })
     }
 
