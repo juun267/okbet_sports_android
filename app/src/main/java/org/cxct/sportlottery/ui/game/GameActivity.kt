@@ -211,12 +211,9 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                             override fun onClick(menuStatus: Int) {
                                 when(menuStatus){
                                     MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                                    MenuStatusType.ISNTCLICKABLE.ordinal -> fl_left_menu.isClickable = false
                                 }
                             }
                         })
-
-                        fl_left_menu.isClickable = true
 
                         supportFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
@@ -232,9 +229,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    enum class MenuStatusType{
-        CLOSE,ISNTCLICKABLE
-    }
+    enum class MenuStatusType{ CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)

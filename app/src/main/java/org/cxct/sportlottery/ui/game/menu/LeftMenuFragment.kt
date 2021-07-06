@@ -96,9 +96,4 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : Ba
         rv_selected.adapter = selectedAdapter
     }
 
-    override fun onPause() {
-        super.onPause()
-        clickListener.onClick(GameActivity.MenuStatusType.ISNTCLICKABLE.ordinal)
-    }
-
 }

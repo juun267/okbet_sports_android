@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorWhite"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".ui.game.menu.LeftMenuFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
