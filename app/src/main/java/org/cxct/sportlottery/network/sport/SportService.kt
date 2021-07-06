@@ -12,4 +12,5 @@ interface SportService {
     suspend fun getMenu(
         @Body sportMenuRequest: SportMenuRequest
     ): Response<SportMenuResult>
+
 }
