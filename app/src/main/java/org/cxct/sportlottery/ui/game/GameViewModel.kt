@@ -334,7 +334,7 @@ class GameViewModel(
 
             val saveMyFavoriteRequest = SaveMyFavoriteRequest(type = 1, code = myNewFavoriteList)
             val result = doNetwork(androidContext) {
-                sportMenuRepository.saveMyFavorite(saveMyFavoriteRequest)
+                OneBoSportApi.favoriteService.saveMyFavorite(saveMyFavoriteRequest)
             }
 
             if (result?.success == true){

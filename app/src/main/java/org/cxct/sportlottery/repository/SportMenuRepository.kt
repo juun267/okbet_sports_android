@@ -14,13 +14,5 @@ class SportMenuRepository {
             )
         )
     }
-
-    suspend fun getMyFavoriteMatch(myFavoriteMatchRequest: MyFavoriteMatchRequest): Response<MyFavoriteMatchResult> {
-        return OneBoSportApi.favoriteService.getMyFavoriteMatch(myFavoriteMatchRequest)
-    }
-
-    suspend fun saveMyFavorite(saveMyFavoriteRequest: SaveMyFavoriteRequest): Response<MyFavoriteBaseResult> {
-        return OneBoSportApi.favoriteService.saveMyFavorite(saveMyFavoriteRequest)
-    }
-
+    
 }
