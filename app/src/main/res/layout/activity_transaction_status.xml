@@ -24,12 +24,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
-                    android:orientation="vertical"
-                    app:layout_scrollFlags="scroll">
+                    android:orientation="vertical">
 
                     <!-- toolBar -->
                     <include layout="@layout/view_toolbar_main" />
-
                     <!-- 公告輪播跑馬燈 -->
                     <RelativeLayout
                         android:id="@+id/cl_message"
@@ -65,7 +63,7 @@
                 <!-- 預留下方導覽列的高度 -->
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"/>
+                    android:layout_height="115dp"/>
             </LinearLayout>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
