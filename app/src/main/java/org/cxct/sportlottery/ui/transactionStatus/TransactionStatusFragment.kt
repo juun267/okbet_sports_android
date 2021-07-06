@@ -4,20 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.GameViewModel
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TransactionStatusFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
+    private val recyclerViewScrollListener: RecyclerView.OnScrollListener by lazy{ object: RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            /*recyclerView.layoutManager?.let {
+                val visibleViewCount = it.childCount
+                val totalItem = it.itemCount
+                val firstVisibleItemPosition = (it as LinearLayoutManager).findFirstVisibleItemPosition()
+                if(firstVisibleItemPosition + visibleViewCount == totalItem)
+                    viewModel.getBetList()
+            }*/
+            if(!recyclerView.canScrollVertically(1)){
+                viewModel.getBetList()
+            }
+        }
+    }}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +49,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     private fun initRecyclerView() {
         rv_record.apply {
             adapter = recordDiffAdapter
+            addOnScrollListener(recyclerViewScrollListener)
         }
     }
 

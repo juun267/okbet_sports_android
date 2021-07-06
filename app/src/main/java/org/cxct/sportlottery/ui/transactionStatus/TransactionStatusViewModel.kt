@@ -54,9 +54,13 @@ class TransactionStatusViewModel(
     }
 
     private val pageSize = 20
+    private var betListRequesting = false
 
     //獲取交易狀況資料(未結算)
-    fun getBetList(firstPage: Boolean) {
+    fun getBetList(firstPage: Boolean = false) {
+        if (betListRequesting || betListData.value?.isLastPage == true)
+            return
+        betListRequesting = true
 
         val page = if (firstPage) 1 else betListData.value?.page?.plus(1) ?: 1
         val betListRequest = createUnSettlementBetListRequest(page)
@@ -66,6 +70,7 @@ class TransactionStatusViewModel(
             doNetwork(androidContext) {
                 OneBoSportApi.betService.getBetList(betListRequest)
             }?.let { result ->
+                betListRequesting = false
                 hideLoading()
                 val rowList =
                     if (page == 1) mutableListOf<Row>()
