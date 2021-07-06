@@ -10,7 +10,6 @@ import retrofit2.http.POST
 
 
 interface SportService {
-
     @POST(SPORT_MENU)
     suspend fun getMenu(
         @Body sportMenuRequest: SportMenuRequest
