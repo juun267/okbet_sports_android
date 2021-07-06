@@ -20,6 +20,13 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             }
         }
 
+    interface BottomNavigationListener {
+        fun onSportHomeNav()
+    }
+
+    private var bottomNavigationListener: BottomNavigationListener? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,6 +36,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initButton()
         initRecyclerView()
     }
 
@@ -50,6 +58,16 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         viewModel.betListData.observe(this, {
             recordDiffAdapter.setupBetList(it)
         })
+    }
+
+    fun setBottomNavigationListener(listener: BottomNavigationListener) {
+        bottomNavigationListener = listener
+    }
+
+    private fun initButton() {
+        btn_back.setOnClickListener {
+            bottomNavigationListener?.onSportHomeNav()
+        }
     }
 
     private fun getBetListData() {

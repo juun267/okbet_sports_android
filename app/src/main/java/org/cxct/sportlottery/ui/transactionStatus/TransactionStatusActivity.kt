@@ -111,7 +111,7 @@ class TransactionStatusActivity : BaseNoticeActivity<TransactionStatusViewModel>
             setOnClickListener {
                 val transactionStatusFragment =
                     (supportFragmentManager.findFragmentById(R.id.fragment_transaction_status) as TransactionStatusFragment)
-                transactionStatusFragment.scroll_view.apply{
+                transactionStatusFragment.scroll_view.apply {
                     stopNestedScroll()
                     fullScroll(View.FOCUS_UP)
 //                    scrollTo(0,top)
@@ -124,6 +124,15 @@ class TransactionStatusActivity : BaseNoticeActivity<TransactionStatusViewModel>
     private fun initBottomNavigation() {
         initNavigationView()
         initNavigationListener()
+
+        val transactionStatusFragment =
+            (supportFragmentManager.findFragmentById(R.id.fragment_transaction_status) as TransactionStatusFragment)
+        transactionStatusFragment.setBottomNavigationListener(object :
+            TransactionStatusFragment.BottomNavigationListener {
+            override fun onSportHomeNav() {
+                bottom_navigation_sport.selectedItemId = R.id.home_page
+            }
+        })
     }
 
     private fun initNavigationView() {
@@ -142,6 +151,7 @@ class TransactionStatusActivity : BaseNoticeActivity<TransactionStatusViewModel>
         bottom_navigation_sport.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.home_page -> {
+                    finish()
                     startActivity(Intent(this, GameActivity::class.java))
                     false
                 }
