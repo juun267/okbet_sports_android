@@ -14,7 +14,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : BaseFragment<GameViewModel>(GameViewModel::class) {
 
     //點擊置頂後
-    var unselectedAdapter = LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { sportType ->
+    private var unselectedAdapter = LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { sportType ->
         viewModel.saveMyFavorite(sportType)
     })
 
