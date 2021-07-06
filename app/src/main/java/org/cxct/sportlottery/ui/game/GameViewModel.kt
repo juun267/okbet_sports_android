@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
@@ -200,6 +201,8 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
+    var sportQueryData: SportQueryData? = null
+
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
         matchType: MatchType,
@@ -263,6 +266,7 @@ class GameViewModel(
         }
 
         getSportMenu(matchType)
+        getAllPlayCategory(matchType)
     }
 
     private fun checkShoppingCart() {
@@ -329,6 +333,22 @@ class GameViewModel(
                 _curMatchType.value = matchType
                 _sportMenuResult.value = it
             }
+        }
+    }
+
+    private fun getAllPlayCategory(matchType: MatchType) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getQuery(
+                    SportQueryRequest(
+                        TimeUtil.getNowTimeStamp().toString(),
+                        TimeUtil.getTodayStartTimeStamp().toString(),
+                        matchType.postValue
+                    )
+                )
+            }
+
+            sportQueryData = result?.sportQueryData
         }
     }
 
@@ -423,8 +443,14 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         updateSportSelectState(matchType, item)
-        getSportPlayCategory(matchType)
-        getGameHallList(matchType, true)
+
+        getGameHallList(matchType, true, isReloadPlayCate = true)
+    }
+
+    fun switchPlayCategory(matchType: MatchType, play: Play) {
+        updatePlayCateSelectedState(play)
+
+        getGameHallList(matchType, false, isReloadPlayCate = true)
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -433,33 +459,16 @@ class GameViewModel(
         getGameHallList(matchType, false, date.date)
     }
 
-    fun getSportPlayCategory(matchType: MatchType) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.sportService.getQuery(
-                    SportQueryRequest(
-                        TimeUtil.getNowTimeStamp().toString(),
-                        TimeUtil.getTodayStartTimeStamp().toString(),
-                        matchType.postValue
-                    )
-                )
-            }
-
-            result?.sportQueryData?.let { sportQueryData ->
-                val playCategoryList = sportQueryData.items?.find { item ->
-                    item.code == getSportSelected(matchType)?.code
-                }?.play?.filter { play ->
-                    play.num != 0
-                }
-
-                playCategoryList?.let {
-                    _playCategoryList.postValue(it)
-                }
-            }
+    fun getGameHallList(
+        matchType: MatchType,
+        isReloadDate: Boolean,
+        date: String? = null,
+        isReloadPlayCate: Boolean = false
+    ) {
+        if (isReloadPlayCate) {
+            getPlayCategory(matchType)
         }
-    }
 
-    fun getGameHallList(matchType: MatchType, isReloadDate: Boolean, date: String? = null) {
         if (isReloadDate) {
             getDateRow(matchType)
             _curDate.value?.firstOrNull()?.let {
@@ -611,7 +620,8 @@ class GameViewModel(
                         matchType,
                         leagueIdList = leagueIdList,
                         startTime = timeRangeParams?.startTime,
-                        endTime = timeRangeParams?.endTime
+                        endTime = timeRangeParams?.endTime,
+                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
                     )
                 )
             }
@@ -680,6 +690,21 @@ class GameViewModel(
             }
 
             _outrightSeasonListResult.postValue(Event(result))
+        }
+    }
+
+    private fun getPlayCategory(matchType: MatchType) {
+        sportQueryData?.let { sportQueryData ->
+            sportQueryData.items?.find { item ->
+                item.code == getSportSelected(matchType)?.code
+            }?.play?.filter { play ->
+                play.num != 0
+            }?.let { playList ->
+                if (!playList.any { it.isSelected }) {
+                    playList.firstOrNull()?.isSelected = true
+                }
+                _playCategoryList.value = playList
+            }
         }
     }
 
@@ -1178,6 +1203,8 @@ class GameViewModel(
         }
     }
 
+    private fun getPlayCateSelected(): Play? = _playCategoryList.value?.find { it.isSelected }
+
     private fun SportMenuData.updateSportSelectState(
         matchType: MatchType?,
         sportTypeCode: String?
@@ -1262,6 +1289,18 @@ class GameViewModel(
         dateRow?.let {
             _curDate.postValue(it)
             _curDatePosition.postValue(_curDate.value?.indexOf(date))
+        }
+    }
+
+    private fun updatePlayCateSelectedState(play: Play) {
+        val playCate = _playCategoryList.value
+
+        playCate?.forEach {
+            it.isSelected = (it == play)
+        }
+
+        playCate?.let {
+            _playCategoryList.postValue(it)
         }
     }
 }
