@@ -250,6 +250,14 @@ class GameViewModel(
         }
     }
 
+    //賽事首頁 - 滾球盤、即將開賽盤 切換
+    fun switchMatchTypeByHome(matchType: MatchType) {
+        betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
+        if (matchType == MatchType.PARLAY) {
+            checkShoppingCart()
+        }
+    }
+
     fun switchMatchType(matchType: MatchType) {
         betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
         if (matchType == MatchType.PARLAY) {
@@ -406,10 +414,29 @@ class GameViewModel(
         }
         viewModelScope.launch {
             doNetwork(androidContext) {
+                //即將開賽 query 參數：
+                //"matchType": "ATSTART",
+                //"startTime": 現在時間戳,
+                //"endTime": 一小時後時間戳
+                val startTime = System.currentTimeMillis()
+                val endTime = startTime + 60*60*1000
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(MatchType.AT_START.postValue)
+                    MatchPreloadRequest(
+                        MatchType.AT_START.postValue,
+                        startTime = startTime.toString(),
+                        endTime = endTime.toString()
+                    )
                 )
             }?.let { result ->
+                //計算且賦值 即將開賽 的倒數時間
+                result.matchPreloadData?.datas?.forEach { data ->
+                    data.matchOdds.forEach { matchOdd ->
+                        matchOdd.matchInfo?.apply {
+                            remainTime = TimeUtil.getRemainTime(startTime.toLong())
+                        }
+                    }
+                }
+
                 _matchPreloadAtStart.postValue(Event(result))
             }
         }

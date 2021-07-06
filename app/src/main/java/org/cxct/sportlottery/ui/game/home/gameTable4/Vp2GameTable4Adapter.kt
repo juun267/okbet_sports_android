@@ -1,70 +1,70 @@
 package org.cxct.sportlottery.ui.game.home.gameTable4
 
-import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
+import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.widget.OddButton
+import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class Vp2GameTable4Adapter: RecyclerView.Adapter<Vp2GameTable4Adapter.ViewPagerViewHolder>() {
+class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 
-    private var mOnSelectItemListener: OnSelectItemListener<GameBean>? = null
-    private var mDataList: List<GameBean> = listOf()
-    private val mTimerMap = mutableMapOf<Int, Timer?>()
+    var dataList = listOf<MatchOdd>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    @NonNull
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): ViewPagerViewHolder {
-        return ViewPagerViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.home_game_table_item_4, parent, false)
-        )
-    }
-
-    override fun onBindViewHolder(@NonNull viewHolder: ViewPagerViewHolder, position: Int) {
-        try {
-            val data = mDataList[position]
-            when (data.matchType) {
-                MatchType.IN_PLAY -> viewHolder.bindInPlay(data)
-                MatchType.AT_START -> viewHolder.bindAtStart(data)
-                else -> {
-                }
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        }
+
+    var matchType: MatchType = MatchType.IN_PLAY
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
+
+    var onClickOddListener: OnClickOddListener? = null
+
+    var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉
+
+    private val mOddStateRefreshListener by lazy {
+        object : OddStateViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
+                    matchOdd.odds.toList()
+                        .find { map -> map.second.find { it == odd } != null } != null
+                }))
+            }
         }
     }
 
-    override fun getItemCount(): Int {
-        return mDataList.size
-    }
-
-    override fun onViewRecycled(holder: ViewPagerViewHolder) {
-        super.onViewRecycled(holder)
-
-        //當 viewHolder 被回收就 stopTimer
-        holder.stopTimer()
-    }
-
-    fun setOnSelectItemListener(onSelectItemListener: OnSelectItemListener<GameBean>?) {
-        mOnSelectItemListener = onSelectItemListener
-    }
-
-    fun setData(dataList: List<GameBean>?) {
-        mDataList = dataList ?: listOf()
-
-        notifyDataSetChanged()
-    }
+    private val mTimerMap = mutableMapOf<Int, Timer?>()
 
     fun stopAllTimer() {
         mTimerMap.forEach {
@@ -74,176 +74,532 @@ class Vp2GameTable4Adapter: RecyclerView.Adapter<Vp2GameTable4Adapter.ViewPagerV
         mTimerMap.clear()
     }
 
-    inner class ViewPagerViewHolder(@NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderHdpOu {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.home_game_table_item_4, parent, false)
+        return ViewHolderHdpOu(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolderHdpOu, position: Int) {
+        try {
+            val data = dataList[position]
+            holder.bind(data)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun getItemCount(): Int = dataList.size
+
+    override fun onViewRecycled(holder: ViewHolderHdpOu) {
+        super.onViewRecycled(holder)
+        holder.stopTimer()
+    }
+
+    inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
+
         private var timer: Timer? = null
 
-        @SuppressLint("SetTextI18n")
-        fun bindInPlay(data: GameBean) {
-            itemView.apply {
-                showTeam(data)
+        fun bind(data: MatchOdd) {
+            setupMatchInfo(data)
+            setupTime(data)
+            setupOddButton(data)
 
-                tv_match_status.text = data.matchStatusCO?.statusName
-
-                when (data.code) {
-                    SportType.FOOTBALL.code -> { //足球
-                        showTime(data.matchClockCO?.matchTime)
-                        startFTTimer(data.matchClockCO)
-                    }
-                    SportType.BASKETBALL.code -> { //籃球
-                        showTime(data.matchClockCO?.remainingTimeInPeriod)
-                        startBKTimer(data.matchClockCO)
-                    }
-                    else -> showTime(null)
-                }
-
-                showOdds(data)
-
-                setOnClickListener {
-                    if (data.match != null)
-                        mOnSelectItemListener?.onClick(data)
-                }
+            itemView.setOnClickListener {
+                onClickMatchListener?.onClick(data)
             }
         }
 
-        @SuppressLint("SetTextI18n")
-        fun bindAtStart(data: GameBean) {
+        private fun setupMatchInfo(data: MatchOdd) {
             itemView.apply {
-                showTeam(data)
+                tv_game_name_home.text = data.matchInfo?.homeName
+                tv_game_name_away.text = data.matchInfo?.awayName
+                tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
 
-                showStartTime(data.match?.startTime)
-
-                showOdds(data)
-
-                setOnClickListener {
-                    if (data.match != null)
-                        mOnSelectItemListener?.onClick(data)
-                }
-            }
-        }
-
-        private fun showTeam(data: GameBean) {
-            itemView.apply {
-                when (data.matchType) {
+                when (matchType) {
                     MatchType.IN_PLAY -> {
                         tv_game_type.text = context.getString(R.string.home_tab_in_play)
 
-                        tv_score1.visibility = View.VISIBLE
-                        tv_score2.visibility = View.VISIBLE
-                        val score1 = data.matchStatusCO?.homeTotalScore ?: 0
-                        val score2 = data.matchStatusCO?.awayTotalScore ?: 0
-                        tv_score1.text = "$score1"
-                        tv_score2.text = "$score2"
+                        tv_game_score_home.visibility = View.VISIBLE
+                        tv_game_score_away.visibility = View.VISIBLE
+                        val homeScore = data.matchInfo?.homeScore ?: 0
+                        val awayScore = data.matchInfo?.awayScore ?: 0
+                        tv_game_score_home.text = "$homeScore"
+                        tv_game_score_away.text = "$awayScore"
 
                         when {
-                            score1 > score2 -> {
-                                tv_score1.setTypeface(tv_score1.typeface, Typeface.BOLD)
-                                tv_score2.setTypeface(tv_score2.typeface, Typeface.NORMAL)
-                                tv_team1.setTypeface(tv_team1.typeface, Typeface.BOLD)
-                                tv_team2.setTypeface(tv_team2.typeface, Typeface.NORMAL)
+                            homeScore > awayScore -> {
+                                tv_game_score_home.setTypeface(
+                                    tv_game_score_home.typeface,
+                                    Typeface.BOLD
+                                )
+                                tv_game_score_away.setTypeface(
+                                    tv_game_score_away.typeface,
+                                    Typeface.NORMAL
+                                )
+                                tv_game_name_home.setTypeface(
+                                    tv_game_name_home.typeface,
+                                    Typeface.BOLD
+                                )
+                                tv_game_name_away.setTypeface(
+                                    tv_game_name_away.typeface,
+                                    Typeface.NORMAL
+                                )
                             }
-                            score1 < score2 -> {
-                                tv_score1.setTypeface(tv_score1.typeface, Typeface.NORMAL)
-                                tv_score2.setTypeface(tv_score2.typeface, Typeface.BOLD)
-                                tv_team1.setTypeface(tv_team1.typeface, Typeface.NORMAL)
-                                tv_team2.setTypeface(tv_team2.typeface, Typeface.BOLD)
+                            homeScore < awayScore -> {
+                                tv_game_score_home.setTypeface(
+                                    tv_game_score_home.typeface,
+                                    Typeface.NORMAL
+                                )
+                                tv_game_score_away.setTypeface(
+                                    tv_game_score_away.typeface,
+                                    Typeface.BOLD
+                                )
+                                tv_game_name_home.setTypeface(
+                                    tv_game_name_home.typeface,
+                                    Typeface.NORMAL
+                                )
+                                tv_game_name_away.setTypeface(
+                                    tv_game_name_away.typeface,
+                                    Typeface.BOLD
+                                )
                             }
                             else -> {
-                                tv_score1.setTypeface(tv_score1.typeface, Typeface.NORMAL)
-                                tv_score2.setTypeface(tv_score2.typeface, Typeface.NORMAL)
-                                tv_team1.setTypeface(tv_team1.typeface, Typeface.NORMAL)
-                                tv_team2.setTypeface(tv_team2.typeface, Typeface.NORMAL)
+                                tv_game_score_home.setTypeface(
+                                    tv_game_score_home.typeface,
+                                    Typeface.NORMAL
+                                )
+                                tv_game_score_away.setTypeface(
+                                    tv_game_score_away.typeface,
+                                    Typeface.NORMAL
+                                )
+                                tv_game_name_home.setTypeface(
+                                    tv_game_name_home.typeface,
+                                    Typeface.NORMAL
+                                )
+                                tv_game_name_away.setTypeface(
+                                    tv_game_name_away.typeface,
+                                    Typeface.NORMAL
+                                )
                             }
                         }
-
-                        tv_team1.text = data.match?.homeName
-                        tv_team2.text = data.match?.awayName
                     }
                     MatchType.AT_START -> {
                         tv_game_type.text = context.getString(R.string.home_tab_today)
 
-                        tv_score1.visibility = View.GONE
-                        tv_score2.visibility = View.GONE
+                        tv_game_score_home.visibility = View.GONE
+                        tv_game_score_away.visibility = View.GONE
 
-                        tv_team1.setTypeface(tv_team1.typeface, Typeface.NORMAL)
-                        tv_team2.setTypeface(tv_team2.typeface, Typeface.NORMAL)
-                        tv_team1.text = data.match?.homeName
-                        tv_team2.text = data.match?.awayName
-                    }
-                    else -> {}
-                }
-            }
-        }
-
-        private fun showOdds(data: GameBean) {
-            itemView.apply {
-                when (data.code) {
-                    SportType.FOOTBALL.code, SportType.BASKETBALL.code  -> {
-                        tv_play_type.text = context.getText(R.string.ou_hdp_hdp_title)
+                        tv_game_name_home.setTypeface(tv_game_name_home.typeface, Typeface.NORMAL)
+                        tv_game_name_away.setTypeface(tv_game_name_away.typeface, Typeface.NORMAL)
                     }
                     else -> {
-                        tv_play_type.text = context.getText(R.string.ou_hdp_1x2_title)
                     }
                 }
             }
         }
 
-        private fun showStartTime(startTime: Long?) {
+        private fun setupTime(data: MatchOdd) {
             itemView.apply {
-                if (startTime == null) {
-                    tv_match_status.visibility = View.GONE
-                    tv_match_time.visibility = View.GONE
-                } else {
-                    tv_match_status.visibility = View.VISIBLE
-                    tv_match_time.visibility = View.VISIBLE
-                    tv_match_status.text = TimeUtil.timeFormat(startTime, "MM/dd")
-                    tv_match_time.text = TimeUtil.timeFormat(startTime, "HH:mm")
+                when (matchType) {
+                    MatchType.IN_PLAY -> {
+                        tv_match_status.text = data.matchInfo?.statusName
+
+                        when (data.matchInfo?.sportType) {
+                            SportType.FOOTBALL -> { //足球
+                                data.leagueTime?.let { leagueTime ->
+                                    startTimer(leagueTime, false) { timeMillis ->
+                                        tv_match_time.text =
+                                            TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        data.leagueTime = (timeMillis / 1000).toInt()
+                                    }
+                                }
+                            }
+                            SportType.BASKETBALL -> { //籃球
+                                data.leagueTime?.let { leagueTime ->
+                                    startTimer(leagueTime, true) { timeMillis ->
+                                        tv_match_time.text =
+                                            TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        data.leagueTime = (timeMillis / 1000).toInt()
+                                    }
+                                }
+                            }
+                            else -> {
+                                stopTimer()
+                                tv_match_time.text = null
+                            }
+                        }
+                    }
+
+                    MatchType.AT_START -> {
+                        tv_match_status.text = data.matchInfo?.startDateDisplay
+
+                        data.matchInfo?.remainTime?.let { remainTime ->
+                            startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
+                                tv_match_time.text = String.format(
+                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                    TimeUtil.timeFormat(timeMillis, "mm")
+                                )
+
+                                data.matchInfo.remainTime = timeMillis
+                            }
+                        }
+                    }
+
+                    else -> {
+                        stopTimer()
+                        tv_match_status.text = data.matchInfo?.startDateDisplay
+                        tv_match_time.text = data.matchInfo?.startTimeDisplay
+                    }
                 }
             }
         }
 
-        private fun showTime(sec: Int?) {
-            if (sec == null) {
-                itemView.tv_match_time.visibility = View.GONE
-            } else {
-                itemView.tv_match_time.visibility = View.VISIBLE
-                itemView.tv_match_time.text = TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+        private fun setupOddButton(data: MatchOdd) {
+            itemView.apply {
+                val sportType = data.matchInfo?.sportType
+
+                tv_play_type.text = when (sportType) {
+                    SportType.FOOTBALL, SportType.BASKETBALL -> context.getText(R.string.ou_hdp_hdp_title)
+                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> context.getText(R.string.ou_hdp_1x2_title)
+                    else -> ""
+                }
+
+                val oddListHDP = when (sportType) {
+                    SportType.TENNIS -> {
+                        data.odds[PlayType.SET_HDP.code]
+                    }
+                    SportType.BASKETBALL -> {
+                        data.odds[PlayType.HDP_INCL_OT.code]
+                    }
+                    else -> {
+                        data.odds[PlayType.HDP.code]
+                    }
+                }
+
+                val oddList1x2 = when (sportType) {
+                    SportType.BASKETBALL -> {
+                        data.odds[PlayType.X12_INCL_OT.code]
+                    }
+                    else -> {
+                        data.odds[PlayType.X12.code]
+                    }
+                }
+
+                btn_match_odd1.apply {
+                    playType = when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            PlayType.HDP
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            PlayType.X12
+                        }
+                        else -> null
+                    }
+
+                    isSelected = when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            oddListHDP?.get(0)?.isSelected ?: false
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            oddList1x2?.get(0)?.isSelected ?: false
+                        }
+                        else -> {
+                            false
+                        }
+                    }
+
+                    betStatus = when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            if (oddListHDP == null || oddListHDP.size < 2) {
+                                BetStatus.LOCKED.code
+                            } else {
+                                oddListHDP[0]?.status ?: BetStatus.LOCKED.code
+                            }
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            if (oddList1x2 == null || oddList1x2.size < 2) {
+                                BetStatus.LOCKED.code
+                            } else {
+                                oddList1x2[0]?.status ?: BetStatus.LOCKED.code
+                            }
+                        }
+                        else -> {
+                            null
+                        }
+                    }
+
+                    this@ViewHolderHdpOu.setupOddState(
+                        this, when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                oddListHDP?.get(0)
+                            }
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                oddList1x2?.get(0)
+                            }
+                            else -> {
+                                null
+                            }
+                        }
+                    )
+
+                    onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                        override fun onOddStateChangedFinish() {
+                            when (sportType) {
+                                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                    oddListHDP?.get(0)?.oddState = OddState.SAME.state
+                                }
+                                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                    oddList1x2?.get(0)?.oddState = OddState.SAME.state
+                                }
+                            }
+                        }
+                    }
+
+                    odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
+                        ""
+                    } else {
+                        oddListHDP[0]?.spread
+                    }
+
+                    odd_hdp_bottom_text.text = when {
+                        (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
+                            oddListHDP[0]?.odds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
+                            oddListHDP[0]?.hkOdds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        else -> ""
+                    }
+
+                    odd_1x2_top_text.visibility = View.GONE
+
+                    odd_1x2_bottom_text.text = when {
+                        (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
+                            oddList1x2[0]?.odds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.HK) -> {
+                            oddList1x2[0]?.hkOdds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        else -> ""
+                    }
+
+                    setOnClickListener {
+                        when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                if (oddListHDP != null && oddListHDP.size >= 2) {
+                                    oddListHDP[0]?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            itemView.tv_play_type.text.toString(),
+                                            data.matchInfo.homeName
+                                        )
+                                    }
+                                }
+                            }
+
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                if (oddList1x2 != null && oddList1x2.size >= 2) {
+                                    oddList1x2[0]?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            itemView.tv_play_type.text.toString(),
+                                            data.matchInfo.homeName
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                btn_match_odd2.apply {
+                    playType = when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            PlayType.HDP
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            PlayType.X12
+                        }
+                        else -> null
+                    }
+
+                    isSelected = when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            oddListHDP?.get(1)?.isSelected ?: false
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            oddList1x2?.get(1)?.isSelected ?: false
+                        }
+                        else -> {
+                            false
+                        }
+                    }
+
+                    betStatus = when (sportType) {
+                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            if (oddListHDP == null || oddListHDP.size < 2) {
+                                BetStatus.LOCKED.code
+                            } else {
+                                oddListHDP[1]?.status ?: BetStatus.LOCKED.code
+                            }
+                        }
+                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            if (oddList1x2 == null || oddList1x2.size < 2) {
+                                BetStatus.LOCKED.code
+                            } else {
+                                oddList1x2[1]?.status ?: BetStatus.LOCKED.code
+                            }
+                        }
+                        else -> {
+                            null
+                        }
+                    }
+
+                    this@ViewHolderHdpOu.setupOddState(
+                        this, when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                oddListHDP?.get(1)
+                            }
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                oddList1x2?.get(1)
+                            }
+                            else -> {
+                                null
+                            }
+                        }
+                    )
+
+                    onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                        override fun onOddStateChangedFinish() {
+                            when (sportType) {
+                                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                    oddListHDP?.get(1)?.oddState = OddState.SAME.state
+                                }
+                                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                    oddList1x2?.get(1)?.oddState = OddState.SAME.state
+                                }
+                            }
+                        }
+                    }
+
+                    odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
+                        ""
+                    } else {
+                        oddListHDP[1]?.spread
+                    }
+
+                    odd_hdp_bottom_text.text = when {
+                        (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
+                            oddListHDP[1]?.odds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
+                            oddListHDP[1]?.hkOdds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        else -> ""
+                    }
+
+                    odd_1x2_top_text.visibility = View.GONE
+
+                    odd_1x2_bottom_text.text = when {
+                        (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
+                            oddList1x2[1]?.odds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.HK) -> {
+                            oddList1x2[1]?.hkOdds?.let {
+                                TextUtil.formatForOdd(it)
+                            }
+                        }
+                        else -> ""
+                    }
+
+                    setOnClickListener {
+                        when (sportType) {
+                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                                if (oddListHDP != null && oddListHDP.size >= 2) {
+                                    oddListHDP[1]?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            itemView.tv_play_type.text.toString(),
+                                            data.matchInfo.awayName
+                                        )
+                                    }
+                                }
+                            }
+
+                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                if (oddList1x2 != null && oddList1x2.size >= 2) {
+                                    oddList1x2[1]?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            itemView.tv_play_type.text.toString(),
+                                            data.matchInfo.awayName
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        private fun startFTTimer(matchClockCO: MatchClockCO?) {
-            //足球每秒時間往上加
-            startTimer {
-                matchClockCO?.matchTime = matchClockCO?.matchTime?.let { it + 1 }
-                showTime(matchClockCO?.matchTime)
-            }
-        }
+        fun startTimer(
+            startTime: Int,
+            isDecrease: Boolean,
+            timerListener: (timeMillis: Long) -> Unit
+        ) {
+            var timeMillis = startTime * 1000L
 
-        private fun startBKTimer(matchClockCO: MatchClockCO?) {
-            //籃球每秒時間倒數
-            startTimer {
-                matchClockCO?.remainingTimeInPeriod =
-                    matchClockCO?.remainingTimeInPeriod?.let { it - 1 }
-                showTime(matchClockCO?.remainingTimeInPeriod)
-            }
-        }
-
-        private fun startTimer(timerTask: () -> Unit) {
             mTimerMap[adapterPosition]?.cancel()
             stopTimer()
+
             timer = Timer()
             timer?.schedule(object : TimerTask() {
                 override fun run() {
+                    when {
+                        timeMillis < 0 -> timeMillis = 0
+                        isDecrease -> timeMillis -= 1000
+                        !isDecrease -> timeMillis += 1000
+                    }
                     Handler(Looper.getMainLooper()).post {
-                        timerTask()
+                        timerListener(timeMillis)
                     }
                 }
             }, 1000L, 1000L)
+
             mTimerMap[adapterPosition] = timer
         }
 
         fun stopTimer() {
             timer?.cancel()
+            timer = null
         }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = mOddStateRefreshListener
     }
 
+}
+
+interface OnClickOddListener {
+    fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String)
 }
