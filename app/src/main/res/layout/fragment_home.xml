@@ -301,7 +301,7 @@
                 </LinearLayout>
 
                 <RadioGroup
-                    android:id="@+id/table_bar"
+                    android:id="@+id/rg_table_bar"
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
                     android:gravity="center"

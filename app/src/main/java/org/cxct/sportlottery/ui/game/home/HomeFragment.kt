@@ -38,7 +38,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 /**
  * TODO:
  * 1. 上下滑動 ToolBar 固定
- * 2. 滾球盤、即將開賽盤 賽事為零隱藏 tab
+ * 2. 賽事精選
  * 3. 賽事推薦
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -141,6 +141,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         mRvGameTable4Adapter.setData(result?.matchPreloadData)
+    }
+
+    //TableBar 判斷是否隱藏
+    private fun judgeTableBar() {
+        val inPlayCount = mInPlayResult?.matchPreloadData?.num?: 0
+        val atStartCount = mAtStartResult?.matchPreloadData?.num?: 0
+        if (inPlayCount == 0) {
+            mSelectMatchType = MatchType.AT_START
+            rb_in_play.visibility = View.GONE
+        } else {
+            mSelectMatchType = MatchType.IN_PLAY
+            rb_in_play.visibility = View.VISIBLE
+        }
+
+        rb_soon.visibility = if (atStartCount == 0) View.GONE else View.VISIBLE
+
+        rg_table_bar.visibility =
+            if (rb_in_play.visibility == View.GONE && rb_soon.visibility == View.GONE)
+                View.GONE else View.VISIBLE
     }
 
     private fun addOddsDialog(
@@ -259,6 +278,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 mInPlayResult = result
+                judgeTableBar()
                 if (mSelectMatchType == MatchType.IN_PLAY)
                     refreshTable(mSelectMatchType, mInPlayResult)
             }
@@ -267,6 +287,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.matchPreloadAtStart.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 mAtStartResult = result
+                judgeTableBar()
                 if (mSelectMatchType == MatchType.AT_START)
                     refreshTable(mSelectMatchType, mAtStartResult)
             }
