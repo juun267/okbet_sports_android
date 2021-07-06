@@ -4,28 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.widget.NestedScrollView
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 
 class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
     private val recordDiffAdapter by lazy { TransactionRecordDiffAdapter() }
-    private val recyclerViewScrollListener: RecyclerView.OnScrollListener by lazy{ object: RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-            super.onScrolled(recyclerView, dx, dy)
-            /*recyclerView.layoutManager?.let {
-                val visibleViewCount = it.childCount
-                val totalItem = it.itemCount
-                val firstVisibleItemPosition = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                if(firstVisibleItemPosition + visibleViewCount == totalItem)
-                    viewModel.getBetList()
-            }*/
-            if(!recyclerView.canScrollVertically(1)){
+    private val nestedScrollViewListener =
+        NestedScrollView.OnScrollChangeListener { scrollView, _, scrollY, _, _ ->
+            val nestedTopView = scrollView.getChildAt(0)
+            val nestedScrollViewHeight = scrollView.height
+            if (nestedTopView.height <= scrollY + nestedScrollViewHeight) {
                 viewModel.getBetList()
             }
         }
-    }}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,19 +42,17 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     private fun initRecyclerView() {
         rv_record.apply {
             adapter = recordDiffAdapter
-            addOnScrollListener(recyclerViewScrollListener)
         }
+        scroll_view.setOnScrollChangeListener(nestedScrollViewListener)
     }
 
     private fun initObserve() {
-        //TODO observe data
         viewModel.betListData.observe(this, {
             recordDiffAdapter.setupBetList(it)
         })
     }
 
     private fun getBetListData() {
-        //TODO 設置投注列表資料
         viewModel.getBetList(true)
     }
 }
