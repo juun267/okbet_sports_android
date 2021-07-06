@@ -316,9 +316,6 @@ class GameViewModel(
     //獲取體育菜單
     fun getSportMenu() {
         getSportMenu(null)
-        //TODO Bill Test
-//        getMyFavorite()
-//        saveMyFavorite()
     }
 
     //儲存我的最愛
@@ -341,15 +338,12 @@ class GameViewModel(
             }
 
             if (result?.success == true){
-                //TODO Bill 等馬克改玩API
                 var favoriteList = listOf<String>()
                 if (!result.t?.sport.isNullOrEmpty()) {
                    favoriteList=TextUtil.split(result.t?.sport ?: "")
                 }
                 refreshMenu(favoriteList)
-                Timber.i("Bill=====> $result,Request:${saveMyFavoriteRequest}\n,result:${result.t}")
             }
-
         }
     }
 
@@ -360,13 +354,10 @@ class GameViewModel(
             val result = doNetwork(androidContext) {
                 sportMenuRepository.getMyFavorite()
             }
-//            Timber.i("Bill=====> $result")
             var favoriteList = listOf<String>()
             if (!result?.t?.sport.isNullOrEmpty()) {
                 favoriteList = TextUtil.split(result?.t?.sport ?: "")
             }
-            Timber.w("Bill=====>favoriteList: $favoriteList")
-
             refreshMenu(favoriteList)
         }
     }
@@ -376,7 +367,7 @@ class GameViewModel(
             var myFavoriteList: ArrayList<MenuItemData> = ArrayList()
             //新增置頂
             favoriteList.forEach {
-                when (it) { //TODO Bill 這裡有順序好像就可以用同一個RV  先用兩個String List 比對 找到(好像沒辦法因為上面是隨機的)，明天測試
+                when (it) {
                     SportType.FOOTBALL.code -> myFavoriteList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
@@ -412,7 +403,6 @@ class GameViewModel(
                 }
             }
 
-//            Timber.i("Bill=====>上面: $myFavoriteList")
             _favoriteItemList.postValue(Event(myFavoriteList))
             //沒被置頂的
             var mData: MutableList<MenuItemData> = mutableListOf(
@@ -449,7 +439,6 @@ class GameViewModel(
                 }
             }
 
-//            Timber.i("Bill=====>下面: $mData")
             _menuSportItemList.postValue(Event(mData) as Event<ArrayList<MenuItemData>>?)
             _isLoading.value = false
         }
@@ -464,8 +453,6 @@ class GameViewModel(
                     TimeUtil.getTodayStartTimeStamp().toString()
                 )
             }
-//            Timber.i("Bill=====> $result")
-
             postHomeCardCount(result)
 
             result?.let {
