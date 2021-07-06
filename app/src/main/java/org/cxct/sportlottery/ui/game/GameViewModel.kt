@@ -16,6 +16,8 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
+import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
+import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -157,6 +159,14 @@ class GameViewModel(
     private val _matchPreloadAtStart = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadAtStart: LiveData<Event<MatchPreloadResult>>
         get() = _matchPreloadAtStart
+
+    private val _highlightMenuResult = MutableLiveData<Event<MatchCategoryResult>>()
+    val highlightMenuResult: LiveData<Event<MatchCategoryResult>>
+        get() = _highlightMenuResult
+
+    private val _highlightMatchResult = MutableLiveData<Event<MatchCategoryResult>>()
+    val highlightMatchResult: LiveData<Event<MatchCategoryResult>>
+        get() = _highlightMatchResult
 
     private val _allFootballCount = MutableLiveData<Int>()
     val allFootballCount: LiveData<Int> //全部足球比賽的數量
@@ -438,6 +448,39 @@ class GameViewModel(
                 }
 
                 _matchPreloadAtStart.postValue(Event(result))
+            }
+        }
+    }
+
+    //遊戲大廳首頁: 精選賽事菜單
+    fun getHighlightMenu() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.matchCategoryService.getHighlightMenu(
+                    MatchCategoryRequest(
+                        startTime = TimeUtil.getTodayStartTimeStamp(),
+                        endTime = TimeUtil.getTodayEndTimeStamp()
+                    )
+                )
+            }?.let { result ->
+                _highlightMenuResult.postValue(Event(result))
+            }
+        }
+    }
+
+    //遊戲大廳首頁: 精選賽事資料
+    fun getHighlightMatch(gameType: String) {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.matchCategoryService.getHighlightMatch(
+                    MatchCategoryRequest(
+                        startTime = TimeUtil.getTodayStartTimeStamp(),
+                        endTime = TimeUtil.getTodayEndTimeStamp(),
+                        gameType = gameType
+                    )
+                )
+            }?.let { result ->
+                _highlightMatchResult.postValue(Event(result))
             }
         }
     }

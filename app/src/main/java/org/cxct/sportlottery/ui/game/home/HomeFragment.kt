@@ -26,6 +26,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeAdapter
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
@@ -33,6 +34,7 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
+import timber.log.Timber
 
 
 /**
@@ -66,6 +68,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         initTable()
+        initHighlight()
         initEvent()
         initObserve()
         observeSocketData()
@@ -97,6 +100,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             refreshTable(mSelectMatchType, mAtStartResult)
             viewModel.switchMatchTypeByHome(mSelectMatchType)
         }
+    }
+
+    private fun initHighlight() {
+        //TODO simon test 串接精選賽事
+        rv_highlight_sport_type.adapter = SportTypeAdapter()
     }
 
     private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
@@ -318,6 +326,18 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 mRvGameTable4Adapter.oddsType = oddsType
             }
         })
+
+        viewModel.highlightMenuResult.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                //TODO simon test 串接精選賽事
+            }
+        })
+
+        viewModel.highlightMatchResult.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                //TODO simon test 串接精選賽事
+            }
+        })
     }
 
     private fun observeSocketData() {
@@ -522,7 +542,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun queryData() {
+        //滾球盤、即將開賽盤
         viewModel.getMatchPreload()
+
+        //精選賽事
+        viewModel.getHighlightMenu()
     }
 
     private fun updateInPlayUI(gameCateList: List<GameCateData>?) {

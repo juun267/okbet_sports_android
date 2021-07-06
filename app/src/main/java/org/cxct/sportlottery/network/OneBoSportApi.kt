@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterService
 import org.cxct.sportlottery.network.league.LeagueService
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.network.match.MatchService
+import org.cxct.sportlottery.network.matchCategory.MatchCategoryService
 import org.cxct.sportlottery.network.matchresult.MatchResultService
 import org.cxct.sportlottery.network.message.MessageService
 import org.cxct.sportlottery.network.money.MoneyService
@@ -161,4 +162,8 @@ object OneBoSportApi {
             .retrofit
             .create(PlayQuotaComService::class.java)
 
+    val matchCategoryService: MatchCategoryService
+        get() = RequestManager.instance
+            .retrofit
+            .create(MatchCategoryService::class.java)
 }

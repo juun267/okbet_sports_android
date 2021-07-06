@@ -194,6 +194,9 @@ object Constants {
     const val QUERY_FIRST_ORDERS = "/api/front/thirdapi/queryFirstOrders"
     const val QUERY_SECOND_ORDERS = "/api/front/thirdapi/querySecondOrders"
 
+    const val MATCH_CATEGORY_SPECIAL_MATCH = "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
+    const val MATCH_CATEGORY_SPECIAL_MENU = "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000

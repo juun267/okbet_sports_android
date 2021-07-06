@@ -24,7 +24,7 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBackground"
+            android:background="@color/colorWhite"
             android:fillViewport="true">
 
             <LinearLayout
@@ -354,7 +354,62 @@
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/home_game_table_4" />
+
+                <LinearLayout
+                    android:id="@+id/highlight_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                    <TextView
+                        android:id="@+id/tv_highlight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="@string/label_highlight"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/textSize20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_highlight_sport_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="3"
+                    tools:listitem="@layout/itemview_sport_type_v4" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_game_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
                     tools:listitem="@layout/home_game_table_4" />
 
             </LinearLayout>

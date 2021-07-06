@@ -128,6 +128,7 @@
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
+    <string name="label_highlight">精选</string>
 
     <string name="label_sport_game">赛程</string>
     <string name="label_account_history">账戶历史</string>
