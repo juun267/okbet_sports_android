@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
+import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -68,6 +69,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private val matchCategoryPagerAdapter by lazy {
+        MatchCategoryViewPagerAdapter()
+    }
+
+    private val playCategoryAdapter by lazy {
+        PlayCategoryAdapter().apply {
+            playCategoryListener = PlayCategoryListener {
+                viewModel.switchPlayCategory(args.matchType, it)
+                loading()
+            }
+        }
+    }
+
     private val countryAdapter by lazy {
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
@@ -78,9 +92,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     pinLeague(league)
                 },
                 { league ->
-                    //TODO save selected league and show submit button
-                    league.isSelected = !league.isSelected
-                    this.notifyDataSetChanged()
+                    viewModel.selectLeague(league)
                 })
         }
     }
@@ -134,6 +146,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             setupToolbar(this)
             setupOddTab(this)
             setupSportBackground(this)
+            setupMatchCategoryPager(this)
+            setupPlayCategory(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -233,6 +247,38 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun setupMatchCategoryPager(view: View) {
+        view.match_category_pager.adapter = matchCategoryPagerAdapter
+        view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
+        view.game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+    private fun setupPlayCategory(view: View) {
+        view.game_play_category.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            this.adapter = playCategoryAdapter
+
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_play_category
+                )
+            )
+
+            visibility =
+                if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+        }
+    }
+
     private fun setupGameRow(view: View) {
         view.game_filter_type_list.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -276,7 +322,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getGameHallList(args.matchType, true)
+        viewModel.getGameHallList(args.matchType, true, isReloadPlayCate = true)
         loading()
     }
 
@@ -311,10 +357,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.curPlayType.observe(viewLifecycleOwner, {
-            leagueAdapter.playType = it
-        })
-
         viewModel.curDate.observe(this.viewLifecycleOwner, {
             gameTypeAdapter.data = it
         })
@@ -332,14 +374,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
-                    val sportType = when (oddsListResult.oddsListData?.sport?.code) {
-                        SportType.FOOTBALL.code -> SportType.FOOTBALL
-                        SportType.BASKETBALL.code -> SportType.BASKETBALL
-                        SportType.BADMINTON.code -> SportType.BADMINTON
-                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-                        SportType.TENNIS.code -> SportType.TENNIS
-                        else -> null
-                    }
+                    val sportType = SportType.getSportType(oddsListResult.oddsListData?.sport?.code)
 
                     game_list.apply {
                         adapter = leagueAdapter.apply {
@@ -448,6 +483,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
             }
+        })
+
+        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner, {
+            countryAdapter.apply {
+                data.forEach { row ->
+                    row.list.forEach { league ->
+                        league.isSelected = it.any { it.id == league.id }
+                    }
+                }
+
+                notifyDataSetChanged()
+            }
+        })
+
+        viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.data = it
         })
     }
 

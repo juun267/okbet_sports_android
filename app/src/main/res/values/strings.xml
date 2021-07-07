@@ -163,6 +163,11 @@
     <string name="poker_game">棋牌游戏</string>
     <string name="slot_game">电子游戏</string>
     <string name="fish_game">捕鱼游戏</string>
+    <string name="price">价格</string>
+    <string name="menu">菜单</string>
+    <string name="premium_odds">特优赔率</string>
+    <string name="infomation_center">信息中心</string>
+
 
     <!-- MenuFragment -->
     <string name="profile_center">个人中心</string>
@@ -376,6 +381,8 @@
     <string name="game_tab_league_odd">赛事</string>
     <string name="game_tab_outright_odd">冠军</string>
     <string name="game_tab_price_boosts_odd">特优赔率</string>
+
+    <string name="button_league_submit">提交 (%d)</string>
 
     <string name="total_bet_amount">总投注额：</string>
 
@@ -693,6 +700,7 @@
     <string name="live">真人</string>
     <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容，\n致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
     <string name="sport_bet_record">体育投注记录</string>
+    <string name="my_favorite">我的赛事</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
     <string name="visit_first">來去逛逛</string>

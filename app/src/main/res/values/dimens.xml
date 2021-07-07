@@ -27,6 +27,7 @@
     <dimen name="recyclerview_item_dec_spec_sport_type">10dp</dimen>
     <dimen name="recyclerview_item_dec_spec_date">14dp</dimen>
     <dimen name="recyclerview_item_dec_spec_bet_info_list">4dp</dimen>
+    <dimen name="recyclerview_item_dec_spec_play_category">12dp</dimen>
 
     <dimen name="recyclerview_item_dec_spec_odds_detail_game_type_grid_2_horizontal">16dp</dimen>
     <dimen name="recyclerview_item_dec_spec_odds_detail_game_type_grid_2_vertical">16dp</dimen>

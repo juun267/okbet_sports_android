@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
@@ -26,12 +27,14 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
+import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -199,17 +202,26 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
-            //選單選擇結束要收起選單
-            val menuLeftFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu_left) as MenuLeftFragment
-            menuLeftFrag.setDownMenuListener { drawer_layout.closeDrawers() }
-            menuLeftFrag.setMenuLeftListener(mMenuLeftListener)
-            nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
-
+            //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                if (drawer_layout.isDrawerOpen(nav_left)) drawer_layout.closeDrawers()
-                else {
-                    drawer_layout.openDrawer(nav_left)
+                //TODO Bill 未登錄會有問題，如果沒登入先不給點，等PM回覆
+                when (viewModel.userInfo.value?.testFlag) {
+                    TestFlag.NORMAL.index -> {
+                        val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
+                            override fun onClick(menuStatus: Int) {
+                                when(menuStatus){
+                                    MenuStatusType.CLOSE.ordinal -> onBackPressed()
+                                }
+                            }
+                        })
+
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
+                            .add(R.id.fl_left_menu,leftMenuFragment)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    else -> { }
                 }
             }
         } catch (e: Exception) {
@@ -217,25 +229,36 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun initBottomNavigation(){
+    enum class MenuStatusType{ CLOSE }
+
+    interface OnMenuClickListener {
+        fun onClick(menuStatus: Int)
+    }
+
+    private fun initBottomNavigation() {
         initNavigationView()
         initNavigationListener()
     }
 
-    private fun initNavigationView(){
+    private fun initNavigationView() {
         try {
-                //TODO 投注單的文字顏色調整
-            (bottom_navigation_sport[0] as BottomNavigationMenuView).let{ navigationMenuView ->
-                navigationMenuView[2].setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlue))
+            //TODO 投注單的文字顏色調整
+            (bottom_navigation_sport[0] as BottomNavigationMenuView).let { navigationMenuView ->
+                navigationMenuView[2].setBackgroundColor(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.colorBlue
+                    )
+                )
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun initNavigationListener(){
+    private fun initNavigationListener() {
         bottom_navigation_sport.setOnNavigationItemSelectedListener {
-            when(it.itemId){
+            when (it.itemId) {
                 R.id.home_page -> {
                     //TODO navigate sport home
                     true
@@ -485,6 +508,18 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             it.getContentIfNotHandled()
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
+        })
+
+        viewModel.leagueSelectedList.observe(this, {
+            game_submit.apply {
+                visibility = if (it.isEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+                text = getString(R.string.button_league_submit, it.size)
+            }
         })
     }
 
