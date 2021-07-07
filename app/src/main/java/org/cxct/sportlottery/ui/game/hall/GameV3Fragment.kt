@@ -374,14 +374,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
-                    val sportType = when (oddsListResult.oddsListData?.sport?.code) {
-                        SportType.FOOTBALL.code -> SportType.FOOTBALL
-                        SportType.BASKETBALL.code -> SportType.BASKETBALL
-                        SportType.BADMINTON.code -> SportType.BADMINTON
-                        SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-                        SportType.TENNIS.code -> SportType.TENNIS
-                        else -> null
-                    }
+                    val sportType = SportType.getSportType(oddsListResult.oddsListData?.sport?.code)
 
                     game_list.apply {
                         adapter = leagueAdapter.apply {

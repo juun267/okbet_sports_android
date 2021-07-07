@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
@@ -65,6 +66,7 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -85,6 +87,9 @@ import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.sport.MyFavoriteBaseResult
+import org.cxct.sportlottery.network.sport.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.sport.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.SportQueryResult
 import org.cxct.sportlottery.network.third_game.AutoTransferResult
@@ -185,6 +190,18 @@ object ErrorUtils {
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SportMenuResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.MYFAVORITE_QUERY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportMenuFavoriteResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.MYFAVORITE_MATCH_QUERY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MyFavoriteMatchResult(it.code, it.msg, it.success, null,null) as T
+                    }
+                    (url.contains(Constants.MYFAVORITE_SAVE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MyFavoriteBaseResult(it.code, it.msg, it.success,null) as T
                     }
                     (url.contains(LEAGUE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
