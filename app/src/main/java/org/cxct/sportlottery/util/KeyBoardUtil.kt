@@ -11,6 +11,7 @@ import org.cxct.sportlottery.ui.common.CustomKeyBoardView
 import org.cxct.sportlottery.ui.common.KeyBoardCode
 
 
+@Suppress("DEPRECATION")
 class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val parent: View) :
     OnKeyboardActionListener {
 
@@ -53,13 +54,13 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
         val editable = mEditText.text
         val start = mEditText.selectionStart
         when (primaryCode) {
-            KeyBoardCode.DELETE.code -> if (editable != null && editable.isNotEmpty()) {
+            Keyboard.KEYCODE_DELETE -> if (editable != null && editable.isNotEmpty()) {
                 if (start > 0) {
                     editable.delete(start - 1, start)
                 }
             }
 
-            KeyBoardCode.DONE.code -> {
+            Keyboard.KEYCODE_DONE -> {
                 hideKeyboard()
             }
 

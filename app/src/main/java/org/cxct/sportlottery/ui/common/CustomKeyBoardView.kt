@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.common
 
+
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -12,6 +13,8 @@ import android.util.AttributeSet
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
 
+
+@Suppress("DEPRECATION")
 class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView(context, attrs) {
 
     private var paint: Paint = Paint()
