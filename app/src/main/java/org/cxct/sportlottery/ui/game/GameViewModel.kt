@@ -223,6 +223,10 @@ class GameViewModel(
     private var sportQueryData: SportQueryData? = null
 
 
+    init {
+        initLeftMenuSportItem()
+    }
+
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
         matchType: MatchType,
@@ -385,85 +389,54 @@ class GameViewModel(
     }
 
     fun refreshMenu(favoriteList: List<String>) {
-        viewModelScope.launch {
-            val myFavoriteList: ArrayList<MenuItemData> = ArrayList()
-            //新增置頂
-            favoriteList.forEach {
-                when (it) {
-                    SportType.FOOTBALL.code -> myFavoriteList.add(
+        val menuSportItemList = _menuSportItemList.value?.peekContent()?.map {
+            it.apply {
+                isSelected = if (favoriteList.contains(it.sportType)) 1 else 0
+            }
+        } ?: mutableListOf()
+
+        val favoriteItemList = menuSportItemList.filter {
+            it.isSelected == 1
+        }
+
+        _menuSportItemList.postValue(Event(ArrayList(menuSportItemList)))
+        _favoriteItemList.postValue(Event(ArrayList(favoriteItemList)))
+        _isLoading.value = false
+    }
+
+    private fun initLeftMenuSportItem() {
+        _menuSportItemList.postValue(
+            Event(
+                ArrayList(
+                    listOf(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             androidContext.getString(R.string.soccer),
                             SportType.FOOTBALL.code,
-                            1
-                        )
-                    )
-                    SportType.BASKETBALL.code -> myFavoriteList.add(
+                            0
+                        ),
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_bk_v4,
                             androidContext.getString(R.string.basketball),
                             SportType.BASKETBALL.code,
-                            1
-                        )
-                    )
-                    SportType.TENNIS.code -> myFavoriteList.add(
+                            0
+                        ),
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_tn_v4,
                             androidContext.getString(R.string.tennis),
                             SportType.TENNIS.code,
-                            1
-                        )
-                    )
-                    SportType.VOLLEYBALL.code -> myFavoriteList.add(
+                            0
+                        ),
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_vb_v4,
                             androidContext.getString(R.string.volleyball),
                             SportType.VOLLEYBALL.code,
-                            1
+                            0
                         )
                     )
-                }
-            }
-
-            _favoriteItemList.postValue(Event(myFavoriteList))
-            //沒被置頂的
-            val mData: MutableList<MenuItemData> = mutableListOf(
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_ft_v4,
-                    androidContext.getString(R.string.soccer),
-                    SportType.FOOTBALL.code,
-                    0
-                ),
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_bk_v4,
-                    androidContext.getString(R.string.basketball),
-                    SportType.BASKETBALL.code,
-                    0
-                ),
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_tn_v4,
-                    androidContext.getString(R.string.tennis),
-                    SportType.TENNIS.code,
-                    0
-                ),
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_vb_v4,
-                    androidContext.getString(R.string.volleyball),
-                    SportType.VOLLEYBALL.code,
-                    0
                 )
             )
-
-            mData.forEach { menuItemData ->
-                favoriteList.forEach {
-                    if (menuItemData.sportType == it)
-                        menuItemData.isSelected = 1
-                }
-            }
-
-            _menuSportItemList.postValue(Event(mData as ArrayList<MenuItemData>))
-            _isLoading.value = false
-        }
+        )
     }
 
     private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
