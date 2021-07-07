@@ -35,7 +35,7 @@ data class MatchOdd(
     @Json(name = "spread")
     val spread: String,
     @Json(name = "startTime")
-    val startTime: Long,
+    val startTime: Long?,
     @Json(name = "status")
     val status: Int
 )
