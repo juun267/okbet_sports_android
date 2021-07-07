@@ -75,7 +75,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get()) }
-        viewModel { AccountHistoryViewModel(get(), get(), get(), get()) }
+        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryNextViewModel(get(), get(), get(), get()) }
     }
 

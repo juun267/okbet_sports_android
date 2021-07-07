@@ -9,32 +9,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_account_history.*
 import kotlinx.android.synthetic.main.fragment_account_history.iv_scroll_to_top
 import kotlinx.android.synthetic.main.fragment_account_history.status_selector
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.component.StatusSheetData
-import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 
 class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
 //    private val mNavController by lazy { findNavController(R.id.game_container) }
 
     private val betStatusList by lazy {
-        listOf(StatusSheetData("0", context?.getString(R.string.all_sport)),
-               StatusSheetData("1", context?.getString(R.string.all_sport)),
-               StatusSheetData("2", context?.getString(R.string.all_sport)))
+        listOf(StatusSheetData("", context?.getString(R.string.all_sport)),
+               StatusSheetData("FT", context?.getString(R.string.soccer)),
+               StatusSheetData("BK", context?.getString(R.string.basketball)),
+               StatusSheetData("TN", context?.getString(R.string.tennis)),
+               StatusSheetData("VB", context?.getString(R.string.volleyball)),
+               StatusSheetData("BM", context?.getString(R.string.badminton)))
     }
-
     private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
         it.let { data ->
             Log.e(">>>", "clicked, data = $data")

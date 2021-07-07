@@ -19,7 +19,7 @@ import org.cxct.sportlottery.ui.component.StatusSheetData
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(AccountHistoryNextViewModel::class) {
 
-//    private val args: AccountHistoryNextFragmentArgs by navArgs()
+    private val args: AccountHistoryNextFragmentArgs by navArgs()
 
     private val dateStatusList by lazy {
         listOf(StatusSheetData("0", context?.getString(R.string.sunday)),
@@ -39,6 +39,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
 
     private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
         it.let { data ->
+
         }
     })
 /*

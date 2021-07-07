@@ -12,10 +12,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
+import org.cxct.sportlottery.databinding.ItemAccountHistoryNextTotalBinding
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
 
 class AccountHistoryAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -31,7 +31,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
+    fun addFooterAndSubmitList(list: MutableList<Row>, isLastPage: Boolean) {
         adapterScope.launch {
             val items = when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
@@ -61,6 +61,8 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
             }
 
             is FooterViewHolder -> {
+                val data = getItem(position) as DataItem.Item
+                holder.bind(data.row)
             }
 
             is NoDataViewHolder -> {
@@ -95,11 +97,21 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
 
     }
 
-    class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        companion object {
-            fun from(parent: ViewGroup) =
-                FooterViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
+    class FooterViewHolder private constructor(val binding: ItemAccountHistoryNextTotalBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: Row) {
+            binding.row = data
+            binding.textUtil = TextUtil
+            binding.executePendingBindings()
         }
+
+        companion object {
+            fun from(parent: ViewGroup): RecyclerView.ViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ItemAccountHistoryNextTotalBinding.inflate(layoutInflater, parent, false)
+                return FooterViewHolder(binding)
+            }
+        }
+
     }
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {

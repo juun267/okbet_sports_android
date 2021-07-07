@@ -56,9 +56,6 @@
                 android:name="matchInfoList"
                 app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
         </action>
-        <action
-            android:id="@+id/action_homeFragment_to_accountHistoryFragment"
-            app:destination="@id/accountHistoryFragment" />
 
     </fragment>
 
@@ -352,27 +349,5 @@
         </action>
     </fragment>
 
-    <fragment
-        android:id="@+id/accountHistoryFragment"
-        android:name="org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryFragment"
-        android:label="AccountHistoryFragment">
-        <action
-            android:id="@+id/action_accountHistoryFragment_to_accountHistoryNextFragment"
-            app:destination="@id/accountHistoryNextFragment"
-            app:popUpTo="@id/accountHistoryFragment">
-            <argument
-                android:name="row"
-                app:argType="org.cxct.sportlottery.network.bet.list.Row" />
-        </action>
-    </fragment>
-
-    <fragment
-        android:id="@+id/accountHistoryNextFragment"
-        android:name="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
-        android:label="AccountHistoryNextFragment">
-        <argument
-            android:name="row"
-            app:argType="org.cxct.sportlottery.network.bet.list.Row" />
-    </fragment>
 
 </navigation>
