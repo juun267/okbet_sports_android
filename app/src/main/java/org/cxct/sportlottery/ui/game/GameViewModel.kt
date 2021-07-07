@@ -439,6 +439,19 @@ class GameViewModel(
         )
     }
 
+    fun pinFavoriteSport(sportType: String) {
+        val favoriteSportList = _favoriteItemList.value?.peekContent()?.map {
+            it.sportType
+        }?.toMutableList() ?: mutableListOf()
+
+        when (favoriteSportList.contains(sportType)) {
+            true -> favoriteSportList.remove(sportType)
+            false -> favoriteSportList.add(sportType)
+        }
+
+        saveFavorite(FavoriteType.SPORT, favoriteSportList)
+    }
+
     private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
