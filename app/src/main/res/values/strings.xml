@@ -742,4 +742,7 @@
     <string name="win_lose">赢 / 输</string>
     <string name="all_sport">所有体育</string>
 
+    <!--keyboard-->
+    <string name="keyboard_done">已完成</string>
+
 </resources>
