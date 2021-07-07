@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_left_menu.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -14,14 +15,15 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : BaseFragment<GameViewModel>(GameViewModel::class) {
 
     //點擊置頂後
-    private var unselectedAdapter = LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { sportType ->
-        viewModel.saveMyFavorite(sportType)
-    })
+    private var unselectedAdapter =
+        LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { sportType ->
+            viewModel.pinFavoriteSport(sportType)
+        })
 
     //取消置頂
     var selectedAdapter =
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { sportType ->
-            viewModel.saveMyFavorite(sportType)
+            viewModel.pinFavoriteSport(sportType)
         })
 
     override fun onCreateView(
@@ -54,7 +56,7 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : Ba
     }
 
     private fun initData() {
-        viewModel.getMyFavorite()
+        viewModel.getFavorite(FavoriteType.SPORT)
     }
 
     fun initObserve(){
