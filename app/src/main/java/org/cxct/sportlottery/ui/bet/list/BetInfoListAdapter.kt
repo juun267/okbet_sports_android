@@ -101,7 +101,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange_light)
                 }
             } else {
-                val quota = it.toLong()
+                val quota = it.toDouble()
                 when {
                     quota > parlayOdd?.max ?: 0 -> {
                         inputError = true

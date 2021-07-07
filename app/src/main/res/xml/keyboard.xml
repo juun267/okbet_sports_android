@@ -1,82 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
-    android:keyHeight="40dp">
-    <Row
-        android:horizontalGap="5dp"
-        android:keyWidth="90dp"
-        android:verticalGap="10dp">
-        <Key
-            android:codes="@string/keyboard_code_plus_100"
-            android:keyEdgeFlags="left"
-            android:keyLabel="+100" />
-        <Key
-            android:codes="@string/keyboard_code_plus_1000"
-            android:keyLabel="+1000" />
-        <Key
-            android:codes="@string/keyboard_code_plus_10000"
-            android:keyEdgeFlags="right"
-            android:keyLabel="+10000" />
-    </Row>
+    android:keyHeight="46dp"
+    android:keyWidth="20%p">
 
-    <Row
-        android:keyWidth="40dp"
-        android:verticalGap="5dp">
+    <!--1-5-->
+    <Row>
         <Key
             android:codes="49"
-            android:horizontalGap="5dp"
             android:keyEdgeFlags="left"
             android:keyLabel="1" />
         <Key
-            android:horizontalGap="8dp"
             android:codes="50"
             android:keyLabel="2" />
         <Key
-            android:horizontalGap="8dp"
             android:codes="51"
             android:keyLabel="3" />
         <Key
-            android:horizontalGap="8dp"
             android:codes="52"
             android:keyLabel="4" />
         <Key
-            android:horizontalGap="8dp"
             android:codes="53"
-            android:keyLabel="5" />
-        <Key
-            android:horizontalGap="8dp"
-            android:codes="54"
             android:keyEdgeFlags="right"
-            android:keyLabel="6" />
+            android:keyLabel="5" />
+
     </Row>
 
-    <Row
-        android:horizontalGap="8dp"
-        android:keyWidth="40dp">
+    <!--6-0-->
+    <Row>
+
         <Key
-            android:horizontalGap="5dp"
-            android:codes="55"
+            android:codes="54"
             android:keyEdgeFlags="left"
+            android:keyLabel="6" />
+
+        <Key
+            android:codes="55"
             android:keyLabel="7" />
         <Key
-            android:horizontalGap="8dp"
             android:codes="56"
             android:keyLabel="8" />
         <Key
-            android:horizontalGap="8dp"
             android:codes="57"
             android:keyLabel="9" />
         <Key
-            android:horizontalGap="8dp"
             android:codes="@string/keyboard_code_insert_0"
+            android:keyEdgeFlags="right"
             android:keyLabel="0" />
+
+    </Row>
+
+    <Row>
+
         <Key
-            android:horizontalGap="8dp"
-            android:codes="@string/keyboard_code_insert_00"
-            android:keyLabel="00" />
+            android:codes="@string/keyboard_code_insert_dot"
+            android:keyEdgeFlags="left"
+            android:keyLabel="." />
+
         <Key
-            android:horizontalGap="8dp"
-            android:codes="@string/keyboard_code_delete"
-            android:keyEdgeFlags="right"/>
+            android:codes="@string/keyboard_code_plus_10"
+            android:keyLabel="+10" />
+        <Key
+            android:codes="@string/keyboard_code_plus_50"
+            android:keyLabel="+50" />
+
+        <Key android:codes="@string/keyboard_code_delete" />
+
+        <Key
+            android:codes="@string/keyboard_code_done"
+            android:keyEdgeFlags="right"
+            android:keyLabel="@string/keyboard_done" />
     </Row>
 
 </Keyboard>
