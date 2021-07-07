@@ -343,51 +343,6 @@ class GameViewModel(
         getSportMenu(null)
     }
 
-    //儲存我的最愛
-    fun saveMyFavorite(sportType: String) {
-        viewModelScope.launch {
-
-            val myNewFavoriteList = mutableListOf<String>()
-            myNewFavoriteList.add(sportType)
-            _favoriteItemList.value?.peekContent()?.forEach {
-                if (it.sportType == sportType) {
-                    myNewFavoriteList.remove(sportType)
-                } else {
-                    myNewFavoriteList.add(it.sportType)
-                }
-            }
-
-            val saveMyFavoriteRequest =
-                SaveMyFavoriteRequest(type = FavoriteType.SPORT.code, code = myNewFavoriteList)
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.saveMyFavorite(saveMyFavoriteRequest)
-            }
-
-            if (result?.success == true) {
-                var favoriteList = listOf<String>()
-                if (!result.t?.sport.isNullOrEmpty()) {
-                    favoriteList = TextUtil.split(result.t?.sport ?: "")
-                }
-                updateFavoriteSport(favoriteList)
-            }
-        }
-    }
-
-    //取得我的最愛
-    fun getMyFavorite() {
-        viewModelScope.launch {
-            _isLoading.value = true
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavorite()
-            }
-            var favoriteList = listOf<String>()
-            if (!result?.t?.sport.isNullOrEmpty()) {
-                favoriteList = TextUtil.split(result?.t?.sport ?: "")
-            }
-            updateFavoriteSport(favoriteList)
-        }
-    }
-
     private fun initLeftMenuSportItem() {
         _menuSportItemList.postValue(
             Event(
@@ -449,7 +404,6 @@ class GameViewModel(
 
         _menuSportItemList.postValue(Event(ArrayList(menuSportItemList)))
         _favoriteItemList.postValue(Event(ArrayList(favoriteItemList)))
-        _isLoading.value = false
     }
 
     private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
@@ -478,7 +432,7 @@ class GameViewModel(
         }
     }
 
-    private fun getFavorite(favoriteType: FavoriteType) {
+    fun getFavorite(favoriteType: FavoriteType) {
         _isLoading.postValue(true)
 
         viewModelScope.launch {
