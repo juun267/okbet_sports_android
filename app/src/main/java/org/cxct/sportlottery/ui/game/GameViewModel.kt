@@ -368,7 +368,7 @@ class GameViewModel(
                 if (!result.t?.sport.isNullOrEmpty()) {
                     favoriteList = TextUtil.split(result.t?.sport ?: "")
                 }
-                refreshMenu(favoriteList)
+                updateFavoriteSport(favoriteList)
             }
         }
     }
@@ -384,24 +384,8 @@ class GameViewModel(
             if (!result?.t?.sport.isNullOrEmpty()) {
                 favoriteList = TextUtil.split(result?.t?.sport ?: "")
             }
-            refreshMenu(favoriteList)
+            updateFavoriteSport(favoriteList)
         }
-    }
-
-    fun refreshMenu(favoriteList: List<String>) {
-        val menuSportItemList = _menuSportItemList.value?.peekContent()?.map {
-            it.apply {
-                isSelected = if (favoriteList.contains(it.sportType)) 1 else 0
-            }
-        } ?: mutableListOf()
-
-        val favoriteItemList = menuSportItemList.filter {
-            it.isSelected == 1
-        }
-
-        _menuSportItemList.postValue(Event(ArrayList(menuSportItemList)))
-        _favoriteItemList.postValue(Event(ArrayList(favoriteItemList)))
-        _isLoading.value = false
     }
 
     private fun initLeftMenuSportItem() {
@@ -450,6 +434,22 @@ class GameViewModel(
         }
 
         saveFavorite(FavoriteType.SPORT, favoriteSportList)
+    }
+
+    private fun updateFavoriteSport(favoriteList: List<String>) {
+        val menuSportItemList = _menuSportItemList.value?.peekContent()?.map {
+            it.apply {
+                isSelected = if (favoriteList.contains(it.sportType)) 1 else 0
+            }
+        } ?: mutableListOf()
+
+        val favoriteItemList = menuSportItemList.filter {
+            it.isSelected == 1
+        }
+
+        _menuSportItemList.postValue(Event(ArrayList(menuSportItemList)))
+        _favoriteItemList.postValue(Event(ArrayList(favoriteItemList)))
+        _isLoading.value = false
     }
 
     private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
