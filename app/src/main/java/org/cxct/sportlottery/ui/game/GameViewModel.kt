@@ -419,6 +419,24 @@ class GameViewModel(
         _favoriteItemList.postValue(Event(ArrayList(favoriteItemList)))
     }
 
+    private fun updateFavoriteLeague(favoriteList: List<String>) {
+        val favoriteLeagueList = mutableListOf<League>()
+
+        leagueListResult.value?.peekContent()?.rows?.forEach {
+            it.list.forEach { league ->
+                league.isPin = favoriteList.contains(league.id)
+            }
+
+            favoriteLeagueList.addAll(
+                it.list.filter { league ->
+                    league.isPin
+                }
+            )
+        }
+
+        _favoriteLeagueList.postValue(Event(favoriteLeagueList))
+    }
+
     private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -433,6 +451,7 @@ class GameViewModel(
                         updateFavoriteSport(TextUtil.split(it.sport))
                     }
                     FavoriteType.LEAGUE -> {
+                        updateFavoriteLeague(TextUtil.split(it.league))
                     }
                     FavoriteType.MATCH -> {
                     }
@@ -461,6 +480,7 @@ class GameViewModel(
                         updateFavoriteSport(TextUtil.split(it.sport))
                     }
                     FavoriteType.LEAGUE -> {
+                        updateFavoriteLeague(TextUtil.split(it.league))
                     }
                     FavoriteType.MATCH -> {
                     }
