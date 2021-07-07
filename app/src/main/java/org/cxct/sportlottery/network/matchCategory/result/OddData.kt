@@ -12,7 +12,7 @@ data class OddData(
     @Json(name = "matchInfo")
     val matchInfo: MatchInfo?,
     @Json(name = "odds")
-    val odds: Map<String, Odd>?,
+    val odds: Map<String, List<Odd>>?,
     @Json(name = "oddsList")
     val oddsList: List<Odd>?,
     @Json(name = "quickPlayCateList")

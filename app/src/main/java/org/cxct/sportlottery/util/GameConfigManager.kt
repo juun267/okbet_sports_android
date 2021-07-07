@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.util
 
+import androidx.annotation.DrawableRes
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.common.SportType
 import java.util.*
 
 object GameConfigManager {
@@ -52,6 +55,36 @@ object GameConfigManager {
      */
     fun getThirdGameIconUrl(gameCategory: String?, h5ImageName: String?): String {
         return Constants.getBaseUrl() + "/staticResource/img/gameicons/${gameCategory?.toLowerCase(Locale.getDefault())}/newimg/$h5ImageName"
+    }
+
+
+
+
+    //
+    //賽事首頁
+    //
+    @DrawableRes
+    fun getGameIcon(code: String?): Int {
+        return when (code) {
+            SportType.FOOTBALL.code -> R.drawable.ic_soccer
+            SportType.BASKETBALL.code -> R.drawable.ic_basketball_icon
+            SportType.TENNIS.code -> R.drawable.ic_tennis_icon
+            SportType.VOLLEYBALL.code -> R.drawable.ic_volley_ball
+            SportType.BADMINTON.code -> R.drawable.ic_badminton_icon
+            else -> -1
+        }
+    }
+
+    @DrawableRes
+    fun getTitleBarBackground(code: String?): Int {
+        return when (code) {
+            SportType.FOOTBALL.code -> R.drawable.img_home_title_soccer_background
+            SportType.BASKETBALL.code -> R.drawable.img_home_title_basketball_background
+            SportType.TENNIS.code -> R.drawable.img_home_title_tennis_background
+            SportType.VOLLEYBALL.code -> R.drawable.img_home_title_volleyball_background
+            SportType.BADMINTON.code -> -1 //20210624 紀錄：說沒有羽球賽事了，所以沒做圖
+            else -> -1
+        }
     }
 
 }

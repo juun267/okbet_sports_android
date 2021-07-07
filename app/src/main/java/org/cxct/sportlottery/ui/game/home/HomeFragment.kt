@@ -17,16 +17,19 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.match.MatchPreloadResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
@@ -34,7 +37,7 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
-import timber.log.Timber
+import org.cxct.sportlottery.util.GameConfigManager
 
 
 /**
@@ -42,6 +45,7 @@ import timber.log.Timber
  * 1. 上下滑動 ToolBar 固定
  * 2. 賽事精選
  * 3. 賽事推薦
+ * 4. 賠率刷新 滾球盤 viewPager 會回到第一頁
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
@@ -50,6 +54,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var mSelectMatchType: MatchType = MatchType.IN_PLAY
     private var mInPlayResult: MatchPreloadResult? = null
     private var mAtStartResult: MatchPreloadResult? = null
+
+    private val mSportTypeAdapter = SportTypeAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,8 +109,24 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initHighlight() {
-        //TODO simon test 串接精選賽事
-        rv_highlight_sport_type.adapter = SportTypeAdapter()
+        rv_highlight_sport_type.adapter = mSportTypeAdapter
+        mSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
+            tv_game_name.text = selectItem.name
+            iv_game_icon.setImageResource(GameConfigManager.getGameIcon(selectItem.code))
+            titleBar.setBackgroundResource(GameConfigManager.getTitleBarBackground(selectItem.code))
+
+            tv_play_type.text = when (SportType.getSportType(selectItem.code)) {
+                SportType.FOOTBALL, SportType.BASKETBALL -> getText(R.string.ou_hdp_hdp_title)
+                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> getText(R.string.ou_hdp_1x2_title)
+                else -> ""
+            }
+
+            mSportTypeAdapter.dataSport.forEach { item ->
+                item.isSelected = item.code == selectItem.code
+            }
+            mSportTypeAdapter.notifyDataSetChanged()
+            viewModel.getHighlightMatch(selectItem.code)
+        }
     }
 
     private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
@@ -153,8 +175,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //TableBar 判斷是否隱藏
     private fun judgeTableBar() {
-        val inPlayCount = mInPlayResult?.matchPreloadData?.num?: 0
-        val atStartCount = mAtStartResult?.matchPreloadData?.num?: 0
+        val inPlayCount = mInPlayResult?.matchPreloadData?.num ?: 0
+        val atStartCount = mAtStartResult?.matchPreloadData?.num ?: 0
         if (inPlayCount == 0) {
             mSelectMatchType = MatchType.AT_START
             rb_in_play.visibility = View.GONE
@@ -329,7 +351,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.highlightMenuResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                //TODO simon test 串接精選賽事
+                updateHighlight(result)
             }
         })
 
@@ -576,7 +598,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
     }
 
-    private fun navOddsDetailFragment(sportTypeCode: String?, matchId: String?, matchType: MatchType) {
+    private fun navOddsDetailFragment(
+        sportTypeCode: String?,
+        matchId: String?,
+        matchType: MatchType
+    ) {
         val sportType = SportType.getSportType(sportTypeCode)
         if (sportType != null && matchId != null) {
             val action = if (matchType == MatchType.IN_PLAY) {
@@ -584,10 +610,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     .actionHomeFragmentToOddsDetailLiveFragment(sportType, matchId)
             } else {
                 HomeFragmentDirections
-                    .actionHomeFragmentToOddsDetailFragment(matchType, sportType, matchId, arrayOf())
+                    .actionHomeFragmentToOddsDetailFragment(
+                        matchType,
+                        sportType,
+                        matchId,
+                        arrayOf()
+                    )
             }
             findNavController().navigate(action)
         }
     }
 
+    private fun updateHighlight(result: MatchCategoryResult) {
+        mSportTypeAdapter.dataSport = result.t?.menu?.map { menu ->
+            Item(menu.code ?: "", menu.name ?: "", 0, null, menu.sortNum ?: 0)
+        } ?: listOf()
+
+        //default 選擇第一個
+        mSportTypeAdapter.dataSport.firstOrNull()?.let {
+            mSportTypeAdapter.sportTypeListener?.onClick(it)
+        }
+    }
 }
