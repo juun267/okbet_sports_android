@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.game.GameActivity">
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/app_bar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:elevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
+
+                    <!-- toolBar -->
+                    <include layout="@layout/view_toolbar_main" />
+                    <!-- 公告輪播跑馬燈 -->
+                    <RelativeLayout
+                        android:id="@+id/cl_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <include layout="@layout/view_message" />
+
+                        <org.cxct.sportlottery.ui.common.NotificationView
+                            android:id="@+id/view_notification"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <fragment
+                    android:id="@+id/fragment_transaction_status"
+                    android:layout_width="match_parent"
+                    class="org.cxct.sportlottery.ui.transactionStatus.TransactionStatusFragment"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    tools:layout="@layout/fragment_transaction_status"/>
+
+                <!-- 預留下方導覽列的高度 -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="115dp"/>
+            </LinearLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+        <include layout="@layout/view_bottom_navigation_sport"/>
+
+        <!-- 右側導覽列 -->
+        <include layout="@layout/view_nav_right" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

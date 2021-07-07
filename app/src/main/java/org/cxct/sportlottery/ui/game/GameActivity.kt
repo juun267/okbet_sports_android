@@ -46,6 +46,7 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.MenuLeftFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
+import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
@@ -188,7 +189,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
-
     }
 
     private fun initMenu() {
@@ -276,8 +276,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.transaction_status -> {
-                    //TODO navigate transaction_status
-                    true
+                    startActivity(Intent(this, TransactionStatusActivity::class.java))
+                    false
                 }
                 else -> false
             }
