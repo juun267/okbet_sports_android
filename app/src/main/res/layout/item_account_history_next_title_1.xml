@@ -1,82 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/colorBlue"
-    android:gravity="center"
-    android:minHeight="48dp"
-    android:orientation="horizontal"
-    android:paddingHorizontal="16dp"
-    android:paddingVertical="9dp"
-    tools:ignore="SpUsage">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/text_view"
-        android:layout_width="wrap_content"
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorBlue"
         android:gravity="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize12sp"
-        app:autoSizeMaxTextSize="@dimen/textSize12sp"
-        app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="NBA季后赛" />
+        android:minHeight="48dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="9dp"
+        tools:ignore="SpUsage">
 
-    <TextView
-        android:id="@+id/tv_team_a"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:textColor="@color/blueLight"
-        android:textSize="@dimen/textSize12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view"
-        tools:text="菲尼克斯太阳" />
+        <TextView
+            android:id="@+id/text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="NBA季后赛" />
 
-    <TextView
-        android:id="@+id/tv_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/colorOrangeLight"
-        android:textSize="@dimen/textSize12sp"
-        android:layout_marginHorizontal="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_team_a"
-        app:layout_constraintStart_toEndOf="@id/tv_team_a"
-        tools:text="5.5" />
+        <TextView
+            android:id="@+id/tv_team_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:textColor="@color/blueLight"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view"
+            tools:text="菲尼克斯太阳" />
 
-    <TextView
-        android:id="@+id/text_view_v"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/blueLight"
-        android:textSize="@dimen/textSize12sp"
-        android:layout_marginHorizontal="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_team_a"
-        app:layout_constraintStart_toEndOf="@id/tv_score"
-        tools:text="v" />
+        <TextView
+            android:id="@+id/tv_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorOrangeLight"
+            android:textSize="@dimen/textSize12sp"
+            android:layout_marginHorizontal="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_team_a"
+            app:layout_constraintStart_toEndOf="@id/tv_team_a"
+            tools:text="5.5" />
 
-    <TextView
-        android:id="@+id/tv_team_b"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:gravity="center"
-        android:textColor="@color/blueLight"
-        android:textSize="@dimen/textSize12sp"
-        android:layout_marginHorizontal="6dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/text_view_v"
-        app:layout_constraintTop_toBottomOf="@+id/text_view"
-        tools:text="菲尼克斯太阳" />
+        <TextView
+            android:id="@+id/text_view_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/blueLight"
+            android:textSize="@dimen/textSize12sp"
+            android:layout_marginHorizontal="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_team_a"
+            app:layout_constraintStart_toEndOf="@id/tv_score"
+            tools:text="v" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_team_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:textColor="@color/blueLight"
+            android:textSize="@dimen/textSize12sp"
+            android:layout_marginHorizontal="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_view_v"
+            app:layout_constraintTop_toBottomOf="@+id/text_view"
+            tools:text="菲尼克斯太阳" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

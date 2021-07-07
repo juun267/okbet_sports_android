@@ -6,14 +6,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.drawer_layout
 import kotlinx.android.synthetic.main.activity_main.nav_right
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -25,11 +29,14 @@ import org.cxct.sportlottery.util.MetricsUtil
 class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class)  {
 
     private val navController by lazy { findNavController(R.id.account_history_container) }
+    private val mMarqueeAdapter by lazy { MarqueeAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_history)
+
         initToolBar()
+        initRvMarquee()
         initMenu()
         setupNoticeButton(btn_notice)
         initObserve()
@@ -64,6 +71,16 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        rv_marquee.startAuto()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        rv_marquee.stopAuto()
+    }
+
     private fun initObserve() {
 
         viewModel.oddsType.observe(this, {
@@ -72,6 +89,10 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
 
         receiver.orderSettlement.observe(this, {
             viewModel.getSettlementNotification(it)
+        })
+
+        viewModel.messageListResult.observe(this, {
+            updateUiWithResult(it)
         })
 
         viewModel.settlementNotificationMsg.observe(this, {
@@ -83,6 +104,26 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
             updateUiWithLogin(it)
             getAnnouncement()
         })
+    }
+
+    private fun updateUiWithResult(messageListResult: MessageListResult?) {
+        val titleList: MutableList<String> = mutableListOf()
+        messageListResult?.let {
+            it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
+
+            mMarqueeAdapter.setData(titleList)
+
+            if (messageListResult.success && titleList.size > 0) {
+                rv_marquee.startAuto() //啟動跑馬燈
+            } else {
+                rv_marquee.stopAuto() //停止跑馬燈
+            }
+        }
+    }
+
+    private fun initRvMarquee() {
+        rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        rv_marquee.adapter = mMarqueeAdapter
     }
 
     private fun getAnnouncement() {

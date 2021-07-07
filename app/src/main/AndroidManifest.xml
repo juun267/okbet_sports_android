@@ -16,8 +16,9 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.accountHistory.AccountHistoryActivity"></activity>
         <activity android:name=".ui.transactionStatus.TransactionStatusActivity"></activity>
+        <activity android:name=".ui.main.accountHistory.AccountHistoryActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.vip.VipActivity" />
         <activity
             android:name=".ui.game.GameActivity"

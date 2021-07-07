@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        tools:context=".ui.profileCenter.sportRecord.SportBetRecordFragment"
+        tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
         tools:ignore="SpUsage">
 
         <ImageView

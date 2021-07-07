@@ -62,7 +62,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
 
             is FooterViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row)
+//                holder.bind(data.row)
             }
 
             is NoDataViewHolder -> {
@@ -96,6 +96,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
         }
 
     }
+/*
 
     class FooterViewHolder private constructor(val binding: ItemAccountHistoryNextTotalBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Row) {
@@ -113,11 +114,19 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
         }
 
     }
+*/
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
                 NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+        }
+    }
+
+    class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup) =
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_main_footer, parent, false))
         }
     }
 

@@ -34,7 +34,6 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     }
     private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
         it.let { data ->
-            Log.e(">>>", "clicked, data = $data")
             val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data)
             findNavController().navigate(action)
         }
@@ -93,11 +92,9 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     }
 
     private fun initOnclick() {
-
         iv_scroll_to_top.setOnClickListener {
             rv_account_history.smoothScrollToPosition(0)
         }
-
     }
 
     private fun initObserver() {

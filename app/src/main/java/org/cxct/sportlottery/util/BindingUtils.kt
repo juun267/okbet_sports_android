@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
 
@@ -25,6 +26,12 @@ fun TextView.setDate(timeStamp: Long?) {
 fun TextView.setDateNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_FORMAT)
 }
+
+@BindingAdapter("dateTimeNoYear")
+fun TextView.setDateTimeNoYear(timeStamp: Long?) {
+    text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
+}
+
 
 @BindingAdapter("dayOfWeek")
 fun TextView.setWeekDay(timeStamp: Long?) {
