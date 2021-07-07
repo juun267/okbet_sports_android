@@ -878,8 +878,11 @@ class GameViewModel(
                 )
             }
 
+            _leagueListResult.value = (Event(result))
+
             _leagueSelectedList.postValue(mutableListOf())
-            _leagueListResult.postValue(Event(result))
+
+            getFavorite(FavoriteType.LEAGUE)
         }
     }
 

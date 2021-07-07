@@ -89,7 +89,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     navGameLeague(league.id)
                 },
                 { league ->
-                    pinLeague(league)
+                    viewModel.pinFavoriteLeague(league.id)
                 },
                 { league ->
                     viewModel.selectLeague(league)
@@ -778,25 +778,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     else -> null
                 }
             ).into(it)
-        }
-    }
-
-    private fun pinLeague(league: org.cxct.sportlottery.network.league.League) {
-        league.isPin = !countryAdapter.datePin.any {
-            it == league
-        }
-
-        when (league.isPin) {
-            true -> {
-                val list = countryAdapter.datePin.toMutableList()
-                list.add(league)
-                countryAdapter.datePin = list
-            }
-            false -> {
-                val list = countryAdapter.datePin.toMutableList()
-                list.remove(league)
-                countryAdapter.datePin = list
-            }
         }
     }
 
