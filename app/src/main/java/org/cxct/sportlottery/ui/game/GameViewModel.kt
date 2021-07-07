@@ -47,7 +47,6 @@ import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
-import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -381,7 +380,7 @@ class GameViewModel(
 
     fun refreshMenu(favoriteList: List<String>) {
         viewModelScope.launch {
-            var myFavoriteList: ArrayList<MenuItemData> = ArrayList()
+            val myFavoriteList: ArrayList<MenuItemData> = ArrayList()
             //新增置頂
             favoriteList.forEach {
                 when (it) {
@@ -422,7 +421,7 @@ class GameViewModel(
 
             _favoriteItemList.postValue(Event(myFavoriteList))
             //沒被置頂的
-            var mData: MutableList<MenuItemData> = mutableListOf(
+            val mData: MutableList<MenuItemData> = mutableListOf(
                 MenuItemData(
                     R.drawable.selector_sport_type_item_img_ft_v4,
                     androidContext.getString(R.string.soccer),
@@ -456,7 +455,7 @@ class GameViewModel(
                 }
             }
 
-            _menuSportItemList.postValue(Event(mData) as Event<ArrayList<MenuItemData>>?)
+            _menuSportItemList.postValue(Event(mData as ArrayList<MenuItemData>))
             _isLoading.value = false
         }
     }
