@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.ui.game.widget
 
+
 import android.content.Context
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,10 +17,13 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
+
 /**
  * @author Kevin
  * @create 2021/06/21
- * @description
+ * @description 賠率按鈕(預設圓角)
+ * @edit:
+ * 2021/07/05 擴展配適直角
  */
 class OddsButton @JvmOverloads constructor(
     context: Context,
@@ -45,13 +50,32 @@ class OddsButton @JvmOverloads constructor(
         }
 
 
+    var mFillet = true
+
+
+    var mBackground: Drawable? = null
+
+
     init {
-        init()
+        init(attrs)
     }
 
 
-    private fun init() {
-        inflate(context, R.layout.button_odd_detail, this)
+    private fun init(attrs: AttributeSet?) {
+
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
+        mFillet = typedArray.getBoolean(R.styleable.OddsButton_ob_fillet, true)
+        mBackground =
+            typedArray.getDrawable(R.styleable.OddsButton_ob_background)
+                ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
+        try {
+            inflate(context, R.layout.button_odd_detail, this).apply {
+                button_odd_detail.background = mBackground
+            }
+        } catch (e: Exception) {
+            typedArray.recycle()
+        }
+
     }
 
 
@@ -81,19 +105,31 @@ class OddsButton @JvmOverloads constructor(
         when (oddState) {
             OddState.LARGER.state -> {
                 button_odd_detail.background =
-                    ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_unselected_green)
+                    ContextCompat.getDrawable(
+                        context,
+                        if (mFillet) R.drawable.bg_radius_4_button_unselected_green
+                        else R.drawable.bg_radius_0_button_green
+                    )
 
                 isActivated = true
             }
             OddState.SMALLER.state -> {
                 button_odd_detail.background =
-                    ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_unselected_red)
+                    ContextCompat.getDrawable(
+                        context,
+                        if (mFillet) R.drawable.bg_radius_4_button_unselected_red
+                        else R.drawable.bg_radius_0_button_red
+                    )
 
                 isActivated = true
             }
             else -> {
                 button_odd_detail.background =
-                    ContextCompat.getDrawable(context, R.drawable.selector_button_radius_4_odds)
+                    ContextCompat.getDrawable(
+                        context,
+                        if (mFillet) R.drawable.selector_button_radius_4_odds
+                        else R.drawable.selector_button_radius_0_odds
+                    )
 
                 isActivated = false
             }
@@ -108,7 +144,7 @@ class OddsButton @JvmOverloads constructor(
 
 
     /*設置賠率顏色*/
-    fun setupOddsTextColor(color: Int){
+    fun setupOddsTextColor(color: Int) {
         tv_odds?.setTextColor(ContextCompat.getColor(context, color))
     }
 

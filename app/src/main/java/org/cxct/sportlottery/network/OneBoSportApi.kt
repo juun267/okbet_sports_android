@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.money.MoneyService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
+import org.cxct.sportlottery.network.sport.FavoriteService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService
@@ -42,6 +43,10 @@ object OneBoSportApi {
             .retrofit
             .create(SportService::class.java)
 
+    val favoriteService: FavoriteService
+        get() = RequestManager.instance
+            .retrofit
+            .create(FavoriteService::class.java)
 
     val matchService: MatchService
         get() = RequestManager.instance

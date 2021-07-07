@@ -1,8 +1,8 @@
 package org.cxct.sportlottery.repository
 
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.sport.SportMenuRequest
-import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.sport.*
 import retrofit2.Response
 
 class SportMenuRepository {
@@ -14,4 +14,5 @@ class SportMenuRepository {
             )
         )
     }
+    
 }
