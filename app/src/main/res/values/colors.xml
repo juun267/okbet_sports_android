@@ -6,6 +6,7 @@
     <color name="colorBlueLight">#1463CF</color>
     <color name="colorBlue">#1053AF</color>
     <color name="colorBlueDark">#1F4780</color>
+    <color name="colorSilverBlue">#A9BEDF</color>
 
     <color name="colorOrangeLight">#FF9E3C</color>
     <color name="colorOrange">#FF8000</color>
@@ -16,6 +17,7 @@
 
     <color name="colorGreenLight">#08ab75</color>
     <color name="colorGreen">#08DC6E</color>
+    <color name="colorSeaGreen">#08AB74</color>
 
     <color name="colorWhite">#FCFCFC</color>
     <color name="colorWhite1">#F3F4F5</color>
@@ -32,6 +34,7 @@
     <color name="colorSilverDirk">#B4B4B4</color>
 
     <color name="colorGrayLight">#999999</color>
+    <color name="colorGrayLight2">#E4E4E4</color>
     <color name="colorGray">#666666</color>
     <color name="colorGrayDark">#404040</color>
 

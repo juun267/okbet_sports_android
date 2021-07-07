@@ -129,9 +129,13 @@
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
 
+    <string name="return_to_top">回到顶部</string>
+    <string name="versus">v</string>
     <string name="label_sport_game">赛程</string>
     <string name="label_account_history">账戶历史</string>
     <string name="label_transaction_status">交易状况</string>
+    <string name="label_title_parlay">综合过关</string>
+    <string name="conspire">串</string>
 
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
     <string name="message_no_in_play">目前没有滚球的赛事</string>
@@ -163,6 +167,11 @@
     <string name="poker_game">棋牌游戏</string>
     <string name="slot_game">电子游戏</string>
     <string name="fish_game">捕鱼游戏</string>
+    <string name="price">价格</string>
+    <string name="menu">菜单</string>
+    <string name="premium_odds">特优赔率</string>
+    <string name="infomation_center">信息中心</string>
+
 
     <!-- MenuFragment -->
     <string name="profile_center">个人中心</string>
@@ -382,7 +391,7 @@
     <string name="total_bet_amount">总投注额：</string>
 
     <!--odds detail-->
-    <string name="odds_detail_more">更多</string>
+    <string name="odds_detail_more">显示更多</string>
     <string name="odds_detail_less">显示更少</string>
     <string name="odds_detail_cs_other">其他比分</string>
     <string name="odds_detail_play_type_fg">最先进球</string>
@@ -695,6 +704,7 @@
     <string name="live">真人</string>
     <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容，\n致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
     <string name="sport_bet_record">体育投注记录</string>
+    <string name="my_favorite">我的赛事</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
     <string name="visit_first">來去逛逛</string>
@@ -748,5 +758,8 @@
     <string name="back_to_top">回到顶部</string>
     <string name="total">总共</string>
 
+
+    <!--keyboard-->
+    <string name="keyboard_done">已完成</string>
 
 </resources>

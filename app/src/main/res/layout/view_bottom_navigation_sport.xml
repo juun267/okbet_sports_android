@@ -1,17 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:layout_gravity="bottom">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/btn_return_to_top"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="9dp"
+        app:contentPadding="10dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/colorWhite6"
+        android:layout_above="@+id/bottom_navigation_sport"
+        android:visibility="gone"
+        tools:visibility="visible">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/return_to_top"
+            android:textSize="@dimen/textSize14sp"
+            android:layout_gravity="center"
+            android:textColor="@color/colorGray"
+            />
+    </androidx.cardview.widget.CardView>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_sport"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
         android:background="@color/colorWhite"
         app:itemIconTint="@color/selector_blue_silver"
         app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_navigation_sport" />
-</FrameLayout>
+        app:menu="@menu/bottom_navigation_sport"/>
+</RelativeLayout>

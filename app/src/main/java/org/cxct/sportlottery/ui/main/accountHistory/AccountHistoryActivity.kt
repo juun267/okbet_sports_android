@@ -4,11 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.drawer_layout
+import kotlinx.android.synthetic.main.activity_main.nav_right
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
@@ -16,6 +19,8 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.util.MetricsUtil
 
 class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class)  {
 
@@ -25,6 +30,8 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_history)
         initToolBar()
+        initMenu()
+        setupNoticeButton(btn_notice)
         initObserve()
         initNavigationListener()
     }
@@ -80,6 +87,22 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
 
     private fun getAnnouncement() {
         viewModel.getAnnouncement()
+    }
+
+    private fun initMenu() {
+        try {
+            //關閉側邊欄滑動行為
+            drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+            //選單選擇結束要收起選單
+            val menuFrag =
+                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+            menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
+            nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
