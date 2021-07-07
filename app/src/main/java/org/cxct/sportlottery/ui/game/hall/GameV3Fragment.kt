@@ -500,6 +500,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
         })
+
+        viewModel.favoriteLeagueList.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { leaguePinList ->
+                countryAdapter.datePin = leaguePinList
+            }
+        })
     }
 
     private fun initSocketReceiver() {
