@@ -211,10 +211,6 @@ class GameViewModel(
     val menuSportItemList: LiveData<Event<ArrayList<MenuItemData>>>
         get() = _menuSportItemList
 
-    private val _favoriteSport = MutableLiveData<Event<ArrayList<String>>>()
-    val favoriteSport: LiveData<Event<ArrayList<String>>>
-        get() = _favoriteSport
-
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
