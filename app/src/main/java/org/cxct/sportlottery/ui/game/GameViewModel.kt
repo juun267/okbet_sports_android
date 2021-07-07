@@ -222,7 +222,7 @@ class GameViewModel(
 
     private var sportQueryData: SportQueryData? = null
 
-    
+
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
         matchType: MatchType,
