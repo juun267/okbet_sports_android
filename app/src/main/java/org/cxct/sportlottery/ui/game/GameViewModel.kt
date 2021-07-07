@@ -211,6 +211,10 @@ class GameViewModel(
     val menuSportItemList: LiveData<Event<ArrayList<MenuItemData>>>
         get() = _menuSportItemList
 
+    private val _favoriteLeagueList = MutableLiveData<Event<List<League>>>()
+    val favoriteLeagueList: LiveData<Event<List<League>>>
+        get() = _favoriteLeagueList
+
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -385,6 +389,19 @@ class GameViewModel(
         }
 
         saveFavorite(FavoriteType.SPORT, favoriteSportList)
+    }
+
+    fun pinFavoriteLeague(leagueId: String) {
+        val favoriteLeagueList = _favoriteLeagueList.value?.peekContent()?.map {
+            it.id
+        }?.toMutableList() ?: mutableListOf()
+
+        when (favoriteLeagueList.contains(leagueId)) {
+            true -> favoriteLeagueList.remove(leagueId)
+            false -> favoriteLeagueList.add(leagueId)
+        }
+
+        saveFavorite(FavoriteType.LEAGUE, favoriteLeagueList)
     }
 
     private fun updateFavoriteSport(favoriteList: List<String>) {
