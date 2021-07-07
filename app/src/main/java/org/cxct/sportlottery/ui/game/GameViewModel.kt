@@ -466,6 +466,31 @@ class GameViewModel(
         }
     }
 
+    private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.favoriteService.saveMyFavorite(
+                    SaveMyFavoriteRequest(favoriteType.code, favoriteList)
+                )
+            }
+
+            result?.t?.let {
+                when (favoriteType) {
+                    FavoriteType.SPORT -> {
+                    }
+                    FavoriteType.LEAGUE -> {
+                    }
+                    FavoriteType.MATCH -> {
+                    }
+                    FavoriteType.OUTRIGHT -> {
+                    }
+                    FavoriteType.PLAY_CATE -> {
+                    }
+                }
+            }
+        }
+    }
+
     private fun getSportMenu(matchType: MatchType?) {
         _isLoading.value = true
         viewModelScope.launch {
