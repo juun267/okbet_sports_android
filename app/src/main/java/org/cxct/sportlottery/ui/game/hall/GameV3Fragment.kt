@@ -74,7 +74,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private val playCategoryAdapter by lazy {
-        PlayCategoryAdapter()
+        PlayCategoryAdapter().apply {
+            playCategoryListener = PlayCategoryListener {
+                viewModel.switchPlayCategory(args.matchType, it)
+                loading()
+            }
+        }
     }
 
     private val countryAdapter by lazy {
@@ -265,11 +270,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 )
             )
 
-            visibility = if (args.matchType == MatchType.IN_PLAY) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            visibility =
+                if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
         }
     }
 
@@ -316,8 +322,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getSportPlayCategory(args.matchType)
-        viewModel.getGameHallList(args.matchType, true)
+        viewModel.getGameHallList(args.matchType, true, isReloadPlayCate = true)
         loading()
     }
 

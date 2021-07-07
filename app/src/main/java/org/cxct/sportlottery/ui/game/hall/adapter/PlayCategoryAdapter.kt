@@ -15,12 +15,14 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
             notifyDataSetChanged()
         }
 
+    var playCategoryListener: PlayCategoryListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPlayCategory {
         return ViewHolderPlayCategory.from(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolderPlayCategory, position: Int) {
-        holder.bind(data[position])
+        holder.bind(data[position], playCategoryListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -28,8 +30,12 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
     class ViewHolderPlayCategory private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Play) {
+        fun bind(item: Play, playCategoryListener: PlayCategoryListener?) {
             itemView.play_category_name.text = item.name
+            itemView.isSelected = item.isSelected
+            itemView.setOnClickListener {
+                playCategoryListener?.onClick(item)
+            }
         }
 
         companion object {
@@ -42,4 +48,8 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
             }
         }
     }
+}
+
+class PlayCategoryListener(val clickListener: (item: Play) -> Unit) {
+    fun onClick(item: Play) = clickListener(item)
 }
