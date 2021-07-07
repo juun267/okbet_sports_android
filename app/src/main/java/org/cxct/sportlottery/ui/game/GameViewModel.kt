@@ -463,6 +463,7 @@ class GameViewModel(
             result?.t?.let {
                 when (favoriteType) {
                     FavoriteType.SPORT -> {
+                        updateFavoriteSport(TextUtil.split(it.sport))
                     }
                     FavoriteType.LEAGUE -> {
                     }
@@ -490,6 +491,7 @@ class GameViewModel(
             result?.t?.let {
                 when (favoriteType) {
                     FavoriteType.SPORT -> {
+                        updateFavoriteSport(TextUtil.split(it.sport))
                     }
                     FavoriteType.LEAGUE -> {
                     }
