@@ -220,7 +220,7 @@ class GameViewModel(
         get() = _isLoading
     private var _isLoading = MutableLiveData<Boolean>()
 
-    var sportQueryData: SportQueryData? = null
+    private var sportQueryData: SportQueryData? = null
 
     
     fun navSpecialEntrance(
