@@ -12,7 +12,7 @@ import org.cxct.sportlottery.R
 /**
  * @author Kevin
  * @create 2021/7/8
- * @description
+ * @description 包含登入按鈕、投注按鈕(兩種狀態)、賠率變動接受按鈕
  */
 class BetButton @JvmOverloads constructor(
     context: Context,
