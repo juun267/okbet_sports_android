@@ -50,11 +50,11 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
             clickListener.onClick(GameActivity.MenuStatusType.CLOSE.ordinal)
         }
         //滾球
-        ct_inplay.setOnClickListener {  }
+        ct_inplay.setOnClickListener { }
         //特優賠率
-        ct_premium_odds.setOnClickListener {  }
+        ct_premium_odds.setOnClickListener { }
         //遊戲規則
-        ct_game_rule.setOnClickListener {  }
+        ct_game_rule.setOnClickListener { }
     }
 
     private fun initData() {
@@ -96,7 +96,7 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
             updateFavorSport(it)
         })
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner,{
+        viewModel.isLoading.observe(this.viewLifecycleOwner, {
             if (it)
                 loading()
             else
@@ -105,22 +105,27 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
     }
 
     private fun initRecyclerView() {
-
-        rv_unselect.layoutManager =
-            object : LinearLayoutManager(rv_unselect.context, VERTICAL, false) {
-                override fun canScrollVertically(): Boolean {
-                    return false
+        rv_unselect.apply {
+            layoutManager =
+                object : LinearLayoutManager(rv_unselect.context, VERTICAL, false) {
+                    override fun canScrollVertically(): Boolean {
+                        return false
+                    }
                 }
-            }
-        rv_unselect.adapter = unselectedAdapter
 
-        rv_selected.layoutManager =
-            object : LinearLayoutManager(rv_selected.context, VERTICAL, false) {
-                override fun canScrollVertically(): Boolean {
-                    return false
+            adapter = unselectedAdapter
+        }
+
+        rv_selected.apply {
+            layoutManager =
+                object : LinearLayoutManager(rv_selected.context, VERTICAL, false) {
+                    override fun canScrollVertically(): Boolean {
+                        return false
+                    }
                 }
-            }
-        rv_selected.adapter = selectedAdapter
+
+            adapter = selectedAdapter
+        }
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {
