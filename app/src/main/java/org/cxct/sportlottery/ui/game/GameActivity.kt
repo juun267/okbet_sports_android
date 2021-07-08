@@ -302,6 +302,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+            val countEps =
+                sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tan_main)
@@ -330,6 +332,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             val tabOutright = tabLayout.getTabAt(6)?.customView
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
+
+            val tabEps = tabLayout.getTabAt(7)?.customView
+            tabEps?.tv_title?.setText(R.string.home_tab_eps)
+            tabEps?.tv_number?.text = countEps.toString()
 
         } catch (e: Exception) {
             e.printStackTrace()
