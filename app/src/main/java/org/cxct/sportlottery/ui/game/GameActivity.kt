@@ -205,32 +205,31 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                //TODO Bill 未登錄會有問題，如果沒登入先不給點，等PM回覆
-                when (viewModel.userInfo.value?.testFlag) {
-                    TestFlag.NORMAL.index -> {
-                        val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                            override fun onClick(menuStatus: Int) {
-                                when(menuStatus){
-                                    MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                                }
-                            }
-                        })
-
-                        supportFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
-                            .add(R.id.fl_left_menu,leftMenuFragment)
-                            .addToBackStack(null)
-                            .commit()
+                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
+                    override fun onClick(menuStatus: Int) {
+                        when (menuStatus) {
+                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
+                        }
                     }
-                    else -> { }
-                }
+                })
+
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque,
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque
+                    )
+                    .add(R.id.fl_left_menu, leftMenuFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    enum class MenuStatusType{ CLOSE }
+    enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)
