@@ -29,6 +29,29 @@
     <include layout="@layout/content_bet_info_item" />
 
 
+    <org.cxct.sportlottery.ui.common.CustomKeyBoardView
+        android:id="@+id/kv_keyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@color/colorWhite"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:keyBackground="@drawable/bg_frame_6dp_white" />
+
+
+    <TextView
+        android:id="@+id/tv_odd_content_changed"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:visibility="gone"
+        android:textSize="@dimen/textSize12sp"
+        android:gravity="center"
+        android:background="@color/colorWhite"
+        android:text="@string/bet_info_odd_content_changed"
+        android:textColor="@color/colorRed"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="46dp"
@@ -50,7 +73,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1" />
-
 
     </LinearLayout>
 
