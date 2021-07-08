@@ -224,10 +224,6 @@ class GameViewModel(
     private var sportQueryData: SportQueryData? = null
 
 
-    init {
-        initLeftMenuSportItem()
-    }
-
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
         matchType: MatchType,
@@ -342,54 +338,6 @@ class GameViewModel(
     //獲取體育菜單
     fun getSportMenu() {
         getSportMenu(null)
-    }
-
-    private fun initLeftMenuSportItem() {
-        _menuSportItemList.postValue(
-            Event(
-                ArrayList(
-                    listOf(
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
-                            androidContext.getString(R.string.soccer),
-                            SportType.FOOTBALL.code,
-                            0
-                        ),
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_bk_v4,
-                            androidContext.getString(R.string.basketball),
-                            SportType.BASKETBALL.code,
-                            0
-                        ),
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_tn_v4,
-                            androidContext.getString(R.string.tennis),
-                            SportType.TENNIS.code,
-                            0
-                        ),
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_vb_v4,
-                            androidContext.getString(R.string.volleyball),
-                            SportType.VOLLEYBALL.code,
-                            0
-                        )
-                    )
-                )
-            )
-        )
-    }
-
-    fun pinFavoriteSport(sportType: String) {
-        val favoriteSportList = _favoriteItemList.value?.peekContent()?.map {
-            it.sportType
-        }?.toMutableList() ?: mutableListOf()
-
-        when (favoriteSportList.contains(sportType)) {
-            true -> favoriteSportList.remove(sportType)
-            false -> favoriteSportList.add(sportType)
-        }
-
-        saveFavorite(FavoriteType.SPORT, favoriteSportList)
     }
 
     fun pinFavoriteLeague(leagueId: String) {

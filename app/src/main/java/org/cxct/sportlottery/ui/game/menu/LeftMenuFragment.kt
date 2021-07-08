@@ -8,22 +8,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_left_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 
-class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : BaseFragment<GameViewModel>(GameViewModel::class) {
+class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
+    BaseFragment<GameViewModel>(GameViewModel::class) {
 
     //點擊置頂後
     private var unselectedAdapter =
         LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { sportType ->
-            viewModel.pinFavoriteSport(sportType)
+            viewModel.pinFavorite(FavoriteType.SPORT, sportType)
         })
 
     //取消置頂
     var selectedAdapter =
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { sportType ->
-            viewModel.pinFavoriteSport(sportType)
+            viewModel.pinFavorite(FavoriteType.SPORT, sportType)
         })
 
     override fun onCreateView(
@@ -56,19 +58,42 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : Ba
     }
 
     private fun initData() {
-        viewModel.getFavorite(FavoriteType.SPORT)
+        unselectedAdapter.data = ArrayList(
+            listOf(
+                MenuItemData(
+                    R.drawable.selector_sport_type_item_img_ft_v4,
+                    getString(R.string.soccer),
+                    SportType.FOOTBALL.code,
+                    0
+                ),
+                MenuItemData(
+                    R.drawable.selector_sport_type_item_img_bk_v4,
+                    getString(R.string.basketball),
+                    SportType.BASKETBALL.code,
+                    0
+                ),
+                MenuItemData(
+                    R.drawable.selector_sport_type_item_img_tn_v4,
+                    getString(R.string.tennis),
+                    SportType.TENNIS.code,
+                    0
+                ),
+                MenuItemData(
+                    R.drawable.selector_sport_type_item_img_vb_v4,
+                    getString(R.string.volleyball),
+                    SportType.VOLLEYBALL.code,
+                    0
+                )
+            )
+        )
+
+        viewModel.notifyFavorite(FavoriteType.SPORT)
     }
 
-    fun initObserve(){
-        viewModel.favoriteItemList.observe(this.viewLifecycleOwner,{
-            it.getContentIfNotHandled()?.let { favoriteList->
-                selectedAdapter.data = favoriteList
-            }
-        })
-        viewModel.menuSportItemList.observe(this.viewLifecycleOwner,{
-            it.getContentIfNotHandled()?.let { menuSportItemList->
-                unselectedAdapter.data = menuSportItemList
-            }
+    fun initObserve() {
+        viewModel.favorSportList.observe(this.viewLifecycleOwner, {
+            updateMenuSport(it)
+            updateFavorSport(it)
         })
 
         viewModel.isLoading.observe(this.viewLifecycleOwner,{
@@ -98,4 +123,18 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) : Ba
         rv_selected.adapter = selectedAdapter
     }
 
+    private fun updateMenuSport(favorSportTypeList: List<String>) {
+        unselectedAdapter.data.forEach { menuSport ->
+            menuSport.isSelected =
+                if (favorSportTypeList.isNotEmpty() && favorSportTypeList.contains(menuSport.sportType)) 1 else 0
+        }
+        unselectedAdapter.notifyDataSetChanged()
+    }
+
+    private fun updateFavorSport(favorSportTypeList: List<String>) {
+        val selectedList = unselectedAdapter.data.filter {
+            favorSportTypeList.contains(it.sportType)
+        }
+        selectedAdapter.data = selectedList
+    }
 }
