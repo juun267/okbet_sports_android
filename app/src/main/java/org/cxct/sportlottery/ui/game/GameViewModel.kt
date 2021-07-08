@@ -37,6 +37,7 @@ import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
@@ -60,7 +61,7 @@ class GameViewModel(
     infoCenterRepository: InfoCenterRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
-) : BaseNoticeViewModel(
+) : BaseFavoriteViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
