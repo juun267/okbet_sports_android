@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -111,9 +112,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun initHighlight() {
         rv_highlight_sport_type.adapter = mSportTypeAdapter
         mSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
-            tv_game_name.text = selectItem.name
-            iv_game_icon.setImageResource(GameConfigManager.getGameIcon(selectItem.code))
-            titleBar.setBackgroundResource(GameConfigManager.getTitleBarBackground(selectItem.code))
+            highlight_tv_game_name.text = selectItem.name
+            highlight_iv_game_icon.setImageResource(GameConfigManager.getGameIcon(selectItem.code))
+            highlight_titleBar.setBackgroundResource(GameConfigManager.getTitleBarBackground(selectItem.code))
 
             tv_play_type.text = when (SportType.getSportType(selectItem.code)) {
                 SportType.FOOTBALL, SportType.BASKETBALL -> getText(R.string.ou_hdp_hdp_title)
@@ -126,6 +127,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
             mSportTypeAdapter.notifyDataSetChanged()
             viewModel.getHighlightMatch(selectItem.code)
+        }
+
+        btn_display_all.setOnClickListener {
+            mSportTypeAdapter.dataSport.find { it.isSelected }?.let{ data ->
+                val sportType = SportType.getSportType(data.code)
+                viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, sportType)
+            }
         }
     }
 
