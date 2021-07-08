@@ -5,7 +5,11 @@
 
     <data>
         <variable
-            name="data"
+            name="gameType"
+            type="String" />
+
+        <variable
+            name="matchOdd"
             type="org.cxct.sportlottery.network.bet.MatchOdd" />
     </data>
 
@@ -13,13 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <include
-            android:id="@+id/title_layout"
-            layout="@layout/item_account_history_next_title_2"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,19 +31,30 @@
 
 
             <TextView
-                android:id="@+id/text_view"
+                android:id="@+id/tv_game_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textStyle="bold"
+                app:gameType="@{gameType}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="@{data.leagueName}"
                 tools:text="篮球 让球" />
+
+            <TextView
+                android:id="@+id/tv_league_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{matchOdd.leagueName}"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize13sp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_game_type"
+                tools:text="22-06 NBA季后赛" />
 
 
             <TextView
@@ -57,7 +65,7 @@
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_view"
+                app:layout_constraintTop_toTopOf="@+id/tv_game_type"
                 tools:text="113 - 116" />
 
             <TextView
@@ -65,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{data.homeName}"
+                android:text="@{matchOdd.homeName}"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +97,7 @@
                 tools:text=" @" />
 
             <TextView
-                android:id="@+id/tv_team_odd"
+                android:id="@+id/tv_odd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
@@ -100,21 +108,20 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
                 app:layout_constraintStart_toEndOf="@id/symbol_at"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name"
-                app:oddFormat="@{data.odds}"
                 tools:text="1.860" />
 
             <TextView
                 android:id="@+id/tv_team_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
                 android:gravity="center"
-                android:text="@{data.homeName}"
+                android:text="@{matchOdd.homeName}"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
-                android:layout_marginVertical="5dp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_play_name"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_view"
+                app:layout_constraintTop_toBottomOf="@+id/tv_league_name"
                 tools:text="菲尼克斯太阳" />
 
             <TextView
@@ -136,12 +143,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
                 android:gravity="center"
+                android:text="@string/verse"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
                 app:layout_constraintStart_toEndOf="@id/tv_score"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_home"
-                tools:text="v" />
+                app:layout_constraintTop_toTopOf="@+id/tv_team_home" />
 
             <TextView
                 android:id="@+id/tv_team_homeway"
@@ -149,15 +156,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
                 android:gravity="center"
-                android:text="@{data.awayName}"
+                android:text="@{matchOdd.awayName}"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
                 app:layout_constraintStart_toEndOf="@id/text_view_v"
                 app:layout_constraintTop_toTopOf="@+id/tv_team_home"
                 tools:text="菲尼克斯太阳" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/divider2"
+            app:layout_constraintTop_toBottomOf="@id/tv_team_home"
+            android:background="@color/colorWhite6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
     </LinearLayout>
+
 </layout>

@@ -758,7 +758,7 @@
     <string name="back_to_top">回到顶部</string>
     <string name="total">总共</string>
     <string name="verse">v</string>
-
+    <string name="sum_pass">综合过关</string>
 
     <!--keyboard-->
     <string name="keyboard_done">已完成</string>

@@ -126,7 +126,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener) : List
     class FooterViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_main_footer, parent, false))
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
         }
     }
 

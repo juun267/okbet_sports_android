@@ -33,6 +33,19 @@ fun TextView.setDateTimeNoYear(timeStamp: Long?) {
 }
 
 
+
+@BindingAdapter("gameType")
+fun TextView.setGameType(gameType: String?) {
+    text = when (gameType) {
+        "FT" -> context.getString(R.string.soccer)
+        "BK" -> context.getString(R.string.basketball)
+        "TN" -> context.getString(R.string.tennis)
+        "VB" -> context.getString(R.string.volleyball)
+        "BM" -> context.getString(R.string.badminton)
+        else -> ""
+    }
+}
+
 @BindingAdapter("dayOfWeek")
 fun TextView.setWeekDay(timeStamp: Long?) {
     text = context.getString(TimeUtil.setupDayOfWeek(timeStamp))

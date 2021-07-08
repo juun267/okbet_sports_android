@@ -96,7 +96,6 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
     private fun initRv() {
         rv_account_history.apply {
             adapter = rvAdapter
-//            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
         }
 
     }
