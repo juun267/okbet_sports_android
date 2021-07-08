@@ -590,7 +590,12 @@
     <string name="bet_info_list_clean">一键清空</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
     <string name="bet_info_different_game_type">不同球种不可进行串关</string>
-
+    <string name="bet_info_input_quota">输入金额</string>
+    <string name="bet_info_check_maximum_limit">查看最高限额</string>
+    <string name="bet_info_bet_quota">投注额</string>
+    <string name="bet_info_win_quota">可赢额</string>
+    <string name="bet_info_accept_odds_change">接受更改</string>
+    <string name="bet_info_add_to_bet_info">加入投注单</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
