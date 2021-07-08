@@ -11,9 +11,11 @@
     <color name="colorOrangeLight">#FF9E3C</color>
     <color name="colorOrange">#FF8000</color>
 
+    <color name="colorRedLight">#e7837c</color>
     <color name="colorRed">#E44438</color>
     <color name="colorRedDark">#B73A20</color>
 
+    <color name="colorGreenLight">#08ab75</color>
     <color name="colorGreen">#08DC6E</color>
     <color name="colorSeaGreen">#08AB74</color>
 
@@ -25,6 +27,7 @@
     <color name="colorWhite5">#EBEBEB</color>
     <color name="colorWhite6">#E2E2E2</color>
     <color name="colorWhite7">#DFEAF8</color>
+
 
     <color name="colorSilverLight">#CCCCCC</color>
     <color name="colorSilver">#BCBCBC</color>
@@ -39,6 +42,7 @@
     <color name="colorBlack">#000000</color>
 
     <!-- //== 以下不在 v3 color guideline 定義內，但有使用==//-->
+    <color name="blueLight">#a9bedf</color>
     <color name="blueDeep">#35485C</color>
 
     <color name="transparent">#00000000</color>

@@ -746,13 +746,19 @@
     <string name="odds_have_changed">该盘口赔率已经变更,请重新投注</string>
     <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
     <string name="account_history_overview">账户历史总览</string>
+    <string name="bet_num_and_bet_date">注单号 / 结算日期</string>
 
     <!--    account history-->
     <string name="date">日期</string>
     <string name="bet_amount">投注金额</string>
     <string name="available_amount">有效金额</string>
     <string name="win_lose">赢 / 输</string>
+    <string name="win_lose_mark">赢 / 输：</string>
     <string name="all_sport">所有体育</string>
+    <string name="back_to_top">回到顶部</string>
+    <string name="total">总共</string>
+    <string name="verse">v</string>
+    <string name="sum_pass">综合过关</string>
 
     <!--keyboard-->
     <string name="keyboard_done">已完成</string>

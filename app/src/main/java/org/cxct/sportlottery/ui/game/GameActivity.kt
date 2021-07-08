@@ -40,6 +40,7 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -272,8 +273,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     false
                 }
                 R.id.account_history -> {
-                    //TODO navigate account_history
-                    true
+                    startActivity(Intent(this, AccountHistoryActivity::class.java))
+                    false
                 }
                 R.id.transaction_status -> {
                     startActivity(Intent(this, TransactionStatusActivity::class.java))

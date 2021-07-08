@@ -9,6 +9,8 @@
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="id">ID</string>
+    <string name="at">\u0040</string>
+
 
     <!--  Member Level Page  -->
     <string name="level_one">VIP1</string>

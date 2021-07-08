@@ -1,29 +1,27 @@
-package org.cxct.sportlottery.ui.main.accountHistory
+package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_account_history.*
+import kotlinx.android.synthetic.main.fragment_account_history_next.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import org.cxct.sportlottery.ui.main.accountHistory.next.BackClickListener
 
-class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
+class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(AccountHistoryNextViewModel::class) {
 
-    private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
-        it.let { data ->
-            val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data)
-            findNavController().navigate(action)
-        }
+    //TODO 等新api, 傳遞總金額
+    private val args: AccountHistoryNextFragmentArgs by navArgs()
+
+    private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
+
     }, BackClickListener {
-        activity?.finish()
+        findNavController().navigateUp()
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -39,7 +37,7 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_account_history, container, false).apply {
+        return inflater.inflate(R.layout.fragment_account_history_next, container, false).apply {
             viewModel.searchBetRecord()
         }
     }
@@ -48,7 +46,16 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
         super.onViewCreated(view, savedInstanceState)
 
         initRv()
+        initOnclick()
         initObserver()
+    }
+
+    private fun initOnclick() {
+
+        btn_back_to_top.setOnClickListener {
+            rv_account_history.smoothScrollToPosition(0)
+        }
+
     }
 
     private fun initObserver() {
@@ -75,7 +82,6 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     private fun initRv() {
         rv_account_history.apply {
             adapter = rvAdapter
-            addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
             addOnScrollListener(recyclerViewOnScrollListener)
         }
 

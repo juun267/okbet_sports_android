@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main.accountHistory
+package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -9,28 +9,20 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.list.Row
-import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
-import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import org.cxct.sportlottery.network.service.order_settlement.Status
-import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 
-class AccountHistoryViewModel(
+class AccountHistoryNextViewModel(
     androidContext: Application,
-    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val sportMenuRepository: SportMenuRepository,
-    private val thirdGameRepository: ThirdGameRepository,
-) : BaseNoticeViewModel(
+) : BaseOddButtonViewModel(
     androidContext,
-    userInfoRepository,
     loginRepository,
     betInfoRepository,
     infoCenterRepository
@@ -46,20 +38,10 @@ class AccountHistoryViewModel(
     val betRecordResult: LiveData<BetListResult>
         get() = _betRecordResult
 
-    val messageListResult: LiveData<MessageListResult?>
-        get() = _messageListResult
-
-    val settlementNotificationMsg: LiveData<Event<SportBet>>
-        get() = _settlementNotificationMsg
-
-
     private val _loading = MutableLiveData<Boolean>()
     private val _betRecordResult = MutableLiveData<BetListResult>()
 
     private var mBetListRequest: BetListRequest? = null
-
-    private val _messageListResult = MutableLiveData<MessageListResult?>()
-    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
 
     fun searchBetRecord(
         isChampionChecked: Boolean? = false,
@@ -136,32 +118,5 @@ class AccountHistoryViewModel(
 
     private fun hideLoading() {
         _loading.postValue(false)
-    }
-
-
-    //獲取系統公告
-    fun getAnnouncement() {
-        if (isLogin.value == true) {
-            viewModelScope.launch {
-                doNetwork(androidContext) {
-                    val typeList = arrayOf(1)
-                    OneBoSportApi.messageService.getPromoteNotice(typeList)
-                }?.let { result -> _messageListResult.postValue(result) }
-            }
-        } else {
-            _messageListResult.value = null
-        }
-    }
-
-
-
-    fun getSettlementNotification(event: OrderSettlementEvent?) {
-        event?.sportBet?.let {
-            when (it.status) {
-                Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
-                    _settlementNotificationMsg.value = Event(it)
-                }
-            }
-        }
     }
 }
