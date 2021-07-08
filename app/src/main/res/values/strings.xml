@@ -129,9 +129,13 @@
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
 
+    <string name="return_to_top">回到顶部</string>
+    <string name="versus">v</string>
     <string name="label_sport_game">赛程</string>
     <string name="label_account_history">账戶历史</string>
     <string name="label_transaction_status">交易状况</string>
+    <string name="label_title_parlay">综合过关</string>
+    <string name="conspire">串</string>
 
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
     <string name="message_no_in_play">目前没有滚球的赛事</string>
@@ -743,11 +747,14 @@
     <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
     <string name="account_history_overview">账户历史总览</string>
 
-<!--    account history-->
+    <!--    account history-->
     <string name="date">日期</string>
     <string name="bet_amount">投注金额</string>
     <string name="available_amount">有效金额</string>
     <string name="win_lose">赢 / 输</string>
     <string name="all_sport">所有体育</string>
+
+    <!--keyboard-->
+    <string name="keyboard_done">已完成</string>
 
 </resources>

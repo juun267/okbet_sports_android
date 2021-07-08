@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewMod
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.ui.splash.SplashViewModel
+import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -73,6 +74,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get()) }
+        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
