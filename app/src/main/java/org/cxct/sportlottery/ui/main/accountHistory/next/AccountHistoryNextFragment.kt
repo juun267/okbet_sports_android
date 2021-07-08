@@ -12,38 +12,16 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_account_history_next.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.component.StatusSheetData
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(AccountHistoryNextViewModel::class) {
 
     //TODO 等新api, 傳遞總金額
     private val args: AccountHistoryNextFragmentArgs by navArgs()
 
-    private val dateStatusList by lazy {
-        listOf(StatusSheetData("0", context?.getString(R.string.sunday)),
-               StatusSheetData("1", context?.getString(R.string.monday)),
-               StatusSheetData("2", context?.getString(R.string.tuesday)),
-               StatusSheetData("3", context?.getString(R.string.wednesday)),
-               StatusSheetData("4", context?.getString(R.string.thursday)),
-               StatusSheetData("5", context?.getString(R.string.friday)),
-               StatusSheetData("6", context?.getString(R.string.saturday)))
-    }
+    private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
 
-    private val sportStatusList by lazy {
-        listOf(StatusSheetData("", context?.getString(R.string.all_sport)),
-               StatusSheetData("FT", context?.getString(R.string.soccer)),
-               StatusSheetData("BK", context?.getString(R.string.basketball)),
-               StatusSheetData("TN", context?.getString(R.string.tennis)),
-               StatusSheetData("VB", context?.getString(R.string.volleyball)),
-               StatusSheetData("BM", context?.getString(R.string.badminton)))
-    }
-
-    private val rvAdapter = AccountHistoryNextAdapter(
-        ItemClickListener {
-
-        },
-        BackClickListener {
-            findNavController().navigateUp()
+    }, BackClickListener {
+        findNavController().navigateUp()
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -67,21 +45,10 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        initView()
         initRv()
         initOnclick()
         initObserver()
     }
-/*
-
-    private fun initView() {
-        sport_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
-        sport_selector.dataList = sportStatusList
-
-        date_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
-        date_selector.dataList = dateStatusList
-    }
-*/
 
     private fun initOnclick() {
 
