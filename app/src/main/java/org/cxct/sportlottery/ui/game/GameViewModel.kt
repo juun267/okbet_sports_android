@@ -35,15 +35,12 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
-import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
-import org.cxct.sportlottery.ui.game.menu.MenuItemData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -204,18 +201,6 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
-    private val _favoriteItemList = MutableLiveData<Event<ArrayList<MenuItemData>>>()
-    val favoriteItemList: LiveData<Event<ArrayList<MenuItemData>>>
-        get() = _favoriteItemList
-
-    private val _menuSportItemList = MutableLiveData<Event<ArrayList<MenuItemData>>>()
-    val menuSportItemList: LiveData<Event<ArrayList<MenuItemData>>>
-        get() = _menuSportItemList
-
-    private val _favoriteLeagueList = MutableLiveData<Event<List<League>>>()
-    val favoriteLeagueList: LiveData<Event<List<League>>>
-        get() = _favoriteLeagueList
-
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -338,108 +323,6 @@ class GameViewModel(
     //獲取體育菜單
     fun getSportMenu() {
         getSportMenu(null)
-    }
-
-    fun pinFavoriteLeague(leagueId: String) {
-        val favoriteLeagueList = _favoriteLeagueList.value?.peekContent()?.map {
-            it.id
-        }?.toMutableList() ?: mutableListOf()
-
-        when (favoriteLeagueList.contains(leagueId)) {
-            true -> favoriteLeagueList.remove(leagueId)
-            false -> favoriteLeagueList.add(leagueId)
-        }
-
-        saveFavorite(FavoriteType.LEAGUE, favoriteLeagueList)
-    }
-
-    private fun updateFavoriteSport(favoriteList: List<String>) {
-        val menuSportItemList = _menuSportItemList.value?.peekContent()?.map {
-            it.apply {
-                isSelected = if (favoriteList.contains(it.sportType)) 1 else 0
-            }
-        } ?: mutableListOf()
-
-        val favoriteItemList = menuSportItemList.filter {
-            it.isSelected == 1
-        }
-
-        _menuSportItemList.postValue(Event(ArrayList(menuSportItemList)))
-        _favoriteItemList.postValue(Event(ArrayList(favoriteItemList)))
-    }
-
-    private fun updateFavoriteLeague(favoriteList: List<String>) {
-        val favoriteLeagueList = mutableListOf<League>()
-
-        leagueListResult.value?.peekContent()?.rows?.forEach {
-            it.list.forEach { league ->
-                league.isPin = favoriteList.contains(league.id)
-            }
-
-            favoriteLeagueList.addAll(
-                it.list.filter { league ->
-                    league.isPin
-                }
-            )
-        }
-
-        _favoriteLeagueList.postValue(Event(favoriteLeagueList))
-    }
-
-    private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.saveMyFavorite(
-                    SaveMyFavoriteRequest(favoriteType.code, favoriteList)
-                )
-            }
-
-            result?.t?.let {
-                when (favoriteType) {
-                    FavoriteType.SPORT -> {
-                        updateFavoriteSport(TextUtil.split(it.sport))
-                    }
-                    FavoriteType.LEAGUE -> {
-                        updateFavoriteLeague(TextUtil.split(it.league))
-                    }
-                    FavoriteType.MATCH -> {
-                    }
-                    FavoriteType.OUTRIGHT -> {
-                    }
-                    FavoriteType.PLAY_CATE -> {
-                    }
-                }
-            }
-        }
-    }
-
-    fun getFavorite(favoriteType: FavoriteType) {
-        _isLoading.postValue(true)
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavorite()
-            }
-
-            _isLoading.postValue(false)
-
-            result?.t?.let {
-                when (favoriteType) {
-                    FavoriteType.SPORT -> {
-                        updateFavoriteSport(TextUtil.split(it.sport))
-                    }
-                    FavoriteType.LEAGUE -> {
-                        updateFavoriteLeague(TextUtil.split(it.league))
-                    }
-                    FavoriteType.MATCH -> {
-                    }
-                    FavoriteType.OUTRIGHT -> {
-                    }
-                    FavoriteType.PLAY_CATE -> {
-                    }
-                }
-            }
-        }
     }
 
     private fun getSportMenu(matchType: MatchType?) {
@@ -831,7 +714,7 @@ class GameViewModel(
 
             _leagueSelectedList.postValue(mutableListOf())
 
-            getFavorite(FavoriteType.LEAGUE)
+            notifyFavorite(FavoriteType.LEAGUE)
         }
     }
 

@@ -21,8 +21,10 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -89,7 +91,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     navGameLeague(league.id)
                 },
                 { league ->
-                    viewModel.pinFavoriteLeague(league.id)
+                    viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
                 },
                 { league ->
                     viewModel.selectLeague(league)
@@ -501,10 +503,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             playCategoryAdapter.data = it
         })
 
-        viewModel.favoriteLeagueList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { leaguePinList ->
-                countryAdapter.datePin = leaguePinList
+        viewModel.favorLeagueList.observe(this.viewLifecycleOwner, {
+            val leaguePinList = mutableListOf<League>()
+
+            countryAdapter.data.forEach { row ->
+                val pinLeague = row.list.filter { league ->
+                    it.contains(league.id)
+                }
+
+                row.list.forEach { league ->
+                    league.isPin = it.contains(league.id)
+                }
+
+                leaguePinList.addAll(pinLeague)
             }
+
+            countryAdapter.datePin = leaguePinList
         })
     }
 
