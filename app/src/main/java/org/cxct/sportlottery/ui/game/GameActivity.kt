@@ -274,7 +274,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 }
                 R.id.account_history -> {
                     startActivity(Intent(this, AccountHistoryActivity::class.java))
-                    true
+                    false
                 }
                 R.id.transaction_status -> {
                     startActivity(Intent(this, TransactionStatusActivity::class.java))

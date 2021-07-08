@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.drawer_layout
 import kotlinx.android.synthetic.main.activity_main.nav_right
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_bottom_navigation_sport.view.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
@@ -38,13 +39,13 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_history)
 
+        initNavigationListener()
+        initNavigationView()
         initToolBar()
         initRvMarquee()
         initMenu()
         setupNoticeButton(btn_notice)
         initObserve()
-        initNavigationView()
-        initNavigationListener()
     }
 
     private fun initNavigationListener() {
@@ -64,11 +65,11 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
                     false
                 }
                 R.id.account_history -> {
-                    false
+                    true
                 }
                 R.id.transaction_status -> {
                     //TODO navigate transaction_status
-                    true
+                    false
                 }
                 else -> false
             }

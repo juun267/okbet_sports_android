@@ -55,18 +55,10 @@
                 android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginBottom="55dp"
                 android:layout_weight="1"
-                app:layout_constraintBottom_toTopOf="@id/account_history_bottom_navigation"
                 app:navGraph="@navigation/account_history_navigation"
                 tools:layout="@layout/fragment_home" />
-
-            <include
-                android:id="@+id/account_history_bottom_navigation"
-                layout="@layout/view_bottom_navigation_sport"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

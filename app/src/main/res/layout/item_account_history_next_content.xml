@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{matchOdd.playName}"
+                android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
@@ -112,11 +112,11 @@
             tools:ignore="SpUsage">
 
             <TextView
-                android:id="@+id/tv_play_name"
+                android:id="@+id/tv_game_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{matchOdd.playName}"
+                app:gameType="@{row.gameType}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
@@ -124,7 +124,23 @@
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="篮球 让球" />
+                tools:text="篮球" />
+
+            <TextView
+                android:id="@+id/tv_play_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginStart="4dp"
+                app:gameType="@{matchOdd.playName}"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:layout_constraintStart_toEndOf="@id/tv_game_type"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="让球" />
 
             <TextView
                 android:id="@+id/tv_team_name"
