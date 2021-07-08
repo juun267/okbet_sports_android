@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,11 +16,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
-class AccountHistoryNextAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class AccountHistoryNextAdapter(private val clickListener: ItemClickListener, private val backClickListener: BackClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
         TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, NO_DATA
@@ -35,7 +37,7 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener) : 
 
     fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
         adapterScope.launch {
-            val items = when {
+            val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
                 isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
                 else -> list.map { DataItem.Item(it) }
@@ -49,6 +51,7 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener) : 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
+            ItemType.TITLE_BAR.ordinal -> TitleBarViewHolder.from(parent)
             ItemType.ITEM.ordinal -> ItemViewHolder.from(parent)
             ItemType.OUTRIGHT.ordinal -> OutrightItemViewHolder.from(parent)
             ItemType.PARLAY.ordinal -> ParlayItemViewHolder.from(parent)
@@ -59,6 +62,11 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener) : 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
+
+            is TitleBarViewHolder -> {
+                holder.bind(backClickListener)
+            }
+
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
                 holder.bind(data.row, oddsType)
@@ -85,6 +93,7 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener) : 
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
+            is DataItem.TitleBar -> ItemType.TITLE_BAR.ordinal
             is DataItem.Item -> {
                 when (getItem(position).parlayType) {
                     "1C1" -> ItemType.ITEM.ordinal
@@ -212,6 +221,46 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener) : 
 
     }
 
+    class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+        fun bind(backClickListener: BackClickListener) {
+            itemView.apply {
+
+                iv_back.setOnClickListener {
+                    backClickListener.onClick()
+                }
+                
+                val sportStatusList =
+                    listOf(StatusSheetData("", context?.getString(R.string.all_sport)),
+                           StatusSheetData("FT", context?.getString(R.string.soccer)),
+                           StatusSheetData("BK", context?.getString(R.string.basketball)),
+                           StatusSheetData("TN", context?.getString(R.string.tennis)),
+                           StatusSheetData("VB", context?.getString(R.string.volleyball)),
+                           StatusSheetData("BM", context?.getString(R.string.badminton)))
+
+                val dateStatusList =
+                    listOf(StatusSheetData("0", context?.getString(R.string.sunday)),
+                           StatusSheetData("1", context?.getString(R.string.monday)),
+                           StatusSheetData("2", context?.getString(R.string.tuesday)),
+                           StatusSheetData("3", context?.getString(R.string.wednesday)),
+                           StatusSheetData("4", context?.getString(R.string.thursday)),
+                           StatusSheetData("5", context?.getString(R.string.friday)),
+                           StatusSheetData("6", context?.getString(R.string.saturday)))
+
+                sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
+                sport_selector.dataList = sportStatusList
+
+                date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
+                date_selector.dataList = dateStatusList
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup) =
+                TitleBarViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_account_history_next_title_bar, parent, false))
+        }
+    }
+
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
@@ -236,6 +285,10 @@ class ItemClickListener(val clickListener: (data: MatchOdd) -> Unit) {
     fun onClick(data: MatchOdd) = clickListener(data)
 }
 
+class BackClickListener(val clickListener: () -> Unit) {
+    fun onClick() = clickListener()
+}
+
 sealed class DataItem {
 
     abstract val orderNum: String?
@@ -244,6 +297,11 @@ sealed class DataItem {
     data class Item(val row: Row) : DataItem() {
         override val orderNum = row.orderNo
         override val parlayType = row.parlayType
+    }
+
+    object TitleBar : DataItem() {
+        override val orderNum: String = ""
+        override val parlayType = ""
     }
 
     object Footer : DataItem() {

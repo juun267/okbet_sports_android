@@ -4,10 +4,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import kotlinx.android.synthetic.main.activity_account_history.*
 import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.android.synthetic.main.activity_game.view_notification
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.drawer_layout
 import kotlinx.android.synthetic.main.activity_main.nav_right
@@ -23,7 +29,9 @@ import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
 class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class)  {
@@ -40,6 +48,7 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
         initMenu()
         setupNoticeButton(btn_notice)
         initObserve()
+        initNavigationView()
         initNavigationListener()
     }
 
@@ -68,6 +77,19 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
                 }
                 else -> false
             }
+        }
+    }
+
+
+    private fun initNavigationView() {
+        try {
+            //TODO 投注單的文字顏色調整
+            (bottom_navigation_sport[0] as BottomNavigationMenuView).let { navigationMenuView ->
+                navigationMenuView[2].setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlue))
+            }
+            bottom_navigation_sport.menu.findItem(R.id.account_history).isChecked = true
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
