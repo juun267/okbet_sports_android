@@ -67,6 +67,9 @@ class GameViewModel(
     betInfoRepository,
     infoCenterRepository
 ) {
+
+    val betInfoSingle = betInfoRepository.betInfoSingle
+
     val betInfoList = betInfoRepository.betInfoList
 
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
@@ -222,7 +225,7 @@ class GameViewModel(
 
     var sportQueryData: SportQueryData? = null
 
-    
+
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
         matchType: MatchType,
@@ -1039,18 +1042,14 @@ class GameViewModel(
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            if (matchType != MatchType.PARLAY || isSameSportTypeAdd(sportType)) {
-                betInfoRepository.addInBetInfo(
-                    matchType,
-                    sportType,
-                    playCateName,
-                    playName,
-                    matchOdd,
-                    odd
-                )
-            } else {
-                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_different_game_type)))
-            }
+            betInfoRepository.addInBetInfo(
+                matchType,
+                sportType,
+                playCateName,
+                playName,
+                matchOdd,
+                odd
+            )
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
@@ -1090,13 +1089,9 @@ class GameViewModel(
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            if (matchType != MatchType.PARLAY || isSameSportTypeAdd(sportType)) {
-                betInfoRepository.addInBetInfo(
-                    matchType, sportType, playCateName, matchOdd, odd
-                )
-            } else {
-                _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_different_game_type)))
-            }
+            betInfoRepository.addInBetInfo(
+                matchType, sportType, playCateName, matchOdd, odd
+            )
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }

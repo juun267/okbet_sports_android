@@ -16,8 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -209,19 +210,25 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     TestFlag.NORMAL.index -> {
                         val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
                             override fun onClick(menuStatus: Int) {
-                                when(menuStatus){
+                                when (menuStatus) {
                                     MenuStatusType.CLOSE.ordinal -> onBackPressed()
                                 }
                             }
                         })
 
                         supportFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
-                            .add(R.id.fl_left_menu,leftMenuFragment)
+                            .setCustomAnimations(
+                                R.anim.pop_left_to_right_enter_opaque,
+                                R.anim.push_right_to_left_exit_opaque,
+                                R.anim.pop_left_to_right_enter_opaque,
+                                R.anim.push_right_to_left_exit_opaque
+                            )
+                            .add(R.id.fl_left_menu, leftMenuFragment)
                             .addToBackStack(null)
                             .commit()
                     }
-                    else -> { }
+                    else -> {
+                    }
                 }
             }
         } catch (e: Exception) {
@@ -229,7 +236,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    enum class MenuStatusType{ CLOSE }
+    enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)
@@ -268,7 +275,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     false
                 }
                 R.id.bet_list -> {
-                    //TODO open bet list page
+                    showBetListDialog()
                     false
                 }
                 R.id.account_history -> {
@@ -521,6 +528,19 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 text = getString(R.string.button_league_submit, it.size)
             }
         })
+
+        viewModel.betInfoSingle.observe(this, {
+            it?.let {
+                BetInfoCarDialog().show(supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
+            }
+        })
+
+        viewModel.betInfoRepository.betInfoList.observe(this, {
+            it.peekContent().let {
+                //TODO 改變 bottom nav 注單數量
+            }
+        })
+
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
