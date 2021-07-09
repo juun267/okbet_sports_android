@@ -79,6 +79,7 @@
             <enum name="spread_inside" value="1" />
             <enum name="packed" value="2" />
         </attr>
+        <attr name="arrowSrc" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="ToolBarView">
