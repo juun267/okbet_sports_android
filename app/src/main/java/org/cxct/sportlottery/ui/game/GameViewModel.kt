@@ -35,14 +35,12 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
-import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
-import org.cxct.sportlottery.ui.game.menu.MenuItemData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -60,7 +58,7 @@ class GameViewModel(
     infoCenterRepository: InfoCenterRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
-) : BaseNoticeViewModel(
+) : BaseFavoriteViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
@@ -203,14 +201,6 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
-    private val _favoriteItemList = MutableLiveData<Event<ArrayList<MenuItemData>>>()
-    val favoriteItemList: LiveData<Event<ArrayList<MenuItemData>>>
-        get() = _favoriteItemList
-
-    private val _menuSportItemList = MutableLiveData<Event<ArrayList<MenuItemData>>>()
-    val menuSportItemList: LiveData<Event<ArrayList<MenuItemData>>>
-        get() = _menuSportItemList
-
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -218,10 +208,6 @@ class GameViewModel(
 
     private var sportQueryData: SportQueryData? = null
 
-
-    init {
-        initLeftMenuSportItem()
-    }
 
     fun navSpecialEntrance(
         source: SpecialEntranceSource,
@@ -337,123 +323,6 @@ class GameViewModel(
     //獲取體育菜單
     fun getSportMenu() {
         getSportMenu(null)
-    }
-
-    private fun initLeftMenuSportItem() {
-        _menuSportItemList.postValue(
-            Event(
-                ArrayList(
-                    listOf(
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
-                            androidContext.getString(R.string.soccer),
-                            SportType.FOOTBALL.code,
-                            0
-                        ),
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_bk_v4,
-                            androidContext.getString(R.string.basketball),
-                            SportType.BASKETBALL.code,
-                            0
-                        ),
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_tn_v4,
-                            androidContext.getString(R.string.tennis),
-                            SportType.TENNIS.code,
-                            0
-                        ),
-                        MenuItemData(
-                            R.drawable.selector_sport_type_item_img_vb_v4,
-                            androidContext.getString(R.string.volleyball),
-                            SportType.VOLLEYBALL.code,
-                            0
-                        )
-                    )
-                )
-            )
-        )
-    }
-
-    fun pinFavoriteSport(sportType: String) {
-        val favoriteSportList = _favoriteItemList.value?.peekContent()?.map {
-            it.sportType
-        }?.toMutableList() ?: mutableListOf()
-
-        when (favoriteSportList.contains(sportType)) {
-            true -> favoriteSportList.remove(sportType)
-            false -> favoriteSportList.add(sportType)
-        }
-
-        saveFavorite(FavoriteType.SPORT, favoriteSportList)
-    }
-
-    private fun updateFavoriteSport(favoriteList: List<String>) {
-        val menuSportItemList = _menuSportItemList.value?.peekContent()?.map {
-            it.apply {
-                isSelected = if (favoriteList.contains(it.sportType)) 1 else 0
-            }
-        } ?: mutableListOf()
-
-        val favoriteItemList = menuSportItemList.filter {
-            it.isSelected == 1
-        }
-
-        _menuSportItemList.postValue(Event(ArrayList(menuSportItemList)))
-        _favoriteItemList.postValue(Event(ArrayList(favoriteItemList)))
-    }
-
-    private fun saveFavorite(favoriteType: FavoriteType, favoriteList: List<String>) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.saveMyFavorite(
-                    SaveMyFavoriteRequest(favoriteType.code, favoriteList)
-                )
-            }
-
-            result?.t?.let {
-                when (favoriteType) {
-                    FavoriteType.SPORT -> {
-                        updateFavoriteSport(TextUtil.split(it.sport))
-                    }
-                    FavoriteType.LEAGUE -> {
-                    }
-                    FavoriteType.MATCH -> {
-                    }
-                    FavoriteType.OUTRIGHT -> {
-                    }
-                    FavoriteType.PLAY_CATE -> {
-                    }
-                }
-            }
-        }
-    }
-
-    fun getFavorite(favoriteType: FavoriteType) {
-        _isLoading.postValue(true)
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavorite()
-            }
-
-            _isLoading.postValue(false)
-
-            result?.t?.let {
-                when (favoriteType) {
-                    FavoriteType.SPORT -> {
-                        updateFavoriteSport(TextUtil.split(it.sport))
-                    }
-                    FavoriteType.LEAGUE -> {
-                    }
-                    FavoriteType.MATCH -> {
-                    }
-                    FavoriteType.OUTRIGHT -> {
-                    }
-                    FavoriteType.PLAY_CATE -> {
-                    }
-                }
-            }
-        }
     }
 
     private fun getSportMenu(matchType: MatchType?) {
@@ -841,8 +710,11 @@ class GameViewModel(
                 )
             }
 
+            _leagueListResult.value = (Event(result))
+
             _leagueSelectedList.postValue(mutableListOf())
-            _leagueListResult.postValue(Event(result))
+
+            notifyFavorite(FavoriteType.LEAGUE)
         }
     }
 

@@ -388,6 +388,7 @@
     <string name="game_tab_price_boosts_odd">特优赔率</string>
 
     <string name="button_league_submit">提交 (%d)</string>
+    <string name="login_notify">请登录以便使用此功能</string>
 
     <string name="total_bet_amount">总投注额：</string>
 

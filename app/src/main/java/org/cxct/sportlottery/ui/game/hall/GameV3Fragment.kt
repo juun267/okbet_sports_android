@@ -21,8 +21,10 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -89,7 +91,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     navGameLeague(league.id)
                 },
                 { league ->
-                    pinLeague(league)
+                    viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
                 },
                 { league ->
                     viewModel.selectLeague(league)
@@ -500,6 +502,24 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
         })
+
+        viewModel.favorLeagueList.observe(this.viewLifecycleOwner, {
+            val leaguePinList = mutableListOf<League>()
+
+            countryAdapter.data.forEach { row ->
+                val pinLeague = row.list.filter { league ->
+                    it.contains(league.id)
+                }
+
+                row.list.forEach { league ->
+                    league.isPin = it.contains(league.id)
+                }
+
+                leaguePinList.addAll(pinLeague)
+            }
+
+            countryAdapter.datePin = leaguePinList
+        })
     }
 
     private fun initSocketReceiver() {
@@ -772,25 +792,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     else -> null
                 }
             ).into(it)
-        }
-    }
-
-    private fun pinLeague(league: org.cxct.sportlottery.network.league.League) {
-        league.isPin = !countryAdapter.datePin.any {
-            it == league
-        }
-
-        when (league.isPin) {
-            true -> {
-                val list = countryAdapter.datePin.toMutableList()
-                list.add(league)
-                countryAdapter.datePin = list
-            }
-            false -> {
-                val list = countryAdapter.datePin.toMutableList()
-                list.remove(league)
-                countryAdapter.datePin = list
-            }
         }
     }
 

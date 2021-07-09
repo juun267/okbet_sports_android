@@ -27,9 +27,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -51,7 +50,7 @@ import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
-class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
@@ -205,32 +204,31 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                //TODO Bill 未登錄會有問題，如果沒登入先不給點，等PM回覆
-                when (viewModel.userInfo.value?.testFlag) {
-                    TestFlag.NORMAL.index -> {
-                        val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                            override fun onClick(menuStatus: Int) {
-                                when(menuStatus){
-                                    MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                                }
-                            }
-                        })
-
-                        supportFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
-                            .add(R.id.fl_left_menu,leftMenuFragment)
-                            .addToBackStack(null)
-                            .commit()
+                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
+                    override fun onClick(menuStatus: Int) {
+                        when (menuStatus) {
+                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
+                        }
                     }
-                    else -> { }
-                }
+                })
+
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque,
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque
+                    )
+                    .add(R.id.fl_left_menu, leftMenuFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    enum class MenuStatusType{ CLOSE }
+    enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)
@@ -526,6 +524,13 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 }
 
                 text = getString(R.string.button_league_submit, it.size)
+            }
+        })
+
+        viewModel.notifyLogin.observe(this, {
+            snackBarLoginNotify.apply {
+                setAnchorView(R.id.game_bottom_navigation)
+                show()
             }
         })
     }
