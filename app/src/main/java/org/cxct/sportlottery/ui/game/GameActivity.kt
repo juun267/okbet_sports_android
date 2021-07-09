@@ -27,10 +27,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -519,6 +517,13 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 }
 
                 text = getString(R.string.button_league_submit, it.size)
+            }
+        })
+
+        viewModel.notifyLogin.observe(this, {
+            snackBarLoginNotify.apply {
+                setAnchorView(R.id.game_bottom_navigation)
+                show()
             }
         })
     }
