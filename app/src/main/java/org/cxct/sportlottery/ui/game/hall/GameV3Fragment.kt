@@ -73,6 +73,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         MatchCategoryViewPagerAdapter()
     }
 
+    private val playCategoryAdapter by lazy {
+        PlayCategoryAdapter().apply {
+            playCategoryListener = PlayCategoryListener {
+                viewModel.switchPlayCategory(args.matchType, it)
+                loading()
+            }
+        }
+    }
+
     private val countryAdapter by lazy {
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
@@ -138,6 +147,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             setupOddTab(this)
             setupSportBackground(this)
             setupMatchCategoryPager(this)
+            setupPlayCategory(this)
             setupGameRow(this)
             setupGameListView(this)
         }
@@ -247,6 +257,28 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun setupPlayCategory(view: View) {
+        view.game_play_category.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            this.adapter = playCategoryAdapter
+
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_play_category
+                )
+            )
+
+            visibility =
+                if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+        }
+    }
+
     private fun setupGameRow(view: View) {
         view.game_filter_type_list.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -290,7 +322,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onStart() {
         super.onStart()
 
-        viewModel.getGameHallList(args.matchType, true)
+        viewModel.getGameHallList(args.matchType, true, isReloadPlayCate = true)
         loading()
     }
 
@@ -463,6 +495,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 notifyDataSetChanged()
             }
+        })
+
+        viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.data = it
         })
     }
 

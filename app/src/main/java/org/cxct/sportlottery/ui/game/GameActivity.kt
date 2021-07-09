@@ -27,23 +27,27 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
+import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.MenuLeftFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
+import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
@@ -186,7 +190,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
-
     }
 
     private fun initMenu() {
@@ -200,22 +203,37 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
-            //選單選擇結束要收起選單
-            val menuLeftFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu_left) as MenuLeftFragment
-            menuLeftFrag.setDownMenuListener { drawer_layout.closeDrawers() }
-            menuLeftFrag.setMenuLeftListener(mMenuLeftListener)
-            nav_left.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
-
+            //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                if (drawer_layout.isDrawerOpen(nav_left)) drawer_layout.closeDrawers()
-                else {
-                    drawer_layout.openDrawer(nav_left)
+                //TODO Bill 未登錄會有問題，如果沒登入先不給點，等PM回覆
+                when (viewModel.userInfo.value?.testFlag) {
+                    TestFlag.NORMAL.index -> {
+                        val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
+                            override fun onClick(menuStatus: Int) {
+                                when(menuStatus){
+                                    MenuStatusType.CLOSE.ordinal -> onBackPressed()
+                                }
+                            }
+                        })
+
+                        supportFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
+                            .add(R.id.fl_left_menu,leftMenuFragment)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    else -> { }
                 }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    enum class MenuStatusType{ CLOSE }
+
+    interface OnMenuClickListener {
+        fun onClick(menuStatus: Int)
     }
 
     private fun initBottomNavigation() {
@@ -255,12 +273,12 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     false
                 }
                 R.id.account_history -> {
-                    //TODO navigate account_history
-                    true
+                    startActivity(Intent(this, AccountHistoryActivity::class.java))
+                    false
                 }
                 R.id.transaction_status -> {
-                    //TODO navigate transaction_status
-                    true
+                    startActivity(Intent(this, TransactionStatusActivity::class.java))
+                    false
                 }
                 else -> false
             }
