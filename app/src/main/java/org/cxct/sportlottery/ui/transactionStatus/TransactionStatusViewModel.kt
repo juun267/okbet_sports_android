@@ -15,6 +15,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.game.BetRecordType
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
@@ -83,9 +84,15 @@ class TransactionStatusViewModel(
                 val rowList =
                     if (page == 1) mutableListOf<Row>()
                     else betListData.value?.row?.toMutableList() ?: mutableListOf<Row>()
-                result.rows?.let { rowList.addAll(it) }
+                result.rows?.let { rowList.addAll(it.apply { }) }
                 _betListData.value =
-                    BetListData(rowList, result.other?.totalAmount ?: 0, page, (rowList.size >= (result.total ?: 0)))
+                    BetListData(
+                        rowList,
+                        loginRepository.mOddsType.value ?: OddsType.EU,
+                        result.other?.totalAmount ?: 0,
+                        page,
+                        (rowList.size >= (result.total ?: 0))
+                    )
             }
         }
     }
