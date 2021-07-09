@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
+import org.cxct.sportlottery.ui.game.home.highlight.RvHighlightAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -57,6 +59,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var mAtStartResult: MatchPreloadResult? = null
 
     private val mSportTypeAdapter = SportTypeAdapter()
+    private val mRvHighlightAdapter = RvHighlightAdapter()
+    private var mHighlightResult: MatchCategoryResult? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -122,6 +126,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 else -> ""
             }
 
+            unsubscribeHighlightHallChannel() //先取消訂閱當前的精選賽事
+
             mSportTypeAdapter.dataSport.forEach { item ->
                 item.isSelected = item.code == selectItem.code
             }
@@ -135,19 +141,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, sportType)
             }
         }
+
+        rv_game_highlight.adapter = mRvHighlightAdapter
     }
 
     private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
-        if (selectMatchType == MatchType.IN_PLAY) {
-            unsubscribeAllHallChannel() //先清除之前訂閱項目
-
-            //訂閱所有滾球賽事
-            result?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs.forEach { match ->
-                    subscribeHallChannel(data.code, match)
-                }
-            }
-        }
         mRvGameTable4Adapter.matchType = selectMatchType
         mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
             override fun onClickBet(
@@ -298,8 +296,46 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         startActivity(intent)
     }
 
-    private fun subscribeHallChannel(code: String, match: Match) {
-        service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match.id)
+    private fun subscribeHallChannel(code: String, matchId: String?) {
+        service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, matchId)
+    }
+
+    private fun unsubscribeHallChannel(code: String, matchId: String?) {
+        service.unsubscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, matchId)
+    }
+
+    //訂閱 滾球盤 or 即將開賽 賠率
+    private fun subscribeTableHallChannel() {
+        val result = if (mSelectMatchType == MatchType.IN_PLAY) mInPlayResult else mAtStartResult
+        result?.matchPreloadData?.datas?.forEach { data ->
+            data.matchs.forEach { match ->
+                subscribeHallChannel(data.code, match.id)
+            }
+        }
+    }
+
+    private fun unsubscribeTableHallChannel() {
+        val result = if (mSelectMatchType == MatchType.IN_PLAY) mInPlayResult else mAtStartResult
+        result?.matchPreloadData?.datas?.forEach { data ->
+            data.matchs.forEach { match ->
+                unsubscribeHallChannel(data.code, match.id)
+            }
+        }
+    }
+
+    //訂閱 精選賽事 賠率
+    private fun subscribeHighlightHallChannel() {
+        val code = mSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
+        mHighlightResult?.t?.odds?.forEach { oddData ->
+            subscribeHallChannel(code, oddData.matchInfo?.id)
+        }
+    }
+
+    private fun unsubscribeHighlightHallChannel() {
+        val code = mSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
+        mHighlightResult?.t?.odds?.forEach { oddData ->
+            unsubscribeHallChannel(code, oddData.matchInfo?.id)
+        }
     }
 
     private fun unsubscribeAllHallChannel() {
@@ -315,19 +351,31 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                mInPlayResult = result
                 judgeTableBar()
                 if (mSelectMatchType == MatchType.IN_PLAY)
-                    refreshTable(mSelectMatchType, mInPlayResult)
+                    refreshTable(mSelectMatchType, result)
+
+                //先清除之前訂閱項目
+                unsubscribeTableHallChannel()
+
+                //訂閱所有滾球賽事
+                mInPlayResult = result
+                subscribeTableHallChannel()
             }
         })
 
         viewModel.matchPreloadAtStart.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                mAtStartResult = result
                 judgeTableBar()
                 if (mSelectMatchType == MatchType.AT_START)
-                    refreshTable(mSelectMatchType, mAtStartResult)
+                    refreshTable(mSelectMatchType, result)
+
+                //先清除之前訂閱項目
+                unsubscribeTableHallChannel()
+
+                //訂閱所有滾球賽事
+                mAtStartResult = result
+                subscribeTableHallChannel()
             }
         })
 
@@ -365,7 +413,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.highlightMatchResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                //TODO simon test 串接精選賽事
+                mHighlightResult = result
+                subscribeHighlightHallChannel()
             }
         })
     }
@@ -560,13 +609,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it?.let { _ ->
                 unsubscribeAllHallChannel()
 
-                val result =
-                    if (mSelectMatchType == MatchType.IN_PLAY) mInPlayResult else mAtStartResult
-                result?.matchPreloadData?.datas?.forEach { data ->
-                    data.matchs.forEach { match ->
-                        subscribeHallChannel(data.code, match)
-                    }
-                }
+                subscribeTableHallChannel()
+
+                subscribeHighlightHallChannel()
             }
         })
     }
