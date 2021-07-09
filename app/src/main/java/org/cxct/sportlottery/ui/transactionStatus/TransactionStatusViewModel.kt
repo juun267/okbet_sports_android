@@ -87,8 +87,8 @@ class TransactionStatusViewModel(
             championOnly = 0,
             BetRecordType.UNSETTLEMENT.code,
             page = page,
-            startTime = TimeUtil.getDefaultTimeStamp().startTime,
-            endTime = TimeUtil.getDefaultTimeStamp().endTime,
+            startTime = TimeUtil.getTodayStartTimeStamp().toString(),
+            endTime = TimeUtil.getTodayEndTimeStamp().toString(),
             pageSize = pageSize
         )
     }
