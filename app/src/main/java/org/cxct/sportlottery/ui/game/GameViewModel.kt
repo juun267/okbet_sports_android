@@ -337,16 +337,15 @@ class GameViewModel(
             postHomeCardCount(result)
 
             result?.let {
-                it.sportMenuData?.sortSport()?.updateSportSelectState(
+                it.sportMenuData?.sortSport()
+                it.updateSportSelectState(
                     specialEntrance.value?.matchType,
                     specialEntrance.value?.sportType?.code
-                )?.run {
+                ).run {
                     _specialEntrance.value = null
                 }
-
-                _curMatchType.value = matchType
-                _sportMenuResult.value = it
             }
+            _curMatchType.value = matchType
         }
         _isLoading.value = false
     }
@@ -476,7 +475,7 @@ class GameViewModel(
     }
 
     fun switchSportType(matchType: MatchType, item: Item) {
-        updateSportSelectState(matchType, item)
+        _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
 
         getGameHallList(matchType, true, isReloadPlayCate = true)
     }
@@ -488,7 +487,7 @@ class GameViewModel(
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
-        updateDateSelectedState(date)
+        _curDate.value?.updateDateSelectedState(date)
 
         getGameHallList(matchType, false, date.date)
     }
@@ -505,9 +504,6 @@ class GameViewModel(
 
         if (isReloadDate) {
             getDateRow(matchType)
-            _curDate.value?.firstOrNull()?.let {
-                updateDateSelectedState(it)
-            }
         }
 
         val sportItem = getSportSelected(matchType)
@@ -586,51 +582,13 @@ class GameViewModel(
                 result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.odds.values.forEach { oddList ->
-                            oddList.forEach { odd ->
-                                odd?.isSelected =
-                                    betInfoRepository.betInfoList.value?.peekContent()
-                                        ?.any { betInfoListData ->
-                                            betInfoListData.matchOdd.oddsId == odd?.id
-                                        }
-                            }
+                            oddList.updateOddSelectState()
                         }
                     }
                 }
 
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
-                    it.odds.forEach { mapSubTitleOdd ->
-                        val dynamicMarket = matchOdd.dynamicMarkets[mapSubTitleOdd.key]
-
-                        //add subtitle
-                        if (!matchOdd.displayList.contains(mapSubTitleOdd.key)) {
-                            dynamicMarket?.let {
-                                when (LanguageManager.getSelectLanguage(androidContext)) {
-                                    LanguageManager.Language.ZH -> {
-                                        matchOdd.displayList.add(dynamicMarket.zh)
-                                    }
-                                    else -> {
-                                        matchOdd.displayList.add(dynamicMarket.en)
-                                    }
-                                }
-                            }
-                        }
-
-                        //add odd
-                        mapSubTitleOdd.value.forEach { odd ->
-                            odd?.outrightCateName =
-                                when (LanguageManager.getSelectLanguage(androidContext)) {
-                                    LanguageManager.Language.ZH -> {
-                                        dynamicMarket?.zh
-                                    }
-                                    else -> {
-                                        dynamicMarket?.en
-                                    }
-                                }
-                            odd?.let { it1 -> matchOdd.displayList.add(it1) }
-                        }
-                    }
-
                     matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
                     matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
                 }
@@ -673,12 +631,7 @@ class GameViewModel(
                     }
 
                     matchOdd.odds.forEach { map ->
-                        map.value.forEach { odd ->
-                            odd?.isSelected =
-                                betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd?.id
-                                }
-                        }
+                        map.value.updateOddSelectState()
                     }
                 }
             }
@@ -763,7 +716,10 @@ class GameViewModel(
                 listOf()
             }
         }
-        _curDate.value = dateRow
+
+        dateRow.firstOrNull()?.let {
+            dateRow.updateDateSelectedState(it)
+        }
     }
 
     private fun getDateRowEarly(): List<Date> {
@@ -928,11 +884,22 @@ class GameViewModel(
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
+        val outrightCateName = matchOdd.dynamicMarkets[odd.outrightCateKey].let {
+            when (LanguageManager.getSelectLanguage(androidContext)) {
+                LanguageManager.Language.ZH -> {
+                    it?.zh
+                }
+                else -> {
+                    it?.en
+                }
+            }
+        }
+
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
                 matchType,
                 sportType,
-                odd.outrightCateName,
+                outrightCateName,
                 odd.spread,
                 matchOdd,
                 odd
@@ -1310,23 +1277,21 @@ class GameViewModel(
         return this
     }
 
-    private fun updateSportSelectState(matchType: MatchType, item: Item) {
-        val sportMenuResult = _sportMenuResult.value
-        sportMenuResult?.sportMenuData?.updateSportSelectState(matchType, item.code)
-        _sportMenuResult.postValue(sportMenuResult)
+    private fun SportMenuResult.updateSportSelectState(
+        matchType: MatchType?,
+        sportTypeCode: String?
+    ) {
+        this.sportMenuData?.updateSportSelectState(matchType, sportTypeCode)
+        _sportMenuResult.postValue(this)
     }
 
-    private fun updateDateSelectedState(date: Date) {
-        val dateRow = _curDate.value
-
-        dateRow?.forEach {
+    private fun List<Date>.updateDateSelectedState(date: Date) {
+        this.forEach {
             it.isSelected = (it == date)
         }
 
-        dateRow?.let {
-            _curDate.postValue(it)
-            _curDatePosition.postValue(_curDate.value?.indexOf(date))
-        }
+        _curDate.postValue(this)
+        _curDatePosition.postValue(this.indexOf(date))
     }
 
     private fun updatePlayCateSelectedState(play: Play) {
@@ -1338,6 +1303,15 @@ class GameViewModel(
 
         playCate?.let {
             _playCategoryList.postValue(it)
+        }
+    }
+
+    private fun List<Odd?>.updateOddSelectState() {
+        this.forEach { odd ->
+            odd?.isSelected = betInfoRepository.betInfoList.value?.peekContent()
+                ?.any { betInfoListData ->
+                    betInfoListData.matchOdd.oddsId == odd?.id
+                }
         }
     }
 }
