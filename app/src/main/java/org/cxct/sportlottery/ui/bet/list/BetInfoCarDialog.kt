@@ -29,6 +29,11 @@ class BetInfoCarDialog : BaseBottomSheetFragment<GameViewModel>(GameViewModel::c
     }
 
 
+    private val keyboard: KeyBoardUtil by lazy {
+        KeyBoardUtil(kv_keyboard, null)
+    }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_bottom_sheet_betinfo_item, container, false)
     }
@@ -42,7 +47,6 @@ class BetInfoCarDialog : BaseBottomSheetFragment<GameViewModel>(GameViewModel::c
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initKeyBoard() {
-        val keyboard = KeyBoardUtil(kv_keyboard, null)
         et_bet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 keyboard.showKeyboard(view as EditText)
