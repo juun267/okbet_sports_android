@@ -2,8 +2,8 @@ package org.cxct.sportlottery.ui.game
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -12,10 +12,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.menu_item_bet_info.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -249,15 +251,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
     private fun initNavigationView() {
         try {
-            //TODO 投注單的文字顏色調整
-            (bottom_navigation_sport[0] as BottomNavigationMenuView).let { navigationMenuView ->
-                navigationMenuView[2].setBackgroundColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.colorBlue
-                    )
-                )
-            }
+            val menuView = bottom_navigation_sport[0] as BottomNavigationMenuView
+            val itemView = menuView.getChildAt(2) as BottomNavigationItemView
+            val betInfoItem: View = LayoutInflater.from(this).inflate(R.layout.menu_item_bet_info, menuView, false)
+            itemView.addView(betInfoItem)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -536,9 +533,7 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
-            it.peekContent().let {
-                //TODO 改變 bottom nav 注單數量
-            }
+            tv_bet_info_count.text = "${it.peekContent().size}"
         })
 
     }
