@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.util.TimeUtil
+import timber.log.Timber
 
 class TransactionStatusViewModel(
     androidContext: Application,
@@ -24,6 +25,13 @@ class TransactionStatusViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
 ) : BaseNoticeViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
+
+    //投注單球類
+    var gameType: String? = null
+        set(value) {
+            field = value
+            getBetList(true)
+        }
 
     val loading: LiveData<Boolean>
         get() = _loading
@@ -58,7 +66,7 @@ class TransactionStatusViewModel(
 
     //獲取交易狀況資料(未結算)
     fun getBetList(firstPage: Boolean = false) {
-        if (betListRequesting || betListData.value?.isLastPage == true)
+        if (betListRequesting || (betListData.value?.isLastPage == true && !firstPage))
             return
         betListRequesting = true
 
@@ -87,6 +95,7 @@ class TransactionStatusViewModel(
             championOnly = 0,
             BetRecordType.UNSETTLEMENT.code,
             page = page,
+            gameType = gameType,
             startTime = TimeUtil.getTodayStartTimeStamp().toString(),
             endTime = TimeUtil.getTodayEndTimeStamp().toString(),
             pageSize = pageSize
