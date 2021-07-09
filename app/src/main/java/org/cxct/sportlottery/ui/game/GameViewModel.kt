@@ -476,7 +476,6 @@ class GameViewModel(
                     _specialEntrance.value = null
                 }
             }
-
             _curMatchType.value = matchType
         }
         _isLoading.value = false
