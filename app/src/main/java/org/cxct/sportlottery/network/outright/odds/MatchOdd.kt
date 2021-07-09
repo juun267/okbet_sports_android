@@ -14,7 +14,6 @@ data class MatchOdd(
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: Map<String, DynamicMarket>
 ) {
-    var displayList: MutableList<Any> = mutableListOf()
     var startDate: String = ""
     var startTime: String = ""
 }

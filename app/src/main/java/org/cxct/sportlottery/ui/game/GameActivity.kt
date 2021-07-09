@@ -29,9 +29,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
@@ -43,16 +42,18 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.MenuLeftFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
+import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
-class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
@@ -191,7 +192,6 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
-
     }
 
     private fun initMenu() {
@@ -207,31 +207,24 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                //TODO Bill 未登錄會有問題，如果沒登入先不給點，等PM回覆
-                when (viewModel.userInfo.value?.testFlag) {
-                    TestFlag.NORMAL.index -> {
-                        val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                            override fun onClick(menuStatus: Int) {
-                                when (menuStatus) {
-                                    MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                                }
-                            }
-                        })
+                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
+                    override fun onClick(menuStatus: Int) {
+                        when (menuStatus) {
+                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
+                        }
+                    }
+                })
 
-                        supportFragmentManager.beginTransaction()
-                            .setCustomAnimations(
-                                R.anim.pop_left_to_right_enter_opaque,
-                                R.anim.push_right_to_left_exit_opaque,
-                                R.anim.pop_left_to_right_enter_opaque,
-                                R.anim.push_right_to_left_exit_opaque
-                            )
-                            .add(R.id.fl_left_menu, leftMenuFragment)
-                            .addToBackStack(null)
-                            .commit()
-                    }
-                    else -> {
-                    }
-                }
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque,
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque
+                    )
+                    .add(R.id.fl_left_menu, leftMenuFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -276,12 +269,12 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                     false
                 }
                 R.id.account_history -> {
-                    //TODO navigate account_history
-                    true
+                    startActivity(Intent(this, AccountHistoryActivity::class.java))
+                    false
                 }
                 R.id.transaction_status -> {
-                    //TODO navigate transaction_status
-                    true
+                    startActivity(Intent(this, TransactionStatusActivity::class.java))
+                    false
                 }
                 else -> false
             }
@@ -323,6 +316,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+            val countEps =
+                sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tan_main)
@@ -351,6 +346,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             val tabOutright = tabLayout.getTabAt(6)?.customView
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
+
+            val tabEps = tabLayout.getTabAt(7)?.customView
+            tabEps?.tv_title?.setText(R.string.home_tab_eps)
+            tabEps?.tv_number?.text = countEps.toString()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -536,6 +535,13 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             tv_bet_info_count.text = "${it.peekContent().size}"
         })
 
+
+        viewModel.notifyLogin.observe(this, {
+            snackBarLoginNotify.apply {
+                setAnchorView(R.id.game_bottom_navigation)
+                show()
+            }
+        })
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {

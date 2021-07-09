@@ -22,7 +22,7 @@ data class Odd(
     override var oddState: Int = OddState.SAME.state
     @Transient
     override var runnable: Runnable? = null
-    var outrightCateName: String? = null
+    var outrightCateKey: String? = null
 }
 
 //socket進來的新賠率較大或較小

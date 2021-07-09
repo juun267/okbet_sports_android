@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorWhite"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
+    tools:ignore="SpUsage">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:src="@drawable/soccer_account"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:padding="16dp"
+        android:src="@drawable/ic_arrow_left_game_back"
+        app:layout_constraintBottom_toBottomOf="@id/iv_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorBlackLight" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:text="@string/bet_num_and_bet_date"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_bg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
+        android:id="@+id/linear_layout"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="8dp"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/linear_layout2"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_bg">
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/date_selector"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_width="match_parent"
+            app:defaultBottomSheetTitleText="@string/choose_bet_state"
+            app:defaultStatusText="6-21 星期一"
+            app:horizontalChainStyle="spread" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@drawable/bg_white_square_shape_4dp_gray_stroke"
+        android:id="@+id/linear_layout2"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="8dp"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/linear_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linear_layout"
+        app:layout_constraintTop_toTopOf="@+id/linear_layout">
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/sport_selector"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_width="match_parent"
+            app:defaultBottomSheetTitleText="@string/choose_bet_state"
+            app:defaultStatusText="@string/all_sport"
+            app:horizontalChainStyle="spread" />
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
