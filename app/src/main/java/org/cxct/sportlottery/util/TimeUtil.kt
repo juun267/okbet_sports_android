@@ -86,6 +86,7 @@ object TimeUtil {
             Calendar.WEDNESDAY -> R.string.wednesday
             Calendar.THURSDAY -> R.string.thursday
             Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
             else -> R.string.sunday
         }
     }
@@ -115,9 +116,22 @@ object TimeUtil {
         }
     }
 
-    fun getMinusDate(minusDays: Int): String {
+    fun getMinusDateTimeStamp(minusDays: Int ?= 0): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
+        val minusDayTimeStamp = cPair.first.timeInMillis
+        val todayTimeStamp = cPair.second.timeInMillis
+        return object : TimeRangeParams {
+            //TODO simon review: TimeRangeParams 裡的 startTime、endTime 同時可能代表 timeStamp 也可能代表 日期(yyyy-MM-dd)，感覺最好拆開定義
+            override val startTime: String
+                get() = minusDayTimeStamp.toString()
+            override val endTime: String
+                get() = todayTimeStamp.toString()
+        }
+    }
+
+    fun getMinusDate(minusDays: Int, dateFormatPattern: String = MD_FORMAT): String {
         val mCalendar = getCalendarForDates(minusDays)
-        return timeFormat(mCalendar.first.timeInMillis, YMD_FORMAT)
+        return timeFormat(mCalendar.first.timeInMillis, dateFormatPattern)
     }
 
     fun getMinusDayOfWeek(minusDays: Int): Int {
@@ -130,6 +144,7 @@ object TimeUtil {
             Calendar.WEDNESDAY -> R.string.wednesday
             Calendar.THURSDAY -> R.string.thursday
             Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
             else -> R.string.sunday
         }
 

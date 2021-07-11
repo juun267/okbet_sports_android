@@ -14,6 +14,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 
 class AccountHistoryNextViewModel(
@@ -46,12 +47,12 @@ class AccountHistoryNextViewModel(
     fun searchBetRecord(
         isChampionChecked: Boolean? = false,
         gameType: String? = null,
-        date: String? = null,
+        minusDate: String? = null,
         status: String? = null,
     ) {
 
-        val startTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.START_OF_DAY).toString()
-        val endTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.END_OF_DAY).toString()
+        val startTime = TimeUtil.getMinusDateTimeStamp(minusDate?.toIntOrNull()).startTime
+        val endTime = TimeUtil.getMinusDateTimeStamp(minusDate?.toIntOrNull()).endTime
 
         val statusFilter = { item: String? ->
             if (item.isNullOrEmpty()) listOf(1, 2, 3, 4, 5, 6, 7) else item.toList().map {

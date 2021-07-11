@@ -243,14 +243,18 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
                            StatusSheetData("VB", context?.getString(R.string.volleyball)),
                            StatusSheetData("BM", context?.getString(R.string.badminton)))
 
+                val dateString = { minusDate: Int ->
+                    "${TimeUtil.getMinusDate(minusDate)} ${context.getString(TimeUtil.getMinusDayOfWeek(minusDate))}"
+                }
+
                 val dateStatusList =
-                    listOf(StatusSheetData("0", "${TimeUtil.getMinusDate(0)} ${TimeUtil.getMinusDayOfWeek(0)}"),
-                           StatusSheetData("1", "${TimeUtil.getMinusDate(1)} ${TimeUtil.getMinusDayOfWeek(1)}"),
-                           StatusSheetData("2", "${TimeUtil.getMinusDate(2)} ${TimeUtil.getMinusDayOfWeek(2)}"),
-                           StatusSheetData("3", "${TimeUtil.getMinusDate(3)} ${TimeUtil.getMinusDayOfWeek(3)}"),
-                           StatusSheetData("4", "${TimeUtil.getMinusDate(4)} ${TimeUtil.getMinusDayOfWeek(4)}"),
-                           StatusSheetData("5", "${TimeUtil.getMinusDate(5)} ${TimeUtil.getMinusDayOfWeek(5)}"),
-                           StatusSheetData("6", "${TimeUtil.getMinusDate(6)} ${TimeUtil.getMinusDayOfWeek(6)}"))
+                    listOf(StatusSheetData("0", dateString(0)),
+                           StatusSheetData("1", dateString(1)),
+                           StatusSheetData("2", dateString(2)),
+                           StatusSheetData("3", dateString(3)),
+                           StatusSheetData("4", dateString(4)),
+                           StatusSheetData("5", dateString(5)),
+                           StatusSheetData("6", dateString(6)))
 
                 sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
                 sport_selector.dataList = sportStatusList
@@ -258,6 +262,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
                     sportSelectListener.onSelect(it.code, date_selector.selectedTag)
                 }
 
+                date_selector.selectedText = dateString(0)
                 date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
                 date_selector.dataList = dateStatusList
                 date_selector.setOnItemSelectedListener {
