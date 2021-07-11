@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
@@ -87,8 +88,8 @@ object TimeUtil {
             Calendar.FRIDAY -> R.string.friday
             else -> R.string.sunday
         }
-
     }
+
     fun getDefaultTimeStamp(): TimeRangeParams {
         val cPair = getCalendarForDates(6)
         val minusDayTimeStamp = cPair.first.timeInMillis
@@ -112,6 +113,26 @@ object TimeUtil {
             override val endTime: String
                 get() = today
         }
+    }
+
+    fun getMinusDate(minusDays: Int): String {
+        val mCalendar = getCalendarForDates(minusDays)
+        return timeFormat(mCalendar.first.timeInMillis, YMD_FORMAT)
+    }
+
+    fun getMinusDayOfWeek(minusDays: Int): Int {
+        val mCalendar = getCalendarForDates(minusDays)
+
+        return when (mCalendar.first.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            else -> R.string.sunday
+        }
+
     }
 
     fun getNowTimeStamp(): Long {

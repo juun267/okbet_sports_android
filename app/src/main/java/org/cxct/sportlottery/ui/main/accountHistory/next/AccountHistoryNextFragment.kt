@@ -19,9 +19,12 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
     private val args: AccountHistoryNextFragmentArgs by navArgs()
 
     private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
-
     }, BackClickListener {
         findNavController().navigateUp()
+    }, SportSelectListener { sport, date ->
+        viewModel.searchBetRecord(gameType = sport, date = date)
+    }, DateSelectListener { sport, date ->
+        viewModel.searchBetRecord(gameType = sport, date = date)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

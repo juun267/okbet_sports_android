@@ -45,19 +45,29 @@ class AccountHistoryNextViewModel(
 
     fun searchBetRecord(
         isChampionChecked: Boolean? = false,
-        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
-        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        gameType: String? = null,
+        date: String? = null,
         status: String? = null,
     ) {
+
+        val startTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.START_OF_DAY).toString()
+        val endTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.END_OF_DAY).toString()
+
         val statusFilter = { item: String? ->
             if (item.isNullOrEmpty()) listOf(1, 2, 3, 4, 5, 6, 7) else item.toList().map {
                 Character.getNumericValue(it)
-
             }
         }
+
+        val emptyFilter = { item: String? ->
+            if (item.isNullOrEmpty()) null else item
+        }
+
         val championOnly = if (isChampionChecked == true) 1 else 0
+
         mBetListRequest = BetListRequest(
             championOnly = championOnly,
+            gameType = emptyFilter(gameType),
             statusList = statusFilter(status),
             startTime = startTime,
             endTime = endTime,
