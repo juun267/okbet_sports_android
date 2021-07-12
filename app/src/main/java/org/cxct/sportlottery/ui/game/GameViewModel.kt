@@ -644,6 +644,7 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
                     }
 
+                    matchOdd.odds = matchOdd.odds.filterOdds(result.oddsListData.sport.code)
                     matchOdd.odds.forEach { map ->
                         map.value.updateOddSelectState()
                     }
@@ -1319,5 +1320,107 @@ class GameViewModel(
                     betInfoListData.matchOdd.oddsId == odd?.id
                 }
         }
+    }
+
+    private fun Map<String, List<Odd?>>.filterOdds(sportCode: String): MutableMap<String, MutableList<Odd?>> {
+        return this.mapValues {
+            val oddGroupCount = when (it.key) {
+                PlayType.X12.code, PlayType.X12_SEG1.code, PlayType.X12_1ST.code -> {
+                    when (sportCode) {
+                        SportType.FOOTBALL.code, SportType.BASKETBALL.code -> 3
+                        SportType.TENNIS.code, SportType.VOLLEYBALL.code -> 2
+                        else -> 0
+                    }
+                }
+
+                PlayType.HDP.code, PlayType.SET_HDP.code, PlayType.HDP_SEG1.code, PlayType.HDP_1ST.code, PlayType.HDP_INCL_OT.code,
+                PlayType.OU.code, PlayType.OU_1ST.code, PlayType.OU_INCL_OT.code,
+                PlayType.BTS.code,
+                PlayType.OE.code,
+                PlayType.TG_OU_H_INCL_OT.code, PlayType.TG_OU_C_INCL_OT.code,
+                PlayType.TG_OU_H_1ST.code, PlayType.TG_OU_C_1ST.code -> 2
+
+                else -> 0
+            }
+
+            it.value.filterIndexed { index, _ ->
+                index < oddGroupCount
+            }.toMutableList()
+
+        }.mapKeys {
+            when (it.key) {
+                PlayType.X12.code -> {
+                    androidContext.getString(R.string.game_play_type_1x2)
+                }
+                PlayType.X12_1ST.code -> {
+                    androidContext.getString(R.string.game_play_type_1x2_1st)
+                }
+                PlayType.X12_SEG1.code -> {
+                    androidContext.getString(R.string.game_play_type_1x2_seg1)
+                }
+                PlayType.HDP.code -> {
+                    when (sportCode) {
+                        SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
+                            androidContext.getString(R.string.game_play_type_hdp_ft)
+                        }
+                        SportType.TENNIS.code -> {
+                            androidContext.getString(R.string.game_play_type_hdp_tn)
+                        }
+                        SportType.VOLLEYBALL.code -> {
+                            androidContext.getString(R.string.game_play_type_hdp_vb)
+                        }
+                        else -> it.key
+                    }
+                }
+                PlayType.HDP_1ST.code -> {
+                    androidContext.getString(R.string.game_play_type_hdp_1st)
+                }
+                PlayType.SET_HDP.code -> {
+                    androidContext.getString(R.string.game_play_type_set_hdp)
+                }
+                PlayType.HDP_SEG1.code -> {
+                    androidContext.getString(R.string.game_play_type_hdp_seg1)
+                }
+                PlayType.HDP_INCL_OT.code -> {
+                    androidContext.getString(R.string.game_play_type_hdp_incl_ot)
+                }
+                PlayType.OU.code -> {
+                    when (sportCode) {
+                        SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
+                            androidContext.getString(R.string.game_play_type_ou_ft)
+                        }
+                        SportType.TENNIS.code -> {
+                            androidContext.getString(R.string.game_play_type_ou_tn)
+                        }
+                        else -> it.key
+                    }
+                }
+                PlayType.OU_1ST.code -> {
+                    androidContext.getString(R.string.game_play_type_ou_1st)
+                }
+                PlayType.OU_INCL_OT.code -> {
+                    androidContext.getString(R.string.game_play_type_ou_incl_ot)
+                }
+                PlayType.BTS.code -> {
+                    androidContext.getString(R.string.game_play_type_bts)
+                }
+                PlayType.OE.code -> {
+                    androidContext.getString(R.string.game_play_type_oe)
+                }
+                PlayType.TG_OU_H_INCL_OT.code -> {
+                    androidContext.getString(R.string.game_play_type_tg_ou_h_ot)
+                }
+                PlayType.TG_OU_C_INCL_OT.code -> {
+                    androidContext.getString(R.string.game_play_type_tg_ou_c_ot)
+                }
+                PlayType.TG_OU_H_1ST.code -> {
+                    androidContext.getString(R.string.game_play_type_tg_ou_h_1st)
+                }
+                PlayType.TG_OU_C_1ST.code -> {
+                    androidContext.getString(R.string.game_play_type_tg_ou_c_1st)
+                }
+                else -> it.key
+            }
+        }.toMutableMap()
     }
 }
