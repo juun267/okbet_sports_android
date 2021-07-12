@@ -103,8 +103,6 @@ class TransactionStatusViewModel(
             BetRecordType.UNSETTLEMENT.code,
             page = page,
             gameType = gameType,
-            startTime = TimeUtil.getTodayStartTimeStamp().toString(),
-            endTime = TimeUtil.getTodayEndTimeStamp().toString(),
             pageSize = pageSize
         )
     }
