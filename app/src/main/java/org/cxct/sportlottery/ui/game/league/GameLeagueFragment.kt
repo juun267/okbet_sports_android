@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,33 +65,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_game_league, container, false).apply {
-            setupGameFilterRow(this)
             setupLeagueOddList(this)
-        }
-    }
-
-    private fun setupGameFilterRow(view: View) {
-        view.game_league_filter_row.apply {
-
-            searchHint = getString(R.string.game_filter_row_search_hint_league)
-
-            backClickListener = View.OnClickListener {
-                findNavController().navigateUp()
-            }
-
-            queryTextListener = object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    newText?.let {
-                        viewModel.searchMatch(it)
-                        leagueAdapter.searchText = it
-                    }
-                    return true
-                }
-            }
         }
     }
 
@@ -128,8 +101,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
-
-                    game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
 
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {

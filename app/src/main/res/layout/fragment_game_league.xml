@@ -20,19 +20,13 @@
             android:layout_height="match_parent"
             android:background="@color/colorWhite1">
 
-            <org.cxct.sportlottery.ui.game.widget.GameFilterRow
-                android:id="@+id/game_league_filter_row"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_league_odd_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
-                app:layout_constraintTop_toBottomOf="@id/game_league_filter_row"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="2"
                 tools:listitem="@layout/itemview_game_league" />
 
