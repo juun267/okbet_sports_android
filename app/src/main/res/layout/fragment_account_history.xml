@@ -8,6 +8,17 @@
     tools:context=".ui.profileCenter.sportRecord.SportBetRecordFragment"
     tools:ignore="SpUsage">
 
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/view_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_account_history"
         android:layout_width="match_parent"
@@ -16,6 +27,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="1"
         tools:listitem="@layout/view_account_history_title_bar" />
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
