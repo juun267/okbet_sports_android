@@ -96,7 +96,7 @@ abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T
         viewModel.betInfoRepository.betInfoList.observe(this, {
             it.peekContent().let {
                 if (it.size == 0) saveFirstBetFlag(true)
-                if (it.size == 0 || it.size == 1) saveFirstBetFlagForParlay(true)
+                if (it.size == 1) saveFirstBetFlagForParlay(true)
 
                 when {
                     it.isNullOrEmpty() -> {

@@ -55,6 +55,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         notifyDataSetChanged()
     }
 
+    fun getData() = dataList
+
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {

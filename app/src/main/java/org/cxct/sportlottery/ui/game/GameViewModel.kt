@@ -9,7 +9,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -32,12 +34,12 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.SaveMyFavoriteRequest
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
-import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -289,12 +291,10 @@ class GameViewModel(
         }
     }
 
-    //賽事首頁 - 滾球盤、即將開賽盤 切換
-    fun switchMatchTypeByHome(matchType: MatchType) {
-        betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
-        if (matchType == MatchType.PARLAY) {
+    fun isParlayPage(isParlayPage: Boolean) {
+        betInfoRepository._isParlayPage.postValue(isParlayPage)
+        if (isParlayPage)
             checkShoppingCart()
-        }
     }
 
     fun switchMatchType(matchType: MatchType) {
@@ -592,6 +592,20 @@ class GameViewModel(
                     MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
             }?.let { result ->
+                //mapping 下注單裡面項目、賠率按鈕
+                result.matchPreloadData?.datas?.forEach { data ->
+                    data.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.forEach { map ->
+                            map.value.forEach { odd ->
+                                odd?.isSelected =
+                                    betInfoRepository.betInfoList.value?.peekContent()?.any {
+                                        it.matchOdd.oddsId == odd?.id
+                                    }
+                            }
+                        }
+                    }
+                }
+
                 _matchPreloadInPlay.postValue(Event(result))
             }
         }
@@ -611,11 +625,21 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                //計算且賦值 即將開賽 的倒數時間
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
+                        //計算且賦值 即將開賽 的倒數時間
                         matchOdd.matchInfo?.apply {
                             remainTime = TimeUtil.getRemainTime(startTime.toLong())
+                        }
+
+                        //mapping 下注單裡面項目、賠率按鈕
+                        matchOdd.odds.forEach { map ->
+                            map.value.forEach { odd ->
+                                odd?.isSelected =
+                                    betInfoRepository.betInfoList.value?.peekContent()?.any {
+                                        it.matchOdd.oddsId == odd?.id
+                                    }
+                            }
                         }
                     }
                 }
@@ -653,6 +677,18 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
+                //mapping 下注單裡面項目、賠率按鈕
+                result.t?.odds?.forEach { oddData ->
+                    oddData.odds?.forEach { map ->
+                        map.value.forEach { odd ->
+                            odd?.isSelected =
+                                betInfoRepository.betInfoList.value?.peekContent()?.any {
+                                    it.matchOdd.oddsId == odd?.id
+                                }
+                        }
+                    }
+                }
+
                 _highlightMatchResult.postValue(Event(result))
             }
         }

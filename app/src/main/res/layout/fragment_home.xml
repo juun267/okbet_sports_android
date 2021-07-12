@@ -329,7 +329,7 @@
                         android:textStyle="bold" />
 
                     <RadioButton
-                        android:id="@+id/rb_soon"
+                        android:id="@+id/rb_as_start"
                         android:layout_width="wrap_content"
                         android:layout_height="28dp"
                         android:background="@null"
