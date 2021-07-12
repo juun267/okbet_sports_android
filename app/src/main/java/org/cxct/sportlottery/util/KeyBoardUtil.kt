@@ -12,7 +12,7 @@ import org.cxct.sportlottery.ui.common.KeyBoardCode
 
 
 @Suppress("DEPRECATION")
-class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val parent: View) :
+class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val parent: View?) :
     OnKeyboardActionListener {
 
 
@@ -32,12 +32,14 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
 
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.inputType = InputType.TYPE_NULL
-        parent.visibility = View.VISIBLE
+        keyboardView.visibility = View.VISIBLE
+        parent?.visibility = View.VISIBLE
     }
 
 
     fun hideKeyboard() {
-        parent.visibility = View.INVISIBLE
+        keyboardView.visibility = View.GONE
+        parent?.visibility = View.INVISIBLE
     }
 
 
@@ -61,6 +63,7 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
             }
 
             Keyboard.KEYCODE_DONE -> {
+                mEditText.isFocusable = false
                 hideKeyboard()
             }
 
