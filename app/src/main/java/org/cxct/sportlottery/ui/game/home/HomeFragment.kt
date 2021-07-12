@@ -17,7 +17,6 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.match.Match
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -58,7 +57,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var mInPlayResult: MatchPreloadResult? = null
     private var mAtStartResult: MatchPreloadResult? = null
 
-    private val mSportTypeAdapter = SportTypeAdapter()
+    private val mHighlightSportTypeAdapter = SportTypeAdapter()
     private val mRvHighlightAdapter = RvHighlightAdapter()
     private var mHighlightResult: MatchCategoryResult? = null
 
@@ -114,8 +113,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initHighlight() {
-        rv_highlight_sport_type.adapter = mSportTypeAdapter
-        mSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
+        rv_highlight_sport_type.adapter = mHighlightSportTypeAdapter
+        mHighlightSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
             highlight_tv_game_name.text = selectItem.name
             highlight_iv_game_icon.setImageResource(GameConfigManager.getGameIcon(selectItem.code))
             highlight_titleBar.setBackgroundResource(GameConfigManager.getTitleBarBackground(selectItem.code))
@@ -128,21 +127,39 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             unsubscribeHighlightHallChannel() //先取消訂閱當前的精選賽事
 
-            mSportTypeAdapter.dataSport.forEach { item ->
+            mHighlightSportTypeAdapter.dataSport.forEach { item ->
                 item.isSelected = item.code == selectItem.code
             }
-            mSportTypeAdapter.notifyDataSetChanged()
+            mHighlightSportTypeAdapter.notifyDataSetChanged()
             viewModel.getHighlightMatch(selectItem.code)
         }
 
         btn_display_all.setOnClickListener {
-            mSportTypeAdapter.dataSport.find { it.isSelected }?.let{ data ->
+            mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.let{ data ->
                 val sportType = SportType.getSportType(data.code)
                 viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, sportType)
             }
         }
 
         rv_game_highlight.adapter = mRvHighlightAdapter
+        mRvHighlightAdapter.onClickOddListener = object : OnClickOddListener {
+            override fun onClickBet(
+                matchOdd: MatchOdd,
+                odd: Odd,
+                playCateName: String,
+                playName: String
+            ) {
+                addOddsDialog(matchOdd, odd, playCateName, playName)
+            }
+        }
+        mRvHighlightAdapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
+            override fun onClick(select: MatchOdd) {
+                scroll_view.smoothScrollTo(0, 0)
+                val code = select.matchInfo?.sportType?.code
+                val matchId = select.matchInfo?.id
+                navOddsDetailFragment(code, matchId, MatchType.TODAY)
+            }
+        }
     }
 
     private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
@@ -196,6 +213,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         rg_table_bar.visibility =
             if (rb_in_play.visibility == View.GONE && rb_soon.visibility == View.GONE)
                 View.GONE else View.VISIBLE
+    }
+
+    private fun refreshHighlight(result: MatchCategoryResult?) {
+        val sportCode = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
+        mRvHighlightAdapter.setData(sportCode, result?.t?.odds)
     }
 
     private fun addOddsDialog(
@@ -325,14 +347,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //訂閱 精選賽事 賠率
     private fun subscribeHighlightHallChannel() {
-        val code = mSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
+        val code = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
         mHighlightResult?.t?.odds?.forEach { oddData ->
             subscribeHallChannel(code, oddData.matchInfo?.id)
         }
     }
 
     private fun unsubscribeHighlightHallChannel() {
-        val code = mSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
+        val code = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
         mHighlightResult?.t?.odds?.forEach { oddData ->
             unsubscribeHallChannel(code, oddData.matchInfo?.id)
         }
@@ -413,6 +435,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.highlightMatchResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
+                refreshHighlight(result)
                 mHighlightResult = result
                 subscribeHighlightHallChannel()
             }
@@ -675,13 +698,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateHighlight(result: MatchCategoryResult) {
-        mSportTypeAdapter.dataSport = result.t?.menu?.map { menu ->
+        mHighlightSportTypeAdapter.dataSport = result.t?.menu?.map { menu ->
             Item(menu.code ?: "", menu.name ?: "", 0, null, menu.sortNum ?: 0)
         } ?: listOf()
 
         //default 選擇第一個
-        mSportTypeAdapter.dataSport.firstOrNull()?.let {
-            mSportTypeAdapter.sportTypeListener?.onClick(it)
+        mHighlightSportTypeAdapter.dataSport.firstOrNull()?.let {
+            mHighlightSportTypeAdapter.sportTypeListener?.onClick(it)
         }
     }
 }

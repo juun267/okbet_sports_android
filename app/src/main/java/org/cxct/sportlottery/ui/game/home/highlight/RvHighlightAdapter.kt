@@ -14,25 +14,46 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.matchCategory.result.OddData
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.home.gameTable4.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-//TODO simon test
+
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
 
-    var dataList = listOf<MatchOdd>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    private var dataList = listOf<MatchOdd>()
+    fun setData(sportCode: String?, newList: List<OddData>?) {
+        dataList = newList?.map {
+            val matchInfo = MatchInfo(
+                gameType = null,
+                awayName = it.matchInfo?.awayName ?: "",
+                endTime = it.matchInfo?.endTime?.toString(),
+                homeName = it.matchInfo?.homeName ?: "",
+                id = it.matchInfo?.id ?: "",
+                playCateNum = it.matchInfo?.playCateNum ?: 0,
+                startTime = it.matchInfo?.startTime?.toString() ?: "",
+                status = it.matchInfo?.status ?: -1
+            ).apply {
+                sportType = SportType.getSportType(sportCode)
+                startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
+                startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")
+            }
+            val odds = it.odds ?: mutableMapOf()
+            MatchOdd(matchInfo, odds)
+        } ?: listOf()
+
+        notifyDataSetChanged()
+    }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -42,13 +63,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
-    var matchType: MatchType = MatchType.IN_PLAY
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
+    private val matchType: MatchType = MatchType.TODAY
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -117,7 +132,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 tv_game_name_away.text = data.matchInfo?.awayName
                 tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
 
-                //TODO icon
+                //TODO icon 時鐘 特優賠率
             }
         }
 
@@ -142,7 +157,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     else -> {
                         stopTimer()
                         tv_match_time.text =
-                            data.matchInfo?.startDateDisplay + " " + data.matchInfo?.startTimeDisplay
+                            "${data.matchInfo?.startDateDisplay ?: ""} ${data.matchInfo?.startTimeDisplay ?: ""}"
                     }
                 }
             }
@@ -491,8 +506,4 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             get() = mOddStateRefreshListener
     }
 
-}
-
-interface OnClickOddListener {
-    fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String)
 }
