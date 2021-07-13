@@ -59,7 +59,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     override fun getItemViewType(position: Int): Int {
         return when {
             getItem(position).orderNo.isNullOrBlank() -> ViewType.NoData.ordinal
-            getItem(position).parlayType == "1C1" || getItem(position).parlayType == "OUTRIGHT" -> ViewType.Match.ordinal
+            getItem(position).parlayType == ParlayType.SINGLE.key || getItem(position).parlayType == ParlayType.OUTRIGHT.key -> ViewType.Match.ordinal
             else -> ViewType.Parlay.ordinal
         }
     }
