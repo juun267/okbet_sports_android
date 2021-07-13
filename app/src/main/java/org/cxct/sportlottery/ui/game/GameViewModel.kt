@@ -592,7 +592,7 @@ class GameViewModel(
                     MatchPreloadRequest(MatchType.IN_PLAY.postValue)
                 )
             }?.let { result ->
-                //mapping 下注單裡面項目、賠率按鈕
+                //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
                         matchOdd.odds.forEach { map ->
@@ -632,7 +632,7 @@ class GameViewModel(
                             remainTime = TimeUtil.getRemainTime(startTime.toLong())
                         }
 
-                        //mapping 下注單裡面項目、賠率按鈕
+                        //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                         matchOdd.odds.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
@@ -677,7 +677,7 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                //mapping 下注單裡面項目、賠率按鈕
+                //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.t?.odds?.forEach { oddData ->
                     oddData.odds?.forEach { map ->
                         map.value.forEach { odd ->

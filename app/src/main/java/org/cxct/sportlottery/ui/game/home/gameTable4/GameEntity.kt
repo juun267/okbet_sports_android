@@ -7,4 +7,6 @@ class GameEntity(
     val name: String?, //球種名稱
     val num: Int, //該球種的比賽場次數量
     val matchOdds: List<MatchOdd> = listOf()
-)
+) {
+    var vpTableAdapter: Vp2GameTable4Adapter? = null
+}

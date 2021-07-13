@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home.gameTable4
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,11 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
     }
 
     fun getData() = mDataList
+
+    //指定刷新內部 ViewPager 的 subItem
+    fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {
+        mDataList[index].vpTableAdapter?.notifyItemChanged(indexMatchOdd)
+    }
 
     var matchType: MatchType = MatchType.IN_PLAY
         set(value) {
@@ -80,10 +86,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(
-            data: GameEntity,
-            oddsType: OddsType
-        ) {
+        fun bind(data: GameEntity, oddsType: OddsType) {
             itemView.apply {
                 iv_game_icon.setImageResource(getGameIcon(data.code))
                 tv_game_name.text = data.name
@@ -93,18 +96,16 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                     onClickTotalMatchListener?.onClick(data)
                 }
 
-                val adapter = if (view_pager.adapter is Vp2GameTable4Adapter)
-                    view_pager.adapter as Vp2GameTable4Adapter
-                else
-                    Vp2GameTable4Adapter()
+                if (data.vpTableAdapter == null) {
+                    data.vpTableAdapter = Vp2GameTable4Adapter()
+                    data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
+                    data.vpTableAdapter?.onClickOddListener = onClickOddListener
+                    data.vpTableAdapter?.matchType = matchType
+                    data.vpTableAdapter?.oddsType = oddsType
+                    data.vpTableAdapter?.dataList = data.matchOdds
+                }
 
-                adapter.onClickMatchListener = onClickMatchListener
-                adapter.onClickOddListener = onClickOddListener
-                adapter.matchType = matchType
-                adapter.oddsType = oddsType
-                adapter.dataList = data.matchOdds
-                view_pager.adapter = adapter
-
+                view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)
             }
         }

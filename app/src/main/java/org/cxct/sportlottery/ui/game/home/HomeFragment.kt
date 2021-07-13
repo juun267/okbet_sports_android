@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.itemview_match_category_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
@@ -22,6 +23,7 @@ import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
@@ -124,7 +126,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mHighlightSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
             highlight_tv_game_name.text = selectItem.name
             highlight_iv_game_icon.setImageResource(GameConfigManager.getGameIcon(selectItem.code))
-            highlight_titleBar.setBackgroundResource(GameConfigManager.getTitleBarBackground(selectItem.code))
+            highlight_titleBar.setBackgroundResource(
+                GameConfigManager.getTitleBarBackground(
+                    selectItem.code
+                )
+            )
 
             tv_play_type.text = when (SportType.getSportType(selectItem.code)) {
                 SportType.FOOTBALL, SportType.BASKETBALL -> getText(R.string.ou_hdp_hdp_title)
@@ -142,7 +148,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         btn_display_all.setOnClickListener {
-            mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.let{ data ->
+            mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.let { data ->
                 val sportType = SportType.getSportType(data.code)
                 viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, sportType)
             }
@@ -223,7 +229,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun refreshHighlight(result: MatchCategoryResult?) {
-        val sportCode = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code?: ""
+        val sportCode = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
         mRvHighlightAdapter.setData(sportCode, result?.t?.odds)
     }
 
@@ -475,13 +481,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
                                 matchOdd.matchInfo?.id == matchId
                             }
+                            val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
                             updateMatchOdd?.let {
                                 updateMatchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
                                 updateMatchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
                                 updateMatchOdd.matchInfo?.statusName = matchStatusCO.statusName
 
-                                mRvGameTable4Adapter.notifyItemChanged(index)
+                                mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
                             }
                         }
                     }
@@ -500,6 +507,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
                                 matchOdd.matchInfo?.id == matchId
                             }
+                            val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
                             updateMatchOdd?.let {
                                 updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
@@ -512,7 +520,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     else -> null
                                 }
 
-                                mRvGameTable4Adapter.notifyItemChanged(index)
+                                mRvGameTable4Adapter.notifyItemChanged(index, indexMatchOdd)
                             }
                         }
                     }
@@ -521,101 +529,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
-            //TODO simon test 賠率變更
-            it?.let { oddsChangeEvent ->
-                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-
-                    @Suppress("NAME_SHADOWING")
-                    val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                        oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
-                            odd?.isSelected =
-                                viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                                    betInfoListData.matchOdd.oddsId == odd?.id
-                                }
-                        }
-                    }
-
-                    val dataList = mRvGameTable4Adapter.getData()
-                    val oddsType = mRvGameTable4Adapter.oddsType
-
-                    dataList.forEachIndexed { index, gameEntity ->
-                        val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
-                            matchOdd.matchInfo?.id == oddsChangeEvent.eventId
-                        }
-
-                        if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                            updateMatchOdd?.odds = oddTypeSocketMap.toMutableMap()
-
-                        } else {
-                            updateMatchOdd?.odds?.forEach { oddTypeMap ->
-
-                                val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                                val odds = oddTypeMap.value
-
-                                odds.forEach { odd ->
-                                    odd?.let { oddNonNull ->
-                                        val oddSocket = oddsSocket?.find { oddSocket ->
-                                            oddSocket?.id == odd.id
-                                        }
-
-                                        oddSocket?.let { oddSocketNonNull ->
-                                            when (oddsType) {
-                                                OddsType.EU -> {
-                                                    oddNonNull.odds?.let { oddValue ->
-                                                        oddSocketNonNull.odds?.let { oddSocketValue ->
-                                                            when {
-                                                                oddValue > oddSocketValue -> {
-                                                                    oddNonNull.oddState =
-                                                                        OddState.SMALLER.state
-                                                                }
-                                                                oddValue < oddSocketValue -> {
-                                                                    oddNonNull.oddState =
-                                                                        OddState.LARGER.state
-                                                                }
-                                                                oddValue == oddSocketValue -> {
-                                                                    oddNonNull.oddState =
-                                                                        OddState.SAME.state
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-
-                                                OddsType.HK -> {
-                                                    oddNonNull.hkOdds?.let { oddValue ->
-                                                        oddSocketNonNull.hkOdds?.let { oddSocketValue ->
-                                                            when {
-                                                                oddValue > oddSocketValue -> {
-                                                                    oddNonNull.oddState =
-                                                                        OddState.SMALLER.state
-                                                                }
-                                                                oddValue < oddSocketValue -> {
-                                                                    oddNonNull.oddState =
-                                                                        OddState.LARGER.state
-                                                                }
-                                                                oddValue == oddSocketValue -> {
-                                                                    oddNonNull.oddState =
-                                                                        OddState.SAME.state
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            oddNonNull.odds = oddSocketNonNull.odds
-                                            oddNonNull.hkOdds = oddSocketNonNull.hkOdds
-
-                                            oddNonNull.status = oddSocketNonNull.status
-
-                                            mRvGameTable4Adapter.notifyItemChanged(index)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            it?.let {
+                updateOdds(it)
             }
         })
 
@@ -625,7 +540,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val dataList = mRvGameTable4Adapter.getData()
 
                 dataList.forEachIndexed { index, gameEntity ->
-                    gameEntity.matchOdds.forEach { matchOdd ->
+                    gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
                         matchOdd.odds.values.forEach { odds ->
                             odds.forEach { odd ->
                                 when (globalStopEvent.producerId) {
@@ -641,7 +556,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     }
                                 }
 
-                                mRvGameTable4Adapter.notifyItemChanged(index)
+                                mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
                             }
                         }
 
@@ -732,8 +647,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateBetList(result: List<BetInfoListData>) {
         //滾球盤、即將開賽盤
-        mRvGameTable4Adapter.getData().forEach { gameEntity ->
-            gameEntity.matchOdds.forEach { matchOdd ->
+        mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
+            gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
                 matchOdd.odds.values.forEach { oddList ->
                     oddList.forEach { odd ->
                         odd?.isSelected = result.any { betInfoListData ->
@@ -741,10 +656,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 }
+
+                mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
             }
         }
-
-        mRvGameTable4Adapter.notifyDataSetChanged()
 
 
         //精選賽事
@@ -760,4 +675,68 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         mRvHighlightAdapter.notifyDataSetChanged()
     }
+
+    private fun updateOdds(result: OddsChangeEvent) {
+        //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
+        result.odds?.forEach { map ->
+            map.value.forEach { odd ->
+                odd?.isSelected = viewModel.betInfoList.value?.peekContent()?.any {
+                    it.matchOdd.oddsId == odd?.id
+                }
+            }
+        }
+
+
+        //滾球盤、即將開賽盤
+        val dataList = mRvGameTable4Adapter.getData()
+        val oddsType = mRvGameTable4Adapter.oddsType
+
+        dataList.forEachIndexed { index, gameEntity ->
+            //先找出要更新的 賽事
+            val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
+                matchOdd.matchInfo?.id == result.eventId
+            }
+            val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
+
+            //mapping 要更新的賠率
+            if (updateMatchOdd?.odds.isNullOrEmpty()) {
+                updateMatchOdd?.odds =
+                    result.odds?.mapValues { it.value.toMutableList() }?.toMutableMap()
+                        ?: mutableMapOf()
+
+            } else {
+                result.odds?.forEach { map ->
+                    val key = map.key
+                    val newOddList = map.value
+                    val oldOddList = updateMatchOdd?.odds?.get(key)
+
+                    oldOddList?.forEach { oldOdd ->
+                        val newOdd = newOddList.find { newOdd -> oldOdd?.id == newOdd?.id }
+                        newOdd?.oddState = when (oddsType) {
+                            OddsType.EU -> judgeOddState(oldOdd?.odds, newOdd?.odds).state
+                            OddsType.HK -> judgeOddState(oldOdd?.hkOdds, newOdd?.hkOdds).state
+                        }
+
+                        oldOdd?.odds = newOdd?.odds
+                        oldOdd?.hkOdds = newOdd?.hkOdds
+                        newOdd?.status?.let {
+                            oldOdd?.status = it
+                        }
+                    }
+                }
+            }
+
+            //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
+            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+        }
+    }
+
+    private fun judgeOddState(oldOdd: Double?, newOdd: Double?): OddState {
+        return when {
+            oldOdd ?: 0.0 > newOdd ?: 0.0 -> OddState.SMALLER
+            oldOdd ?: 0.0 < newOdd ?: 0.0 -> OddState.LARGER
+            else -> OddState.SAME
+        }
+    }
+
 }
