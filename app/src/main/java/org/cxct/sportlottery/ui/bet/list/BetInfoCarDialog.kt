@@ -140,16 +140,16 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     }
 
 
-    private fun initBetButton(){
+    private fun initBetButton() {
         button_bet.apply {
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
             cl_bet.setOnClickListener {
-
+                //TODO 下注
             }
             tv_accept_odds_change.setOnClickListener {
-
+                //TODO 下注
             }
         }
     }
@@ -180,7 +180,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         })
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
-            it?.let { changeEvent -> viewModel.updateMatchOdd(changeEvent) }
+            //TODO 賠率變更
         })
     }
 
@@ -195,7 +195,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     }
 
 
-    private fun setupBetButtonType(isLogin: Boolean){
+    private fun setupBetButtonType(isLogin: Boolean) {
         button_bet.isLogin = isLogin
     }
 
