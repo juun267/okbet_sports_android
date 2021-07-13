@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -113,6 +114,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                     game_toolbar_match_type.text = oddsListResult.oddsListData?.sport?.name
 
+                    updateSportBackground(oddsListResult.oddsListData?.sport?.code)
+
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
@@ -163,6 +166,18 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueAdapter.oddsType = oddsType
             }
         })
+    }
+
+    private fun updateSportBackground(sportCode: String?) {
+        Glide.with(requireContext()).load(
+            when (sportCode) {
+                SportType.FOOTBALL.code -> R.drawable.soccer48
+                SportType.BASKETBALL.code -> R.drawable.basketball48
+                SportType.TENNIS.code -> R.drawable.tennis48
+                SportType.VOLLEYBALL.code -> R.drawable.volleyball48
+                else -> null
+            }
+        ).into(game_league_toolbar_bg)
     }
 
     private fun initSocketReceiver() {

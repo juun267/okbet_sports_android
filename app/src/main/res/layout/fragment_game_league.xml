@@ -20,6 +20,16 @@
             android:layout_height="match_parent"
             android:background="@color/colorWhite1">
 
+            <ImageView
+                android:id="@+id/game_league_toolbar_bg"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/game_league_toolbar_v4"
+                app:layout_constraintTop_toTopOf="@id/game_league_toolbar_v4"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/soccer48" />
+
             <include
                 android:id="@+id/game_league_toolbar_v4"
                 layout="@layout/view_game_toolbar_v4"
