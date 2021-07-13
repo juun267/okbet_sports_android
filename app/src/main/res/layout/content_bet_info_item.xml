@@ -125,7 +125,9 @@
             app:layout_constraintWidth_percent="0.442" />
 
 
-        <include layout="@layout/content_bet_info_item_quota_detail" />
+        <include
+            layout="@layout/content_bet_info_item_quota_detail"
+            app:gameViewModel="@{gameViewModel}"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

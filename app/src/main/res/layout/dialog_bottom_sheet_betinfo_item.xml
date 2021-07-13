@@ -44,7 +44,8 @@
 
         <include
             layout="@layout/content_bet_info_item"
-            app:dialog="@{dialog}" />
+            app:dialog="@{dialog}"
+            app:gameViewModel="@{gameViewModel}"/>
 
 
         <org.cxct.sportlottery.ui.common.CustomKeyBoardView

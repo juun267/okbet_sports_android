@@ -20,6 +20,8 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
+import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
+import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
@@ -28,6 +30,7 @@ import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyBoardUtil
@@ -109,7 +112,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             gameViewModel = this@BetInfoCarDialog.viewModel
             lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
             dialog = this@BetInfoCarDialog
-        }
+        }.executePendingBindings()
         return binding.root
     }
 
@@ -118,6 +121,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         super.onViewCreated(view, savedInstanceState)
         initKeyBoard()
         initBetButton()
+        initQuota()
+        initEditText()
         initObserve()
         initSocketObserver()
         getCurrentMoney()
@@ -151,6 +156,61 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             tv_accept_odds_change.setOnClickListener {
                 //TODO 下注
             }
+        }
+    }
+
+
+    private fun initQuota() {
+        tv_check_maximum_limit.setOnClickListener {
+            it.visibility = View.GONE
+            ll_bet_quota_detail.visibility = View.VISIBLE
+        }
+
+        ll_bet_quota_detail.setOnClickListener {
+            it.visibility = View.GONE
+            ll_win_quota_detail.visibility = View.VISIBLE
+
+            et_bet.apply {
+                setText(betInfoListData?.parlayOdds?.max.toString())
+                isFocusable = true
+                setSelection(text.length)
+            }
+            keyboard.showKeyboard(et_bet)
+        }
+    }
+
+
+    private fun initEditText() {
+        et_bet.afterTextChanged {
+            //比照以往計算
+            if (it.isEmpty()) {
+                tv_check_maximum_limit.visibility = View.VISIBLE
+                ll_bet_quota_detail.visibility = View.GONE
+                ll_win_quota_detail.visibility = View.GONE
+                return@afterTextChanged
+            }
+
+            //輸入時 直接顯示可贏額
+            tv_check_maximum_limit.visibility = View.GONE
+            ll_bet_quota_detail.visibility = View.GONE
+            ll_win_quota_detail.visibility = View.VISIBLE
+
+            val quota = it.toDouble()
+
+            betInfoListData?.parlayOdds?.max?.let { max ->
+                if (quota > max) {
+                    et_bet.setText(max.toString())
+                    et_bet.setSelection(max.toString().length)
+                    return@afterTextChanged
+                }
+            }
+
+            var win = quota * getOdds(matchOdd, oddsType)
+            if (oddsType == OddsType.EU) {
+                win -= quota
+            }
+            tv_win_quota.text = TextUtil.format(win)
+
         }
     }
 
