@@ -9,6 +9,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -65,7 +67,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_game_league, container, false).apply {
+            setupToolbar(this)
             setupLeagueOddList(this)
+        }
+    }
+
+    private fun setupToolbar(view: View) {
+        view.game_toolbar_back.setOnClickListener {
+            activity?.onBackPressed()
         }
     }
 
@@ -101,6 +110,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+
+                    game_toolbar_match_type.text = oddsListResult.oddsListData?.sport?.name
 
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
