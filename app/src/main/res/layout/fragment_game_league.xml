@@ -38,12 +38,25 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/game_league_play_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp"
+                app:layout_constraintTop_toBottomOf="@id/game_league_toolbar_v4"
+                tools:itemCount="1"
+                tools:listitem="@layout/itemview_play_category_v4" />
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_league_odd_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
-                app:layout_constraintTop_toBottomOf="@id/game_league_toolbar_v4"
+                app:layout_constraintTop_toBottomOf="@id/game_league_play_category"
                 tools:itemCount="2"
                 tools:listitem="@layout/itemview_game_league" />
 

@@ -26,12 +26,24 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameLeagueFragmentArgs by navArgs()
+
+    private val playCategoryAdapter by lazy {
+        PlayCategoryAdapter().apply {
+            playCategoryListener = PlayCategoryListener {
+                viewModel.switchPlayCategory(args.matchType, args.leagueId, it)
+                loading()
+            }
+        }
+    }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
@@ -69,6 +81,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     ): View? {
         return inflater.inflate(R.layout.fragment_game_league, container, false).apply {
             setupToolbar(this)
+            setupPlayCategory(this)
             setupLeagueOddList(this)
         }
     }
@@ -76,6 +89,21 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun setupToolbar(view: View) {
         view.game_toolbar_back.setOnClickListener {
             activity?.onBackPressed()
+        }
+    }
+
+    private fun setupPlayCategory(view: View) {
+        view.game_league_play_category.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+            this.adapter = playCategoryAdapter
+
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_play_category
+                )
+            )
         }
     }
 
@@ -105,6 +133,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initObserve() {
+        viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.data = it
+        })
+
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
 
