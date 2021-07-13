@@ -22,10 +22,10 @@ const val BET_INFO_MAX_COUNT = 10
 class BetInfoRepository {
 
 
-    private val _betInfoSingle = MutableLiveData<BetInfoListData?>()
+    private val _betInfoSingle = MutableLiveData<Event<BetInfoListData?>>()
 
 
-    val betInfoSingle: LiveData<BetInfoListData?>
+    val betInfoSingle: LiveData<Event<BetInfoListData?>>
         get() = _betInfoSingle
 
 
@@ -165,7 +165,7 @@ class BetInfoRepository {
             }
 
             if (betList.size == 0) {
-                _betInfoSingle.postValue(data)
+                _betInfoSingle.postValue(Event(data))
             }
             betList.add(data)
             _betInfoList.postValue(Event(betList))
@@ -200,7 +200,7 @@ class BetInfoRepository {
             }
 
             if (betList.size == 0) {
-                _betInfoSingle.postValue(data)
+                _betInfoSingle.postValue(Event(data))
             }
             betList.add(data)
             _betInfoList.postValue(Event(betList))
@@ -234,7 +234,7 @@ class BetInfoRepository {
             }
 
             if (betList.size == 0) {
-                _betInfoSingle.postValue(data)
+                _betInfoSingle.postValue(Event(data))
             }
             betList.add(data)
             _betInfoList.postValue(Event(betList))
