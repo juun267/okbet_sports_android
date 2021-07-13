@@ -8,12 +8,12 @@
         <attr name="cvTitle" format="string" />
         <attr name="cvMarginBottom" format="dimension" />
         <attr name="cvTitleTextStyle">
-            <flag name="normal" value="0"/>
-            <flag name="bold" value="1"/>
-            <flag name="italic" value="2"/>
-            <flag name="bold_italic" value="3"/>
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
         </attr>
-        <attr name="cvEnable" format="boolean"/>
+        <attr name="cvEnable" format="boolean" />
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
         <attr name="cvHint" format="string" />
@@ -121,6 +121,11 @@
     <declare-styleable name="OddsButton">
         <attr name="ob_fillet" format="boolean" />
         <attr name="ob_background" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="BottomNavigationItem">
+        <attr name="btiTitle" format="string" />
+        <attr name="btiIcon" format="reference" />
     </declare-styleable>
 
 </resources>
