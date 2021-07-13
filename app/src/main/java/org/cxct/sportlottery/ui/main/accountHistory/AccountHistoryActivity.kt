@@ -3,12 +3,9 @@ package org.cxct.sportlottery.ui.main.accountHistory
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import kotlinx.android.synthetic.main.activity_account_history.*
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.activity_game.view_notification
@@ -30,7 +27,7 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
-class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class)  {
+class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     private val navController by lazy { findNavController(R.id.account_history_container) }
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
@@ -49,25 +46,25 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
     }
 
     private fun initNavigationListener() {
-        bottom_navigation_sport.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.home_page -> {
+        sport_bottom_navigation.setNavigationItemClickListener {
+            when (it) {
+                R.id.navigation_sport -> {
                     startActivity(Intent(this, GameActivity::class.java))
                     finish()
                     true
                 }
-                R.id.game_page -> {
+                R.id.navigation_game -> {
                     //TODO navigate sport game
                     false
                 }
-                R.id.bet_list -> {
+                R.id.item_bet_list -> {
                     //TODO open bet list page
                     false
                 }
-                R.id.account_history -> {
+                R.id.navigation_account_history -> {
                     true
                 }
-                R.id.transaction_status -> {
+                R.id.navigation_transaction_status -> {
                     //TODO navigate transaction_status
                     false
                 }
@@ -78,15 +75,7 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
 
 
     private fun initNavigationView() {
-        try {
-            //TODO 投注單的文字顏色調整
-            (bottom_navigation_sport[0] as BottomNavigationMenuView).let { navigationMenuView ->
-                navigationMenuView[2].setBackgroundColor(ContextCompat.getColor(this, R.color.colorBlue))
-            }
-            bottom_navigation_sport.menu.findItem(R.id.account_history).isChecked = true
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        sport_bottom_navigation.setSelected(R.id.navigation_account_history)
     }
 
     override fun onResume() {
