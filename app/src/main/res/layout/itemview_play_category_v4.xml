@@ -14,11 +14,11 @@
         android:drawablePadding="10dp"
         android:textColor="@color/selector_odd_category_text_v4"
         android:textSize="@dimen/textSize12sp"
-        app:drawableRightCompat="@drawable/ic_arrow_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        tools:drawableRightCompat="@drawable/ic_arrow_gray"
         tools:ignore="spUsage"
         tools:text="主要市场" />
 

@@ -31,8 +31,30 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Play, playCategoryListener: PlayCategoryListener?) {
-            itemView.play_category_name.text = item.name
+            itemView.play_category_name.apply {
+                text = item.name
+
+                setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    if (item.playCateList?.size ?: 0 > 1) {
+                        when (item.isSelected) {
+                            true -> {
+                                R.drawable.ic_arrow_blue
+                            }
+                            false -> {
+                                R.drawable.ic_arrow_gray
+                            }
+                        }
+                    } else {
+                        0
+                    },
+                    0
+                )
+            }
+
             itemView.isSelected = item.isSelected
+
             itemView.setOnClickListener {
                 playCategoryListener?.onClick(item)
             }
