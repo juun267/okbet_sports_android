@@ -16,8 +16,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
+import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -276,6 +277,31 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 }
                 R.id.transaction_status -> {
                     startActivity(Intent(this, TransactionStatusActivity::class.java))
+                    false
+                }
+                else -> false
+            }
+        }
+        sport_bottom_navigation.setNavigationItemClickListener {
+            when (it) {
+                R.id.navigation_sport -> {
+                    //TODO navigate sport home
+                    true
+                }
+                R.id.navigation_game -> {
+                    //TODO navigate sport game
+                    true
+                }
+                R.id.item_bet_list -> {
+                    //TODO show bet list dialog
+                    false
+                }
+                R.id.navigation_account_history -> {
+                    startActivity(Intent(this@GameActivity, AccountHistoryActivity::class.java))
+                    false
+                }
+                R.id.navigation_transaction_status -> {
+                    startActivity(Intent(this@GameActivity, TransactionStatusActivity::class.java))
                     false
                 }
                 else -> false
