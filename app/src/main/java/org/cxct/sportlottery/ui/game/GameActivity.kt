@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -248,7 +249,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.item_bet_list -> {
-                    //TODO show bet list dialog
+                    showBetListDialog()
                     false
                 }
                 R.id.navigation_account_history -> {
@@ -507,6 +508,17 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 text = getString(R.string.button_league_submit, it.size)
             }
         })
+
+        viewModel.betInfoSingle.observe(this, {
+            it?.let {
+                BetInfoCarDialog().show(supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
+            }
+        })
+
+        viewModel.betInfoRepository.betInfoList.observe(this, {
+            sport_bottom_navigation.setBetCount(it.peekContent().size)
+        })
+
 
         viewModel.notifyLogin.observe(this, {
             snackBarLoginNotify.apply {

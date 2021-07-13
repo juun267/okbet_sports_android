@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_account_history_next.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.util.TimeUtil
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(AccountHistoryNextViewModel::class) {
 
@@ -19,9 +20,12 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
     private val args: AccountHistoryNextFragmentArgs by navArgs()
 
     private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
-
     }, BackClickListener {
         findNavController().navigateUp()
+    }, SportSelectListener { sport, date ->
+        viewModel.searchBetRecord(gameType = sport, minusDate = date)
+    }, DateSelectListener { sport, date ->
+        viewModel.searchBetRecord(gameType = sport, minusDate = date)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.bet.list
 
 
 import android.annotation.SuppressLint
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -11,6 +12,7 @@ import android.widget.EditText
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.KeyBoardUtil
@@ -24,6 +26,15 @@ import org.cxct.sportlottery.util.KeyBoardUtil
 class BetInfoCarDialog : BaseBottomSheetFragment<GameViewModel>(GameViewModel::class) {
 
 
+    private lateinit var binding: DialogBottomSheetBetinfoItemBinding
+
+
+    private var betInfoListData: BetInfoListData? = null
+
+
+    private var addFlag = false
+
+
     init {
         setStyle(STYLE_NORMAL, R.style.LightBackgroundBottomSheet)
     }
@@ -34,14 +45,21 @@ class BetInfoCarDialog : BaseBottomSheetFragment<GameViewModel>(GameViewModel::c
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_bottom_sheet_betinfo_item, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = DialogBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
+        binding.apply {
+            gameViewModel = this@BetInfoCarDialog.viewModel
+            lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
+            dialog = this@BetInfoCarDialog
+        }
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initKeyBoard()
+        initObserve()
     }
 
 
@@ -56,4 +74,21 @@ class BetInfoCarDialog : BaseBottomSheetFragment<GameViewModel>(GameViewModel::c
     }
 
 
+    private fun initObserve() {
+        viewModel.betInfoSingle.observe(this.viewLifecycleOwner, {
+            betInfoListData = it
+        })
+    }
+
+
+    fun addToBetInfoList() {
+        addFlag = true
+        dismiss()
+    }
+
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        if (!addFlag) viewModel.removeBetInfoAll()
+    }
 }

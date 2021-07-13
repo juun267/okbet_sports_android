@@ -77,4 +77,8 @@ class SportBottomNavigation @JvmOverloads constructor(
             e.printStackTrace()
         }
     }
+
+    fun setBetCount(betCount: Int){
+        tv_bet_count.text = betCount.toString()
+    }
 }

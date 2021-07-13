@@ -19,9 +19,14 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.getOdds
 
-class AccountHistoryNextAdapter(private val clickListener: ItemClickListener, private val backClickListener: BackClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener,
+                                private val backClickListener: BackClickListener,
+                                private val sportSelectListener: SportSelectListener,
+                                private val dateSelectListener: DateSelectListener,
+                                ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
         TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, NO_DATA
@@ -64,7 +69,7 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener, pr
         when (holder) {
 
             is TitleBarViewHolder -> {
-                holder.bind(backClickListener)
+                holder.bind(backClickListener, sportSelectListener, dateSelectListener)
             }
 
             is ItemViewHolder -> {
@@ -223,7 +228,7 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener, pr
 
     class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(backClickListener: BackClickListener) {
+        fun bind(backClickListener: BackClickListener, sportSelectListener: SportSelectListener, dateSelectListener: DateSelectListener) {
             itemView.apply {
 
                 iv_back.setOnClickListener {
@@ -238,20 +243,32 @@ class AccountHistoryNextAdapter(private val clickListener: ItemClickListener, pr
                            StatusSheetData("VB", context?.getString(R.string.volleyball)),
                            StatusSheetData("BM", context?.getString(R.string.badminton)))
 
+                val dateString = { minusDate: Int ->
+                    "${TimeUtil.getMinusDate(minusDate)} ${context.getString(TimeUtil.getMinusDayOfWeek(minusDate))}"
+                }
+
                 val dateStatusList =
-                    listOf(StatusSheetData("0", context?.getString(R.string.sunday)),
-                           StatusSheetData("1", context?.getString(R.string.monday)),
-                           StatusSheetData("2", context?.getString(R.string.tuesday)),
-                           StatusSheetData("3", context?.getString(R.string.wednesday)),
-                           StatusSheetData("4", context?.getString(R.string.thursday)),
-                           StatusSheetData("5", context?.getString(R.string.friday)),
-                           StatusSheetData("6", context?.getString(R.string.saturday)))
+                    listOf(StatusSheetData("0", dateString(0)),
+                           StatusSheetData("1", dateString(1)),
+                           StatusSheetData("2", dateString(2)),
+                           StatusSheetData("3", dateString(3)),
+                           StatusSheetData("4", dateString(4)),
+                           StatusSheetData("5", dateString(5)),
+                           StatusSheetData("6", dateString(6)))
 
                 sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
                 sport_selector.dataList = sportStatusList
+                sport_selector.setOnItemSelectedListener {
+                    sportSelectListener.onSelect(it.code, date_selector.selectedTag)
+                }
 
+                date_selector.selectedText = dateString(0)
                 date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
                 date_selector.dataList = dateStatusList
+                date_selector.setOnItemSelectedListener {
+                    dateSelectListener.onSelect(it.code, sport_selector.selectedTag)
+                }
+
             }
         }
 
@@ -287,6 +304,14 @@ class ItemClickListener(val clickListener: (data: MatchOdd) -> Unit) {
 
 class BackClickListener(val clickListener: () -> Unit) {
     fun onClick() = clickListener()
+}
+
+class SportSelectListener(val selectedListener: (sport: String?, date: String?) -> Unit) {
+    fun onSelect(sport: String?, date: String?) = selectedListener(sport, date)
+}
+
+class DateSelectListener(val selectedListener: (sport: String?, date: String?) -> Unit) {
+    fun onSelect(sport: String?, date: String?) = selectedListener(sport, date)
 }
 
 sealed class DataItem {
