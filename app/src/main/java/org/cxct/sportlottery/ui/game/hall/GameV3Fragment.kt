@@ -816,7 +816,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 play.playCateList?.first()?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
-
+                bottomSheet.dismiss()
             })
     }
 

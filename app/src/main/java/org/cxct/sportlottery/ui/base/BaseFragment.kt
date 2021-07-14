@@ -24,7 +24,7 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
     private val bottomSheetView: View by lazy {
         LayoutInflater.from(context).inflate(R.layout.dialog_bottom_sheet_custom, null)
     }
-    private val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(requireContext()) }
+    protected val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(requireContext()) }
 
 
     /*弹出加载界面*/
