@@ -555,10 +555,21 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun getLeagueOddsList(matchType: MatchType, leagueId: String) {
+    fun switchPlayCategory(matchType: MatchType, leagueId: String, play: Play) {
+        updatePlayCateSelectedState(play)
+
+        getLeagueOddsList(matchType, leagueId)
+    }
+
+    fun getLeagueOddsList(
+        matchType: MatchType,
+        leagueId: String,
+    ) {
         val leagueIdList by lazy {
             listOf(leagueId)
         }
+
+        getPlayCategory(matchType)
 
         getSportSelected(matchType)?.let { item ->
             getOddsList(
