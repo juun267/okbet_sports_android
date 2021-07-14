@@ -8,8 +8,8 @@
     <data>
 
         <variable
-            name="gameViewModel"
-            type="org.cxct.sportlottery.ui.game.GameViewModel" />
+            name="parlayOdd"
+            type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
 
         <variable
             name="dialog"
@@ -44,7 +44,7 @@
 
         <include
             layout="@layout/content_bet_info_item"
-            app:gameViewModel="@{gameViewModel}"/>
+            app:parlayOdd="@{parlayOdd}"/>
 
 
         <org.cxct.sportlottery.ui.common.CustomKeyBoardView

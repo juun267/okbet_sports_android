@@ -4,20 +4,12 @@ package org.cxct.sportlottery.ui.bet.list
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
@@ -28,6 +20,7 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
@@ -53,23 +46,43 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     private var betInfoListData: BetInfoListData? = null
         set(value) {
             field = value
-            field?.let { matchOdd = it.matchOdd }
+            field?.let {
+                matchOdd = it.matchOdd
+                parlayOdd = it.parlayOdds
+            }
         }
 
 
     private var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
-            matchOdd?.let { setupOddsContent(it) }
+            matchOdd?.let {
+                setupData(it)
+            }
         }
 
 
     private var matchOdd: MatchOdd? = null
         set(value) {
             field = value
-            field?.let { setupData(it) }
+            field?.let {
+                if(!subscribeFlag){
+                    subscribeChannel(it)
+                    subscribeFlag = true
+                }
+                setupData(it)
+            }
         }
 
+
+    private var parlayOdd: ParlayOdd? = null
+        set(value) {
+            field = value
+            field?.let {
+                binding.parlayOdd = it
+                binding.executePendingBindings()
+            }
+        }
 
     private var currentMoney: Double? = null
         set(value) {
@@ -88,12 +101,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         }
 
 
-    private lateinit var playNameSpan: SpannableString
-    private lateinit var spreadSpan: SpannableString
-    private lateinit var oddsSpan: SpannableString
-
-
     private var addFlag = false
+
+
+    private var subscribeFlag = false
 
 
     init {
@@ -109,7 +120,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
         binding.apply {
-            gameViewModel = this@BetInfoCarDialog.viewModel
             lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
             dialog = this@BetInfoCarDialog
         }.executePendingBindings()
@@ -136,7 +146,13 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     }
 
 
-    private fun initClose(){
+    override fun onStop() {
+        super.onStop()
+        service.unsubscribeEventChannel(matchOdd?.matchId)
+    }
+
+
+    private fun initClose() {
         iv_close.setOnClickListener {
             dismiss()
         }
@@ -183,7 +199,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             ll_win_quota_detail.visibility = View.VISIBLE
 
             et_bet.apply {
-                setText(betInfoListData?.parlayOdds?.max.toString())
+                setText(parlayOdd?.max.toString())
                 isFocusable = true
                 setSelection(text.length)
             }
@@ -236,8 +252,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun initObserve() {
-        viewModel.betInfoSingle.observe(this.viewLifecycleOwner, {
-            betInfoListData = it.peekContent()
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.peekContent().let { list ->
+                if (list.isNotEmpty()) {
+                    betInfoListData = list[0]
+                }
+            }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
@@ -260,7 +280,14 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         })
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
-            //TODO 賠率變更
+            it?.let { event ->
+                viewModel.updateMatchOdd(event)
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            service.unsubscribeAllEventChannel()
+            service.subscribeEventChannel(matchOdd?.matchId)
         })
     }
 
@@ -292,42 +319,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             )
         } else matchOdd.playCateName
 
-        setupOddsContent(matchOdd)
+        OddSpannableString.setupOddsContent(matchOdd, oddsType, tv_odds_content)
     }
 
 
-    private fun setupOddsContent(matchOdd: MatchOdd) {
-        val colorRedDark = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
-
-        playNameSpan = SpannableString(matchOdd.playName)
-        playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0, matchOdd.playName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        val spreadEnd = matchOdd.spread.length + 1
-        spreadSpan = SpannableString(" ${matchOdd.spread}")
-        spreadSpan.setSpan(ForegroundColorSpan(colorRedDark), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spreadSpan.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        setupOddsSpannableString(matchOdd, false)
-    }
-
-
-    private fun setupOddsSpannableString(matchOdd: MatchOdd, isChanged: Boolean) {
-        val textColor = ContextCompat.getColor(requireContext(), if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
-        val backgroundColor = ContextCompat.getColor(requireContext(), if (isChanged) R.color.colorRed else R.color.colorWhite)
-
-        val oddsEnd = TextUtil.formatForOdd(getOdds(matchOdd, oddsType)).length
-        oddsSpan = SpannableString(TextUtil.formatForOdd(getOdds(matchOdd, oddsType)))
-        oddsSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        oddsSpan.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        oddsSpan.setSpan(BackgroundColorSpan(backgroundColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        val oddContentBuilder = SpannableStringBuilder()
-
-        oddContentBuilder.append(playNameSpan)
-        oddContentBuilder.append(spreadSpan)
-        oddContentBuilder.append(" ＠ ")
-
-        tv_odds_content.text = oddContentBuilder.append(oddsSpan)
+    private fun subscribeChannel(matchOdd: MatchOdd) {
+        service.subscribeEventChannel(matchOdd.matchId)
     }
 
 

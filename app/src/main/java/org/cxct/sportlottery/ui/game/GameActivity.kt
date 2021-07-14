@@ -525,7 +525,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.betInfoSingle.observe(this, {
+        viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
                 BetInfoCarDialog().show(supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
             }

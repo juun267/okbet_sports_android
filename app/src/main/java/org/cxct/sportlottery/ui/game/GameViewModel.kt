@@ -66,7 +66,7 @@ class GameViewModel(
     infoCenterRepository
 ) {
 
-    val betInfoSingle = betInfoRepository.betInfoSingle
+    val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
     val betInfoList = betInfoRepository.betInfoList
 

@@ -8,8 +8,8 @@
     <data>
 
         <variable
-            name="gameViewModel"
-            type="org.cxct.sportlottery.ui.game.GameViewModel" />
+            name="parlayOdd"
+            type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
 
     </data>
 
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{Integer.toString(gameViewModel.betInfoSingle.peekContent().parlayOdds.max)}"
+                android:text="@{Integer.toString(parlayOdd.max)}"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="7900.000" />

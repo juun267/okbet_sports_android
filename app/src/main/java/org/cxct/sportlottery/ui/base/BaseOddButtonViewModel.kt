@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
@@ -230,6 +231,13 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+    private fun getSpreadState(oldSpread: String, newSpread: String): Int =
+        when {
+            newSpread != oldSpread -> SpreadState.DIFFERENT.state
+            else -> SpreadState.SAME.state
+        }
+
+
     private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         betInfoRepository.matchOddList.value?.forEach {
             updateItem(it, newListFromSocket)
@@ -252,11 +260,14 @@ abstract class BaseOddButtonViewModel(
                             ), newItem
                         )
 
+                        oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
+
                         newItem.status.let { status -> oldItem.status = status }
 
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                            newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
                         //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
@@ -293,8 +304,12 @@ abstract class BaseOddButtonViewModel(
                                     loginRepository.mOddsType.value ?: OddsType.EU
                                 ), newItem
                             )
+
+                            oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
+
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                            newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
                         newItem.status.let { status -> oldItem.status = status }

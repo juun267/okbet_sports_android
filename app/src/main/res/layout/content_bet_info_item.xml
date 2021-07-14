@@ -8,8 +8,8 @@
     <data>
 
         <variable
-            name="gameViewModel"
-            type="org.cxct.sportlottery.ui.game.GameViewModel" />
+            name="parlayOdd"
+            type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
 
     </data>
 
@@ -123,7 +123,7 @@
 
         <include
             layout="@layout/content_bet_info_item_quota_detail"
-            app:gameViewModel="@{gameViewModel}"/>
+            app:parlayOdd="@{parlayOdd}"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
