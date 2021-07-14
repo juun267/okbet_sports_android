@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_game_league.*
 import kotlinx.android.synthetic.main.fragment_game_league.view.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
@@ -24,12 +26,24 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
 class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameLeagueFragmentArgs by navArgs()
+
+    private val playCategoryAdapter by lazy {
+        PlayCategoryAdapter().apply {
+            playCategoryListener = PlayCategoryListener {
+                viewModel.switchPlayCategory(args.matchType, args.leagueId, it)
+                loading()
+            }
+        }
+    }
 
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
@@ -66,33 +80,30 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_game_league, container, false).apply {
-            setupGameFilterRow(this)
+            setupToolbar(this)
+            setupPlayCategory(this)
             setupLeagueOddList(this)
         }
     }
 
-    private fun setupGameFilterRow(view: View) {
-        view.game_league_filter_row.apply {
+    private fun setupToolbar(view: View) {
+        view.game_toolbar_back.setOnClickListener {
+            activity?.onBackPressed()
+        }
+    }
 
-            searchHint = getString(R.string.game_filter_row_search_hint_league)
+    private fun setupPlayCategory(view: View) {
+        view.game_league_play_category.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            backClickListener = View.OnClickListener {
-                findNavController().navigateUp()
-            }
+            this.adapter = playCategoryAdapter
 
-            queryTextListener = object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    newText?.let {
-                        viewModel.searchMatch(it)
-                        leagueAdapter.searchText = it
-                    }
-                    return true
-                }
-            }
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_play_category
+                )
+            )
         }
     }
 
@@ -122,6 +133,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initObserve() {
+        viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.data = it
+        })
+
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
 
@@ -129,7 +144,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
-                    game_league_filter_row.sportName = oddsListResult.oddsListData?.sport?.name
+                    game_toolbar_match_type.text = oddsListResult.oddsListData?.sport?.name
+
+                    updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
@@ -181,6 +198,18 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueAdapter.oddsType = oddsType
             }
         })
+    }
+
+    private fun updateSportBackground(sportCode: String?) {
+        Glide.with(requireContext()).load(
+            when (sportCode) {
+                SportType.FOOTBALL.code -> R.drawable.soccer48
+                SportType.BASKETBALL.code -> R.drawable.basketball48
+                SportType.TENNIS.code -> R.drawable.tennis48
+                SportType.VOLLEYBALL.code -> R.drawable.volleyball48
+                else -> null
+            }
+        ).into(game_league_toolbar_bg)
     }
 
     private fun initSocketReceiver() {

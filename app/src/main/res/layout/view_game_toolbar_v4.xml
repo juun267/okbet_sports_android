@@ -55,10 +55,12 @@
         android:padding="3dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_champion_v4"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
 
     <ImageButton
         android:id="@+id/game_toolbar_calendar"
@@ -69,6 +71,7 @@
         android:padding="3dp"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_calendar_v4"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

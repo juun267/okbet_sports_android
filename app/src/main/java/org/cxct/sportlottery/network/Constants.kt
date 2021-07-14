@@ -125,6 +125,7 @@ object Constants {
     //odds
     const val MATCH_ODDS_LIST = "/api/front/match/odds/simple/list"
     const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
+    const val MATCH_ODDS_EPS_LIST = "/api/front/match/odds/eps/list"
 
     //sport
     const val SPORT_MENU = "/api/front/sport/mobile/menu"

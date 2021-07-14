@@ -9,6 +9,8 @@
     <string name="unknown_data">-</string>
     <string name="percent">%</string>
     <string name="id">ID</string>
+    <string name="at">\u0040</string>
+
 
     <!--  Member Level Page  -->
     <string name="level_one">VIP1</string>
@@ -31,12 +33,12 @@
     <string name="finance_rmb">%s RMB</string>
 
     <!--keyboard-->
-    <string name="keyboard_code_delete">-999</string>
+    <string name="keyboard_code_delete">-5</string>
+    <string name="keyboard_code_insert_dot">-48</string>
     <string name="keyboard_code_insert_0">48</string>
-    <string name="keyboard_code_insert_00">-48</string>
-    <string name="keyboard_code_plus_100">-100</string>
-    <string name="keyboard_code_plus_1000">-1000</string>
-    <string name="keyboard_code_plus_10000">-10000</string>
+    <string name="keyboard_code_plus_10">-10</string>
+    <string name="keyboard_code_plus_50">-50</string>
+    <string name="keyboard_code_done">-4</string>
 
     <!--Time-->
     <string name="time_null">--:--</string>

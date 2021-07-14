@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
-    fun setupMatchData(gameType: String, dataList: List<MatchOdd>) {
+    var oddsType: OddsType = OddsType.EU
+    fun setupMatchData(gameType: String, oddsType: OddsType, dataList: List<MatchOdd>) {
         this.gameType = gameType
+        this.oddsType = oddsType
         submitList(dataList)
     }
 
@@ -35,7 +38,7 @@ class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>
         val data = getItem(holder.adapterPosition)
         when (holder) {
             is ParlayMatchViewHolder -> {
-                holder.bind(gameType, data)
+                holder.bind(gameType, data, oddsType)
             }
         }
     }
@@ -49,7 +52,7 @@ class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>
             }
         }
 
-        fun bind(gameTypeName: String, data: MatchOdd) {
+        fun bind(gameTypeName: String, data: MatchOdd, oddsType: OddsType) {
             itemView.apply {
                 content_play.text = "$gameTypeName ${data.playCateName}"
                 content_league.text = data.leagueName
@@ -57,7 +60,10 @@ class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>
                 content_away_name.text = data.awayName
                 content_spread.text = data.spread
                 content_spread_team.text = data.playName
-                content_odds.text = data.odds.toString() //TODO 盤口類型配置
+                content_odds.text = when (oddsType) {
+                    OddsType.HK -> data.hkOdds
+                    else -> data.odds
+                }.toString()
             }
         }
     }

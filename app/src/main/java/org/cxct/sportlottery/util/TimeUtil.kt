@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import android.content.Context
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -10,6 +12,7 @@ import java.util.*
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_FORMAT = "yyyy-MM-dd"
+    const val MD_FORMAT = "MM-dd"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
@@ -69,6 +72,25 @@ object TimeUtil {
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
     }
 
+    /**
+     * return : 星期幾
+     */
+    fun setupDayOfWeek(todayMillis: Long?): Int {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = todayMillis ?:0
+
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
+            else -> R.string.sunday
+        }
+    }
+
     fun getDefaultTimeStamp(): TimeRangeParams {
         val cPair = getCalendarForDates(6)
         val minusDayTimeStamp = cPair.first.timeInMillis
@@ -92,6 +114,40 @@ object TimeUtil {
             override val endTime: String
                 get() = today
         }
+    }
+
+    fun getMinusDateTimeStamp(minusDays: Int ?= 0): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
+        val minusDayTimeStamp = cPair.first.timeInMillis
+        val todayTimeStamp = cPair.second.timeInMillis
+        return object : TimeRangeParams {
+            //TODO simon review: TimeRangeParams 裡的 startTime、endTime 同時可能代表 timeStamp 也可能代表 日期(yyyy-MM-dd)，感覺最好拆開定義
+            override val startTime: String
+                get() = minusDayTimeStamp.toString()
+            override val endTime: String
+                get() = todayTimeStamp.toString()
+        }
+    }
+
+    fun getMinusDate(minusDays: Int, dateFormatPattern: String = MD_FORMAT): String {
+        val mCalendar = getCalendarForDates(minusDays)
+        return timeFormat(mCalendar.first.timeInMillis, dateFormatPattern)
+    }
+
+    fun getMinusDayOfWeek(minusDays: Int): Int {
+        val mCalendar = getCalendarForDates(minusDays)
+
+        return when (mCalendar.first.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
+            else -> R.string.sunday
+        }
+
     }
 
     fun getNowTimeStamp(): Long {

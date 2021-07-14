@@ -2,19 +2,22 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ResourceCycle">
+
+
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="5dp" />
-            <solid android:color="@color/colorWhite2" />
+            <solid android:color="@color/colorBlackLight" />
             <padding
-                android:bottom="12dp"
-                android:left="8dp"
-                android:right="8dp"
-                android:top="12dp" />
+                android:bottom="16dp"
+                android:left="24dp"
+                android:right="24dp"
+                android:top="16dp" />
         </shape>
 
     </item>
 
 
     <item android:drawable="@drawable/ic_keyboard_delete" />
+
+
 </layer-list>

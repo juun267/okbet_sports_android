@@ -125,6 +125,7 @@
     <string name="home_tab_parlay">串关</string>
     <string name="home_tab_outright">冠军</string>
     <string name="home_tab_at_start">即将</string>
+    <string name="home_tab_eps">特优</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
@@ -389,6 +390,7 @@
     <string name="game_tab_price_boosts_odd">特优赔率</string>
 
     <string name="button_league_submit">提交 (%d)</string>
+    <string name="login_notify">请登录以便使用此功能</string>
 
     <string name="total_bet_amount">总投注额：</string>
 
@@ -596,7 +598,13 @@
     <string name="bet_info_list_clean">一键清空</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
     <string name="bet_info_different_game_type">不同球种不可进行串关</string>
-
+    <string name="bet_info_input_quota">输入金额</string>
+    <string name="bet_info_check_maximum_limit">查看最高限额</string>
+    <string name="bet_info_bet_quota">投注额</string>
+    <string name="bet_info_win_quota">可赢额</string>
+    <string name="bet_info_accept_odds_change">接受更改并投注</string>
+    <string name="bet_info_add_to_bet_info">加入投注单</string>
+    <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
@@ -748,12 +756,21 @@
     <string name="odds_have_changed">该盘口赔率已经变更,请重新投注</string>
     <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
     <string name="account_history_overview">账户历史总览</string>
+    <string name="bet_num_and_bet_date">注单号 / 结算日期</string>
 
     <!--    account history-->
     <string name="date">日期</string>
     <string name="bet_amount">投注金额</string>
     <string name="available_amount">有效金额</string>
     <string name="win_lose">赢 / 输</string>
+    <string name="win_lose_mark">赢 / 输：</string>
     <string name="all_sport">所有体育</string>
+    <string name="back_to_top">回到顶部</string>
+    <string name="total">总共</string>
+    <string name="verse">v</string>
+    <string name="sum_pass">综合过关</string>
+
+    <!--keyboard-->
+    <string name="keyboard_done">已完成</string>
 
 </resources>

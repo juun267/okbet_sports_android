@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SpUsage">
+
+
+    <TextView
+        android:id="@+id/tv_check_maximum_limit"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:gravity="center"
+        android:text="@string/bet_info_check_maximum_limit"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_bet" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_bet_quota_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:gravity="end|center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_bet">
+
+        <TextView
+            android:id="@+id/tv_bet_maximum_limit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="7900.000" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/bet_info_bet_quota"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/textSize12sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_win_quota_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:gravity="end|center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_bet">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/bet_info_win_quota"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp" />
+
+        <TextView
+            android:id="@+id/tv_win_quota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/bet_info_bet_quota"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="293.000" />
+
+    </LinearLayout>
+
+
+</merge>

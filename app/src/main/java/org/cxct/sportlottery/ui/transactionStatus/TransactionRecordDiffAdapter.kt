@@ -11,23 +11,32 @@ import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+
 //TODO 冠軍應有獨立樣式，等待新API完成後再根據資料做新UI
-class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
+class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Long = 0
+    var oddsType: OddsType = OddsType.EU
 
-    private enum class ViewType { Match, Parlay }
+    private enum class ViewType { Match, Parlay, NoData }
 
     fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
-        submitList(betListData.row)
+        oddsType = betListData.oddsType
+        val itemList = when {
+            betListData.row.isEmpty() -> listOf(DataItem.NoData)
+            else -> betListData.row.map { DataItem.Item(it) }
+        }
+        submitList(itemList)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
+            ViewType.NoData.ordinal -> NoDataViewHolder.from(parent)
             ViewType.Match.ordinal -> MatchRecordViewHolder.from(parent)
             else -> ParlayRecordViewHolder.from(parent)
         }
@@ -37,17 +46,20 @@ class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(T
         val rvData = getItem(holder.adapterPosition)
         when (holder) {
             is MatchRecordViewHolder -> {
-                holder.bind(rvData)
+                holder.bind((rvData as DataItem.Item).row, oddsType)
             }
             is ParlayRecordViewHolder -> {
-                holder.bind(rvData)
+                holder.bind((rvData as DataItem.Item).row, oddsType)
+            }
+            is NoDataViewHolder -> {
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position).parlayType) {
-            "1C1", "OUTRIGHT" -> ViewType.Match.ordinal
+        return when {
+            getItem(position).orderNo.isNullOrBlank() -> ViewType.NoData.ordinal
+            getItem(position).parlayType == ParlayType.SINGLE.key || getItem(position).parlayType == ParlayType.OUTRIGHT.key -> ViewType.Match.ordinal
             else -> ViewType.Parlay.ordinal
         }
     }
@@ -61,7 +73,7 @@ class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(T
             }
         }
 
-        fun bind(data: Row) {
+        fun bind(data: Row, oddsType: OddsType) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName
@@ -71,11 +83,14 @@ class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(T
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playName}"
                 spread_name.text = matchOdds.homeName
-                content_odds.text = matchOdds.odds.toString() //TODO 根據盤口類型切換 odds hkOdds
+                content_odds.text = when (oddsType) {
+                    OddsType.HK -> matchOdds.hkOdds
+                    else -> matchOdds.odds
+                }.toString()
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
-                content_time_type.text = "${getTimeFormatFromDouble(data.addTime)} (盤口類型)" //TODO 盤口類型配置
+                content_time_type.text = getTimeFormatFromDouble(data.addTime)
             }
         }
 
@@ -94,7 +109,7 @@ class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(T
             }
         }
 
-        fun bind(data: Row) {
+        fun bind(data: Row, oddsType: OddsType) {
             val contentParlayMatchAdapter by lazy { ContentParlayMatchAdapter() }
 
             itemView.apply {
@@ -102,14 +117,14 @@ class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(T
                 rv_parlay_match.apply {
                     adapter = contentParlayMatchAdapter
                     layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
-                    contentParlayMatchAdapter.setupMatchData(getGameTypeName(data.gameType), data.matchOdds)
+                    contentParlayMatchAdapter.setupMatchData(getGameTypeName(data.gameType), oddsType, data.matchOdds)
 
                 }
 
                 content_parlay_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_parlay_winnable_amount.text = TextUtil.format(data.winnable)
                 content_parlay_order_no.text = data.orderNo
-                content_parlay_time_type.text = "${getTimeFormatFromDouble(data.addTime)} (盤口類型)" //TODO 盤口類型配置
+                content_parlay_time_type.text = getTimeFormatFromDouble(data.addTime)
             }
         }
 
@@ -122,6 +137,13 @@ class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(T
         }
     }
 
+    class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup) =
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+        }
+    }
+
     companion object {
         fun getTimeFormatFromDouble(time: Long): String {
             return TimeUtil.timeFormat(time, TimeUtil.MD_HMS_FORMAT)
@@ -129,15 +151,30 @@ class TransactionRecordDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(T
     }
 }
 
-class TransactionRecordDiffCallBack : DiffUtil.ItemCallback<Row>() {
-    override fun areItemsTheSame(oldItem: Row, newItem: Row): Boolean {
-        //TODO review 應使用訂單編號
-        return oldItem == newItem
+class TransactionRecordDiffCallBack : DiffUtil.ItemCallback<DataItem>() {
+    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+        return oldItem.orderNo == newItem.orderNo
     }
 
-    override fun areContentsTheSame(oldItem: Row, newItem: Row): Boolean {
+    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem == newItem
     }
 
 }
 
+sealed class DataItem {
+    abstract var parlayType: String?
+    abstract var orderNo: String?
+
+    data class Item(
+        val row: Row,
+        override var parlayType: String? = row.parlayType,
+        override var orderNo: String? = row.orderNo
+    ) :
+        DataItem()
+
+    object NoData : DataItem() {
+        override var parlayType: String? = null
+        override var orderNo: String? = null
+    }
+}
