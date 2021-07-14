@@ -106,6 +106,35 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun initTable() {
         rv_game_table.adapter = mRvGameTable4Adapter
+        mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
+            override fun onClickBet(
+                matchOdd: MatchOdd,
+                odd: Odd,
+                playCateName: String,
+                playName: String
+            ) {
+                addOddsDialog(matchOdd, odd, playCateName, playName)
+            }
+        }
+        mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
+            override fun onClick(select: MatchOdd) {
+                scroll_view.smoothScrollTo(0, 0)
+                val code = select.matchInfo?.sportType?.code
+                val matchId = select.matchInfo?.id
+                navOddsDetailFragment(code, matchId, mSelectMatchType)
+            }
+        }
+        mRvGameTable4Adapter.onClickTotalMatchListener =
+            object : OnSelectItemListener<GameEntity> {
+                override fun onClick(select: GameEntity) {
+                    scroll_view.smoothScrollTo(0, 0)
+                    viewModel.navSpecialEntrance(
+                        SpecialEntranceSource.HOME,
+                        mSelectMatchType,
+                        SportType.getSportType(select.code)
+                    )
+                }
+            }
 
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
@@ -116,11 +145,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             mSelectMatchType = MatchType.AT_START
             refreshTable(mSelectMatchType, mAtStartResult)
         }
-
-        if (mSelectMatchType == MatchType.IN_PLAY)
-            rb_in_play.performClick()
-        else
-            rb_as_start.performClick()
     }
 
     private fun initHighlight() {
@@ -178,56 +202,27 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
-        mRvGameTable4Adapter.matchType = selectMatchType
-        mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
-            override fun onClickBet(
-                matchOdd: MatchOdd,
-                odd: Odd,
-                playCateName: String,
-                playName: String
-            ) {
-                addOddsDialog(matchOdd, odd, playCateName, playName)
-            }
-        }
-        mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
-            override fun onClick(select: MatchOdd) {
-                scroll_view.smoothScrollTo(0, 0)
-                val code = select.matchInfo?.sportType?.code
-                val matchId = select.matchInfo?.id
-                navOddsDetailFragment(code, matchId, mSelectMatchType)
-            }
-        }
-        mRvGameTable4Adapter.onClickTotalMatchListener =
-            object : OnSelectItemListener<GameEntity> {
-                override fun onClick(select: GameEntity) {
-                    scroll_view.smoothScrollTo(0, 0)
-                    viewModel.navSpecialEntrance(
-                        SpecialEntranceSource.HOME,
-                        selectMatchType,
-                        SportType.getSportType(select.code)
-                    )
-                }
-            }
-        mRvGameTable4Adapter.setData(result?.matchPreloadData)
+        //先清除之前訂閱項目
+        unsubscribeTableHallChannel()
+        subscribeTableHallChannel(selectMatchType)
+
+        mRvGameTable4Adapter.setData(result?.matchPreloadData, selectMatchType)
     }
 
     //TableBar 判斷是否隱藏
     private fun judgeTableBar() {
         val inPlayCount = mInPlayResult?.matchPreloadData?.num ?: 0
         val atStartCount = mAtStartResult?.matchPreloadData?.num ?: 0
-        if (inPlayCount == 0) {
-            mSelectMatchType = MatchType.AT_START
-            rb_in_play.visibility = View.GONE
-        } else {
-            mSelectMatchType = MatchType.IN_PLAY
-            rb_in_play.visibility = View.VISIBLE
-        }
-
-        rb_as_start.visibility = if (atStartCount == 0) View.GONE else View.VISIBLE
 
         rg_table_bar.visibility =
-            if (rb_in_play.visibility == View.GONE && rb_as_start.visibility == View.GONE)
-                View.GONE else View.VISIBLE
+            if (inPlayCount == 0 && atStartCount == 0) View.GONE else View.VISIBLE
+        rb_in_play.visibility = if (inPlayCount == 0) View.GONE else View.VISIBLE
+        rb_as_start.visibility = if (atStartCount == 0) View.GONE else View.VISIBLE
+
+        if (inPlayCount != 0)
+            rb_in_play.performClick()
+        else
+            rb_as_start.performClick()
     }
 
     private fun refreshHighlight(result: MatchCategoryResult?) {
@@ -334,8 +329,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     //訂閱 滾球盤 or 即將開賽 賠率
-    private fun subscribeTableHallChannel() {
-        if (mSelectMatchType == MatchType.IN_PLAY) {
+    private fun subscribeTableHallChannel(selectMatchType: MatchType) {
+        if (selectMatchType == MatchType.IN_PLAY) {
             mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
                 data.matchs.forEach { match ->
                     service.subscribeHallChannel(
@@ -345,7 +340,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     )
                 }
             }
-        } else if (mSelectMatchType == MatchType.AT_START) {
+        } else if (selectMatchType == MatchType.AT_START) {
             mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
                 data.matchs.forEach { match ->
                     service.subscribeHallChannel(
@@ -359,25 +354,23 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun unsubscribeTableHallChannel() {
-        if (mSelectMatchType == MatchType.IN_PLAY) {
-            mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs.forEach { match ->
-                    service.unsubscribeHallChannel(
-                        data.code,
-                        MenuCode.HOME_INPLAY_MOBILE.code,
-                        match.id
-                    )
-                }
+        mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+            data.matchs.forEach { match ->
+                service.unsubscribeHallChannel(
+                    data.code,
+                    MenuCode.HOME_INPLAY_MOBILE.code,
+                    match.id
+                )
             }
-        } else if (mSelectMatchType == MatchType.AT_START) {
-            mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs.forEach { match ->
-                    service.unsubscribeHallChannel(
-                        data.code,
-                        MenuCode.HOME_ATSTART_MOBILE.code,
-                        match.id
-                    )
-                }
+        }
+
+        mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+            data.matchs.forEach { match ->
+                service.unsubscribeHallChannel(
+                    data.code,
+                    MenuCode.HOME_ATSTART_MOBILE.code,
+                    match.id
+                )
             }
         }
     }
@@ -418,31 +411,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.matchPreloadInPlay.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                judgeTableBar()
-                if (mSelectMatchType == MatchType.IN_PLAY)
-                    refreshTable(mSelectMatchType, result)
-
-                //先清除之前訂閱項目
-                unsubscribeTableHallChannel()
-
-                //訂閱所有滾球賽事
                 mInPlayResult = result
-                subscribeTableHallChannel()
+                judgeTableBar()
             }
         })
 
         viewModel.matchPreloadAtStart.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                judgeTableBar()
-                if (mSelectMatchType == MatchType.AT_START)
-                    refreshTable(mSelectMatchType, result)
-
-                //先清除之前訂閱項目
-                unsubscribeTableHallChannel()
-
-                //訂閱所有滾球賽事
                 mAtStartResult = result
-                subscribeTableHallChannel()
+                judgeTableBar()
             }
         })
 
@@ -496,7 +473,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             if (it != null) {
                 unsubscribeAllHallChannel()
 
-                subscribeTableHallChannel()
+                subscribeTableHallChannel(mSelectMatchType)
 
                 subscribeHighlightHallChannel()
             }
@@ -665,7 +642,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val newOddList = map.value
                     val oldOddList = updateMatchOdd?.odds?.get(key)
 
-                    oldOddList?.forEach oldOddList@ { oldOdd ->
+                    oldOddList?.forEach oldOddList@{ oldOdd ->
                         if (oldOdd == null) return@oldOddList
 
                         newOddList.find { newOdd -> oldOdd.id == newOdd?.id }?.let { newOdd ->
@@ -704,7 +681,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val newOddList = map.value
                     val oldOddList = updateMatchOdd.odds[key]
 
-                    oldOddList?.forEach oldOddList@ { oldOdd ->
+                    oldOddList?.forEach oldOddList@{ oldOdd ->
                         if (oldOdd == null)
                             return@oldOddList
 
@@ -749,7 +726,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         //精選賽事
         val highlightDataList = mRvHighlightAdapter.getData()
         highlightDataList.forEachIndexed { index, matchOdd ->
-            matchOdd.odds.values.forEach {  odds ->
+            matchOdd.odds.values.forEach { odds ->
                 odds.forEach { odd ->
                     if (result.producerId == null || odd?.producerId == result.producerId) {
                         odd?.status = BetStatus.DEACTIVATED.code

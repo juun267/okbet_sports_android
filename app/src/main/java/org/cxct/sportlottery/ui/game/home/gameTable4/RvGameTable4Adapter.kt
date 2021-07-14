@@ -1,10 +1,8 @@
 package org.cxct.sportlottery.ui.game.home.gameTable4
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import org.cxct.sportlottery.R
@@ -20,15 +18,16 @@ import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHolder>() {
 
     private var mDataList = listOf<GameEntity>()
+    private var mMatchType: MatchType = MatchType.IN_PLAY
 
-    fun setData(matchPreloadData: MatchPreloadData?) {
+    fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
         mDataList = matchPreloadData?.datas?.map { data ->
             data.matchOdds.forEach {
                 it.matchInfo?.sportType = SportType.getSportType(data.code)
             }
             GameEntity(data.code, data.name, data.num, data.matchOdds)
         } ?: listOf()
-
+        mMatchType = matchType
         notifyDataSetChanged()
     }
 
@@ -38,14 +37,6 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
     fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {
         mDataList[index].vpTableAdapter?.notifyItemChanged(indexMatchOdd)
     }
-
-    var matchType: MatchType = MatchType.IN_PLAY
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -98,13 +89,14 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
                 if (data.vpTableAdapter == null) {
                     data.vpTableAdapter = Vp2GameTable4Adapter()
-                    data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
-                    data.vpTableAdapter?.onClickOddListener = onClickOddListener
-                    data.vpTableAdapter?.matchType = matchType
-                    data.vpTableAdapter?.oddsType = oddsType
+                    data.vpTableAdapter?.matchType = mMatchType
                     data.vpTableAdapter?.dataList = data.matchOdds
                 }
 
+                data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
+                data.vpTableAdapter?.onClickOddListener = onClickOddListener
+                if (data.vpTableAdapter?.oddsType != oddsType)
+                    data.vpTableAdapter?.oddsType = oddsType
                 view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)
             }
