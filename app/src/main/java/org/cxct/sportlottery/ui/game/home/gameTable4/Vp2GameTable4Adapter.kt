@@ -25,29 +25,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
-
-    var dataList = listOf<MatchOdd>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    var oddsType: OddsType = OddsType.EU
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
-
-    var matchType: MatchType = MatchType.IN_PLAY
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
+class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 
     var onClickOddListener: OnClickOddListener? = null
 

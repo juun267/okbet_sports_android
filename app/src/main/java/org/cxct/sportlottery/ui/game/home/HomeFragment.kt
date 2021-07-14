@@ -577,7 +577,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         else -> null
                     }
 
-                    mRvGameTable4Adapter.notifyItemChanged(index, indexMatchOdd)
+                    mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
                 }
             }
         }

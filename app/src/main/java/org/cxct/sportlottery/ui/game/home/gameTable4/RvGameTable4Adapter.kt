@@ -28,6 +28,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
             GameEntity(data.code, data.name, data.num, data.matchOdds)
         } ?: listOf()
         mMatchType = matchType
+        stopAllTimer()
         notifyDataSetChanged()
     }
 
@@ -35,13 +36,15 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
     //指定刷新內部 ViewPager 的 subItem
     fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {
-        mDataList[index].vpTableAdapter?.notifyItemChanged(indexMatchOdd)
+        if (index >= 0 && indexMatchOdd >= 0)
+            mDataList[index].vpTableAdapter?.notifyItemChanged(indexMatchOdd)
     }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
                 field = value
+                stopAllTimer()
                 notifyDataSetChanged()
             }
         }
@@ -75,6 +78,13 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
         }
     }
 
+    fun stopAllTimer() {
+        mDataList.forEach {
+            it.vpTableAdapter?.stopAllTimer()
+            it.vpTableAdapter = null
+        }
+    }
+
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(data: GameEntity, oddsType: OddsType) {
@@ -87,16 +97,12 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                     onClickTotalMatchListener?.onClick(data)
                 }
 
-                if (data.vpTableAdapter == null) {
-                    data.vpTableAdapter = Vp2GameTable4Adapter()
-                    data.vpTableAdapter?.matchType = mMatchType
-                    data.vpTableAdapter?.dataList = data.matchOdds
-                }
+                if (data.vpTableAdapter == null)
+                    data.vpTableAdapter = Vp2GameTable4Adapter(data.matchOdds, oddsType, mMatchType)
 
                 data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener
-                if (data.vpTableAdapter?.oddsType != oddsType)
-                    data.vpTableAdapter?.oddsType = oddsType
+
                 view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)
             }
