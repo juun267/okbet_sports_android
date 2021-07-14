@@ -486,7 +486,9 @@ class GameViewModel(
     fun switchPlayCategory(matchType: MatchType, play: Play) {
         updatePlayCateSelectedState(play)
 
-        getGameHallList(matchType, false, isReloadPlayCate = true)
+        if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
+            getGameHallList(matchType, false, isReloadPlayCate = true)
+        }
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -558,7 +560,9 @@ class GameViewModel(
     fun switchPlayCategory(matchType: MatchType, leagueId: String, play: Play) {
         updatePlayCateSelectedState(play)
 
-        getLeagueOddsList(matchType, leagueId)
+        if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
+            getLeagueOddsList(matchType, leagueId)
+        }
     }
 
     fun getLeagueOddsList(

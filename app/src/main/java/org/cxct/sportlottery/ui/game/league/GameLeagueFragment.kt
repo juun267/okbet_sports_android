@@ -15,14 +15,18 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.common.StatusSheetAdapter
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
@@ -135,6 +139,17 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initObserve() {
         viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
+
+            it.find { play ->
+                play.isSelected
+            }?.let { selectedPlay ->
+                if (selectedPlay.code != PlayType.MAIN.code && selectedPlay.playCateList?.size ?: 0 > 1) {
+                    selectedPlay.let {
+                        showPlayCateBottomSheet(selectedPlay)
+                        hideLoading()
+                    }
+                }
+            }
         })
 
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, {
@@ -210,6 +225,20 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 else -> null
             }
         ).into(game_league_toolbar_bg)
+    }
+
+    private fun showPlayCateBottomSheet(play: Play) {
+        showBottomSheetDialog(
+            play.name,
+            play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
+                ?: listOf(),
+            StatusSheetData(
+                play.playCateList?.first()?.code,
+                play.playCateList?.first()?.name
+            ),
+            StatusSheetAdapter.ItemCheckedListener { _, data ->
+
+            })
     }
 
     private fun initSocketReceiver() {
