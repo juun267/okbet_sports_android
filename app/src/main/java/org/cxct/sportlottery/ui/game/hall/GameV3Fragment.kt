@@ -78,7 +78,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlayCategory(args.matchType, it)
+                viewModel.switchPlay(args.matchType, it)
                 loading()
             }
         }
@@ -499,7 +499,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
+        viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
 
             it.find { play ->

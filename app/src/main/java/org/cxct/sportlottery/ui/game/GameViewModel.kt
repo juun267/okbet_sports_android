@@ -135,8 +135,8 @@ class GameViewModel(
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
-    val playCategoryList: LiveData<List<Play>>
-        get() = _playCategoryList
+    val playList: LiveData<List<Play>>
+        get() = _playList
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
@@ -158,7 +158,7 @@ class GameViewModel(
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
-    private val _playCategoryList = MutableLiveData<List<Play>>()
+    private val _playList = MutableLiveData<List<Play>>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -483,8 +483,8 @@ class GameViewModel(
         getGameHallList(matchType, true, isReloadPlayCate = true)
     }
 
-    fun switchPlayCategory(matchType: MatchType, play: Play) {
-        updatePlayCateSelectedState(play)
+    fun switchPlay(matchType: MatchType, play: Play) {
+        updatePlaySelectedState(play)
 
         if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
             getGameHallList(matchType, false, isReloadPlayCate = true)
@@ -557,8 +557,8 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun switchPlayCategory(matchType: MatchType, leagueId: String, play: Play) {
-        updatePlayCateSelectedState(play)
+    fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
+        updatePlaySelectedState(play)
 
         if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
             getLeagueOddsList(matchType, leagueId)
@@ -711,7 +711,7 @@ class GameViewModel(
                 if (!playList.any { it.isSelected }) {
                     playList.firstOrNull()?.isSelected = true
                 }
-                _playCategoryList.value = playList
+                _playList.value = playList
             }
         }
     }
@@ -1217,7 +1217,7 @@ class GameViewModel(
         }
     }
 
-    private fun getPlayCateSelected(): Play? = _playCategoryList.value?.find { it.isSelected }
+    private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
 
     private fun SportMenuData.updateSportSelectState(
         matchType: MatchType?,
@@ -1304,15 +1304,15 @@ class GameViewModel(
         _curDatePosition.postValue(this.indexOf(date))
     }
 
-    private fun updatePlayCateSelectedState(play: Play) {
-        val playCate = _playCategoryList.value
+    private fun updatePlaySelectedState(play: Play) {
+        val playList = _playList.value
 
-        playCate?.forEach {
+        playList?.forEach {
             it.isSelected = (it == play)
         }
 
-        playCate?.let {
-            _playCategoryList.postValue(it)
+        playList?.let {
+            _playList.postValue(it)
         }
     }
 
