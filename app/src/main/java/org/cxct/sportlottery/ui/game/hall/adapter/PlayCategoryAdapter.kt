@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_play_category_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.sport.query.Play
 
 class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderPlayCategory>() {
@@ -31,26 +32,26 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Play, playCategoryListener: PlayCategoryListener?) {
-            itemView.play_category_name.apply {
-                text = item.name
+            itemView.play_name.text = item.name
 
-                setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    if (item.playCateList?.size ?: 0 > 1) {
-                        when (item.isSelected) {
-                            true -> {
-                                R.drawable.ic_arrow_blue
-                            }
-                            false -> {
-                                R.drawable.ic_arrow_gray
-                            }
-                        }
-                    } else {
-                        0
-                    },
-                    0
-                )
+            itemView.play_arrow.visibility =
+                if (item.playCateList?.size ?: 0 > 1 && item.code != PlayType.MAIN.code) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+            itemView.play_category_name.apply {
+                visibility = if (item.isSelected
+                    && item.playCateList?.any { it.isSelected } == true
+                    && item.code != PlayType.MAIN.code
+                ) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                text = item.playCateList?.find { it.isSelected }?.name
             }
 
             itemView.isSelected = item.isSelected

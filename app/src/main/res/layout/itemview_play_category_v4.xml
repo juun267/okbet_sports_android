@@ -8,18 +8,42 @@
     android:padding="12dp">
 
     <TextView
-        android:id="@+id/play_category_name"
+        android:id="@+id/play_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawablePadding="10dp"
         android:textColor="@color/selector_odd_category_text_v4"
         android:textSize="@dimen/textSize12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/play_category_name"
+        app:layout_constraintEnd_toStartOf="@id/play_arrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:drawableRightCompat="@drawable/ic_arrow_gray"
         tools:ignore="spUsage"
         tools:text="主要市场" />
+
+    <TextView
+        android:id="@+id/play_category_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:textColor="@color/selector_odd_category_text_v4"
+        android:textSize="@dimen/textSize12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/play_name"
+        app:layout_constraintStart_toStartOf="@id/play_name"
+        app:layout_constraintTop_toBottomOf="@id/play_name"
+        tools:text="独赢"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/play_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/selector_ic_arrow_gray_blue_v4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/play_name"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

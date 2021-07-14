@@ -8,4 +8,6 @@ data class PlayCate(
     val code: String?,
     @Json(name = "name")
     val name: String?
-)
+) {
+    var isSelected = false
+}
