@@ -44,7 +44,6 @@
 
         <include
             layout="@layout/content_bet_info_item"
-            app:dialog="@{dialog}"
             app:gameViewModel="@{gameViewModel}"/>
 
 
@@ -65,7 +64,6 @@
             android:layout_height="36dp"
             android:background="@color/colorWhite"
             android:gravity="center"
-            android:onClick="@{() -> dialog.dismiss()}"
             android:text="@string/bet_info_odd_content_changed"
             android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp"

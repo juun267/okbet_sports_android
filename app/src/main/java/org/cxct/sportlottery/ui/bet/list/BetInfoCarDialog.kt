@@ -119,6 +119,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initClose()
         initKeyBoard()
         initBetButton()
         initQuota()
@@ -132,6 +133,13 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         if (!addFlag) viewModel.removeBetInfoAll()
+    }
+
+
+    private fun initClose(){
+        iv_close.setOnClickListener {
+            dismiss()
+        }
     }
 
 
@@ -150,12 +158,16 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
+
             cl_bet.setOnClickListener {
                 //TODO 下注
             }
+
             tv_accept_odds_change.setOnClickListener {
                 //TODO 下注
             }
+
+            isCanSendOut = false
         }
     }
 
@@ -182,35 +194,43 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun initEditText() {
         et_bet.afterTextChanged {
-            //比照以往計算
+
+            button_bet.tv_quota.text = TextUtil.format(if (it.isEmpty()) 0.0 else it.toDouble())
+
             if (it.isEmpty()) {
+
                 tv_check_maximum_limit.visibility = View.VISIBLE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.GONE
-                return@afterTextChanged
-            }
+                button_bet.isCanSendOut = false
 
-            //輸入時 直接顯示可贏額
-            tv_check_maximum_limit.visibility = View.GONE
-            ll_bet_quota_detail.visibility = View.GONE
-            ll_win_quota_detail.visibility = View.VISIBLE
+            } else {
 
-            val quota = it.toDouble()
+                //輸入時 直接顯示可贏額
+                tv_check_maximum_limit.visibility = View.GONE
+                ll_bet_quota_detail.visibility = View.GONE
+                ll_win_quota_detail.visibility = View.VISIBLE
+                button_bet.isCanSendOut = true
 
-            betInfoListData?.parlayOdds?.max?.let { max ->
-                if (quota > max) {
-                    et_bet.setText(max.toString())
-                    et_bet.setSelection(max.toString().length)
-                    return@afterTextChanged
+
+                val quota = it.toDouble()
+
+                betInfoListData?.parlayOdds?.max?.let { max ->
+                    if (quota > max) {
+                        et_bet.setText(max.toString())
+                        et_bet.setSelection(max.toString().length)
+                        return@afterTextChanged
+                    }
                 }
-            }
 
-            var win = quota * getOdds(matchOdd, oddsType)
-            if (oddsType == OddsType.EU) {
-                win -= quota
-            }
-            tv_win_quota.text = TextUtil.format(win)
+                //比照以往計算
+                var win = quota * getOdds(matchOdd, oddsType)
+                if (oddsType == OddsType.EU) {
+                    win -= quota
+                }
+                tv_win_quota.text = TextUtil.format(win)
 
+            }
         }
     }
 
