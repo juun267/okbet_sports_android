@@ -123,6 +123,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             setupTime(data)
             setupOddButton(data)
 
+            //TODO simon test review 賠率 icon 顯示邏輯
+            itemView.iv_match_in_play.visibility = if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
+//            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
+//            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
+
             itemView.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
@@ -133,8 +138,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 tv_game_name_home.text = data.matchInfo?.homeName
                 tv_game_name_away.text = data.matchInfo?.awayName
                 tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
-
-                //TODO icon 時鐘 特優賠率
             }
         }
 
