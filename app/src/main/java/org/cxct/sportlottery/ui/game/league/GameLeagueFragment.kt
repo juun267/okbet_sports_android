@@ -152,6 +152,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         })
 
+        viewModel.playCate.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.apply {
+                data.find { it.isSelected }?.playCateList?.forEach { playCate ->
+                    playCate.isSelected = (playCate.code == it)
+                }
+                notifyDataSetChanged()
+            }
+        })
+
         viewModel.oddsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
 
@@ -233,11 +242,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
                 ?: listOf(),
             StatusSheetData(
-                play.playCateList?.first()?.code,
-                play.playCateList?.first()?.name
+                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
+                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
-
+                viewModel.switchPlayCategory(args.matchType, args.leagueId, data.code)
+                bottomSheet.dismiss()
+                loading()
             })
     }
 

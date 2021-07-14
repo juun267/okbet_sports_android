@@ -33,6 +33,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.network.sport.query.PlayCate
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
@@ -138,6 +139,9 @@ class GameViewModel(
     val playList: LiveData<List<Play>>
         get() = _playList
 
+    val playCate: LiveData<String?>
+        get() = _playCate
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -159,6 +163,7 @@ class GameViewModel(
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
     private val _playList = MutableLiveData<List<Play>>()
+    private val _playCate = MutableLiveData<String?>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -491,6 +496,12 @@ class GameViewModel(
         }
     }
 
+    fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
+        _playCate.value = playCateCode
+
+        getGameHallList(matchType, false, isReloadPlayCate = true)
+    }
+
     fun switchMatchDate(matchType: MatchType, date: Date) {
         _curDate.value?.updateDateSelectedState(date)
 
@@ -565,6 +576,12 @@ class GameViewModel(
         }
     }
 
+    fun switchPlayCategory(matchType: MatchType, leagueId: String, playCateCode: String?) {
+        _playCate.value = playCateCode
+
+        getLeagueOddsList(matchType, leagueId)
+    }
+
     fun getLeagueOddsList(
         matchType: MatchType,
         leagueId: String,
@@ -622,6 +639,7 @@ class GameViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null
     ) {
+        //TODO add playCate live data to the api param
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
@@ -1313,6 +1331,7 @@ class GameViewModel(
 
         playList?.let {
             _playList.postValue(it)
+            _playCate.value = null
         }
     }
 

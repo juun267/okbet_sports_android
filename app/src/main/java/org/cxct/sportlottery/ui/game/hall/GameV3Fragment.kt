@@ -514,6 +514,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        viewModel.playCate.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.apply {
+                data.find { it.isSelected }?.playCateList?.forEach { playCate ->
+                    playCate.isSelected = (playCate.code == it)
+                }
+                notifyDataSetChanged()
+            }
+        })
+
         viewModel.favorLeagueList.observe(this.viewLifecycleOwner, {
             val leaguePinList = mutableListOf<League>()
 
@@ -812,11 +821,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
                 ?: listOf(),
             StatusSheetData(
-                play.playCateList?.first()?.code,
-                play.playCateList?.first()?.name
+                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
+                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
+                viewModel.switchPlayCategory(args.matchType, data.code)
                 bottomSheet.dismiss()
+                loading()
             })
     }
 
