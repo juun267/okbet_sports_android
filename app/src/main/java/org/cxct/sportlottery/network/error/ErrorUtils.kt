@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
@@ -80,6 +81,7 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
@@ -383,6 +385,10 @@ object ErrorUtils {
                     (url.contains(THIRD_REBATES)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ThirdRebatesResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_CATEGORY_RECOMMEND)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchRecommendResult(it.code, it.msg, it.success, null, null) as T
                     }
                     (url.contains(MATCH_CATEGORY_SPECIAL_MATCH)) -> {
                         @Suppress("UNCHECKED_CAST")

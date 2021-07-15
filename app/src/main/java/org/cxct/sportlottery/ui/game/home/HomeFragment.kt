@@ -433,6 +433,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        viewModel.recommendMatchResult.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                //TODO simon test observe 推薦賽事
+            }
+        })
+
         viewModel.highlightMenuResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 updateHighlight(result)
@@ -483,6 +489,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun queryData() {
         //滾球盤、即將開賽盤
         viewModel.getMatchPreload()
+
+        //推薦賽事
+        viewModel.getRecommendMatch()
 
         //精選賽事
         viewModel.getHighlightMenu()

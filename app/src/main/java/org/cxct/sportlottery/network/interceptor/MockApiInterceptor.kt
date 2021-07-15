@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_DETAIL
@@ -230,6 +231,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(PLAYQUOTACOM_LIST) -> {
                     response = getMockJsonData(request, "playquotacom_list.mock")
+                }
+                path.contains(MATCH_CATEGORY_RECOMMEND) -> {
+                    response = getMockJsonData(request, "match_category_recommend.mock")
                 }
                 path.contains(MATCH_CATEGORY_SPECIAL_MATCH) -> {
                     response = getMockJsonData(request, "match_category_special_match.mock")
