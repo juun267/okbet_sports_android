@@ -33,7 +33,6 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
-import org.cxct.sportlottery.network.sport.query.PlayCate
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
@@ -639,7 +638,7 @@ class GameViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null
     ) {
-        //TODO add playCate live data to the api param
+        //TODO add playCate live data to the api param 等待後端調整
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
@@ -1331,7 +1330,7 @@ class GameViewModel(
 
         playList?.let {
             _playList.postValue(it)
-            _playCate.value = null
+            _playCate.postValue(null)
         }
     }
 
