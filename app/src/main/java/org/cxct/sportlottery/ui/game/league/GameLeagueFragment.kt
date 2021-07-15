@@ -132,7 +132,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onStart() {
         super.onStart()
 
-        viewModel.getLeagueOddsList(args.matchType, args.leagueId)
+        viewModel.getLeagueOddsList(args.matchType, args.leagueId, isReloadPlayCate = true)
         loading()
     }
 

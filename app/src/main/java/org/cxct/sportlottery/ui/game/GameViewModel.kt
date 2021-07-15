@@ -491,14 +491,14 @@ class GameViewModel(
         updatePlaySelectedState(play)
 
         if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
-            getGameHallList(matchType, false, isReloadPlayCate = true)
+            getGameHallList(matchType, false)
         }
     }
 
     fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
         _playCate.value = playCateCode
 
-        getGameHallList(matchType, false, isReloadPlayCate = true)
+        getGameHallList(matchType, false)
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -584,12 +584,15 @@ class GameViewModel(
     fun getLeagueOddsList(
         matchType: MatchType,
         leagueId: String,
+        isReloadPlayCate: Boolean = false
     ) {
         val leagueIdList by lazy {
             listOf(leagueId)
         }
 
-        getPlayCategory(matchType)
+        if (isReloadPlayCate) {
+            getPlayCategory(matchType)
+        }
 
         getSportSelected(matchType)?.let { item ->
             getOddsList(
@@ -725,9 +728,10 @@ class GameViewModel(
             }?.play?.filter { play ->
                 play.num != 0
             }?.let { playList ->
-                if (!playList.any { it.isSelected }) {
-                    playList.firstOrNull()?.isSelected = true
+                playList.forEach {
+                    it.isSelected = (it == playList.firstOrNull())
                 }
+
                 _playList.value = playList
             }
         }
