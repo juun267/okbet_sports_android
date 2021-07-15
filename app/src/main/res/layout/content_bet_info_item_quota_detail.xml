@@ -14,32 +14,39 @@
     </data>
 
 
-    <merge>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_quota_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_bet">
 
         <TextView
             android:id="@+id/tv_check_maximum_limit"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/bet_info_check_maximum_limit"
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_bet" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <LinearLayout
             android:id="@+id/ll_bet_quota_detail"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:gravity="end|center"
             android:orientation="vertical"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_bet">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tv_bet_maximum_limit"
@@ -64,14 +71,14 @@
         <LinearLayout
             android:id="@+id/ll_win_quota_detail"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
             android:gravity="end|center"
             android:orientation="vertical"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/et_bet"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_bet">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -92,7 +99,7 @@
 
         </LinearLayout>
 
-    </merge>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </layout>

@@ -27,6 +27,9 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
     private lateinit var mEditText: EditText
 
 
+    private var isShow = false
+
+
     fun showKeyboard(editText: EditText) {
         this.mEditText = editText
 
@@ -38,13 +41,17 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
         }
         keyboardView.visibility = View.VISIBLE
         parent?.visibility = View.VISIBLE
+
+        isShow = true
     }
 
 
     fun hideKeyboard() {
         keyboardView.visibility = View.GONE
         parent?.visibility = View.INVISIBLE
-        mEditText.isFocusable = false
+        if (isShow) mEditText.isFocusable = false
+
+        isShow = false
     }
 
 

@@ -10,15 +10,19 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
 import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
+import kotlinx.android.synthetic.main.view_bet_info_close_message.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
@@ -148,6 +152,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         if (!addFlag) viewModel.removeBetInfoAll()
+        OddSpannableString.clearHandler()
     }
 
 
@@ -167,7 +172,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     private fun initKeyBoard() {
         et_bet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                keyboard.showKeyboard(view as EditText)
+                if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(view as EditText)
             }
             false
         }
@@ -307,6 +312,13 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             service.unsubscribeAllEventChannel()
             service.subscribeEventChannel(matchOdd?.matchId)
         })
+
+        receiver.globalStop.observe(viewLifecycleOwner, { event ->
+            if (matchOdd?.producerId == null || matchOdd?.producerId == event?.producerId) {
+                matchOdd?.status = BetStatus.LOCKED.code
+                matchOdd?.let { setupData(it) }
+            }
+        })
     }
 
 
@@ -337,6 +349,28 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             )
         } else matchOdd.playCateName
 
+        if (matchOdd.status == BetStatus.ACTIVATED.code) {
+            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
+            iv_bet_lock.visibility = View.GONE
+            et_bet.isFocusable = true
+            et_bet.isFocusableInTouchMode = true
+            cl_quota_detail.visibility = View.VISIBLE
+            cl_close_waring.visibility = View.GONE
+        } else {
+            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite2))
+            iv_bet_lock.visibility = View.VISIBLE
+            et_bet.isFocusable = false
+            et_bet.isFocusableInTouchMode = false
+            keyboard.hideKeyboard()
+            cl_quota_detail.visibility = View.GONE
+            cl_close_waring.visibility = View.VISIBLE
+        }
+
+        if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
+            tv_odd_content_changed.visibility = View.VISIBLE
+            button_bet.isOddsChanged = true
+        }
+
         OddSpannableString.setupOddsContent(matchOdd, oddsType, tv_odds_content)
     }
 
@@ -360,22 +394,17 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     private fun addBet() {
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
 
-        val stake = if (et_bet.text.toString().isEmpty()) {
-            0.0
-        } else {
-            et_bet.text.toString().toDouble()
-        }
+        val stake = if (et_bet.text.toString().isEmpty()) 0.0 else et_bet.text.toString().toDouble()
+
 
         if (stake > currentMoney ?: 0.0) {
             showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
             return
         }
 
-        val parlayType = if (betInfoListData?.matchType == MatchType.OUTRIGHT) {
-            MatchType.OUTRIGHT.postValue
-        } else {
-            betInfoListData?.parlayOdds?.parlayType
-        }
+        val parlayType =
+            if (betInfoListData?.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else parlayOdd?.parlayType
+
 
         parlayOdd?.let {
             viewModel.addBet(
