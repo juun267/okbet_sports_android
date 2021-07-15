@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.getOdds
 /**
  * @author Kevin
  * @create 2021/7/14
- * @description
+ * @description 共用多筆注單
  */
 object OddSpannableString {
 
@@ -51,22 +51,42 @@ object OddSpannableString {
 
     fun setupOddsContent(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?) {
         if (textView == null) return
+
+        when{
+            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState == MatchOdd.OddState.SAME.state -> {
+                matchOdd.runnable?.let {
+                    return
+                }?:run { setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false) }
+            }
+
+            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState == MatchOdd.OddState.SAME.state -> {
+                setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = false)
+                resetRunnable(matchOdd, oddsType, textView)
+            }
+
+            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState != MatchOdd.OddState.SAME.state -> {
+                setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = true)
+                resetRunnable(matchOdd, oddsType, textView)
+            }
+
+            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState != MatchOdd.OddState.SAME.state -> {
+                setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = true)
+                resetRunnable(matchOdd, oddsType, textView)
+            }
+        }
+    }
+
+
+    private fun setupMergeString(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?, isSpreadChanged: Boolean, isOddsChanged: Boolean) {
+        if (textView == null) return
+
         setupPlayNameSpannableString(matchOdd)
 
-        setupSpreadSpannableString(textView.context, matchOdd)
+        setupSpreadSpannableString(textView.context, matchOdd, isSpreadChanged)
 
-        setupOddsSpannableString(textView.context, matchOdd, oddsType)
+        setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
 
-        mergeOddContent(textView)
-
-        if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != MatchOdd.OddState.SAME.state) {
-            matchOdd.runnable?.let {
-                mHandler.removeCallbacks(it)
-            }
-            val runnable = highLightRunnable(matchOdd, oddsType, textView)
-            matchOdd.runnable = runnable
-            mHandler.postDelayed(runnable, HIGH_LIGHT_TIME)
-        }
+        mergeString(textView)
     }
 
 
@@ -76,9 +96,7 @@ object OddSpannableString {
     }
 
 
-    private fun setupSpreadSpannableString(context: Context, matchOdd: MatchOdd) {
-        val isChanged = matchOdd.spreadState != SpreadState.SAME.state
-
+    private fun setupSpreadSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorRed else R.color.colorWhite)
 
@@ -90,21 +108,20 @@ object OddSpannableString {
     }
 
 
-    private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, oddsType: OddsType) {
-        val isChanged = matchOdd.oddState != MatchOdd.OddState.SAME.state
-
+    private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean, oddsType: OddsType) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorRed else R.color.colorWhite)
 
-        val oddsEnd = TextUtil.formatForOdd(getOdds(matchOdd, oddsType)).length
-        oddsSpan = SpannableString(TextUtil.formatForOdd(getOdds(matchOdd, oddsType)))
+        val odds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+        val oddsEnd = odds.length
+        oddsSpan = SpannableString(odds)
         oddsSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         oddsSpan.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         oddsSpan.setSpan(BackgroundColorSpan(backgroundColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
 
-    private fun mergeOddContent(textView: TextView) {
+    private fun mergeString(textView: TextView) {
         val oddContentBuilder = SpannableStringBuilder()
 
         oddContentBuilder.append(playNameSpan)
@@ -118,11 +135,21 @@ object OddSpannableString {
 
     private fun highLightRunnable(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?): Runnable {
         return Runnable {
+            setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false)
             matchOdd.oddState = OddState.SAME.state
             matchOdd.spreadState = SpreadState.SAME.state
             matchOdd.runnable = null
-            setupOddsContent(matchOdd, oddsType, textView)
         }
+    }
+
+
+    private fun resetRunnable(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?){
+        matchOdd.runnable?.let {
+            mHandler.removeCallbacks(it)
+        }
+        val runnable = highLightRunnable(matchOdd, oddsType, textView)
+        matchOdd.runnable = runnable
+        mHandler.postDelayed(runnable, HIGH_LIGHT_TIME)
     }
 
 
