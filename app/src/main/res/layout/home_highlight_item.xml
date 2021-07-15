@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="20dp"
-    android:paddingEnd="16dp"
-    tools:context=".ui.game.home.gameTable4.Vp2GameTable4Adapter">
+    android:layout_height="wrap_content"
+    tools:context=".ui.game.home.highlight.RvHighlightAdapter">
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="9dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/block_bottom"
@@ -20,74 +19,30 @@
         app:layout_constraintVertical_bias="0">
 
         <TextView
-            android:id="@+id/tv_game_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="38dp"
-            android:gravity="center"
-            android:text="@string/home_tab_in_play"
-            android:textColor="@color/colorGray"
-            android:textSize="@dimen/textSize12sp" />
-
-        <LinearLayout
+            android:id="@+id/tv_game_name_home"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:minHeight="43dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/textSize15sp"
+            tools:text="皇家馬德里" />
 
-            <TextView
-                android:id="@+id/tv_game_score_home"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:includeFontPadding="false"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize18sp"
-                tools:text="0" />
-
-            <TextView
-                android:id="@+id/tv_game_name_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:minHeight="43dp"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:maxLines="2"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/textSize15sp"
-                tools:text="皇家馬德里" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_game_name_away"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_game_score_away"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:includeFontPadding="false"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize18sp"
-                tools:text="0" />
-
-            <TextView
-                android:id="@+id/tv_game_name_away"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:minHeight="43dp"
-                android:ellipsize="end"
-                android:includeFontPadding="false"
-                android:maxLines="2"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/textSize15sp"
-                tools:text="利物浦" />
-
-        </LinearLayout>
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:minHeight="43dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/textSize15sp"
+            tools:text="利物浦" />
 
     </LinearLayout>
 
@@ -95,43 +50,26 @@
         android:id="@+id/block_odd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="9dp"
         android:gravity="center"
-        android:orientation="vertical"
+        android:minHeight="86dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/block_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0">
 
-        <TextView
-            android:id="@+id/tv_play_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="38dp"
-            android:gravity="center"
-            android:text="@string/ou_hdp_hdp_title"
-            android:textColor="@color/colorGray"
-            android:textSize="@dimen/textSize12sp" />
+        <org.cxct.sportlottery.ui.game.widget.OddButton
+            android:id="@+id/btn_match_odd1"
+            android:layout_width="78dp"
+            android:layout_height="48dp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="86dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <org.cxct.sportlottery.ui.game.widget.OddButton
-                android:id="@+id/btn_match_odd1"
-                android:layout_width="78dp"
-                android:layout_height="48dp" />
-
-            <org.cxct.sportlottery.ui.game.widget.OddButton
-                android:id="@+id/btn_match_odd2"
-                android:layout_width="78dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp" />
-
-        </LinearLayout>
+        <org.cxct.sportlottery.ui.game.widget.OddButton
+            android:id="@+id/btn_match_odd2"
+            android:layout_width="78dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp" />
 
     </LinearLayout>
 
@@ -139,15 +77,18 @@
         android:id="@+id/block_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/line_bottom">
 
         <TextView
             android:id="@+id/tv_match_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorRedDark"
+            android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize12sp"
             app:layout_constraintBottom_toBottomOf="@id/match_row"
             app:layout_constraintStart_toEndOf="@id/match_status"
@@ -215,5 +156,12 @@
             android:src="@drawable/ic_home_star" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/line_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorSilverLight"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

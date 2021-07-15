@@ -24,7 +24,7 @@
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBackground"
+            android:background="@color/colorWhite"
             android:fillViewport="true">
 
             <LinearLayout
@@ -301,10 +301,11 @@
                 </LinearLayout>
 
                 <RadioGroup
-                    android:id="@+id/table_bar"
+                    android:id="@+id/rg_table_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="28dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:minHeight="56dp"
                     android:orientation="horizontal">
 
                     <View
@@ -328,7 +329,7 @@
                         android:textStyle="bold" />
 
                     <RadioButton
-                        android:id="@+id/rb_soon"
+                        android:id="@+id/rb_as_start"
                         android:layout_width="wrap_content"
                         android:layout_height="28dp"
                         android:background="@null"
@@ -354,8 +355,157 @@
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3"
+                    tools:itemCount="1"
                     tools:listitem="@layout/home_game_table_4" />
+
+                <LinearLayout
+                    android:id="@+id/highlight_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="56dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                    <TextView
+                        android:id="@+id/tv_highlight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="@string/label_highlight"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/textSize20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_highlight_sport_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="8dp"
+                    android:minHeight="60dp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/itemview_sport_type_v4" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/highlight_titleBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:orientation="horizontal"
+                    tools:background="@drawable/img_home_title_soccer_background">
+
+                    <ImageView
+                        android:id="@+id/highlight_iv_game_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginStart="20dp"
+                        android:contentDescription="@null"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/colorGray"
+                        tools:src="@drawable/ic_soccer" />
+
+                    <TextView
+                        android:id="@+id/highlight_tv_game_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/soccer" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="38dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_game_type"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:minHeight="38dp"
+                        android:text="@string/home_tab_today"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_play_type"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:minHeight="38dp"
+                        android:text="@string/ou_hdp_hdp_title"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/textSize12sp" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_game_highlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/home_highlight_item"/>
+
+                <LinearLayout
+                    android:id="@+id/btn_display_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/display_all"
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/textSize14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_iconarrow" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
