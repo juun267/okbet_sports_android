@@ -19,16 +19,21 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
+import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.BetAddErrorParser
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.KeyBoardUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 
 
 /**
@@ -66,7 +71,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         set(value) {
             field = value
             field?.let {
-                if(!subscribeFlag){
+                if (!subscribeFlag) {
                     subscribeChannel(it)
                     subscribeFlag = true
                 }
@@ -176,11 +181,11 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
 
             cl_bet.setOnClickListener {
-                //TODO 下注
+                addBet()
             }
 
             tv_accept_odds_change.setOnClickListener {
-                //TODO 下注
+                addBet()
             }
 
             isCanSendOut = false
@@ -271,6 +276,19 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         viewModel.userMoney.observe(this.viewLifecycleOwner, {
             currentMoney = it
         })
+
+        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = messageByResultCode(requireContext(), result),
+                    success = result.success
+                ) {
+                    changeBetInfoContentByMessage(result)
+                    dismiss()
+                }
+            }
+        })
     }
 
 
@@ -336,6 +354,55 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun getCurrentMoney() {
         viewModel.getMoney()
+    }
+
+
+    private fun addBet() {
+        if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
+
+        val stake = if (et_bet.text.toString().isEmpty()) {
+            0.0
+        } else {
+            et_bet.text.toString().toDouble()
+        }
+
+        if (stake > currentMoney ?: 0.0) {
+            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            return
+        }
+
+        val parlayType = if (betInfoListData?.matchType == MatchType.OUTRIGHT) {
+            MatchType.OUTRIGHT.postValue
+        } else {
+            betInfoListData?.parlayOdds?.parlayType
+        }
+
+        parlayOdd?.let {
+            viewModel.addBet(
+                BetAddRequest(
+                    listOf(
+                        Odd(
+                            matchOdd?.oddsId,
+                            getOdds(matchOdd, oddsType),
+                            stake
+                        )
+                    ),
+                    listOf(Stake(parlayType ?: "", stake)),
+                    1,
+                    oddsType.code
+                ), betInfoListData?.matchType
+            )
+        }
+    }
+
+
+    private fun changeBetInfoContentByMessage(result: BetAddResult) {
+        getBetAddError(result.code)?.let { betAddError ->
+            if (!result.success) {
+                val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+                errorData?.let { viewModel.updateMatchOdd(it, betAddError) }
+            }
+        }
     }
 
 
