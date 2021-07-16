@@ -338,20 +338,20 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     onItemClickListener.saveOddsHasChanged(matchOdd)
 
                     //先清除前一次任務
-                    matchOdd.changeOddsTask?.let { mHandler.removeCallbacks(it) }
-                    val changeOddsTask = Runnable {
-                        matchOdd.changeOddsTask = null
+                    matchOdd.runnable?.let { mHandler.removeCallbacks(it) }
+                    val runnable = Runnable {
+                        matchOdd.runnable = null
                         notifyItemChanged(position)
                     }
 
                     //三秒後 恢復 Odd 狀態
-                    mHandler.postDelayed(changeOddsTask, CHANGING_ITEM_BG_COLOR_DURATION)
-                    matchOdd.changeOddsTask = changeOddsTask
+                    mHandler.postDelayed(runnable, CHANGING_ITEM_BG_COLOR_DURATION)
+                    matchOdd.runnable = runnable
                 }
 
                 else -> {
                     //若有 賠率變更 任務還未執行完，就不刷新
-                    if (matchOdd.changeOddsTask != null)
+                    if (matchOdd.runnable != null)
                         return
 
                     when (inputError) {
