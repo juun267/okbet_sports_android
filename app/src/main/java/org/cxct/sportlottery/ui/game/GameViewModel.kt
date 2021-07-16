@@ -9,10 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.FavoriteType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
