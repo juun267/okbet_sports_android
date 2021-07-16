@@ -1,16 +1,18 @@
 package org.cxct.sportlottery.util
 
+
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener
 import android.text.InputType
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.common.CustomKeyBoardView
 import org.cxct.sportlottery.ui.common.KeyBoardCode
 
-class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val parent: View) :
+
+@Suppress("DEPRECATION")
+class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val parent: View?) :
     OnKeyboardActionListener {
 
 
@@ -30,12 +32,14 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
 
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
         mEditText.inputType = InputType.TYPE_NULL
-        parent.visibility = View.VISIBLE
+        keyboardView.visibility = View.VISIBLE
+        parent?.visibility = View.VISIBLE
     }
 
 
     fun hideKeyboard() {
-        parent.visibility = View.INVISIBLE
+        keyboardView.visibility = View.GONE
+        parent?.visibility = View.INVISIBLE
     }
 
 
@@ -52,27 +56,37 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
         val editable = mEditText.text
         val start = mEditText.selectionStart
         when (primaryCode) {
-            KeyBoardCode.DELETE.code -> if (editable != null && editable.isNotEmpty()) {
+            Keyboard.KEYCODE_DELETE -> if (editable != null && editable.isNotEmpty()) {
                 if (start > 0) {
                     editable.delete(start - 1, start)
                 }
             }
 
-            KeyBoardCode.PLUS_100.code -> plus(KeyBoardCode.PLUS_100.value.toLong())
+            Keyboard.KEYCODE_DONE -> {
+                mEditText.isFocusable = false
+                hideKeyboard()
+            }
 
-            KeyBoardCode.PLUS_1000.code -> plus(KeyBoardCode.PLUS_1000.value.toLong())
+            KeyBoardCode.PLUS_10.code -> plus(KeyBoardCode.PLUS_10.value.toLong())
 
-            KeyBoardCode.PLUS_10000.code -> plus(KeyBoardCode.PLUS_10000.value.toLong())
+            KeyBoardCode.PLUS_50.code -> plus(KeyBoardCode.PLUS_50.value.toLong())
 
             KeyBoardCode.INSERT_0.code -> {
-                if(editable.isNotEmpty()){
+                if (editable.isNotEmpty()) {
                     editable.insert(start, primaryCode.toChar().toString())
                 }
             }
-            KeyBoardCode.INSERT_00.code -> {
-               if(editable.isNotEmpty()){
-                   editable.insert(start, KeyBoardCode.INSERT_00.value)
-               }
+            KeyBoardCode.DOT.code -> {
+                editable.apply {
+                    insert(
+                        start,
+                        if (isNotEmpty()) {
+                            if (!toString().contains(KeyBoardCode.DOT.value)) KeyBoardCode.DOT.value else return
+                        } else {
+                            "0."
+                        }
+                    )
+                }
             }
 
             else -> {
@@ -84,9 +98,15 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
 
     private fun plus(count: Long) {
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
-        mEditText.setText((input.toLong() + count).toString())
+        val tran = if (input.contains(".")) {
+            input.toDouble() + count
+        } else input.toLong() + count
+        mEditText.setText(tran.toString())
         mEditText.setSelection(mEditText.text.length)
     }
 
 
 }
+
+
+

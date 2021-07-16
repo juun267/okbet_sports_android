@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="RtlSymmetry,SpUsage">
+
+
+    <data>
+
+        <variable
+            name="gameViewModel"
+            type="org.cxct.sportlottery.ui.game.GameViewModel" />
+
+        <variable
+            name="dialog"
+            type="org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog" />
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/shadow"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
+
+        <TextView
+            android:id="@+id/tv_current_money"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:background="@color/colorBlackLight"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:textColor="@color/colorWhite6"
+            android:textSize="@dimen/textSize12sp"
+            tools:text="9,875,241.000 RMB" />
+
+
+        <include
+            layout="@layout/content_bet_info_item"
+            app:dialog="@{dialog}" />
+
+
+        <org.cxct.sportlottery.ui.common.CustomKeyBoardView
+            android:id="@+id/kv_keyboard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:keyBackground="@drawable/bg_frame_6dp_white"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:id="@+id/tv_odd_content_changed"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:onClick="@{() -> dialog.dismiss()}"
+            android:text="@string/bet_info_odd_content_changed"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/textSize12sp"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_add_to_bet_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorWhite4"
+                android:gravity="center"
+                android:text="@string/bet_info_add_to_bet_info"
+                android:textColor="@color/colorGray"
+                android:onClick="@{() -> dialog.addToBetInfoList()}"
+                android:textSize="@dimen/textSize14sp" />
+
+            <org.cxct.sportlottery.ui.bet.list.BetButton
+                android:id="@+id/button_bet"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</layout>
+

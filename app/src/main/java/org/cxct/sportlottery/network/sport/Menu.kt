@@ -15,5 +15,7 @@ data class Menu(
     @Json(name = "parlay")
     val parlay: Sport, //串连
     @Json(name = "outright")
-    val outright: Sport //冠軍
+    val outright: Sport, //冠軍
+    @Json(name = "eps")
+    val eps: Sport //特优赔率
 )

@@ -11,10 +11,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 
 class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -26,7 +28,15 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         set(value) {
             field = value
             field?.let {
-                data = it.displayList
+                val list = mutableListOf<Any>()
+                matchOdd?.odds?.forEach {
+                    list.add(it.key)
+                    list.addAll(it.value.filterNotNull().map { odd ->
+                        odd.outrightCateKey = it.key
+                        odd
+                    })
+                }
+                data = list
             }
         }
 
@@ -74,7 +84,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is SubTitleViewHolder -> {
                 val item = data[position] as String
-                holder.bind(item)
+                holder.bind(item, matchOdd?.dynamicMarkets)
             }
             is OddViewHolder -> {
                 val item = data[position] as Odd
@@ -86,7 +96,10 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int = data.size
 
-    class OddViewHolder private constructor(itemView: View, private val refreshListener: OddStateChangeListener) : OddStateViewHolder(itemView) {
+    class OddViewHolder private constructor(
+        itemView: View,
+        private val refreshListener: OddStateChangeListener
+    ) : OddStateViewHolder(itemView) {
 
         fun bind(
             matchOdd: MatchOdd?,
@@ -150,8 +163,17 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class SubTitleViewHolder private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: String) {
-            itemView.outright_odd_subtitle.text = item
+        fun bind(item: String, dynamicMarkets: Map<String, DynamicMarket>?) {
+            itemView.outright_odd_subtitle.text = dynamicMarkets?.get(item)?.let {
+                when (LanguageManager.getSelectLanguage(itemView.context)) {
+                    LanguageManager.Language.ZH -> {
+                        it.zh
+                    }
+                    else -> {
+                        it.en
+                    }
+                }
+            }
         }
 
         companion object {

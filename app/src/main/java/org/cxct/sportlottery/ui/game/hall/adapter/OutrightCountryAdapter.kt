@@ -46,7 +46,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                             DividerItemDecorator(
                                 ContextCompat.getDrawable(
                                     context,
-                                    R.drawable.divider_gray
+                                    R.drawable.divider_color_white8
                                 )
                             )
                         )

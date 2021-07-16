@@ -71,7 +71,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                 sendOutStatus = true
             } else {
 
-                val quota = it.toLong()
+                val quota = it.toDouble()
 
                 when {
                     quota > parlayOdd.max -> {
