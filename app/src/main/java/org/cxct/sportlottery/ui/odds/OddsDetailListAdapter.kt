@@ -71,7 +71,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item),
         FG_LG(R.layout.content_odds_detail_list_fg_lg),
         GROUP_6(R.layout.content_odds_detail_list_group_6_item),
-        GROUP_4(R.layout.content_odds_detail_list_group_4_item)
+        GROUP_4(R.layout.content_odds_detail_list_group_4_item),
+        SCO(R.layout.content_odds_detail_list_sco)
     }
 
 
@@ -254,60 +255,61 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         val layout: Int = when (viewType) {
 
-            GameType.OU_TTS1ST.type -> LayoutType.GROUP_4.layout
-            GameType.OU_OE.type -> LayoutType.GROUP_4.layout
+            GameType.OU_TTS1ST.type,
+            GameType.OU_OE.type,
             GameType.OU_BTS.type -> LayoutType.GROUP_4.layout
 
-            GameType.DC_OU.type -> LayoutType.GROUP_6.layout
-            GameType.DC_BTS.type -> LayoutType.GROUP_6.layout
-            GameType.DC_FLG.type -> LayoutType.GROUP_6.layout
-            GameType.SINGLE_FLG.type -> LayoutType.GROUP_6.layout
-            GameType.SINGLE_BTS.type -> LayoutType.GROUP_6.layout
+            GameType.DC_OU.type,
+            GameType.DC_BTS.type,
+            GameType.DC_FLG.type,
+            GameType.SINGLE_FLG.type,
+            GameType.SINGLE_BTS.type,
             GameType.SINGLE_OU.type -> LayoutType.GROUP_6.layout
 
             GameType.CS.type -> LayoutType.CS.layout
 
             GameType.FGLG.type -> LayoutType.FG_LG.layout
 
-            GameType.DC.type -> LayoutType.ONE_LIST.layout
-            GameType.SCO.type -> LayoutType.ONE_LIST.layout
-            GameType.GT1ST.type -> LayoutType.ONE_LIST.layout
-            GameType.SBH.type -> LayoutType.ONE_LIST.layout
-            GameType.WBH.type -> LayoutType.ONE_LIST.layout
-            GameType.WEH.type -> LayoutType.ONE_LIST.layout
-            GameType.WM.type -> LayoutType.ONE_LIST.layout
-            GameType.HTFT.type -> LayoutType.ONE_LIST.layout
-            GameType.W3.type -> LayoutType.ONE_LIST.layout
-            GameType.HDP_ONE_LIST.type -> LayoutType.ONE_LIST.layout
-            GameType.NGOAL_1.type -> LayoutType.ONE_LIST.layout
-            GameType.TWTN.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.SCO.type -> LayoutType.SCO.layout
+
+            GameType.DC.type,
+            GameType.GT1ST.type,
+            GameType.SBH.type,
+            GameType.WBH.type,
+            GameType.WEH.type,
+            GameType.WM.type,
+            GameType.HTFT.type,
+            GameType.W3.type,
+            GameType.HDP_ONE_LIST.type,
+            GameType.NGOAL_1.type,
             GameType.HWMG_SINGLE.type -> LayoutType.ONE_LIST.layout
 
-            GameType.HDP.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU_1ST.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU_2ST.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OE.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.TG.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.TG_.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.BTS.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.CLSH.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.TG_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.C_OU.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.C_OE.type -> LayoutType.TWO_SPAN_COUNT.layout
-            GameType.OU_I_OT.type -> LayoutType.TWO_SPAN_COUNT.layout
+            GameType.TWTN.type,
+            GameType.HDP.type,
+            GameType.OU.type,
+            GameType.OU_1ST.type,
+            GameType.OU_2ST.type,
+            GameType.OE.type,
+            GameType.TG.type,
+            GameType.TG_.type,
+            GameType.BTS.type,
+            GameType.CLSH.type,
+            GameType.TG_OU.type,
+            GameType.C_OU.type,
+            GameType.C_OE.type,
+            GameType.OU_I_OT.type,
             GameType.OU_SEG.type -> LayoutType.TWO_SPAN_COUNT.layout
 
-            GameType.SINGLE.type -> LayoutType.SINGLE.layout
-            GameType.SINGLE_1ST.type -> LayoutType.SINGLE.layout
-            GameType.SINGLE_2ST.type -> LayoutType.SINGLE.layout
-            GameType.SINGLE_OT.type -> LayoutType.SINGLE.layout
+            GameType.SINGLE.type,
+            GameType.SINGLE_1ST.type,
+            GameType.SINGLE_2ST.type,
+            GameType.SINGLE_OT.type,
             GameType.SINGLE_SEG.type -> LayoutType.SINGLE.layout
 
-            GameType.SINGLE_2.type -> LayoutType.SINGLE_2_ITEM.layout
-            GameType.SINGLE_1ST_2.type -> LayoutType.SINGLE_2_ITEM.layout
-            GameType.SINGLE_2ST_2.type -> LayoutType.SINGLE_2_ITEM.layout
-            GameType.SINGLE_OT_2.type -> LayoutType.SINGLE_2_ITEM.layout
+            GameType.SINGLE_2.type,
+            GameType.SINGLE_1ST_2.type,
+            GameType.SINGLE_2ST_2.type,
+            GameType.SINGLE_OT_2.type,
             GameType.SINGLE_SEG_2.type -> LayoutType.SINGLE_2_ITEM.layout
 
             else -> LayoutType.ONE_LIST.layout
@@ -317,6 +319,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType).apply {
 
             when (layout) {
+
+                LayoutType.SCO.layout -> {
+                    rvBet?.apply {
+                        addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_silverlight_1dp)))
+                    }
+                }
 
                 LayoutType.GROUP_4.layout,
                 LayoutType.GROUP_6.layout -> {
@@ -447,6 +455,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         val tvFg: TextView? = itemView.findViewById(R.id.tv_fg)
         val tvLg: TextView? = itemView.findViewById(R.id.tv_lg)
 
+        //SCO
+        val tvHomeName: TextView? = itemView.findViewById(R.id.tv_home_name)
+        val tvAwayName: TextView? = itemView.findViewById(R.id.tv_away_name)
+
         fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
 
             val type = oddsDetailDataList[position].gameType
@@ -506,12 +518,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.SBH.type,
                 GameType.NGOAL_1.type,
                 GameType.HDP_ONE_LIST.type,
-                GameType.SCO.type,
                 GameType.W3.type,
                 GameType.DC.type,
                 GameType.GT1ST.type,
                 GameType.WM.type,
                 GameType.HTFT.type -> oneList(oddsDetail)
+
+                GameType.SCO.type -> forSCO(oddsDetail)
 
                 GameType.DC_OU.type,
                 GameType.DC_BTS.type,
@@ -752,7 +765,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-
         private fun group4ItemForOuTag(oddsDetail: OddsDetailListData) {
             rvBet?.apply {
                 adapter = group4AdapterSetup(oddsDetail).apply {
@@ -761,6 +773,43 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     isShowSpreadWithName = true
                 }
                 layoutManager = LinearLayoutManager(itemView.context)
+            }
+        }
+
+        private fun forSCO(oddsDetail: OddsDetailListData){
+            tvHomeName?.text = homeName
+            tvAwayName?.text = awayName
+
+            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+
+            tvHomeName?.apply {
+                isSelected = oddsDetail.gameTypeSCOSelect == SCOType.HOME
+                setOnClickListener {
+
+                }
+            }
+
+            tvAwayName?.apply {
+                isSelected = oddsDetail.gameTypeSCOSelect == SCOType.AWAY
+                setOnClickListener {
+
+                }
+            }
+
+        }
+
+        private fun selectSCO(oddsDetail: OddsDetailListData): OddsDetailListData {
+            val oddArrayList: MutableList<Odd?> = mutableListOf()
+
+            return OddsDetailListData(
+                oddsDetail.gameType,
+                oddsDetail.typeCodes,
+                oddsDetail.name,
+                oddArrayList
+            ).apply {
+                isExpand = oddsDetail.isExpand
+                isMoreExpand = oddsDetail.isMoreExpand
+                gameTypeSCOSelect = oddsDetail.gameTypeSCOSelect
             }
         }
 
