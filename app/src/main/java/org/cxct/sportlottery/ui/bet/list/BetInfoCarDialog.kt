@@ -23,13 +23,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
-import org.cxct.sportlottery.network.bet.Odd
-import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
-import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
@@ -186,11 +182,11 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
 
             cl_bet.setOnClickListener {
-                addBet()
+                addBetSingle()
             }
 
             tv_accept_odds_change.setOnClickListener {
-                addBet()
+                addBetSingle()
             }
 
             isCanSendOut = false
@@ -391,7 +387,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     }
 
 
-    private fun addBet() {
+    private fun addBetSingle() {
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
 
         val stake = if (et_bet.text.toString().isEmpty()) 0.0 else et_bet.text.toString().toDouble()
@@ -402,25 +398,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             return
         }
 
-        val parlayType =
-            if (betInfoListData?.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else parlayOdd?.parlayType
-
-
-        parlayOdd?.let {
-            viewModel.addBet(
-                BetAddRequest(
-                    listOf(
-                        Odd(
-                            matchOdd?.oddsId,
-                            getOdds(matchOdd, oddsType),
-                            stake
-                        )
-                    ),
-                    listOf(Stake(parlayType ?: "", stake)),
-                    1,
-                    oddsType.code
-                ), betInfoListData?.matchType
-            )
+        betInfoListData?.let {
+            viewModel.addBetSingle(stake, it)
         }
     }
 

@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -19,6 +21,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.getOdds
@@ -185,6 +188,35 @@ abstract class BaseOddButtonViewModel(
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(matchType, result)
+                }
+            }
+        }
+    }
+
+
+    fun addBetSingle(stake: Double, betInfoListData: BetInfoListData) {
+        val parlayType =
+            if (betInfoListData.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else betInfoListData.parlayOdds?.parlayType
+
+        val request = BetAddRequest(
+            listOf(
+                Odd(
+                    betInfoListData.matchOdd.oddsId,
+                    getOdds(betInfoListData.matchOdd, oddsType.value ?: OddsType.EU),
+                    stake
+                )
+            ),
+            listOf(Stake(parlayType ?: "", stake)),
+            1,
+            oddsType.value?.code ?: OddsType.EU.code
+        )
+
+        viewModelScope.launch {
+            val result = getBetApi(betInfoListData.matchType, request)
+            _betAddResult.postValue(Event(result))
+            Event(result).getContentIfNotHandled()?.success?.let {
+                if (it) {
+                    afterBet(betInfoListData.matchType, result)
                 }
             }
         }
