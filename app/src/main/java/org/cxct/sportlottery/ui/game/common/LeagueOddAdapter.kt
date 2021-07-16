@@ -7,28 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd.view.*
-import kotlinx.android.synthetic.main.itemview_game_league_odd_1x2.view.*
-import kotlinx.android.synthetic.main.itemview_game_league_odd_hdp_ou.view.*
+import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
-import kotlinx.android.synthetic.main.view_odd_btn_1c2r_v4.view.*
-import kotlinx.android.synthetic.main.view_odd_btn_1c2r_v4.view.odd_btn_type
-import kotlinx.android.synthetic.main.view_odd_btn_1c3r_v4.view.*
+import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
-import org.cxct.sportlottery.ui.game.widget.OddButton
+import org.cxct.sportlottery.ui.game.PlayTypeUtils
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
+
 
 class LeagueOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -241,35 +235,128 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             oddsType: OddsType,
         ) {
             item.odds.forEach {
-                val view = when (it.value.size) {
-                    2 -> {
-                        LayoutInflater.from(itemView.context).inflate(
-                            R.layout.view_odd_btn_1c2r_v4,
-                            itemView.odd_button_test,
-                            false
-                        ).apply {
-                            this.odd_btn_type.text = it.key
+                val view = LayoutInflater.from(itemView.context).inflate(
+                    R.layout.view_odd_btn_column_v4,
+                    itemView.odd_button_test,
+                    false
+                ).apply {
+
+                    PlayTypeUtils.getPlayTypeTitleResId(it.key, item.matchInfo?.sportType?.code)
+                        ?.let {
+                            this.odd_btn_type.text = itemView.context.getString(it)
+                        }
+
+                    this.odd_btn_home.apply {
+
+                        odd_type_text.apply {
+                            visibility = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }
+                                    .contains(it.key) -> View.VISIBLE
+                                else -> {
+                                    when (!it.value[0]?.spread.isNullOrEmpty()) {
+                                        true -> View.INVISIBLE
+                                        false -> View.GONE
+                                    }
+                                }
+                            }
+
+                            text = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }
+                                    .contains(it.key) -> OUType.O_TYPE.title
+                                else -> ""
+                            }
+                        }
+
+                        odd_top_text.apply {
+                            visibility = when (!it.value[0]?.spread.isNullOrEmpty()) {
+                                true -> View.VISIBLE
+                                false -> {
+                                    when {
+                                        PlayTypeUtils.getOUSeries().map { it.code }
+                                            .contains(it.key) -> View.INVISIBLE
+                                        else -> View.GONE
+                                    }
+                                }
+                            }
+
+                            text = it.value[0]?.spread ?: ""
+                        }
+
+                        odd_bottom_text.text = it.value[0]?.odds.toString()
+                    }
+
+                    this.odd_btn_away.apply {
+
+                        odd_type_text.apply {
+                            visibility = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }
+                                    .contains(it.key) -> View.VISIBLE
+                                else -> {
+                                    when (!it.value[1]?.spread.isNullOrEmpty()) {
+                                        true -> View.INVISIBLE
+                                        false -> View.GONE
+                                    }
+                                }
+                            }
+
+                            text = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }
+                                    .contains(it.key) -> OUType.U_TYPE.title
+                                else -> ""
+                            }
+                        }
+
+                        odd_top_text.apply {
+                            visibility = when (!it.value[1]?.spread.isNullOrEmpty()) {
+                                true -> View.VISIBLE
+                                false -> {
+                                    when {
+                                        PlayTypeUtils.getOUSeries().map { it.code }
+                                            .contains(it.key) -> View.INVISIBLE
+                                        else -> View.GONE
+                                    }
+                                }
+                            }
+
+                            text = it.value[1]?.spread ?: ""
+                        }
+
+                        odd_bottom_text.text = it.value[1]?.odds.toString()
+                    }
+
+                    this.odd_btn_draw.apply {
+
+                        visibility = when (it.value.size < 3) {
+                            true -> View.GONE
+                            false -> View.VISIBLE
+                        }
+
+                        odd_type_text.apply {
+                            text = itemView.context.getString(R.string.draw)
+                            visibility = View.VISIBLE
+                        }
+
+                        odd_top_text.apply {
+                            visibility = View.INVISIBLE
+                        }
+
+                        odd_bottom_text.text = if (it.value.size >= 3) {
+                            it.value[2]?.odds.toString()
+                        } else {
+                            ""
                         }
                     }
-                    3 -> {
-                        LayoutInflater.from(itemView.context).inflate(
-                            R.layout.view_odd_btn_1c3r_v4,
-                            itemView.odd_button_test,
-                            false
-                        ).apply {
-                            this.odd_btn_type.text = it.key
-                        }
-                    }
-                    else -> null
                 }
 
                 view?.let {
                     val layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
-                    )
-                    layoutParams.rightMargin =
-                        itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize8sp)
+                    ).apply {
+                        rightMargin =
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize8sp)
+                    }
+
                     itemView.odd_button_test.addView(it, layoutParams)
                 }
             }
