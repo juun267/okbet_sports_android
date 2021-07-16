@@ -647,7 +647,7 @@ class GameViewModel(
                         startTime = timeRangeParams?.startTime,
                         endTime = timeRangeParams?.endTime,
                         playCateMenuCode = getPlayCateSelected()?.code ?: "",
-                        playCateListCode = _playCate.value
+                        playCateCodeList = getPlayCateCodeList()
                     )
                 )
             }
@@ -1236,6 +1236,13 @@ class GameViewModel(
     }
 
     private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
+
+    private fun getPlayCateCodeList(): List<String>? {
+        _playCate.value?.let {
+            return listOf(it)
+        }
+        return null
+    }
 
     private fun SportMenuData.updateSportSelectState(
         matchType: MatchType?,
