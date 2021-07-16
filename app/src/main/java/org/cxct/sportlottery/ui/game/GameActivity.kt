@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
+import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -249,7 +250,9 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.item_bet_list -> {
-                    showBetListDialog()
+                    //TODO 邏輯移動 see: BetInfoListDialog
+//                    showBetListDialog()
+                    showBetListPage()
                     false
                 }
                 R.id.navigation_account_history -> {
@@ -263,6 +266,20 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 else -> false
             }
         }
+    }
+
+    private fun showBetListPage() {
+        val betListFragment = BetListFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     //公告
