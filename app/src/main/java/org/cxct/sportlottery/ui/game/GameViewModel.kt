@@ -1336,23 +1336,23 @@ class GameViewModel(
         }
 
         playList?.let {
-            _playList.postValue(it)
-            _playCate.postValue(
-                when (play.selectionType == SelectionType.SELECTABLE.code) {
-                    true -> {
-                        it.find { play ->
-                            play.isSelected
-                        }?.playCateList?.find { playCate ->
-                            playCate.isSelected
-                        }?.code ?: it.find { play ->
-                            play.isSelected
-                        }?.playCateList?.firstOrNull()?.code
+            _playList.value = it
+            _playCate.value = (
+                    when (play.selectionType == SelectionType.SELECTABLE.code) {
+                        true -> {
+                            it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.find { playCate ->
+                                playCate.isSelected
+                            }?.code ?: it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.firstOrNull()?.code
+                        }
+                        false -> {
+                            null
+                        }
                     }
-                    false -> {
-                        null
-                    }
-                }
-            )
+                    )
         }
     }
 
