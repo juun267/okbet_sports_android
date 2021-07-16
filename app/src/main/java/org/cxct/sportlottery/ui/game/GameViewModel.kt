@@ -490,9 +490,7 @@ class GameViewModel(
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
 
-        if (play.selectionType == SelectionType.UN_SELECTABLE.code) {
-            getGameHallList(matchType, false)
-        }
+        getGameHallList(matchType, false)
     }
 
     fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
@@ -570,9 +568,7 @@ class GameViewModel(
     fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
         updatePlaySelectedState(play)
 
-        if (play.selectionType == SelectionType.UN_SELECTABLE.code) {
-            getLeagueOddsList(matchType, leagueId)
-        }
+        getLeagueOddsList(matchType, leagueId)
     }
 
     fun switchPlayCategory(matchType: MatchType, leagueId: String, playCateCode: String?) {
@@ -641,7 +637,6 @@ class GameViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null
     ) {
-        //TODO add playCate live data to the api param 等待後端調整
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
@@ -651,7 +646,8 @@ class GameViewModel(
                         leagueIdList = leagueIdList,
                         startTime = timeRangeParams?.startTime,
                         endTime = timeRangeParams?.endTime,
-                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
+                        playCateMenuCode = getPlayCateSelected()?.code ?: "",
+                        playCateListCode = _playCate.value
                     )
                 )
             }
@@ -1335,9 +1331,16 @@ class GameViewModel(
         playList?.let {
             _playList.postValue(it)
             _playCate.postValue(
-                it.find { play ->
-                    play.isSelected
-                }?.playCateList?.firstOrNull()?.code
+                when (play.selectionType == SelectionType.SELECTABLE.code) {
+                    true -> {
+                        it.find { play ->
+                            play.isSelected
+                        }?.playCateList?.firstOrNull()?.code
+                    }
+                    false -> {
+                        null
+                    }
+                }
             )
         }
     }
