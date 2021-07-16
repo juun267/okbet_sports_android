@@ -505,7 +505,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it.find { play ->
                 play.isSelected
             }?.let { selectedPlay ->
-                if (selectedPlay.code != PlayType.MAIN.code && selectedPlay.playCateList?.size ?: 0 > 1) {
+                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code) {
                     selectedPlay.let {
                         showPlayCateBottomSheet(selectedPlay)
                         hideLoading()

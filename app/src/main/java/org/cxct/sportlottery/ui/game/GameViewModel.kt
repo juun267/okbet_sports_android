@@ -490,7 +490,7 @@ class GameViewModel(
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
 
-        if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
+        if (play.selectionType == SelectionType.UN_SELECTABLE.code) {
             getGameHallList(matchType, false)
         }
     }
@@ -570,7 +570,7 @@ class GameViewModel(
     fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
         updatePlaySelectedState(play)
 
-        if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
+        if (play.selectionType == SelectionType.UN_SELECTABLE.code) {
             getLeagueOddsList(matchType, leagueId)
         }
     }
@@ -1334,7 +1334,11 @@ class GameViewModel(
 
         playList?.let {
             _playList.postValue(it)
-            _playCate.postValue(null)
+            _playCate.postValue(
+                it.find { play ->
+                    play.isSelected
+                }?.playCateList?.firstOrNull()?.code
+            )
         }
     }
 
