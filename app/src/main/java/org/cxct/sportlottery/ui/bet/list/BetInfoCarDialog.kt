@@ -106,9 +106,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         }
 
 
-    private var addFlag = false
-
-
     private var subscribeFlag = false
 
 
@@ -147,7 +144,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        if (!addFlag) viewModel.removeBetInfoAll()
+        viewModel.removeBetInfoAll()
         OddSpannableString.clearHandler()
     }
 
@@ -290,6 +287,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 }
             }
         })
+
+        viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner, { event ->
+            event?.peekContent()?.let {
+                if(!it)dismiss()
+            }
+        })
     }
 
 
@@ -377,8 +380,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     fun addToBetInfoList() {
-        addFlag = true
-        dismiss()
+        viewModel.addInBetInfo()
     }
 
 

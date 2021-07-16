@@ -141,6 +141,11 @@ class BetInfoRepository {
     }
 
 
+    fun addInBetInfo(){
+        _showBetInfoSingle.postValue(Event(false))
+    }
+
+
     fun addInBetInfo(
         matchType: MatchType,
         sportType: SportType,
