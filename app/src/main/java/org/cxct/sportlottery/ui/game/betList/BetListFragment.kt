@@ -5,9 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,6 +28,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var binding: FragmentBetListBinding
+    private val betListDiffAdapter by lazy { BetListDiffAdapter() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,9 +42,47 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bet_list, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)
+        binding.apply {
+            gameViewModel = this@BetListFragment.viewModel
+        }
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initView()
+        setupObserver()
+    }
+
+    private fun initView() {
+        binding.apply {
+            rvBetList.layoutManager =
+                LinearLayoutManager(this@BetListFragment.context, LinearLayoutManager.VERTICAL, false)
+            rvBetList.adapter = betListDiffAdapter
+        }
+    }
+
+    private fun setupObserver() {
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { list ->
+                Timber.e("Dean, bet list = $list")
+                betListDiffAdapter.submitList(list)
+                /*if (list.isNullOrEmpty()) {
+                    dismiss()
+                } else {
+                    if (!isSubScribe) {
+                        isSubScribe = true
+                        subscribeChannel(list)
+                    }
+                    betInfoListAdapter.betInfoList = list
+                }*/
+            }
+        })
     }
 
     companion object {
