@@ -19,6 +19,8 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchCategory.result.OddData
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -38,6 +40,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.highlight.RvHighlightAdapter
+import org.cxct.sportlottery.ui.game.home.recommend.RvRecommendAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -48,10 +51,11 @@ import org.cxct.sportlottery.util.GameConfigManager
 
 
 /**
- * TODO:
+ * TODO simon test:
  * 1. 上下滑動 ToolBar 固定
  * 2. 賽事精選: icon 顯示 review
- * 3. 賽事推薦
+ * 3. 賽事推薦 - viewPager 賠率串接
+ * 4. 賽事推薦 - socket 賠率刷新 串接
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
@@ -64,6 +68,20 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val mHighlightSportTypeAdapter = SportTypeAdapter()
     private val mRvHighlightAdapter = RvHighlightAdapter()
     private var mHighlightResult: MatchCategoryResult? = null
+
+    private val mRecommendAdapter = RvRecommendAdapter()
+    private var mRecommendResult: MatchRecommendResult? = null
+
+    private val mOnClickOddListener = object : OnClickOddListener {
+        override fun onClickBet(
+            matchOdd: MatchOdd,
+            odd: Odd,
+            playCateName: String,
+            playName: String
+        ) {
+            addOddsDialog(matchOdd, odd, playCateName, playName)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,6 +104,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.isParlayPage(false)
 
         initTable()
+        initRecommend()
         initHighlight()
         initEvent()
         initObserve()
@@ -102,6 +121,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onStop()
 
         unsubscribeAllHallChannel()
+        mRvGameTable4Adapter.stopAllTimer()
+        mRvHighlightAdapter.stopAllTimer()
     }
 
     private fun initTable() {
@@ -147,6 +168,21 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun initRecommend() {
+        rv_recommend.adapter = mRecommendAdapter
+        mRecommendAdapter.onClickOddListener = mOnClickOddListener
+        mRecommendAdapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
+            override fun onClick(select: MatchOdd) {
+                scroll_view.smoothScrollTo(0, 0)
+                val code = select.matchInfo?.sportType?.code
+                val matchId = select.matchInfo?.id
+
+                //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
+                navOddsDetailFragment(code, matchId, MatchType.TODAY)
+            }
+        }
+    }
+
     private fun initHighlight() {
         rv_highlight_sport_type.adapter = mHighlightSportTypeAdapter
         mHighlightSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
@@ -181,21 +217,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         rv_game_highlight.adapter = mRvHighlightAdapter
-        mRvHighlightAdapter.onClickOddListener = object : OnClickOddListener {
-            override fun onClickBet(
-                matchOdd: MatchOdd,
-                odd: Odd,
-                playCateName: String,
-                playName: String
-            ) {
-                addOddsDialog(matchOdd, odd, playCateName, playName)
-            }
-        }
+        mRvHighlightAdapter.onClickOddListener = mOnClickOddListener
         mRvHighlightAdapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
             override fun onClick(select: MatchOdd) {
                 scroll_view.smoothScrollTo(0, 0)
                 val code = select.matchInfo?.sportType?.code
                 val matchId = select.matchInfo?.id
+
+                //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY
                 navOddsDetailFragment(code, matchId, MatchType.TODAY)
             }
         }
@@ -435,7 +464,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.recommendMatchResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                //TODO simon test observe 推薦賽事
+                mRecommendResult = result
+                updateRecommend(result)
+
+                //TODO simon test 訂閱賽事頻道
             }
         })
 
@@ -545,6 +577,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
             findNavController().navigate(action)
         }
+    }
+
+    //TODO simon test observe 推薦賽事
+    private fun updateRecommend(result: MatchRecommendResult) {
+        val dataList = mutableListOf<OddData>()
+        result.rows?.forEach {
+            dataList.addAll(it.leagueOdds?.matchOdds?: listOf())
+        }
+        mRecommendAdapter.dataList = dataList
     }
 
     private fun updateHighlight(result: MatchCategoryResult) {
