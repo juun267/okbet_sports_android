@@ -39,7 +39,7 @@ data class MatchOdd(
     @Json(name = "spread")
     val spread: String,
     @Json(name = "startTime")
-    val startTime: Long,
+    val startTime: Long?,
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code,
     @Json(name = "gameType")
