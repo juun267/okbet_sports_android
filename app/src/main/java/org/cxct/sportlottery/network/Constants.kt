@@ -93,8 +93,8 @@ object Constants {
 
     //bet
     const val MATCH_BET_INFO = "/api/front/match/bet/info"
-    const val MATCH_BET_ADD = "/api/front/match/bet/add"
-    const val MATCH_BET_LIST = "/api/front/match/bet/list"
+    const val MATCH_BET_ADD = "/api/front/match/bet/v1/add"
+    const val MATCH_BET_LIST = "/api/front/match/bet/v1/list"
 
     //index
     const val INDEX_LOGIN = "/api/front/index/login"
@@ -116,15 +116,15 @@ object Constants {
     const val LEAGUE_LIST = "/api/front/match/league/list"
 
     //match
-    const val MATCH_PRELOAD = "/api/front/match/preload"
+    const val MATCH_PRELOAD = "/api/front/match/v1/preload"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"
     const val MATCH_RESULT_PLAY_LIST = "/api/front/match/result/play/list"
 
     //odds
-    const val MATCH_ODDS_LIST = "/api/front/match/odds/simple/list"
-    const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
+    const val MATCH_ODDS_LIST = "/api/front/match/odds/v1/simple/list"
+    const val MATCH_ODDS_DETAIL = "/api/front/match/odds/v1/detail"
 
     //sport
     const val SPORT_MENU = "/api/front/sport/mobile/menu"
@@ -133,7 +133,7 @@ object Constants {
     const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list"
 
     //outright
-    const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/list"
+    const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/v1/list"
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
     const val OUTRIGHT_SEASON_LIST = "/api/front/outright/season/list"
     const val OUTRIGHT_BET_ADD = "/api/front/outright/bet/add"
