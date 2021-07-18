@@ -578,8 +578,9 @@ class GameViewModel(
                         }
                     }
 
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
+                    //冠軍時間取endTime
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.endTime, "MM/dd")
+                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.endTime, "HH:mm")
                 }
 
                 _outrightOddsListResult.postValue(Event(result))
