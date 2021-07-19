@@ -607,6 +607,7 @@
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_current_rmb">%s&#160;RMB</string>
     <string name="bet_info_all_bet">所有投注</string>
+    <string name="bet_list_delete_all">全删除</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>

@@ -1,17 +1,18 @@
 package org.cxct.sportlottery.ui.game.betList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
 import timber.log.Timber
@@ -33,6 +34,21 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private lateinit var binding: FragmentBetListBinding
     private val betListDiffAdapter by lazy { BetListDiffAdapter() }
+
+    private val deleteAllLayoutAnimationListener by lazy {
+        object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+            }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.llDeleteAll.visibility = View.GONE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) {
+            }
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,10 +81,36 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initView() {
+        initRecyclerView()
+        initDeleteAllOnClickEvent()
+    }
+
+    private fun initRecyclerView() {
         binding.apply {
             rvBetList.layoutManager =
                 LinearLayoutManager(this@BetListFragment.context, LinearLayoutManager.VERTICAL, false)
             rvBetList.adapter = betListDiffAdapter
+        }
+    }
+
+    private fun initDeleteAllOnClickEvent() {
+        binding.apply {
+            btnDeleteAll.setOnClickListener {
+                val enterAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_to_left_enter).apply {
+                    duration = 300
+                }
+
+                llDeleteAll.visibility = View.VISIBLE
+                btnDeleteAllConfirm.startAnimation(enterAnimation)
+            }
+            btnDeleteAllCancel.setOnClickListener {
+                val exitAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
+                    setAnimationListener(deleteAllLayoutAnimationListener)
+                    duration = 300
+                }
+
+                btnDeleteAllConfirm.startAnimation(exitAnimation)
+            }
         }
     }
 
