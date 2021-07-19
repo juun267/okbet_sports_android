@@ -296,7 +296,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         setOnClickListener { _ ->
                             it.value[0]?.let { odd ->
-                                leagueOddListener?.onClickBet(item, odd, playCateName, "")
+
+                                val playName = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(it.key) -> {
+                                        itemView.context.getString(R.string.odd_button_ou_o)
+                                    }
+                                    else -> {
+                                        item.matchInfo?.homeName
+                                    }
+                                } ?: ""
+
+                                leagueOddListener?.onClickBet(item, odd, playCateName, playName)
                             }
                         }
                     }
@@ -350,7 +361,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         setOnClickListener { _ ->
                             it.value[1]?.let { odd ->
-                                leagueOddListener?.onClickBet(item, odd, playCateName, "")
+
+                                val playName = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(it.key) -> {
+                                        itemView.context.getString(R.string.odd_button_ou_u)
+                                    }
+                                    else -> {
+                                        item.matchInfo?.awayName
+                                    }
+                                } ?: ""
+
+                                leagueOddListener?.onClickBet(item, odd, playCateName, playName)
                             }
                         }
                     }
@@ -381,7 +403,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         setOnClickListener { _ ->
                             it.value[2]?.let { odd ->
-                                leagueOddListener?.onClickBet(item, odd, playCateName, "")
+                                leagueOddListener?.onClickBet(
+                                    item,
+                                    odd,
+                                    playCateName,
+                                    itemView.context.getString(R.string.draw)
+                                )
                             }
                         }
                     }
