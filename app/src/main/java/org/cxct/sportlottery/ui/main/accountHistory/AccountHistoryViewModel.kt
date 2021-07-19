@@ -42,11 +42,8 @@ class AccountHistoryViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val selectSport: LiveData<String>
-        get() = _selectSport
-
-    val selectDate: LiveData<String>
-        get() = _selectDate
+    val selectedSportDate: LiveData<Pair<String?, String?>> //<sport, date>
+        get() = _selectedSportDate
 
     val betRecordResult: LiveData<BetSettledListResult>
         get() = _betSettledRecordResult
@@ -61,8 +58,7 @@ class AccountHistoryViewModel(
         get() = _betDetailResult
 
     private val _loading = MutableLiveData<Boolean>()
-    private val _selectDate = MutableLiveData<String>()
-    private val _selectSport = MutableLiveData<String>()
+    private val _selectedSportDate = MutableLiveData<Pair<String?, String?>>()
     private val _betSettledRecordResult = MutableLiveData<BetSettledListResult>()
     private var mBetSettledListRequest: BetSettledListRequest? = null
     private val _messageListResult = MutableLiveData<MessageListResult?>()
@@ -73,11 +69,14 @@ class AccountHistoryViewModel(
         if (item.isNullOrEmpty()) null else item
     }
 
-    fun searchBetRecord() {
+    fun searchBetRecord(
+        gameType: String ?= "",
+    ) {
+
         BetSettledListRequest(
             startTime = startTime,
             endTime = endTime,
-            gameType = emptyFilter(_selectSport.value),
+            gameType = emptyFilter(gameType),
             page = 1,
             pageSize = PAGE_SIZE
         ).let {
@@ -162,13 +161,14 @@ class AccountHistoryViewModel(
     private var nowDetailPage = 1
     val detailDataList = mutableListOf<org.cxct.sportlottery.network.bet.settledDetailList.Row>()
 
-    fun searchDetail() {
-        val startTime = TimeUtil.dateToTimeStamp(_selectDate.value, TimeUtil.TimeType.START_OF_DAY, TimeUtil.YMD_FORMAT).toString()
-        val endTime = TimeUtil.dateToTimeStamp(_selectDate.value, TimeUtil.TimeType.END_OF_DAY, TimeUtil.YMD_FORMAT).toString()
+    fun searchDetail(gameType: String? = null, date: String? = null) {
+
+        val startTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.START_OF_DAY, TimeUtil.YMD_FORMAT).toString()
+        val endTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.END_OF_DAY, TimeUtil.YMD_FORMAT).toString()
 
         mBetDetailRequest = BetSettledDetailListRequest(
-            gameType = emptyFilter(_selectSport.value),
-            statDate = emptyFilter(_selectDate.value),
+            gameType = emptyFilter(gameType),
+            statDate = date,
             startTime = startTime,
             endTime = endTime,
             page = 1,
@@ -214,12 +214,8 @@ class AccountHistoryViewModel(
 
     }
 
-    fun setSelectedSport(sport: String?) {
-        _selectSport.value = sport
-    }
-
-    fun setSelectedDate(date: String?) {
-        _selectDate.value = date
+    fun setSelectedSportDate(sport: String?, date: String?) {
+        _selectedSportDate.value = Pair(sport, date)
     }
 
     private fun loading() {

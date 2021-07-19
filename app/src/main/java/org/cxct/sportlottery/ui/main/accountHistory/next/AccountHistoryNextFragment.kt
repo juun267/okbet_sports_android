@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,14 +23,8 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
     }, BackClickListener {
         findNavController().navigateUp()
-    }, SportSelectListener { sport, date ->
-        viewModel.setSelectedSport(sport)
-        viewModel.setSelectedDate(date)
-//        viewModel.searchDetail(gameType = sport, date = date)
-    }, DateSelectListener { sport, date ->
-        viewModel.setSelectedSport(sport)
-        viewModel.setSelectedDate(date)
-//        viewModel.searchDetail(gameType = sport, date = date)
+    }, SportDateSelectListener { sport, date ->
+        viewModel.setSelectedSportDate(sport, date)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -46,7 +41,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_account_history_next, container, false).apply {
-            viewModel.setSelectedDate(args.row.statDate)
+            viewModel.setSelectedSportDate(args.row.gameType, args.row.statDate)
         }
     }
 
@@ -54,8 +49,13 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         super.onViewCreated(view, savedInstanceState)
 
         initRv()
+        initView()
         initOnclick()
         initObserver()
+    }
+
+    private fun initView() {
+        rvAdapter.selectedItem = Pair(args.row.gameType, args.row.statDate)
     }
 
     private fun initOnclick() {
@@ -75,6 +75,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         viewModel.betDetailResult.observe(viewLifecycleOwner, {
             if (it.success) {
                 rvAdapter.addFooterAndSubmitList(it.other, viewModel.detailDataList, viewModel.isDetailLastPage)
+                rvAdapter.selectedItem = Pair(args.row.gameType, args.row.statDate)
                 rv_account_history.scrollToPosition(0)
             } else {
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
@@ -85,12 +86,8 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             rvAdapter.oddsType = it
         })
 
-        viewModel.selectSport.observe(viewLifecycleOwner, {
-            viewModel.searchDetail()
-        })
-
-        viewModel.selectDate.observe(viewLifecycleOwner, {
-            viewModel.searchDetail()
+        viewModel.selectedSportDate.observe(viewLifecycleOwner, {
+            viewModel.searchDetail(gameType = it.first, date = it.second)
         })
 
     }

@@ -17,6 +17,7 @@ import org.cxct.sportlottery.ui.main.accountHistory.*
 
 class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
+    private var selectedSport: String = ""
     private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
         it.let { data ->
             val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data)
@@ -25,7 +26,8 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
     }, BackClickListener {
         activity?.finish()
     }, SportSelectListener {
-        viewModel.setSelectedSport(it)
+        viewModel.searchBetRecord(it)
+        selectedSport = it ?: ""
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -70,10 +72,6 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
             rvAdapter.oddsType = it
-        })
-
-        viewModel.selectSport.observe(viewLifecycleOwner, {
-            viewModel.searchBetRecord()
         })
 
     }
