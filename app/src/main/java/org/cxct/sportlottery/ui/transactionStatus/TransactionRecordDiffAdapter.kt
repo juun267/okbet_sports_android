@@ -25,7 +25,7 @@ import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
-//TODO 冠軍應有獨立樣式，等待新API完成後再根據資料做新UI
+//TODO 20210719當前api缺少總金額,待後端修正後進行確認
 class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Long = 0
