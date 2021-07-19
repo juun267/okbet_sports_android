@@ -47,4 +47,26 @@ open class BaseBottomSheetFragment <T : BaseViewModel>(clazz: KClass<T>) : Botto
         Toast.makeText(activity, R.string.connect_first, Toast.LENGTH_SHORT).show()
     }
 
+    fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
+        if (activity is BaseActivity<*>) {
+            (activity as BaseActivity<*>).showErrorPromptDialog(title, message, positiveClickListener)
+        }
+    }
+
+    fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
+        if (activity is BaseActivity<*>) {
+            (activity as BaseActivity<*>).showPromptDialog(title, message, positiveClickListener)
+        }
+    }
+
+    fun showPromptDialog(title: String, message: String, success: Boolean, positiveClickListener: () -> Unit) {
+        if (activity is BaseActivity<*>) {
+            if (success) {
+                (activity as BaseActivity<*>).showPromptDialog(title, message, positiveClickListener)
+            } else {
+                (activity as BaseActivity<*>).showErrorPromptDialog(title, message, positiveClickListener)
+            }
+        }
+    }
+
 }
