@@ -25,29 +25,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
-
-    var dataList = listOf<MatchOdd>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    var oddsType: OddsType = OddsType.EU
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
-
-    var matchType: MatchType = MatchType.IN_PLAY
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
+class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -104,6 +82,11 @@ class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolde
             setupMatchInfo(data)
             setupTime(data)
             setupOddButton(data)
+
+            //TODO simon test review 賠率 icon 顯示邏輯
+            itemView.iv_match_in_play.visibility = if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
+//            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
+//            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
 
             itemView.setOnClickListener {
                 onClickMatchListener?.onClick(data)
@@ -203,14 +186,18 @@ class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolde
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        tv_match_status.text = data.matchInfo?.statusName
+                        val statusName = if (data.matchInfo?.statusName.isNullOrEmpty())
+                            ""
+                        else
+                            data.matchInfo?.statusName + " "
 
                         when (data.matchInfo?.sportType) {
                             SportType.FOOTBALL -> { //足球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, false) { timeMillis ->
-                                        tv_match_time.text =
-                                            TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr =
+                                            statusName + TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }
                                 }
@@ -218,8 +205,9 @@ class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolde
                             SportType.BASKETBALL -> { //籃球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, true) { timeMillis ->
-                                        tv_match_time.text =
-                                            TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr =
+                                            statusName + TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }
                                 }
@@ -232,14 +220,18 @@ class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolde
                     }
 
                     MatchType.AT_START -> {
-                        tv_match_status.text = data.matchInfo?.startDateDisplay
+                        val statusName = if (data.matchInfo?.startDateDisplay.isNullOrEmpty())
+                            ""
+                        else
+                            data.matchInfo?.startDateDisplay + " "
 
                         data.matchInfo?.remainTime?.let { remainTime ->
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
-                                tv_match_time.text = String.format(
+                                val timeStr = statusName + String.format(
                                     itemView.context.resources.getString(R.string.at_start_remain_minute),
                                     TimeUtil.timeFormat(timeMillis, "mm")
                                 )
+                                tv_match_time.text = timeStr
 
                                 data.matchInfo.remainTime = timeMillis
                             }
@@ -248,8 +240,8 @@ class Vp2GameTable4Adapter : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolde
 
                     else -> {
                         stopTimer()
-                        tv_match_status.text = data.matchInfo?.startDateDisplay
-                        tv_match_time.text = data.matchInfo?.startTimeDisplay
+                        tv_match_time.text =
+                            "${data.matchInfo?.startDateDisplay?: ""} ${data.matchInfo?.startTimeDisplay?: ""}"
                     }
                 }
             }

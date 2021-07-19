@@ -241,8 +241,4 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         navController.navigate(R.id.mainMoreFragment, bundle)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        resetButton()
-    }
 }

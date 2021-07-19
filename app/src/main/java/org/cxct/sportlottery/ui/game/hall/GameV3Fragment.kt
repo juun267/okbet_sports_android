@@ -20,17 +20,19 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.CateMenuCode
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.common.*
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.common.StatusSheetAdapter
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
@@ -76,7 +78,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlayCategory(args.matchType, it)
+                viewModel.switchPlay(args.matchType, it)
                 loading()
             }
         }
@@ -89,7 +91,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     navGameLeague(league.id)
                 },
                 { league ->
-                    pinLeague(league)
+                    viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
                 },
                 { league ->
                     viewModel.selectLeague(league)
@@ -497,8 +499,46 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.playCategoryList.observe(this.viewLifecycleOwner, {
+        viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
+
+            it.find { play ->
+                play.isSelected
+            }?.let { selectedPlay ->
+                if (selectedPlay.code != PlayType.MAIN.code && selectedPlay.playCateList?.size ?: 0 > 1) {
+                    selectedPlay.let {
+                        showPlayCateBottomSheet(selectedPlay)
+                        hideLoading()
+                    }
+                }
+            }
+        })
+
+        viewModel.playCate.observe(this.viewLifecycleOwner, {
+            playCategoryAdapter.apply {
+                data.find { it.isSelected }?.playCateList?.forEach { playCate ->
+                    playCate.isSelected = (playCate.code == it)
+                }
+                notifyDataSetChanged()
+            }
+        })
+
+        viewModel.favorLeagueList.observe(this.viewLifecycleOwner, {
+            val leaguePinList = mutableListOf<League>()
+
+            countryAdapter.data.forEach { row ->
+                val pinLeague = row.list.filter { league ->
+                    it.contains(league.id)
+                }
+
+                row.list.forEach { league ->
+                    league.isPin = it.contains(league.id)
+                }
+
+                leaguePinList.addAll(pinLeague)
+            }
+
+            countryAdapter.datePin = leaguePinList
         })
     }
 
@@ -775,23 +815,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun pinLeague(league: org.cxct.sportlottery.network.league.League) {
-        league.isPin = !countryAdapter.datePin.any {
-            it == league
-        }
-
-        when (league.isPin) {
-            true -> {
-                val list = countryAdapter.datePin.toMutableList()
-                list.add(league)
-                countryAdapter.datePin = list
-            }
-            false -> {
-                val list = countryAdapter.datePin.toMutableList()
-                list.remove(league)
-                countryAdapter.datePin = list
-            }
-        }
+    private fun showPlayCateBottomSheet(play: Play) {
+        showBottomSheetDialog(
+            play.name,
+            play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
+                ?: listOf(),
+            StatusSheetData(
+                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
+                (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
+            ),
+            StatusSheetAdapter.ItemCheckedListener { _, data ->
+                viewModel.switchPlayCategory(args.matchType, data.code)
+                bottomSheet.dismiss()
+                loading()
+            })
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {

@@ -125,9 +125,12 @@
     <string name="home_tab_parlay">串关</string>
     <string name="home_tab_outright">冠军</string>
     <string name="home_tab_at_start">即将</string>
+    <string name="home_tab_eps">特优</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
+    <string name="label_highlight">精选</string>
+    <string name="display_all">显示全部</string>
 
     <string name="return_to_top">回到顶部</string>
     <string name="versus">v</string>
@@ -387,6 +390,7 @@
     <string name="game_tab_price_boosts_odd">特优赔率</string>
 
     <string name="button_league_submit">提交 (%d)</string>
+    <string name="login_notify">请登录以便使用此功能</string>
 
     <string name="total_bet_amount">总投注额：</string>
 
@@ -589,12 +593,21 @@
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_current_money">余额:%s</string>
-    <string name="bet_info_in_play_score">滚球&#160;&#160;%1$s&#160;(%2$s:%3$s)</string>
+    <string name="bet_info_in_play_score">滚球&#160;%1$s&#160;(%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">您选择的部分玩法不适用于串关规则的玩法,系统已帮您自动取消</string>
     <string name="bet_info_list_clean">一键清空</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
     <string name="bet_info_different_game_type">不同球种不可进行串关</string>
-
+    <string name="bet_info_input_quota">输入金额</string>
+    <string name="bet_info_check_maximum_limit">查看最高限额</string>
+    <string name="bet_info_bet_quota">投注额</string>
+    <string name="bet_info_win_quota">可赢额</string>
+    <string name="bet_info_accept_odds_change">接受更改并投注</string>
+    <string name="bet_info_add_to_bet_info">加入投注单</string>
+    <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
+    <string name="bet_info_current_rmb">%s&#160;RMB</string>
+    <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
+    <string name="bet_info_remove_closed">移除已关闭的选项</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>

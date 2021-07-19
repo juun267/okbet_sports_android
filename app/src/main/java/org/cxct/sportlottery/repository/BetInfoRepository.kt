@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.repository
 
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -14,10 +15,19 @@ import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 
+
 const val BET_INFO_MAX_COUNT = 10
 
 
 class BetInfoRepository {
+
+
+    private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
+
+
+    val showBetInfoSingle: LiveData<Event<Boolean?>>
+        get() = _showBetInfoSingle
+
 
     //每個畫面都要觀察
     private val _betInfoList = MutableLiveData<Event<MutableList<BetInfoListData>>>().apply {
@@ -26,21 +36,28 @@ class BetInfoRepository {
     val betInfoList: LiveData<Event<MutableList<BetInfoListData>>>
         get() = _betInfoList
 
+
     private val _matchOddList = MutableLiveData<MutableList<MatchOdd>>()
     val matchOddList: LiveData<MutableList<MatchOdd>>
         get() = _matchOddList
+
 
     private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
 
-    val _isParlayPage = MutableLiveData<Boolean>()
+
+    val _isParlayPage = MutableLiveData<Boolean>().apply {
+        value = false
+    }
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
+
 
     private val _removeItem = MutableLiveData<String>()
     val removeItem: LiveData<String>
         get() = _removeItem
+
 
     var playQuotaComData: PlayQuotaComData? = null
         set(value) {
@@ -49,6 +66,7 @@ class BetInfoRepository {
                 notifyBetInfoChanged()
             }
         }
+
 
     fun addInBetInfoParlay() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
@@ -79,6 +97,7 @@ class BetInfoRepository {
         }
     }
 
+
     private fun updateParlayOddOrder(parlayOddList: MutableList<ParlayOdd>): MutableList<ParlayOdd> {
         //將串起來的數量賠率移至第一項
         val pOdd = parlayOddList.find {
@@ -94,9 +113,9 @@ class BetInfoRepository {
         return parlayOddList
     }
 
+
     fun getCurrentBetInfoList() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
         _betInfoList.postValue(Event(betList))
     }
 
@@ -121,6 +140,12 @@ class BetInfoRepository {
         _betInfoList.postValue(Event(betList))
     }
 
+
+    fun addInBetInfo(){
+        _showBetInfoSingle.postValue(Event(false))
+    }
+
+
     fun addInBetInfo(
         matchType: MatchType,
         sportType: SportType,
@@ -138,23 +163,22 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
-
-            if (matchType == MatchType.PARLAY) {
-                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            val data = BetInfoListData(
+                betInfoMatchOdd,
+                getParlayOdd(matchType, sportType, mutableListOf(it)).first()
+            ).apply {
+                this.matchType = matchType
             }
 
-            betList.add(
-                BetInfoListData(
-                    betInfoMatchOdd,
-                    getParlayOdd(matchType, sportType, mutableListOf(it)).first()
-                ).apply {
-                    this.matchType = matchType
-                }
-            )
+            if (betList.size == 0) {
+                _showBetInfoSingle.postValue(Event(true))
+            }
 
+            betList.add(data)
             _betInfoList.postValue(Event(betList))
         }
     }
+
 
     fun addInBetInfo(
         matchType: MatchType,
@@ -173,23 +197,22 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
-
-            if (matchType == MatchType.PARLAY) {
-                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            val data = BetInfoListData(
+                betInfoMatchOdd,
+                getParlayOdd(matchType, sportType, mutableListOf(it)).first()
+            ).apply {
+                this.matchType = matchType
             }
 
-            betList.add(
-                BetInfoListData(
-                    betInfoMatchOdd,
-                    getParlayOdd(matchType, sportType, mutableListOf(it)).first()
-                ).apply {
-                    this.matchType = matchType
-                }
-            )
+            if (betList.size == 0) {
+                _showBetInfoSingle.postValue(Event(true))
+            }
 
+            betList.add(data)
             _betInfoList.postValue(Event(betList))
         }
     }
+
 
     fun addInBetInfo(
         matchType: MatchType,
@@ -207,20 +230,18 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
-
-            if (matchType == MatchType.PARLAY) {
-                betList.remove(betList.find { data -> it.matchId == data.matchOdd.matchId })
+            val data = BetInfoListData(
+                betInfoMatchOdd,
+                getParlayOdd(matchType, sportType, mutableListOf(it)).first()
+            ).apply {
+                this.matchType = matchType
             }
 
-            betList.add(
-                BetInfoListData(
-                    betInfoMatchOdd,
-                    getParlayOdd(matchType, sportType, mutableListOf(it)).first()
-                ).apply {
-                    this.matchType = matchType
-                }
-            )
+            if (betList.size == 0) {
+                _showBetInfoSingle.postValue(Event(true))
+            }
 
+            betList.add(data)
             _betInfoList.postValue(Event(betList))
         }
     }
@@ -354,4 +375,6 @@ class BetInfoRepository {
             }
         }
     }
+
+
 }

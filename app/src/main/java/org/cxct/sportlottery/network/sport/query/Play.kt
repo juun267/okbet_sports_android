@@ -9,7 +9,9 @@ data class Play(
     @Json(name = "name")
     val name: String?,
     @Json(name = "num")
-    val num: Int?
+    val num: Int?,
+    @Json(name = "playCateList")
+    val playCateList: List<PlayCate>?
 ) {
     var isSelected = false
 }

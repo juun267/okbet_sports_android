@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import org.cxct.sportlottery.ui.component.StatusSheetData
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.profileCenter.sportRecord.dialog.BetRecordDetailDialog
 import org.cxct.sportlottery.util.setMoneyColor
 import org.cxct.sportlottery.util.setMoneyFormat

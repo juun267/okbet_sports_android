@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.home.gameTable4
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import org.cxct.sportlottery.R
@@ -13,36 +12,39 @@ import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
+import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHolder>() {
 
     private var mDataList = listOf<GameEntity>()
+    private var mMatchType: MatchType = MatchType.IN_PLAY
 
-    fun setData(matchPreloadData: MatchPreloadData?) {
+    fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
         mDataList = matchPreloadData?.datas?.map { data ->
             data.matchOdds.forEach {
                 it.matchInfo?.sportType = SportType.getSportType(data.code)
             }
             GameEntity(data.code, data.name, data.num, data.matchOdds)
         } ?: listOf()
-
+        mMatchType = matchType
+        stopAllTimer()
         notifyDataSetChanged()
     }
 
     fun getData() = mDataList
 
-    var matchType: MatchType = MatchType.IN_PLAY
-        set(value) {
-            if (value != field) {
-                field = value
-                notifyDataSetChanged()
-            }
-        }
+    //指定刷新內部 ViewPager 的 subItem
+    fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {
+        if (index >= 0 && indexMatchOdd >= 0)
+            mDataList[index].vpTableAdapter?.notifyItemChanged(indexMatchOdd)
+    }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
             if (value != field) {
                 field = value
+                stopAllTimer()
                 notifyDataSetChanged()
             }
         }
@@ -76,12 +78,16 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
         }
     }
 
+    fun stopAllTimer() {
+        mDataList.forEach {
+            it.vpTableAdapter?.stopAllTimer()
+            it.vpTableAdapter = null
+        }
+    }
+
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(
-            data: GameEntity,
-            oddsType: OddsType
-        ) {
+        fun bind(data: GameEntity, oddsType: OddsType) {
             itemView.apply {
                 iv_game_icon.setImageResource(getGameIcon(data.code))
                 tv_game_name.text = data.name
@@ -91,43 +97,14 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                     onClickTotalMatchListener?.onClick(data)
                 }
 
-                val adapter = if (view_pager.adapter is Vp2GameTable4Adapter)
-                    view_pager.adapter as Vp2GameTable4Adapter
-                else
-                    Vp2GameTable4Adapter()
+                if (data.vpTableAdapter == null)
+                    data.vpTableAdapter = Vp2GameTable4Adapter(data.matchOdds, oddsType, mMatchType)
 
-                adapter.onClickMatchListener = onClickMatchListener
-                adapter.onClickOddListener = onClickOddListener
-                adapter.matchType = matchType
-                adapter.oddsType = oddsType
-                adapter.dataList = data.matchOdds
-                view_pager.adapter = adapter
+                data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
+                data.vpTableAdapter?.onClickOddListener = onClickOddListener
 
+                view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)
-            }
-        }
-
-        @DrawableRes
-        fun getGameIcon(code: String?): Int {
-            return when (code) {
-                SportType.FOOTBALL.code -> R.drawable.ic_soccer
-                SportType.BASKETBALL.code -> R.drawable.ic_basketball_icon
-                SportType.TENNIS.code -> R.drawable.ic_tennis_icon
-                SportType.VOLLEYBALL.code -> R.drawable.ic_volley_ball
-                SportType.BADMINTON.code -> R.drawable.ic_badminton_icon
-                else -> -1
-            }
-        }
-
-        @DrawableRes
-        fun getTitleBarBackground(code: String?): Int {
-            return when (code) {
-                SportType.FOOTBALL.code -> R.drawable.img_home_title_soccer_background
-                SportType.BASKETBALL.code -> R.drawable.img_home_title_basketball_background
-                SportType.TENNIS.code -> R.drawable.img_home_title_tennis_background
-                SportType.VOLLEYBALL.code -> R.drawable.img_home_title_volleyball_background
-                SportType.BADMINTON.code -> -1 //20210624 紀錄：說沒有羽球賽事了，所以沒做圖
-                else -> -1
             }
         }
     }

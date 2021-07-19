@@ -3,8 +3,6 @@ package org.cxct.sportlottery.ui.game
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -12,12 +10,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
+import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
+import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -27,9 +25,9 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
+import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -51,7 +49,7 @@ import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
-class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
@@ -205,79 +203,61 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                //TODO Bill 未登錄會有問題，如果沒登入先不給點，等PM回覆
-                when (viewModel.userInfo.value?.testFlag) {
-                    TestFlag.NORMAL.index -> {
-                        val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                            override fun onClick(menuStatus: Int) {
-                                when(menuStatus){
-                                    MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                                }
-                            }
-                        })
-
-                        supportFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque,R.anim.pop_left_to_right_enter_opaque,R.anim.push_right_to_left_exit_opaque)
-                            .add(R.id.fl_left_menu,leftMenuFragment)
-                            .addToBackStack(null)
-                            .commit()
+                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
+                    override fun onClick(menuStatus: Int) {
+                        when (menuStatus) {
+                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
+                        }
                     }
-                    else -> { }
-                }
+                })
+
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque,
+                        R.anim.pop_left_to_right_enter_opaque,
+                        R.anim.push_right_to_left_exit_opaque
+                    )
+                    .add(R.id.fl_left_menu, leftMenuFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    enum class MenuStatusType{ CLOSE }
+    enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)
     }
 
     private fun initBottomNavigation() {
-        initNavigationView()
         initNavigationListener()
     }
 
-    private fun initNavigationView() {
-        try {
-            //TODO 投注單的文字顏色調整
-            (bottom_navigation_sport[0] as BottomNavigationMenuView).let { navigationMenuView ->
-                navigationMenuView[2].setBackgroundColor(
-                    ContextCompat.getColor(
-                        this,
-                        R.color.colorBlue
-                    )
-                )
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
     private fun initNavigationListener() {
-        bottom_navigation_sport.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.home_page -> {
+        sport_bottom_navigation.setNavigationItemClickListener {
+            when (it) {
+                R.id.navigation_sport -> {
                     //TODO navigate sport home
                     true
                 }
-                R.id.game_page -> {
+                R.id.navigation_game -> {
                     //TODO navigate sport game
+                    true
+                }
+                R.id.item_bet_list -> {
+                    showBetListDialog()
                     false
                 }
-                R.id.bet_list -> {
-                    //TODO open bet list page
+                R.id.navigation_account_history -> {
+                    startActivity(Intent(this@GameActivity, AccountHistoryActivity::class.java))
                     false
                 }
-                R.id.account_history -> {
-                    startActivity(Intent(this, AccountHistoryActivity::class.java))
-                    false
-                }
-                R.id.transaction_status -> {
-                    startActivity(Intent(this, TransactionStatusActivity::class.java))
+                R.id.navigation_transaction_status -> {
+                    startActivity(Intent(this@GameActivity, TransactionStatusActivity::class.java))
                     false
                 }
                 else -> false
@@ -320,6 +300,8 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
                 sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+            val countEps =
+                sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tan_main)
@@ -348,6 +330,10 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
             val tabOutright = tabLayout.getTabAt(6)?.customView
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
+
+            val tabEps = tabLayout.getTabAt(7)?.customView
+            tabEps?.tv_title?.setText(R.string.home_tab_eps)
+            tabEps?.tv_number?.text = countEps.toString()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -520,6 +506,24 @@ class GameActivity : BaseNoticeActivity<GameViewModel>(GameViewModel::class) {
                 }
 
                 text = getString(R.string.button_league_submit, it.size)
+            }
+        })
+
+        viewModel.showBetInfoSingle.observe(this, {
+            it?.getContentIfNotHandled()?.let {
+                BetInfoCarDialog().show(supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
+            }
+        })
+
+        viewModel.betInfoRepository.betInfoList.observe(this, {
+            sport_bottom_navigation.setBetCount(it.peekContent().size)
+        })
+
+
+        viewModel.notifyLogin.observe(this, {
+            snackBarLoginNotify.apply {
+                setAnchorView(R.id.game_bottom_navigation)
+                show()
             }
         })
     }
