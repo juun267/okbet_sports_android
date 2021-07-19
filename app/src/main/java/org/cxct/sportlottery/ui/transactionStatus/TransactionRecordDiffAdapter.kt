@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_last_total_record.view.*
 import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_outright_record.view.content_bet_amount
 import kotlinx.android.synthetic.main.content_outright_record.view.content_odds
@@ -30,14 +31,15 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     var totalAmount: Long = 0
     var oddsType: OddsType = OddsType.EU
 
-    private enum class ViewType { Match, Parlay, Outright, NoData }
+    private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
 
     fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
         oddsType = betListData.oddsType
+        totalAmount = betListData.totalMoney
         val itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
-            else -> betListData.row.map { DataItem.Item(it) }
+            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount.toString()))
         }
         submitList(itemList)
     }
@@ -47,6 +49,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
             ViewType.NoData.ordinal -> NoDataViewHolder.from(parent)
             ViewType.Match.ordinal -> MatchRecordViewHolder.from(parent)
             ViewType.Outright.ordinal -> OutrightRecordViewHolder.from(parent)
+            ViewType.LastTotal.ordinal -> LastTotalViewHolder.from(parent)
             else -> ParlayRecordViewHolder.from(parent)
         }
     }
@@ -63,6 +66,9 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
             is OutrightRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row, oddsType)
             }
+            is LastTotalViewHolder -> {
+                holder.bind((rvData as DataItem.Total).totalAmount)
+            }
             is NoDataViewHolder -> {
             }
         }
@@ -70,7 +76,8 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
     override fun getItemViewType(position: Int): Int {
         return when {
-            getItem(position).orderNo.isNullOrBlank() -> ViewType.NoData.ordinal
+            getItem(position).orderNo.isNullOrBlank() && itemCount == 1 -> ViewType.NoData.ordinal
+            position == itemCount - 1 -> ViewType.LastTotal.ordinal
             getItem(position).parlayType == ParlayType.SINGLE.key -> ViewType.Match.ordinal
             getItem(position).parlayType == ParlayType.OUTRIGHT.key -> ViewType.Outright.ordinal
             else -> ViewType.Parlay.ordinal
@@ -146,6 +153,22 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
     }
 
+    class LastTotalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+                val layoutInflater = LayoutInflater.from(viewGroup.context)
+                val view = layoutInflater.inflate(R.layout.content_last_total_record, viewGroup, false)
+                return LastTotalViewHolder(view)
+            }
+        }
+
+        fun bind(totalAmount: String) {
+            itemView.apply {
+                last_total_amount.text = "$totalAmount ${context.getString(R.string.currency)}"
+            }
+        }
+    }
+
     class ParlayRecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
@@ -218,6 +241,12 @@ sealed class DataItem {
         override var orderNo: String? = row.orderNo
     ) :
         DataItem()
+
+    data class Total(val totalAmount: String) : DataItem() {
+        override var parlayType: String? = null
+        override var orderNo: String? = null
+    }
+
 
     object NoData : DataItem() {
         override var parlayType: String? = null
