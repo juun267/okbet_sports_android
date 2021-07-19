@@ -8,6 +8,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_match_record.view.*
+import kotlinx.android.synthetic.main.content_outright_record.view.content_bet_amount
+import kotlinx.android.synthetic.main.content_outright_record.view.content_odds
+import kotlinx.android.synthetic.main.content_outright_record.view.content_order_no
+import kotlinx.android.synthetic.main.content_outright_record.view.content_play
+import kotlinx.android.synthetic.main.content_outright_record.view.content_time_type
+import kotlinx.android.synthetic.main.content_outright_record.view.content_winnable_amount
+import kotlinx.android.synthetic.main.content_outright_record.view.spread_name
+import kotlinx.android.synthetic.main.content_outright_record.view.title_league_name
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
@@ -22,7 +30,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     var totalAmount: Long = 0
     var oddsType: OddsType = OddsType.EU
 
-    private enum class ViewType { Match, Parlay, NoData }
+    private enum class ViewType { Match, Parlay, Outright, NoData }
 
     fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
@@ -38,6 +46,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
         return when (viewType) {
             ViewType.NoData.ordinal -> NoDataViewHolder.from(parent)
             ViewType.Match.ordinal -> MatchRecordViewHolder.from(parent)
+            ViewType.Outright.ordinal -> OutrightRecordViewHolder.from(parent)
             else -> ParlayRecordViewHolder.from(parent)
         }
     }
@@ -51,6 +60,9 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
             is ParlayRecordViewHolder -> {
                 holder.bind((rvData as DataItem.Item).row, oddsType)
             }
+            is OutrightRecordViewHolder -> {
+                holder.bind((rvData as DataItem.Item).row, oddsType)
+            }
             is NoDataViewHolder -> {
             }
         }
@@ -59,7 +71,8 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     override fun getItemViewType(position: Int): Int {
         return when {
             getItem(position).orderNo.isNullOrBlank() -> ViewType.NoData.ordinal
-            getItem(position).parlayType == ParlayType.SINGLE.key || getItem(position).parlayType == ParlayType.OUTRIGHT.key -> ViewType.Match.ordinal
+            getItem(position).parlayType == ParlayType.SINGLE.key -> ViewType.Match.ordinal
+            getItem(position).parlayType == ParlayType.OUTRIGHT.key -> ViewType.Outright.ordinal
             else -> ViewType.Parlay.ordinal
         }
     }
@@ -83,6 +96,39 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playName}"
                 spread_name.text = matchOdds.homeName
+                content_odds.text = when (oddsType) {
+                    OddsType.HK -> matchOdds.hkOdds
+                    else -> matchOdds.odds
+                }.toString()
+                content_bet_amount.text = TextUtil.format(data.totalAmount)
+                content_winnable_amount.text = TextUtil.format(data.winnable)
+                content_order_no.text = data.orderNo
+                content_time_type.text = getTimeFormatFromDouble(data.addTime)
+            }
+        }
+
+        private fun getGameTypeName(gameType: String): String {
+            return itemView.context.getString(GameType.valueOf(gameType).string)
+        }
+
+    }
+
+    class OutrightRecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+                val layoutInflater = LayoutInflater.from(viewGroup.context)
+                val view = layoutInflater.inflate(R.layout.content_outright_record, viewGroup, false)
+                return OutrightRecordViewHolder(view)
+            }
+        }
+
+        fun bind(data: Row, oddsType: OddsType) {
+            val matchOdds = data.matchOdds[0]
+            itemView.apply {
+                title_league_name.text = "${matchOdds.leagueName} - ${context.getString(R.string.champion)}"
+
+                content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
+                spread_name.text = matchOdds.spread
                 content_odds.text = when (oddsType) {
                     OddsType.HK -> matchOdds.hkOdds
                     else -> matchOdds.odds
