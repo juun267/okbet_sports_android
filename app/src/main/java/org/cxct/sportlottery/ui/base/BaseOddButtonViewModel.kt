@@ -36,10 +36,6 @@ abstract class BaseOddButtonViewModel(
 
     val oddsType: LiveData<OddsType> = loginRepository.mOddsType
 
-//    private val _sportType = MutableLiveData<String?>()
-//    val sportType: LiveData<String?>
-//        get() = _sportType
-
     val betAddResult: LiveData<Event<BetAddResult?>>
         get() = _betAddResult
 

@@ -27,16 +27,12 @@ class AccountHistoryNextViewModel(
         private const val PAGE_SIZE = 20
     }
 
-//    val gameType: LiveData<String?>
-//        get() = _gameType
-
     val loading: LiveData<Boolean>
         get() = _loading
 
     val betDetailResult: LiveData<BetSettledDetailListResult>
         get() = _betDetailResult
 
-//    private val _gameType = MutableLiveData<String?>()
     private val _loading = MutableLiveData<Boolean>()
     private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
 
@@ -63,10 +59,6 @@ class AccountHistoryNextViewModel(
             pageSize = PAGE_SIZE)
         mBetDetailRequest?.let { getBetList(it) }
     }
-
-//    fun setGameType(selectType: String? = "", minusDate: String? = null) {
-//        _gameType.value = selectType
-//    }
 
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (_loading.value != true && !isLastPage) {
