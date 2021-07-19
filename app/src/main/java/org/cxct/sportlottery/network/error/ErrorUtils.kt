@@ -192,7 +192,7 @@ object ErrorUtils {
                     }
                     (url.contains(MATCH_BET_SETTLED_DETAIL_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return BetSettledDetailListResult(it.code, it.msg, it.success, null, null) as T
+                        return BetSettledDetailListResult(it.code, it.msg, it.success, null, null, null) as T
                     }
                     (url.contains(MATCH_PRELOAD)) -> {
                         @Suppress("UNCHECKED_CAST")

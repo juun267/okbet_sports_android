@@ -3,7 +3,6 @@ package org.cxct.sportlottery.network.bet.settledDetailList
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.network.bet.MatchOdd
 
 @JsonClass(generateAdapter = true)
 data class Row (

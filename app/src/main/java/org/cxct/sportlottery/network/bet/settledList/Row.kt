@@ -10,25 +10,29 @@ import kotlinx.android.parcel.Parcelize
 @JsonClass(generateAdapter = true)
 data class Row(
     @Json(name = "userId")
-    val userId: Int?,
+    val userId: Int? = null,
     @Json(name = "platformId")
-    val platformId: Int?,
+    val platformId: Int? = null,
     @Json(name = "gameType")
-    val gameType: String?,
-    @Json(name = "date")
-    val date: String?,
+    val gameType: String? = null,
+    @Json(name = "statDate")
+    val statDate: String? = null,
     @Json(name = "settledBetNum")
-    val settledBetNum: Int?,
+    val settledBetNum: Int? = null,
     @Json(name = "settledBetMoney")
-    val settledBetMoney: Double?,
+    val settledBetMoney: Double? = null,
+    @Json(name = "validBetNum")
+    val validBetNum: Int? = null,
+    @Json(name = "validBetMoney")
+    val validBetMoney: Double? = null,
     @Json(name = "winBetMoney")
-    val winBetMoney: Double?,
+    val winBetMoney: Double? = null,
     @Json(name = "agentRebateMoney")
-    val agentRebateMoney: Double?,
+    val agentRebateMoney: Double? = null,
     @Json(name = "vipRewardMoney")
-    val vipRewardMoney: Double?,
+    val vipRewardMoney: Double? = null,
     @Json(name = "realRebate")
-    val realRebate: Double?,
+    val realRebate: Double? = null,
     @Json(name = "vipRewardMoneyWithRebate")
-    val vipRewardMoneyWithRebate: Double?,
+    val vipRewardMoneyWithRebate: Double? = null,
 ) : Parcelable

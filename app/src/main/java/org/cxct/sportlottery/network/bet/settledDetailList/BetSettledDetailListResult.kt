@@ -17,5 +17,7 @@ data class BetSettledDetailListResult(
     val rows: List<Row>?,
     @Json(name = "total")
     val total: Int?,
+    @Json(name = "other")
+    val other: Other?,
 ) : BaseResult()
 

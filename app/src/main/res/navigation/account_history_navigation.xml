@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/account_history_navigation"
-    app:startDestination="@+id/accountHistoryNextFragment">
+    app:startDestination="@+id/accountHistoryFragment">
     <fragment
         android:id="@+id/accountHistoryFragment"
-        android:name="org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryFragment"
+        android:name="org.cxct.sportlottery.ui.main.accountHistory.first.AccountHistoryFragment"
         android:label="AccountHistoryFragment">
         <action
             android:id="@+id/action_accountHistoryFragment_to_accountHistoryNextFragment"

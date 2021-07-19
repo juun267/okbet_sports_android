@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_account_history_next.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 
-class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(AccountHistoryNextViewModel::class) {
+class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     //TODO 等新api, 傳遞總金額
     private val args: AccountHistoryNextFragmentArgs by navArgs()
@@ -22,9 +23,13 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
     }, BackClickListener {
         findNavController().navigateUp()
     }, SportSelectListener { sport, date ->
-        viewModel.searchBetRecord(gameType = sport, minusDate = date)
+        viewModel.setSelectedSport(sport)
+        viewModel.setSelectedDate(date)
+//        viewModel.searchDetail(gameType = sport, date = date)
     }, DateSelectListener { sport, date ->
-        viewModel.searchBetRecord(gameType = sport, minusDate = date)
+        viewModel.setSelectedSport(sport)
+        viewModel.setSelectedDate(date)
+//        viewModel.searchDetail(gameType = sport, date = date)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -34,14 +39,14 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
                 val visibleItemCount: Int = it.childCount
                 val totalItemCount: Int = it.itemCount
                 val firstVisibleItemPosition: Int = (it as LinearLayoutManager).findFirstVisibleItemPosition()
-                viewModel.getNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
+                viewModel.getDetailNextPage(visibleItemCount, firstVisibleItemPosition, totalItemCount)
             }
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_account_history_next, container, false).apply {
-            viewModel.searchBetRecord()
+            viewModel.setSelectedDate(args.row.statDate)
         }
     }
 
@@ -69,7 +74,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
 
         viewModel.betDetailResult.observe(viewLifecycleOwner, {
             if (it.success) {
-                rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
+                rvAdapter.addFooterAndSubmitList(it.other, viewModel.detailDataList, viewModel.isDetailLastPage)
                 rv_account_history.scrollToPosition(0)
             } else {
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
@@ -78,6 +83,14 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
             rvAdapter.oddsType = it
+        })
+
+        viewModel.selectSport.observe(viewLifecycleOwner, {
+            viewModel.searchDetail()
+        })
+
+        viewModel.selectDate.observe(viewLifecycleOwner, {
+            viewModel.searchDetail()
         })
 
     }

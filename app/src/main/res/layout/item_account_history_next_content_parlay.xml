@@ -11,7 +11,7 @@
 
         <variable
             name="matchOdd"
-            type="org.cxct.sportlottery.network.bet.MatchOdd" />
+            type="org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd" />
 
     </data>
 
@@ -52,6 +52,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize12sp"
+                android:text="@{matchOdd.playCateCode}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

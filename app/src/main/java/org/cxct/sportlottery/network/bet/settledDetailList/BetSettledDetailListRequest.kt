@@ -6,6 +6,7 @@ import org.cxct.sportlottery.network.common.TimeRangeParams
 
 data class BetSettledDetailListRequest(
     val gameType: String? = null,
+    val statDate: String? = null,
     override val startTime: String? = null,
     override val endTime: String? = null,
     override val page: Int? = null,

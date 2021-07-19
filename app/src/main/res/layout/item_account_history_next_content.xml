@@ -10,7 +10,7 @@
 
         <variable
             name="matchOdd"
-            type="org.cxct.sportlottery.network.bet.MatchOdd" />
+            type="org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd" />
     </data>
 
     <LinearLayout
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginStart="4dp"
-                app:gameType="@{matchOdd.playName}"
+                app:gameType="@{matchOdd.playCateName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
@@ -164,25 +164,10 @@
                 android:gravity="center"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
+                android:text="@{matchOdd.rtScore}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="113 - 116" />
-
-            <TextView
-                android:id="@+id/symbol_at"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginStart="4dp"
-                android:gravity="center"
-                android:text="@string/at"
-                android:textColor="@color/colorGrayLight"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
-                app:layout_constraintStart_toEndOf="@id/tv_team_name"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_name"
-                app:layout_constraintVertical_chainStyle="spread"
-                tools:text=" @" />
 
             <TextView
                 android:id="@+id/tv_odd"
@@ -194,9 +179,9 @@
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
-                app:layout_constraintStart_toEndOf="@id/symbol_at"
+                app:layout_constraintStart_toEndOf="@+id/tv_team_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_team_name"
-                tools:text="1.860" />
+                tools:text="\@1.860" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -258,7 +243,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorGreenLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/tv_odd_type"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
                 app:moneyFormat="@{row.win}"
                 tools:text="9,959,500.000" />
