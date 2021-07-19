@@ -247,7 +247,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                     this.odd_btn_type.text = playCateName
 
-                    this.odd_btn_home.apply {
+                    this.odd_btn_home.apply homeButtonSettings@{
+                        if (it.value.size < 2) {
+                            return@homeButtonSettings
+                        }
 
                         odd_type_text.apply {
                             visibility = when {
@@ -289,7 +292,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                     }
 
-                    this.odd_btn_away.apply {
+                    this.odd_btn_away.apply awayButtonSettings@{
+                        if (it.value.size < 2) {
+                            return@awayButtonSettings
+                        }
 
                         odd_type_text.apply {
                             visibility = when {
@@ -331,11 +337,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                     }
 
-                    this.odd_btn_draw.apply {
-
-                        visibility = when (it.value.size < 3) {
-                            true -> View.GONE
-                            false -> View.VISIBLE
+                    this.odd_btn_draw.apply drawButtonSettings@{
+                        if (it.value.size < 3) {
+                            visibility = View.GONE
+                            return@drawButtonSettings
+                        } else {
+                            visibility = View.VISIBLE
                         }
 
                         odd_type_text.apply {
@@ -347,13 +354,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             visibility = View.INVISIBLE
                         }
 
-                        odd_bottom_text.text = if (it.value.size >= 3) {
-                            when (oddsType) {
-                                OddsType.EU -> it.value[2]?.odds.toString()
-                                OddsType.HK -> it.value[2]?.hkOdds.toString()
-                            }
-                        } else {
-                            ""
+                        odd_bottom_text.text = when (oddsType) {
+                            OddsType.EU -> it.value[2]?.odds.toString()
+                            OddsType.HK -> it.value[2]?.hkOdds.toString()
                         }
                     }
                 }
