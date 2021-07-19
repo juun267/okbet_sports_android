@@ -38,6 +38,7 @@ class BetListDiffAdapter : ListAdapter<BetInfoListData, RecyclerView.ViewHolder>
 
 }
 
+//TODO review diff method
 class BetListDiffCallBack : DiffUtil.ItemCallback<BetInfoListData>() {
     override fun areItemsTheSame(oldItem: BetInfoListData, newItem: BetInfoListData): Boolean {
         return oldItem == newItem

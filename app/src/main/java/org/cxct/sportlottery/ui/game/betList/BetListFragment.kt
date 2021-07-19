@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_bet_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.TextUtil
 import timber.log.Timber
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,7 +46,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)
         binding.apply {
             gameViewModel = this@BetListFragment.viewModel
@@ -56,7 +58,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         super.onViewCreated(view, savedInstanceState)
 
         initView()
-        setupObserver()
+        initObserver()
+        initSocketObserver()
+
+        queryData()
     }
 
     private fun initView() {
@@ -67,22 +72,28 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun setupObserver() {
+    private fun initObserver() {
+        viewModel.userMoney.observe(this.viewLifecycleOwner, {
+            it.let { money -> tv_total_bet_amount.text = TextUtil.formatMoney(money ?: 0.0) }
+        })
+
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { list ->
                 Timber.e("Dean, bet list = $list")
                 betListDiffAdapter.submitList(list)
-                /*if (list.isNullOrEmpty()) {
-                    dismiss()
-                } else {
-                    if (!isSubScribe) {
-                        isSubScribe = true
-                        subscribeChannel(list)
-                    }
-                    betInfoListAdapter.betInfoList = list
-                }*/
             }
         })
+    }
+
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(viewLifecycleOwner, {
+            it?.let { money -> tv_total_bet_amount.text = TextUtil.formatMoney(money) }
+        })
+    }
+
+    private fun queryData() {
+        //獲取餘額
+        viewModel.getMoney()
     }
 
     companion object {
@@ -98,10 +109,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         @JvmStatic
         fun newInstance() =
             BetListFragment().apply {
-                arguments = Bundle().apply {
-                    /*putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)*/
-                }
+                /*arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }*/
             }
     }
 }
