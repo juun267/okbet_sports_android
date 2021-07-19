@@ -15,7 +15,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.MatchOdd
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -118,15 +118,16 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
         private val parlayAdapter by lazy { ParlayItemAdapter() }
 
         fun bind(row: Row, oddsType: OddsType) {
+            binding.matchOdd = row.matchOdds?.firstOrNull()
             binding.row = row
-            binding.tvParlayType.text = row.parlayType.replace("C", "串")
+            binding.tvParlayType.text = row.parlayType?.replace("C", "串")
 
             binding.rvParlay.apply {
                 adapter = parlayAdapter
                 layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                 parlayAdapter.addFooterAndSubmitList(row.matchOdds, false)
                 parlayAdapter.oddsType = oddsType
-                parlayAdapter.gameType = row.gameType
+                parlayAdapter.gameType = row.gameType ?: ""
             }
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
@@ -146,7 +147,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
     class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentOutrightBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(row: Row, oddsType: OddsType) {
-            val first = row.matchOdds.firstOrNull()
+            val first = row.matchOdds?.firstOrNull()
 
             binding.row = row
             binding.matchOdd = first
@@ -180,7 +181,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(row: Row, oddsType: OddsType) {
-            val first = row.matchOdds.firstOrNull()
+            val first = row.matchOdds?.firstOrNull()
 
             binding.row = row
             binding.matchOdd = first

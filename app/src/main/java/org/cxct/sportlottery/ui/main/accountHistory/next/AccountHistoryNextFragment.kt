@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_account_history_next.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.util.TimeUtil
 
 class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(AccountHistoryNextViewModel::class) {
 
@@ -68,7 +67,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryNextViewModel>(Acc
             if (it) loading() else hideLoading()
         })
 
-        viewModel.betRecordResult.observe(viewLifecycleOwner, {
+        viewModel.betDetailResult.observe(viewLifecycleOwner, {
             if (it.success) {
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
                 rv_account_history.scrollToPosition(0)

@@ -14,7 +14,7 @@
             app:popUpTo="@id/accountHistoryFragment">
             <argument
                 android:name="row"
-                app:argType="org.cxct.sportlottery.network.bet.list.Row" />
+                app:argType="org.cxct.sportlottery.network.bet.settledList.Row" />
         </action>
     </fragment>
 
@@ -24,7 +24,7 @@
         android:label="AccountHistoryNextFragment">
         <argument
             android:name="row"
-            app:argType="org.cxct.sportlottery.network.bet.list.Row" />
+            app:argType="org.cxct.sportlottery.network.bet.settledList.Row" />
     </fragment>
 
 </navigation>

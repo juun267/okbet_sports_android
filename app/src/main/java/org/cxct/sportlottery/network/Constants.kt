@@ -95,6 +95,8 @@ object Constants {
     const val MATCH_BET_INFO = "/api/front/match/bet/info"
     const val MATCH_BET_ADD = "/api/front/match/bet/add"
     const val MATCH_BET_LIST = "/api/front/match/bet/list"
+    const val MATCH_BET_SETTLED_LIST = "/api/front/match/bet/settled/list"
+    const val MATCH_BET_SETTLED_DETAIL_LIST = "/api/front/match/bet/settled/detail/list"
 
     //index
     const val INDEX_LOGIN = "/api/front/index/login"

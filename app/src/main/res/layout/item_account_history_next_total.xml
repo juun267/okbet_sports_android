@@ -5,10 +5,14 @@
     tools:ignore="SpUsage">
 
     <data>
-
         <variable
             name="row"
-            type="org.cxct.sportlottery.network.bet.list.Row" />
+            type="org.cxct.sportlottery.network.bet.settledDetailList.Row" />
+
+<!--        <variable-->
+<!--            name="matchOdd"-->
+<!--            type="org.cxct.sportlottery.network.bet.MatchOdd" />-->
+
 
     </data>
 
@@ -51,8 +55,8 @@
             android:gravity="center"
             android:textColor="@color/colorRedLight"
             android:textSize="@dimen/textSize14sp"
-            app:betStatus="@{row.status}"
-            app:betStatusMoney="@{row.win}"
+            app:moneyFormat="@{row.rebateAmount}"
+            app:moneyColor="@{row.rebateAmount}"
             tools:text="-9,999,587.000 RMB" />
 
     </LinearLayout>

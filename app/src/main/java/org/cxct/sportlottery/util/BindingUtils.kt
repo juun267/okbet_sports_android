@@ -51,6 +51,11 @@ fun TextView.setWeekDay(timeStamp: Long?) {
     text = context.getString(TimeUtil.setupDayOfWeek(timeStamp))
 }
 
+@BindingAdapter("dayOfWeek")
+fun TextView.setWeekDay(date: String?) {
+    text = context.getString(TimeUtil.setupDayOfWeek(date))
+}
+
 @BindingAdapter("gameStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setGameStatus(status: Int?) {
     text = when (status) {
@@ -123,7 +128,6 @@ fun TextView.setRecordStatusColor(status: Int?) {
             3 -> R.color.colorRed
             else -> R.color.colorGray
         }
-
         this.setTextColor(ContextCompat.getColor(context, color))
     }
 }

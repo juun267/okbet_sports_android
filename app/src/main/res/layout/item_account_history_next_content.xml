@@ -6,7 +6,7 @@
     <data>
         <variable
             name="row"
-            type="org.cxct.sportlottery.network.bet.list.Row" />
+            type="org.cxct.sportlottery.network.bet.settledDetailList.Row" />
 
         <variable
             name="matchOdd"
@@ -286,7 +286,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
-                app:dateTimeNoYear="@{row.addTime}"
+                app:dateTimeNoYear="@{matchOdd.startTime}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_odd_type"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"

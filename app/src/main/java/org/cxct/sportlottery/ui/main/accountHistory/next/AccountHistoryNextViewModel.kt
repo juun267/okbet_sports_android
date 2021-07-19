@@ -6,15 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.bet.list.BetListResult
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListRequest
+import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
+import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.TimeUtil
-import java.util.*
 
 
 class AccountHistoryNextViewModel(
@@ -22,89 +21,73 @@ class AccountHistoryNextViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseOddButtonViewModel(
-    androidContext,
-    loginRepository,
-    betInfoRepository,
-    infoCenterRepository
-) {
+) : BaseOddButtonViewModel(androidContext, loginRepository, betInfoRepository, infoCenterRepository) {
 
     companion object {
         private const val PAGE_SIZE = 20
     }
 
+//    val gameType: LiveData<String?>
+//        get() = _gameType
+
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val betRecordResult: LiveData<BetListResult>
-        get() = _betRecordResult
+    val betDetailResult: LiveData<BetSettledDetailListResult>
+        get() = _betDetailResult
 
+//    private val _gameType = MutableLiveData<String?>()
     private val _loading = MutableLiveData<Boolean>()
-    private val _betRecordResult = MutableLiveData<BetListResult>()
+    private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
 
-    private var mBetListRequest: BetListRequest? = null
+    private var mBetDetailRequest: BetSettledDetailListRequest? = null
 
-    fun searchBetRecord(
-        isChampionChecked: Boolean? = false,
-        gameType: String? = null,
-        minusDate: String? = null,
-        status: String? = null,
-    ) {
-
-        val startTime = TimeUtil.getMinusDateTimeStamp(minusDate?.toIntOrNull()).startTime
-        val endTime = TimeUtil.getMinusDateTimeStamp(minusDate?.toIntOrNull()).endTime
-
-        val statusFilter = { item: String? ->
-            if (item.isNullOrEmpty()) listOf(1, 2, 3, 4, 5, 6, 7) else item.toList().map {
-                Character.getNumericValue(it)
-            }
-        }
-
-        val emptyFilter = { item: String? ->
-            if (item.isNullOrEmpty()) null else item
-        }
-
-        val championOnly = if (isChampionChecked == true) 1 else 0
-
-        mBetListRequest = BetListRequest(
-            championOnly = championOnly,
-            gameType = emptyFilter(gameType),
-            statusList = statusFilter(status),
-            startTime = startTime,
-            endTime = endTime,
-            page = 1,
-            pageSize = PAGE_SIZE
-        )
-        mBetListRequest?.let { getBetList(it) }
+    val emptyFilter = { item: String? ->
+        if (item.isNullOrEmpty()) null else item
     }
 
     var isLastPage = false
     private var nowPage = 1
     val recordDataList = mutableListOf<Row>()
 
+    fun searchBetRecord(gameType: String? = null, minusDate: String? = null) {
+
+        val startTime = TimeUtil.getMinusDateTimeStamp(minusDate?.toIntOrNull()).startTime
+        val endTime = TimeUtil.getMinusDateTimeStamp(minusDate?.toIntOrNull()).endTime
+
+        mBetDetailRequest = BetSettledDetailListRequest(
+            gameType = emptyFilter(gameType),
+            startTime = startTime,
+            endTime = endTime,
+            page = 1,
+            pageSize = PAGE_SIZE)
+        mBetDetailRequest?.let { getBetList(it) }
+    }
+
+//    fun setGameType(selectType: String? = "", minusDate: String? = null) {
+//        _gameType.value = selectType
+//    }
+
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (_loading.value != true && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loading()
-                mBetListRequest?.let {
-                    mBetListRequest = BetListRequest(
-                        championOnly = it.championOnly,
-                        statusList = it.statusList,
+                mBetDetailRequest?.let {
+                    mBetDetailRequest = BetSettledDetailListRequest(
                         startTime = it.startTime,
                         endTime = it.endTime,
                         page = it.page?.plus(1),
-                        pageSize = PAGE_SIZE
-                    )
-                    getBetList(mBetListRequest!!)
+                        pageSize = PAGE_SIZE)
+                    getBetList(mBetDetailRequest!!)
                 }
             }
         }
 
     }
 
-    private fun getBetList(betListRequest: BetListRequest) {
+    private fun getBetList(betDetailRequest: BetSettledDetailListRequest) {
 
-        if (betListRequest.page == 1) {
+        if (betDetailRequest.page == 1) {
             nowPage = 1
             recordDataList.clear()
         }
@@ -112,12 +95,12 @@ class AccountHistoryNextViewModel(
         loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.betService.getBetList(betListRequest)
+                OneBoSportApi.betService.getBetSettledDetailList(betDetailRequest)
             }?.let { result ->
                 hideLoading()
                 result.rows?.let { recordDataList.addAll(it) }
                 isLastPage = (recordDataList.size >= (result.total ?: 0))
-                _betRecordResult.value = result
+                _betDetailResult.value = result
             }
         }
 

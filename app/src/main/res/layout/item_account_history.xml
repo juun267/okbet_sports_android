@@ -7,7 +7,7 @@
 
         <variable
             name="row"
-            type="org.cxct.sportlottery.network.bet.list.Row" />
+            type="org.cxct.sportlottery.network.bet.settledList.Row" />
 
         <variable
             name="clickListener"
@@ -44,9 +44,9 @@
                 android:gravity="center"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
+                android:text="@{row.date}"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
-                app:dateNoYear="@{row.addTime}"
                 tools:text="12-29" />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                app:dayOfWeek="@{row.addTime}"
+                app:dayOfWeek="@{row.date}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="星期一" />
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             tools:text="8,117,500.000"
             android:gravity="center"
-            app:moneyFormat="@{row.totalAmount}"
+            app:moneyFormat="@{row.settledBetMoney}"
             android:layout_marginStart="4dp"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
@@ -80,7 +80,7 @@
             android:layout_weight="2"
             android:gravity="center"
             tools:text="9,959,500.000"
-            app:moneyFormat="@{row.stake}"
+            app:moneyFormat="@{row.realRebate}"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
 
@@ -91,8 +91,8 @@
             android:layout_marginStart="4dp"
             android:layout_weight="2"
             android:gravity="center"
-            app:betStatus="@{row.status}"
-            app:betStatusMoney="@{row.win}"
+            app:moneyColor="@{row.vipRewardMoneyWithRebate}"
+            app:moneyFormat="@{row.vipRewardMoneyWithRebate}"
             tools:text="-9,959,500.000"
             android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp" />

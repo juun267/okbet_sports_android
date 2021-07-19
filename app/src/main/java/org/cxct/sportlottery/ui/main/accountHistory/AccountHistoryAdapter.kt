@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.ui.component.StatusSheetData
 import org.cxct.sportlottery.ui.main.accountHistory.next.BackClickListener
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -148,7 +148,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener, privat
 
     class DiffCallback : DiffUtil.ItemCallback<DataItem>() {
         override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-            return oldItem.orderNum == newItem.orderNum
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
@@ -164,21 +164,21 @@ class ItemClickListener(val clickListener: (data: Row) -> Unit) {
 
 sealed class DataItem {
 
-    abstract val orderNum: String?
+    abstract val rowItem: Row?
 
     data class Item(val row: Row) : DataItem() {
-        override val orderNum = row.orderNo
+        override val rowItem = row
     }
 
     object TitleBar : DataItem() {
-        override val orderNum: String = ""
+        override val rowItem: Row? = null
     }
 
     object Footer : DataItem() {
-        override val orderNum: String = ""
+        override val rowItem: Row? = null
     }
 
     object NoData : DataItem() {
-        override val orderNum: String? = null
+        override val rowItem: Row? = null
     }
 }
