@@ -290,6 +290,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             OddsType.EU -> it.value[0]?.odds.toString()
                             OddsType.HK -> it.value[0]?.hkOdds.toString()
                         }
+
+                        isSelected = it.value[0]?.isSelected ?: false
+
+                        setOnClickListener { _ ->
+                            it.value[0]?.let { odd ->
+                                leagueOddListener?.onClickBet(item, odd, playCateName, "")
+                            }
+                        }
                     }
 
                     this.odd_btn_away.apply awayButtonSettings@{
@@ -335,6 +343,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             OddsType.EU -> it.value[1]?.odds.toString()
                             OddsType.HK -> it.value[1]?.hkOdds.toString()
                         }
+
+                        isSelected = it.value[1]?.isSelected ?: false
+
+                        setOnClickListener { _ ->
+                            it.value[1]?.let { odd ->
+                                leagueOddListener?.onClickBet(item, odd, playCateName, "")
+                            }
+                        }
                     }
 
                     this.odd_btn_draw.apply drawButtonSettings@{
@@ -357,6 +373,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         odd_bottom_text.text = when (oddsType) {
                             OddsType.EU -> it.value[2]?.odds.toString()
                             OddsType.HK -> it.value[2]?.hkOdds.toString()
+                        }
+
+                        isSelected = it.value[2]?.isSelected ?: false
+
+                        setOnClickListener { _ ->
+                            it.value[2]?.let { odd ->
+                                leagueOddListener?.onClickBet(item, odd, playCateName, "")
+                            }
                         }
                     }
                 }
