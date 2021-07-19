@@ -13,7 +13,11 @@ import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class VpRecommendAdapter(val dataList: List<Pair<String, MutableList<Odd?>>>, val oddsType: OddsType, val matchOdd: MatchOdd) : RecyclerView.Adapter<VpRecommendAdapter.ViewHolderHdpOu>() {
+class VpRecommendAdapter(
+    val dataList: List<OddBean>,
+    val oddsType: OddsType,
+    val matchOdd: MatchOdd
+) : RecyclerView.Adapter<VpRecommendAdapter.ViewHolderHdpOu>() {
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -37,21 +41,16 @@ class VpRecommendAdapter(val dataList: List<Pair<String, MutableList<Odd?>>>, va
     inner class ViewHolderHdpOu(itemView: View) : OddDetailStateViewHolder(itemView) {
 
         //TODO simon test 賽事推薦 賠率串接
-        fun bind(data: Pair<String, MutableList<Odd?>>) {
-            val playKey = data.first
-            val oddList = data.second
+        fun bind(data: OddBean) {
+            val playKey = data.oddCode
             itemView.apply {
                 tv_play_type.text = playKey
 
-
-                oddList.forEachIndexed { index, odd ->
-                    if (odd != null) {
-
-                        when (index) {
-                            0 -> setupOddButton(button_odds_left, odd)
-                            1 -> setupOddButton(button_odds_middle, odd)
-                            2 -> setupOddButton(button_odds_right, odd)
-                        }
+                data.oddList.forEachIndexed { index, odd ->
+                    when (index) {
+                        0 -> setupOddButton(button_odds_left, odd)
+                        1 -> setupOddButton(button_odds_middle, odd)
+                        2 -> setupOddButton(button_odds_right, odd)
                     }
                 }
 
@@ -68,8 +67,8 @@ class VpRecommendAdapter(val dataList: List<Pair<String, MutableList<Odd?>>>, va
                 isSelected = odd.isSelected ?: false
                 oddStateChangeListener = object : OddStateChangeListener {
                     override fun refreshOddButton(odd: org.cxct.sportlottery.network.odds.detail.Odd) {
-                        dataList.forEachIndexed { index, pair ->
-                            if (pair.second.find { it?.id == odd.id } != null)
+                        dataList.forEachIndexed { index, oddBean ->
+                            if (oddBean.oddList.find { it.id == odd.id } != null)
                                 notifyItemChanged(index)
                         }
                     }
@@ -77,7 +76,7 @@ class VpRecommendAdapter(val dataList: List<Pair<String, MutableList<Odd?>>>, va
 
                 setOnClickListener {
                     val playCateName = itemView.tv_play_type.text.toString()
-                    val playName = odd.name?: "" //TODO simon test review 不確定 playName 能否使用 name 參數
+                    val playName = odd.name ?: "" //TODO simon test review 不確定 playName 能否使用 name 參數
                     onClickOddListener?.onClickBet(matchOdd, odd, playCateName, playName)
                 }
             }

@@ -10,9 +10,10 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.home_recommend_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.matchCategory.result.OddData
+import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
@@ -25,22 +26,33 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         .diskCacheStrategy(DiskCacheStrategy.ALL)
         .dontTransform()
 
-    private var mVpAdapterList = mutableListOf<VpRecommendAdapter?>()
+    private var mDataList = listOf<RecommendGameEntity>()
 
-    var dataList = listOf<OddData>()
-        set(value) {
-            if (value != field) {
-                field = value
-                mVpAdapterList = MutableList(value.size) { null }
-                notifyDataSetChanged()
+    fun setData(result: MatchRecommendResult) {
+        val dataList = mutableListOf<RecommendGameEntity>()
+        result.rows?.forEach { row ->
+            row.leagueOdds?.matchOdds?.forEach { oddData ->
+                val beans = oddData.odds?.map { OddBean(it.key, it.value) }?: listOf()
+                val entity = RecommendGameEntity(
+                    code = row.sport?.code,
+                    name = row.sport?.name,
+                    matchInfo = oddData.matchInfo,
+                    oddBeans = beans
+                )
+                dataList.add(entity)
             }
         }
+        mDataList = dataList
+
+        notifyDataSetChanged()
+    }
+
+    fun getData() = mDataList
 
     //指定刷新內部 ViewPager 的 subItem
-    fun notifySubItemChanged(index: Int, indexMatchOdd: Int) {
-        //TODO simon test 賽事推薦 刷新
-//        if (index >= 0 && indexMatchOdd >= 0)
-//            dataList[indexvpTableAdapter?.notifyItemChanged(indexMatchOdd)
+    fun notifySubItemChanged(index: Int, indexVpAdapter: Int) {
+        if (index >= 0 && indexVpAdapter >= 0)
+            mDataList[index].vpRecommendAdapter?.notifyItemChanged(indexVpAdapter)
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -53,7 +65,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
     var onClickOddListener: OnClickOddListener? = null
 
-    var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null
+    var onClickMatchListener: OnSelectItemListener<RecommendGameEntity>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layout = LayoutInflater.from(parent.context)
@@ -62,20 +74,19 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val data = dataList[position]
-        holder.bind(data, oddsType, position)
+        val data = mDataList[position]
+        holder.bind(data)
     }
 
-    override fun getItemCount(): Int = dataList.size
+    override fun getItemCount(): Int = mDataList.size
 
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(data: OddData, oddsType: OddsType, position: Int) {
+        fun bind(data: RecommendGameEntity) {
             itemView.apply {
-                val matchOdd = data.toMatchOdd()
                 block_match_info.setOnClickListener {
-                    onClickMatchListener?.onClick(matchOdd)
+                    onClickMatchListener?.onClick(data)
                 }
 
                 Glide.with(context).load(data.matchInfo?.img).apply(mRequestOptions).into(iv_match_image)
@@ -84,13 +95,13 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 tv_game_name_away.text = data.matchInfo?.awayName
                 tv_match_time.text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
 
-                mVpAdapterList[position]
-                if (mVpAdapterList[position] == null)
-                    mVpAdapterList[position] = VpRecommendAdapter(data.odds?.toList()?: listOf(), oddsType, matchOdd)
 
-                mVpAdapterList[position]?.onClickOddListener = onClickOddListener
+                if (data.vpRecommendAdapter == null)
+                    data.vpRecommendAdapter = VpRecommendAdapter(data.oddBeans, oddsType, data.toMatchOdd())
 
-                view_pager.adapter = mVpAdapterList[position]
+                data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
+
+                view_pager.adapter = data.vpRecommendAdapter
                 indicator_view.setupWithViewPager2(view_pager)
             }
         }
@@ -99,7 +110,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 }
 
 //TODO simon test review MatchOdd 資料轉換
-fun OddData.toMatchOdd(): MatchOdd {
+fun RecommendGameEntity.toMatchOdd(): MatchOdd {
     val matchInfo = MatchInfo(
         gameType = null,
         awayName = this.matchInfo?.awayName.toString(),
@@ -110,6 +121,9 @@ fun OddData.toMatchOdd(): MatchOdd {
         startTime = this.matchInfo?.startTime.toString(),
         status = this.matchInfo?.status?: -1
     )
-
-    return MatchOdd(matchInfo, this.odds?: mutableMapOf())
+    val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
+    this.oddBeans.forEach {
+        odds[it.oddCode] = it.oddList.toMutableList()
+    }
+    return MatchOdd(matchInfo, odds)
 }
