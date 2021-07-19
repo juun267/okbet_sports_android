@@ -88,7 +88,6 @@ class AccountHistoryViewModel(
                 loading()
                 mBetSettledListRequest?.let {
                     mBetSettledListRequest = BetSettledListRequest(
-                        gameType = emptyFilter(sportType.value),
                         startTime = it.startTime,
                         endTime = it.endTime,
                         page = it.page?.plus(1),

@@ -69,7 +69,7 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
         viewModel.oddsType.observe(viewLifecycleOwner, {
             rvAdapter.oddsType = it
         })
-        
+
     }
 
     private fun initRv() {
