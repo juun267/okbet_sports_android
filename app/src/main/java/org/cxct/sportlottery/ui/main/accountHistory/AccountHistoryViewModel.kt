@@ -65,11 +65,12 @@ class AccountHistoryViewModel(
     }
 
     fun searchBetRecord(
+        gameType: String = "",
         startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
         endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
     ) {
         mBetSettledListRequest = BetSettledListRequest(
-            gameType = emptyFilter(sportType.value),
+            gameType = emptyFilter(gameType),
             startTime = startTime,
             endTime = endTime,
             page = 1,
