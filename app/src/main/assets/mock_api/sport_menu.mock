@@ -319,7 +319,40 @@
                         "play": null
                     }
                 ]
-            }
+            },
+              "eps": {
+                            "num": 112,
+                            "items": [
+                                {
+                                    "name": "Basketball",
+                                    "code": "BK",
+                                    "num": 18,
+                                    "sortNum": 2,
+                                    "play": null
+                                },
+                                {
+                                    "name": "Tennis",
+                                    "code": "TN",
+                                    "num": 9,
+                                    "sortNum": 3,
+                                    "play": null
+                                },
+                                {
+                                    "name": "Volleyball",
+                                    "code": "VB",
+                                    "num": 16,
+                                    "sortNum": 4,
+                                    "play": null
+                                },
+                                {
+                                    "name": "Soccer",
+                                    "code": "FT",
+                                    "num": 69,
+                                    "sortNum": 1,
+                                    "play": null
+                                }
+                            ]
+                        }
         },
         "atStart": {
             "num": 27,
