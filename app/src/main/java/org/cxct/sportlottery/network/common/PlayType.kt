@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.network.common
 
 enum class PlayType(val code: String) {
-    MAIN("MAIN"),
     OU_HDP("O/U&HDP"),
     X12("1X2"),
     OU("O/U"),
