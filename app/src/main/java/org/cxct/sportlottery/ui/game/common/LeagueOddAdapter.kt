@@ -281,7 +281,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             text = it.value[0]?.spread ?: ""
                         }
 
-                        odd_bottom_text.text = it.value[0]?.odds.toString()
+                        odd_bottom_text.text = when (oddsType) {
+                            OddsType.EU -> it.value[0]?.odds.toString()
+                            OddsType.HK -> it.value[0]?.hkOdds.toString()
+                        }
                     }
 
                     this.odd_btn_away.apply {
@@ -320,7 +323,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             text = it.value[1]?.spread ?: ""
                         }
 
-                        odd_bottom_text.text = it.value[1]?.odds.toString()
+                        odd_bottom_text.text = when (oddsType) {
+                            OddsType.EU -> it.value[1]?.odds.toString()
+                            OddsType.HK -> it.value[1]?.hkOdds.toString()
+                        }
                     }
 
                     this.odd_btn_draw.apply {
@@ -340,7 +346,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
 
                         odd_bottom_text.text = if (it.value.size >= 3) {
-                            it.value[2]?.odds.toString()
+                            when (oddsType) {
+                                OddsType.EU -> it.value[2]?.odds.toString()
+                                OddsType.HK -> it.value[2]?.hkOdds.toString()
+                            }
                         } else {
                             ""
                         }
