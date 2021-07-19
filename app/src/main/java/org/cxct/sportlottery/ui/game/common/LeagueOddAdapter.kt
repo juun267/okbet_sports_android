@@ -240,10 +240,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     false
                 ).apply {
 
-                    PlayTypeUtils.getPlayTypeTitleResId(it.key, item.matchInfo?.sportType?.code)
-                        ?.let {
-                            this.odd_btn_type.text = itemView.context.getString(it)
-                        }
+                    val playCateName = PlayTypeUtils
+                        .getPlayTypeTitleResId(it.key, item.matchInfo?.sportType?.code)?.let {
+                            itemView.context.getString(it)
+                        } ?: ""
+
+                    this.odd_btn_type.text = playCateName
 
                     this.odd_btn_home.apply {
 
