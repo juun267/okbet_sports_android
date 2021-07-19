@@ -265,8 +265,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
 
                             text = when {
-                                PlayTypeUtils.getOUSeries().map { it.code }
-                                    .contains(it.key) -> OUType.O_TYPE.title
+                                PlayTypeUtils.getOUSeries().map { it.code }.contains(it.key) -> {
+                                    itemView.context.getString(R.string.odd_button_ou_o)
+                                }
                                 else -> ""
                             }
                         }
@@ -318,8 +319,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
 
                             text = when {
-                                PlayTypeUtils.getOUSeries().map { it.code }
-                                    .contains(it.key) -> OUType.U_TYPE.title
+                                PlayTypeUtils.getOUSeries().map { it.code }.contains(it.key) -> {
+                                    itemView.context.getString(R.string.odd_button_ou_u)
+                                }
                                 else -> ""
                             }
                         }
