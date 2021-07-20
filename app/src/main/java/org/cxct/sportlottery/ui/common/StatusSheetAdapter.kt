@@ -15,6 +15,8 @@ class StatusSheetAdapter(private val checkedListener: ItemCheckedListener) :
 
     private var mPreviousItem: String? = null
 
+    var checkedItemCode: String? = null
+
     var defaultCheckedCode: String? = null
         set(value) {
             field = value
@@ -49,6 +51,7 @@ class StatusSheetAdapter(private val checkedListener: ItemCheckedListener) :
 
         if ((data.code == defaultCheckedCode || data.code == null) && mPreviousItem == null) {
             data.isChecked = true
+            checkedItemCode = data.code
             mPreviousItem = dataList[position].showName
         }
 
@@ -69,6 +72,8 @@ class StatusSheetAdapter(private val checkedListener: ItemCheckedListener) :
             data.isChecked = true
 
             checkedListener.onChecked(checkbox.isChecked, data)
+
+            checkedItemCode = data.code
 
             notifyItemChanged(position)
         }

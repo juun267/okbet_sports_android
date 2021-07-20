@@ -14,18 +14,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
-import org.cxct.sportlottery.network.bet.MatchOdd
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
+import org.cxct.sportlottery.network.bet.settledDetailList.Other
+import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.getOdds
 
 class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener,
                                 private val backClickListener: BackClickListener,
-                                private val sportSelectListener: SportSelectListener,
-                                private val dateSelectListener: DateSelectListener,
+                                private val sportDateSelectListener: SportDateSelectListener
                                 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
@@ -38,9 +39,18 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
             notifyDataSetChanged()
         }
 
+    var mOther: Other? = null
+
+    var mSelectedSportDate : Pair<String?, String?>? = null
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
-    fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
+    fun addFooterAndSubmitList(other: Other?, list: List<Row>?, isLastPage: Boolean) {
+        mOther = other
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
@@ -69,7 +79,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
         when (holder) {
 
             is TitleBarViewHolder -> {
-                holder.bind(backClickListener, sportSelectListener, dateSelectListener)
+                holder.bind(mSelectedSportDate, backClickListener, sportDateSelectListener)
             }
 
             is ItemViewHolder -> {
@@ -88,7 +98,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
             }
 
             is FooterViewHolder -> {
-                //TODO Cheryl: Mark說會有新api, 等新api取值後帶入
+                holder.bind(mOther)
             }
 
             is NoDataViewHolder -> {
@@ -118,15 +128,16 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
         private val parlayAdapter by lazy { ParlayItemAdapter() }
 
         fun bind(row: Row, oddsType: OddsType) {
+            binding.matchOdd = row.matchOdds?.firstOrNull()
             binding.row = row
-            binding.tvParlayType.text = row.parlayType.replace("C", "串")
+            binding.tvParlayType.text = row.parlayType?.replace("C", "串")
 
             binding.rvParlay.apply {
                 adapter = parlayAdapter
                 layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
-                parlayAdapter.addFooterAndSubmitList(row.matchOdds, false)
+                parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
                 parlayAdapter.oddsType = oddsType
-                parlayAdapter.gameType = row.gameType
+                parlayAdapter.gameType = row.gameType ?: ""
             }
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
@@ -146,7 +157,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
     class OutrightItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentOutrightBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(row: Row, oddsType: OddsType) {
-            val first = row.matchOdds.firstOrNull()
+            val first = row.matchOdds?.firstOrNull()
 
             binding.row = row
             binding.matchOdd = first
@@ -180,7 +191,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(row: Row, oddsType: OddsType) {
-            val first = row.matchOdds.firstOrNull()
+            val first = row.matchOdds?.firstOrNull()
 
             binding.row = row
             binding.matchOdd = first
@@ -211,8 +222,8 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
     }
 
     class FooterViewHolder private constructor(val binding: ItemAccountHistoryNextTotalBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row) {
-            binding.row = data
+        fun bind(data: Other?) {
+            binding.other = data
             binding.executePendingBindings()
         }
 
@@ -228,7 +239,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
 
     class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(backClickListener: BackClickListener, sportSelectListener: SportSelectListener, dateSelectListener: DateSelectListener) {
+        fun bind(mSelectedSportDate: Pair<String?, String?>?, backClickListener: BackClickListener, selectListener: SportDateSelectListener) {
             itemView.apply {
 
                 iv_back.setOnClickListener {
@@ -248,25 +259,32 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
                 }
 
                 val dateStatusList =
-                    listOf(StatusSheetData("0", dateString(0)),
-                           StatusSheetData("1", dateString(1)),
-                           StatusSheetData("2", dateString(2)),
-                           StatusSheetData("3", dateString(3)),
-                           StatusSheetData("4", dateString(4)),
-                           StatusSheetData("5", dateString(5)),
-                           StatusSheetData("6", dateString(6)))
+                    listOf(StatusSheetData(TimeUtil.getMinusDate(0, YMD_FORMAT), dateString(0)),
+                           StatusSheetData(TimeUtil.getMinusDate(1, YMD_FORMAT), dateString(1)),
+                           StatusSheetData(TimeUtil.getMinusDate(2, YMD_FORMAT), dateString(2)),
+                           StatusSheetData(TimeUtil.getMinusDate(3, YMD_FORMAT), dateString(3)),
+                           StatusSheetData(TimeUtil.getMinusDate(4, YMD_FORMAT), dateString(4)),
+                           StatusSheetData(TimeUtil.getMinusDate(5, YMD_FORMAT), dateString(5)),
+                           StatusSheetData(TimeUtil.getMinusDate(6, YMD_FORMAT), dateString(6)),
+                           StatusSheetData(TimeUtil.getMinusDate(7, YMD_FORMAT), dateString(7)))
+
+
+                sport_selector.selectedText = sportStatusList.find { it.code == mSelectedSportDate?.first }?.showName
+                sport_selector.selectedTag = mSelectedSportDate?.first
+
+                date_selector.selectedText = dateStatusList.find { it.code == mSelectedSportDate?.second }?.showName
+                date_selector.selectedTag = mSelectedSportDate?.second
 
                 sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
                 sport_selector.dataList = sportStatusList
                 sport_selector.setOnItemSelectedListener {
-                    sportSelectListener.onSelect(it.code, date_selector.selectedTag)
+                    selectListener.onSelect(it.code, date_selector.getNowSelectedItemCode())
                 }
 
-                date_selector.selectedText = dateString(0)
                 date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
                 date_selector.dataList = dateStatusList
                 date_selector.setOnItemSelectedListener {
-                    dateSelectListener.onSelect(it.code, sport_selector.selectedTag)
+                    selectListener.onSelect(sport_selector.getNowSelectedItemCode(), it.code)
                 }
 
             }
@@ -306,11 +324,7 @@ class BackClickListener(val clickListener: () -> Unit) {
     fun onClick() = clickListener()
 }
 
-class SportSelectListener(val selectedListener: (sport: String?, date: String?) -> Unit) {
-    fun onSelect(sport: String?, date: String?) = selectedListener(sport, date)
-}
-
-class DateSelectListener(val selectedListener: (sport: String?, date: String?) -> Unit) {
+class SportDateSelectListener(val selectedListener: (sport: String?, date: String?) -> Unit) {
     fun onSelect(sport: String?, date: String?) = selectedListener(sport, date)
 }
 

@@ -10,6 +10,8 @@ data class Play(
     val name: String?,
     @Json(name = "num")
     val num: Int?,
+    @Json(name = "selectionType")
+    val selectionType: Int?,
     @Json(name = "playCateList")
     val playCateList: List<PlayCate>?
 ) {

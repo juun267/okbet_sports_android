@@ -5,10 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -18,6 +21,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.getOdds
@@ -189,6 +193,35 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+
+    fun addBetSingle(stake: Double, betInfoListData: BetInfoListData) {
+        val parlayType =
+            if (betInfoListData.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else betInfoListData.parlayOdds?.parlayType
+
+        val request = BetAddRequest(
+            listOf(
+                Odd(
+                    betInfoListData.matchOdd.oddsId,
+                    getOdds(betInfoListData.matchOdd, oddsType.value ?: OddsType.EU),
+                    stake
+                )
+            ),
+            listOf(Stake(parlayType ?: "", stake)),
+            1,
+            oddsType.value?.code ?: OddsType.EU.code
+        )
+
+        viewModelScope.launch {
+            val result = getBetApi(betInfoListData.matchType, request)
+            _betAddResult.postValue(Event(result))
+            Event(result).getContentIfNotHandled()?.success?.let {
+                if (it) {
+                    afterBet(betInfoListData.matchType, result)
+                }
+            }
+        }
+    }
+
     fun saveOddsHasChanged(matchOdd: org.cxct.sportlottery.network.bet.info.MatchOdd) {
         betInfoRepository.saveOddsHasChanged(matchOdd)
     }
@@ -205,11 +238,16 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun removeBetInfoAll() {
+        if(betInfoRepository.showBetInfoSingle.value?.peekContent() == true)
         betInfoRepository.clear()
     }
 
     fun getBetInfoListForParlay() {
         betInfoRepository.addInBetInfoParlay()
+    }
+
+    fun addInBetInfo(){
+        betInfoRepository.addInBetInfo()
     }
 
     protected fun getOddState(
@@ -229,6 +267,13 @@ abstract class BaseOddButtonViewModel(
             else -> OddState.SAME.state
         }
     }
+
+    private fun getSpreadState(oldSpread: String, newSpread: String): Int =
+        when {
+            newSpread != oldSpread -> SpreadState.DIFFERENT.state
+            else -> SpreadState.SAME.state
+        }
+
 
     private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
         betInfoRepository.matchOddList.value?.forEach {
@@ -252,11 +297,14 @@ abstract class BaseOddButtonViewModel(
                             ), newItem
                         )
 
+                        oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
+
                         newItem.status.let { status -> oldItem.status = status }
 
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                            newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
                         //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
@@ -293,8 +341,12 @@ abstract class BaseOddButtonViewModel(
                                     loginRepository.mOddsType.value ?: OddsType.EU
                                 ), newItem
                             )
+
+                            oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
+
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                            newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
                         newItem.status.let { status -> oldItem.status = status }

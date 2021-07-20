@@ -1,21 +1,23 @@
 package org.cxct.sportlottery.ui.main.accountHistory
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.bet.list.BetListRequest
-import org.cxct.sportlottery.network.bet.list.BetListResult
-import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListRequest
+import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
+import org.cxct.sportlottery.network.bet.settledList.BetSettledListRequest
+import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
+import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -26,8 +28,6 @@ class AccountHistoryViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val sportMenuRepository: SportMenuRepository,
-    private val thirdGameRepository: ThirdGameRepository,
 ) : BaseNoticeViewModel(
     androidContext,
     userInfoRepository,
@@ -43,8 +43,11 @@ class AccountHistoryViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val betRecordResult: LiveData<BetListResult>
-        get() = _betRecordResult
+    val selectedSportDate: LiveData<Pair<String?, String?>> //<sport, date>
+        get() = _selectedSportDate
+
+    val betRecordResult: LiveData<BetSettledListResult>
+        get() = _betSettledRecordResult
 
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
@@ -52,66 +55,66 @@ class AccountHistoryViewModel(
     val settlementNotificationMsg: LiveData<Event<SportBet>>
         get() = _settlementNotificationMsg
 
+    val betDetailResult: LiveData<BetSettledDetailListResult>
+        get() = _betDetailResult
 
     private val _loading = MutableLiveData<Boolean>()
-    private val _betRecordResult = MutableLiveData<BetListResult>()
-
-    private var mBetListRequest: BetListRequest? = null
-
+    private val _selectedSportDate = MutableLiveData<Pair<String?, String?>>()
+    private val _betSettledRecordResult = MutableLiveData<BetSettledListResult>()
+    private var mBetSettledListRequest: BetSettledListRequest? = null
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
+    private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
+
+    val emptyFilter = { item: String? ->
+        if (item.isNullOrEmpty()) null else item
+    }
 
     fun searchBetRecord(
-        isChampionChecked: Boolean? = false,
-        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
-        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
-        status: String? = null,
+        gameType: String ?= "",
     ) {
-        val statusFilter = { item: String? ->
-            if (item.isNullOrEmpty()) listOf(1, 2, 3, 4, 5, 6, 7) else item.toList().map {
-                Character.getNumericValue(it)
 
-            }
-        }
-        val championOnly = if (isChampionChecked == true) 1 else 0
-        mBetListRequest = BetListRequest(
-            championOnly = championOnly,
-            statusList = statusFilter(status),
+        BetSettledListRequest(
             startTime = startTime,
             endTime = endTime,
+            gameType = emptyFilter(gameType),
             page = 1,
             pageSize = PAGE_SIZE
-        )
-        mBetListRequest?.let { getBetList(it) }
+        ).let {
+            getBetSettledList(it)
+        }
     }
 
     var isLastPage = false
     private var nowPage = 1
-    val recordDataList = mutableListOf<Row>()
+
+    private var mBetDetailRequest: BetSettledDetailListRequest? = null
+
+    val recordDataList = mutableListOf<Row?>()
+    val startTime = TimeUtil.getDefaultTimeStamp().startTime
+    val endTime = TimeUtil.getDefaultTimeStamp().endTime
 
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (_loading.value != true && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
                 loading()
-                mBetListRequest?.let {
-                    mBetListRequest = BetListRequest(
-                        championOnly = it.championOnly,
-                        statusList = it.statusList,
-                        startTime = it.startTime,
-                        endTime = it.endTime,
+                mBetSettledListRequest?.let {
+                    mBetSettledListRequest = BetSettledListRequest(
+                        startTime = startTime,
+                        endTime = endTime,
                         page = it.page?.plus(1),
                         pageSize = PAGE_SIZE
                     )
-                    getBetList(mBetListRequest!!)
+                    getBetSettledList(mBetSettledListRequest!!)
                 }
             }
         }
 
     }
 
-    private fun getBetList(betListRequest: BetListRequest) {
+    private fun getBetSettledList(betSettledListRequest: BetSettledListRequest) {
 
-        if (betListRequest.page == 1) {
+        if (betSettledListRequest.page == 1) {
             nowPage = 1
             recordDataList.clear()
         }
@@ -119,26 +122,16 @@ class AccountHistoryViewModel(
         loading()
         viewModelScope.launch {
             doNetwork(androidContext) {
-                OneBoSportApi.betService.getBetList(betListRequest)
+                OneBoSportApi.betService.getBetSettledList(betSettledListRequest)
             }?.let { result ->
                 hideLoading()
                 result.rows?.let { recordDataList.addAll(it) }
                 isLastPage = (recordDataList.size >= (result.total ?: 0))
-                _betRecordResult.value = result
+                _betSettledRecordResult.value = result
             }
         }
 
     }
-
-    private fun loading() {
-        _loading.postValue(true)
-    }
-
-    private fun hideLoading() {
-        _loading.postValue(false)
-    }
-
-
     //獲取系統公告
     fun getAnnouncement() {
         if (isLogin.value == true) {
@@ -164,4 +157,75 @@ class AccountHistoryViewModel(
             }
         }
     }
+
+    var isDetailLastPage = false
+    private var nowDetailPage = 1
+    val detailDataList = mutableListOf<org.cxct.sportlottery.network.bet.settledDetailList.Row>()
+
+    fun searchDetail(gameType: String? = null, date: String? = null) {
+
+        val startTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.START_OF_DAY, TimeUtil.YMD_FORMAT).toString()
+        val endTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.END_OF_DAY, TimeUtil.YMD_FORMAT).toString()
+
+        mBetDetailRequest = BetSettledDetailListRequest(
+            gameType = emptyFilter(gameType),
+            statDate = date,
+            startTime = startTime,
+            endTime = endTime,
+            page = 1,
+            pageSize = PAGE_SIZE)
+        mBetDetailRequest?.let { getDetailList(it) }
+    }
+
+    fun getDetailNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
+        if (_loading.value != true && !isDetailLastPage) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {
+                loading()
+                mBetDetailRequest?.let {
+                    mBetDetailRequest = BetSettledDetailListRequest(
+                        startTime = it.startTime,
+                        endTime = it.endTime,
+                        page = it.page?.plus(1),
+                        pageSize = PAGE_SIZE)
+                    getDetailList(mBetDetailRequest!!)
+                }
+            }
+        }
+    }
+
+
+    private fun getDetailList(betDetailRequest: BetSettledDetailListRequest) {
+
+        if (betDetailRequest.page == 1) {
+            nowDetailPage = 1
+            detailDataList.clear()
+        }
+
+        loading()
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.betService.getBetSettledDetailList(betDetailRequest)
+            }?.let { result ->
+                hideLoading()
+                result.rows?.let { detailDataList.addAll(it) }
+                isDetailLastPage = (detailDataList.size >= (result.total ?: 0))
+                _betDetailResult.value = result
+            }
+        }
+
+    }
+
+    fun setSelectedSportDate(sport: String? = _selectedSportDate.value?.first, date: String? = _selectedSportDate.value?.second) {
+        _selectedSportDate.value = Pair(sport, date)
+    }
+
+    private fun loading() {
+        _loading.postValue(true)
+    }
+
+    private fun hideLoading() {
+        _loading.postValue(false)
+    }
+
+
 }

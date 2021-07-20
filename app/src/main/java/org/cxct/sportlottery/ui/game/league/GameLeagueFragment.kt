@@ -13,10 +13,7 @@ import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.CateMenuCode
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -143,11 +140,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             it.find { play ->
                 play.isSelected
             }?.let { selectedPlay ->
-                if (selectedPlay.code != PlayType.MAIN.code && selectedPlay.playCateList?.size ?: 0 > 1) {
-                    selectedPlay.let {
-                        showPlayCateBottomSheet(selectedPlay)
-                        hideLoading()
-                    }
+                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code) {
+                    showPlayCateBottomSheet(selectedPlay)
                 }
             }
         })

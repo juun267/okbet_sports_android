@@ -19,7 +19,7 @@
     "customerServiceUrl": "https://www.google.com",
     "customerServiceUrl2": "https://www.baidu.com/",
     "defaultSkin": "blue",
-    "maintainStatus": "1",
+    "maintainStatus": "0",
     "maintainInfo": "系统维护公告：维护时间8:00-12:00",
     "appDownUrl": "",
     "mobileAppDownUrl": "",
