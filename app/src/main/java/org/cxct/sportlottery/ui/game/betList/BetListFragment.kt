@@ -126,6 +126,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.getMoney()
     }
 
+    /**
+     * 顯示串關說明
+     */
     private fun showParlayDescription() {
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_dialog_parlay_description, null)
         val dialog = BottomSheetDialog(context ?: requireContext())
@@ -138,7 +141,25 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
             show()
         }
+    }
 
+    /**
+     * 賠率更改提示
+     * @param show true:顯示, false:隱藏
+     */
+    private fun showHideOddsChangeWarn(show: Boolean) {
+        val visibilityControl = if (show) View.VISIBLE else View.GONE
+
+        btn_refresh_odds.visibility = visibilityControl
+        tv_warn_odds_change.visibility = visibilityControl
+    }
+
+    /**
+     * 投注關閉提示
+     * @param show true:顯示, false:隱藏
+     */
+    private fun showHideOddsCloseWarn(show: Boolean) {
+        ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     companion object {

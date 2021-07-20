@@ -281,6 +281,7 @@
 
         <!-- 選項關閉提示 -->
         <LinearLayout
+            android:id="@+id/ll_odds_close_warn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btn_bet"
