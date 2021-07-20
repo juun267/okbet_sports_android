@@ -40,7 +40,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(args.matchType, args.leagueId, it)
+                viewModel.switchPlay(args.matchType, args.leagueId.toList(), it)
                 loading()
             }
         }
@@ -129,7 +129,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onStart() {
         super.onStart()
 
-        viewModel.getLeagueOddsList(args.matchType, args.leagueId, isReloadPlayCate = true)
+        viewModel.getLeagueOddsList(args.matchType, args.leagueId.toList(), isReloadPlayCate = true)
         loading()
     }
 
@@ -240,7 +240,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
-                viewModel.switchPlayCategory(args.matchType, args.leagueId, data.code)
+                viewModel.switchPlayCategory(args.matchType, args.leagueId.toList(), data.code)
                 bottomSheet.dismiss()
                 loading()
             })

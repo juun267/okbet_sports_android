@@ -856,7 +856,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
                 matchType ?: args.matchType,
                 sportType,
-                matchId
+                listOf(matchId).toTypedArray()
             )
 
             findNavController().navigate(action)

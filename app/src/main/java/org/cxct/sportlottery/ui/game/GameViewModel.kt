@@ -643,26 +643,27 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
+    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, play: Play) {
         updatePlaySelectedState(play)
 
-        getLeagueOddsList(matchType, leagueId)
+        getLeagueOddsList(matchType, leagueIdList)
     }
 
-    fun switchPlayCategory(matchType: MatchType, leagueId: String, playCateCode: String?) {
+    fun switchPlayCategory(
+        matchType: MatchType,
+        leagueIdList: List<String>,
+        playCateCode: String?
+    ) {
         _playCate.value = playCateCode
 
-        getLeagueOddsList(matchType, leagueId)
+        getLeagueOddsList(matchType, leagueIdList)
     }
 
     fun getLeagueOddsList(
         matchType: MatchType,
-        leagueId: String,
+        leagueIdList: List<String>,
         isReloadPlayCate: Boolean = false
     ) {
-        val leagueIdList by lazy {
-            listOf(leagueId)
-        }
 
         if (isReloadPlayCate) {
             getPlayCategory(matchType)
