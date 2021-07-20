@@ -775,5 +775,6 @@
 
     <!--keyboard-->
     <string name="keyboard_done">已完成</string>
+    <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
 
 </resources>
