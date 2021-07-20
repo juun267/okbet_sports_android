@@ -14,9 +14,14 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
+import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
+import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -110,6 +115,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { list ->
+                Timber.e("Dean, list = $list")
                 betListDiffAdapter.submitList(list)
             }
         })
@@ -118,6 +124,34 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initSocketObserver() {
         receiver.userMoney.observe(viewLifecycleOwner, {
             it?.let { money -> tv_total_bet_amount.text = TextUtil.formatMoney(money) }
+        })
+
+        receiver.matchOddsChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            viewModel.updateMatchOdd(it)
+        })
+
+        receiver.oddsChange.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            viewModel.updateMatchOdd(it)
+        })
+
+        receiver.globalStop.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+            val list = betListDiffAdapter.currentList
+            list.forEach { listData ->
+                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
+                    listData.matchOdd.status = BetStatus.LOCKED.code
+                }
+            }
+            betListDiffAdapter.submitList(list)
+        })
+
+        receiver.producerUp.observe(viewLifecycleOwner, {
+            if (it == null) return@observe
+
+            unsubscribeChannel(betListDiffAdapter.currentList)
+            subscribeChannel(betListDiffAdapter.currentList)
         })
     }
 
@@ -168,6 +202,27 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun showHideCantParlayWarn(show: Boolean) {
         ll_cant_parlay_warn.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun subscribeChannel(list: MutableList<BetInfoListData>) {
+        list.forEach { listData ->
+            if (listData.matchType == MatchType.OUTRIGHT) {
+                service.subscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
+            } else {
+                service.subscribeEventChannel(listData.matchOdd.matchId)
+            }
+        }
+    }
+
+
+    private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
+        list.forEach { listData ->
+            if (listData.matchType == MatchType.OUTRIGHT) {
+                service.unsubscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
+            } else {
+                service.unsubscribeEventChannel(listData.matchOdd.matchId)
+            }
+        }
     }
 
     companion object {
