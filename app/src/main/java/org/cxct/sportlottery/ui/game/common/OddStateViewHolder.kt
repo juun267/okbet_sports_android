@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.ui.game.widget.OddButton
+import org.cxct.sportlottery.ui.game.widget.OddButtonV4
 
 abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     interface OddStateChangeListener {
@@ -20,6 +21,27 @@ abstract class OddStateViewHolder(itemView: View) : RecyclerView.ViewHolder(item
     private val mHandler: Handler by lazy { Handler() }
 
     protected fun setupOddState(oddButton: OddButton, itemOdd: Odd?) {
+
+        when (itemOdd?.oddState) {
+            MatchOdd.OddState.SAME.state -> {
+                itemOdd.runnable?.let {
+                    return
+                } ?: run {
+                    oddButton.oddStatus = MatchOdd.OddState.SAME.state
+                }
+            }
+            MatchOdd.OddState.LARGER.state -> {
+                oddButton.oddStatus = MatchOdd.OddState.LARGER.state
+                resetRunnable(itemOdd)
+            }
+            MatchOdd.OddState.SMALLER.state -> {
+                oddButton.oddStatus = MatchOdd.OddState.SMALLER.state
+                resetRunnable(itemOdd)
+            }
+        }
+    }
+
+    protected fun setupOddState(oddButton: OddButtonV4, itemOdd: Odd?) {
 
         when (itemOdd?.oddState) {
             MatchOdd.OddState.SAME.state -> {

@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.OddState
 
 
 class OddButtonV4 @JvmOverloads constructor(
@@ -14,10 +16,6 @@ class OddButtonV4 @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
-
-    interface OnOddStatusChangedListener {
-        fun onOddStateChangedFinish()
-    }
 
     var betStatus: Int? = null
         set(value) {
@@ -36,7 +34,6 @@ class OddButtonV4 @JvmOverloads constructor(
                 setupOddState(it)
             }
         }
-
 
     init {
         inflate(context, R.layout.button_odd_v4, this)
@@ -59,5 +56,28 @@ class OddButtonV4 @JvmOverloads constructor(
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
     }
 
-    private fun setupOddState(oddState: Int) {}
+    private fun setupOddState(oddState: Int) {
+        if (!isEnabled) return
+
+        when (oddState) {
+            OddState.LARGER.state -> {
+                odd_button_v4.background =
+                    ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg_green)
+
+                isActivated = true
+            }
+            OddState.SMALLER.state -> {
+                odd_button_v4.background =
+                    ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg_red)
+
+                isActivated = true
+            }
+            else -> {
+                odd_button_v4.background =
+                    ContextCompat.getDrawable(context, R.drawable.shape_button_odd_bg)
+
+                isActivated = false
+            }
+        }
+    }
 }
