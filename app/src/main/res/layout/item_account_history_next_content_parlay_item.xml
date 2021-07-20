@@ -10,7 +10,7 @@
 
         <variable
             name="matchOdd"
-            type="org.cxct.sportlottery.network.bet.MatchOdd" />
+            type="org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd" />
     </data>
 
     <LinearLayout
@@ -64,6 +64,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
+                android:text="@{matchOdd.rtScore}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_game_type"
                 tools:text="113 - 116" />
@@ -81,22 +82,6 @@
                 tools:text="菲尼克斯太阳" />
 
             <TextView
-                android:id="@+id/symbol_at"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginStart="4dp"
-                android:gravity="center"
-                android:text="@string/at"
-                android:textColor="@color/colorGrayLight"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
-                app:layout_constraintStart_toEndOf="@id/tv_play_name"
-                app:layout_constraintTop_toTopOf="@+id/tv_play_name"
-                app:layout_constraintVertical_chainStyle="spread"
-                tools:text=" @" />
-
-            <TextView
                 android:id="@+id/tv_odd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -106,9 +91,9 @@
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
-                app:layout_constraintStart_toEndOf="@id/symbol_at"
+                app:layout_constraintStart_toEndOf="@id/tv_play_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name"
-                tools:text="1.860" />
+                tools:text="\@1.860" />
 
             <TextView
                 android:id="@+id/tv_team_home"

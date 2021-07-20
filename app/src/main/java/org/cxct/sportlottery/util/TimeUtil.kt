@@ -91,6 +91,25 @@ object TimeUtil {
         }
     }
 
+    /**
+     * return : 星期幾
+     */
+    fun setupDayOfWeek(date: String?): Int {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = dateToTimeStamp(date = date) ?:0
+
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
+            else -> R.string.sunday
+        }
+    }
+
     fun getDefaultTimeStamp(): TimeRangeParams {
         val cPair = getCalendarForDates(6)
         val minusDayTimeStamp = cPair.first.timeInMillis

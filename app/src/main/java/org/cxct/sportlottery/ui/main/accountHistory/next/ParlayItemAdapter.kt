@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
-import org.cxct.sportlottery.network.bet.MatchOdd
+import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -81,7 +81,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             binding.gameType = gameType
             binding.matchOdd = matchOdd
 
-            matchOdd?.let {
+            matchOdd.let {
                 val odds = getOdds(matchOdd, oddsType)
                 val oddStr = if (odds > 0)
                     String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))

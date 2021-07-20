@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.main.accountHistory
+package org.cxct.sportlottery.ui.main.accountHistory.first
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,17 +13,20 @@ import kotlinx.android.synthetic.main.fragment_account_history.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
-import org.cxct.sportlottery.ui.main.accountHistory.next.BackClickListener
+import org.cxct.sportlottery.ui.main.accountHistory.*
 
 class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
         it.let { data ->
-            val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data)
+            viewModel.setSelectedSportDate(date = data.statDate)
+            val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
             findNavController().navigate(action)
         }
     }, BackClickListener {
         activity?.finish()
+    }, SportSelectListener {
+        viewModel.setSelectedSportDate(sport = it)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -68,6 +71,10 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
             rvAdapter.oddsType = it
+        })
+
+        viewModel.selectedSportDate.observe(viewLifecycleOwner, {
+            viewModel.searchBetRecord(it.first)
         })
 
     }
