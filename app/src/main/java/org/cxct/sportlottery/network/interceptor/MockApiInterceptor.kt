@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
@@ -33,6 +34,8 @@ import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
+import org.cxct.sportlottery.network.Constants.MYFAVORITE_QUERY
+import org.cxct.sportlottery.network.Constants.MYFAVORITE_SAVE
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
@@ -113,6 +116,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(INDEX_CHECK_TOKEN) -> {
                     response = getMockJsonData(request, "index_check_token.mock")
+                }
+                path.contains(INDEX_PROMOTENOTICE) -> {
+                    response = getMockJsonData(request, "index_promotenotice.mock")
                 }
                 path.contains(MATCH_BET_INFO) -> {
                     response = getMockJsonData(request, "match_bet_info.mock")
@@ -248,6 +254,12 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(MATCH_CATEGORY_SPECIAL_MENU) -> {
                     response = getMockJsonData(request, "match_category_special_menu.mock")
+                }
+                path.contains(MYFAVORITE_QUERY) -> {
+                    response = getMockJsonData(request, "my_favorite_query.mock")
+                }
+                path.contains(MYFAVORITE_SAVE) -> {
+                    response = getMockJsonData(request, "my_favorite_save.mock")
                 }
             }
         }
