@@ -761,7 +761,7 @@
     <string name="account_history_overview">账户历史总览</string>
     <string name="bet_num_and_bet_date">注单号 / 结算日期</string>
 
-    <!--    account history-->
+    <!--account history-->
     <string name="date">日期</string>
     <string name="bet_amount">投注金额</string>
     <string name="available_amount">有效金额</string>
@@ -775,5 +775,10 @@
 
     <!--keyboard-->
     <string name="keyboard_done">已完成</string>
+
+    <!--odds button-->
+    <string name="odds_button_name_first">第一</string>
+    <string name="odds_button_name_ant">任何</string>
+    <string name="odds_button_name_last">最后</string>
 
 </resources>

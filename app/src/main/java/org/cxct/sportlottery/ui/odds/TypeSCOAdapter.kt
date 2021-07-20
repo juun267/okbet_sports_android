@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.OddSpreadForSCOCompare
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
@@ -38,22 +40,14 @@ class TypeSCOAdapter(
     }
 
 
-    private var keys = mutableListOf<String>().apply {
-        oddsDetail.scoItem.forEach {
-            add(it.key)
-        }
-    }
+    private var keys = oddsDetail.scoItem.mapTo(mutableListOf(), { it.key })
 
 
     var mOddsDetail: OddsDetailListData? = null
         set(value) {
             field = value
             oddsDetail = value as OddsDetailListData
-            keys = mutableListOf<String>().apply {
-                oddsDetail.scoItem.forEach {
-                    add(it.key)
-                }
-            }
+            keys = oddsDetail.scoItem.mapTo(mutableListOf(), { it.key })
             notifyDataSetChanged()
         }
 
@@ -97,19 +91,15 @@ class TypeSCOAdapter(
 
         fun bindModel(key: String) {
 
-            if (!oddsDetail.isMoreExpand && adapterPosition > 4) {
-                clItem.visibility = View.GONE
-            } else {
-                clItem.visibility = View.VISIBLE
-            }
+            clItem.visibility = if (!oddsDetail.isMoreExpand && adapterPosition > 4) View.GONE else View.VISIBLE
 
             tvName.text = key
 
             val oddsList = oddsDetail.scoItem[key]
 
-            val fOdds = oddsList?.find { it?.spread?.contains("SCORE-1ST") == true }
-            val aOdds = oddsList?.find { it?.spread?.contains("SCORE-ANT") == true }
-            val lOdds = oddsList?.find { it?.spread?.contains("SCORE-LAST") == true }
+            val fOdds = oddsList?.find { it?.spread?.contains(OddSpreadForSCOCompare.SCORE_1ST.spread) == true }
+            val aOdds = oddsList?.find { it?.spread?.contains(OddSpreadForSCOCompare.SCORE_ANT.spread) == true }
+            val lOdds = oddsList?.find { it?.spread?.contains(OddSpreadForSCOCompare.SCORE_LAST.spread) == true }
 
             btnOdds1st?.apply {
                 setupOdd(fOdds, oddsType)
@@ -123,7 +113,7 @@ class TypeSCOAdapter(
                 setOnClickListener {
                     fOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
-                tv_name.text = "第一"
+                tv_name.text = context.getString(R.string.odds_button_name_first)
                 tv_spread.text = ""
             }
 
@@ -139,7 +129,7 @@ class TypeSCOAdapter(
                 setOnClickListener {
                     aOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
-                tv_name.text = "任何"
+                tv_name.text = context.getString(R.string.odds_button_name_ant)
                 tv_spread.text = ""
             }
 
@@ -155,7 +145,7 @@ class TypeSCOAdapter(
                 setOnClickListener {
                     lOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
-                tv_name.text = "最后"
+                tv_name.text = context.getString(R.string.odds_button_name_last)
                 tv_spread.text = ""
             }
         }
@@ -170,16 +160,12 @@ class TypeSCOAdapter(
 
         fun bindModel(key: String) {
 
-            if (!oddsDetail.isMoreExpand && adapterPosition > 4) {
-                clItem.visibility = View.GONE
-            } else {
-                clItem.visibility = View.VISIBLE
-            }
+            clItem.visibility = if (!oddsDetail.isMoreExpand && adapterPosition > 4) View.GONE else View.VISIBLE
 
             tvName.text = key
 
             val oddsList = oddsDetail.scoItem[key]
-            val odds = oddsList?.find { TextUtil.compareWithGameKey("SCORE-N", "${it?.spread}") }
+            val odds = oddsList?.find { TextUtil.compareWithGameKey(OddSpreadForSCOCompare.SCORE_N.spread, "${it?.spread}") }
 
             btnOdds?.apply {
                 setupOdd(odds, oddsType)

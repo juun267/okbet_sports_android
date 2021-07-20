@@ -79,11 +79,15 @@ class OddsButton @JvmOverloads constructor(
 
     fun setupOdd(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            if (odd?.name.isNullOrEmpty()) visibility = View.GONE else tv_name.text = odd?.name
+            text = odd?.name
+            visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
+
         tv_spread.apply {
-            if (odd?.spread.isNullOrEmpty()) visibility = View.GONE else tv_spread.text = odd?.spread
+            text = odd?.spread
+            visibility = if (odd?.spread.isNullOrEmpty())View.GONE else View.VISIBLE
         }
+
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null)
             BetStatus.LOCKED.code else odd.status

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -800,48 +801,43 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun selectSCO(oddsDetail: OddsDetailListData, teamName: String, teamNameList: MutableList<String>): OddsDetailListData {
             oddsDetail.gameTypeSCOSelect = teamName
 
-            if (teamName == teamNameList[0]) {
-                tvHomeName?.isSelected = true
-                tvAwayName?.isSelected = false
-            } else {
-                tvHomeName?.isSelected = false
-                tvAwayName?.isSelected = true
-            }
-
-            //過濾掉 其他:(第一、任何、最後), 无進球
-            val newList = oddsDetail.oddArrayList.filterNot { odd ->
-                odd?.spread == "SCORE-1ST-O" || odd?.spread == "SCORE-ANT-O" || odd?.spread == "SCORE-LAST-O" || odd?.spread == "SCORE-N"
-            }
-
-            //依隊名分開
-            val groupTeamName = newList.groupBy {
-                it?.extInfo
-            }
+            tvHomeName?.isSelected = teamName == teamNameList[0]
+            tvAwayName?.isSelected = teamName != teamNameList[0]
 
             //建立球員列表(一個球員三個賠率)
             var map: HashMap<String, List<Odd?>> = HashMap()
 
-            groupTeamName.forEach {
+            //過濾掉 其他:(第一、任何、最後), 无進球
+            //依隊名分開
+            oddsDetail.oddArrayList.filterNot { odd ->
+                odd?.spread == OddSpreadForSCO.SCORE_1ST_O.spread ||
+                        odd?.spread == OddSpreadForSCO.SCORE_ANT_O.spread ||
+                        odd?.spread == OddSpreadForSCO.SCORE_LAST_O.spread ||
+                        odd?.spread == OddSpreadForSCO.SCORE_N.spread
+            }.groupBy {
+                it?.extInfo
+            }.forEach {
                 if (it.key == teamName) {
                     map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>
                 }
             }
 
             //保留 其他:(第一、任何、最後), 无進球
-            val otherAndNone = oddsDetail.oddArrayList.filter { odd ->
-                odd?.spread == "SCORE-1ST-O" || odd?.spread == "SCORE-ANT-O" || odd?.spread == "SCORE-LAST-O" || odd?.spread == "SCORE-N"
-            }
-
             //依球員名稱分開
-            val groupPlayerName = otherAndNone.groupBy {
-                it?.name
-            }
-
             //倒序排列 多的在前(無進球只有一種賠率 放最後面)
-            val mapSort = groupPlayerName.entries.sortedByDescending { it.value.size }.associateBy({ it.key }, { it.value })
-
             //添加至球員列表內
-            mapSort.forEach {
+            oddsDetail.oddArrayList.filter { odd ->
+                odd?.spread == OddSpreadForSCO.SCORE_1ST_O.spread ||
+                        odd?.spread == OddSpreadForSCO.SCORE_ANT_O.spread ||
+                        odd?.spread == OddSpreadForSCO.SCORE_LAST_O.spread ||
+                        odd?.spread == OddSpreadForSCO.SCORE_N.spread
+            }.groupBy {
+                it?.name
+            }.entries.sortedByDescending {
+                it.value.size
+            }.associateBy(
+                { it.key }, { it.value }
+            ).forEach {
                 map[it.key ?: ""] = it.value
             }
 
