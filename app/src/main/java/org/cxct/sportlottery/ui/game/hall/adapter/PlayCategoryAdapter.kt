@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_play_category_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.sport.query.Play
 
 class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderPlayCategory>() {
@@ -31,8 +32,28 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Play, playCategoryListener: PlayCategoryListener?) {
-            itemView.play_category_name.text = item.name
+            itemView.play_name.text = item.name
+
+            itemView.play_arrow.visibility =
+                if (item.selectionType == SelectionType.SELECTABLE.code) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+            itemView.play_category_name.apply {
+                visibility =
+                    if (item.isSelected && item.selectionType == SelectionType.SELECTABLE.code) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                text = item.playCateList?.find { it.isSelected }?.name
+            }
+
             itemView.isSelected = item.isSelected
+
             itemView.setOnClickListener {
                 playCategoryListener?.onClick(item)
             }

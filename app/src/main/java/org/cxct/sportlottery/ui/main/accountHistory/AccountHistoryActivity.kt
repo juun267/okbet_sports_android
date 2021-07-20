@@ -88,6 +88,14 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
         rv_marquee.stopAuto()
     }
 
+    override fun onBackPressed() {
+        if (navController.previousBackStackEntry != null) {
+            navController.popBackStack()
+            return
+        }
+        finish()
+    }
+
     private fun initObserve() {
 
         viewModel.oddsType.observe(this, {

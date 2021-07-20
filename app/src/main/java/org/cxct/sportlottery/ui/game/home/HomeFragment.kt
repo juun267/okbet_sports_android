@@ -102,16 +102,20 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //20210712 紀錄：沒設定 betInfoRepository._isParlayPage，BetListDialog 就不會初始化，下注不會有投注彈窗
-        //賽事首頁 - 滾球盤、即將開賽盤、精選賽事、推薦賽事，都不屬於串關類型 切換
-        viewModel.isParlayPage(false)
+        try {
+            //20210712 紀錄：沒設定 betInfoRepository._isParlayPage，BetListDialog 就不會初始化，下注不會有投注彈窗
+            //賽事首頁 - 滾球盤、即將開賽盤、精選賽事、推薦賽事，都不屬於串關類型 切換
+            viewModel.isParlayPage(false)
 
-        initTable()
-        initRecommend()
-        initHighlight()
-        initEvent()
-        initObserve()
-        observeSocketData()
+            initTable()
+            initRecommend()
+            initHighlight()
+            initEvent()
+            initObserve()
+            observeSocketData()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onStart() {
@@ -190,12 +194,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         rv_highlight_sport_type.adapter = mHighlightSportTypeAdapter
         mHighlightSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
             highlight_tv_game_name.text = selectItem.name
-            highlight_iv_game_icon.setImageResource(GameConfigManager.getGameIcon(selectItem.code))
-            highlight_titleBar.setBackgroundResource(
-                GameConfigManager.getTitleBarBackground(
-                    selectItem.code
-                )
-            )
+
+            GameConfigManager.getGameIcon(selectItem.code)?.let {
+                highlight_iv_game_icon.setImageResource(it)
+            }
+
+            GameConfigManager.getTitleBarBackground(selectItem.code)?.let {
+                highlight_titleBar.setBackgroundResource(it)
+            }
 
             tv_play_type.text = when (SportType.getSportType(selectItem.code)) {
                 SportType.FOOTBALL, SportType.BASKETBALL -> getText(R.string.ou_hdp_hdp_title)

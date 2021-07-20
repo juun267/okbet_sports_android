@@ -9,10 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.FavoriteType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.common.TimeRangeParams
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.LeagueListRequest
 import org.cxct.sportlottery.network.league.LeagueListResult
@@ -73,7 +70,7 @@ class GameViewModel(
     infoCenterRepository
 ) {
 
-    val betInfoSingle = betInfoRepository.betInfoSingle
+    val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
     val betInfoList = betInfoRepository.betInfoList
 
@@ -142,8 +139,11 @@ class GameViewModel(
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
-    val playCategoryList: LiveData<List<Play>>
-        get() = _playCategoryList
+    val playList: LiveData<List<Play>>
+        get() = _playList
+
+    val playCate: LiveData<String?>
+        get() = _playCate
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
@@ -165,7 +165,8 @@ class GameViewModel(
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
-    private val _playCategoryList = MutableLiveData<List<Play>>()
+    private val _playList = MutableLiveData<List<Play>>()
+    private val _playCate = MutableLiveData<String?>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -593,10 +594,16 @@ class GameViewModel(
         getGameHallList(matchType, true, isReloadPlayCate = true)
     }
 
-    fun switchPlayCategory(matchType: MatchType, play: Play) {
-        updatePlayCateSelectedState(play)
+    fun switchPlay(matchType: MatchType, play: Play) {
+        updatePlaySelectedState(play)
 
-        getGameHallList(matchType, false, isReloadPlayCate = true)
+        getGameHallList(matchType, false)
+    }
+
+    fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
+        _playCate.value = playCateCode
+
+        getGameHallList(matchType, false)
     }
 
     fun switchMatchDate(matchType: MatchType, date: Date) {
@@ -665,8 +672,14 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun switchPlayCategory(matchType: MatchType, leagueId: String, play: Play) {
-        updatePlayCateSelectedState(play)
+    fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
+        updatePlaySelectedState(play)
+
+        getLeagueOddsList(matchType, leagueId)
+    }
+
+    fun switchPlayCategory(matchType: MatchType, leagueId: String, playCateCode: String?) {
+        _playCate.value = playCateCode
 
         getLeagueOddsList(matchType, leagueId)
     }
@@ -674,12 +687,15 @@ class GameViewModel(
     fun getLeagueOddsList(
         matchType: MatchType,
         leagueId: String,
+        isReloadPlayCate: Boolean = false
     ) {
         val leagueIdList by lazy {
             listOf(leagueId)
         }
 
-        getPlayCategory(matchType)
+        if (isReloadPlayCate) {
+            getPlayCategory(matchType)
+        }
 
         getSportSelected(matchType)?.let { item ->
             getOddsList(
@@ -737,7 +753,8 @@ class GameViewModel(
                         leagueIdList = leagueIdList,
                         startTime = timeRangeParams?.startTime,
                         endTime = timeRangeParams?.endTime,
-                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
+                        playCateMenuCode = getPlayCateSelected()?.code ?: "",
+                        playCateCodeList = getPlayCateCodeList()
                     )
                 )
             }
@@ -754,6 +771,7 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
                     }
 
+                    matchOdd.odds = matchOdd.odds.filterOdds(result.oddsListData.sport.code)
                     matchOdd.odds.forEach { map ->
                         map.value.updateOddSelectState()
                     }
@@ -814,10 +832,11 @@ class GameViewModel(
             }?.play?.filter { play ->
                 play.num != 0
             }?.let { playList ->
-                if (!playList.any { it.isSelected }) {
-                    playList.firstOrNull()?.isSelected = true
+                playList.forEach {
+                    it.isSelected = (it == playList.firstOrNull())
                 }
-                _playCategoryList.value = playList
+
+                _playList.value = playList
             }
         }
     }
@@ -1323,7 +1342,14 @@ class GameViewModel(
         }
     }
 
-    private fun getPlayCateSelected(): Play? = _playCategoryList.value?.find { it.isSelected }
+    private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
+
+    private fun getPlayCateCodeList(): List<String>? {
+        _playCate.value?.let {
+            return listOf(it)
+        }
+        return null
+    }
 
     private fun SportMenuData.updateSportSelectState(
         matchType: MatchType?,
@@ -1410,15 +1436,31 @@ class GameViewModel(
         _curDatePosition.postValue(this.indexOf(date))
     }
 
-    private fun updatePlayCateSelectedState(play: Play) {
-        val playCate = _playCategoryList.value
+    private fun updatePlaySelectedState(play: Play) {
+        val playList = _playList.value
 
-        playCate?.forEach {
+        playList?.forEach {
             it.isSelected = (it == play)
         }
 
-        playCate?.let {
-            _playCategoryList.postValue(it)
+        playList?.let {
+            _playList.value = it
+            _playCate.value = (
+                    when (play.selectionType == SelectionType.SELECTABLE.code) {
+                        true -> {
+                            it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.find { playCate ->
+                                playCate.isSelected
+                            }?.code ?: it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.firstOrNull()?.code
+                        }
+                        false -> {
+                            null
+                        }
+                    }
+                    )
         }
     }
 
@@ -1429,5 +1471,14 @@ class GameViewModel(
                     betInfoListData.matchOdd.oddsId == odd?.id
                 }
         }
+    }
+
+    private fun Map<String, List<Odd?>>.filterOdds(sportCode: String): MutableMap<String, MutableList<Odd?>> {
+        return this.mapValues {
+            it.value.filterIndexed { index, _ ->
+                index < PlayTypeUtils.getPlayTypeSetCount(it.key, sportCode)
+            }.toMutableList()
+
+        }.toMutableMap()
     }
 }

@@ -90,10 +90,14 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
         fun bind(data: GameEntity, oddsType: OddsType) {
             itemView.apply {
-                iv_game_icon.setImageResource(getGameIcon(data.code))
                 tv_game_name.text = data.name
                 tv_game_num.text = data.num.toString()
-                titleBar.setBackgroundResource(getTitleBarBackground(data.code))
+                getGameIcon(data.code)?.let {
+                    iv_game_icon.setImageResource(it)
+                }
+                getTitleBarBackground(data.code)?.let {
+                    titleBar.setBackgroundResource(it)
+                }
                 titleBar.setOnClickListener {
                     onClickTotalMatchListener?.onClick(data)
                 }

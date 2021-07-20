@@ -4,14 +4,7 @@ package org.cxct.sportlottery.ui.bet.list
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.BackgroundColorSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -20,19 +13,27 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
+import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
+import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
+import kotlinx.android.synthetic.main.view_bet_info_close_message.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.error.BetAddErrorParser
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.KeyBoardUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 
 
 /**
@@ -50,23 +51,43 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     private var betInfoListData: BetInfoListData? = null
         set(value) {
             field = value
-            field?.let { matchOdd = it.matchOdd }
+            field?.let {
+                matchOdd = it.matchOdd
+                parlayOdd = it.parlayOdds
+            }
         }
 
 
     private var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
-            matchOdd?.let { setupOddsContent(it) }
+            matchOdd?.let {
+                setupData(it)
+            }
         }
 
 
     private var matchOdd: MatchOdd? = null
         set(value) {
             field = value
-            field?.let { setupData(it) }
+            field?.let {
+                if (!subscribeFlag) {
+                    subscribeChannel(it)
+                    subscribeFlag = true
+                }
+                setupData(it)
+            }
         }
 
+
+    private var parlayOdd: ParlayOdd? = null
+        set(value) {
+            field = value
+            field?.let {
+                binding.parlayOdd = it
+                binding.executePendingBindings()
+            }
+        }
 
     private var currentMoney: Double? = null
         set(value) {
@@ -85,12 +106,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         }
 
 
-    private lateinit var playNameSpan: SpannableString
-    private lateinit var spreadSpan: SpannableString
-    private lateinit var oddsSpan: SpannableString
-
-
-    private var addFlag = false
+    private var subscribeFlag = false
 
 
     init {
@@ -106,18 +122,20 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
         binding.apply {
-            gameViewModel = this@BetInfoCarDialog.viewModel
             lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
             dialog = this@BetInfoCarDialog
-        }
+        }.executePendingBindings()
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initClose()
         initKeyBoard()
         initBetButton()
+        initQuota()
+        initEditText()
         initObserve()
         initSocketObserver()
         getCurrentMoney()
@@ -126,14 +144,28 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        if (!addFlag) viewModel.removeBetInfoAll()
+        viewModel.removeBetInfoAll()
+        OddSpannableString.clearHandler()
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        service.unsubscribeEventChannel(matchOdd?.matchId)
+    }
+
+
+    private fun initClose() {
+        iv_close.setOnClickListener {
+            dismiss()
+        }
     }
 
 
     private fun initKeyBoard() {
         et_bet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                keyboard.showKeyboard(view as EditText)
+                if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(view as EditText)
             }
             false
         }
@@ -145,19 +177,90 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
+
             cl_bet.setOnClickListener {
-                //TODO 下注
+                addBetSingle()
             }
+
             tv_accept_odds_change.setOnClickListener {
-                //TODO 下注
+                addBetSingle()
+            }
+
+            isCanSendOut = false
+        }
+    }
+
+
+    private fun initQuota() {
+        tv_check_maximum_limit.setOnClickListener {
+            it.visibility = View.GONE
+            ll_bet_quota_detail.visibility = View.VISIBLE
+        }
+
+        ll_bet_quota_detail.setOnClickListener {
+            it.visibility = View.GONE
+            ll_win_quota_detail.visibility = View.VISIBLE
+
+            et_bet.apply {
+                setText(parlayOdd?.max.toString())
+                isFocusable = true
+                setSelection(text.length)
+            }
+            keyboard.showKeyboard(et_bet)
+        }
+    }
+
+
+    private fun initEditText() {
+        et_bet.afterTextChanged {
+
+            button_bet.tv_quota.text = TextUtil.format(if (it.isEmpty()) 0.0 else it.toDouble())
+
+            if (it.isEmpty()) {
+
+                tv_check_maximum_limit.visibility = View.VISIBLE
+                ll_bet_quota_detail.visibility = View.GONE
+                ll_win_quota_detail.visibility = View.GONE
+                button_bet.isCanSendOut = false
+
+            } else {
+
+                //輸入時 直接顯示可贏額
+                tv_check_maximum_limit.visibility = View.GONE
+                ll_bet_quota_detail.visibility = View.GONE
+                ll_win_quota_detail.visibility = View.VISIBLE
+                button_bet.isCanSendOut = true
+
+
+                val quota = it.toDouble()
+
+                betInfoListData?.parlayOdds?.max?.let { max ->
+                    if (quota > max) {
+                        et_bet.setText(max.toString())
+                        et_bet.setSelection(max.toString().length)
+                        return@afterTextChanged
+                    }
+                }
+
+                //比照以往計算
+                var win = quota * getOdds(matchOdd, oddsType)
+                if (oddsType == OddsType.EU) {
+                    win -= quota
+                }
+                tv_win_quota.text = TextUtil.format(win)
+
             }
         }
     }
 
 
     private fun initObserve() {
-        viewModel.betInfoSingle.observe(this.viewLifecycleOwner, {
-            betInfoListData = it.peekContent()
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.peekContent().let { list ->
+                if (list.isNotEmpty()) {
+                    betInfoListData = list[0]
+                }
+            }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
@@ -171,6 +274,25 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         viewModel.userMoney.observe(this.viewLifecycleOwner, {
             currentMoney = it
         })
+
+        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = messageByResultCode(requireContext(), result),
+                    success = result.success
+                ) {
+                    changeBetInfoContentByMessage(result)
+                    dismiss()
+                }
+            }
+        })
+
+        viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner, { event ->
+            event?.peekContent()?.let {
+                if(!it)dismiss()
+            }
+        })
     }
 
 
@@ -180,7 +302,21 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         })
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
-            //TODO 賠率變更
+            it?.let { event ->
+                viewModel.updateMatchOdd(event)
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            service.unsubscribeAllEventChannel()
+            service.subscribeEventChannel(matchOdd?.matchId)
+        })
+
+        receiver.globalStop.observe(viewLifecycleOwner, { event ->
+            if (matchOdd?.producerId == null || matchOdd?.producerId == event?.producerId) {
+                matchOdd?.status = BetStatus.LOCKED.code
+                matchOdd?.let { setupData(it) }
+            }
         })
     }
 
@@ -212,53 +348,71 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             )
         } else matchOdd.playCateName
 
-        setupOddsContent(matchOdd)
+        if (matchOdd.status == BetStatus.ACTIVATED.code) {
+            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
+            iv_bet_lock.visibility = View.GONE
+            et_bet.isFocusable = true
+            et_bet.isFocusableInTouchMode = true
+            cl_quota_detail.visibility = View.VISIBLE
+            cl_close_waring.visibility = View.GONE
+        } else {
+            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite2))
+            iv_bet_lock.visibility = View.VISIBLE
+            et_bet.isFocusable = false
+            et_bet.isFocusableInTouchMode = false
+            keyboard.hideKeyboard()
+            cl_quota_detail.visibility = View.GONE
+            cl_close_waring.visibility = View.VISIBLE
+        }
+
+        if (matchOdd.spreadState != SpreadState.SAME.state || matchOdd.oddState != OddState.SAME.state) {
+            tv_odd_content_changed.visibility = View.VISIBLE
+            button_bet.isOddsChanged = true
+        }
+
+        OddSpannableString.setupOddsContent(matchOdd, oddsType, tv_odds_content)
     }
 
 
-    private fun setupOddsContent(matchOdd: MatchOdd) {
-        val colorRedDark = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
-
-        playNameSpan = SpannableString(matchOdd.playName)
-        playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0, matchOdd.playName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        val spreadEnd = matchOdd.spread.length + 1
-        spreadSpan = SpannableString(" ${matchOdd.spread}")
-        spreadSpan.setSpan(ForegroundColorSpan(colorRedDark), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spreadSpan.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        setupOddsSpannableString(matchOdd, false)
-    }
-
-
-    private fun setupOddsSpannableString(matchOdd: MatchOdd, isChanged: Boolean) {
-        val textColor = ContextCompat.getColor(requireContext(), if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
-        val backgroundColor = ContextCompat.getColor(requireContext(), if (isChanged) R.color.colorRed else R.color.colorWhite)
-
-        val oddsEnd = TextUtil.formatForOdd(getOdds(matchOdd, oddsType)).length
-        oddsSpan = SpannableString(TextUtil.formatForOdd(getOdds(matchOdd, oddsType)))
-        oddsSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        oddsSpan.setSpan(StyleSpan(Typeface.BOLD), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        oddsSpan.setSpan(BackgroundColorSpan(backgroundColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        val oddContentBuilder = SpannableStringBuilder()
-
-        oddContentBuilder.append(playNameSpan)
-        oddContentBuilder.append(spreadSpan)
-        oddContentBuilder.append(" ＠ ")
-
-        tv_odds_content.text = oddContentBuilder.append(oddsSpan)
+    private fun subscribeChannel(matchOdd: MatchOdd) {
+        service.subscribeEventChannel(matchOdd.matchId)
     }
 
 
     fun addToBetInfoList() {
-        addFlag = true
-        dismiss()
+        viewModel.addInBetInfo()
     }
 
 
     private fun getCurrentMoney() {
         viewModel.getMoney()
+    }
+
+
+    private fun addBetSingle() {
+        if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
+
+        val stake = if (et_bet.text.toString().isEmpty()) 0.0 else et_bet.text.toString().toDouble()
+
+
+        if (stake > currentMoney ?: 0.0) {
+            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            return
+        }
+
+        betInfoListData?.let {
+            viewModel.addBetSingle(stake, it)
+        }
+    }
+
+
+    private fun changeBetInfoContentByMessage(result: BetAddResult) {
+        getBetAddError(result.code)?.let { betAddError ->
+            if (!result.success) {
+                val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+                errorData?.let { viewModel.updateMatchOdd(it, betAddError) }
+            }
+        }
     }
 
 

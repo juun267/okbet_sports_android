@@ -1,1819 +1,1113 @@
 {
-  "success": true,
-  "msg": "ok",
-  "code": 0,
-  "t": {
-    "sport": {
-      "code": "FT",
-      "name": "足球"
-    },
-    "leagueOdds": [
-      {
-        "league": {
-          "id": "sr:simple_tournament:93053",
-          "name": "Esports Battle - German Bundesliga"
+    "success": true,
+    "msg": "ok",
+    "code": 0,
+    "t": {
+        "sport": {
+            "code": "FT",
+            "name": "足球"
         },
-        "matchOdds": [
-          {
-            "matchInfo": {
-              "id": "sr:match:25152036",
-              "homeName": "RB Leipzig (Rebels)",
-              "awayName": "Borussia Dortmund (Lomik)",
-              "startTime": 1609754640000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 3
+        "leagueOdds": [
+            {
+                "league": {
+                    "id": "27629",
+                    "name": "North America CONCACAF Gold Cup 2021 (In USA)",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5086531",
+                            "leagueId": "27629",
+                            "leagueName": null,
+                            "homeName": "Mexico",
+                            "awayName": "El Salvador",
+                            "startTime": 1626660900000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 24,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {
+                            "O/U": [
+                                {
+                                    "id": "6484187266",
+                                    "name": "Over",
+                                    "spread": "1.5",
+                                    "extInfo": "",
+                                    "odds": 2.28,
+                                    "hkOdds": 1.28,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187267",
+                                    "name": "Under",
+                                    "spread": "1.5",
+                                    "extInfo": "",
+                                    "odds": 1.68,
+                                    "hkOdds": 0.68,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187268",
+                                    "name": "Over",
+                                    "spread": "1.5/2",
+                                    "extInfo": "",
+                                    "odds": 2.92,
+                                    "hkOdds": 1.92,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187269",
+                                    "name": "Under",
+                                    "spread": "1.5/2",
+                                    "extInfo": "",
+                                    "odds": 1.42,
+                                    "hkOdds": 0.42,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6515869205",
+                                    "name": "Over",
+                                    "spread": "2",
+                                    "extInfo": "",
+                                    "odds": 4.84,
+                                    "hkOdds": 3.84,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6515869206",
+                                    "name": "Under",
+                                    "spread": "2",
+                                    "extInfo": "",
+                                    "odds": 1.16,
+                                    "hkOdds": 0.16,
+                                    "status": 0,
+                                    "producerId": 0
+                                }
+                            ],
+                            "HDP": [
+                                {
+                                    "id": "6515869203",
+                                    "name": "Mexico",
+                                    "spread": "0",
+                                    "extInfo": "",
+                                    "odds": 1.24,
+                                    "hkOdds": 0.24,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6515869204",
+                                    "name": "El Salvador",
+                                    "spread": "0",
+                                    "extInfo": "",
+                                    "odds": 4.12,
+                                    "hkOdds": 3.12,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187262",
+                                    "name": "Mexico",
+                                    "spread": "-0/0.5",
+                                    "extInfo": "",
+                                    "odds": 2.26,
+                                    "hkOdds": 1.26,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187263",
+                                    "name": "El Salvador",
+                                    "spread": "+0/0.5",
+                                    "extInfo": "",
+                                    "odds": 1.71,
+                                    "hkOdds": 0.71,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187264",
+                                    "name": "Mexico",
+                                    "spread": "-0.5",
+                                    "extInfo": "",
+                                    "odds": 3.12,
+                                    "hkOdds": 2.12,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187265",
+                                    "name": "El Salvador",
+                                    "spread": "+0.5",
+                                    "extInfo": "",
+                                    "odds": 1.39,
+                                    "hkOdds": 0.39,
+                                    "status": 0,
+                                    "producerId": 0
+                                }
+                            ],
+                            "1X2": [
+                                {
+                                    "id": "6484187270",
+                                    "name": "Mexico",
+                                    "spread": "",
+                                    "extInfo": "",
+                                    "odds": 1.05,
+                                    "hkOdds": 0.05,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187272",
+                                    "name": "Draw",
+                                    "spread": "",
+                                    "extInfo": "",
+                                    "odds": 10.0,
+                                    "hkOdds": 9.0,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484187271",
+                                    "name": "El Salvador",
+                                    "spread": "",
+                                    "extInfo": "",
+                                    "odds": 36.0,
+                                    "hkOdds": 35.0,
+                                    "status": 0,
+                                    "producerId": 0
+                                }
+                            ]
+                        },
+                        "oddsList": null,
+                        "quickPlayCateList": [
+                            {
+                                "gameType": "FT",
+                                "code": "O/U",
+                                "name": "进球 大/小",
+                                "sort": 3
+                            },
+                            {
+                                "gameType": "FT",
+                                "code": "HDP",
+                                "name": "让球",
+                                "sort": 2
+                            }
+                        ]
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5086540",
+                            "leagueId": "27629",
+                            "leagueName": null,
+                            "homeName": "Guatemala",
+                            "awayName": "Trinidad and Tobago",
+                            "startTime": 1626660900000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 18,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {
+                            "O/U": [
+                                {
+                                    "id": "6484188366",
+                                    "name": "Over",
+                                    "spread": "2.5",
+                                    "extInfo": "",
+                                    "odds": 3.0,
+                                    "hkOdds": 2.0,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188367",
+                                    "name": "Under",
+                                    "spread": "2.5",
+                                    "extInfo": "",
+                                    "odds": 1.4,
+                                    "hkOdds": 0.4,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188368",
+                                    "name": "Over",
+                                    "spread": "2.5/3",
+                                    "extInfo": "",
+                                    "odds": 4.03,
+                                    "hkOdds": 3.03,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188369",
+                                    "name": "Under",
+                                    "spread": "2.5/3",
+                                    "extInfo": "",
+                                    "odds": 1.23,
+                                    "hkOdds": 0.23,
+                                    "status": 0,
+                                    "producerId": 0
+                                }
+                            ],
+                            "HDP": [
+                                {
+                                    "id": "6484188364",
+                                    "name": "Guatemala",
+                                    "spread": "-0/0.5",
+                                    "extInfo": "",
+                                    "odds": 3.94,
+                                    "hkOdds": 2.94,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188365",
+                                    "name": "Trinidad and Tobago",
+                                    "spread": "+0/0.5",
+                                    "extInfo": "",
+                                    "odds": 1.26,
+                                    "hkOdds": 0.26,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188362",
+                                    "name": "Guatemala",
+                                    "spread": "0",
+                                    "extInfo": "",
+                                    "odds": 1.94,
+                                    "hkOdds": 0.94,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188363",
+                                    "name": "Trinidad and Tobago",
+                                    "spread": "0",
+                                    "extInfo": "",
+                                    "odds": 1.98,
+                                    "hkOdds": 0.98,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6515869169",
+                                    "name": "Guatemala",
+                                    "spread": "+0/0.5",
+                                    "extInfo": "",
+                                    "odds": 1.24,
+                                    "hkOdds": 0.24,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6515869170",
+                                    "name": "Trinidad and Tobago",
+                                    "spread": "-0/0.5",
+                                    "extInfo": "",
+                                    "odds": 4.12,
+                                    "hkOdds": 3.12,
+                                    "status": 0,
+                                    "producerId": 0
+                                }
+                            ],
+                            "1X2": [
+                                {
+                                    "id": "6484188370",
+                                    "name": "Guatemala",
+                                    "spread": "",
+                                    "extInfo": "",
+                                    "odds": 6.2,
+                                    "hkOdds": 5.2,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188372",
+                                    "name": "Draw",
+                                    "spread": "",
+                                    "extInfo": "",
+                                    "odds": 1.31,
+                                    "hkOdds": 0.31,
+                                    "status": 0,
+                                    "producerId": 0
+                                },
+                                {
+                                    "id": "6484188371",
+                                    "name": "Trinidad and Tobago",
+                                    "spread": "",
+                                    "extInfo": "",
+                                    "odds": 6.3,
+                                    "hkOdds": 5.3,
+                                    "status": 0,
+                                    "producerId": 0
+                                }
+                            ]
+                        },
+                        "oddsList": null,
+                        "quickPlayCateList": [
+                            {
+                                "gameType": "FT",
+                                "code": "O/U",
+                                "name": "进球 大/小",
+                                "sort": 3
+                            },
+                            {
+                                "gameType": "FT",
+                                "code": "HDP",
+                                "name": "让球",
+                                "sort": 2
+                            }
+                        ]
+                    }
+                ]
             },
-            "odds": {
-              "O/U": [
-                {
-                  "id": "5cbd5eba30d07a45063eec40f7ebb879",
-                  "spread": "2.5",
-                  "odds": 1.6,
-                  "status": 0,
-                  "producerId": 3
+            {
+                "league": {
+                    "id": "42042",
+                    "name": "United States USA National Women Soccer League",
+                    "category": null
                 },
-                {
-                  "id": "1a78939e423a8a9ddc508f84ebe2e602",
-                  "spread": "2.5",
-                  "odds": 2.36,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "6c7052447306ef347ef4a0e667b3af95",
-                  "spread": null,
-                  "odds": 4.6,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "44e46a53717c9b288d8c890713ca3cd8",
-                  "spread": null,
-                  "odds": 3.3,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "0b48f8babdfcae3336f248bbfb1e4805",
-                  "spread": null,
-                  "odds": 1.9,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ]
-            }
-          },
-          {
-            "matchInfo": {
-              "id": "sr:match:25152034",
-              "homeName": "Bayer 04 Leverkusen (Driller)",
-              "awayName": "FC Bayern Munich (Destroyer)",
-              "startTime": 1609754640000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 3
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5092931",
+                            "leagueId": "42042",
+                            "leagueName": null,
+                            "homeName": "Portland Thorns (W)",
+                            "awayName": "Orlando Pride (W)",
+                            "startTime": 1626661800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 22,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
             },
-            "odds": {
-              "O/U": [
-                {
-                  "id": "f420ee283476cfd5a0c45519860ccf14",
-                  "spread": "2.5",
-                  "odds": 2.12,
-                  "status": 0,
-                  "producerId": 3
+            {
+                "league": {
+                    "id": "38474",
+                    "name": "Australia Australia Capital Territory National Premier League",
+                    "category": null
                 },
-                {
-                  "id": "ff5eb50b5dd9f6c50ea26869078ed742",
-                  "spread": "2.5",
-                  "odds": 1.73,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "253b414d5ad83379d572663dace5ee86",
-                  "spread": null,
-                  "odds": 1.78,
-                  "status": 0,
-                  "producerId": 3
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5092720",
+                            "leagueId": "38474",
+                            "leagueName": null,
+                            "homeName": "Canberra Croatia",
+                            "awayName": "Gungahlin United",
+                            "startTime": 1626584400000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 3,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "112268",
+                    "name": "Canada Canada Premier League",
+                    "category": null
                 },
-                {
-                  "id": "e2d01fe292c7e980dae0a4af3573a848",
-                  "spread": null,
-                  "odds": 3.75,
-                  "status": 0,
-                  "producerId": 3
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5105096",
+                            "leagueId": "112268",
+                            "leagueName": null,
+                            "homeName": "Atletico Ottawa",
+                            "awayName": "Edmonton",
+                            "startTime": 1626661800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 22,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "103068",
+                    "name": "World Club Friendlies",
+                    "category": null
                 },
-                {
-                  "id": "0b6a83534d5c8c55c9941328d7cf055f",
-                  "spread": null,
-                  "odds": 4.6,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ]
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5102500",
+                            "leagueId": "103068",
+                            "leagueName": null,
+                            "homeName": "Benfica",
+                            "awayName": "Almeria",
+                            "startTime": 1626631200000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 6,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5104399",
+                            "leagueId": "103068",
+                            "leagueName": null,
+                            "homeName": "Bordeaux",
+                            "awayName": "SM Caen",
+                            "startTime": 1626620400000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 15,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5104396",
+                            "leagueId": "103068",
+                            "leagueName": null,
+                            "homeName": "Nantes",
+                            "awayName": "Chamois Niortais",
+                            "startTime": 1626609600000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 20,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5104402",
+                            "leagueId": "103068",
+                            "leagueName": null,
+                            "homeName": "Caykur Rizespor",
+                            "awayName": "Kocaelispor",
+                            "startTime": 1626607800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 11,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "65612",
+                    "name": "Bosnia and Herzegovina Bosnia and Herzegovina Premier League",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5092764",
+                            "leagueId": "65612",
+                            "leagueName": null,
+                            "homeName": "NK Siroki Brijeg",
+                            "awayName": "HSK Zrinjski Mostar",
+                            "startTime": 1626634800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 36,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "28732",
+                    "name": "Romania Romania Liga 1",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5077679",
+                            "leagueId": "28732",
+                            "leagueName": null,
+                            "homeName": "Rapid Bucuresti",
+                            "awayName": "Chindia Targoviste",
+                            "startTime": 1626633000000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 3,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "26979",
+                    "name": "Serbia Serbia Superliga",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5090927",
+                            "leagueId": "26979",
+                            "leagueName": null,
+                            "homeName": "FK Mladost Lucani",
+                            "awayName": "Radnicki 1923",
+                            "startTime": 1626634800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 13,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "28485",
+                    "name": "Slovenia Slovenia Prvaliga",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5091182",
+                            "leagueId": "28485",
+                            "leagueName": null,
+                            "homeName": "NK Celje",
+                            "awayName": "NK Maribor",
+                            "startTime": 1626632100000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 38,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "33698",
+                    "name": "Belarus Belarus Division 1",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5092743",
+                            "leagueId": "33698",
+                            "leagueName": null,
+                            "homeName": "Baranovichi",
+                            "awayName": "Slonim 2017",
+                            "startTime": 1626615840000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 3,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "29402",
+                    "name": "Argentina Argentina Primera Nacional",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5097995",
+                            "leagueId": "29402",
+                            "leagueName": null,
+                            "homeName": "Mitre Santiago Del Estero",
+                            "awayName": "Chacarita Juniors",
+                            "startTime": 1626632880000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 12,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "26287",
+                    "name": "Australia Australia Brisbane Premier League",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5104040",
+                            "leagueId": "26287",
+                            "leagueName": null,
+                            "homeName": "Mt Gravatt Hawks",
+                            "awayName": "The Gap",
+                            "startTime": 1626591600000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 13,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "69092",
+                    "name": "Venezuela Venezuela Segunda Division",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5102824",
+                            "leagueId": "69092",
+                            "leagueName": null,
+                            "homeName": "Fundacion Lara Deportiva",
+                            "awayName": "Llaneros De Guanare",
+                            "startTime": 1626634800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 35,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "100928",
+                    "name": " eFootball - Battle - 8 Mins Play",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5105713",
+                            "leagueId": "100928",
+                            "leagueName": null,
+                            "homeName": "Bayern Munich (YoungDaddy) Esports",
+                            "awayName": "Liverpool (It29) Esports",
+                            "startTime": 1626625320000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 2,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5105298",
+                            "leagueId": "100928",
+                            "leagueName": null,
+                            "homeName": "Napoli (Johnny) Esports",
+                            "awayName": "Bayer Leverkusen (It29) Esports",
+                            "startTime": 1626619080000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 3,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5104165",
+                            "leagueId": "100928",
+                            "leagueName": null,
+                            "homeName": "Portugal (YoungDaddy) Esports",
+                            "awayName": "Belgium (Johnny) Esports",
+                            "startTime": 1626613440000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 4,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "60574",
+                    "name": "Brazil Brazil Campeonato Mineiro Division 2",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5103006",
+                            "leagueId": "60574",
+                            "leagueName": null,
+                            "homeName": "Tupi MG",
+                            "awayName": "Serranense MG",
+                            "startTime": 1626616800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 2,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "27563",
+                    "name": "Japan Japan Football League",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5092885",
+                            "leagueId": "27563",
+                            "leagueName": null,
+                            "homeName": "Kariya",
+                            "awayName": "Reinmeer Aomori ",
+                            "startTime": 1626600600000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 2,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5092864",
+                            "leagueId": "27563",
+                            "leagueName": null,
+                            "homeName": "Veertien MIE",
+                            "awayName": "Suzuka Point Getters",
+                            "startTime": 1626588000000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 19,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5092850",
+                            "leagueId": "27563",
+                            "leagueName": null,
+                            "homeName": "Tiamo Hirakata",
+                            "awayName": "Iwaki",
+                            "startTime": 1626586200000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 36,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "26596",
+                    "name": "Iceland Iceland Premier League",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5087014",
+                            "leagueId": "26596",
+                            "leagueName": null,
+                            "homeName": "FH Hafnarfjordur",
+                            "awayName": "Fylkir Reykjavik",
+                            "startTime": 1626635700000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 3,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "50048",
+                    "name": "Brazil Brazil Serie D",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5105365",
+                            "leagueId": "50048",
+                            "leagueName": null,
+                            "homeName": "Atletico Acreano",
+                            "awayName": "GA Sampaio RR",
+                            "startTime": 1626642000000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 37,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5102432",
+                            "leagueId": "50048",
+                            "leagueName": null,
+                            "homeName": "ASA AL",
+                            "awayName": "Bahia De Feira BA",
+                            "startTime": 1626634800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 37,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    },
+                    {
+                        "matchInfo": {
+                            "id": "5102478",
+                            "leagueId": "50048",
+                            "leagueName": null,
+                            "homeName": "Nova Mutum MT",
+                            "awayName": "Porto Velho RO",
+                            "startTime": 1626634800000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 35,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "55449",
+                    "name": "Ecuador Ecuador Serie B",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5104296",
+                            "leagueId": "55449",
+                            "leagueName": null,
+                            "homeName": "El Nacional Quito",
+                            "awayName": "Chacaritas",
+                            "startTime": 1626631200000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 3,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
+            },
+            {
+                "league": {
+                    "id": "26380",
+                    "name": "Norway Norway Eliteserien",
+                    "category": null
+                },
+                "matchOdds": [
+                    {
+                        "matchInfo": {
+                            "id": "5074680",
+                            "leagueId": "26380",
+                            "leagueName": null,
+                            "homeName": "Tromso",
+                            "awayName": "Rosenborg",
+                            "startTime": 1626624000000,
+                            "endTime": null,
+                            "status": 1,
+                            "playCateNum": 18,
+                            "name": null,
+                            "img": null,
+                            "msg": null
+                        },
+                        "dynamicMarkets": {},
+                        "odds": {},
+                        "oddsList": null,
+                        "quickPlayCateList": null
+                    }
+                ]
             }
-          }
         ]
-      },
-      {
-        "league": {
-          "id": "sr:tournament:28538",
-          "name": "Copa Diego Armando Maradona"
-        },
-        "matchOdds": [
-          {
-            "matchInfo": {
-              "id": "sr:match:25053306",
-              "homeName": "科尔多瓦塔勒瑞斯",
-              "awayName": "班菲尔德",
-              "startTime": 1609806600000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 30
-            },
-            "odds": {
-              "1X2-1ST": [
-                {
-                  "id": "10f41766c2bd45dda24944ebc12079b7",
-                  "spread": null,
-                  "odds": 10.5,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "93bec255cd04c37b18cccc7b45944d5b",
-                  "spread": null,
-                  "odds": 1.06,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "be96efc9dfd1fe61d116a317e74b9125",
-                  "spread": null,
-                  "odds": 13.5,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U": [
-                {
-                  "id": "ca68d9f1bcdd1fa437ac141b6a788e25",
-                  "spread": "1.5",
-                  "odds": 1.14,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "7c6f1e6fbcc0f55adef8e4bccfbd549f",
-                  "spread": "1.5",
-                  "odds": 4.65,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "614405626ac073364e58d12757d06275",
-                  "spread": "2.5",
-                  "odds": 1.35,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "afe9e1ee8c23c12b75bfeb2b8c1f19a5",
-                  "spread": "2.5",
-                  "odds": 2.85,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "85e97f57a0d466dfb32ff6fc7f398cb1",
-                  "spread": "3.5",
-                  "odds": 1.47,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "2adbe987872df5775b724ded1de90f87",
-                  "spread": "3.5",
-                  "odds": 2.4,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "db0cf2345d775d8752f6d78e320567fa",
-                  "spread": "4.5",
-                  "odds": 3.2,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "87c9337565ad8eda4a4a28ef34a14a06",
-                  "spread": "4.5",
-                  "odds": 1.27,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "748e25cb24778ca7e1b5fbdd9ee55c80",
-                  "spread": "5.5",
-                  "odds": 7.5,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "16f394a3822c0ef72795a647d000fca6",
-                  "spread": "5.5",
-                  "odds": 1.05,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP": [
-                {
-                  "id": "217affe01d333c317b1615544a15343e",
-                  "spread": "-0.5",
-                  "odds": 2.65,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "d88c2f3014c0c062d6e433ff29a332e8",
-                  "spread": "+0.5",
-                  "odds": 1.4,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "8a10e9b9ca5338df5eb1be1339e0cb74",
-                  "spread": "-1.5",
-                  "odds": 2.2,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "f9f55bf37c84741bc378c3c71b9349de",
-                  "spread": "+1.5",
-                  "odds": 1.57,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "O/U-1ST": [
-                {
-                  "id": "91d921f72e8b6a3299be785aece550ee",
-                  "spread": "0.5",
-                  "odds": 1.5,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "7a461a507bc5420bc12860c54bc6fda8",
-                  "spread": "0.5",
-                  "odds": 2.35,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "c87d0acbd6d6574d9aa7af90d9d6221c",
-                  "spread": "1.5",
-                  "odds": 2.4,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "3f26334f62e20697dd773ecddfbb32ee",
-                  "spread": "1.5",
-                  "odds": 1.5,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "963515a9488dfe475cb15d101a1237be",
-                  "spread": "2.5",
-                  "odds": 6.25,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "33b9bd3a70ec5faf92b97ccce1ba0eca",
-                  "spread": "2.5",
-                  "odds": 1.07,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "3925de4622d8f15ec4d0f3ba3a620f64",
-                  "spread": "3.5",
-                  "odds": 10.5,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "6a79d32b13c47bece8491b22111d376f",
-                  "spread": "3.5",
-                  "odds": 1.01,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "8c784a4aa56cc7baa8dd9cf4743d759c",
-                  "spread": null,
-                  "odds": 1.12,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "52587ae0deea3de37f03c8f52557cfd8",
-                  "spread": null,
-                  "odds": 5.7,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "d5fffa2338d181554fb02ddfb426caa5",
-                  "spread": null,
-                  "odds": 33,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "league": {
-          "id": "sr:tournament:32261",
-          "name": "CLA England Cup"
-        },
-        "matchOdds": [
-          {
-            "matchInfo": {
-              "id": "sr:match:25153490",
-              "homeName": "Manchester City FC (Mistyeye)",
-              "awayName": "Chelsea FC (Dragonborn)",
-              "startTime": 1609754880000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 3
-            },
-            "odds": {
-              "O/U": [
-                {
-                  "id": "c0e68fffa8f327b7406a34ec3c44848a",
-                  "spread": "2.5",
-                  "odds": 1.18,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "c53e7930832b8cf62960158390f78ccd",
-                  "spread": "2.5",
-                  "odds": 5,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "f4034bb32141136bd3bd49b4e6c19b13",
-                  "spread": null,
-                  "odds": 2.35,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "578f56f5b1146b667e181fb0026dcfd5",
-                  "spread": null,
-                  "odds": 5,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "480ab19670918b23aea6748941a597e4",
-                  "spread": null,
-                  "odds": 2.35,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ]
-            }
-          },
-          {
-            "matchInfo": {
-              "id": "sr:match:25153492",
-              "homeName": "Liverpool FC (Void)",
-              "awayName": "Tottenham Hotspur FC (Iceman)",
-              "startTime": 1609754880000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 3
-            },
-            "odds": {
-              "O/U": [
-                {
-                  "id": "256e5273b4dca072d54bd60f318fede7",
-                  "spread": "2.5",
-                  "odds": 1.24,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "cf3b770b84fc213937d681fb98fa7c9f",
-                  "spread": "2.5",
-                  "odds": 4.1,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "124d0ecef895e5ab1cd17a651777e099",
-                  "spread": null,
-                  "odds": 1.9,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "5e0214469cc964d2aede0ebe4616648e",
-                  "spread": null,
-                  "odds": 4.9,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "483b341b7880f7797ed6567270cf83ee",
-                  "spread": null,
-                  "odds": 3.15,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ]
-            }
-          },
-          {
-            "matchInfo": {
-              "id": "sr:match:25153486",
-              "homeName": "Newcastle United (Stig)",
-              "awayName": "Leeds United (Kit)",
-              "startTime": 1609754880000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 3
-            },
-            "odds": {
-              "O/U": [
-                {
-                  "id": "9ce03632802aa86578b13121acc5835d",
-                  "spread": "2.5",
-                  "odds": 1.24,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "62fc973da1c1d3d7861d92faf7a07905",
-                  "spread": "2.5",
-                  "odds": 4.1,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "edaaa45a4dfbae825fe6b75acbc00584",
-                  "spread": null,
-                  "odds": 1.76,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "bd36dbb55819e8f56dae5dc4591cd9fd",
-                  "spread": null,
-                  "odds": 5,
-                  "status": 0,
-                  "producerId": 3
-                },
-                {
-                  "id": "1f078c4d737b340c18dfe2b1ce709e8c",
-                  "spread": null,
-                  "odds": 3.55,
-                  "status": 0,
-                  "producerId": 3
-                }
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "league": {
-          "id": "sr:tournament:32521",
-          "name": "GT World Nations League"
-        },
-        "matchOdds": [
-          {
-            "matchInfo": {
-              "id": "sr:match:25146370",
-              "homeName": "Belgium (Tommy)",
-              "awayName": "Germany (Burton)",
-              "startTime": 1609810800000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 14
-            },
-            "odds": {
-              "1X2-1ST": [
-                {
-                  "id": "43b47a8f9b705db4637473862edbe229",
-                  "spread": null,
-                  "odds": 3.2,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "32bfbd3e425adf87e977b06e34b02102",
-                  "spread": null,
-                  "odds": 1.65,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "dd102629803515451019c63a5a9e7038",
-                  "spread": null,
-                  "odds": 5.1,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U": [
-                {
-                  "id": "057734a7dcd3ca6f0f343ad066765b84",
-                  "spread": "2.5",
-                  "odds": 1.45,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "6406926105057148e7359a9c039049a8",
-                  "spread": "2.5",
-                  "odds": 2.5,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "6c66f406dace125cd2dc1eba6cbebbc6",
-                  "spread": "3.5",
-                  "odds": 1.27,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "84dc5a62f272b71215bb7c8f38ce996a",
-                  "spread": "3.5",
-                  "odds": 3.3,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "05c42543375db8e5ec2bc9c25416124d",
-                  "spread": "4.5",
-                  "odds": 1.4,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "b959d508913fd73f86301552411efc09",
-                  "spread": "4.5",
-                  "odds": 2.7,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "HDP": [
-                {
-                  "id": "95379a2631ef2d6c93d6f7b599c0771e",
-                  "spread": "-0.5",
-                  "odds": 1.95,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "2300d7fd8eebab627c9750860b08e36b",
-                  "spread": "+0.5",
-                  "odds": 1.75,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "8fc727c5cbc9ef4484dc03a6b8a341bb",
-                  "spread": "-1.5",
-                  "odds": 1.9,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "cd1c3f47cfdc97e028d90fdd0c113ac1",
-                  "spread": "+1.5",
-                  "odds": 1.8,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U-1ST": [
-                {
-                  "id": "662b1b11115d798d92cfa87a8a9fb867",
-                  "spread": "0.5",
-                  "odds": 1.27,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "d2115007d16111d0bedf5cf96deb2fb4",
-                  "spread": "0.5",
-                  "odds": 3.3,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "4cdc3309d6a3355f34ece792eb8fe0bd",
-                  "spread": "1.5",
-                  "odds": 1.32,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "0ff26289c7a95f17de71f84f0cd38b88",
-                  "spread": "1.5",
-                  "odds": 3.05,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "13e69cb8dc1d6e44456f6295c49abd76",
-                  "spread": "2.5",
-                  "odds": 1.42,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "053aa60a1eca6b725ff055e5a3ef06c6",
-                  "spread": "2.5",
-                  "odds": 2.6,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "1db02ab8527fb8aeda42aaf1388e806d",
-                  "spread": "3.5",
-                  "odds": 3.15,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "ae73ef27f73b1588746bb425607dfb52",
-                  "spread": "3.5",
-                  "odds": 1.3,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "d5137dee3aa3bccfca51b289c24de333",
-                  "spread": null,
-                  "odds": 100,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "f77f4331f41acf9870505c46cffa7e3e",
-                  "spread": null,
-                  "odds": 9.25,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "a2bba1961df16662450b95b4f2b5fa51",
-                  "spread": null,
-                  "odds": 1.01,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP-1ST": [
-                {
-                  "id": "ed4657fdb88e8857005ea6a4d6b75c52",
-                  "spread": "-1.5",
-                  "odds": 2.3,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "4eaa75001dc1b3c8b8d8c4ab4405efee",
-                  "spread": "+1.5",
-                  "odds": 1.52,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "f0fbac980281a6d21bd1139dac1f123c",
-                  "spread": "-0.5",
-                  "odds": 2.4,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "5dc6ad0f02af5386bfee5e64e06ecc29",
-                  "spread": "+0.5",
-                  "odds": 1.5,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ]
-            }
-          },
-          {
-            "matchInfo": {
-              "id": "sr:match:25146372",
-              "homeName": "Mexico (Moebius)",
-              "awayName": "Uruguay (Billiot)",
-              "startTime": 1609810800000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 14
-            },
-            "odds": {
-              "1X2-1ST": [
-                {
-                  "id": "4eaba3f8011827a56a4ba55cad620803",
-                  "spread": null,
-                  "odds": 1.3,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "8685c0e6b0a1ee09d0e52cc3c0658367",
-                  "spread": null,
-                  "odds": 3.7,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "9e3746ea498d05677454691bd6339a96",
-                  "spread": null,
-                  "odds": 16.5,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U": [
-                {
-                  "id": "6b00eaab1335eee769baf01c5c93898c",
-                  "spread": "2.5",
-                  "odds": 1.45,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "52b7823d7acf0e5abc2e116c03b4f406",
-                  "spread": "2.5",
-                  "odds": 2.55,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "0131945d70b106173a65ce30fcac338c",
-                  "spread": "3.5",
-                  "odds": 1.18,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "d69ee0c54a2b0828c143287e54a480b0",
-                  "spread": "3.5",
-                  "odds": 4.05,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "HDP": [
-                {
-                  "id": "fc04500a67583949f67df0ab28441526",
-                  "spread": "+1.5",
-                  "odds": 1.55,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "5fde3a59083962a5b6322d289a2ffe4c",
-                  "spread": "-1.5",
-                  "odds": 2.25,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U-1ST": [
-                {
-                  "id": "c725d3974b8723f19c70966db06e3651",
-                  "spread": "1.5",
-                  "odds": 1.35,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "e035cc774932832e2ba08c9c4006a0ff",
-                  "spread": "1.5",
-                  "odds": 2.85,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "580f7dd451caac3a1d1cda44556ea5ed",
-                  "spread": "2.5",
-                  "odds": 2.8,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "21cc8eb584253b8544d7b599c99a87bc",
-                  "spread": "2.5",
-                  "odds": 1.37,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "cc4ce8e1ef354403b4fe809d49c926ee",
-                  "spread": "3.5",
-                  "odds": 3.95,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "ff85b039d13672e56ae7faf93ac2f14b",
-                  "spread": "3.5",
-                  "odds": 1.2,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "d91236606eef73e2ba0ed5c99ec670c6",
-                  "spread": null,
-                  "odds": 1.2,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "b1cbcdcae2fb1cd99e46e6f84c5cf4c7",
-                  "spread": null,
-                  "odds": 4.1,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "82b3444fcfc5ac8cd19120a8260a23e8",
-                  "spread": null,
-                  "odds": 31,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP-1ST": [
-                {
-                  "id": "8f35f65eeca8fdc6f4392ce34a0eed4a",
-                  "spread": "-0.5",
-                  "odds": 1.57,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "0667e90f1734dd8a7b39b0f620b9d8e3",
-                  "spread": "+0.5",
-                  "odds": 2.2,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "3043870463fe508e36b423e7525ff62c",
-                  "spread": "+0.5",
-                  "odds": 1.65,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "d0c24bbdfec6268070c7c88c654ed66d",
-                  "spread": "-0.5",
-                  "odds": 2.1,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ]
-            }
-          },
-          {
-            "matchInfo": {
-              "id": "sr:match:25138490",
-              "homeName": "Czech Republic (Koko)",
-              "awayName": "Sweden (Chrisx)",
-              "startTime": 1609754400000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 14
-            },
-            "odds": {
-              "1X2-1ST": [
-                {
-                  "id": "1c730866d9b82829e9949aa0d95ac335",
-                  "spread": null,
-                  "odds": 4.45,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "0e87a4c26ec33735fdd2c5e53517c9b2",
-                  "spread": null,
-                  "odds": 3.4,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "144db5fb97416e9a0d351023c63b12f1",
-                  "spread": null,
-                  "odds": 1.7,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "O/U": [
-                {
-                  "id": "1fab870cd2c9b4b7430a482c0f6007fe",
-                  "spread": "3.5",
-                  "odds": 1.37,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "4c8bad7589074dd2642eb89d8b4ea47a",
-                  "spread": "3.5",
-                  "odds": 2.75,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "3712376a3b81edc69d71d56c960062c3",
-                  "spread": "4.5",
-                  "odds": 1.9,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "14b6bff6c8a508c180108831e08bfa13",
-                  "spread": "4.5",
-                  "odds": 1.8,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "7c76d59316559491b93a223eb1df7757",
-                  "spread": "5.5",
-                  "odds": 2.85,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "5abc0dd315764f63d5a722339530c9ea",
-                  "spread": "5.5",
-                  "odds": 1.35,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP": [
-                {
-                  "id": "d0bb95a685161721a8c7a8e77463a7a6",
-                  "spread": "+1.5",
-                  "odds": 1.75,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "28f727d8f5c111429ff5a83c3475243c",
-                  "spread": "-1.5",
-                  "odds": 1.9,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "O/U-1ST": [
-                {
-                  "id": "e1dc3847709224bcc0ffab43c39024fb",
-                  "spread": "1.5",
-                  "odds": 1.4,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "605d44924933dcb7e678b3a4ab13127e",
-                  "spread": "1.5",
-                  "odds": 2.65,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "5e52e4ec7ca00cda5b4d66eb70115ee6",
-                  "spread": "2.5",
-                  "odds": 2.3,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "aabc6adf20cf4dcc823bac85bdb0772c",
-                  "spread": "2.5",
-                  "odds": 1.52,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "0712e1160ef79431d5ee38166ecc8e9c",
-                  "spread": null,
-                  "odds": 4.8,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "dc21d8da462f56ff06f682294d264b57",
-                  "spread": null,
-                  "odds": 5.5,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "674b1f52575a33042a3ad5de841eec38",
-                  "spread": null,
-                  "odds": 1.42,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP-1ST": [
-                {
-                  "id": "93a1c9e444fc06427efc0a643732af8c",
-                  "spread": "+0.5",
-                  "odds": 2,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "66bba17f96293f860eb7febec70758f6",
-                  "spread": "-0.5",
-                  "odds": 1.7,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ]
-            }
-          },
-          {
-            "matchInfo": {
-              "id": "sr:match:25138492",
-              "homeName": "USA (Captainx)",
-              "awayName": "Poland (Johnybegood)",
-              "startTime": 1609754400000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 13
-            },
-            "odds": {
-              "1X2-1ST": [
-                {
-                  "id": "fa44142aebc69ca18e91a3d6f93f6186",
-                  "spread": null,
-                  "odds": 2.3,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "3795594375be895c3a36beb9cab07f31",
-                  "spread": null,
-                  "odds": 3.05,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "18fd3cd3eaccf8061d489ec2b1897744",
-                  "spread": null,
-                  "odds": 2.95,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "O/U": [
-                {
-                  "id": "180767a0e4ab551137567cf9e0c3ad8e",
-                  "spread": "3.5",
-                  "odds": 1.5,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "9a43d1dc6e7f2c783e392afe1419e3c9",
-                  "spread": "3.5",
-                  "odds": 2.35,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "b0a6dc863a6847d7ba34b853db0f4c80",
-                  "spread": "4.5",
-                  "odds": 2.15,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "941a4322d38f71694cd78d490f1d6604",
-                  "spread": "4.5",
-                  "odds": 1.6,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "9d03df2a66306cc11b1e9c527f1e8745",
-                  "spread": "5.5",
-                  "odds": 3.4,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "06f582e1cc96b60e4d15d1f019223203",
-                  "spread": "5.5",
-                  "odds": 1.25,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP": [
-                {
-                  "id": "895238f76de0e75481ea13ce5fcc6958",
-                  "spread": "-0.5",
-                  "odds": 1.95,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "3a47dcba9619185dbb620cbdb02dddf9",
-                  "spread": "+0.5",
-                  "odds": 1.75,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "O/U-1ST": [
-                {
-                  "id": "a2dca2fadd3f880a841ee1e627c65b7f",
-                  "spread": "1.5",
-                  "odds": 1.5,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "8f56994a80b4394a0ce43e21107e1b52",
-                  "spread": "1.5",
-                  "odds": 2.35,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "11b932e059e93429e14d13d0da67aea3",
-                  "spread": "2.5",
-                  "odds": 2.6,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "31533e6ef1bc0c96340e90ad504f261f",
-                  "spread": "2.5",
-                  "odds": 1.42,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "3906b5ff4ff1a1d56d4e705d6e1c2afc",
-                  "spread": null,
-                  "odds": 1.95,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "eecb15f3d49bac6816fbef2cbe4662ca",
-                  "spread": null,
-                  "odds": 4.55,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "785f43edc22fbb318c6792a383335016",
-                  "spread": null,
-                  "odds": 2.7,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ]
-            }
-          },
-          {
-            "matchInfo": {
-              "id": "sr:match:25146374",
-              "homeName": "Colombia (Gorilla)",
-              "awayName": "Portugal (Cliff)",
-              "startTime": 1609810800000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 11
-            },
-            "odds": {
-              "1X2-1ST": [
-                {
-                  "id": "9c0e9f9abdf29098e0c47c85043be725",
-                  "spread": null,
-                  "odds": 80,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "366964889d90ff36c19af92d4f7a56b5",
-                  "spread": null,
-                  "odds": 9,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "efd2ca5253b9e48956269001785ca2da",
-                  "spread": null,
-                  "odds": 1.01,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U": [
-                {
-                  "id": "d80755061b5a147360a8797eabf4ae3a",
-                  "spread": "2.5",
-                  "odds": 1.55,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "edd88e3d9eb00b6b96c32810cb7dc387",
-                  "spread": "2.5",
-                  "odds": 2.25,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "a90878d44fa2fd4e5ff367b22b2b159e",
-                  "spread": "3.5",
-                  "odds": 3.75,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "d0e75248dcf36b81745dc6c073f2c097",
-                  "spread": "3.5",
-                  "odds": 1.22,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "ef447b608ce752ff7ae7db4735fc7488",
-                  "spread": "4.5",
-                  "odds": 9,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "4dfbdf202ef9716f42e85baf9db4dcd8",
-                  "spread": "4.5",
-                  "odds": 1.02,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "e4f847500110c8a6e172ea6039463d06",
-                  "spread": "5.5",
-                  "odds": 5.6,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "66745d54fe1d446fae93c7683ab3222b",
-                  "spread": "5.5",
-                  "odds": 1.1,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "300903a1936cd2e6b61f29f00a8582eb",
-                  "spread": "6.5",
-                  "odds": 4.2,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "d8205a4e2949cf299e50890ee54b16a7",
-                  "spread": "6.5",
-                  "odds": 1.18,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "HDP": [
-                {
-                  "id": "b4fe503d8f06488f5f4839ed41994b40",
-                  "spread": "-0.5",
-                  "odds": 1.65,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "ce777283f5acc79d71811d23bed3e6b0",
-                  "spread": "+0.5",
-                  "odds": 2.1,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "e14e841c1114f2ea05c233f6840e9f32",
-                  "spread": "+1.5",
-                  "odds": 3.1,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "13a9e829cecf736da737ba4fe32a8a52",
-                  "spread": "-1.5",
-                  "odds": 1.3,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U-1ST": [
-                {
-                  "id": "552aa0a5960f409c2ed6ae3cd2c7e155",
-                  "spread": "1.5",
-                  "odds": 1.27,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "98f5918fa324e158c477b8ef800799d3",
-                  "spread": "1.5",
-                  "odds": 3.25,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "561f4b2fd695058fc2597108bea8c33b",
-                  "spread": "2.5",
-                  "odds": 1.5,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "eb27ff8fb1f7979d237af1443ef0974f",
-                  "spread": "2.5",
-                  "odds": 2.35,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "95f7e643c759f894ac6b62bc9953dc75",
-                  "spread": "3.5",
-                  "odds": 3.55,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "a75e11509172a400fdf4c54981b2e3dd",
-                  "spread": "3.5",
-                  "odds": 1.25,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "HDP-1ST": [
-                {
-                  "id": "000db9525b22e4ed50ca22b76cc217af",
-                  "spread": "+0.5",
-                  "odds": 2.3,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "69e5e7a48f59eb07eeb12ca8674975c9",
-                  "spread": "-0.5",
-                  "odds": 1.52,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "d6ad4480f72b80c010e96495e8cab11c",
-                  "spread": "-0.5",
-                  "odds": 1.95,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "75da0e4236f567f63d874fed0908d368",
-                  "spread": "+0.5",
-                  "odds": 1.75,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ]
-            }
-          }
-        ]
-      },
-      {
-        "league": {
-          "id": "sr:tournament:27665",
-          "name": "甲级联赛"
-        },
-        "matchOdds": [
-          {
-            "matchInfo": {
-              "id": "sr:match:25061192",
-              "homeName": "奧达斯",
-              "awayName": "艾斯潘诺拉",
-              "startTime": 1609806600000,
-              "endTime": null,
-              "status": 1,
-              "playCateNum": 40
-            },
-            "odds": {
-              "1X2-1ST": [
-                {
-                  "id": "f793b6c5d2ae95ee16760a2688ae3ce2",
-                  "spread": null,
-                  "odds": 100,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "b6a15c88c564e884863400f024bb15ce",
-                  "spread": null,
-                  "odds": 7,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "874e785705e0f86acf2957ac0e8db8b0",
-                  "spread": null,
-                  "odds": 1.04,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "O/U": [
-                {
-                  "id": "dbac657a9f2d4f3847bb4e75aa93dd3b",
-                  "spread": "2.5",
-                  "odds": 1.42,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "1cf57ee40b7e9ec1fa8e8d1bbd9776e5",
-                  "spread": "2.5",
-                  "odds": 2.6,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "688c29bc22695dfbe969fd6d2635ce3e",
-                  "spread": "2.5/3",
-                  "odds": 1.74,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "2ed879b10d00b54b03bd632ffa611036",
-                  "spread": "2.5/3",
-                  "odds": 2.1,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "25aebc26ce07d484036b36efae87f446",
-                  "spread": "2/2.5",
-                  "odds": 1.47,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "cea2ed703acb3b2b4de57097bb401103",
-                  "spread": "2/2.5",
-                  "odds": 2.7,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "8a0f86149e281c4f6d618cdadc6f76e7",
-                  "spread": "3",
-                  "odds": 1.95,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "f57fbde97719da5870839595bf6aa49d",
-                  "spread": "3",
-                  "odds": 1.86,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "2ad4ec515ac8cd3d750c3d366242cdfd",
-                  "spread": "3.5",
-                  "odds": 2.9,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "7dfed03f6a0123f5347bf7c297f1f754",
-                  "spread": "3.5",
-                  "odds": 1.35,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "9357dcebf5422bce54c1a443a828b678",
-                  "spread": "3/3.5",
-                  "odds": 2.21,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "edbe2f1c2e0c29438f8c60356d3e3093",
-                  "spread": "3/3.5",
-                  "odds": 1.68,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "26291205305dcb507f2596cf864fd0cb",
-                  "spread": "4.5",
-                  "odds": 6.5,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "81f2f90600d1f74fdd927ac80b51eff8",
-                  "spread": "4.5",
-                  "odds": 1.06,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP": [
-                {
-                  "id": "3fae2ce35509a4db4663fb8f23471d90",
-                  "spread": "+0.5",
-                  "odds": 1.53,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "fffd5abdfaeed3330dd6dcd7b455c2b8",
-                  "spread": "-0.5",
-                  "odds": 2.55,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "878d05d525e0fc096782151c1fc90cef",
-                  "spread": "0",
-                  "odds": 1.9,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "b11c480190d154665713006f3446db27",
-                  "spread": "0",
-                  "odds": 1.9,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "e6460464c817e825ca2afb9da3de65a2",
-                  "spread": "-0/0.5",
-                  "odds": 2.22,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "773fb1307304bd550afed5fb7f131eb6",
-                  "spread": "+0/0.5",
-                  "odds": 1.67,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "8bc23b5a4b05049056a6046ed7bc2a8e",
-                  "spread": "+0/0.5",
-                  "odds": 1.67,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "8f67eec9c62db5145ec190692c8c3fb1",
-                  "spread": "-0/0.5",
-                  "odds": 2.22,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "57155bccec1c3e7dcf08be292cb63386",
-                  "spread": "-0.5",
-                  "odds": 2.55,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "f52aaac1497421cc7dd76c446d2e878a",
-                  "spread": "+0.5",
-                  "odds": 1.53,
-                  "status": 1,
-                  "producerId": 3
-                }
-              ],
-              "O/U-1ST": [
-                {
-                  "id": "639470704f81b511f079675a5e448753",
-                  "spread": "0.5",
-                  "odds": 1.35,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "1f295ea49f7a1d95395baa72f1f7c943",
-                  "spread": "0.5",
-                  "odds": 2.95,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "4faf1f481abf44dd78137932f1ab83db",
-                  "spread": "0.5/1",
-                  "odds": 1.48,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "a68b8b16470fba5ab9c0f4d8509121d2",
-                  "spread": "0.5/1",
-                  "odds": 2.7,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "6f882a73fff8bb72c52299d418349af0",
-                  "spread": "1",
-                  "odds": 1.6,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "1052b0d6a431c5b823b22f51de209407",
-                  "spread": "1",
-                  "odds": 2.34,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "3623ce82b364b95e58021050118481bf",
-                  "spread": "1.5",
-                  "odds": 4.6,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "f9e22a0852c429b20a291ec4733ed6b8",
-                  "spread": "1.5",
-                  "odds": 1.14,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "6923b82920418c6ebab5ac2e50a83da1",
-                  "spread": "1/1.5",
-                  "odds": 2,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "485467ad78dc9086fb7c30c5495b0cbb",
-                  "spread": "1/1.5",
-                  "odds": 1.82,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "49df51acca971b3b41ccd6195826b120",
-                  "spread": "2.5",
-                  "odds": 9.5,
-                  "status": 1,
-                  "producerId": 1
-                },
-                {
-                  "id": "a85f19c7b356c4c69d6942ac569e4610",
-                  "spread": "2.5",
-                  "odds": 1.02,
-                  "status": 1,
-                  "producerId": 1
-                }
-              ],
-              "1X2": [
-                {
-                  "id": "e38f10a8670e38befcae6f94499fe0d7",
-                  "spread": null,
-                  "odds": 3.2,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "1f48d382f2db5bee4b44355200af1650",
-                  "spread": null,
-                  "odds": 2.05,
-                  "status": 0,
-                  "producerId": 1
-                },
-                {
-                  "id": "599e0b94a0be292f34990ea14ddf2902",
-                  "spread": null,
-                  "odds": 3.35,
-                  "status": 0,
-                  "producerId": 1
-                }
-              ],
-              "HDP-1ST": [
-                {
-                  "id": "3c4eac48a33de533ca8c4e63d8d13447",
-                  "spread": "0",
-                  "odds": 1.9,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "f7fb8f8f0685027a7d457e6fc84043b0",
-                  "spread": "0",
-                  "odds": 1.9,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "3029f6c707fc39be1b7c8415db0d4b90",
-                  "spread": "+0/0.5",
-                  "odds": 1.54,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "a6c1bd087fc38791335b252148f5608e",
-                  "spread": "-0/0.5",
-                  "odds": 2.49,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "fd298e2a1461e495de9f7dcc0b08d9b7",
-                  "spread": "-0/0.5",
-                  "odds": 2.49,
-                  "status": 1,
-                  "producerId": 3
-                },
-                {
-                  "id": "a93a4628557c4010cf25b99890f3df00",
-                  "spread": "+0/0.5",
-                  "odds": 1.54,
-                  "status": 1,
-                  "producerId": 3
-                }
-              ]
-            }
-          }
-        ]
-      }
-    ]
-  }
+    }
 }

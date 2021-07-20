@@ -22,11 +22,11 @@ const val BET_INFO_MAX_COUNT = 10
 class BetInfoRepository {
 
 
-    private val _betInfoSingle = MutableLiveData<Event<BetInfoListData?>>()
+    private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
 
 
-    val betInfoSingle: LiveData<Event<BetInfoListData?>>
-        get() = _betInfoSingle
+    val showBetInfoSingle: LiveData<Event<Boolean?>>
+        get() = _showBetInfoSingle
 
 
     //每個畫面都要觀察
@@ -47,7 +47,9 @@ class BetInfoRepository {
         get() = _parlayList
 
 
-    val _isParlayPage = MutableLiveData<Boolean>()
+    val _isParlayPage = MutableLiveData<Boolean>().apply {
+        value = false
+    }
     val isParlayPage: LiveData<Boolean>
         get() = _isParlayPage
 
@@ -139,6 +141,11 @@ class BetInfoRepository {
     }
 
 
+    fun addInBetInfo(){
+        _showBetInfoSingle.postValue(Event(false))
+    }
+
+
     fun addInBetInfo(
         matchType: MatchType,
         sportType: SportType,
@@ -156,7 +163,6 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
-
             val data = BetInfoListData(
                 betInfoMatchOdd,
                 getParlayOdd(matchType, sportType, mutableListOf(it)).first()
@@ -165,11 +171,11 @@ class BetInfoRepository {
             }
 
             if (betList.size == 0) {
-                _betInfoSingle.postValue(Event(data))
+                _showBetInfoSingle.postValue(Event(true))
             }
+
             betList.add(data)
             _betInfoList.postValue(Event(betList))
-
         }
     }
 
@@ -191,7 +197,6 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
-
             val data = BetInfoListData(
                 betInfoMatchOdd,
                 getParlayOdd(matchType, sportType, mutableListOf(it)).first()
@@ -200,11 +205,11 @@ class BetInfoRepository {
             }
 
             if (betList.size == 0) {
-                _betInfoSingle.postValue(Event(data))
+                _showBetInfoSingle.postValue(Event(true))
             }
+
             betList.add(data)
             _betInfoList.postValue(Event(betList))
-
         }
     }
 
@@ -225,7 +230,6 @@ class BetInfoRepository {
         )
 
         betInfoMatchOdd?.let {
-
             val data = BetInfoListData(
                 betInfoMatchOdd,
                 getParlayOdd(matchType, sportType, mutableListOf(it)).first()
@@ -234,11 +238,11 @@ class BetInfoRepository {
             }
 
             if (betList.size == 0) {
-                _betInfoSingle.postValue(Event(data))
+                _showBetInfoSingle.postValue(Event(true))
             }
+
             betList.add(data)
             _betInfoList.postValue(Event(betList))
-
         }
     }
 
