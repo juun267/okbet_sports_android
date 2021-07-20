@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
 import org.cxct.sportlottery.network.Constants.MYFAVORITE_QUERY
+import org.cxct.sportlottery.network.Constants.MYFAVORITE_SAVE
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
@@ -256,6 +257,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(MYFAVORITE_QUERY) -> {
                     response = getMockJsonData(request, "my_favorite_query.mock")
+                }
+                path.contains(MYFAVORITE_SAVE) -> {
+                    response = getMockJsonData(request, "my_favorite_save.mock")
                 }
             }
         }

@@ -3,8 +3,8 @@
     "msg": "ok",
     "code": 0,
     "t": {
-        "sport": "FT",
-        "league": null,
+        "sport": null,
+        "league": "sr:tournament:96",
         "match": null,
         "outright": null,
         "playCate": null
