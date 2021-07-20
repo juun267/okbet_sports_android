@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -214,7 +215,7 @@ class AccountHistoryViewModel(
 
     }
 
-    fun setSelectedSportDate(sport: String?, date: String?) {
+    fun setSelectedSportDate(sport: String? = _selectedSportDate.value?.first, date: String? = _selectedSportDate.value?.second) {
         _selectedSportDate.value = Pair(sport, date)
     }
 
