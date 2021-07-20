@@ -97,13 +97,11 @@ class TypeSCOAdapter(
 
         fun bindModel(key: String) {
 
-
             if (!oddsDetail.isMoreExpand && adapterPosition > 4) {
                 clItem.visibility = View.GONE
             } else {
                 clItem.visibility = View.VISIBLE
             }
-
 
             tvName.text = key
 

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import okhttp3.internal.filterList
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
@@ -170,7 +168,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
             TextUtil.compareWithGameKey(type, GameType.OE.value) -> return GameType.OE.type
 
-//            TextUtil.compareWithGameKey(type, GameType.SCO.value) -> return GameType.SCO.type
             type == GameType.SCO.value -> return GameType.SCO.type
 
             type == GameType.TG.value -> return GameType.TG.type
