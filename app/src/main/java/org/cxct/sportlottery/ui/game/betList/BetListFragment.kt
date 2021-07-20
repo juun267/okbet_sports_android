@@ -162,6 +162,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
 
+    /**
+     * 同賽事不能串關提示
+     * @param show true:顯示, false:隱藏
+     */
+    private fun showHideCantParlayWarn(show: Boolean) {
+        ll_cant_parlay_warn.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

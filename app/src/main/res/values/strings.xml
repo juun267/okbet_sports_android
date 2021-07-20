@@ -613,6 +613,7 @@
     <string name="bet_list_view_more_options">查看所有多个选项</string>
     <string name="bet_list_odds_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_list_remove_the_close">移除已关闭的选项</string>
+    <string name="bet_list_cant_parlay_warn">提醒若同一赛事投注项目不可进行串关</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
