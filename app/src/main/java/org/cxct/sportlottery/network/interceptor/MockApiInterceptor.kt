@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
@@ -113,6 +114,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(INDEX_CHECK_TOKEN) -> {
                     response = getMockJsonData(request, "index_check_token.mock")
+                }
+                path.contains(INDEX_PROMOTENOTICE) -> {
+                    response = getMockJsonData(request, "index_promotenotice.mock")
                 }
                 path.contains(MATCH_BET_INFO) -> {
                     response = getMockJsonData(request, "match_bet_info.mock")
