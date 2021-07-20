@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import okhttp3.internal.filterList
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.detail.Odd
@@ -168,7 +170,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(type, GameType.C_OE.value) -> return GameType.C_OE.type
             TextUtil.compareWithGameKey(type, GameType.OE.value) -> return GameType.OE.type
 
-            TextUtil.compareWithGameKey(type, GameType.SCO.value) -> return GameType.SCO.type
+//            TextUtil.compareWithGameKey(type, GameType.SCO.value) -> return GameType.SCO.type
+            type == GameType.SCO.value -> return GameType.SCO.type
 
             type == GameType.TG.value -> return GameType.TG.type
 
@@ -419,6 +422,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     }
 
 
+    @Suppress("UNCHECKED_CAST")
     inner class ViewHolder(itemView: View, var viewType: Int) : RecyclerView.ViewHolder(itemView) {
 
         private fun setVisibility(visible: Boolean) {
@@ -524,7 +528,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.WM.type,
                 GameType.HTFT.type -> oneList(oddsDetail)
 
-                GameType.SCO.type -> forSCO(oddsDetail)
+                GameType.SCO.type -> forSCO(oddsDetail, position)
 
                 GameType.DC_OU.type,
                 GameType.DC_BTS.type,
@@ -733,6 +737,130 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
+        private fun forSCO(oddsDetail: OddsDetailListData, position: Int) {
+
+            val teamNameList = setupSCOTeamName(oddsDetail)
+
+            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+
+            rvBet?.apply {
+                adapter = TypeSCOAdapter(
+                    selectSCO(oddsDetail, oddsDetail.gameTypeSCOSelect ?: teamNameList[0], teamNameList),
+                    onOddClickListener,
+                    betInfoList,
+                    oddsType,
+                    object : TypeSCOAdapter.OnMoreClickListener {
+                        override fun click() {
+                            oddsDetail.isMoreExpand = !oddsDetail.isMoreExpand
+                            this@OddsDetailListAdapter.notifyItemChanged(position)
+                        }
+                    }
+                )
+                layoutManager = LinearLayoutManager(itemView.context)
+            }
+
+            tvHomeName?.apply {
+                isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[0]
+                setOnClickListener {
+                    (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
+                        oddsDetail = oddsDetail.apply {
+                            gameTypeSCOSelect = teamNameList[0]
+                            isMoreExpand = false
+                        },
+                        teamName = oddsDetail.gameTypeSCOSelect ?: teamNameList[0],
+                        teamNameList = teamNameList
+                    )
+                    this@OddsDetailListAdapter.notifyItemChanged(position)
+                }
+            }
+
+            tvAwayName?.apply {
+                isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[1]
+                setOnClickListener {
+                    (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
+                        oddsDetail = oddsDetail.apply {
+                            gameTypeSCOSelect = teamNameList[1]
+                            isMoreExpand = false
+                        },
+                        teamName = oddsDetail.gameTypeSCOSelect ?: teamNameList[1],
+                        teamNameList = teamNameList
+                    )
+                    this@OddsDetailListAdapter.notifyItemChanged(position)
+                }
+            }
+        }
+
+        private fun setupSCOTeamName(oddsDetail: OddsDetailListData): MutableList<String> {
+            val groupTeamName = oddsDetail.oddArrayList.groupBy {
+                it?.extInfo
+            }
+            return mutableListOf<String>().apply { groupTeamName.forEach { it.key?.let { key -> add(key) } } }.apply {
+                tvHomeName?.text = this[0]
+                tvAwayName?.text = this[1]
+            }
+        }
+
+        private fun selectSCO(oddsDetail: OddsDetailListData, teamName: String, teamNameList: MutableList<String>): OddsDetailListData {
+            oddsDetail.gameTypeSCOSelect = teamName
+
+            if (teamName == teamNameList[0]) {
+                tvHomeName?.isSelected = true
+                tvAwayName?.isSelected = false
+            } else {
+                tvHomeName?.isSelected = false
+                tvAwayName?.isSelected = true
+            }
+
+            //過濾掉 其他:(第一、任何、最後), 无進球
+            val newList = oddsDetail.oddArrayList.filterNot { odd ->
+                odd?.spread == "SCORE-1ST-O" || odd?.spread == "SCORE-ANT-O" || odd?.spread == "SCORE-LAST-O" || odd?.spread == "SCORE-N"
+            }
+
+            //依隊名分開
+            val groupTeamName = newList.groupBy {
+                it?.extInfo
+            }
+
+            //建立球員列表(一個球員三個賠率)
+            var map: HashMap<String, List<Odd?>> = HashMap()
+
+            groupTeamName.forEach {
+                if (it.key == teamName) {
+                    map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>
+                }
+            }
+
+            //保留 其他:(第一、任何、最後), 无進球
+            val otherAndNone = oddsDetail.oddArrayList.filter { odd ->
+                odd?.spread == "SCORE-1ST-O" || odd?.spread == "SCORE-ANT-O" || odd?.spread == "SCORE-LAST-O" || odd?.spread == "SCORE-N"
+            }
+
+            //依球員名稱分開
+            val groupPlayerName = otherAndNone.groupBy {
+                it?.name
+            }
+
+            //倒序排列 多的在前(無進球只有一種賠率 放最後面)
+            val mapSort = groupPlayerName.entries.sortedByDescending { it.value.size }.associateBy({ it.key }, { it.value })
+
+            //添加至球員列表內
+            mapSort.forEach {
+                map[it.key ?: ""] = it.value
+            }
+
+            return OddsDetailListData(
+                oddsDetail.gameType,
+                oddsDetail.typeCodes,
+                oddsDetail.name,
+                oddsDetail.oddArrayList
+            ).apply {
+                isExpand = oddsDetail.isExpand
+                isMoreExpand = oddsDetail.isMoreExpand
+                gameTypeSCOSelect = oddsDetail.gameTypeSCOSelect
+                scoItem = map
+            }
+        }
+
         private fun group6Item(oddsDetail: OddsDetailListData) {
             rvBet?.apply {
                 adapter = group6AdapterSetup(oddsDetail).apply {
@@ -776,44 +904,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun forSCO(oddsDetail: OddsDetailListData){
-            tvHomeName?.text = homeName
-            tvAwayName?.text = awayName
-
-            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-
-            tvHomeName?.apply {
-                isSelected = oddsDetail.gameTypeSCOSelect == SCOType.HOME
-                setOnClickListener {
-
-                }
-            }
-
-            tvAwayName?.apply {
-                isSelected = oddsDetail.gameTypeSCOSelect == SCOType.AWAY
-                setOnClickListener {
-
-                }
-            }
-
-        }
-
-        private fun selectSCO(oddsDetail: OddsDetailListData): OddsDetailListData {
-            val oddArrayList: MutableList<Odd?> = mutableListOf()
-
-            return OddsDetailListData(
-                oddsDetail.gameType,
-                oddsDetail.typeCodes,
-                oddsDetail.name,
-                oddArrayList
-            ).apply {
-                isExpand = oddsDetail.isExpand
-                isMoreExpand = oddsDetail.isMoreExpand
-                gameTypeSCOSelect = oddsDetail.gameTypeSCOSelect
-            }
-        }
-
-        @Suppress("UNCHECKED_CAST")
         private fun group6AdapterSetup(oddsDetail: OddsDetailListData): Type6GroupAdapter =
             Type6GroupAdapter(
                 oddsDetail.apply { groupItem = oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>> },
@@ -822,7 +912,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 oddsType
             )
 
-        @Suppress("UNCHECKED_CAST")
         private fun group4AdapterSetup(oddsDetail: OddsDetailListData): Type4GroupAdapter =
             Type4GroupAdapter(
                 oddsDetail.apply {
