@@ -6,7 +6,7 @@
     <data>
         <variable
             name="data"
-            type="org.cxct.sportlottery.network.bet.MatchOdd" />
+            type="org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

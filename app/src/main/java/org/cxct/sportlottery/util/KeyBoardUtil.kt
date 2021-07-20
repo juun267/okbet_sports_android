@@ -27,19 +27,31 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
     private lateinit var mEditText: EditText
 
 
+    private var isShow = false
+
+
     fun showKeyboard(editText: EditText) {
         this.mEditText = editText
 
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
-        mEditText.inputType = InputType.TYPE_NULL
+        mEditText.apply {
+            inputType = InputType.TYPE_NULL
+            isFocusable = true
+            isFocusableInTouchMode = true
+        }
         keyboardView.visibility = View.VISIBLE
         parent?.visibility = View.VISIBLE
+
+        isShow = true
     }
 
 
     fun hideKeyboard() {
         keyboardView.visibility = View.GONE
         parent?.visibility = View.INVISIBLE
+        if (isShow) mEditText.isFocusable = false
+
+        isShow = false
     }
 
 
@@ -63,7 +75,6 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
             }
 
             Keyboard.KEYCODE_DONE -> {
-                mEditText.isFocusable = false
                 hideKeyboard()
             }
 

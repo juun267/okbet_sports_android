@@ -24,6 +24,8 @@ import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_DETAIL
@@ -42,6 +44,7 @@ import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
 import org.cxct.sportlottery.network.Constants.THIRD_REBATES
@@ -120,6 +123,12 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(MATCH_BET_LIST) -> {
                     response = getMockJsonData(request, "match_bet_list.mock")
                 }
+                path.contains(MATCH_BET_SETTLED_LIST) -> {
+                    response = getMockJsonData(request, "match_bet_settled_list.mock")
+                }
+                path.contains(MATCH_BET_SETTLED_DETAIL_LIST) -> {
+                    response = getMockJsonData(request, "match_bet_settled_detail_list.mock")
+                }
                 path.contains(MATCH_PRELOAD) -> {
                     response = getMockJsonData(request, "match_preload.mock")
                 }
@@ -131,6 +140,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(SPORT_MENU) -> {
                     response = getMockJsonData(request, "sport_menu.mock")
+                }
+                path.contains(SPORT_QUERY) -> {
+                    response = getMockJsonData(request, "sport_query.mock")
                 }
                 path.contains(LEAGUE_LIST) -> {
                     response = getMockJsonData(request, "league_list.mock")

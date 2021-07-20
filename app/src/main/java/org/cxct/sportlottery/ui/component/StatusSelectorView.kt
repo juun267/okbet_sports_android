@@ -152,6 +152,10 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
         }
     }
 
+    fun getNowSelectedItemCode(): String? {
+        return sheetAdapter?.checkedItemCode
+    }
+
     fun setCloseBtnClickListener(onClicked: () -> Unit) {
         bottomSheetView.sheet_tv_close.setOnClickListener {
             onClicked.invoke()
@@ -163,6 +167,7 @@ class StatusSelectorView @JvmOverloads constructor(context: Context, attrs: Attr
     fun setOnItemSelectedListener(listener: (data: StatusSheetData) -> Unit) {
         itemSelectedListener = listener
     }
+
 
 
     private fun setBottomSheet(typedArray: TypedArray) {

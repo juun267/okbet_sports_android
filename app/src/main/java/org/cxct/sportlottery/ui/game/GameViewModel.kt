@@ -69,7 +69,7 @@ class GameViewModel(
     infoCenterRepository
 ) {
 
-    val betInfoSingle = betInfoRepository.betInfoSingle
+    val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
     val betInfoList = betInfoRepository.betInfoList
 
@@ -568,9 +568,7 @@ class GameViewModel(
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
 
-        if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
-            getGameHallList(matchType, false)
-        }
+        getGameHallList(matchType, false)
     }
 
     fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
@@ -648,9 +646,7 @@ class GameViewModel(
     fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
         updatePlaySelectedState(play)
 
-        if (play.code == PlayType.MAIN.code || play.playCateList?.size ?: 0 <= 1) {
-            getLeagueOddsList(matchType, leagueId)
-        }
+        getLeagueOddsList(matchType, leagueId)
     }
 
     fun switchPlayCategory(matchType: MatchType, leagueId: String, playCateCode: String?) {
@@ -719,7 +715,6 @@ class GameViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null
     ) {
-        //TODO add playCate live data to the api param 等待後端調整
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getOddsList(
@@ -729,7 +724,8 @@ class GameViewModel(
                         leagueIdList = leagueIdList,
                         startTime = timeRangeParams?.startTime,
                         endTime = timeRangeParams?.endTime,
-                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
+                        playCateMenuCode = getPlayCateSelected()?.code ?: "",
+                        playCateCodeList = getPlayCateCodeList()
                     )
                 )
             }
@@ -1318,6 +1314,13 @@ class GameViewModel(
 
     private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
 
+    private fun getPlayCateCodeList(): List<String>? {
+        _playCate.value?.let {
+            return listOf(it)
+        }
+        return null
+    }
+
     private fun SportMenuData.updateSportSelectState(
         matchType: MatchType?,
         sportTypeCode: String?
@@ -1411,8 +1414,23 @@ class GameViewModel(
         }
 
         playList?.let {
-            _playList.postValue(it)
-            _playCate.postValue(null)
+            _playList.value = it
+            _playCate.value = (
+                    when (play.selectionType == SelectionType.SELECTABLE.code) {
+                        true -> {
+                            it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.find { playCate ->
+                                playCate.isSelected
+                            }?.code ?: it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.firstOrNull()?.code
+                        }
+                        false -> {
+                            null
+                        }
+                    }
+                    )
         }
     }
 

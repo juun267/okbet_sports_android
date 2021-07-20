@@ -337,14 +337,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bet_list_odds_close"
+                android:text="@string/bet_info_odd_content_close"
                 android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bet_list_remove_the_close"
+                android:text="@string/bet_info_remove_closed"
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/textSize12sp" />
         </LinearLayout>

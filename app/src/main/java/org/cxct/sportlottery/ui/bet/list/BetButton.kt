@@ -39,6 +39,14 @@ class BetButton @JvmOverloads constructor(
         }
 
 
+    var isCanSendOut: Boolean ?= null
+        set(value) {
+            field = value
+            field?.let {
+                setupSendOutClickable(it)
+            }
+        }
+
     init {
         init()
     }
@@ -56,6 +64,16 @@ class BetButton @JvmOverloads constructor(
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
         tv_accept_odds_change.visibility = if (isOddsChanged) View.VISIBLE else View.GONE
+    }
+
+
+    private fun setupSendOutClickable(isCanSendOut: Boolean) {
+        cl_bet.apply {
+            isSelected = isCanSendOut
+            isClickable = isCanSendOut
+        }
+
+        tv_accept_odds_change.isClickable = isCanSendOut
     }
 
 
