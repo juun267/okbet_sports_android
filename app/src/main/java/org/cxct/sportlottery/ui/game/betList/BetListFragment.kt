@@ -9,13 +9,14 @@ import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
-import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -123,6 +124,21 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun queryData() {
         //獲取餘額
         viewModel.getMoney()
+    }
+
+    private fun showParlayDescription() {
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_dialog_parlay_description, null)
+        val dialog = BottomSheetDialog(context ?: requireContext())
+        dialog.apply {
+            setContentView(bottomSheetView)
+            setCancelable(false)
+            setCanceledOnTouchOutside(false)
+            btn_close.setOnClickListener {
+                dismiss()
+            }
+            show()
+        }
+
     }
 
     companion object {
