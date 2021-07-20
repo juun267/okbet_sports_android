@@ -85,7 +85,8 @@ class OddsButton @JvmOverloads constructor(
             if (odd?.spread.isNullOrEmpty()) visibility = View.GONE else tv_spread.text = odd?.spread
         }
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        betStatus = odd?.status ?: BetStatus.LOCKED.code
+        betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null)
+            BetStatus.LOCKED.code else odd.status
     }
 
 
