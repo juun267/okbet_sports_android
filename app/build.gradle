@@ -38,14 +38,14 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+            buildConfigField 'Boolean', 'MOCK', 'true'//使用mock data要設為true
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
+            buildConfigField 'Boolean', 'MOCK', 'true'//使用mock data要設為true
         }
     }
 

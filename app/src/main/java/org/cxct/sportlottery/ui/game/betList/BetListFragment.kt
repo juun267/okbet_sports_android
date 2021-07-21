@@ -185,10 +185,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
             }
 
-            btnDeleteAllConfirm.setOnClickListener {
-                //TODO 發現問題, 待問題排除後確認功能
-                viewModel.removeBetInfoAll()
-            }
+            btnDeleteAllConfirm.setOnClickListener { viewModel.removeBetInfoAll() }
         }
     }
 

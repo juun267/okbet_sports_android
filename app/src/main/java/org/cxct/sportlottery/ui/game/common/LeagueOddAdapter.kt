@@ -5,26 +5,23 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd.view.*
-import kotlinx.android.synthetic.main.itemview_game_league_odd_1x2.view.*
-import kotlinx.android.synthetic.main.itemview_game_league_odd_hdp_ou.view.*
+import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
+import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.OUType
-import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
-import org.cxct.sportlottery.ui.game.widget.OddButton
+import org.cxct.sportlottery.ui.game.PlayTypeUtils
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
+
 
 class LeagueOddAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -117,7 +114,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupMatchTime(item, matchType, isTimerEnable)
 
-//            setupOddButton(item, leagueOddListener, oddsType)
+            setupOddButton(item, leagueOddListener, oddsType)
         }
 
         private fun setupMatchInfo(
@@ -236,628 +233,218 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType,
         ) {
-            val sportType = item.matchInfo?.sportType
+            item.odds.forEach {
+                val view = LayoutInflater.from(itemView.context).inflate(
+                    R.layout.view_odd_btn_column_v4,
+                    itemView.odd_button_test,
+                    false
+                ).apply {
 
-            val oddListHDP = when (sportType) {
-                SportType.TENNIS -> {
-                    item.odds[PlayType.SET_HDP.code]
-                }
-                SportType.BASKETBALL -> {
-                    item.odds[PlayType.HDP_INCL_OT.code]
-                }
-                else -> {
-                    item.odds[PlayType.HDP.code]
-                }
-            }
+                    val playCateName = PlayTypeUtils
+                        .getPlayTypeTitleResId(it.key, item.matchInfo?.sportType?.code)?.let {
+                            itemView.context.getString(it)
+                        } ?: ""
 
-            val oddListOU = when (sportType) {
-                SportType.BASKETBALL -> {
-                    item.odds[PlayType.OU_INCL_OT.code]
-                }
-                else -> {
-                    item.odds[PlayType.OU.code]
-                }
-            }
+                    this.odd_btn_type.text = playCateName
 
-            val oddList1x2 = when (sportType) {
-                SportType.BASKETBALL -> {
-                    item.odds[PlayType.X12_INCL_OT.code]
-                }
-                else -> {
-                    item.odds[PlayType.X12.code]
-                }
-            }
-
-            itemView.match_play_type_column1.text = when (sportType) {
-                SportType.FOOTBALL, SportType.BASKETBALL -> {
-                    itemView.context.getString(R.string.ou_hdp_hdp_title)
-                }
-                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                    itemView.context.getString(R.string.ou_hdp_1x2_title)
-                }
-                else -> ""
-            }
-
-            itemView.match_play_type_column2.text = when (sportType) {
-                SportType.FOOTBALL, SportType.BASKETBALL -> {
-                    itemView.context.getString(R.string.ou_hdp_ou_title)
-                }
-                SportType.TENNIS -> {
-                    itemView.context.getString(R.string.ou_hdp_hdp_title_tennis)
-                }
-                SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                    itemView.context.getString(R.string.ou_hdp_hdp_title_v_b)
-                }
-                else -> ""
-            }
-
-            itemView.match_odd_column1_home.apply {
-                playType = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        PlayType.HDP
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        PlayType.X12
-                    }
-                    else -> null
-                }
-
-                isSelected = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListHDP?.get(0)?.isSelected ?: false
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddList1x2?.get(0)?.isSelected ?: false
-                    }
-                    else -> {
-                        false
-                    }
-                }
-
-                betStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        if (oddListHDP == null || oddListHDP.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddListHDP[0]?.status ?: BetStatus.LOCKED.code
-                        }
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        if (oddList1x2 == null || oddList1x2.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddList1x2[0]?.status ?: BetStatus.LOCKED.code
-                        }
-                    }
-                    else -> {
-                        null
-                    }
-                }
-
-                this@ViewHolderHdpOu.setupOddState(
-                    this, when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            oddListHDP?.get(0)
-                        }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            oddList1x2?.get(0)
-                        }
-                        else -> {
-                            null
-                        }
-                    }
-                )
-
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
-                                oddListHDP?.get(0)?.oddState = OddState.SAME.state
+                    this.odd_btn_home.apply homeButtonSettings@{
+                        when {
+                            (it.value.size < 2) -> {
+                                betStatus = BetStatus.LOCKED.code
+                                return@homeButtonSettings
                             }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                                oddList1x2?.get(0)?.oddState = OddState.SAME.state
+                            else -> {
+                                betStatus = it.value[0]?.status
                             }
                         }
-                    }
-                }
 
-                odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
-                    ""
-                } else {
-                    oddListHDP[0]?.spread
-                }
-
-                odd_hdp_bottom_text.text = when {
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddListHDP[0]?.odds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddListHDP[0]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
-
-                odd_1x2_top_text.visibility = View.GONE
-
-                odd_1x2_bottom_text.text = when {
-                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddList1x2[0]?.odds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddList1x2[0]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
-
-                setOnClickListener {
-                    when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            if (oddListHDP != null && oddListHDP.size >= 2) {
-                                oddListHDP[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column1.text.toString(),
-                                        item.matchInfo.homeName
-                                    )
+                        odd_type_text.apply {
+                            visibility = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }
+                                    .contains(it.key) -> View.VISIBLE
+                                else -> {
+                                    when (!it.value[0]?.spread.isNullOrEmpty()) {
+                                        true -> View.INVISIBLE
+                                        false -> View.GONE
+                                    }
                                 }
                             }
+
+                            text = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }.contains(it.key) -> {
+                                    itemView.context.getString(R.string.odd_button_ou_o)
+                                }
+                                else -> ""
+                            }
                         }
 
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            if (oddList1x2 != null && oddList1x2.size >= 2) {
-                                oddList1x2[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column1.text.toString(),
-                                        item.matchInfo.homeName
-                                    )
+                        odd_top_text.apply {
+                            visibility = when (!it.value[0]?.spread.isNullOrEmpty()) {
+                                true -> View.VISIBLE
+                                false -> {
+                                    when {
+                                        PlayTypeUtils.getOUSeries().map { it.code }
+                                            .contains(it.key) -> View.INVISIBLE
+                                        else -> View.GONE
+                                    }
                                 }
                             }
-                        }
-                    }
-                }
-            }
 
-            itemView.match_odd_column1_away.apply {
-                playType = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        PlayType.HDP
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        PlayType.X12
-                    }
-                    else -> null
-                }
+                            text = it.value[0]?.spread ?: ""
+                        }
 
-                isSelected = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListHDP?.get(1)?.isSelected ?: false
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddList1x2?.get(1)?.isSelected ?: false
-                    }
-                    else -> {
-                        false
-                    }
-                }
+                        odd_bottom_text.text = when (oddsType) {
+                            OddsType.EU -> it.value[0]?.odds.toString()
+                            OddsType.HK -> it.value[0]?.hkOdds.toString()
+                        }
 
-                betStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        if (oddListHDP == null || oddListHDP.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddListHDP[1]?.status ?: BetStatus.LOCKED.code
-                        }
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        if (oddList1x2 == null || oddList1x2.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddList1x2[1]?.status ?: BetStatus.LOCKED.code
-                        }
-                    }
-                    else -> {
-                        null
-                    }
-                }
+                        this@ViewHolderHdpOu.setupOddState(this, it.value[0])
 
-                this@ViewHolderHdpOu.setupOddState(
-                    this, when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            oddListHDP?.get(1)
-                        }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            oddList1x2?.get(1)
-                        }
-                        else -> {
-                            null
-                        }
-                    }
-                )
+                        isSelected = it.value[0]?.isSelected ?: false
 
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
-                                oddListHDP?.get(1)?.oddState = OddState.SAME.state
-                            }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                                oddList1x2?.get(1)?.oddState = OddState.SAME.state
+                        setOnClickListener { _ ->
+                            it.value[0]?.let { odd ->
+
+                                val playName = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(it.key) -> {
+                                        itemView.context.getString(R.string.odd_button_ou_o)
+                                    }
+                                    else -> {
+                                        item.matchInfo?.homeName
+                                    }
+                                } ?: ""
+
+                                leagueOddListener?.onClickBet(item, odd, playCateName, playName)
                             }
                         }
                     }
-                }
 
-                odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
-                    ""
-                } else {
-                    oddListHDP[1]?.spread
-                }
-
-                odd_hdp_bottom_text.text = when {
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddListHDP[1]?.odds?.let {
-                            TextUtil.formatForOdd(it)
+                    this.odd_btn_away.apply awayButtonSettings@{
+                        when {
+                            (it.value.size < 2) -> {
+                                betStatus = BetStatus.LOCKED.code
+                                return@awayButtonSettings
+                            }
+                            else -> {
+                                betStatus = it.value[1]?.status
+                            }
                         }
-                    }
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddListHDP[1]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
 
-                odd_1x2_top_text.visibility = View.GONE
-
-                odd_1x2_bottom_text.text = when {
-                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddList1x2[1]?.odds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    (oddList1x2 != null && oddList1x2.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddList1x2[1]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
-
-                setOnClickListener {
-                    when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            if (oddListHDP != null && oddListHDP.size >= 2) {
-                                oddListHDP[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column1.text.toString(),
-                                        item.matchInfo.awayName
-                                    )
+                        odd_type_text.apply {
+                            visibility = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }
+                                    .contains(it.key) -> View.VISIBLE
+                                else -> {
+                                    when (!it.value[1]?.spread.isNullOrEmpty()) {
+                                        true -> View.INVISIBLE
+                                        false -> View.GONE
+                                    }
                                 }
                             }
+
+                            text = when {
+                                PlayTypeUtils.getOUSeries().map { it.code }.contains(it.key) -> {
+                                    itemView.context.getString(R.string.odd_button_ou_u)
+                                }
+                                else -> ""
+                            }
                         }
 
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            if (oddList1x2 != null && oddList1x2.size >= 2) {
-                                oddList1x2[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column1.text.toString(),
-                                        item.matchInfo.awayName
-                                    )
+                        odd_top_text.apply {
+                            visibility = when (!it.value[1]?.spread.isNullOrEmpty()) {
+                                true -> View.VISIBLE
+                                false -> {
+                                    when {
+                                        PlayTypeUtils.getOUSeries().map { it.code }
+                                            .contains(it.key) -> View.INVISIBLE
+                                        else -> View.GONE
+                                    }
                                 }
                             }
-                        }
-                    }
-                }
-            }
 
-            itemView.match_odd_column2_home.apply {
-                playType = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        PlayType.OU
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        PlayType.HDP
-                    }
-                    else -> null
-                }
-
-                ouType = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        OUType.O_TYPE
-                    }
-                    else -> null
-                }
-
-                isSelected = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListOU?.get(0)?.isSelected ?: false
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddListHDP?.get(0)?.isSelected ?: false
-                    }
-                    else -> {
-                        false
-                    }
-                }
-
-                betStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        if (oddListOU == null || oddListOU.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddListOU[0]?.status ?: BetStatus.LOCKED.code
+                            text = it.value[1]?.spread ?: ""
                         }
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        if (oddListHDP == null || oddListHDP.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddListHDP[0]?.status ?: BetStatus.LOCKED.code
-                        }
-                    }
-                    else -> {
-                        null
-                    }
-                }
 
-                this@ViewHolderHdpOu.setupOddState(
-                    this, when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            oddListOU?.get(0)
+                        odd_bottom_text.text = when (oddsType) {
+                            OddsType.EU -> it.value[1]?.odds.toString()
+                            OddsType.HK -> it.value[1]?.hkOdds.toString()
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            oddListHDP?.get(0)
-                        }
-                        else -> {
-                            null
-                        }
-                    }
-                )
 
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
-                                oddListOU?.get(0)?.oddState = OddState.SAME.state
+                        this@ViewHolderHdpOu.setupOddState(this, it.value[1])
+
+                        isSelected = it.value[1]?.isSelected ?: false
+
+                        setOnClickListener { _ ->
+                            it.value[1]?.let { odd ->
+
+                                val playName = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(it.key) -> {
+                                        itemView.context.getString(R.string.odd_button_ou_u)
+                                    }
+                                    else -> {
+                                        item.matchInfo?.awayName
+                                    }
+                                } ?: ""
+
+                                leagueOddListener?.onClickBet(item, odd, playCateName, playName)
                             }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                                oddListHDP?.get(0)?.oddState = OddState.SAME.state
+                        }
+                    }
+
+                    this.odd_btn_draw.apply drawButtonSettings@{
+                        when {
+                            (it.value.size < 3) -> {
+                                betStatus = BetStatus.DEACTIVATED.code
+                                return@drawButtonSettings
+                            }
+                            else -> {
+                                betStatus = it.value[2]?.status
+                            }
+                        }
+
+                        odd_type_text.apply {
+                            text = itemView.context.getString(R.string.draw)
+                            visibility = View.VISIBLE
+                        }
+
+                        odd_top_text.apply {
+                            visibility = View.INVISIBLE
+                        }
+
+                        odd_bottom_text.text = when (oddsType) {
+                            OddsType.EU -> it.value[2]?.odds.toString()
+                            OddsType.HK -> it.value[2]?.hkOdds.toString()
+                        }
+
+                        this@ViewHolderHdpOu.setupOddState(this, it.value[2])
+
+                        isSelected = it.value[2]?.isSelected ?: false
+
+                        setOnClickListener { _ ->
+                            it.value[2]?.let { odd ->
+                                leagueOddListener?.onClickBet(
+                                    item,
+                                    odd,
+                                    playCateName,
+                                    itemView.context.getString(R.string.draw)
+                                )
                             }
                         }
                     }
                 }
 
-                odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
-                    ""
-                } else {
-                    oddListOU[0]?.spread
-                }
+                view?.let {
+                    val layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        rightMargin =
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize8sp)
+                    }
 
-                odd_ou_bottom_text.text = when {
-                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddListOU[0]?.odds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddListOU[0]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
-
-                odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
-                    ""
-                } else {
-                    oddListHDP[0]?.spread
-                }
-
-                odd_hdp_bottom_text.text = when {
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddListHDP[0]?.odds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddListHDP[0]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
-
-                setOnClickListener {
-                    when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            if (oddListOU != null && oddListOU.size >= 2) {
-                                oddListOU[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column2.text.toString(),
-                                        resources.getString(R.string.odd_button_ou_o)
-                                    )
-                                }
-                            }
-                        }
-
-                        SportType.VOLLEYBALL, SportType.BADMINTON, SportType.TENNIS -> {
-                            if (oddListHDP != null && oddListHDP.size >= 2) {
-                                oddListHDP[0]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column2.text.toString(),
-                                        item.matchInfo.homeName
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            itemView.match_odd_column2_away.apply {
-                playType = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        PlayType.OU
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        PlayType.HDP
-                    }
-                    else -> null
-                }
-
-                ouType = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        OUType.U_TYPE
-                    }
-                    else -> null
-                }
-
-                isSelected = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        oddListOU?.get(1)?.isSelected ?: false
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        oddListHDP?.get(1)?.isSelected ?: false
-                    }
-                    else -> {
-                        false
-                    }
-                }
-
-                betStatus = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> {
-                        if (oddListOU == null || oddListOU.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddListOU[1]?.status ?: BetStatus.LOCKED.code
-                        }
-                    }
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                        if (oddListHDP == null || oddListHDP.size < 2) {
-                            BetStatus.LOCKED.code
-                        } else {
-                            oddListHDP[1]?.status ?: BetStatus.LOCKED.code
-                        }
-                    }
-                    else -> {
-                        null
-                    }
-                }
-
-                this@ViewHolderHdpOu.setupOddState(
-                    this, when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            oddListOU?.get(1)
-                        }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            oddListHDP?.get(1)
-                        }
-                        else -> {
-                            null
-                        }
-                    }
-                )
-
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
-                                oddListOU?.get(1)?.oddState = OddState.SAME.state
-                            }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                                oddListHDP?.get(1)?.oddState = OddState.SAME.state
-                            }
-                        }
-                    }
-                }
-
-                odd_ou_top_text.text = if (oddListOU == null || oddListOU.size < 2) {
-                    ""
-                } else {
-                    oddListOU[1]?.spread
-                }
-
-                odd_ou_bottom_text.text = when {
-                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddListOU[1]?.odds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    (oddListOU != null && oddListOU.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddListOU[1]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
-
-                odd_hdp_top_text.text = if (oddListHDP == null || oddListHDP.size < 2) {
-                    ""
-                } else {
-                    oddListHDP[1]?.spread
-                }
-
-                odd_hdp_bottom_text.text = when {
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.EU) -> {
-                        oddListHDP[1]?.odds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    (oddListHDP != null && oddListHDP.size >= 2 && oddsType == OddsType.HK) -> {
-                        oddListHDP[1]?.hkOdds?.let {
-                            TextUtil.formatForOdd(it)
-                        }
-                    }
-                    else -> ""
-                }
-
-                setOnClickListener {
-                    when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            if (oddListOU != null && oddListOU.size >= 2) {
-                                oddListOU[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column2.text.toString(),
-                                        resources.getString(R.string.odd_button_ou_u)
-                                    )
-                                }
-                            }
-                        }
-
-                        SportType.VOLLEYBALL, SportType.BADMINTON, SportType.TENNIS -> {
-                            if (oddListHDP != null && oddListHDP.size >= 2) {
-                                oddListHDP[1]?.let { odd ->
-                                    leagueOddListener?.onClickBet(
-                                        item,
-                                        odd,
-                                        itemView.match_play_type_column2.text.toString(),
-                                        item.matchInfo.awayName
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    itemView.odd_button_test.addView(it, layoutParams)
                 }
             }
         }

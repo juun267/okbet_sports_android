@@ -385,6 +385,27 @@
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
 
+    <string name="game_play_type_1x2">独赢</string>
+    <string name="game_play_type_1x2_1st">独赢-上半场</string>
+    <string name="game_play_type_1x2_seg1">独赢-第一盘</string>
+    <string name="game_play_type_hdp_ft">让球</string>
+    <string name="game_play_type_hdp_tn">让局</string>
+    <string name="game_play_type_hdp_vb">让分</string>
+    <string name="game_play_type_hdp_1st">让球-上半场</string>
+    <string name="game_play_type_set_hdp">让盘</string>
+    <string name="game_play_type_hdp_seg1">让分-第一盘</string>
+    <string name="game_play_type_hdp_incl_ot">让球(含加时)</string>
+    <string name="game_play_type_ou_ft">大/小</string>
+    <string name="game_play_type_ou_tn">总局数-大/小</string>
+    <string name="game_play_type_ou_1st">大/小-上半场</string>
+    <string name="game_play_type_ou_incl_ot">大/小(含加时)</string>
+    <string name="game_play_type_bts">双方球队进球</string>
+    <string name="game_play_type_oe">单/双</string>
+    <string name="game_play_type_tg_ou_h_ot">球队得分数&amp;大/小-{H}(含加时)</string>
+    <string name="game_play_type_tg_ou_c_ot">球队得分数&amp;大/小-{C}(含加时)</string>
+    <string name="game_play_type_tg_ou_h_1st">球队得分数&amp;大/小-{H}-上半场</string>
+    <string name="game_play_type_tg_ou_c_1st">球队得分数&amp;大/小-{C}-上半场</string>
+
     <string name="game_tab_league_odd">赛事</string>
     <string name="game_tab_outright_odd">冠军</string>
     <string name="game_tab_price_boosts_odd">特优赔率</string>
@@ -767,7 +788,7 @@
     <string name="account_history_overview">账户历史总览</string>
     <string name="bet_num_and_bet_date">注单号 / 结算日期</string>
 
-    <!--    account history-->
+    <!--account history-->
     <string name="date">日期</string>
     <string name="bet_amount">投注金额</string>
     <string name="available_amount">有效金额</string>
@@ -781,5 +802,11 @@
 
     <!--keyboard-->
     <string name="keyboard_done">已完成</string>
+    <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
+
+    <!--odds button-->
+    <string name="odds_button_name_first">第一</string>
+    <string name="odds_button_name_ant">任何</string>
+    <string name="odds_button_name_last">最后</string>
 
 </resources>

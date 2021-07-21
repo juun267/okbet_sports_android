@@ -24,3 +24,18 @@ enum class BetStatus(val code: Int) {
     LOCKED(1),
     DEACTIVATED(2)
 }
+
+//球員玩法 其他(第一、任何、最後) 無進球
+enum class OddSpreadForSCO(val spread: String) {
+    SCORE_1ST_O("SCORE-1ST-O"),
+    SCORE_ANT_O("SCORE-ANT-O"),
+    SCORE_LAST_O("SCORE-LAST-O"),
+    SCORE_N("SCORE-N")
+}
+
+enum class OddSpreadForSCOCompare(val spread: String) {
+    SCORE_1ST("SCORE-1ST"),
+    SCORE_ANT("SCORE-ANT"),
+    SCORE_LAST("SCORE-LAST"),
+    SCORE_N("SCORE-N")
+}

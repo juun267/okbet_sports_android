@@ -128,6 +128,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             it?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
                 curHomeScore = homeScore
                 curAwayScore = awayScore
+
+                tv_score.text = "$curHomeScore / $curAwayScore"
             }
         })
 
@@ -221,6 +223,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                     sport = oddsListResult.oddsListData?.sport?.code.toString()
                     oddsGameCardAdapter?.data = matchOddList
+
+                    setView(matchOddList.firstOrNull())
+
                 }
             }
 
@@ -236,6 +241,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     }
 
+    private fun setView(matchInfo: MatchInfo?) {
+        matchInfo?.apply {
+            tv_home_name.text = homeName
+            tv_away_name.text = awayName
+            tv_time.text = startTime
+            tv_score.text = "$homeScore / $awayScore"
+        }
+    }
 
     private fun subscribeHallChannel(code: String, match: String?) {
         service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match)
@@ -264,6 +277,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             matchOdd.matchInfo.homeScore = curHomeScore
             matchOdd.matchInfo.awayScore = curAwayScore
+            tv_score.text = "$curHomeScore / $curAwayScore"
+
             viewModel.updateMatchBetList(matchType = MatchType.IN_PLAY, args.sportType, playCateName = oddsDetail.name, matchOdd = matchOdd, odd = odd)
 
         }

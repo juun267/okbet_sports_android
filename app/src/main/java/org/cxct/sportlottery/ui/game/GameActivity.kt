@@ -117,6 +117,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
+        initSubmitBtn()
         initBottomNavigation()
         initRvMarquee()
         initTabLayout()
@@ -234,6 +235,12 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         fun onClick(menuStatus: Int)
     }
 
+    private fun initSubmitBtn() {
+        game_submit.setOnClickListener {
+            viewModel.submitLeague()
+        }
+    }
+
     private fun initBottomNavigation() {
         initNavigationListener()
     }
@@ -278,7 +285,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 R.anim.pop_bottom_to_top_exit
             )
             .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(null)
+            .addToBackStack("BetListFragment")
             .commit()
     }
 
@@ -428,6 +435,11 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     }
 
     override fun onBackPressed() {
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0){
+            supportFragmentManager.popBackStack()
+            return
+        }
         when (mNavController.currentDestination?.id) {
             R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
                 mNavController.navigateUp()

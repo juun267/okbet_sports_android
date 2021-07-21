@@ -138,6 +138,9 @@ class GameViewModel(
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
+    val leagueSubmitList: LiveData<Event<List<League>>>
+        get() = _leagueSubmitList
+
     val playList: LiveData<List<Play>>
         get() = _playList
 
@@ -164,6 +167,7 @@ class GameViewModel(
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
+    private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
 
@@ -643,26 +647,27 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
+    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, play: Play) {
         updatePlaySelectedState(play)
 
-        getLeagueOddsList(matchType, leagueId)
+        getLeagueOddsList(matchType, leagueIdList)
     }
 
-    fun switchPlayCategory(matchType: MatchType, leagueId: String, playCateCode: String?) {
+    fun switchPlayCategory(
+        matchType: MatchType,
+        leagueIdList: List<String>,
+        playCateCode: String?
+    ) {
         _playCate.value = playCateCode
 
-        getLeagueOddsList(matchType, leagueId)
+        getLeagueOddsList(matchType, leagueIdList)
     }
 
     fun getLeagueOddsList(
         matchType: MatchType,
-        leagueId: String,
+        leagueIdList: List<String>,
         isReloadPlayCate: Boolean = false
     ) {
-        val leagueIdList by lazy {
-            listOf(leagueId)
-        }
 
         if (isReloadPlayCate) {
             getPlayCategory(matchType)
@@ -742,6 +747,8 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
                     }
 
+                    matchOdd.odds =
+                        PlayTypeUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
                     matchOdd.odds.forEach { map ->
                         map.value.updateOddSelectState()
                     }
@@ -929,6 +936,14 @@ class GameViewModel(
         }
 
         _leagueSelectedList.postValue(list)
+    }
+
+    fun submitLeague() {
+        _leagueSelectedList.value?.let {
+            _leagueSubmitList.postValue(Event(it))
+        }
+
+        _leagueSelectedList.postValue(mutableListOf())
     }
 
     fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {

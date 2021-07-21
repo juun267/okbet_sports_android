@@ -128,6 +128,15 @@
 			"max": 20000,
 			"platformId": 19,
 			"gameType": "VB"
-		}
+		},
+		 "OUTRIGHT@BM": {
+                    "id": 57,
+                    "code": "OUTRIGHT@BM",
+                    "name": "冠军",
+                    "min": 1,
+                    "max": 20000,
+                    "platformId": 1,
+                    "gameType": "BM"
+         }
 	}
 }
