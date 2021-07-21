@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="224dp"
+    android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:paddingStart="16dp"
     android:paddingEnd="0dp">
@@ -11,15 +11,18 @@
     <View
         android:id="@+id/league_odd_match_border"
         android:layout_width="176dp"
-        android:layout_height="match_parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="224dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/league_odd_button_border"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_border" />
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_border"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/league_odd_match_border_row1"
