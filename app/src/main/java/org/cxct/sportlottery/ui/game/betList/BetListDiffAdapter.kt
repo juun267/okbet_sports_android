@@ -97,7 +97,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(itemData.matchOdd, oddsType))
                 betInfoDetail.ivDelete.setOnClickListener {
                     Timber.e("Dean, delete click event")
-                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId)
+                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
                 }
                 ivClearText.setOnClickListener { etBet.text.clear() }
 
@@ -366,7 +366,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
     interface OnItemClickListener {
-        fun onDeleteClick(oddsId: String)
+        fun onDeleteClick(oddsId: String, currentItemCount: Int)
         fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd)
         fun saveOddsHasChanged(matchOdd: MatchOdd)
         fun refreshAmount()

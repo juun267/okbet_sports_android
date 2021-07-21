@@ -110,8 +110,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initDiffAdapter() {
         betListDiffAdapter = BetListDiffAdapter(
             object : BetListDiffAdapter.OnItemClickListener {
-                override fun onDeleteClick(oddsId: String) {
+                override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                     viewModel.removeBetInfoItem(oddsId)
+                    //當前item為最後一個時
+                    if (currentItemCount == 1)
+                        activity?.supportFragmentManager?.popBackStack()
                 }
 
                 override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
@@ -167,6 +170,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initDeleteAllOnClickEvent() {
+        val exitAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
+            setAnimationListener(deleteAllLayoutAnimationListener)
+            duration = 300
+        }
         binding.apply {
             btnDeleteAll.setOnClickListener {
                 val enterAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_to_left_enter).apply {
@@ -176,16 +183,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 llDeleteAll.visibility = View.VISIBLE
                 btnDeleteAllConfirm.startAnimation(enterAnimation)
             }
-            btnDeleteAllCancel.setOnClickListener {
-                val exitAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
-                    setAnimationListener(deleteAllLayoutAnimationListener)
-                    duration = 300
-                }
+            btnDeleteAllCancel.setOnClickListener { btnDeleteAllConfirm.startAnimation(exitAnimation) }
 
+            btnDeleteAllConfirm.setOnClickListener {
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
+                viewModel.removeBetInfoAll()
+                activity?.supportFragmentManager?.popBackStack()
             }
-
-            btnDeleteAllConfirm.setOnClickListener { viewModel.removeBetInfoAll() }
         }
     }
 
@@ -199,7 +203,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         })
 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
-            it.peekContent().let { list ->
+            it.getContentIfNotHandled()?.let { list ->
                 val newList = list.toMutableList()
                 tv_bet_list_count.text = newList.size.toString()
                 betListDiffAdapter?.submitList(newList)
