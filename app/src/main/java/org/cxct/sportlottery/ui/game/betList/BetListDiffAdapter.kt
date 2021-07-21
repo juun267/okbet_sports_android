@@ -95,8 +95,10 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 }
 
                 betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(itemData.matchOdd, oddsType))
-                betInfoDetail.ivDelete.setOnClickListener { Timber.e("Dean, delete click event")
-                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId) }
+                betInfoDetail.ivDelete.setOnClickListener {
+                    Timber.e("Dean, delete click event")
+                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId)
+                }
                 ivClearText.setOnClickListener { etBet.text.clear() }
 
                 val strVerse = root.context.getString(R.string.verse_)
@@ -116,7 +118,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
                 etBet.setText(itemData.input)
 
-                check(etBet.text.toString(), itemData.matchOdd, itemData.parlayOdds)
+                check(etBet.text.toString(), itemData.matchOdd, itemData.parlayOdds, itemData)
 
                 /* check input focus */
                 if (adapterPosition == focusPosition) {
@@ -130,7 +132,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 val tw = object : TextWatcher {
                     override fun afterTextChanged(it: Editable?) {
                         itemData.parlayOdds?.let { pOdd ->
-                            check(it.toString(), itemData.matchOdd, pOdd)
+                            check(it.toString(), itemData.matchOdd, pOdd, itemData)
                         }
                         if (TextUtils.isEmpty(it)) {
                             itemData.input = ""
@@ -212,19 +214,15 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
          * 影響功能:投注按鈕、投注金額輸入欄位、輸入欄位錯誤訊息
          */
         //TODO 更新上一層的投注按鈕及總金額
-        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd?) {
+        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd?, itemData: BetInfoListData) {
             if (TextUtils.isEmpty(it)) {
                 binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
-//                binding.betInfoAction.tv_bet_quota.text = "0.000"
-//                binding.betInfoAction.tv_win_quota.text = "0.000"
+                itemData.betAmount = 0.000
                 binding.tvErrorMessage.visibility = View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = 11.dp
-                /*binding.betInfoAction.tv_bet.apply {
-                    isClickable = true
-                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange_light)
-                }*/
             } else {
                 val quota = it.toDouble()
+                itemData.betAmount = quota
                 when {
                     quota > parlayOdd?.max ?: 0 -> {
                         inputError = true
@@ -246,24 +244,15 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 if (oddsType == OddsType.EU) {
                     win -= quota
                 }
-//                binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)
-//                binding.betInfoAction.tv_win_quota.text = TextUtil.format(win)
 
                 binding.tvErrorMessage.visibility = if (inputError) View.VISIBLE else View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (inputError) 0.dp else 11.dp
                 binding.etBet.setTextColor(
                     if (inputError) ContextCompat.getColor(binding.root.context, R.color.colorRedDark) else ContextCompat.getColor(binding.root.context, R.color.colorBlackLight)
                 )
-                /*binding.betInfoAction.tv_bet.apply {
-                    isClickable = if (inputError) {
-                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_unselected)
-                        false
-                    } else {
-                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange_light)
-                        true
-                    }
-                }*/
             }
+
+            onItemClickListener.refreshAmount()
         }
 
         //TODO review this method
@@ -380,6 +369,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         fun onDeleteClick(oddsId: String)
         fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd)
         fun saveOddsHasChanged(matchOdd: MatchOdd)
+        fun refreshAmount()
     }
 }
 

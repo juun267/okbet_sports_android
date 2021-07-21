@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,7 +27,6 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyBoardUtil
 import org.cxct.sportlottery.util.TextUtil
-import timber.log.Timber
 
 /**
  * A simple [Fragment] subclass.
@@ -40,26 +40,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var keyboard: KeyBoardUtil? = null
 
-    private val betListDiffAdapter by lazy {
-        BetListDiffAdapter(
-            object : BetListDiffAdapter.OnItemClickListener {
-                override fun onDeleteClick(oddsId: String) {
-                    Timber.e("Dean, remove oddsId = $oddsId")
-                    //mock模式下 因為回傳內容都一樣 所以不會移除
-                    viewModel.removeBetInfoItem(oddsId)
-                }
-
-                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
-                    keyboard?.showKeyboard(editText)
-                }
-
-                override fun saveOddsHasChanged(matchOdd: MatchOdd) {
-                    viewModel.saveOddsHasChanged(matchOdd)
-                }
-
-            }
-        )
-    }
+    private var betListDiffAdapter: BetListDiffAdapter? = null
 
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
@@ -74,10 +55,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
@@ -103,16 +80,89 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initView() {
+        initBtnView()
         initRecyclerView()
         initDeleteAllOnClickEvent()
         initKeyBoard()
     }
 
+    private fun initBtnView() {
+        binding.apply {
+            btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilverLight)
+            tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
+            tvBtnBetAmount.apply {
+                setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
+                text = "${TextUtil.formatMoney(0.0)} ${getString(R.string.currency)}"
+            }
+        }
+    }
+
     private fun initRecyclerView() {
+        initDiffAdapter()
+
         binding.apply {
             rvBetList.layoutManager =
                 LinearLayoutManager(this@BetListFragment.context, LinearLayoutManager.VERTICAL, false)
             rvBetList.adapter = betListDiffAdapter
+        }
+    }
+
+    private fun initDiffAdapter() {
+        betListDiffAdapter = BetListDiffAdapter(
+            object : BetListDiffAdapter.OnItemClickListener {
+                override fun onDeleteClick(oddsId: String) {
+                    viewModel.removeBetInfoItem(oddsId)
+                }
+
+                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
+                    keyboard?.showKeyboard(editText)
+                }
+
+                override fun saveOddsHasChanged(matchOdd: MatchOdd) {
+                    viewModel.saveOddsHasChanged(matchOdd)
+                }
+
+                override fun refreshAmount() {
+                    refreshAllAmount()
+                }
+
+            }
+        )
+    }
+
+    private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
+        val list = newBetList ?: betListDiffAdapter?.currentList
+        val totalBetAmount = list?.sumByDouble { it.betAmount }
+        val betCount = list?.count { it.betAmount > 0 }
+
+        binding.apply {
+            tvAllBetCount.text = betCount.toString()
+            tvTotalBetAmount.text = "${TextUtil.formatMoney(totalBetAmount ?: 0.0)} ${getString(R.string.currency)}"
+        }
+
+        setupBtnBetAmount(totalBetAmount)
+    }
+
+    private fun setupBtnBetAmount(totalBetAmount: Double?) {
+        try {
+            val totalBetAmountNotNull = totalBetAmount ?: 0.0
+            totalBetAmountNotNull.let {
+                binding.apply {
+                    tvBtnBetAmount.text = "${TextUtil.formatMoney(it)} ${getString(R.string.currency)}"
+                    if (it > 0) {
+                        tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
+                        tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
+                        btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorBlue)
+                    } else {
+                        tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
+                        tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
+                        btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilverLight)
+
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -134,6 +184,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
             }
+
+            btnDeleteAllConfirm.setOnClickListener {
+                //TODO 發現問題, 待問題排除後確認功能
+                viewModel.removeBetInfoAll()
+            }
         }
     }
 
@@ -142,36 +197,28 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initObserver() {
-        viewModel.userMoney.observe(this.viewLifecycleOwner, {
-            it.let { money -> tv_total_bet_amount.text = TextUtil.formatMoney(money ?: 0.0) }
+        viewModel.userMoney.observe(viewLifecycleOwner, {
+            it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
         })
 
-        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            Timber.e("Dean, list observe")
+        viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 val newList = list.toMutableList()
-                Timber.e("Dean, list = $list")
-                newList.forEach {
-                    Timber.e("Dean list oddsId = ${it.matchOdd.oddsId}")
-                }
-                try {
-                    betListDiffAdapter?.submitList(newList)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
+                tv_bet_list_count.text = newList.size.toString()
+                betListDiffAdapter?.submitList(newList)
+                refreshAllAmount(newList)
             }
         })
 
         //移除注單解除訂閱
-        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, {
             service.unsubscribeEventChannel(it)
         })
     }
 
     private fun initSocketObserver() {
         receiver.userMoney.observe(viewLifecycleOwner, {
-            it?.let { money -> tv_total_bet_amount.text = TextUtil.formatMoney(money) }
+            it?.let { money -> tv_balance.text = TextUtil.formatMoney(money) }
         })
 
         receiver.matchOddsChange.observe(viewLifecycleOwner, {
