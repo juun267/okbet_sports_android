@@ -50,7 +50,7 @@ class OddsButton @JvmOverloads constructor(
         }
 
 
-    var mFillet = true
+    private var mFillet = true
 
 
     var mBackground: Drawable? = null
@@ -62,7 +62,6 @@ class OddsButton @JvmOverloads constructor(
 
 
     private fun init(attrs: AttributeSet?) {
-
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
         mFillet = typedArray.getBoolean(R.styleable.OddsButton_ob_fillet, true)
         mBackground =
@@ -75,19 +74,32 @@ class OddsButton @JvmOverloads constructor(
         } catch (e: Exception) {
             typedArray.recycle()
         }
-
     }
 
 
     fun setupOdd(odd: Odd?, oddsType: OddsType) {
-        tv_name.text = odd?.name
-        tv_spread.text = odd?.spread
+        tv_name.apply {
+            text = odd?.name
+            visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
+        }
+
+        tv_spread.apply {
+            text = odd?.spread
+            visibility = if (odd?.spread.isNullOrEmpty())View.GONE else View.VISIBLE
+        }
+
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        betStatus = odd?.status ?: BetStatus.LOCKED.code
+        betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null)
+            BetStatus.LOCKED.code else odd.status
     }
 
 
     private fun setupBetStatus(betStatus: Int) {
+        img_odd_lock.background = ContextCompat.getDrawable(
+            context,
+            if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+        )
+
         img_odd_lock.visibility =
             if (betStatus == BetStatus.LOCKED.code || betStatus == BetStatus.DEACTIVATED.code) {
                 View.VISIBLE
