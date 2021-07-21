@@ -40,7 +40,7 @@ class BetButton @JvmOverloads constructor(
         }
 
 
-    var isCanSendOut: Boolean ?= null
+    var isCanSendOut: Boolean? = null
         set(value) {
             field = value
             field?.let {
@@ -60,9 +60,9 @@ class BetButton @JvmOverloads constructor(
     }
 
 
-    private fun setupQuotaListener(){
+    private fun setupQuotaListener() {
         tv_quota.doAfterTextChanged {
-            isCanSendOut = it.toString() != "0.000"
+            isCanSendOut = it.toString().replace(",", "").toDouble() != 0.0
         }
     }
 
