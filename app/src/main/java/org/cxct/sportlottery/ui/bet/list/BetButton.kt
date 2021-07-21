@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doAfterTextChanged
 import kotlinx.android.synthetic.main.button_bet.view.*
 import org.cxct.sportlottery.R
 
@@ -47,6 +48,7 @@ class BetButton @JvmOverloads constructor(
             }
         }
 
+
     init {
         init()
     }
@@ -54,6 +56,15 @@ class BetButton @JvmOverloads constructor(
 
     private fun init() {
         inflate(context, R.layout.button_bet, this)
+        setupQuotaListener()
+        isCanSendOut = false
+    }
+
+
+    private fun setupQuotaListener(){
+        tv_quota.doAfterTextChanged {
+            isCanSendOut = it.toString() != "0.000"
+        }
     }
 
 
