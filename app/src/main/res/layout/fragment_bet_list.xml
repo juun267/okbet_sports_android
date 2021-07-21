@@ -256,6 +256,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />
 
             <TextView
+                android:id="@+id/tv_total_winnable_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"

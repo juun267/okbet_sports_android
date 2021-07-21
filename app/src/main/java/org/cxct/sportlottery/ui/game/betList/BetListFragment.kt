@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyBoardUtil
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 
 /**
  * A simple [Fragment] subclass.
@@ -137,10 +138,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val list = newBetList ?: betListDiffAdapter?.currentList
         val totalBetAmount = list?.sumByDouble { it.betAmount }
         val betCount = list?.count { it.betAmount > 0 }
+        val winnableAmount = list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
             tvTotalBetAmount.text = "${TextUtil.formatMoney(totalBetAmount ?: 0.0)} ${getString(R.string.currency)}"
+            tvTotalWinnableAmount.text = "${TextUtil.formatMoney(winnableAmount ?: 0.0)} ${getString(R.string.currency)}"
         }
 
         setupBtnBetAmount(totalBetAmount)
@@ -203,7 +206,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         })
 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { list ->
+            it.peekContent().let { list ->
                 val newList = list.toMutableList()
                 tv_bet_list_count.text = newList.size.toString()
                 betListDiffAdapter?.submitList(newList)
