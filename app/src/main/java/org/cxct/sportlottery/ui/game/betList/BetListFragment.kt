@@ -6,20 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
+import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
+import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.KeyBoardUtil
 import org.cxct.sportlottery.util.TextUtil
 import timber.log.Timber
 
@@ -31,7 +36,30 @@ import timber.log.Timber
 class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
 
-    private val betListDiffAdapter by lazy { BetListDiffAdapter() }
+    private var oddsType: OddsType = OddsType.EU
+
+    private var keyboard: KeyBoardUtil? = null
+
+    private val betListDiffAdapter by lazy {
+        BetListDiffAdapter(
+            object : BetListDiffAdapter.OnItemClickListener {
+                override fun onDeleteClick(oddsId: String) {
+                    Timber.e("Dean, remove oddsId = $oddsId")
+                    //mock模式下 因為回傳內容都一樣 所以不會移除
+                    viewModel.removeBetInfoItem(oddsId)
+                }
+
+                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
+                    keyboard?.showKeyboard(editText)
+                }
+
+                override fun saveOddsHasChanged(matchOdd: MatchOdd) {
+                    viewModel.saveOddsHasChanged(matchOdd)
+                }
+
+            }
+        )
+    }
 
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
@@ -77,6 +105,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initView() {
         initRecyclerView()
         initDeleteAllOnClickEvent()
+        initKeyBoard()
     }
 
     private fun initRecyclerView() {
@@ -108,16 +137,35 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private fun initKeyBoard() {
+        keyboard = KeyBoardUtil(binding.kvKeyboard, null)
+    }
+
     private fun initObserver() {
         viewModel.userMoney.observe(this.viewLifecycleOwner, {
             it.let { money -> tv_total_bet_amount.text = TextUtil.formatMoney(money ?: 0.0) }
         })
 
         viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { list ->
+            Timber.e("Dean, list observe")
+            it.peekContent().let { list ->
+                val newList = list.toMutableList()
                 Timber.e("Dean, list = $list")
-                betListDiffAdapter.submitList(list)
+                newList.forEach {
+                    Timber.e("Dean list oddsId = ${it.matchOdd.oddsId}")
+                }
+                try {
+                    betListDiffAdapter?.submitList(newList)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
             }
+        })
+
+        //移除注單解除訂閱
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
+            service.unsubscribeEventChannel(it)
         })
     }
 
@@ -138,20 +186,23 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.globalStop.observe(viewLifecycleOwner, {
             if (it == null) return@observe
-            val list = betListDiffAdapter.currentList
-            list.forEach { listData ->
+            val list = betListDiffAdapter?.currentList
+            list?.forEach { listData ->
                 if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
                     listData.matchOdd.status = BetStatus.LOCKED.code
                 }
             }
-            betListDiffAdapter.submitList(list)
+            betListDiffAdapter?.submitList(list)
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
             if (it == null) return@observe
 
-            unsubscribeChannel(betListDiffAdapter.currentList)
-            subscribeChannel(betListDiffAdapter.currentList)
+            betListDiffAdapter?.apply {
+                unsubscribeChannel(currentList)
+                subscribeChannel(currentList)
+            }
+
         })
     }
 
