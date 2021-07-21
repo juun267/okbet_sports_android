@@ -31,7 +31,7 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import timber.log.Timber
 
-class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) : ListAdapter<BetInfoListData, RecyclerView.ViewHolder>(BetListDiffCallBack()) {
+class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetListDiffCallBack()) {
     var focusPosition = -1
 
 
@@ -43,15 +43,35 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
     private val mHandler by lazy { Handler() }
 
+    private enum class ViewType { Bet, NoData }
+
+    fun setupDataList(dataList: MutableList<BetInfoListData>) {
+        val itemList = when {
+            dataList.isEmpty() -> listOf(DataItem.NoData())
+            else -> dataList.map { DataItem.BetInfoData(it) }
+        }
+        submitList(itemList)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (getItem(position)) {
+            is DataItem.NoData -> ViewType.NoData.ordinal
+            else -> ViewType.Bet.ordinal
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return fromViewHolder(parent)
+        return when (viewType) {
+            ViewType.NoData.ordinal -> fromNoData(parent)
+            else -> fromViewHolder(parent)
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         Timber.e("Dean, bind view holder itemCount = $itemCount , currentList = $currentList")
         val itemData = getItem(holder.adapterPosition)
         when (holder) {
-            is ViewHolder -> holder.bind(itemData, oddsType)
+            is ViewHolder -> holder.bind((itemData as DataItem.BetInfoData).betInfoListData, oddsType)
         }
     }
 
@@ -60,6 +80,13 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         val binding: ContentBetListItemBinding =
             ContentBetListItemBinding.inflate(layoutInflater, viewGroup, false)
         return ViewHolder(binding)
+    }
+
+    private fun fromNoData(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+        //TODO 目前缺少沒有投注單的圖片, 待更新後更換layout
+        val layoutInflater = LayoutInflater.from(viewGroup.context)
+        val view = layoutInflater.inflate(R.layout.view_no_record, viewGroup, false)
+        return NoDataViewHolder(view)
     }
 
     inner class ViewHolder(val binding: ContentBetListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -365,6 +392,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         }
     }
 
+    inner class NoDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
     interface OnItemClickListener {
         fun onDeleteClick(oddsId: String, currentItemCount: Int)
         fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd)
@@ -373,14 +402,23 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 }
 
-//TODO review diff method
-class BetListDiffCallBack : DiffUtil.ItemCallback<BetInfoListData>() {
-    override fun areItemsTheSame(oldItem: BetInfoListData, newItem: BetInfoListData): Boolean {
+class BetListDiffCallBack : DiffUtil.ItemCallback<DataItem>() {
+    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: BetInfoListData, newItem: BetInfoListData): Boolean {
-        return oldItem.matchOdd.oddsId == newItem.matchOdd.oddsId
+    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+        return oldItem.oddsId == newItem.oddsId
     }
 
+}
+
+sealed class DataItem {
+    abstract var oddsId: String?
+
+    data class BetInfoData(val betInfoListData: BetInfoListData, override var oddsId: String? = betInfoListData.matchOdd.oddsId) : DataItem()
+
+    class NoData : DataItem() {
+        override var oddsId: String? = null
+    }
 }

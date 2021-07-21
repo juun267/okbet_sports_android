@@ -135,7 +135,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
-        val list = newBetList ?: betListDiffAdapter?.currentList
+        val list = newBetList ?: betListDiffAdapter?.let { getCurrentBetList(it) }
         val totalBetAmount = list?.sumByDouble { it.betAmount }
         val betCount = list?.count { it.betAmount > 0 }
         val winnableAmount = list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) }
@@ -207,10 +207,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
-                val newList = list.toMutableList()
-                tv_bet_list_count.text = newList.size.toString()
-                betListDiffAdapter?.submitList(newList)
-                refreshAllAmount(newList)
+                tv_bet_list_count.text = list.size.toString()
+                betListDiffAdapter?.setupDataList(list)
+                refreshAllAmount(list)
             }
         })
 
@@ -237,24 +236,33 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.globalStop.observe(viewLifecycleOwner, {
             if (it == null) return@observe
-            val list = betListDiffAdapter?.currentList
-            list?.forEach { listData ->
+            val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
+            betList?.forEach { listData ->
                 if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
                     listData.matchOdd.status = BetStatus.LOCKED.code
                 }
             }
-            betListDiffAdapter?.submitList(list)
+            betListDiffAdapter?.setupDataList(betList ?: mutableListOf())
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
             if (it == null) return@observe
 
             betListDiffAdapter?.apply {
-                unsubscribeChannel(currentList)
-                subscribeChannel(currentList)
+                val betInfList = getCurrentBetList(this)
+                unsubscribeChannel(betInfList)
+                subscribeChannel(betInfList)
             }
 
         })
+    }
+
+    private fun getCurrentBetList(betListDiffAdapter: BetListDiffAdapter): MutableList<BetInfoListData> {
+        betListDiffAdapter.apply {
+            return if (currentList.size >= 1 && currentList[0].oddsId != null) {
+                currentList.map { itemData -> (itemData as DataItem.BetInfoData).betInfoListData }.toMutableList()
+            } else mutableListOf()
+        }
     }
 
     private fun queryData() {
