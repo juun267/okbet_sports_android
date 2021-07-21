@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
@@ -115,6 +117,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupMatchTime(item, matchType, isTimerEnable)
 
             setupOddButton(item, leagueOddListener, oddsType)
+
+            setupQuickCategory(item)
         }
 
         private fun setupMatchInfo(
@@ -446,6 +450,68 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                     itemView.odd_button_test.addView(it, layoutParams)
                 }
+            }
+        }
+
+        private fun setupQuickCategory(item: MatchOdd) {
+            itemView.league_odd_quick_cate_border.visibility =
+                if (item.quickPlayCateList.isNullOrEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+            itemView.league_odd_quick_cate_divider.visibility =
+                if (item.quickPlayCateList.isNullOrEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+            itemView.league_odd_quick_cate_close.apply {
+            }
+
+            itemView.league_odd_quick_cate_tabs.apply {
+                visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+                item.quickPlayCateList?.forEach {
+                    addTab(league_odd_quick_cate_tabs.newTab().apply {
+                        text = it.name
+                    })
+                }
+
+                addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabSelected(tab: TabLayout.Tab?) {
+                        setupTabLayout(this@apply)
+                    }
+
+                    override fun onTabReselected(tab: TabLayout.Tab?) {
+                        setupTabLayout(this@apply)
+                    }
+
+                    override fun onTabUnselected(tab: TabLayout.Tab?) {
+                    }
+                })
+            }
+        }
+
+        private fun setupTabLayout(tabLayout: TabLayout) {
+            tabLayout.apply {
+                @Suppress("DEPRECATION")
+                setSelectedTabIndicatorHeight(
+                    itemView.context.resources.getDimensionPixelSize(
+                        R.dimen.tab_layout_indicator_height
+                    )
+                )
+
+                setTabTextColors(
+                    ContextCompat.getColor(context, R.color.colorGray),
+                    ContextCompat.getColor(context, R.color.colorBlue)
+                )
             }
         }
 

@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    android:paddingStart="16dp"
     android:paddingEnd="0dp">
 
     <View
         android:id="@+id/league_odd_match_border"
         android:layout_width="176dp"
         android:layout_height="224dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +50,12 @@
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row2" />
+
+    <View
+        android:id="@+id/league_odd_quick_cate_border"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_match_border" />
 
     <TextView
         android:id="@+id/league_odd_match_status"
@@ -261,5 +267,43 @@
             android:orientation="horizontal" />
 
     </HorizontalScrollView>
+
+    <View
+        android:id="@+id/league_odd_quick_cate_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorWhite8"
+        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/league_odd_quick_cate_tabs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
+        app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
+        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border"
+        app:tabGravity="fill"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/colorGray"
+        app:tabTextColor="@color/colorGray" />
+
+    <ImageButton
+        android:id="@+id/league_odd_quick_cate_close"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_close_menu_v4"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_quick_cate_border"
+        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border"
+        tools:ignore="contentDescription"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
