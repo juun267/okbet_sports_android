@@ -134,6 +134,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 },
                 { matchOdd, odd, playCateName, playName ->
                     addOddsDialog(matchOdd, odd, playCateName, playName)
+                },
+                { matchId ->
+                    Toast.makeText(
+                        context,
+                        "Fetch quick category list with $matchId",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             )
         }

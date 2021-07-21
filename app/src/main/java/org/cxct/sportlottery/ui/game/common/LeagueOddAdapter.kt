@@ -118,7 +118,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupOddButton(item, leagueOddListener, oddsType)
 
-            setupQuickCategory(item)
+            setupQuickCategory(item, leagueOddListener)
         }
 
         private fun setupMatchInfo(
@@ -453,7 +453,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupQuickCategory(item: MatchOdd) {
+        private fun setupQuickCategory(
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?
+        ) {
             itemView.league_odd_quick_cate_border.visibility =
                 if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.GONE
@@ -486,11 +489,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabSelected(tab: TabLayout.Tab?) {
-                        setupTabLayout(this@apply)
+                        selectPlayCategory(this@apply, item, leagueOddListener)
                     }
 
                     override fun onTabReselected(tab: TabLayout.Tab?) {
-                        setupTabLayout(this@apply)
+                        selectPlayCategory(this@apply, item, leagueOddListener)
                     }
 
                     override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -499,7 +502,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupTabLayout(tabLayout: TabLayout) {
+        private fun selectPlayCategory(
+            tabLayout: TabLayout,
+            item: MatchOdd,
+            leagueOddListener: LeagueOddListener?
+        ) {
             tabLayout.apply {
                 @Suppress("DEPRECATION")
                 setSelectedTabIndicatorHeight(
@@ -513,6 +520,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     ContextCompat.getColor(context, R.color.colorBlue)
                 )
             }
+
+            leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
         }
 
         companion object {
@@ -585,7 +594,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 class LeagueOddListener(
     val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
-    val clickListenerBet: (matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String) -> Unit
+    val clickListenerBet: (matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String) -> Unit,
+    val clickListenerQuickCataTab: (matchId: String?) -> Unit
 ) {
     fun onClickLive(item: MatchOdd) =
         clickListenerLive(item)
@@ -595,4 +605,6 @@ class LeagueOddListener(
 
     fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String = "", playName: String = "") =
         clickListenerBet(matchOdd, odd, playCateName, playName)
+
+    fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCataTab(matchId)
 }

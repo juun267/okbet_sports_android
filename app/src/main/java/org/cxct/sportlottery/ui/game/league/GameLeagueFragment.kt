@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -72,6 +73,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 { matchOdd, odd, playCateName, playName ->
                     addOddsDialog(matchOdd, odd, playCateName, playName)
                     hideKeyboard()
+                },
+                { matchId ->
+                    Toast.makeText(
+                        context,
+                        "Fetch quick category list with $matchId",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             )
         }
