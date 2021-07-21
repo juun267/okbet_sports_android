@@ -782,7 +782,7 @@
     <string name="account_history_overview">账户历史总览</string>
     <string name="bet_num_and_bet_date">注单号 / 结算日期</string>
 
-    <!--    account history-->
+    <!--account history-->
     <string name="date">日期</string>
     <string name="bet_amount">投注金额</string>
     <string name="available_amount">有效金额</string>
@@ -797,5 +797,10 @@
     <!--keyboard-->
     <string name="keyboard_done">已完成</string>
     <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
+
+    <!--odds button-->
+    <string name="odds_button_name_first">第一</string>
+    <string name="odds_button_name_ant">任何</string>
+    <string name="odds_button_name_last">最后</string>
 
 </resources>

@@ -12,8 +12,14 @@ data class OddsDetailListData(
     var isMoreExpand: Boolean = false
     var gameTypeFgLgSelect = FGLGType.FG
     var groupItem = HashMap<String, List<Odd?>>()
+    var gameTypeSCOSelect: String? = null
+    var scoItem = HashMap<String, List<Odd?>>()
 }
 
 enum class FGLGType {
     FG, LG
+}
+
+enum class SCOType {
+    HOME, AWAY
 }
