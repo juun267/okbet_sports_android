@@ -221,7 +221,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 tv_check_maximum_limit.visibility = View.VISIBLE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.GONE
-                button_bet.isCanSendOut = false
 
             } else {
 
@@ -229,8 +228,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 tv_check_maximum_limit.visibility = View.GONE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.VISIBLE
-                button_bet.isCanSendOut = true
-
 
                 val quota = it.toDouble()
 
