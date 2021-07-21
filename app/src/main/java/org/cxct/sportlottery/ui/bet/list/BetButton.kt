@@ -57,7 +57,6 @@ class BetButton @JvmOverloads constructor(
     private fun init() {
         inflate(context, R.layout.button_bet, this)
         setupQuotaListener()
-        isCanSendOut = false
     }
 
 
