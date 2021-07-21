@@ -138,6 +138,9 @@ class GameViewModel(
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
+    val leagueSubmitList: LiveData<Event<List<League>>>
+        get() = _leagueSubmitList
+
     val playList: LiveData<List<Play>>
         get() = _playList
 
@@ -164,6 +167,7 @@ class GameViewModel(
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
+    private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
 
@@ -931,6 +935,14 @@ class GameViewModel(
         }
 
         _leagueSelectedList.postValue(list)
+    }
+
+    fun submitLeague() {
+        _leagueSelectedList.value?.let {
+            _leagueSubmitList.postValue(Event(it))
+        }
+
+        _leagueSelectedList.postValue(mutableListOf())
     }
 
     fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {
