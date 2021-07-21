@@ -742,7 +742,8 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
                     }
 
-                    matchOdd.odds = matchOdd.odds.filterOdds(result.oddsListData.sport.code)
+                    matchOdd.odds =
+                        PlayTypeUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
                     matchOdd.odds.forEach { map ->
                         map.value.updateOddSelectState()
                     }
@@ -1442,14 +1443,5 @@ class GameViewModel(
                     betInfoListData.matchOdd.oddsId == odd?.id
                 }
         }
-    }
-
-    private fun Map<String, List<Odd?>>.filterOdds(sportCode: String): MutableMap<String, MutableList<Odd?>> {
-        return this.mapValues {
-            it.value.filterIndexed { index, _ ->
-                index < PlayTypeUtils.getPlayTypeSetCount(it.key, sportCode)
-            }.toMutableList()
-
-        }.toMutableMap()
     }
 }
