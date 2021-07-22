@@ -206,7 +206,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             clickable = false,
                             moreTextBg = R.drawable.bg_radius_4_button_unselected,
                             moreTextColor = R.color.colorWhite,
-                            moreClickable = false
+                            moreClickable = false,
+                            platClose = true
                         )
 
                     }
@@ -220,7 +221,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             clickable = true,
                             moreTextBg = R.drawable.bg_radius_4_button_colorwhite6,
                             moreTextColor = R.color.colorGray,
-                            moreClickable = true
+                            moreClickable = true,
+                            platClose = false
                         )
                         setChangeOdds(adapterPosition, itemData.matchOdd)
                     }
@@ -286,11 +288,23 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         private fun componentStatusByOdds(
             betVisible: Int, warningVisible: Int,
             betTextBg: Int, clickable: Boolean,
-            moreTextBg: Int, moreTextColor: Int, moreClickable: Boolean
+            moreTextBg: Int, moreTextColor: Int, moreClickable: Boolean,
+            platClose: Boolean
         ) {
             binding.llBet.visibility = betVisible
             binding.tvCloseWarning.apply {
                 visibility = warningVisible
+            }
+
+            //盤口狀態
+            binding.apply {
+                if (platClose) {
+                    llItem.background = ContextCompat.getDrawable(root.context, R.color.colorWhite2)
+                    ivLock.visibility = View.VISIBLE
+                } else {
+                    llItem.background = ContextCompat.getDrawable(root.context, R.color.colorWhite)
+                    ivLock.visibility = View.GONE
+                }
             }
 
             //TODO 投注按鈕是否可點擊
