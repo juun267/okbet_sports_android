@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
+import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
@@ -754,6 +755,32 @@ class GameViewModel(
                 _oddsListResult.postValue(Event(result))
             } else {
                 _oddsListGameHallResult.postValue(Event(result))
+            }
+        }
+    }
+
+    fun getQuickList(matchId: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getQuickList(
+                    QuickListRequest(matchId)
+                )
+            }
+
+            result?.quickListData?.let {
+                val updateGameHallList = _oddsListGameHallResult.value?.peekContent()
+
+                updateGameHallList?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                            quickPlayCate.quickOdd = it.quickOdds?.values?.mapNotNull {
+                                it[quickPlayCate.code]
+                            }?.first()
+                        }
+                    }
+                }
+
+                _oddsListGameHallResult.postValue(Event(updateGameHallList))
             }
         }
     }
