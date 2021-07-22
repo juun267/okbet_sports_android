@@ -77,7 +77,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initObserver()
         initSocketObserver()
 
+        //test parlay
+        getParlayList()
+
         queryData()
+    }
+
+    private fun getParlayList() {
+        viewModel.getBetInfoListForParlay()
     }
 
     private fun initView() {
@@ -208,7 +215,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
-                betListDiffAdapter?.setupDataList(list)
+                betListDiffAdapter?.betList = list
                 refreshAllAmount(list)
             }
         })
@@ -216,6 +223,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //移除注單解除訂閱
         viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, {
             service.unsubscribeEventChannel(it)
+        })
+
+        //串關列表
+        viewModel.parlayList.observe(this.viewLifecycleOwner, {
+            betListDiffAdapter?.parlayList = it
         })
     }
 
@@ -242,7 +254,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     listData.matchOdd.status = BetStatus.LOCKED.code
                 }
             }
-            betListDiffAdapter?.setupDataList(betList ?: mutableListOf())
+            betListDiffAdapter?.betList = (betList ?: mutableListOf())
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {

@@ -45,10 +45,24 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
     private enum class ViewType { Bet, NoData }
 
-    fun setupDataList(dataList: MutableList<BetInfoListData>) {
+    var betList: MutableList<BetInfoListData> = mutableListOf()
+        set(value) {
+            field = value
+            submitData()
+        }
+
+    var parlayList: MutableList<ParlayOdd> = mutableListOf()
+        set(value) {
+            field = value
+            submitData()
+        }
+
+    private fun submitData() {
         val itemList = when {
-            dataList.isEmpty() -> listOf(DataItem.NoData())
-            else -> dataList.map { DataItem.BetInfoData(it) }
+            betList.isEmpty() -> listOf(DataItem.NoData())
+            else -> {
+                betList.map { DataItem.BetInfoData(it) }
+            }
         }
         submitList(itemList)
     }
