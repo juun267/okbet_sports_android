@@ -410,7 +410,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsDetailDataList[position], position)
+        holder.bindModel(oddsDetailDataList[position])
     }
 
 
@@ -457,25 +457,23 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         val tvFg: TextView? = itemView.findViewById(R.id.tv_fg)
         val tvLg: TextView? = itemView.findViewById(R.id.tv_lg)
 
-        //SCO
+        //SCO, CS
         val tvHomeName: TextView? = itemView.findViewById(R.id.tv_home_name)
         val tvAwayName: TextView? = itemView.findViewById(R.id.tv_away_name)
 
-        fun bindModel(oddsDetail: OddsDetailListData, position: Int) {
+        fun bindModel(oddsDetail: OddsDetailListData) {
 
-            val type = oddsDetailDataList[position].gameType
+            val type = oddsDetail.gameType
 
-            if (type.contains(":")) {
-                tvGameName.text = oddsDetail.name.plus("  ").plus(type.split(":")[1])
-            } else {
-                tvGameName.text = oddsDetail.name
-            }
+            tvGameName.text = if (type.contains(":"))
+                oddsDetail.name.plus("  ").plus(type.split(":")[1])
+            else oddsDetail.name
 
             controlExpandBottom(oddsDetail.isExpand)
 
             clItem.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
-                notifyItemChanged(position)
+                notifyItemChanged(adapterPosition)
             }
 
             rvBet?.visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
@@ -526,7 +524,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 GameType.WM.type,
                 GameType.HTFT.type -> oneList(oddsDetail)
 
-                GameType.SCO.type -> forSCO(oddsDetail, position)
+                GameType.SCO.type -> forSCO(oddsDetail, adapterPosition)
 
                 GameType.DC_OU.type,
                 GameType.DC_BTS.type,
@@ -574,8 +572,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun forCS(oddsDetail: OddsDetailListData) {
 
-            itemView.findViewById<TextView>(R.id.tv_home_name).text = homeName
-            itemView.findViewById<TextView>(R.id.tv_away_name).text = awayName
+            tvHomeName?.text = homeName
+            tvAwayName?.text = awayName
 
             itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
@@ -596,7 +594,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         awayList.add(odd)
                     }
                 } else {
-
                     val list: MutableList<Odd?> = mutableListOf()
                     list.add(odd)
                     val od = OddsDetailListData(
@@ -612,7 +609,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         )
                         layoutManager = LinearLayoutManager(itemView.context)
                     }
-
                 }
             }
 
@@ -623,14 +619,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 it.name?.split(" - ")?.get(0)?.toInt()
             }
 
-
             awayList.sortBy {
                 it.name?.split(" - ")?.get(0)?.toInt()
             }
             awayList.sortBy {
                 it.name?.split(" - ")?.get(1)?.toInt()
             }
-
 
             rvHome?.apply {
                 adapter = TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
@@ -669,7 +663,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun forFGLG(oddsDetail: OddsDetailListData) {
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-            itemView.findViewById<View>(R.id.divider).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet?.apply {
                 adapter = TypeOneListAdapter(
                     selectFGLG(oddsDetail),
@@ -910,11 +903,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 oddsDetail.apply {
 
                     //依key分組 有元件需要用key做顯示
-                    val filterMap = oddsDetail.oddArrayList.groupBy { it?.spread }.filter {
-                        it.key != null
-                    } as HashMap<String, List<Odd?>>
-
-                    val keys = mutableListOf<String>().apply { filterMap.forEach { add(it.key) } }
+                    val keys = (oddsDetail.oddArrayList
+                        .groupBy { it?.spread }
+                        .filter { it.key != null } as HashMap<String, List<Odd?>>)
+                        .mapTo(mutableListOf(), { it.key })
 
                     //依key數量等分
                     val splitList = splitSameLength(oddsDetail.oddArrayList, keys.size)
