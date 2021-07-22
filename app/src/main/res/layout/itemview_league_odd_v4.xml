@@ -275,21 +275,18 @@
         android:background="@color/colorWhite8"
         app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
 
-    <com.google.android.material.tabs.TabLayout
+    <RadioGroup
         android:id="@+id/league_odd_quick_cate_tabs"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
         app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
         app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
-        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border"
-        app:tabGravity="fill"
-        app:tabIndicatorHeight="0dp"
-        app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/colorGray"
-        app:tabTextColor="@color/colorGray" />
+        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
 
     <ImageButton
         android:id="@+id/league_odd_quick_cate_close"

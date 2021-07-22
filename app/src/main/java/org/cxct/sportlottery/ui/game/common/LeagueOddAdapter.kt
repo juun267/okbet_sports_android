@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
@@ -482,46 +482,43 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 item.quickPlayCateList?.forEach {
-                    addTab(league_odd_quick_cate_tabs.newTab().apply {
+                    addView(RadioButton(context).apply {
                         text = it.name
+
+                        id = it.hashCode()
+
+                        setTextColor(
+                            ContextCompat.getColorStateList(
+                                context,
+                                R.color.selector_tab_text_color
+                            )
+                        )
+
+                        setButtonDrawable(R.drawable.selector_null)
+
+                        setBackgroundResource(R.drawable.selector_tab)
+
+                    }, LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    ).apply {
+                        rightMargin =
+                            itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize20sp)
                     })
+
+                    if (it.isSelected) {
+                        check(it.hashCode())
+                    }
                 }
 
-                addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-                        selectPlayCategory(this@apply, item, leagueOddListener)
+                setOnCheckedChangeListener { _, checkedId ->
+                    item.quickPlayCateList?.forEach {
+                        it.isSelected = (it.hashCode() == checkedId)
                     }
 
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
-                        selectPlayCategory(this@apply, item, leagueOddListener)
-                    }
-
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-                    }
-                })
+                    leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
+                }
             }
-        }
-
-        private fun selectPlayCategory(
-            tabLayout: TabLayout,
-            item: MatchOdd,
-            leagueOddListener: LeagueOddListener?
-        ) {
-            tabLayout.apply {
-                @Suppress("DEPRECATION")
-                setSelectedTabIndicatorHeight(
-                    itemView.context.resources.getDimensionPixelSize(
-                        R.dimen.tab_layout_indicator_height
-                    )
-                )
-
-                setTabTextColors(
-                    ContextCompat.getColor(context, R.color.colorGray),
-                    ContextCompat.getColor(context, R.color.colorBlue)
-                )
-            }
-
-            leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
         }
 
         companion object {

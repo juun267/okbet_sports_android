@@ -16,5 +16,6 @@ data class QuickPlayCate(
     @Json(name = "sort")
     val sort: Int?
 ) {
+    var isSelected = false
     var quickOdd: QuickOdd? = null
 }
