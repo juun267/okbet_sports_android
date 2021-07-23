@@ -391,7 +391,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
                                 sportType?.code,
-                                CateMenuCode.HDP_AND_OU.code,
+                                PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
                         }
@@ -763,7 +763,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
                                 sportType,
-                                CateMenuCode.HDP_AND_OU.code,
+                                PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
                         }

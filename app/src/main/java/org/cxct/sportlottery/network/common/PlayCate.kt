@@ -59,7 +59,7 @@ enum class PlayCate(val value: String) {
     OU_OE("O/U-O/E"),//进球 大/小&进球数 单/双
     OU_TTS1ST("O/U-TTS1ST"),//进球 大/小&首次进球队伍
 
-    OU_HDP("O/U&HDP"),
+    OU_HDP("HDP&OU"),
     SET_HDP("SET-HDP"),
     OUTRIGHT("OUTRIGHT"),
     HDP_INCL_OT("HDP-INCL-OT"),
