@@ -11,7 +11,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_odds_detail_game_card.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
@@ -104,7 +104,7 @@ class OddsGameCardAdapter(
             stopTimer()
             if (matchClockCO?.stopped == 0) {//是否计时停止 1:是 ，0：否
                 when (matchClockCO.gameType) {
-                    SportType.BASKETBALL.code -> {
+                    GameType.BK.key -> {
                         if (matchClockCO.remainingTimeInPeriod != null || matchClockCO.remainingTimeInPeriod != -1) {
                             itemView.txv_time.text = TimeUtil.timeFormat(
                                 matchClockCO.remainingTimeInPeriod?.times(1000L),
@@ -128,7 +128,7 @@ class OddsGameCardAdapter(
                             }, 1000L, 1000L)
                         }
                     }
-                    SportType.FOOTBALL.code -> {
+                    GameType.FT.key -> {
                         if (matchClockCO.matchTime == null) {
                             itemView.txv_time.text = context?.getString(R.string.time_null).toString()
                         } else {
@@ -156,7 +156,7 @@ class OddsGameCardAdapter(
                 mTimerMap[adapterPosition] = timer
             } else {
                 when (matchClockCO?.gameType) {
-                    SportType.BASKETBALL.code -> {
+                    GameType.BK.key -> {
                         if (matchClockCO.remainingTimeInPeriod == null) {
                             itemView.txv_time.text = context?.getString(R.string.time_null).toString()
                         } else {
@@ -166,7 +166,7 @@ class OddsGameCardAdapter(
                             )
                         }
                     }
-                    SportType.FOOTBALL.code -> {
+                    GameType.FT.key -> {
                         itemView.txv_time.text =
                             TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
                     }
@@ -180,7 +180,7 @@ class OddsGameCardAdapter(
             var status = ""
 
             when (matchStatusCO?.gameType) {
-                SportType.FOOTBALL.code -> {
+                GameType.FT.key -> {
                     when (matchStatusCO.status) {
                         6 -> {
                             status = context?.getString(R.string.first_half_game).toString()
@@ -196,7 +196,7 @@ class OddsGameCardAdapter(
                         }
                     }
                 }
-                SportType.BASKETBALL.code -> {
+                GameType.BK.key -> {
                     when (matchStatusCO.status) {
                         6 -> {
                             status = context?.getString(R.string.first_half_game).toString()
@@ -221,7 +221,7 @@ class OddsGameCardAdapter(
                         }
                     }
                 }
-                SportType.TENNIS.code, SportType.VOLLEYBALL.code, SportType.BADMINTON.code -> {
+                GameType.TN.key, GameType.VB.key -> {
                     when (matchStatusCO.status) {
                         8 -> {
                             status = context?.getString(R.string.first_plat).toString()
@@ -248,20 +248,20 @@ class OddsGameCardAdapter(
         private fun setDefaultUI() {
             if (itemView.txv_time.text == "" || itemView.txv_time.text == context?.getString(R.string.time_null).toString()) {
                 when (sportCode) {
-                    SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
+                    GameType.FT.key, GameType.BK.key -> {
                         itemView.txv_time.text = context?.getString(R.string.time_null).toString()
                     }
-                    SportType.BADMINTON.code, SportType.TENNIS.code, SportType.VOLLEYBALL.code -> {
+                    GameType.TN.key, GameType.VB.key -> {
                         itemView.txv_time.text = ""
                     }
                 }
             }
             if (itemView.txv_status.text == "") {
                 when (sportCode) {
-                    SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
+                    GameType.FT.key, GameType.BK.key -> {
                         itemView.txv_status.text = ""
                     }
-                    SportType.BADMINTON.code, SportType.TENNIS.code, SportType.VOLLEYBALL.code -> {
+                    GameType.TN.key, GameType.VB.key -> {
                         itemView.txv_status.text = ""
                     }
                 }

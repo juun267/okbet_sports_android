@@ -51,7 +51,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSportCode = args.sportType.code
+        mSportCode = args.gameType.key
         matchId = args.matchId
     }
 
@@ -291,7 +291,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         matchOdd?.let { matchOdd ->
             viewModel.updateMatchBetList(
                 matchType = args.matchType,
-                args.sportType,
+                args.gameType,
                 playCateName = oddsDetail.name,
                 matchOdd = matchOdd,
                 odd = odd

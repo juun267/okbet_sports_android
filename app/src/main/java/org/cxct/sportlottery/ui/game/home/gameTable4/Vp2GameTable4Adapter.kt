@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -192,8 +192,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                         else
                             data.matchInfo?.statusName + " "
 
-                        when (data.matchInfo?.sportType) {
-                            SportType.FOOTBALL -> { //足球
+                        when (data.matchInfo?.gameType) {
+                            GameType.FT.key -> { //足球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, false) { timeMillis ->
                                         val timeStr =
@@ -203,7 +203,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                     }
                                 }
                             }
-                            SportType.BASKETBALL -> { //籃球
+                            GameType.BK.key -> { //籃球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, true) { timeMillis ->
                                         val timeStr =
@@ -250,19 +250,19 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
         private fun setupOddButton(data: MatchOdd) {
             itemView.apply {
-                val sportType = data.matchInfo?.sportType
+                val gameType = data.matchInfo?.gameType
 
-                tv_play_type.text = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> context.getText(R.string.ou_hdp_hdp_title)
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> context.getText(R.string.ou_hdp_1x2_title)
+                tv_play_type.text = when (gameType) {
+                    GameType.FT.key, GameType.BK.key -> context.getText(R.string.ou_hdp_hdp_title)
+                    GameType.TN.key, GameType.VB.key -> context.getText(R.string.ou_hdp_1x2_title)
                     else -> ""
                 }
 
-                val oddListHDP = when (sportType) {
-                    SportType.TENNIS -> {
+                val oddListHDP = when (gameType) {
+                    GameType.TN.key-> {
                         data.odds[PlayCate.SET_HDP.value]
                     }
-                    SportType.BASKETBALL -> {
+                    GameType.BK.key -> {
                         data.odds[PlayCate.HDP_INCL_OT.value]
                     }
                     else -> {
@@ -270,8 +270,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     }
                 }
 
-                val oddList1x2 = when (sportType) {
-                    SportType.BASKETBALL -> {
+                val oddList1x2 = when (gameType) {
+                    GameType.BK.key -> {
                         data.odds[PlayCate.SINGLE_OT.value]
                     }
                     else -> {
@@ -280,21 +280,21 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 }
 
                 btn_match_odd1.apply {
-                    playCate = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    playCate = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             PlayCate.HDP
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             PlayCate.SINGLE
                         }
                         else -> null
                     }
 
-                    isSelected = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    isSelected = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             oddListHDP?.get(0)?.isSelected ?: false
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key-> {
                             oddList1x2?.get(0)?.isSelected ?: false
                         }
                         else -> {
@@ -302,15 +302,15 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                         }
                     }
 
-                    betStatus = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    betStatus = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             if (oddListHDP == null || oddListHDP.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
                                 oddListHDP[0]?.status ?: BetStatus.LOCKED.code
                             }
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             if (oddList1x2 == null || oddList1x2.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
@@ -323,11 +323,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     }
 
                     this@ViewHolderHdpOu.setupOddState(
-                        this, when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        this, when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 oddListHDP?.get(0)
                             }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 oddList1x2?.get(0)
                             }
                             else -> {
@@ -338,11 +338,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                     onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                         override fun onOddStateChangedFinish() {
-                            when (sportType) {
-                                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            when (gameType) {
+                                GameType.FT.key, GameType.BK.key -> {
                                     oddListHDP?.get(0)?.oddState = OddState.SAME.state
                                 }
-                                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                GameType.TN.key, GameType.VB.key -> {
                                     oddList1x2?.get(0)?.oddState = OddState.SAME.state
                                 }
                             }
@@ -386,8 +386,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     }
 
                     setOnClickListener {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 if (oddListHDP != null && oddListHDP.size >= 2) {
                                     oddListHDP[0]?.let { odd ->
                                         onClickOddListener?.onClickBet(
@@ -400,7 +400,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 }
                             }
 
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 if (oddList1x2 != null && oddList1x2.size >= 2) {
                                     oddList1x2[0]?.let { odd ->
                                         onClickOddListener?.onClickBet(
@@ -417,21 +417,21 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 }
 
                 btn_match_odd2.apply {
-                    playCate = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    playCate = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             PlayCate.HDP
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             PlayCate.SINGLE
                         }
                         else -> null
                     }
 
-                    isSelected = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    isSelected = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             oddListHDP?.get(1)?.isSelected ?: false
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             oddList1x2?.get(1)?.isSelected ?: false
                         }
                         else -> {
@@ -439,15 +439,15 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                         }
                     }
 
-                    betStatus = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    betStatus = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             if (oddListHDP == null || oddListHDP.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
                                 oddListHDP[1]?.status ?: BetStatus.LOCKED.code
                             }
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             if (oddList1x2 == null || oddList1x2.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
@@ -460,11 +460,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     }
 
                     this@ViewHolderHdpOu.setupOddState(
-                        this, when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        this, when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 oddListHDP?.get(1)
                             }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 oddList1x2?.get(1)
                             }
                             else -> {
@@ -475,11 +475,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                     onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                         override fun onOddStateChangedFinish() {
-                            when (sportType) {
-                                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            when (gameType) {
+                                GameType.FT.key, GameType.BK.key -> {
                                     oddListHDP?.get(1)?.oddState = OddState.SAME.state
                                 }
-                                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                GameType.TN.key, GameType.VB.key -> {
                                     oddList1x2?.get(1)?.oddState = OddState.SAME.state
                                 }
                             }
@@ -523,8 +523,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     }
 
                     setOnClickListener {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 if (oddListHDP != null && oddListHDP.size >= 2) {
                                     oddListHDP[1]?.let { odd ->
                                         onClickOddListener?.onClickBet(
@@ -537,7 +537,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 }
                             }
 
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 if (oddList1x2 != null && oddList1x2.size >= 2) {
                                     oddList1x2[1]?.let { odd ->
                                         onClickOddListener?.onClickBet(

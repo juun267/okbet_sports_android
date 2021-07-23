@@ -119,7 +119,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     outrightOddAdapter.matchOdd = matchOdd
 
                     service.subscribeHallChannel(
-                        args.sportType.code,
+                        args.gameType.key,
                         PlayCate.OUTRIGHT.value,
                         args.eventId
                     )
@@ -266,7 +266,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
                 service.subscribeHallChannel(
-                    args.sportType.code,
+                    args.gameType.key,
                     PlayCate.OUTRIGHT.value,
                     args.eventId
                 )
@@ -280,7 +280,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     ) {
         viewModel.updateMatchBetList(
             MatchType.OUTRIGHT,
-            args.sportType,
+            args.gameType,
             matchOdd,
             odd
         )

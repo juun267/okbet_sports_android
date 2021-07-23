@@ -21,8 +21,8 @@ import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
@@ -93,11 +93,10 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 R.id.menu_early -> tabLayout.getTabAt(4)?.select()
                 R.id.menu_parlay -> tabLayout.getTabAt(5)?.select()
                 R.id.menu_champion -> tabLayout.getTabAt(6)?.select()
-                R.id.menu_soccer -> goToSportGame(SportType.FOOTBALL)
-                R.id.menu_basketball -> goToSportGame(SportType.BASKETBALL)
-                R.id.menu_tennis -> goToSportGame(SportType.TENNIS)
-                R.id.menu_badminton -> goToSportGame(SportType.BADMINTON)
-                R.id.menu_volleyball -> goToSportGame(SportType.VOLLEYBALL)
+                R.id.menu_soccer -> goToSportGame(GameType.FT)
+                R.id.menu_basketball -> goToSportGame(GameType.BK)
+                R.id.menu_tennis -> goToSportGame(GameType.TN)
+                R.id.menu_volleyball -> goToSportGame(GameType.VB)
                 R.id.menu_cg_lottery -> goToMainActivity(ThirdGameCategory.CGCP)
                 R.id.menu_live_game -> goToMainActivity(ThirdGameCategory.LIVE)
                 R.id.menu_poker_game -> goToMainActivity(ThirdGameCategory.QP)
@@ -140,7 +139,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
-    private fun goToSportGame(sportType: SportType) {
+    private fun goToSportGame(gameType: GameType) {
         //規則：
         //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
         //2. 若此當前頁籤無該種球類比賽，則後續導入優先順序為 今日 > 早盤 > 串關
@@ -155,7 +154,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             else -> MatchType.AT_START
         }
 
-        viewModel.navSpecialEntrance(SpecialEntranceSource.LEFT_MENU, matchType, sportType)
+        viewModel.navSpecialEntrance(SpecialEntranceSource.LEFT_MENU, matchType, gameType)
     }
 
     private fun goToMainActivity(thirdGameCategory: ThirdGameCategory) {
@@ -598,21 +597,14 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
         val bundle = intent.extras
         val matchType = bundle?.getString("matchType")
-        val sportType = when (bundle?.getString("gameType")) {
-            SportType.BASKETBALL.code -> SportType.BASKETBALL
-            SportType.TENNIS.code -> SportType.TENNIS
-            SportType.BADMINTON.code -> SportType.BADMINTON
-            SportType.VOLLEYBALL.code -> SportType.VOLLEYBALL
-            SportType.FOOTBALL.code -> SportType.FOOTBALL
-            else -> null
-        }
+        val gameType = GameType.getGameType(bundle?.getString("gameType"))
 
         when (matchType) {
             MatchType.PARLAY.postValue -> {
                 viewModel.navSpecialEntrance(
                     SpecialEntranceSource.SHOPPING_CART,
                     MatchType.PARLAY,
-                    sportType
+                    gameType
                 )
             }
 
@@ -620,7 +612,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 viewModel.navSpecialEntrance(
                     SpecialEntranceSource.SHOPPING_CART,
                     MatchType.TODAY,
-                    sportType
+                    gameType
                 )
             }
         }
