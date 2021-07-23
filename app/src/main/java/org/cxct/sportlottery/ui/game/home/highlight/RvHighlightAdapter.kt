@@ -172,7 +172,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             itemView.apply {
                 val sportType = data.matchInfo?.sportType
 
-                val playTypeStr = when (sportType) {
+                val playCateStr = when (sportType) {
                     SportType.FOOTBALL, SportType.BASKETBALL -> context.getText(R.string.ou_hdp_hdp_title)
                     SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> context.getText(R.string.ou_hdp_1x2_title)
                     else -> ""
@@ -313,7 +313,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.homeName
                                         )
                                     }
@@ -326,7 +326,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.homeName
                                         )
                                     }
@@ -450,7 +450,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.awayName
                                         )
                                     }
@@ -463,7 +463,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.awayName
                                         )
                                     }

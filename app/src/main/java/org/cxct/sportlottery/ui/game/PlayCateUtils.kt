@@ -5,7 +5,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.Odd
 
-object PlayTypeUtils {
+object PlayCateUtils {
 
     fun filterOdds(
         odds: Map<String, List<Odd?>>,
@@ -23,8 +23,8 @@ object PlayTypeUtils {
         getPlayCateSetCount(playCate.value, sportType.code)
     }
 
-    fun getPlayCateSetCount(playTypeCode: String, sportTypeCode: String) =
-        when (playTypeCode) {
+    fun getPlayCateSetCount(playCateCode: String, sportTypeCode: String) =
+        when (playCateCode) {
             PlayCate.SINGLE.value, PlayCate.X12_SEG1.value, PlayCate.SINGLE_1ST.value -> {
                 when (sportTypeCode) {
                     SportType.FOOTBALL.code, SportType.BASKETBALL.code -> 3

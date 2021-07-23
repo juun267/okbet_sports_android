@@ -32,7 +32,6 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SaveMyFavoriteRequest
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
@@ -45,7 +44,6 @@ import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -748,7 +746,7 @@ class GameViewModel(
                     }
 
                     matchOdd.odds =
-                        PlayTypeUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
+                        PlayCateUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
                     matchOdd.odds.forEach { map ->
                         map.value.updateOddSelectState()
                     }
