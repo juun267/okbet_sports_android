@@ -1081,7 +1081,7 @@ class GameViewModel(
                         //如果是球員 忽略名字替換
                         if (!TextUtil.compareWithGameKey(
                                 oddsDetail.gameType,
-                                OddsDetailListAdapter.GameType.SCO.value
+                                PlayCate.SCO.value
                             )
                         ) {
                             if (newOddData.name?.isNotEmpty() == true) {
