@@ -106,6 +106,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         when (holder) {
             is ViewHolder -> holder.bind((itemData as DataItem.BetInfoData).betInfoListData, oddsType)
             is BatchSingleViewHolder -> holder.bind((itemData as DataItem.ParlayData).parlayOdd, parlayList.size, betList)
+            is BatchParlayViewHolder -> holder.bind((itemData as DataItem.ParlayData).parlayOdd)
         }
     }
 
@@ -132,7 +133,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
     private fun fromBatchParlayViewHolder(viewGroup: ViewGroup): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(viewGroup.context)
         val binding = ItemBetListBatchControlConnectBinding.inflate(layoutInflater, viewGroup, false)
-        return BatchParlayViewHolder(binding.root)
+        return BatchParlayViewHolder(binding)
     }
 
     inner class ViewHolder(val binding: ContentBetListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -556,7 +557,10 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         }
     }
 
-    inner class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class BatchParlayViewHolder(val binding: ItemBetListBatchControlConnectBinding) : BatchViewHolder(binding) {
+        fun bind(itemData: ParlayOdd?) {
+            setupParlayItemTest(binding, itemData)
+        }
     }
 
     abstract inner class BatchViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
