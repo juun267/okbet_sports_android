@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
@@ -8,11 +7,13 @@
     android:background="@drawable/selector_button_radius_4_odds"
     tools:ignore="SpUsage,ContentDescription">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
+        android:paddingHorizontal="4dp"
         tools:ignore="SpUsage">
 
         <LinearLayout
@@ -24,8 +25,11 @@
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text2"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="义大利"
@@ -35,6 +39,7 @@
                 android:id="@+id/tv_spread"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="-0.5/1"
@@ -55,6 +60,7 @@
 
     </LinearLayout>
 
+
     <ImageView
         android:id="@+id/img_odd_lock"
         android:layout_width="match_parent"
@@ -63,5 +69,6 @@
         android:scaleType="center"
         android:src="@drawable/ic_iconlock"
         android:visibility="gone" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
