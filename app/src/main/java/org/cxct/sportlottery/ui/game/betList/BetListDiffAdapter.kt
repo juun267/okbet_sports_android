@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetListBatchControlBinding
 import org.cxct.sportlottery.databinding.ContentBetListItemBinding
@@ -454,9 +455,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         }
     }
 
-    inner class BatchSingleViewHolder(val binding: ContentBetListBatchControlBinding) : RecyclerView.ViewHolder(binding.root) {
-        var parlayInputError: Boolean = false
-
+    inner class BatchSingleViewHolder(val binding: ContentBetListBatchControlBinding) : BatchViewHolder(binding) {
         fun bind(itemData: ParlayOdd?, parlayListSize: Int, betList: MutableList<BetInfoListData>) {
             binding.apply {
                 when (parlayListSize) {
@@ -468,99 +467,21 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                         itemFirstConnect.llConnect.visibility = View.VISIBLE
                         llMoreOption.visibility = View.GONE
 
-                        setupParlayItem(itemData)
+                        setupParlayItemTest(binding.itemFirstConnect, itemData)
                         setupSingleItem(betList, itemData)
                     }
                     else -> {
                         itemFirstConnect.llConnect.visibility = View.VISIBLE
                         llMoreOption.visibility = View.VISIBLE
 
-                        setupParlayItem(itemData)
+                        setupParlayItemTest(binding.itemFirstConnect, itemData)
                         setupSingleItem(betList, itemData)
                         //TODO 點擊查看所有多個選項
                         setupClickMoreItem()
                     }
                 }
             }
-        }
 
-        private fun setupParlayItem(itemData: ParlayOdd?) {
-            binding.itemFirstConnect.apply {
-                llWinnable.visibility = View.GONE
-                llMaxBetAmount.visibility = View.GONE
-
-                itemData?.let { data ->
-                    tvParlayType.text = TextUtil.replaceParlayByC(data.parlayType)
-
-                    val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
-                    tvParlayOdd.text = itemOdd
-                    tvComCount.text = data.num.toString()
-
-                    etBet.apply {
-                        /* set listener */
-                        val tw = object : TextWatcher {
-                            override fun afterTextChanged(it: Editable?) {
-                                val inputValue = if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
-                                val winnableAmount = itemOdd.toDouble() * inputValue
-                                when (winnableAmount > 0) {
-                                    true -> {
-                                        binding.itemFirstConnect.apply {
-                                            llWinnable.visibility = View.VISIBLE
-                                            tvWinnableAmount.text = TextUtil.formatMoney(winnableAmount)
-                                            llMaxBetAmount.visibility = View.GONE
-                                            btnMaximumLimit.visibility = View.GONE
-                                        }
-                                    }
-                                    else -> {
-                                        binding.itemFirstConnect.apply {
-                                            llWinnable.visibility = View.GONE
-                                            btnMaximumLimit.visibility = View.VISIBLE
-                                        }
-                                    }
-                                }
-
-                                if (TextUtils.isEmpty(it)) {
-                                    data.input = ""
-                                } else {
-                                    data.input = it.toString()
-                                }
-
-                                checkInput(it.toString(), data)
-                                data.betAmount = inputValue
-                            }
-
-                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-                        }
-
-                        val fc = View.OnFocusChangeListener { _, hasFocus ->
-                            if (hasFocus && adapterPosition != focusPosition)
-                                etBet.clearFocus()
-                        }
-
-                        onFocusChangeListener = fc
-                        addTextChangedListener(tw)
-                        tag = tw
-
-                        setOnTouchListener { _, event ->
-                            //若回傳true則不會觸發onTouchEvent,onClick
-                            if (event.action == MotionEvent.ACTION_UP) {
-                                focusPosition = adapterPosition
-                                onItemClickListener.onShowParlayKeyboard(this, data)
-                            }
-                            false
-                        }
-                    }
-
-                    checkInput(etBet.text.toString(), data)
-
-                    btnMaximumLimit.setOnClickListener {
-                        it.visibility = View.GONE
-                        llMaxBetAmount.visibility = View.VISIBLE
-                        tvMaxBetAmount.text = data.max.toString()
-                    }
-                }
-            }
         }
 
         private fun setupSingleItem(betList: MutableList<BetInfoListData>, itemData: ParlayOdd?) {
@@ -623,8 +544,100 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
         private fun setupClickMoreItem() {}
 
-        private fun checkInput(it: String, itemData: ParlayOdd?) {
-            binding.itemFirstConnect.apply {
+        /**
+         * 填充所有單注後獲取總可贏額
+         */
+        private fun getAllSingleWinnableAmount(betAmount: Double, betList: MutableList<BetInfoListData>): Double {
+            var allWinnableAmount = 0.0
+            betList.forEach {
+                allWinnableAmount += getOdds(it.matchOdd, oddsType) * betAmount
+            }
+            return allWinnableAmount
+        }
+    }
+
+    inner class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    }
+
+    abstract inner class BatchViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+        var parlayInputError: Boolean = false
+        protected fun setupParlayItemTest(binding: ItemBetListBatchControlConnectBinding, itemData: ParlayOdd?) {
+            binding.apply {
+                llWinnable.visibility = View.GONE
+                llMaxBetAmount.visibility = View.GONE
+
+                itemData?.let { data ->
+                    tvParlayType.text = TextUtil.replaceParlayByC(data.parlayType)
+
+                    val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
+                    tvParlayOdd.text = itemOdd
+                    tvComCount.text = data.num.toString()
+
+                    etBet.apply {
+                        /* set listener */
+                        val tw = object : TextWatcher {
+                            override fun afterTextChanged(it: Editable?) {
+                                val inputValue = if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
+                                val winnableAmount = itemOdd.toDouble() * inputValue
+                                when (winnableAmount > 0) {
+                                    true -> {
+                                        llWinnable.visibility = View.VISIBLE
+                                        tvWinnableAmount.text = TextUtil.formatMoney(winnableAmount)
+                                        llMaxBetAmount.visibility = View.GONE
+                                        btnMaximumLimit.visibility = View.GONE
+                                    }
+                                    else -> {
+                                        llWinnable.visibility = View.GONE
+                                        btnMaximumLimit.visibility = View.VISIBLE
+                                    }
+                                }
+
+                                if (TextUtils.isEmpty(it)) {
+                                    data.input = ""
+                                } else {
+                                    data.input = it.toString()
+                                }
+
+                                checkInput(binding, it.toString(), data)
+                                data.betAmount = inputValue
+                            }
+
+                            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+                        }
+
+                        val fc = View.OnFocusChangeListener { _, hasFocus ->
+                            if (hasFocus && adapterPosition != focusPosition)
+                                etBet.clearFocus()
+                        }
+
+                        onFocusChangeListener = fc
+                        addTextChangedListener(tw)
+                        tag = tw
+
+                        setOnTouchListener { _, event ->
+                            //若回傳true則不會觸發onTouchEvent,onClick
+                            if (event.action == MotionEvent.ACTION_UP) {
+                                focusPosition = adapterPosition
+                                onItemClickListener.onShowParlayKeyboard(this, data)
+                            }
+                            false
+                        }
+                    }
+
+                    checkInput(binding, etBet.text.toString(), data)
+
+                    btnMaximumLimit.setOnClickListener {
+                        it.visibility = View.GONE
+                        llMaxBetAmount.visibility = View.VISIBLE
+                        tvMaxBetAmount.text = data.max.toString()
+                    }
+                }
+            }
+        }
+
+        private fun checkInput(binding: ItemBetListBatchControlConnectBinding, it: String, itemData: ParlayOdd?) {
+            binding.apply {
                 itemData?.let { itemDataNotnull ->
                     if (TextUtils.isEmpty(it)) {
                         etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text_fill_color_white)
@@ -664,20 +677,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             }
             onItemClickListener.refreshAmount()
         }
-
-        /**
-         * 填充所有單注後獲取總可贏額
-         */
-        private fun getAllSingleWinnableAmount(betAmount: Double, betList: MutableList<BetInfoListData>): Double {
-            var allWinnableAmount = 0.0
-            betList.forEach {
-                allWinnableAmount += getOdds(it.matchOdd, oddsType) * betAmount
-            }
-            return allWinnableAmount
-        }
-    }
-
-    inner class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     inner class NoDataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
