@@ -25,19 +25,34 @@ object PlayCateUtils {
 
     fun getPlayCateSetCount(playCateCode: String, sportTypeCode: String) =
         when (playCateCode) {
-            PlayCate.SINGLE.value, PlayCate.SINGLE_SEG1.value, PlayCate.SINGLE_1ST.value -> {
+            PlayCate.SINGLE.value, PlayCate.SINGLE_SEG1.value, PlayCate.SINGLE_1ST.value, PlayCate.SINGLE_2ST.value -> {
                 when (sportTypeCode) {
                     SportType.FOOTBALL.code, SportType.BASKETBALL.code -> 3
                     SportType.TENNIS.code, SportType.VOLLEYBALL.code -> 2
                     else -> 0
                 }
             }
+
             PlayCate.HDP.value, PlayCate.SET_HDP.value, PlayCate.HDP_SEG1.value, PlayCate.HDP_1ST.value, PlayCate.HDP_INCL_OT.value,
-            PlayCate.OU.value, PlayCate.OU_1ST.value, PlayCate.OU_I_OT.value,
+            PlayCate.OU.value, PlayCate.OU_1ST.value, PlayCate.OU_2ST.value, PlayCate.OU_I_OT.value,
             PlayCate.BTS.value,
             PlayCate.OE.value,
+            PlayCate.TG_OU.value,
             PlayCate.TG_OU_H_INCL_OT.value, PlayCate.TG_OU_C_INCL_OT.value,
-            PlayCate.TG_OU_H_1ST.value, PlayCate.TG_OU_C_1ST.value -> 2
+            PlayCate.TG_OU_H_1ST.value, PlayCate.TG_OU_C_1ST.value,
+            PlayCate.TWTN.value,
+            PlayCate.CLSH.value,
+            PlayCate.C_OU.value,
+            PlayCate.C_OE.value,
+            PlayCate.OU_I_OT.value,
+            PlayCate.SINGLE_OT.value, PlayCate.SINGLE_OT_2.value,
+            PlayCate.WBH.value,
+            PlayCate.WEH.value,
+            PlayCate.SBH.value
+            -> 2
+
+            PlayCate.HWMG_SINGLE.value, PlayCate.W3.value, PlayCate.DC.value -> 3
+
             else -> 0
         }
 
