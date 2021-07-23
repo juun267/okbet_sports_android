@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.transactionStatus
+package org.cxct.sportlottery.network.common
 
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
