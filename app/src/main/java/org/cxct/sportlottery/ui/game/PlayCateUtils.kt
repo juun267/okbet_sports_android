@@ -13,17 +13,17 @@ object PlayCateUtils {
     ): MutableMap<String, MutableList<Odd?>> {
         return odds.mapValues {
             it.value.filterIndexed { index, _ ->
-                index < getPlayCateSetCount(it.key, sportCode)
+                index < getPlayCateSpanCount(it.key, sportCode)
             }.toMutableList()
 
         }.toMutableMap()
     }
 
-    fun getPlayCateSetCount(playCate: PlayCate, sportType: SportType) {
-        getPlayCateSetCount(playCate.value, sportType.code)
+    fun getPlayCateSpanCount(playCate: PlayCate, sportType: SportType) {
+        getPlayCateSpanCount(playCate.value, sportType.code)
     }
 
-    fun getPlayCateSetCount(playCateCode: String, sportTypeCode: String) =
+    fun getPlayCateSpanCount(playCateCode: String, sportTypeCode: String) =
         when (playCateCode) {
             PlayCate.SINGLE.value, PlayCate.SINGLE_SEG1.value, PlayCate.SINGLE_1ST.value, PlayCate.SINGLE_2ST.value -> {
                 when (sportTypeCode) {

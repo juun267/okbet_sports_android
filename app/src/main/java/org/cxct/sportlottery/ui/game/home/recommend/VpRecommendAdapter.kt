@@ -66,7 +66,7 @@ class VpRecommendAdapter(
                     } ?: ""
 
                 sportCode?.let {
-                    val spanCount = PlayCateUtils.getPlayCateSetCount(data.playTypeCode, sportCode)
+                    val spanCount = PlayCateUtils.getPlayCateSpanCount(data.playTypeCode, sportCode)
 
                     if (spanCount > 0 && data.oddList.isNotEmpty()) {
                         odd_btn_home.visibility = View.VISIBLE
