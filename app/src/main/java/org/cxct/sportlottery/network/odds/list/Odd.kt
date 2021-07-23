@@ -2,6 +2,8 @@ package org.cxct.sportlottery.network.odds.list
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 
 @JsonClass(generateAdapter = true)
 data class Odd(
@@ -25,16 +27,4 @@ data class Odd(
     var outrightCateKey: String? = null
 }
 
-//socket進來的新賠率較大或較小
-enum class OddState(val state: Int) {
-    SAME(0),
-    LARGER(1),
-    SMALLER(2)
-}
 
-//0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
-enum class BetStatus(val code: Int) {
-    ACTIVATED(0),
-    LOCKED(1),
-    DEACTIVATED(2)
-}

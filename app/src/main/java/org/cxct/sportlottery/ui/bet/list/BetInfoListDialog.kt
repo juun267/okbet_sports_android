@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
@@ -31,7 +32,6 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddErrorParser
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.game.GameActivity

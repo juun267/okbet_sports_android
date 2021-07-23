@@ -2,8 +2,8 @@ package org.cxct.sportlottery.network.odds.detail
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.list.OddStateParams
 
 @JsonClass(generateAdapter = true)
