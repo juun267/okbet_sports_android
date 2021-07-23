@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -590,8 +591,4 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             get() = mOddStateRefreshListener
     }
 
-}
-
-interface OnClickOddListener {
-    fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String)
 }
