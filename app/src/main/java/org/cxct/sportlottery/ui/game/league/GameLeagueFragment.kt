@@ -18,7 +18,7 @@ import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager

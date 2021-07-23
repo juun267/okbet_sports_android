@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil
@@ -152,7 +153,7 @@ class BetInfoRepository {
         playCateName: String,
         playName: String,
         matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
@@ -186,7 +187,7 @@ class BetInfoRepository {
         playCateName: String?,
         playName: String?,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 

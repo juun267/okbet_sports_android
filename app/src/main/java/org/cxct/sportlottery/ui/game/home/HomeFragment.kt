@@ -22,7 +22,7 @@ import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent

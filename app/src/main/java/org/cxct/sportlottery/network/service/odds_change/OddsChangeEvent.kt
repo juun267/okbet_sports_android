@@ -2,7 +2,7 @@ package org.cxct.sportlottery.network.service.odds_change
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceEventType
 

@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.PlayTypeUtils
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil

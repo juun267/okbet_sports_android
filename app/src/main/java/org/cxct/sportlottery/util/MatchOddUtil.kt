@@ -2,7 +2,7 @@ package org.cxct.sportlottery.util
 
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 
 object MatchOddUtil {

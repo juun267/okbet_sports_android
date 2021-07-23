@@ -4,8 +4,7 @@ import android.os.Handler
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.network.bet.info.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.game.widget.OddButtonV4
 

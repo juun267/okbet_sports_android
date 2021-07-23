@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
