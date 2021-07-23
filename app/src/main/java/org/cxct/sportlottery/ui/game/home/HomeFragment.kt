@@ -67,10 +67,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val mHighlightSportTypeAdapter = SportTypeAdapter()
     private val mRvHighlightAdapter = RvHighlightAdapter()
-    private var mHighlightResult: MatchCategoryResult? = null
 
     private val mRecommendAdapter = RvRecommendAdapter()
-    private var mRecommendResult: MatchRecommendResult? = null
 
     private val mOnClickOddListener = object : OnClickOddListener {
         override fun onClickBet(
@@ -413,50 +411,44 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //訂閱 推薦賽事 賠率
     private fun subscribeRecommendHallChannel() {
-        mRecommendResult?.rows?.forEach { row ->
-            val code = row.sport?.code
-            row.leagueOdds?.matchOdds?.forEach { oddData ->
-                service.subscribeHallChannel(
-                    code,
-                    MenuCode.RECOMMEND.code,
-                    oddData.matchInfo?.id
-                )
-            }
+        mRecommendAdapter.getData().forEach { entity ->
+            service.subscribeHallChannel(
+                entity.code,
+                MenuCode.RECOMMEND.code,
+                entity.matchInfo?.id
+            )
         }
     }
 
     private fun unsubscribeRecommendHallChannel() {
-        mRecommendResult?.rows?.forEach { row ->
-            val code = row.sport?.code
-            row.leagueOdds?.matchOdds?.forEach { oddData ->
-                service.unsubscribeHallChannel(
-                    code,
-                    MenuCode.RECOMMEND.code,
-                    oddData.matchInfo?.id
-                )
-            }
+        mRecommendAdapter.getData().forEach { entity ->
+            service.unsubscribeHallChannel(
+                entity.code,
+                MenuCode.RECOMMEND.code,
+                entity.matchInfo?.id
+            )
         }
     }
 
     //訂閱 精選賽事 賠率
     private fun subscribeHighlightHallChannel() {
         val code = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-        mHighlightResult?.t?.odds?.forEach { oddData ->
+        mRvHighlightAdapter.getData().forEach { matchOdd ->
             service.subscribeHallChannel(
                 code,
                 MenuCode.SPECIAL_MATCH_MOBILE.code,
-                oddData.matchInfo?.id
+                matchOdd.matchInfo?.id
             )
         }
     }
 
     private fun unsubscribeHighlightHallChannel() {
         val code = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-        mHighlightResult?.t?.odds?.forEach { oddData ->
+        mRvHighlightAdapter.getData().forEach { matchOdd ->
             service.unsubscribeHallChannel(
                 code,
                 MenuCode.SPECIAL_MATCH_MOBILE.code,
-                oddData.matchInfo?.id
+                matchOdd.matchInfo?.id
             )
         }
     }
@@ -500,7 +492,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it.getContentIfNotHandled()?.let { result ->
                 unsubscribeRecommendHallChannel() //先取消訂閱當前的推薦賽事
                 refreshRecommend(result)
-                mRecommendResult = result
                 subscribeRecommendHallChannel()
             }
         })
@@ -514,7 +505,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.highlightMatchResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 refreshHighlight(result)
-                mHighlightResult = result
                 subscribeHighlightHallChannel()
             }
         })
@@ -615,7 +605,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    //TODO simon test observe 推薦賽事
     private fun refreshRecommend(result: MatchRecommendResult) {
         mRecommendAdapter.setData(result)
     }
