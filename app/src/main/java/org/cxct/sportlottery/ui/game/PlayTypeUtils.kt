@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.Odd
 
@@ -13,49 +13,49 @@ object PlayTypeUtils {
     ): MutableMap<String, MutableList<Odd?>> {
         return odds.mapValues {
             it.value.filterIndexed { index, _ ->
-                index < getPlayTypeSetCount(it.key, sportCode)
+                index < getPlayCateSetCount(it.key, sportCode)
             }.toMutableList()
 
         }.toMutableMap()
     }
 
-    fun getPlayTypeSetCount(playType: PlayType, sportType: SportType) {
-        getPlayTypeSetCount(playType.code, sportType.code)
+    fun getPlayCateSetCount(playCate: PlayCate, sportType: SportType) {
+        getPlayCateSetCount(playCate.value, sportType.code)
     }
 
-    fun getPlayTypeSetCount(playTypeCode: String, sportTypeCode: String) =
+    fun getPlayCateSetCount(playTypeCode: String, sportTypeCode: String) =
         when (playTypeCode) {
-            PlayType.X12.code, PlayType.X12_SEG1.code, PlayType.X12_1ST.code -> {
+            PlayCate.SINGLE.value, PlayCate.X12_SEG1.value, PlayCate.SINGLE_1ST.value -> {
                 when (sportTypeCode) {
                     SportType.FOOTBALL.code, SportType.BASKETBALL.code -> 3
                     SportType.TENNIS.code, SportType.VOLLEYBALL.code -> 2
                     else -> 0
                 }
             }
-            PlayType.HDP.code, PlayType.SET_HDP.code, PlayType.HDP_SEG1.code, PlayType.HDP_1ST.code, PlayType.HDP_INCL_OT.code,
-            PlayType.OU.code, PlayType.OU_1ST.code, PlayType.OU_INCL_OT.code,
-            PlayType.BTS.code,
-            PlayType.OE.code,
-            PlayType.TG_OU_H_INCL_OT.code, PlayType.TG_OU_C_INCL_OT.code,
-            PlayType.TG_OU_H_1ST.code, PlayType.TG_OU_C_1ST.code -> 2
+            PlayCate.HDP.value, PlayCate.SET_HDP.value, PlayCate.HDP_SEG1.value, PlayCate.HDP_1ST.value, PlayCate.HDP_INCL_OT.value,
+            PlayCate.OU.value, PlayCate.OU_1ST.value, PlayCate.OU_I_OT.value,
+            PlayCate.BTS.value,
+            PlayCate.OE.value,
+            PlayCate.TG_OU_H_INCL_OT.value, PlayCate.TG_OU_C_INCL_OT.value,
+            PlayCate.TG_OU_H_1ST.value, PlayCate.TG_OU_C_1ST.value -> 2
             else -> 0
         }
 
-    fun getPlayTypeTitleResId(playType: PlayType, sportType: SportType) {
-        getPlayTypeTitleResId(playType.code, sportType.code)
+    fun getPlayCateTitleResId(playCate: PlayCate, sportType: SportType) {
+        getPlayCateTitleResId(playCate.value, sportType.code)
     }
 
-    fun getPlayTypeTitleResId(playTypeCode: String, sportTypeCode: String?) = when (playTypeCode) {
-        PlayType.X12.code -> {
+    fun getPlayCateTitleResId(playCateCode: String, sportTypeCode: String?) = when (playCateCode) {
+        PlayCate.SINGLE.value -> {
             R.string.game_play_type_1x2
         }
-        PlayType.X12_1ST.code -> {
+        PlayCate.SINGLE_1ST.value -> {
             R.string.game_play_type_1x2_1st
         }
-        PlayType.X12_SEG1.code -> {
+        PlayCate.X12_SEG1.value -> {
             R.string.game_play_type_1x2_seg1
         }
-        PlayType.HDP.code -> {
+        PlayCate.HDP.value -> {
             when (sportTypeCode) {
                 SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
                     R.string.game_play_type_hdp_ft
@@ -69,19 +69,19 @@ object PlayTypeUtils {
                 else -> null
             }
         }
-        PlayType.HDP_1ST.code -> {
+        PlayCate.HDP_1ST.value -> {
             R.string.game_play_type_hdp_1st
         }
-        PlayType.SET_HDP.code -> {
+        PlayCate.SET_HDP.value -> {
             R.string.game_play_type_set_hdp
         }
-        PlayType.HDP_SEG1.code -> {
+        PlayCate.HDP_SEG1.value -> {
             R.string.game_play_type_hdp_seg1
         }
-        PlayType.HDP_INCL_OT.code -> {
+        PlayCate.HDP_INCL_OT.value -> {
             R.string.game_play_type_hdp_incl_ot
         }
-        PlayType.OU.code -> {
+        PlayCate.OU.value -> {
             when (sportTypeCode) {
                 SportType.FOOTBALL.code, SportType.BASKETBALL.code -> {
                     R.string.game_play_type_ou_ft
@@ -92,40 +92,40 @@ object PlayTypeUtils {
                 else -> null
             }
         }
-        PlayType.OU_1ST.code -> {
+        PlayCate.OU_1ST.value -> {
             R.string.game_play_type_ou_1st
         }
-        PlayType.OU_INCL_OT.code -> {
+        PlayCate.OU_I_OT.value -> {
             R.string.game_play_type_ou_incl_ot
         }
-        PlayType.BTS.code -> {
+        PlayCate.BTS.value -> {
             R.string.game_play_type_bts
         }
-        PlayType.OE.code -> {
+        PlayCate.OE.value -> {
             R.string.game_play_type_oe
         }
-        PlayType.TG_OU_H_INCL_OT.code -> {
+        PlayCate.TG_OU_H_INCL_OT.value -> {
             R.string.game_play_type_tg_ou_h_ot
         }
-        PlayType.TG_OU_C_INCL_OT.code -> {
+        PlayCate.TG_OU_C_INCL_OT.value -> {
             R.string.game_play_type_tg_ou_c_ot
         }
-        PlayType.TG_OU_H_1ST.code -> {
+        PlayCate.TG_OU_H_1ST.value -> {
             R.string.game_play_type_tg_ou_h_1st
         }
-        PlayType.TG_OU_C_1ST.code -> {
+        PlayCate.TG_OU_C_1ST.value -> {
             R.string.game_play_type_tg_ou_c_1st
         }
         else -> null
     }
 
     fun getOUSeries() = listOf(
-        PlayType.OU,
-        PlayType.OU_1ST,
-        PlayType.OU_INCL_OT,
-        PlayType.TG_OU_C_1ST,
-        PlayType.TG_OU_H_1ST,
-        PlayType.TG_OU_C_INCL_OT,
-        PlayType.TG_OU_H_INCL_OT
+        PlayCate.OU,
+        PlayCate.OU_1ST,
+        PlayCate.OU_I_OT,
+        PlayCate.TG_OU_C_1ST,
+        PlayCate.TG_OU_H_1ST,
+        PlayCate.TG_OU_C_INCL_OT,
+        PlayCate.TG_OU_H_INCL_OT
     )
 }

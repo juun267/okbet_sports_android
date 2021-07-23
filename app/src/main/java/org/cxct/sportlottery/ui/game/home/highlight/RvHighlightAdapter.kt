@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.matchCategory.result.OddData
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -180,32 +180,32 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                 val oddListHDP = when (sportType) {
                     SportType.TENNIS -> {
-                        data.odds[PlayType.SET_HDP.code]
+                        data.odds[PlayCate.SET_HDP.value]
                     }
                     SportType.BASKETBALL -> {
-                        data.odds[PlayType.HDP_INCL_OT.code]
+                        data.odds[PlayCate.HDP_INCL_OT.value]
                     }
                     else -> {
-                        data.odds[PlayType.HDP.code]
+                        data.odds[PlayCate.HDP.value]
                     }
                 }
 
                 val oddList1x2 = when (sportType) {
                     SportType.BASKETBALL -> {
-                        data.odds[PlayType.X12_INCL_OT.code]
+                        data.odds[PlayCate.SINGLE_OT.value]
                     }
                     else -> {
-                        data.odds[PlayType.X12.code]
+                        data.odds[PlayCate.SINGLE.value]
                     }
                 }
 
                 btn_match_odd1.apply {
-                    playType = when (sportType) {
+                    playCate = when (sportType) {
                         SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            PlayType.HDP
+                            PlayCate.HDP
                         }
                         SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            PlayType.X12
+                            PlayCate.SINGLE
                         }
                         else -> null
                     }
@@ -337,12 +337,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 }
 
                 btn_match_odd2.apply {
-                    playType = when (sportType) {
+                    playCate = when (sportType) {
                         SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            PlayType.HDP
+                            PlayCate.HDP
                         }
                         SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            PlayType.X12
+                            PlayCate.SINGLE
                         }
                         else -> null
                     }

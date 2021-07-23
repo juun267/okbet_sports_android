@@ -241,7 +241,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 ).apply {
 
                     val playCateName = PlayTypeUtils
-                        .getPlayTypeTitleResId(it.key, item.matchInfo?.sportType?.code)?.let {
+                        .getPlayCateTitleResId(it.key, item.matchInfo?.sportType?.code)?.let {
                             itemView.context.getString(it)
                         } ?: ""
 
@@ -260,7 +260,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         odd_type_text.apply {
                             visibility = when {
-                                PlayTypeUtils.getOUSeries().map { it.code }
+                                PlayTypeUtils.getOUSeries().map { it.value }
                                     .contains(it.key) -> View.VISIBLE
                                 else -> {
                                     when (!it.value[0]?.spread.isNullOrEmpty()) {
@@ -271,7 +271,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
 
                             text = when {
-                                PlayTypeUtils.getOUSeries().map { it.code }.contains(it.key) -> {
+                                PlayTypeUtils.getOUSeries().map { it.value }.contains(it.key) -> {
                                     itemView.context.getString(R.string.odd_button_ou_o)
                                 }
                                 else -> ""
@@ -283,7 +283,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 true -> View.VISIBLE
                                 false -> {
                                     when {
-                                        PlayTypeUtils.getOUSeries().map { it.code }
+                                        PlayTypeUtils.getOUSeries().map { it.value }
                                             .contains(it.key) -> View.INVISIBLE
                                         else -> View.GONE
                                     }
@@ -306,7 +306,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             it.value[0]?.let { odd ->
 
                                 val playName = when {
-                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                    PlayTypeUtils.getOUSeries().map { it.value }
                                         .contains(it.key) -> {
                                         itemView.context.getString(R.string.odd_button_ou_o)
                                     }
@@ -333,7 +333,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         odd_type_text.apply {
                             visibility = when {
-                                PlayTypeUtils.getOUSeries().map { it.code }
+                                PlayTypeUtils.getOUSeries().map { it.value }
                                     .contains(it.key) -> View.VISIBLE
                                 else -> {
                                     when (!it.value[1]?.spread.isNullOrEmpty()) {
@@ -344,7 +344,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
 
                             text = when {
-                                PlayTypeUtils.getOUSeries().map { it.code }.contains(it.key) -> {
+                                PlayTypeUtils.getOUSeries().map { it.value }.contains(it.key) -> {
                                     itemView.context.getString(R.string.odd_button_ou_u)
                                 }
                                 else -> ""
@@ -356,7 +356,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 true -> View.VISIBLE
                                 false -> {
                                     when {
-                                        PlayTypeUtils.getOUSeries().map { it.code }
+                                        PlayTypeUtils.getOUSeries().map { it.value }
                                             .contains(it.key) -> View.INVISIBLE
                                         else -> View.GONE
                                     }
@@ -379,7 +379,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             it.value[1]?.let { odd ->
 
                                 val playName = when {
-                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                    PlayTypeUtils.getOUSeries().map { it.value }
                                         .contains(it.key) -> {
                                         itemView.context.getString(R.string.odd_button_ou_u)
                                     }
