@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.ui.game.PlayTypeUtils
+import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddButtonV4
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
+
 
 class VpRecommendAdapter(
     val sportCode: String?,
@@ -61,7 +62,7 @@ class VpRecommendAdapter(
         fun bind(data: OddBean) {
             itemView.apply {
                 tv_play_type.text =
-                    PlayTypeUtils.getPlayTypeTitleResId(data.playTypeCode, sportCode)?.let {
+                    PlayCateUtils.getPlayCateTitleResId(data.playTypeCode, sportCode)?.let {
                         itemView.context.getString(it)
                     } ?: ""
 
@@ -103,7 +104,7 @@ class VpRecommendAdapter(
 
                 setOnClickListener {
                     val playCateName = itemView.tv_play_type.text.toString()
-                    val playName = odd.name?: ""
+                    val playName = odd.name ?: ""
                     onClickOddListener?.onClickBet(matchOdd, odd, playCateName, playName)
                 }
             }
@@ -112,69 +113,67 @@ class VpRecommendAdapter(
         //TODO simon test review 賠率按鈕 依照不同盤口 顯示個數(目前假定至多不會超過三個)
         fun getSpanCount(playTypeCode: String): Int {
             return when (playTypeCode) {
-                OddsDetailListAdapter.GameType.TWTN.value,
-                OddsDetailListAdapter.GameType.CLSH.value,
-                OddsDetailListAdapter.GameType.OU.value,
-                OddsDetailListAdapter.GameType.OU_1ST.value,
-                OddsDetailListAdapter.GameType.OU_2ST.value,
-                OddsDetailListAdapter.GameType.OE.value,
-                OddsDetailListAdapter.GameType.TG.value,
-                OddsDetailListAdapter.GameType.TG_.value,
-                OddsDetailListAdapter.GameType.TG_OU.value,
-                OddsDetailListAdapter.GameType.C_OU.value,
-                OddsDetailListAdapter.GameType.C_OE.value,
-                OddsDetailListAdapter.GameType.OU_I_OT.value,
-                OddsDetailListAdapter.GameType.OU_SEG.value,
-                OddsDetailListAdapter.GameType.BTS.value,
-                OddsDetailListAdapter.GameType.HDP.value -> 2
+                PlayCate.TWTN.value,
+                PlayCate.CLSH.value,
+                PlayCate.OU.value,
+                PlayCate.OU_1ST.value,
+                PlayCate.OU_2ST.value,
+                PlayCate.OE.value,
+                PlayCate.TG.value,
+                PlayCate.TG_.value,
+                PlayCate.TG_OU.value,
+                PlayCate.C_OU.value,
+                PlayCate.C_OE.value,
+                PlayCate.OU_I_OT.value,
+                PlayCate.OU_SEG.value,
+                PlayCate.BTS.value,
+                PlayCate.HDP.value -> 2
 
-                OddsDetailListAdapter.GameType.CS.value -> 1
+                PlayCate.CS.value -> 1
 
-                OddsDetailListAdapter.GameType.SINGLE_OT.value,
-                OddsDetailListAdapter.GameType.SINGLE_SEG.value,
-                OddsDetailListAdapter.GameType.SINGLE_1ST.value,
-                OddsDetailListAdapter.GameType.SINGLE_2ST.value,
-                OddsDetailListAdapter.GameType.SINGLE.value -> 3
+                PlayCate.SINGLE_OT.value,
+                PlayCate.SINGLE_SEG.value,
+                PlayCate.SINGLE_1ST.value,
+                PlayCate.SINGLE_2ST.value,
+                PlayCate.SINGLE.value -> 3
 
-                OddsDetailListAdapter.GameType.SINGLE_OT_2.value,
-                OddsDetailListAdapter.GameType.SINGLE_SEG_2.value,
-                OddsDetailListAdapter.GameType.SINGLE_1ST_2.value,
-                OddsDetailListAdapter.GameType.SINGLE_2ST_2.value,
-                OddsDetailListAdapter.GameType.SINGLE_2.value -> 2
+                PlayCate.SINGLE_OT_2.value,
+                PlayCate.SINGLE_SEG_2.value,
+                PlayCate.SINGLE_1ST_2.value,
+                PlayCate.SINGLE_2ST_2.value,
+                PlayCate.SINGLE_2.value -> 2
 
-                OddsDetailListAdapter.GameType.FGLG.value -> 3
+                PlayCate.FGLG.value -> 3
 
-                OddsDetailListAdapter.GameType.HWMG_SINGLE.value,
-                OddsDetailListAdapter.GameType.WBH.value,
-                OddsDetailListAdapter.GameType.WEH.value,
-                OddsDetailListAdapter.GameType.SBH.value,
-                OddsDetailListAdapter.GameType.NGOAL_1.value,
-                OddsDetailListAdapter.GameType.HDP_ONE_LIST.value,
-                OddsDetailListAdapter.GameType.SCO.value,
-                OddsDetailListAdapter.GameType.W3.value,
-                OddsDetailListAdapter.GameType.DC.value,
-                OddsDetailListAdapter.GameType.GT1ST.value,
-                OddsDetailListAdapter.GameType.WM.value,
-                OddsDetailListAdapter.GameType.HTFT.value -> 2
+                PlayCate.HWMG_SINGLE.value,
+                PlayCate.WBH.value,
+                PlayCate.WEH.value,
+                PlayCate.SBH.value,
+                PlayCate.NGOAL_1.value,
+                PlayCate.HDP_ONE_LIST.value,
+                PlayCate.SCO.value,
+                PlayCate.W3.value,
+                PlayCate.DC.value,
+                PlayCate.GT1ST.value,
+                PlayCate.WM.value,
+                PlayCate.HTFT.value -> 2
 
-                OddsDetailListAdapter.GameType.DC_OU.value,
-                OddsDetailListAdapter.GameType.DC_BTS.value,
-                OddsDetailListAdapter.GameType.DC_FLG.value -> 3
+                PlayCate.DC_OU.value,
+                PlayCate.DC_BTS.value,
+                PlayCate.DC_FLG.value -> 3
 
-                OddsDetailListAdapter.GameType.SINGLE_FLG.value,
-                OddsDetailListAdapter.GameType.SINGLE_BTS.value,
-                OddsDetailListAdapter.GameType.SINGLE_OU.value -> 3
+                PlayCate.SINGLE_FLG.value,
+                PlayCate.SINGLE_BTS.value,
+                PlayCate.SINGLE_OU.value -> 3
 
-                OddsDetailListAdapter.GameType.OU_BTS.value -> 2
+                PlayCate.OU_BTS.value -> 2
 
-                OddsDetailListAdapter.GameType.OU_TTS1ST.value,
-                OddsDetailListAdapter.GameType.OU_OE.value -> 2
+                PlayCate.OU_TTS1ST.value,
+                PlayCate.OU_OE.value -> 2
 
                 //臨時新增或尚未確定的排版 以單行列表作為排版
                 else -> 1
             }
         }
-
     }
-
 }
