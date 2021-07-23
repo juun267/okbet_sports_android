@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.common.PlayCate
