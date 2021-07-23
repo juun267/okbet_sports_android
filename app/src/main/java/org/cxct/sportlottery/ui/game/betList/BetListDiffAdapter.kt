@@ -573,6 +573,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     tvParlayOdd.text = itemOdd
                     tvComCount.text = data.num.toString()
 
+                    btnRule.setOnClickListener { Timber.e("Dean, Test show rule = ${itemData.parlayRule}") }
+
                     etBet.apply {
                         /* set listener */
                         val tw = object : TextWatcher {

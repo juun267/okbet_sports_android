@@ -62,6 +62,7 @@
                 tools:text="6.120" />
 
             <ImageView
+                android:id="@+id/btn_rule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_question_mark" />
