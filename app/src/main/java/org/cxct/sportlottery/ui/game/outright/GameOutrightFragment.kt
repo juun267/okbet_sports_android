@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -120,7 +120,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                     service.subscribeHallChannel(
                         args.sportType.code,
-                        CateMenuCode.OUTRIGHT.code,
+                        PlayCate.OUTRIGHT.value,
                         args.eventId
                     )
                 }
@@ -267,7 +267,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 service.unsubscribeAllHallChannel()
                 service.subscribeHallChannel(
                     args.sportType.code,
-                    CateMenuCode.OUTRIGHT.code,
+                    PlayCate.OUTRIGHT.value,
                     args.eventId
                 )
             }

@@ -28,8 +28,8 @@ import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
@@ -132,7 +132,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.subscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
+                service.subscribeHallChannel(
+                    listData.matchOdd.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    listData.matchOdd.matchId
+                )
             } else {
                 service.subscribeEventChannel(listData.matchOdd.matchId)
             }
@@ -143,7 +147,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.unsubscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
+                service.unsubscribeHallChannel(
+                    listData.matchOdd.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    listData.matchOdd.matchId
+                )
             } else {
                 service.unsubscribeEventChannel(listData.matchOdd.matchId)
             }

@@ -25,7 +25,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.PlayTypeUtils
+import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
@@ -179,7 +179,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
                                 args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
+                                PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
                         }
@@ -344,7 +344,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             }
 
                             if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                updateMatchOdd?.odds = PlayTypeUtils.filterOdds(
+                                updateMatchOdd?.odds = PlayCateUtils.filterOdds(
                                     oddTypeSocketMap.toMutableMap(),
                                     args.sportType.code
                                 )
@@ -470,7 +470,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
                                 args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
+                                PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
                         }
