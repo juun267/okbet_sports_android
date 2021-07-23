@@ -83,7 +83,7 @@ class VpRecommendAdapter(
                     }
                     if (spanCount > 2 && data.oddList.size > 2) {
                         odd_btn_draw.visibility = View.VISIBLE
-                        setupOddButton(odd_btn_draw, data.oddList[1])
+                        setupOddButton(odd_btn_draw, data.oddList[2])
                     } else {
                         odd_btn_draw.visibility = View.GONE
                     }
