@@ -74,8 +74,12 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val data = mDataList[position]
-        holder.bind(data)
+        try {
+            val data = mDataList[position]
+            holder.bind(data)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun getItemCount(): Int = mDataList.size
@@ -97,7 +101,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
 
                 if (data.vpRecommendAdapter == null)
-                    data.vpRecommendAdapter = VpRecommendAdapter(data.oddBeans, oddsType, data.toMatchOdd())
+                    data.vpRecommendAdapter = VpRecommendAdapter(data.code, data.oddBeans, oddsType, data.toMatchOdd())
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
 
@@ -123,7 +127,7 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
     )
     val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
     this.oddBeans.forEach {
-        odds[it.oddCode] = it.oddList.toMutableList()
+        odds[it.playTypeCode] = it.oddList.toMutableList()
     }
     return MatchOdd(matchInfo, odds)
 }

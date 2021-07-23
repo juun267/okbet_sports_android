@@ -13,6 +13,6 @@ class RecommendGameEntity(
 }
 
 class OddBean(
-    val oddCode: String,
+    val playTypeCode: String,
     val oddList: List<Odd>,
 )

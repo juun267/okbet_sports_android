@@ -19,9 +19,7 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
-import org.cxct.sportlottery.network.matchCategory.result.MatchInfo
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
-import org.cxct.sportlottery.network.matchCategory.result.OddData
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -57,8 +55,7 @@ import org.cxct.sportlottery.util.GameConfigManager
  * TODO simon test:
  * 1. 上下滑動 ToolBar 固定
  * 2. 賽事精選: icon 顯示 review
- * 3. 賽事推薦 - viewPager 賠率串接
- * 4. 賽事推薦 - socket 賠率刷新 串接
+ * 3. 賽事推薦 - 冠軍樣式
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
@@ -178,16 +175,17 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun initRecommend() {
         rv_recommend.adapter = mRecommendAdapter
         mRecommendAdapter.onClickOddListener = mOnClickOddListener
-        mRecommendAdapter.onClickMatchListener = object : OnSelectItemListener<RecommendGameEntity> {
-            override fun onClick(select: RecommendGameEntity) {
-                scroll_view.smoothScrollTo(0, 0)
-                val code = select.code
-                val matchId = select.matchInfo?.id
+        mRecommendAdapter.onClickMatchListener =
+            object : OnSelectItemListener<RecommendGameEntity> {
+                override fun onClick(select: RecommendGameEntity) {
+                    scroll_view.smoothScrollTo(0, 0)
+                    val code = select.code
+                    val matchId = select.matchInfo?.id
 
-                //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
-                navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
+                    navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                }
             }
-        }
     }
 
     private fun initHighlight() {
@@ -770,7 +768,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             if (entity.oddBeans.isNullOrEmpty()) {
                 entity.oddBeans = result.odds?.map {
                     OddBean(it.key, it.value.filterNotNull())
-                }?: listOf()
+                } ?: listOf()
                 mRecommendAdapter.notifyItemChanged(index)
 
             } else {
@@ -778,22 +776,29 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val key = map.key
                     val newOddList = map.value
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
-                        if (key == oddBean.oddCode) {
+                        if (key == oddBean.playTypeCode) {
                             val oldOddList = oddBean.oddList
                             oldOddList.forEach { oldOdd ->
-                                newOddList.find { newOdd -> oldOdd.id == newOdd?.id }?.let { newOdd ->
-                                    val newOddState = when (recommendOddsType) {
-                                        OddsType.EU -> judgeOddState(oldOdd.odds, newOdd.odds).state
-                                        OddsType.HK -> judgeOddState(oldOdd.hkOdds, newOdd.hkOdds).state
+                                newOddList.find { newOdd -> oldOdd.id == newOdd?.id }
+                                    ?.let { newOdd ->
+                                        val newOddState = when (recommendOddsType) {
+                                            OddsType.EU -> judgeOddState(
+                                                oldOdd.odds,
+                                                newOdd.odds
+                                            ).state
+                                            OddsType.HK -> judgeOddState(
+                                                oldOdd.hkOdds,
+                                                newOdd.hkOdds
+                                            ).state
+                                        }
+
+                                        oldOdd.odds = newOdd.odds
+                                        oldOdd.hkOdds = newOdd.hkOdds
+                                        oldOdd.status = newOddState
+
+                                        //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
+                                        mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
                                     }
-
-                                    oldOdd.odds = newOdd.odds
-                                    oldOdd.hkOdds = newOdd.hkOdds
-                                    oldOdd.status = newOddState
-
-                                    //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
-                                    mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
-                                }
                             }
                         }
                     }
