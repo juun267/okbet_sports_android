@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.repository
 
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -19,7 +20,7 @@ import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 const val BET_INFO_MAX_COUNT = 10
 
 
-class BetInfoRepository {
+class BetInfoRepository(val androidContext: Context) {
 
 
     private val _showBetInfoSingle = MutableLiveData<Event<Boolean?>>()
@@ -141,7 +142,7 @@ class BetInfoRepository {
     }
 
 
-    fun addInBetInfo(){
+    fun addInBetInfo() {
         _showBetInfoSingle.postValue(Event(false))
     }
 
@@ -292,7 +293,7 @@ class BetInfoRepository {
             oddsList.indexOf(it)
         }
 
-        val parlayComList = ParlayLimitUtil.getCom(oddsIndexList.toIntArray())
+        val parlayComList = ParlayLimitUtil.getCom(androidContext, oddsIndexList.toIntArray())
 
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
             oddsList,
@@ -300,6 +301,12 @@ class BetInfoRepository {
             playQuota?.max?.toBigDecimal(),
             playQuota?.min?.toBigDecimal()
         )
+
+        //串關規則Map
+        val parlayRuleMap: MutableMap<String, String?> = mutableMapOf()
+        for (parlayCom in parlayComList) {
+            parlayRuleMap[parlayCom.parlayType] = parlayCom.rule
+        }
 
         return parlayBetLimitMap.map {
             ParlayOdd(
@@ -309,7 +316,9 @@ class BetInfoRepository {
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
-            )
+            ).apply {
+                parlayRule = parlayRuleMap[it.key]
+            }
         }
     }
 

@@ -19,6 +19,7 @@ data class ParlayOdd(
     @Json(name = "parlayType")
     val parlayType: String
 ) {
+    var parlayRule: String? = null
     var sendOutStatus: Boolean = true
     var betAmount: Double = 0.0
     var allSingleInput: String? = null //僅給投注單填充所有單注使用

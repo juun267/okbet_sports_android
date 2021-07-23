@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
+import android.content.Context
+import org.cxct.sportlottery.R
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -97,7 +99,11 @@ object ParlayLimitUtil {
      * @return
      */
     @SuppressLint("NewApi")
-    fun getCom(matchIdArray: IntArray): List<ParlayCom> {
+    fun getCom(context: Context, matchIdArray: IntArray): List<ParlayCom> {
+        val atLeastRuleString = context.getString(R.string.parlay_rule_at_least)
+
+        val cantParlayWarn = context.getString(R.string.parlay_rule_cant_warn)
+
         val parlayComSOList: MutableList<ParlayCom> = ArrayList()
         if (matchIdArray.size == 1) {
             val parlayCom = ParlayCom()
@@ -132,11 +138,14 @@ object ParlayLimitUtil {
 
         //N串1场景
         val keyList: Set<Int> = map.keys
+        val nC1RuleList: MutableList<String> = mutableListOf()
         for (key in keyList) {
             val list: List<IntArray> = map[key]!!
             val parlayCom = ParlayCom()
             parlayCom.num = list.size
             parlayCom.parlayType = list[0].size.toString() + "C1"
+            parlayCom.rule = "${String.format(context.getString(R.string.parlay_rule_nc1), list[0].size.toString())}\n$cantParlayWarn"
+            nC1RuleList.add(String.format(context.getString(R.string.parlay_rule_list_nc1), list.size, list[0].size.toString()))
             parlayCom.setComList(list)
             parlayComSOList.add(parlayCom)
         }
@@ -149,12 +158,18 @@ object ParlayLimitUtil {
 
         parlayComSOList.reverse()
 
-        //N串M场景
-        val nParlayM = ParlayCom()
-        nParlayM.num = all.size
-        nParlayM.setComList(all)
-        nParlayM.parlayType = matchIdArray.size.toString() + "C" + all.size
-        parlayComSOList.add(nParlayM)
+        if (all.size > 2) {
+            //N串M场景
+            val nParlayM = ParlayCom()
+            nParlayM.num = all.size
+            nParlayM.setComList(all)
+            nParlayM.parlayType = matchIdArray.size.toString() + "C" + all.size
+            nParlayM.rule = "${String.format(context.getString(R.string.parlay_rule_ncm), matchIdArray.size.toString(), all.size)}\n" +
+                    nC1RuleList.joinToString(context.getString(R.string.parlay_rule_and)) +
+                    "\n$atLeastRuleString\n$cantParlayWarn"
+            parlayComSOList.add(nParlayM)
+        }
+
         return parlayComSOList
     }
 
