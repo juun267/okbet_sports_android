@@ -47,7 +47,6 @@ import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.odds.OddsDetailListAdapter
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -778,7 +777,7 @@ class GameViewModel(
                     }
 
                     matchOdd.odds =
-                        PlayTypeUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
+                        PlayCateUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
                     matchOdd.odds.forEach { map ->
                         map.value.updateOddSelectState()
                     }
@@ -1111,7 +1110,7 @@ class GameViewModel(
                         //如果是球員 忽略名字替換
                         if (!TextUtil.compareWithGameKey(
                                 oddsDetail.gameType,
-                                OddsDetailListAdapter.GameType.SCO.value
+                                PlayCate.SCO.value
                             )
                         ) {
                             if (newOddData.name?.isNotEmpty() == true) {

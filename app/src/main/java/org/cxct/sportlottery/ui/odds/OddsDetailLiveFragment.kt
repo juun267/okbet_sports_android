@@ -23,8 +23,8 @@ import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
@@ -250,7 +250,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun subscribeHallChannel(code: String, match: String?) {
-        service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match)
+        service.subscribeHallChannel(code, PlayCate.OU_HDP.value, match)
     }
 
 

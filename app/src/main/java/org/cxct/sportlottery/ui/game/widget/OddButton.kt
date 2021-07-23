@@ -10,7 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.OUType
-import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.PlayCate
 
 class OddButton @JvmOverloads constructor(
     context: Context,
@@ -22,12 +22,12 @@ class OddButton @JvmOverloads constructor(
         fun onOddStateChangedFinish()
     }
 
-    var playType: PlayType? = null
+    var playCate: PlayCate? = null
         set(value) {
             field = value
 
             field?.let {
-                setupPlayType(it)
+                setupPlayCate(it)
             }
         }
 
@@ -79,50 +79,50 @@ class OddButton @JvmOverloads constructor(
         }
     }
 
-    private fun setupPlayType(playType: PlayType) {
-        odd_hdp_top_text.visibility = if (playType == PlayType.HDP) {
+    private fun setupPlayCate(playCate: PlayCate) {
+        odd_hdp_top_text.visibility = if (playCate == PlayCate.HDP) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        odd_hdp_bottom_text.visibility = if (playType == PlayType.HDP) {
+        odd_hdp_bottom_text.visibility = if (playCate == PlayCate.HDP) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        odd_ou_type.visibility = if (playType == PlayType.OU) {
+        odd_ou_type.visibility = if (playCate == PlayCate.OU) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        odd_ou_top_text.visibility = if (playType == PlayType.OU) {
+        odd_ou_top_text.visibility = if (playCate == PlayCate.OU) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        odd_ou_bottom_text.visibility = if (playType == PlayType.OU) {
+        odd_ou_bottom_text.visibility = if (playCate == PlayCate.OU) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        odd_1x2_top_text.visibility = if (playType == PlayType.X12) {
+        odd_1x2_top_text.visibility = if (playCate == PlayCate.SINGLE) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        odd_1x2_bottom_text.visibility = if (playType == PlayType.X12) {
+        odd_1x2_bottom_text.visibility = if (playCate == PlayCate.SINGLE) {
             View.VISIBLE
         } else {
             View.GONE
         }
 
-        odd_outright_text.visibility = if (playType == PlayType.OUTRIGHT) {
+        odd_outright_text.visibility = if (playCate == PlayCate.OUTRIGHT) {
             View.VISIBLE
         } else {
             View.GONE
@@ -142,8 +142,8 @@ class OddButton @JvmOverloads constructor(
 
     private fun setupBetStatus(betStatus: Int) {
         visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
-            when (playType) {
-                PlayType.X12 -> View.GONE
+            when (playCate) {
+                PlayCate.SINGLE -> View.GONE
                 else -> View.INVISIBLE
             }
         } else {
