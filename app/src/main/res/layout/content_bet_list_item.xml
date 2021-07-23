@@ -104,6 +104,7 @@
                     android:layout_marginBottom="9dp"
                     android:textColor="@color/colorRedDark"
                     android:visibility="gone"
+                    tools:visibility="visible"
                     tools:text="投注额大于下注限额" />
 
             </LinearLayout>

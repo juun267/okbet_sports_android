@@ -88,6 +88,7 @@
                     android:textSize="@dimen/textSize13sp" />
 
                 <TextView
+                    android:id="@+id/tv_single_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlackLight"
@@ -97,6 +98,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_winnable"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
@@ -113,6 +115,7 @@
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
+                    android:id="@+id/tv_winnable_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlue"

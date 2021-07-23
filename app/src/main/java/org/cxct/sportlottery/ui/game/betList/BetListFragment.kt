@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.BetStatus
@@ -129,6 +130,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     keyboard?.showKeyboard(editText)
                 }
 
+                override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
+                    keyboard?.showKeyboard(editText)
+                }
+
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
                     viewModel.saveOddsHasChanged(matchOdd)
                 }
@@ -143,9 +148,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
         val list = newBetList ?: betListDiffAdapter?.let { getCurrentBetList(it) }
-        val totalBetAmount = list?.sumByDouble { it.betAmount }
-        val betCount = list?.count { it.betAmount > 0 }
-        val winnableAmount = list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) }
+        val parlayList = betListDiffAdapter?.let { getCurrentParlayList(it) }
+        val totalBetAmount = (list?.sumByDouble { it.betAmount } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount } ?: 0.0)
+        val betCount = (list?.count { it.betAmount > 0 } ?: 0) + (parlayList?.filter { it.betAmount > 0 }?.sumBy { it.num } ?: 0)
+        val winnableAmount = (list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * getOdds(it, oddsType) } ?: 0.0)
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -271,10 +277,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun getCurrentBetList(betListDiffAdapter: BetListDiffAdapter): MutableList<BetInfoListData> {
         betListDiffAdapter.apply {
-            return if (currentList.size >= 1 && currentList[0].oddsId != null) {
-                currentList.map { itemData -> (itemData as DataItem.BetInfoData).betInfoListData }.toMutableList()
-            } else mutableListOf()
+            /*return if (betList.size >= 1 && betList[0].matchOdd.oddsId != null) {
+                betList.map { itemData -> (itemData as DataItem.BetInfoData).betInfoListData }.toMutableList()
+            } else mutableListOf()*/
+            return betList
         }
+    }
+
+    private fun getCurrentParlayList(betListDiffAdapter: BetListDiffAdapter): MutableList<ParlayOdd> {
+        return betListDiffAdapter.parlayList
     }
 
     private fun queryData() {

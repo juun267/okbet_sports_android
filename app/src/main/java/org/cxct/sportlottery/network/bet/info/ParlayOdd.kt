@@ -20,4 +20,7 @@ data class ParlayOdd(
     val parlayType: String
 ) {
     var sendOutStatus: Boolean = true
+    var input: String? = null
+    var betAmount: Double = 0.0
+    var allSingleInput: String? = null //僅給投注單填充所有單注使用
 }
