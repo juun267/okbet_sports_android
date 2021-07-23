@@ -220,7 +220,7 @@ class BetInfoRepository {
         sportType: SportType,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.detail.Odd
+        odd: Odd
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 

@@ -939,7 +939,7 @@ class GameViewModel(
         matchOdd.odds?.forEach { map ->
             val key = map.key
             val value = map.value
-            val filteredOddList = mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
+            val filteredOddList = mutableListOf<Odd?>()
             value.odds?.forEach { odd ->
                 filteredOddList.add(odd)
             }
@@ -1026,7 +1026,7 @@ class GameViewModel(
         sportType: SportType,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.detail.Odd
+        odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
@@ -1051,7 +1051,7 @@ class GameViewModel(
         updatedOddsDetail: ArrayList<OddsDetailListData>
     ) {
         val oldOddList = oddsDetail.oddArrayList
-        var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
+        var newOddList = listOf<Odd?>()
 
         for (item in updatedOddsDetail) {
             if (item.gameType == oddsDetail.gameType) {
@@ -1112,13 +1112,13 @@ class GameViewModel(
                 result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                     betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
                         value.odds.forEach { odd ->
-                            odd?.isSelect = list.any {
+                            odd?.isSelected = list.any {
                                 it.matchOdd.oddsId == odd?.id
                             }
                         }
                     }
                     val filteredOddList =
-                        mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
+                        mutableListOf<Odd?>()
                     value.odds.forEach { detailOdd ->
                         //因排版問題 null也需要添加
                         filteredOddList.add(detailOdd)

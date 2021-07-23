@@ -23,7 +23,7 @@ import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel

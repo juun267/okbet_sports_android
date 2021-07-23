@@ -102,7 +102,7 @@ object MatchOddUtil {
         gameType: String,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.detail.Odd
+        odd: Odd
     ): org.cxct.sportlottery.network.bet.info.MatchOdd? {
 
         odd.id?.let { oddsId ->
