@@ -42,6 +42,7 @@ enum class PlayCate(val value: String) {
     SINGLE_2ST("1X2-2ST"),//独赢-下半場
     SINGLE_OT("1X2-INCL-OT"),//独赢(含加时)
     SINGLE_SEG("1X2-SEG"),//独赢-第X节
+    SINGLE_SEG1("1X2-SEG1"),
 
     //single two item
     SINGLE_2("1X2"),
@@ -64,7 +65,6 @@ enum class PlayCate(val value: String) {
     OUTRIGHT("OUTRIGHT"),
     HDP_INCL_OT("HDP-INCL-OT"),
     HDP_SEG1("HDP-SEG1"),
-    X12_SEG1("1X2-SEG1"),
     TG_OU_H_INCL_OT("TG&O/U-H-INCL-OT"),
     TG_OU_C_INCL_OT("TG&O/U-C-INCL-OT"),
     HDP_1ST("HDP-1ST"),

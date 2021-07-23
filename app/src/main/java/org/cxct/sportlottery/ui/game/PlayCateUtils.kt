@@ -25,7 +25,7 @@ object PlayCateUtils {
 
     fun getPlayCateSetCount(playCateCode: String, sportTypeCode: String) =
         when (playCateCode) {
-            PlayCate.SINGLE.value, PlayCate.X12_SEG1.value, PlayCate.SINGLE_1ST.value -> {
+            PlayCate.SINGLE.value, PlayCate.SINGLE_SEG1.value, PlayCate.SINGLE_1ST.value -> {
                 when (sportTypeCode) {
                     SportType.FOOTBALL.code, SportType.BASKETBALL.code -> 3
                     SportType.TENNIS.code, SportType.VOLLEYBALL.code -> 2
@@ -52,7 +52,7 @@ object PlayCateUtils {
         PlayCate.SINGLE_1ST.value -> {
             R.string.game_play_type_1x2_1st
         }
-        PlayCate.X12_SEG1.value -> {
+        PlayCate.SINGLE_SEG1.value -> {
             R.string.game_play_type_1x2_seg1
         }
         PlayCate.HDP.value -> {
