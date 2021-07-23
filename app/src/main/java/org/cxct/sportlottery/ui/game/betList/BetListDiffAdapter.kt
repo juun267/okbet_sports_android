@@ -508,14 +508,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                                 }
                             }
 
-                            if (TextUtils.isEmpty(it)) {
-                                itemData?.input = ""
-                            } else {
-                                itemData?.input = it.toString()
-                            }
-
                             //單注填充所有單注選項, 刷新單注選項資料
-                            notifyItemRangeChanged(0, betList.size)
+                            Handler().post { notifyItemRangeChanged(0, betList.size) }
                         }
 
                         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -539,6 +533,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                         }
                         false
                     }
+
+                    setText(itemData?.allSingleInput)
                 }
             }
         }
@@ -596,12 +592,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                                     }
                                 }
 
-                                if (TextUtils.isEmpty(it)) {
-                                    data.input = ""
-                                } else {
-                                    data.input = it.toString()
-                                }
-
                                 checkInput(binding, it.toString(), data)
                                 data.betAmount = inputValue
                             }
@@ -627,6 +617,10 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             }
                             false
                         }
+
+                        setText(data.betAmount.let {
+                            if (it > 0) it.toString() else ""
+                        })
                     }
 
                     checkInput(binding, etBet.text.toString(), data)
