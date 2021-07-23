@@ -3,7 +3,7 @@ package org.cxct.sportlottery.ui.game
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 
 object PlayCateUtils {
 

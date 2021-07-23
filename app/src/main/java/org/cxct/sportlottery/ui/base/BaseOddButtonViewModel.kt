@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
@@ -14,8 +16,6 @@ import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddError
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -72,7 +72,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun updateMatchOddForParlay(matchOdd: MatchOddsChangeEvent) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> =
+        val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> =
             mutableListOf()
         for ((_, value) in matchOdd.odds ?: mapOf()) {
             value.odds?.forEach { odd ->
@@ -88,11 +88,11 @@ abstract class BaseOddButtonViewModel(
         betAddErrorDataList: List<BetAddErrorData>,
         betAddError: BetAddError
     ) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+        val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> = mutableListOf()
         betAddErrorDataList.forEach { betAddErrorData ->
             betAddErrorData.let { data ->
                 data.status?.let { status ->
-                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                    val newOdd = org.cxct.sportlottery.network.odds.Odd(
                         null,
                         data.id,
                         null,
@@ -115,14 +115,14 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun updateMatchOdd(changeEvent: Any) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+        val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> = mutableListOf()
         when (changeEvent) {
             is OddsChangeEvent -> {
                 changeEvent.odds?.forEach { map ->
                     val value = map.value
                     value.forEach { odd ->
                         odd?.let {
-                            val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                            val newOdd = org.cxct.sportlottery.network.odds.Odd(
                                 null,
                                 odd.id,
                                 null,
@@ -156,11 +156,11 @@ abstract class BaseOddButtonViewModel(
     }
 
     fun updateMatchOdd(betAddErrorDataList: List<BetAddErrorData>, betAddError: BetAddError) {
-        val newList: MutableList<org.cxct.sportlottery.network.odds.detail.Odd> = mutableListOf()
+        val newList: MutableList<org.cxct.sportlottery.network.odds.Odd> = mutableListOf()
         betAddErrorDataList.forEach { betAddErrorData ->
             betAddErrorData.let { data ->
                 data.status?.let { status ->
-                    val newOdd = org.cxct.sportlottery.network.odds.detail.Odd(
+                    val newOdd = org.cxct.sportlottery.network.odds.Odd(
                         null,
                         data.id,
                         null,
@@ -256,7 +256,7 @@ abstract class BaseOddButtonViewModel(
 
     protected fun getOddState(
         oldItemOdds: Double,
-        newOdd: org.cxct.sportlottery.network.odds.detail.Odd
+        newOdd: org.cxct.sportlottery.network.odds.Odd
     ): Int {
         val odds = when (loginRepository.mOddsType.value) {
             OddsType.EU -> newOdd.odds
@@ -279,7 +279,7 @@ abstract class BaseOddButtonViewModel(
         }
 
 
-    private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.detail.Odd>) {
+    private fun updateBetInfoListByMatchOddChange(newListFromSocket: List<org.cxct.sportlottery.network.odds.Odd>) {
         betInfoRepository.matchOddList.value?.forEach {
             updateItem(it, newListFromSocket)
         }
@@ -288,7 +288,7 @@ abstract class BaseOddButtonViewModel(
 
     private fun updateItem(
         oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
-        newList: List<org.cxct.sportlottery.network.odds.detail.Odd>
+        newList: List<org.cxct.sportlottery.network.odds.Odd>
     ) {
         for (newItem in newList) {
             try {
@@ -312,7 +312,7 @@ abstract class BaseOddButtonViewModel(
                         }
 
                         //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
-                        if (oldItem.oddState != org.cxct.sportlottery.network.bet.info.MatchOdd.OddState.SAME.state &&
+                        if (oldItem.oddState != OddState.SAME.state &&
                             oldItem.status == BetStatus.ACTIVATED.code
                         ) {
                             oldItem.betAddError = null
@@ -328,7 +328,7 @@ abstract class BaseOddButtonViewModel(
 
     private fun updateItemForBetAddError(
         oldItem: org.cxct.sportlottery.network.bet.info.MatchOdd,
-        newList: List<org.cxct.sportlottery.network.odds.detail.Odd>,
+        newList: List<org.cxct.sportlottery.network.odds.Odd>,
         betAddError: BetAddError
     ) {
         for (newItem in newList) {

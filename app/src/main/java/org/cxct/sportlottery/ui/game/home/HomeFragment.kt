@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.itemview_match_category_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentHomeBinding
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -20,10 +22,8 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent

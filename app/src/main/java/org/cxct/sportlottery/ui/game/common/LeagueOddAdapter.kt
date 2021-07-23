@@ -12,12 +12,12 @@ import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*

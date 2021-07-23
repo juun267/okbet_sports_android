@@ -7,8 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 
 
 class OddButtonV4 @JvmOverloads constructor(

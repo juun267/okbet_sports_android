@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
@@ -83,7 +83,7 @@ class VpRecommendAdapter(
                     }
                     if (spanCount > 2 && data.oddList.size > 2) {
                         odd_btn_draw.visibility = View.VISIBLE
-                        setupOddButton(odd_btn_draw, data.oddList[1])
+                        setupOddButton(odd_btn_draw, data.oddList[2])
                     } else {
                         odd_btn_draw.visibility = View.GONE
                     }

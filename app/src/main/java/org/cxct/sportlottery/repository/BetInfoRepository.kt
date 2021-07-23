@@ -3,13 +3,14 @@ package org.cxct.sportlottery.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil
@@ -145,7 +146,7 @@ class BetInfoRepository {
         playCateName: String,
         playName: String,
         matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
@@ -179,7 +180,7 @@ class BetInfoRepository {
         playCateName: String?,
         playName: String?,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        odd: Odd
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
@@ -212,7 +213,7 @@ class BetInfoRepository {
         gameType: GameType,
         playCateName: String,
         matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.detail.Odd
+        odd: Odd
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 

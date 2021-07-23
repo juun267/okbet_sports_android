@@ -6,12 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCOCompare
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
