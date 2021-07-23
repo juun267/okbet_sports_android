@@ -91,7 +91,7 @@
 
             <argument
                 android:name="leagueId"
-                app:argType="string" />
+                app:argType="string[]" />
         </action>
 
         <action
@@ -160,7 +160,7 @@
 
         <argument
             android:name="leagueId"
-            app:argType="string" />
+            app:argType="string[]" />
 
         <action
             android:id="@+id/action_gameLeagueFragment_to_oddsDetailFragment"

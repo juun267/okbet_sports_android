@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.game.PlayTypeUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
@@ -88,7 +89,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
                 { league ->
-                    navGameLeague(league.id)
+                    navGameLeague(listOf(league.id))
                 },
                 { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
@@ -537,6 +538,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             countryAdapter.datePin = leaguePinList
         })
+
+        viewModel.leagueSubmitList.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { leagueList ->
+                navGameLeague(leagueList.map { league ->
+                    league.id
+                })
+            }
+        })
     }
 
     private fun initSocketReceiver() {
@@ -627,7 +636,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             }
 
                             if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                updateMatchOdd?.odds = oddTypeSocketMap.toMutableMap()
+                                updateMatchOdd?.odds = PlayTypeUtils.filterOdds(
+                                    oddTypeSocketMap.toMutableMap(),
+                                    updateMatchOdd?.matchInfo?.sportType?.code ?: ""
+                                )
 
                             } else {
                                 updateMatchOdd?.odds?.forEach { oddTypeMap ->
@@ -834,7 +846,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         startActivity(intent)
     }
 
-    private fun navGameLeague(matchId: String) {
+    private fun navGameLeague(matchId: List<String>) {
         val sportType =
             when (sportTypeAdapter.dataSport.find { item -> item.isSelected }?.code) {
                 SportType.FOOTBALL.code -> SportType.FOOTBALL
@@ -856,7 +868,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
                 matchType ?: args.matchType,
                 sportType,
-                matchId
+                matchId.toTypedArray()
             )
 
             findNavController().navigate(action)

@@ -12,9 +12,9 @@ import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.OUType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.ui.game.PlayTypeUtils
@@ -248,8 +248,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     this.odd_btn_type.text = playCateName
 
                     this.odd_btn_home.apply homeButtonSettings@{
-                        if (it.value.size < 2) {
-                            return@homeButtonSettings
+                        when {
+                            (it.value.size < 2) -> {
+                                betStatus = BetStatus.LOCKED.code
+                                return@homeButtonSettings
+                            }
+                            else -> {
+                                betStatus = it.value[0]?.status
+                            }
                         }
 
                         odd_type_text.apply {
@@ -292,6 +298,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             OddsType.HK -> it.value[0]?.hkOdds.toString()
                         }
 
+                        this@ViewHolderHdpOu.setupOddState(this, it.value[0])
+
                         isSelected = it.value[0]?.isSelected ?: false
 
                         setOnClickListener { _ ->
@@ -313,8 +321,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
 
                     this.odd_btn_away.apply awayButtonSettings@{
-                        if (it.value.size < 2) {
-                            return@awayButtonSettings
+                        when {
+                            (it.value.size < 2) -> {
+                                betStatus = BetStatus.LOCKED.code
+                                return@awayButtonSettings
+                            }
+                            else -> {
+                                betStatus = it.value[1]?.status
+                            }
                         }
 
                         odd_type_text.apply {
@@ -357,6 +371,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             OddsType.HK -> it.value[1]?.hkOdds.toString()
                         }
 
+                        this@ViewHolderHdpOu.setupOddState(this, it.value[1])
+
                         isSelected = it.value[1]?.isSelected ?: false
 
                         setOnClickListener { _ ->
@@ -378,11 +394,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
 
                     this.odd_btn_draw.apply drawButtonSettings@{
-                        if (it.value.size < 3) {
-                            visibility = View.GONE
-                            return@drawButtonSettings
-                        } else {
-                            visibility = View.VISIBLE
+                        when {
+                            (it.value.size < 3) -> {
+                                betStatus = BetStatus.DEACTIVATED.code
+                                return@drawButtonSettings
+                            }
+                            else -> {
+                                betStatus = it.value[2]?.status
+                            }
                         }
 
                         odd_type_text.apply {
@@ -398,6 +417,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             OddsType.EU -> it.value[2]?.odds.toString()
                             OddsType.HK -> it.value[2]?.hkOdds.toString()
                         }
+
+                        this@ViewHolderHdpOu.setupOddState(this, it.value[2])
 
                         isSelected = it.value[2]?.isSelected ?: false
 

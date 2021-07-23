@@ -3,8 +3,21 @@ package org.cxct.sportlottery.ui.game
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.odds.list.Odd
 
 object PlayTypeUtils {
+
+    fun filterOdds(
+        odds: Map<String, List<Odd?>>,
+        sportCode: String
+    ): MutableMap<String, MutableList<Odd?>> {
+        return odds.mapValues {
+            it.value.filterIndexed { index, _ ->
+                index < getPlayTypeSetCount(it.key, sportCode)
+            }.toMutableList()
+
+        }.toMutableMap()
+    }
 
     fun getPlayTypeSetCount(playType: PlayType, sportType: SportType) {
         getPlayTypeSetCount(playType.code, sportType.code)

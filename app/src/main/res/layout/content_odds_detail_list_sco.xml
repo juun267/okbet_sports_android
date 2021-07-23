@@ -13,39 +13,43 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_tab"
         android:layout_width="match_parent"
-        android:layout_height="48dp">
+        android:layout_height="65dp">
 
         <TextView
             android:id="@+id/tv_home_name"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:gravity="center"
             android:textColor="@color/color_select_blue_black"
             android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toStartOf="@+id/tv_away_name"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="瑞士"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="瑞士" />
 
         <TextView
             android:id="@+id/tv_away_name"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:gravity="center"
             android:textColor="@color/color_select_blue_black"
             android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tv_home_name"
-            tools:text="西班牙"/>
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="西班牙" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorSilverLight"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorSilverLight" />
 
 
     <androidx.recyclerview.widget.RecyclerView

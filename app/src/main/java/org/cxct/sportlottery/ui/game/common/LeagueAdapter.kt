@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.common
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
@@ -10,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 
 class LeagueAdapter(private val matchType: MatchType) :
@@ -57,6 +59,15 @@ class LeagueAdapter(private val matchType: MatchType) :
                     this.itemView.league_odd_list.apply {
                         this.layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+                        addItemDecoration(
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_gray
+                                )
+                            )
+                        )
                     }
                 }
             }
