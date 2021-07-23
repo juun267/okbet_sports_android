@@ -116,6 +116,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
+        initSubmitBtn()
         initBottomNavigation()
         initRvMarquee()
         initTabLayout()
@@ -231,6 +232,12 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)
+    }
+
+    private fun initSubmitBtn() {
+        game_submit.setOnClickListener {
+            viewModel.submitLeague()
+        }
     }
 
     private fun initBottomNavigation() {

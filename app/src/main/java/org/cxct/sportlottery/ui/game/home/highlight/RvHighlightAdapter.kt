@@ -21,7 +21,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.home.gameTable4.OnClickOddListener
+import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -48,7 +48,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")
             }
-            val odds = it.odds ?: mutableMapOf()
+            val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
+            it.odds?.forEach { odd ->
+                odds[odd.key] = odd.value.toMutableList()
+            }
             MatchOdd(matchInfo, odds)
         } ?: listOf()
 
@@ -65,6 +68,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
+    //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY，是的話可以再簡化判斷邏輯
     private val matchType: MatchType = MatchType.TODAY
 
     var onClickOddListener: OnClickOddListener? = null

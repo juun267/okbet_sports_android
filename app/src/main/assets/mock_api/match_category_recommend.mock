@@ -1,0 +1,472 @@
+{
+  "success": true,
+  "msg": "ok",
+  "code": 0,
+  "rows": [
+    {
+      "sport": {
+        "code": "FT",
+        "name": "足球"
+      },
+      "leagueOdds": {
+        "league": {
+          "id": "27111",
+          "name": "中国 中国超级联赛",
+          "category": null
+        },
+        "matchOdds": [
+          {
+            "matchInfo": {
+              "id": "5090372",
+              "leagueId": "27111",
+              "leagueName": null,
+              "homeName": "河南嵩山龙门",
+              "awayName": "广州",
+              "startTime": 1626348600000,
+              "endTime": null,
+              "status": 0,
+              "playCateNum": 66,
+              "name": null,
+              "img": "https://sb-doc-cdn.zhen64.com/ContentCDN/Football/Participant/Guangzhou_153549/Away01.jpg?v=1422",
+              "msg": null
+            },
+            "dynamicMarkets": {},
+            "odds": {
+              "BTS": [
+                {
+                  "id": "6489563741",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 2.34,
+                  "hkOdds": 1.34,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563742",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 1.58,
+                  "hkOdds": 0.58,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "O/U": [
+                {
+                  "id": "6489563498",
+                  "name": null,
+                  "spread": "2.5",
+                  "extInfo": "",
+                  "odds": 1.93,
+                  "hkOdds": 0.93,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563499",
+                  "name": null,
+                  "spread": "2.5",
+                  "extInfo": "",
+                  "odds": 1.89,
+                  "hkOdds": 0.89,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563502",
+                  "name": null,
+                  "spread": "2.5/3",
+                  "extInfo": "",
+                  "odds": 2.16,
+                  "hkOdds": 1.16,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563503",
+                  "name": null,
+                  "spread": "2.5/3",
+                  "extInfo": "",
+                  "odds": 1.68,
+                  "hkOdds": 0.68,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563500",
+                  "name": null,
+                  "spread": "2/2.5",
+                  "extInfo": "",
+                  "odds": 1.69,
+                  "hkOdds": 0.69,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563501",
+                  "name": null,
+                  "spread": "2/2.5",
+                  "extInfo": "",
+                  "odds": 2.14,
+                  "hkOdds": 1.14,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563505",
+                  "name": null,
+                  "spread": "3",
+                  "extInfo": "",
+                  "odds": 2.51,
+                  "hkOdds": 1.51,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563506",
+                  "name": null,
+                  "spread": "3",
+                  "extInfo": "",
+                  "odds": 1.48,
+                  "hkOdds": 0.48,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "HDP": [
+                {
+                  "id": "6489563507",
+                  "name": null,
+                  "spread": "+1/1.5",
+                  "extInfo": "",
+                  "odds": 1.97,
+                  "hkOdds": 0.97,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563508",
+                  "name": null,
+                  "spread": "-1/1.5",
+                  "extInfo": "",
+                  "odds": 1.87,
+                  "hkOdds": 0.87,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563509",
+                  "name": null,
+                  "spread": "+1.5",
+                  "extInfo": "",
+                  "odds": 1.71,
+                  "hkOdds": 0.71,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563510",
+                  "name": null,
+                  "spread": "-1.5",
+                  "extInfo": "",
+                  "odds": 2.14,
+                  "hkOdds": 1.14,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563511",
+                  "name": null,
+                  "spread": "+1",
+                  "extInfo": "",
+                  "odds": 2.31,
+                  "hkOdds": 1.31,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563512",
+                  "name": null,
+                  "spread": "-1",
+                  "extInfo": "",
+                  "odds": 1.6,
+                  "hkOdds": 0.6,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563513",
+                  "name": null,
+                  "spread": "+1.5/2",
+                  "extInfo": "",
+                  "odds": 1.55,
+                  "hkOdds": 0.55,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563514",
+                  "name": null,
+                  "spread": "-1.5/2",
+                  "extInfo": "",
+                  "odds": 2.4,
+                  "hkOdds": 1.4,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "EPS": [
+                {
+                  "id": "6493654460",
+                  "name": null,
+                  "spread": "Guangzhou to Draw at Half Time but Win at Full Time\t",
+                  "extInfo": "4.05",
+                  "odds": 4.45,
+                  "hkOdds": 3.45,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "1X2": [
+                {
+                  "id": "6489563455",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 7.3,
+                  "hkOdds": 6.3,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563457",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 4.4,
+                  "hkOdds": 3.4,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6489563456",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 1.33,
+                  "hkOdds": 0.33,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ]
+            },
+            "oddsList": null,
+            "quickPlayCateList": null
+          }
+        ]
+      },
+      "isOutright": 0
+    },
+    {
+      "sport": {
+        "code": "FT",
+        "name": "足球"
+      },
+      "leagueOdds": {
+        "league": {
+          "id": "26649",
+          "name": "南美洲 南美洲球会杯",
+          "category": null
+        },
+        "matchOdds": [
+          {
+            "matchInfo": {
+              "id": "5071806",
+              "leagueId": "26649",
+              "leagueName": null,
+              "homeName": "山度士SP",
+              "awayName": "独立队",
+              "startTime": 1626387300000,
+              "endTime": null,
+              "status": 0,
+              "playCateNum": 66,
+              "name": null,
+              "img": "https://sb-doc-cdn.zhen64.com/ContentCDN/Football/Participant/Santos SP_165467/Home01.jpg?v=1422",
+              "msg": null
+            },
+            "dynamicMarkets": {},
+            "odds": {
+              "BTS": [
+                {
+                  "id": "6455287733",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 2.23,
+                  "hkOdds": 1.23,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287734",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 1.63,
+                  "hkOdds": 0.63,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "O/U": [
+                {
+                  "id": "6455287372",
+                  "name": null,
+                  "spread": "2",
+                  "extInfo": "",
+                  "odds": 1.9,
+                  "hkOdds": 0.9,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287373",
+                  "name": null,
+                  "spread": "2",
+                  "extInfo": "",
+                  "odds": 1.98,
+                  "hkOdds": 0.98,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287374",
+                  "name": null,
+                  "spread": "2/2.5",
+                  "extInfo": "",
+                  "odds": 2.23,
+                  "hkOdds": 1.23,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287375",
+                  "name": null,
+                  "spread": "2/2.5",
+                  "extInfo": "",
+                  "odds": 1.69,
+                  "hkOdds": 0.69,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "HDP": [
+                {
+                  "id": "6455287382",
+                  "name": null,
+                  "spread": "-0.5",
+                  "extInfo": "",
+                  "odds": 2.08,
+                  "hkOdds": 1.08,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287383",
+                  "name": null,
+                  "spread": "+0.5",
+                  "extInfo": "",
+                  "odds": 1.82,
+                  "hkOdds": 0.82,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287384",
+                  "name": null,
+                  "spread": "-0/0.5",
+                  "extInfo": "",
+                  "odds": 1.8,
+                  "hkOdds": 0.8,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287385",
+                  "name": null,
+                  "spread": "+0/0.5",
+                  "extInfo": "",
+                  "odds": 2.11,
+                  "hkOdds": 1.11,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "CORNER-O/U": [
+                {
+                  "id": "6483833826",
+                  "name": null,
+                  "spread": "9.5",
+                  "extInfo": "",
+                  "odds": 2.01,
+                  "hkOdds": 1.01,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6483833827",
+                  "name": null,
+                  "spread": "9.5",
+                  "extInfo": "",
+                  "odds": 1.81,
+                  "hkOdds": 0.81,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ],
+              "1X2": [
+                {
+                  "id": "6455287348",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 2.07,
+                  "hkOdds": 1.07,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287350",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 3.05,
+                  "hkOdds": 2.05,
+                  "status": 0,
+                  "producerId": 0
+                },
+                {
+                  "id": "6455287349",
+                  "name": null,
+                  "spread": "",
+                  "extInfo": "",
+                  "odds": 3.45,
+                  "hkOdds": 2.45,
+                  "status": 0,
+                  "producerId": 0
+                }
+              ]
+            },
+            "oddsList": null,
+            "quickPlayCateList": null
+          }
+        ]
+      },
+      "isOutright": 0
+    }
+  ],
+  "total": 2
+}

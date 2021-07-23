@@ -17,7 +17,9 @@ import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
+import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -33,7 +35,6 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SaveMyFavoriteRequest
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
@@ -139,6 +140,9 @@ class GameViewModel(
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
+    val leagueSubmitList: LiveData<Event<List<League>>>
+        get() = _leagueSubmitList
+
     val playList: LiveData<List<Play>>
         get() = _playList
 
@@ -165,6 +169,7 @@ class GameViewModel(
     private val _outrightCountryListSearchResult =
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
+    private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
 
@@ -179,6 +184,10 @@ class GameViewModel(
     private val _highlightMenuResult = MutableLiveData<Event<MatchCategoryResult>>()
     val highlightMenuResult: LiveData<Event<MatchCategoryResult>>
         get() = _highlightMenuResult
+
+    private val _recommendMatchResult = MutableLiveData<Event<MatchRecommendResult>>()
+    val recommendMatchResult: LiveData<Event<MatchRecommendResult>>
+        get() = _recommendMatchResult
 
     private val _highlightMatchResult = MutableLiveData<Event<MatchCategoryResult>>()
     val highlightMatchResult: LiveData<Event<MatchCategoryResult>>
@@ -531,6 +540,30 @@ class GameViewModel(
         }
     }
 
+    fun getRecommendMatch() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.matchCategoryService.getRecommendMatch(MatchRecommendRequest())
+            }?.let { result ->
+                //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
+                result.rows?.forEach { row ->
+                    row.leagueOdds?.matchOdds?.forEach { oddData ->
+                        oddData.odds?.forEach { map ->
+                            map.value.forEach { odd ->
+                                odd?.isSelected =
+                                    betInfoRepository.betInfoList.value?.peekContent()?.any {
+                                        it.matchOdd.oddsId == odd?.id
+                                    }
+                            }
+                        }
+                    }
+                }
+
+                _recommendMatchResult.postValue(Event(result))
+            }
+        }
+    }
+
     //遊戲大廳首頁: 精選賽事資料
     fun getHighlightMatch(gameType: String) {
         viewModelScope.launch {
@@ -644,26 +677,27 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun switchPlay(matchType: MatchType, leagueId: String, play: Play) {
+    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, play: Play) {
         updatePlaySelectedState(play)
 
-        getLeagueOddsList(matchType, leagueId)
+        getLeagueOddsList(matchType, leagueIdList)
     }
 
-    fun switchPlayCategory(matchType: MatchType, leagueId: String, playCateCode: String?) {
+    fun switchPlayCategory(
+        matchType: MatchType,
+        leagueIdList: List<String>,
+        playCateCode: String?
+    ) {
         _playCate.value = playCateCode
 
-        getLeagueOddsList(matchType, leagueId)
+        getLeagueOddsList(matchType, leagueIdList)
     }
 
     fun getLeagueOddsList(
         matchType: MatchType,
-        leagueId: String,
+        leagueIdList: List<String>,
         isReloadPlayCate: Boolean = false
     ) {
-        val leagueIdList by lazy {
-            listOf(leagueId)
-        }
 
         if (isReloadPlayCate) {
             getPlayCategory(matchType)
@@ -932,6 +966,14 @@ class GameViewModel(
         }
 
         _leagueSelectedList.postValue(list)
+    }
+
+    fun submitLeague() {
+        _leagueSelectedList.value?.let {
+            _leagueSubmitList.postValue(Event(it))
+        }
+
+        _leagueSelectedList.postValue(mutableListOf())
     }
 
     fun updateOddForOddsDetail(matchOdd: MatchOddsChangeEvent) {

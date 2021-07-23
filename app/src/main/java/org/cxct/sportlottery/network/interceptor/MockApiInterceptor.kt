@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_DETAIL
@@ -50,9 +51,9 @@ import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
-import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
+import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
@@ -68,7 +69,6 @@ import org.cxct.sportlottery.network.Constants.WITHDRAW_LIST
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
 import timber.log.Timber
 import java.io.IOException
-import kotlin.jvm.Throws
 
 class MockApiInterceptor(private val context: Context) : Interceptor {
 
@@ -248,6 +248,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(PLAYQUOTACOM_LIST) -> {
                     response = getMockJsonData(request, "playquotacom_list.mock")
+                }
+                path.contains(MATCH_CATEGORY_RECOMMEND) -> {
+                    response = getMockJsonData(request, "match_category_recommend.mock")
                 }
                 path.contains(MATCH_CATEGORY_SPECIAL_MATCH) -> {
                     response = getMockJsonData(request, "match_category_special_match.mock")
