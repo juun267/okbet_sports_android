@@ -17,7 +17,9 @@ import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.network.match.MatchPreloadRequest
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
+import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -32,7 +34,6 @@ import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEve
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SaveMyFavoriteRequest
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
@@ -182,6 +183,10 @@ class GameViewModel(
     private val _highlightMenuResult = MutableLiveData<Event<MatchCategoryResult>>()
     val highlightMenuResult: LiveData<Event<MatchCategoryResult>>
         get() = _highlightMenuResult
+
+    private val _recommendMatchResult = MutableLiveData<Event<MatchRecommendResult>>()
+    val recommendMatchResult: LiveData<Event<MatchRecommendResult>>
+        get() = _recommendMatchResult
 
     private val _highlightMatchResult = MutableLiveData<Event<MatchCategoryResult>>()
     val highlightMatchResult: LiveData<Event<MatchCategoryResult>>
@@ -530,6 +535,30 @@ class GameViewModel(
                 )
             }?.let { result ->
                 _highlightMenuResult.postValue(Event(result))
+            }
+        }
+    }
+
+    fun getRecommendMatch() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                OneBoSportApi.matchCategoryService.getRecommendMatch(MatchRecommendRequest())
+            }?.let { result ->
+                //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
+                result.rows?.forEach { row ->
+                    row.leagueOdds?.matchOdds?.forEach { oddData ->
+                        oddData.odds?.forEach { map ->
+                            map.value.forEach { odd ->
+                                odd?.isSelected =
+                                    betInfoRepository.betInfoList.value?.peekContent()?.any {
+                                        it.matchOdd.oddsId == odd?.id
+                                    }
+                            }
+                        }
+                    }
+                }
+
+                _recommendMatchResult.postValue(Event(result))
             }
         }
     }
