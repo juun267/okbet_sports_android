@@ -773,6 +773,10 @@ class GameViewModel(
                 updateGameHallList?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+
+                            quickPlayCate.isSelected =
+                                (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
+
                             quickPlayCate.quickOdds = it.quickOdds?.get(quickPlayCate.code)
                         }
                     }
