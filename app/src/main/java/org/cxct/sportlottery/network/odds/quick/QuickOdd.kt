@@ -7,7 +7,7 @@ data class QuickOdd(
     @Json(name = "name")
     val name: String?,
     @Json(name = "odds")
-    val odds: List<Odd>?,
+    var odds: List<Odd>?,
     @Json(name = "rowSort")
     val rowSort: Int?,
     @Json(name = "typeCodes")

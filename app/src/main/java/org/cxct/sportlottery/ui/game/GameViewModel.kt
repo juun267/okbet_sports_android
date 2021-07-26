@@ -777,7 +777,10 @@ class GameViewModel(
                             quickPlayCate.isSelected =
                                 (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
-                            quickPlayCate.quickOdds = it.quickOdds?.get(quickPlayCate.code)
+                            quickPlayCate.quickOdds = PlayTypeUtils.filterQuickOdds(
+                                it.quickOdds?.get(quickPlayCate.code),
+                                quickPlayCate.gameType ?: ""
+                            )
                         }
                     }
                 }
