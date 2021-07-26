@@ -1,12 +1,13 @@
 package org.cxct.sportlottery.ui.game.outright
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd.view.*
-import kotlinx.android.synthetic.main.itemview_outright_odd_subtitlev3.view.*
-import kotlinx.android.synthetic.main.itemview_outright_oddv3.view.*
+import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
+import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.Odd
@@ -107,9 +108,12 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             outrightOddListener: OutrightOddListener?,
             oddsType: OddsType
         ) {
-            itemView.outright_odd_name.text = item.spread
-
             itemView.outright_odd_btn.apply {
+
+                odd_outright_name_text.apply {
+                    visibility = View.VISIBLE
+                    text = item.spread
+                }
 
                 onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                     override fun onOddStateChangedFinish() {
@@ -150,7 +154,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): OddViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_oddv3, parent, false)
+                    .inflate(R.layout.itemview_outright_odd_v4, parent, false)
 
                 return OddViewHolder(view, refreshListener)
             }
@@ -174,13 +178,14 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             }
+            itemView.outright_odd_instruction.text = "1/3, 顶级 2" //TODO Cheryl: 等後端api的新數值再做更改
         }
 
         companion object {
             fun from(parent: ViewGroup): SubTitleViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd_subtitlev3, parent, false)
+                    .inflate(R.layout.itemview_outright_odd_subtitle_v4, parent, false)
 
                 return SubTitleViewHolder(view)
             }

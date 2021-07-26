@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
+import kotlinx.android.synthetic.main.row_game_filter_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.GameConfigManager
 
 
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -65,14 +66,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
             adapter = outrightOddAdapter
 
-            addItemDecoration(
-                OutrightOddDividerDecoration(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.divider_gray
-                    )
-                )
-            )
         }
     }
 
@@ -100,13 +93,16 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
-                    val matchOdd =
-                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(
-                            0
-                        )
+
+                    val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
                     outright_filter_row.sportName =
                         outrightOddsListResult.outrightOddsListData?.sport?.name ?: ""
+
+
+                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)?.let { gameImg ->
+                        game_filter_back_img.setBackgroundResource(gameImg)
+                    }
 
                     outright_league_name.text =
                         outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
@@ -124,6 +120,12 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                         args.eventId
                     )
                 }
+            }
+        })
+
+        viewModel.curMatchType.observe(viewLifecycleOwner, {
+            it?.name.apply {
+                game_filter_game_type.text = this
             }
         })
 

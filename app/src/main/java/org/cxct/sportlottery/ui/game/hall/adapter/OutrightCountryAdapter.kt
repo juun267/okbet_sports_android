@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +37,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            CountryAdapter.ItemType.ITEM.ordinal -> {
+            ItemType.ITEM.ordinal -> {
                 ItemViewHolder.from(parent).apply {
                     this.itemView.league_list.apply {
                         this.layoutManager =
@@ -63,7 +64,6 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ItemViewHolder -> {
                 val item = data[position]
-
                 holder.bind(item, outrightCountryLeagueListener)
             }
         }
@@ -93,7 +93,9 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             outrightCountryLeagueListener: OutrightCountryLeagueListener?
         ) {
             itemView.league_list.apply {
+
                 adapter = countryLeagueAdapter.apply {
+
                     this.outrightCountryLeagueListener = outrightCountryLeagueListener
 
                     data = if (item.searchList.isNotEmpty()) {
@@ -101,24 +103,16 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     } else {
                         item.list
                     }
+
                 }
             }
         }
 
         private fun setupCountryExpand(item: Row) {
             itemView.country_league_expand.setExpanded(item.isExpand, false)
-            updateArrowExpand()
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)
-                updateArrowExpand()
-            }
-        }
-
-        private fun updateArrowExpand() {
-            when (itemView.country_league_expand.isExpanded) {
-                true -> itemView.country_arrow.setImageResource(R.drawable.ic_arrow_dark)
-                false -> itemView.country_arrow.setImageResource(R.drawable.ic_arrow_down_dark)
             }
         }
 
