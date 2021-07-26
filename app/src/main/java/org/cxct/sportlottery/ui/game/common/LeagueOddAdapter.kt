@@ -240,7 +240,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item.odds.forEach {
                 val view = LayoutInflater.from(itemView.context).inflate(
                     R.layout.view_odd_btn_column_v4,
-                    itemView.odd_button_test,
+                    itemView.odd_button_main,
                     false
                 ).apply {
 
@@ -448,7 +448,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize8sp)
                     }
 
-                    itemView.odd_button_test.addView(it, layoutParams)
+                    itemView.odd_button_main.addView(it, layoutParams)
                 }
             }
         }

@@ -261,7 +261,7 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_button_border">
 
         <LinearLayout
-            android:id="@+id/odd_button_test"
+            android:id="@+id/odd_button_main"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal" />
