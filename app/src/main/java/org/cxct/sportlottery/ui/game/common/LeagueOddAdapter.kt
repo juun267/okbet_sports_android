@@ -119,6 +119,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setupOddButton(item, leagueOddListener, oddsType)
 
             setupQuickCategory(item, leagueOddListener)
+
+            setupOddButtonOther(item)
         }
 
         private fun setupMatchInfo(
@@ -517,6 +519,54 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
 
                     leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
+                }
+            }
+        }
+
+        private fun setupOddButtonOther(item: MatchOdd) {
+            itemView.league_odd_quick_button_border.apply {
+                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+            }
+
+            itemView.odd_button_other.apply {
+                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+                item.quickPlayCateList?.find {
+                    it.isSelected
+                }?.quickOdds?.forEach { quickOdd ->
+                    val view = LayoutInflater.from(itemView.context).inflate(
+                        R.layout.view_odd_btn_column_v4,
+                        itemView.odd_button_main,
+                        false
+                    ).apply {
+                        val playCateName = PlayTypeUtils
+                            .getPlayTypeTitleResId(quickOdd.key, item.matchInfo?.sportType?.code)
+                            ?.let {
+                                itemView.context.getString(it)
+                            } ?: ""
+
+                        this.odd_btn_type.text = playCateName
+                    }
+
+                    view?.let {
+                        val layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            rightMargin =
+                                itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize8sp)
+                        }
+
+                        addView(it, layoutParams)
+                    }
                 }
             }
         }

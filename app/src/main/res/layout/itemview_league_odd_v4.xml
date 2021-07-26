@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:paddingEnd="0dp">
+    android:background="@android:color/white">
 
     <View
         android:id="@+id/league_odd_match_border"
@@ -56,6 +55,13 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border" />
+
+    <View
+        android:id="@+id/league_odd_quick_button_border"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:background="@color/colorWhite4"
+        app:layout_constraintTop_toBottomOf="@id/league_odd_quick_cate_border" />
 
     <TextView
         android:id="@+id/league_odd_match_status"
@@ -302,5 +308,25 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border"
         tools:ignore="contentDescription"
         tools:visibility="visible" />
+
+    <HorizontalScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:nestedScrollingEnabled="false"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_button_border"
+        app:layout_constraintEnd_toEndOf="@id/league_odd_button_border"
+        app:layout_constraintStart_toStartOf="@id/league_odd_button_border"
+        app:layout_constraintTop_toTopOf="@id/league_odd_quick_button_border">
+
+        <LinearLayout
+            android:id="@+id/odd_button_other"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
