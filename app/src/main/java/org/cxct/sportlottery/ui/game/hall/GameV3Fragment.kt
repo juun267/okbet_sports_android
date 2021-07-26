@@ -958,14 +958,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
         sportType?.let {
-            viewModel.updateMatchBetList(
-                args.matchType,
-                sportType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            matchOdd.matchInfo?.let { matchInfo ->
+                viewModel.updateMatchBetList(
+                    args.matchType,
+                    sportType,
+                    playCateName,
+                    playName,
+                    matchInfo,
+                    odd
+                )
+            }
         }
     }
 

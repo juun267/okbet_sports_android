@@ -278,11 +278,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         matchOdd: MatchOdd,
         odd: Odd
     ) {
-        viewModel.updateMatchBetList(
-            MatchType.OUTRIGHT,
-            args.sportType,
-            matchOdd,
-            odd
+        viewModel.updateMatchBetListForOutRight(
+            matchType = MatchType.OUTRIGHT,
+            sportType = args.sportType,
+            matchOdd = matchOdd,
+            odd = odd
         )
     }
 

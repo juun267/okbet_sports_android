@@ -276,7 +276,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 sportType,
                 playCateName,
                 playName,
-                matchOdd,
+                matchOdd.matchInfo,
                 odd
             )
         }

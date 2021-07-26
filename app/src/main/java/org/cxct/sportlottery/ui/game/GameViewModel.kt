@@ -21,8 +21,8 @@ import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
@@ -1009,14 +1009,14 @@ class GameViewModel(
         sportType: SportType,
         playCateName: String,
         playName: String,
-        matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
+        matchInfo: MatchInfo,
         odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            matchOdd.matchInfo?.let { matchInfo ->
+            matchInfo.let {
                 betInfoRepository.addInBetInfo(
                     matchType = matchType,
                     sportType = sportType,
@@ -1031,7 +1031,7 @@ class GameViewModel(
         }
     }
 
-    fun updateMatchBetList(
+    fun updateMatchBetListForOutRight(
         matchType: MatchType,
         sportType: SportType,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
@@ -1057,30 +1057,6 @@ class GameViewModel(
                 sportType = sportType,
                 playCateName = outrightCateName ?: "",
                 playName = odd.spread ?: "",
-                matchInfo = matchOdd.matchInfo,
-                odd = odd
-            )
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
-    fun updateMatchBetList(
-        matchType: MatchType,
-        sportType: SportType,
-        playCateName: String,
-        matchOdd: MatchOdd,
-        odd: Odd
-    ) {
-        val betItem = betInfoRepository.betInfoList.value?.peekContent()
-            ?.find { it.matchOdd.oddsId == odd.id }
-
-        if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType = matchType,
-                sportType = sportType,
-                playCateName = playCateName,
-                playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,
                 odd = odd
             )
