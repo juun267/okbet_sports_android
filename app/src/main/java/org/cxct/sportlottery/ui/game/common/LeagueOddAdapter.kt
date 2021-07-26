@@ -532,6 +532,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
+            itemView.league_odd_quick_button_bottom_margin.apply {
+                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+            }
+
             itemView.odd_button_other.apply {
                 visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
                     View.GONE
