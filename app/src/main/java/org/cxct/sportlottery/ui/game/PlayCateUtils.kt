@@ -53,6 +53,8 @@ object PlayCateUtils {
 
             PlayCate.HWMG_SINGLE.value, PlayCate.W3.value, PlayCate.DC.value -> 3
 
+            PlayCate.EPS.value -> 1
+
             else -> 0
         }
 
@@ -130,6 +132,15 @@ object PlayCateUtils {
         }
         PlayCate.TG_OU_C_1ST.value -> {
             R.string.game_play_type_tg_ou_c_1st
+        }
+        PlayCate.EPS.value -> {
+            R.string.game_play_type_eps
+        }
+        PlayCate.C_OU.value -> {
+            R.string.game_play_type_c_ou
+        }
+        PlayCate.C_OE.value -> {
+            R.string.game_play_type_c_oe
         }
         else -> null
     }
