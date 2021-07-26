@@ -17,5 +17,5 @@ data class QuickPlayCate(
     val sort: Int?
 ) {
     var isSelected = false
-    var quickOdd: QuickOdd? = null
+    var quickOdds: Map<String, QuickOdd?>? = null
 }
