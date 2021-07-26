@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
@@ -24,6 +26,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.Menu
+import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
@@ -47,6 +51,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
+import timber.log.Timber
 
 
 class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
@@ -376,9 +381,12 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
                 loading()
             }
+            7 -> {
+                viewModel.switchMatchType(MatchType.EPS)
+                loading()
+            }
         }
     }
-
     private fun navGameFragment(matchType: MatchType) {
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
@@ -474,6 +482,9 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                     }
                     MatchType.OUTRIGHT -> {
                         tabLayout.getTabAt(6)?.select()
+                    }
+                    MatchType.EPS -> {
+                        tabLayout.getTabAt(7)?.select()
                     }
                 }
             }
@@ -634,6 +645,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             MatchType.EARLY -> updateSelectTabState(4)
             MatchType.PARLAY -> updateSelectTabState(5)
             MatchType.OUTRIGHT -> updateSelectTabState(6)
+            MatchType.EPS -> updateSelectTabState(7)
         }
     }
 

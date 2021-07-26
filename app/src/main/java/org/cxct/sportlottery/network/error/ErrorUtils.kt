@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_EPS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
@@ -210,6 +211,10 @@ object ErrorUtils {
                         ) as T
                     }
                     (url.contains(MATCH_PRELOAD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchPreloadResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_ODDS_EPS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MatchPreloadResult(it.code, it.msg, it.success, null) as T
                     }

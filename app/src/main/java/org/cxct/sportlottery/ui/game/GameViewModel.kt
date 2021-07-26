@@ -23,6 +23,8 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.odds.eps.OddsEpsListRequest
+import org.cxct.sportlottery.network.odds.eps.OddsEpsListResult
 import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
@@ -49,6 +51,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
+import timber.log.Timber
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -105,6 +108,9 @@ class GameViewModel(
     val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
 
+    val epsListResult: LiveData<Event<OddsEpsListResult?>>
+        get() = _epsListResult
+
     val countryListSearchResult: LiveData<List<Row>>
         get() = _countryListSearchResult
 
@@ -155,6 +161,7 @@ class GameViewModel(
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
+    private val _epsListResult =  MutableLiveData<Event<OddsEpsListResult?>>()
     private val _countryListSearchResult = MutableLiveData<List<Row>>()
     private val _leagueListSearchResult = MutableLiveData<List<LeagueOdd>>()
     private val _curDate = MutableLiveData<List<Date>>()
@@ -296,7 +303,6 @@ class GameViewModel(
         if (isParlayPage)
             checkShoppingCart()
     }
-
     fun switchMatchType(matchType: MatchType) {
         betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
         if (matchType == MatchType.PARLAY) {
@@ -368,6 +374,7 @@ class GameViewModel(
                 ).run {
                     _specialEntrance.value = null
                 }
+
             }
             _curMatchType.value = matchType
         }
@@ -451,6 +458,9 @@ class GameViewModel(
             sport.sortNum
         }
         this.atStart.items.sortedBy { sport ->
+            sport.sortNum
+        }
+        this.menu.eps.items.sortedBy { sport ->
             sport.sortNum
         }
 
@@ -669,6 +679,11 @@ class GameViewModel(
                         getCurrentTimeRangeParams()
                     )
                 }
+                MatchType.EPS -> {
+                    val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(),TimeUtil.YMD_FORMAT)
+                    val sportType =  _sportMenuResult.value?.sportMenuData?.atStart?.items?.find { item -> item.isSelected }?.code ?: ""//判斷運動類型
+                    getEpsList(sportType,time)
+                }
             }
         }
 
@@ -827,6 +842,17 @@ class GameViewModel(
             }
 
             _outrightSeasonListResult.postValue(Event(result))
+        }
+    }
+
+    private fun getEpsList(gameType: String, startTime: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getEpsList(
+                    OddsEpsListRequest(gameType = gameType, startTime = startTime)
+                )
+            }
+            _epsListResult.postValue(Event(result))
         }
     }
 
@@ -1293,6 +1319,9 @@ class GameViewModel(
             MatchType.AT_START -> {
                 sportMenuRes?.sportMenuData?.atStart?.items?.size ?: 0
             }
+            MatchType.EPS -> {
+                sportMenuRes?.sportMenuData?.menu?.eps?.items?.size ?: 0
+            }
         }
     }
 
@@ -1331,6 +1360,10 @@ class GameViewModel(
                 sportMenuRes?.sportMenuData?.atStart?.items?.find { it.code == sportType.code }?.num
                     ?: 0
             }
+            MatchType.EPS -> {
+                sportMenuRes?.sportMenuData?.menu?.eps?.items?.find { it.code == sportType.code }?.num
+                    ?: 0
+            }
         }
     }
 
@@ -1352,6 +1385,9 @@ class GameViewModel(
         }
         MatchType.AT_START -> {
             sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }
+        }
+        MatchType.EPS -> {
+            sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }
         }
     }
 
@@ -1425,6 +1461,16 @@ class GameViewModel(
                 }
                 else -> {
                     this.atStart.items.indexOf(sport) == 0
+                }
+            }
+        }
+        this.menu.eps.items.map { sport ->
+            sport.isSelected = when {
+                ((matchType == MatchType.EPS) && sportTypeCode != null) -> {
+                    sport.code == sportTypeCode
+                }
+                else -> {
+                    this.menu.eps.items.indexOf(sport) == 0
                 }
             }
         }

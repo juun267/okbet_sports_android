@@ -23,10 +23,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
+import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -42,6 +40,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -139,6 +138,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private val epsListAdapter by lazy {
+        EpsListAdapter(EpsListAdapter.ItemClickListener{
+
+        })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -180,6 +185,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
             MatchType.AT_START -> getString(R.string.home_tab_at_start)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
+            MatchType.EPS -> getString(R.string.home_title_eps)
             else -> ""
         }
 
@@ -310,7 +316,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
@@ -324,7 +329,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     override fun onStart() {
         super.onStart()
-
         viewModel.getGameHallList(args.matchType, true, isReloadPlayCate = true)
         loading()
     }
@@ -354,6 +358,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 MatchType.AT_START -> {
                     updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
+                }
+                MatchType.EPS -> {
+                    updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf())
                 }
                 else -> {
                 }
@@ -426,6 +433,28 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     game_list.apply {
                         adapter = outrightCountryAdapter.apply {
                             data = rows
+                        }
+                    }
+                }
+            }
+        })
+        viewModel.epsListResult.observe(this.viewLifecycleOwner,{
+            hideLoading()
+            it.getContentIfNotHandled()?.let { epsListResult ->
+                if (epsListResult.success) {
+                    val oddsEpsListData = epsListResult.oddsEpsListData
+                    val epsLeagueOddsItemList =  mutableListOf<EpsLeagueOddsItem>()
+                    oddsEpsListData.forEach { oddsEpdListData ->
+                        val newLeagueOddsItem =
+                            EpsLeagueOddsItem(date = oddsEpdListData.date, league = null, matchOdds = null) //合併過後的資料結構
+                        epsLeagueOddsItemList.add(newLeagueOddsItem)
+                        oddsEpdListData.leagueOdd.forEach { leaguesOddsItems ->
+                            epsLeagueOddsItemList.add(EpsLeagueOddsItem(date = 0, league = leaguesOddsItems?.league, matchOdds = leaguesOddsItems?.matchOdds))
+                        }
+                    }
+                    game_list.apply {
+                        adapter = epsListAdapter.apply {
+                            dataList = epsLeagueOddsItemList
                         }
                     }
                 }
