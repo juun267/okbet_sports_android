@@ -549,9 +549,9 @@ class GameViewModel(
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
                         oddData.odds?.forEach { map ->
                             map.value.forEach { odd ->
-                                odd?.isSelected =
+                                odd.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd?.id
+                                        it.matchOdd.oddsId == odd.id
                                     }
                             }
                         }
@@ -579,9 +579,9 @@ class GameViewModel(
                 result.t?.odds?.forEach { oddData ->
                     oddData.odds?.forEach { map ->
                         map.value.forEach { odd ->
-                            odd?.isSelected =
+                            odd.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd?.id
+                                    it.matchOdd.oddsId == odd.id
                                 }
                         }
                     }
@@ -734,8 +734,8 @@ class GameViewModel(
 
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), "MM/dd")
+                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), "HH:mm")
                 }
 
                 _outrightOddsListResult.postValue(Event(result))
@@ -1106,22 +1106,6 @@ class GameViewModel(
 
                 if (oldOddData != null && newOddData != null) {
                     if (oldOddData.id == newOddData.id) {
-
-                        //如果是球員 忽略名字替換
-                        if (!TextUtil.compareWithGameKey(
-                                oddsDetail.gameType,
-                                PlayCate.SCO.value
-                            )
-                        ) {
-                            if (newOddData.name?.isNotEmpty() == true) {
-                                oldOddData.name = newOddData.name
-                            }
-                        }
-
-                        if (newOddData.extInfo?.isNotEmpty() == true) {
-                            oldOddData.extInfo = newOddData.extInfo
-                        }
-
                         oldOddData.spread = newOddData.spread
 
                         //先判斷大小

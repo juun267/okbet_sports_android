@@ -67,8 +67,8 @@ object MatchOddUtil {
                     odd.producerId?.let { producerId ->
 
                         return org.cxct.sportlottery.network.bet.info.MatchOdd(
-                            awayName = matchOdd.matchInfo.awayName ?: "",
-                            homeName = matchOdd.matchInfo.homeName ?: "",
+                            awayName = matchOdd.matchInfo.awayName,
+                            homeName = matchOdd.matchInfo.homeName,
                             inplay = 0,
                             leagueId = "",
                             leagueName = "",
@@ -83,7 +83,7 @@ object MatchOddUtil {
                             playName = playName ?: "",
                             producerId = producerId,
                             spread = odd.spread ?: "",
-                            startTime = matchOdd.matchInfo.startTime,
+                            startTime = matchOdd.matchInfo.startTime.toLong(),
                             status = odd.status,
                             gameType = gameType,
                             homeScore = 0,
