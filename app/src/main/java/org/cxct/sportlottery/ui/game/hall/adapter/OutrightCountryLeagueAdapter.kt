@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ class OutrightCountryLeagueAdapter :
     var data = listOf<Season>()
         set(value) {
             field = value
-            Log.e(">>>", "OutrightCountryLeagueAdapter data = $data")
             notifyDataSetChanged()
         }
 

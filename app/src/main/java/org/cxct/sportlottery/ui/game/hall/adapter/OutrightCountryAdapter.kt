@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -93,9 +92,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             outrightCountryLeagueListener: OutrightCountryLeagueListener?
         ) {
             itemView.league_list.apply {
-
                 adapter = countryLeagueAdapter.apply {
-
                     this.outrightCountryLeagueListener = outrightCountryLeagueListener
 
                     data = if (item.searchList.isNotEmpty()) {
@@ -103,7 +100,6 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     } else {
                         item.list
                     }
-
                 }
             }
         }

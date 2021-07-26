@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.hall
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -434,12 +433,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, {
-            Log.e(">>>", "countryListSearchResult data = $it")
             countryAdapter.data = it
         })
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner, {
-            Log.e(">>>", "outrightCountryListSearchResult data = $it")
             outrightCountryAdapter.data = it
         })
 
