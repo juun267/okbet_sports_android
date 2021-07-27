@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
-import kotlinx.android.synthetic.main.row_game_filter_v4.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
+import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
@@ -40,7 +42,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         return inflater.inflate(R.layout.fragment_game_outright, container, false).apply {
             setupGameFilterRow(this)
@@ -49,21 +51,15 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun setupGameFilterRow(view: View) {
-        view.outright_filter_row.apply {
-
-            isSearchViewVisible = false
-
-            backClickListener = View.OnClickListener {
-                findNavController().navigateUp()
-            }
+        view.outright_toolbar.game_toolbar_back.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
     private fun setupOutrightOddList(view: View) {
         view.outright_league_odd_list.apply {
 
-            this.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             adapter = outrightOddAdapter
 
@@ -98,15 +94,15 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
 //                    outright_filter_row.sportName = outrightOddsListResult.outrightOddsListData?.sport?.name ?: "" //TODO Cheryl : 等api修好後待確認用哪個值正確
-                    outright_filter_row.sportName = GameType.values().find { gameType -> gameType.key == args.sportType.code }?.string?.let { stringId -> getString(stringId) }
+                    game_toolbar_sport_type.text = GameType.values().find { gameType -> gameType.key == args.sportType.code }?.string?.let { stringId -> getString(stringId) }
 
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)?.let { gameImg ->
-                        game_filter_back_img.setBackgroundResource(gameImg)
+                        game_toolbar_bg.setBackgroundResource(gameImg)
                     }
 
-                    outright_league_name.text =
-                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
-                            ?: ""
+
+                    outright_league_name.text = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
+                        ?: ""
 
                     outright_league_date.text = matchOdd?.startDate ?: ""
 
@@ -114,18 +110,14 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                     outrightOddAdapter.matchOdd = matchOdd
 
-                    service.subscribeHallChannel(
-                        args.sportType.code,
-                        PlayCate.OUTRIGHT.value,
-                        args.eventId
-                    )
+                    service.subscribeHallChannel(args.sportType.code, PlayCate.OUTRIGHT.value, args.eventId)
                 }
             }
         })
 
         viewModel.curMatchType.observe(viewLifecycleOwner, {
             it?.name.apply {
-                game_filter_game_type.text = this
+                game_toolbar_match_type.text = this
             }
         })
 
@@ -167,11 +159,9 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                         oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
                             oddTypeSocketMapEntry.value.onEach { odd ->
-                                odd?.isSelected =
-                                    viewModel.betInfoList.value?.peekContent()
-                                        ?.any { betInfoListData ->
-                                            betInfoListData.matchOdd.oddsId == odd?.id
-                                        }
+                                odd?.isSelected = viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
                             }
 
                             val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
@@ -185,16 +175,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                                             oddSocketNonNull.odds?.let { oddSocketValue ->
                                                 when {
                                                     oddValue > oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SMALLER.state
+                                                        odd.oddState = OddState.SMALLER.state
                                                     }
                                                     oddValue < oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.LARGER.state
+                                                        odd.oddState = OddState.LARGER.state
                                                     }
                                                     oddValue == oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SAME.state
+                                                        odd.oddState = OddState.SAME.state
                                                     }
                                                 }
                                             }
@@ -206,16 +193,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                                             oddSocketNonNull.hkOdds?.let { oddSocketValue ->
                                                 when {
                                                     oddValue > oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SMALLER.state
+                                                        odd.oddState = OddState.SMALLER.state
                                                     }
                                                     oddValue < oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.LARGER.state
+                                                        odd.oddState = OddState.LARGER.state
                                                     }
                                                     oddValue == oddSocketValue -> {
-                                                        odd.oddState =
-                                                            OddState.SAME.state
+                                                        odd.oddState = OddState.SAME.state
                                                     }
                                                 }
                                             }
@@ -267,25 +251,16 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
-                service.subscribeHallChannel(
-                    args.sportType.code,
-                    PlayCate.OUTRIGHT.value,
-                    args.eventId
-                )
+                service.subscribeHallChannel(args.sportType.code, PlayCate.OUTRIGHT.value, args.eventId)
             }
         })
     }
 
     private fun addOddsDialog(
         matchOdd: MatchOdd,
-        odd: Odd
+        odd: Odd,
     ) {
-        viewModel.updateMatchBetListForOutRight(
-            matchType = MatchType.OUTRIGHT,
-            sportType = args.sportType,
-            matchOdd = matchOdd,
-            odd = odd
-        )
+        viewModel.updateMatchBetListForOutRight(matchType = MatchType.OUTRIGHT, sportType = args.sportType, matchOdd = matchOdd, odd = odd)
     }
 
     override fun onStop() {
