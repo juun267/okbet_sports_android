@@ -19,6 +19,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:id="@+id/ll_item"
             android:layout_width="match_parent"
@@ -47,15 +48,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp">
 
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/gl_center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
                     <RelativeLayout
                         android:id="@+id/rl_input"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
-                        app:layout_constraintEnd_toStartOf="@+id/btn_maximum_limit"
+                        app:layout_constraintEnd_toStartOf="@+id/gl_center"
                         app:layout_constraintHorizontal_chainStyle="spread_inside"
+                        app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.715">
+                        app:layout_constraintTop_toTopOf="parent">
 
                         <EditText
                             android:id="@+id/et_bet"
@@ -84,14 +92,74 @@
                     <TextView
                         android:id="@+id/btn_maximum_limit"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
+                        android:gravity="center"
                         android:text="@string/bet_info_check_maximum_limit"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/textSize12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1"
                         app:layout_constraintStart_toEndOf="@+id/rl_input"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_winnable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="end"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1"
+                        app:layout_constraintStart_toEndOf="@+id/rl_input"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bet_info_win_quota"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_winnable_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="9.720" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_max_bet_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="end"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1"
+                        app:layout_constraintStart_toEndOf="@+id/rl_input"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tv_max_bet_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize12sp"
+                            tools:text="9.720" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bet_info_bet_quota"
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/textSize12sp" />
+
+                    </LinearLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -104,8 +172,8 @@
                     android:layout_marginBottom="9dp"
                     android:textColor="@color/colorRedDark"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    tools:text="投注额大于下注限额" />
+                    tools:text="投注额大于下注限额"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 
@@ -152,10 +220,9 @@
             android:id="@+id/iv_lock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_bg_lock"
-            android:layout_alignParentEnd="true"
             android:layout_alignBottom="@+id/ll_item"
-            />
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_bg_lock" />
     </RelativeLayout>
 
 </layout>

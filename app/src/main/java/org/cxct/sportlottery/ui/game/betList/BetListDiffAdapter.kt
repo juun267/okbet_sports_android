@@ -184,7 +184,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     etBet.hint = String.format(root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(it.max))
                 }
 
-                betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(itemData.matchOdd, oddsType))
+                val itemOdd = TextUtil.formatForOdd(getOdds(itemData.matchOdd, oddsType))
+                betInfoDetail.tvOdds.text = itemOdd
                 betInfoDetail.ivDelete.setOnClickListener {
                     Timber.e("Dean, delete click event")
                     onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
@@ -226,6 +227,21 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 val tw = object : TextWatcher {
                     override fun afterTextChanged(it: Editable?) {
                         itemData.parlayOdds?.let { pOdd ->
+                            val inputValue = if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
+                            val winnableAmount = itemOdd.toDouble() * inputValue
+                            when (winnableAmount > 0) {
+                                true -> {
+                                    llWinnable.visibility = View.VISIBLE
+                                    tvWinnableAmount.text = TextUtil.formatMoney(winnableAmount)
+                                    llMaxBetAmount.visibility = View.GONE
+                                    btnMaximumLimit.visibility = View.GONE
+                                }
+                                else -> {
+                                    llWinnable.visibility = View.GONE
+                                    btnMaximumLimit.visibility = View.VISIBLE
+                                }
+                            }
+
                             check(it.toString(), itemData.matchOdd, pOdd, itemData)
                         }
                         if (TextUtils.isEmpty(it)) {
@@ -263,7 +279,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     itemData.matchOdd.betAddError?.string ?: R.string.bet_info_list_game_closed
                 )
 
-
                 when (itemData.matchOdd.status) {
                     BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
                         componentStatusByOdds(
@@ -296,6 +311,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 }
 
 //                executePendingBindings()
+
+                setupMaximumLimit(itemData)
 
                 //TODO 投注按鈕事件
                 setupBetButton(itemData)
@@ -386,6 +403,22 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 isClickable = moreClickable
             }*/
 
+        }
+
+        private fun setupMaximumLimit(data: BetInfoListData) {
+            binding.apply {
+                //init View
+                llMaxBetAmount.visibility = View.GONE
+                llWinnable.visibility = View.GONE
+                btnMaximumLimit.visibility = View.VISIBLE
+
+                tvMaxBetAmount.text = data.parlayOdds?.max.toString()
+
+                btnMaximumLimit.setOnClickListener {
+                    it.visibility = View.GONE
+                    llMaxBetAmount.visibility = View.VISIBLE
+                }
+            }
         }
 
         //TODO 投注按鈕事件
