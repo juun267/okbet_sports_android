@@ -790,6 +790,20 @@ class GameViewModel(
         }
     }
 
+    fun clearQuickPlayCateSelected() {
+        val updateGameHallList = _oddsListGameHallResult.value?.peekContent()
+
+        updateGameHallList?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.isSelected = false
+                }
+            }
+        }
+
+        _oddsListGameHallResult.postValue(Event(updateGameHallList))
+    }
+
     private fun getLeagueList(
         gameType: String,
         matchType: String,

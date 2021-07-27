@@ -139,6 +139,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     matchId?.let {
                         viewModel.getQuickList(it)
                     }
+                },
+                {
+                    viewModel.clearQuickPlayCateSelected()
                 }
             )
         }

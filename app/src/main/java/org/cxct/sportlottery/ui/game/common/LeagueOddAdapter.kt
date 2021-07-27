@@ -474,6 +474,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
             itemView.league_odd_quick_cate_close.apply {
+                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+                setOnClickListener {
+                    leagueOddListener?.onClickQuickCateClose()
+                }
             }
 
             itemView.league_odd_quick_cate_tabs.apply {
@@ -670,7 +679,8 @@ class LeagueOddListener(
     val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
     val clickListenerBet: (matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String) -> Unit,
-    val clickListenerQuickCataTab: (matchId: String?) -> Unit
+    val clickListenerQuickCataTab: (matchId: String?) -> Unit,
+    val clickListenerQuickCateClose: () -> Unit
 ) {
     fun onClickLive(item: MatchOdd) =
         clickListenerLive(item)
@@ -682,4 +692,6 @@ class LeagueOddListener(
         clickListenerBet(matchOdd, odd, playCateName, playName)
 
     fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCataTab(matchId)
+
+    fun onClickQuickCateClose() = clickListenerQuickCateClose()
 }

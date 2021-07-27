@@ -326,7 +326,6 @@
         android:maxLines="2"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border_row1"
         app:layout_constraintStart_toStartOf="@id/league_odd_quick_button_border"
         app:layout_constraintTop_toTopOf="@id/league_odd_quick_button_border"

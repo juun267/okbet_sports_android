@@ -80,6 +80,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         "Fetch quick category list with $matchId",
                         Toast.LENGTH_SHORT
                     ).show()
+                },
+                {
+                    viewModel.clearQuickPlayCateSelected()
                 }
             )
         }
