@@ -24,6 +24,16 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{
+                            "WINNER":{
+                                "en":"Winner",
+                                "zh":"冠军"
+                            },
+                            "WINNER:Top Goalscorer":{
+                                "en":"Top Goalscorer",
+                                "zh":"最佳射手"
+                            }
+                        },
                         "odds": {
                             "WINNER": [
                                 {
@@ -110,6 +120,7 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{"WINNER":{"en":"Winner","zh":"冠军"},"WINNER:Top Goalscorer":{"en":"Top Goalscorer","zh":"最佳射手"}},
                         "odds": {
                             "WINNER": [
                                 {
@@ -259,6 +270,7 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{"WINNER":{"en":"Winner","zh":"冠军"},"WINNER:Top Goalscorer":{"en":"Top Goalscorer","zh":"最佳射手"}},
                         "odds": {
                             "WINNER": [
                                 {
@@ -415,6 +427,7 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{"WINNER":{"en":"Winner","zh":"冠军"},"WINNER:Top Goalscorer":{"en":"Top Goalscorer","zh":"最佳射手"}},
                         "odds": {
                             "WINNER": [
                                 {
@@ -550,6 +563,7 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{"WINNER":{"en":"Winner","zh":"冠军"},"WINNER:Top Goalscorer":{"en":"Top Goalscorer","zh":"最佳射手"}},
                         "odds": {
                             "WINNER": [
                                 {
@@ -783,6 +797,7 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{"WINNER":{"en":"Winner","zh":"冠军"},"WINNER:Top Goalscorer":{"en":"Top Goalscorer","zh":"最佳射手"}},
                         "odds": {
                             "WINNER": [
                                 {
@@ -918,6 +933,7 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{"WINNER":{"en":"Winner","zh":"冠军"},"WINNER:Top Goalscorer":{"en":"Top Goalscorer","zh":"最佳射手"}},
                         "odds": {
                             "WINNER": [
                                 {
@@ -1039,6 +1055,7 @@
                             "status": null,
                             "playCateNum": null
                         },
+                        "dynamicMarkets":{"WINNER":{"en":"Winner","zh":"冠军"},"WINNER:Top Goalscorer":{"en":"Top Goalscorer","zh":"最佳射手"}},
                         "odds": {
                             "WINNER": [
                                 {
