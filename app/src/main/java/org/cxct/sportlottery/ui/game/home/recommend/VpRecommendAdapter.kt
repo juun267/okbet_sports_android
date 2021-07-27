@@ -60,6 +60,7 @@ class VpRecommendAdapter(
 
         fun bind(data: OddBean) {
             itemView.apply {
+                //TODO simon test review playTypeCode = "EPS",更優賠率 盤口 顯示處理
                 tv_play_type.text =
                     PlayCateUtils.getPlayCateTitleResId(data.playTypeCode, sportCode)?.let {
                         itemView.context.getString(it)
@@ -93,6 +94,9 @@ class VpRecommendAdapter(
 
         private fun setupOddButton(oddButton: OddButtonV4, odd: Odd) {
             oddButton.apply homeButtonSettings@{
+
+                odd_type_text.visibility = View.VISIBLE
+                odd_top_text.visibility = View.VISIBLE
                 odd_type_text.text = odd.name
                 odd_top_text.text = odd.spread
 
