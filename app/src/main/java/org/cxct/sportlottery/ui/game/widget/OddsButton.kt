@@ -24,6 +24,7 @@ import org.cxct.sportlottery.util.getOdds
  * @description 賠率按鈕(預設圓角)
  * @edit:
  * 2021/07/05 擴展配適直角
+ * 2021/07/27 合併其他odd button
  */
 class OddsButton @JvmOverloads constructor(
     context: Context,
@@ -36,7 +37,7 @@ class OddsButton @JvmOverloads constructor(
         set(value) {
             field = value
             field?.let {
-                setupBetStatus(it)
+                if (hideItem) setupBetStatusWithHideItem(it) else setupBetStatus(it)
             }
         }
 
@@ -53,7 +54,10 @@ class OddsButton @JvmOverloads constructor(
     private var mFillet = true
 
 
-    var mBackground: Drawable? = null
+    private var hideItem = false
+
+
+    private var mBackground: Drawable? = null
 
 
     init {
@@ -64,6 +68,7 @@ class OddsButton @JvmOverloads constructor(
     private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
         mFillet = typedArray.getBoolean(R.styleable.OddsButton_ob_fillet, true)
+        hideItem = typedArray.getBoolean(R.styleable.OddsButton_ob_hide_item_flag, false)
         mBackground =
             typedArray.getDrawable(R.styleable.OddsButton_ob_background)
                 ?: context.theme.getDrawable(R.drawable.selector_button_radius_4_odds)
@@ -85,7 +90,7 @@ class OddsButton @JvmOverloads constructor(
 
         tv_spread.apply {
             text = odd?.spread
-            visibility = if (odd?.spread.isNullOrEmpty())View.GONE else View.VISIBLE
+            visibility = if (odd?.spread.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
@@ -95,17 +100,44 @@ class OddsButton @JvmOverloads constructor(
 
 
     private fun setupBetStatus(betStatus: Int) {
-        img_odd_lock.background = ContextCompat.getDrawable(
-            context,
-            if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
-        )
+        img_odd_lock.apply {
+            background = ContextCompat.getDrawable(
+                context,
+                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+            )
 
-        img_odd_lock.visibility =
-            if (betStatus == BetStatus.LOCKED.code || betStatus == BetStatus.DEACTIVATED.code) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+            visibility =
+                if (betStatus == BetStatus.LOCKED.code || betStatus == BetStatus.DEACTIVATED.code) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+        }
+
+        isEnabled = (betStatus == BetStatus.ACTIVATED.code)
+    }
+
+
+    private fun setupBetStatusWithHideItem(betStatus: Int) {
+        visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
+            View.INVISIBLE
+        } else {
+            View.VISIBLE
+        }
+
+        img_odd_lock.apply {
+            background = ContextCompat.getDrawable(
+                context,
+                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+            )
+
+            visibility =
+                if (betStatus == BetStatus.LOCKED.code) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+        }
 
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
     }
