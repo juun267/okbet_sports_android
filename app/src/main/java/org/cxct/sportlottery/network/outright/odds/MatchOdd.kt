@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.outright.odds
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 
 @JsonClass(generateAdapter = true)

@@ -271,14 +271,16 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         playName: String
     ) {
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
-            viewModel.updateMatchBetList(
-                mSelectMatchType,
-                gameType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            matchOdd.matchInfo?.let { matchInfo ->
+                viewModel.updateMatchBetList(
+                    mSelectMatchType,
+                    gameType,
+                    playCateName,
+                    playName,
+                    matchInfo,
+                    odd
+                )
+            }
         }
     }
 

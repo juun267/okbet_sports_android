@@ -291,9 +291,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         matchOdd?.let { matchOdd ->
             viewModel.updateMatchBetList(
                 matchType = args.matchType,
-                args.gameType,
+                gameType = args.gameType,
                 playCateName = oddsDetail.name,
-                matchOdd = matchOdd,
+                playName = odd.name?:"",
+                matchInfo = matchOdd.matchInfo,
                 odd = odd
             )
         }

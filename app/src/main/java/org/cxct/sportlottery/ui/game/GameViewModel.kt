@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -542,9 +543,9 @@ class GameViewModel(
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
                         oddData.odds?.forEach { map ->
                             map.value.forEach { odd ->
-                                odd?.isSelected =
+                                odd.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd?.id
+                                        it.matchOdd.oddsId == odd.id
                                     }
                             }
                         }
@@ -572,9 +573,9 @@ class GameViewModel(
                 result.t?.odds?.forEach { oddData ->
                     oddData.odds?.forEach { map ->
                         map.value.forEach { odd ->
-                            odd?.isSelected =
+                            odd.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd?.id
+                                    it.matchOdd.oddsId == odd.id
                                 }
                         }
                     }
@@ -727,8 +728,8 @@ class GameViewModel(
 
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, "MM/dd")
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), "MM/dd")
+                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), "HH:mm")
                 }
 
                 _outrightOddsListResult.postValue(Event(result))
@@ -1001,35 +1002,34 @@ class GameViewModel(
         gameType: GameType,
         playCateName: String,
         playName: String,
-        matchOdd: MatchOdd,
+        matchInfo: MatchInfo,
         odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType,
-                gameType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            matchInfo.let {
+                betInfoRepository.addInBetInfo(
+                    matchType = matchType,
+                    gameType = gameType,
+                    playCateName = playCateName,
+                    playName = playName,
+                    matchInfo = matchInfo,
+                    odd = odd
+                )
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
     }
 
-    fun updateMatchBetList(
+    fun updateMatchBetListForOutRight(
         matchType: MatchType,
         gameType: GameType,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: Odd
     ) {
-        val betItem = betInfoRepository.betInfoList.value?.peekContent()
-            ?.find { it.matchOdd.oddsId == odd.id }
-
         val outrightCateName = matchOdd.dynamicMarkets[odd.outrightCateKey].let {
             when (LanguageManager.getSelectLanguage(androidContext)) {
                 LanguageManager.Language.ZH -> {
@@ -1041,33 +1041,17 @@ class GameViewModel(
             }
         }
 
-        if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType,
-                gameType,
-                outrightCateName,
-                odd.spread,
-                matchOdd,
-                odd
-            )
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
-    fun updateMatchBetList(
-        matchType: MatchType,
-        gameType: GameType,
-        playCateName: String,
-        matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        odd: Odd
-    ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
-                matchType, gameType, playCateName, matchOdd, odd
+                matchType = matchType,
+                gameType = gameType,
+                playCateName = outrightCateName ?: "",
+                playName = odd.spread ?: "",
+                matchInfo = matchOdd.matchInfo,
+                odd = odd
             )
         } else {
             odd.id?.let { removeBetInfoItem(it) }
@@ -1093,22 +1077,6 @@ class GameViewModel(
 
                 if (oldOddData != null && newOddData != null) {
                     if (oldOddData.id == newOddData.id) {
-
-                        //如果是球員 忽略名字替換
-                        if (!TextUtil.compareWithGameKey(
-                                oddsDetail.gameType,
-                                PlayCate.SCO.value
-                            )
-                        ) {
-                            if (newOddData.name?.isNotEmpty() == true) {
-                                oldOddData.name = newOddData.name
-                            }
-                        }
-
-                        if (newOddData.extInfo?.isNotEmpty() == true) {
-                            oldOddData.extInfo = newOddData.extInfo
-                        }
-
                         oldOddData.spread = newOddData.spread
 
                         //先判斷大小

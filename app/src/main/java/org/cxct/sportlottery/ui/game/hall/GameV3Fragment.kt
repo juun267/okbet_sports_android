@@ -923,14 +923,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
         gameType?.let {
-            viewModel.updateMatchBetList(
-                args.matchType,
-                gameType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            matchOdd.matchInfo?.let { matchInfo ->
+                viewModel.updateMatchBetList(
+                    args.matchType,
+                    gameType,
+                    playCateName,
+                    playName,
+                    matchInfo,
+                    odd
+                )
+            }
         }
     }
 

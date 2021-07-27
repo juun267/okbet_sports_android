@@ -2,11 +2,7 @@ package org.cxct.sportlottery.ui.odds
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.net.http.SslError
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +16,6 @@ import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
-import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.common.MatchType
@@ -102,13 +97,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun initRecyclerView() {
         rv_game_card.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter = OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
-            it.let {
-                matchId = it.id
-                getData()
-                live_view_tool_bar.setWebViewUrl(matchId)
-            }
-        })
+        oddsGameCardAdapter =
+            OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
+                it.let {
+                    matchId = it.id
+                    getData()
+                    live_view_tool_bar.setWebViewUrl(matchId)
+                }
+            })
         rv_game_card.adapter = oddsGameCardAdapter
     }
 
@@ -278,7 +274,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             matchOdd.matchInfo.awayScore = curAwayScore
             tv_score.text = "$curHomeScore / $curAwayScore"
 
-            viewModel.updateMatchBetList(matchType = MatchType.IN_PLAY, args.gameType, playCateName = oddsDetail.name, matchOdd = matchOdd, odd = odd)
+            viewModel.updateMatchBetList(
+                matchType = MatchType.IN_PLAY,
+                gameType = args.gameType,
+                playCateName = oddsDetail.name,
+                playName = odd.name ?: "",
+                matchInfo = matchOdd.matchInfo,
+                odd = odd
+            )
 
         }
     }

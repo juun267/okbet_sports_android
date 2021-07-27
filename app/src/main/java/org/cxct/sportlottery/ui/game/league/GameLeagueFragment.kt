@@ -507,14 +507,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         playCateName: String,
         playName: String
     ) {
-        viewModel.updateMatchBetList(
-            args.matchType,
-            args.gameType,
-            playCateName,
-            playName,
-            matchOdd,
-            odd
-        )
+        matchOdd.matchInfo?.let { matchInfo ->
+            viewModel.updateMatchBetList(
+                args.matchType,
+                args.gameType,
+                playCateName,
+                playName,
+                matchInfo,
+                odd
+            )
+        }
     }
 
     override fun onStop() {

@@ -15,13 +15,13 @@ import org.cxct.sportlottery.network.odds.list.OddStateParams
 data class Odd(
 
     @Json(name = "extInfo")
-    var extInfo: String? = null, //额外信息. （如果是球员玩法，则H表示主队,C表示客队）
+    val extInfo: String? = null, //额外信息. （如果是球员玩法，则H表示主队,C表示客队）
 
     @Json(name = "id")
-    var id: String? = "", //赔率id
+    val id: String? = "", //赔率id
 
     @Json(name = "name")
-    var name: String? = null, //玩法名称（如果是球员玩法，则名称代码球员名称）
+    val name: String? = null, //玩法名称（如果是球员玩法，则名称代码球员名称）
 
     @Json(name = "odds")
     var odds: Double? = null, //赔率
