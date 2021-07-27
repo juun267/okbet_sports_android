@@ -224,7 +224,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
                 betListDiffAdapter?.betList = list
+
+                getParlayList()
                 refreshAllAmount(list)
+                checkBetInfoPlatStatus(list)
             }
         })
 
@@ -263,6 +266,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
             betListDiffAdapter?.betList = (betList ?: mutableListOf())
+            checkBetInfoPlatStatus(betList ?: mutableListOf())
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
@@ -308,6 +312,26 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
     }
+
+    /**
+     * 判斷是否有賠率關閉
+     */
+    private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
+        var hasPlatClose = false
+        betInfoList.forEach {
+            when (it.matchOdd.status) {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                    hasPlatClose = true
+                    return@forEach
+                }
+                else -> { //BetStatus.ACTIVATED.code
+                    it.matchOdd.betAddError != null
+                }
+            }
+        }
+        showHideOddsCloseWarn(hasPlatClose)
+    }
+
     private fun queryData() {
         //獲取餘額
         viewModel.getMoney()

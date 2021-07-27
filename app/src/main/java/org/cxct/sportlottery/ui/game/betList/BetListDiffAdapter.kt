@@ -64,6 +64,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
     var moreOptionCollapse = false
 
+    var needScrollToBottom = false //用來紀錄是否為點擊更多選項需滾動至底部
     private fun submitData(doFirst: () -> Unit = {}, showMore: Boolean = false) {
         doFirst.invoke()
         val itemList = when {
@@ -275,49 +276,9 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     }
                 }
 
-                tvCloseWarning.text = root.context.getString(
-                    itemData.matchOdd.betAddError?.string ?: R.string.bet_info_list_game_closed
-                )
-
-                when (itemData.matchOdd.status) {
-                    BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
-                        componentStatusByOdds(
-                            betVisible = View.GONE,
-                            warningVisible = View.VISIBLE,
-                            betTextBg = R.drawable.bg_radius_4_button_unselected,
-                            clickable = false,
-                            moreTextBg = R.drawable.bg_radius_4_button_unselected,
-                            moreTextColor = R.color.colorWhite,
-                            moreClickable = false,
-                            platClose = true
-                        )
-
-                    }
-
-
-                    BetStatus.ACTIVATED.code -> {
-                        componentStatusByOdds(
-                            betVisible = View.VISIBLE,
-                            warningVisible = if (itemData.matchOdd.betAddError == null) View.GONE else View.VISIBLE,
-                            betTextBg = R.drawable.bg_radius_4_button_orange_light,
-                            clickable = true,
-                            moreTextBg = R.drawable.bg_radius_4_button_colorwhite6,
-                            moreTextColor = R.color.colorGray,
-                            moreClickable = true,
-                            platClose = false
-                        )
-                        setChangeOdds(adapterPosition, itemData.matchOdd)
-                    }
-                }
-
-//                executePendingBindings()
+                componentStatusByOdds(itemData)
 
                 setupMaximumLimit(itemData)
-
-                //TODO 投注按鈕事件
-                setupBetButton(itemData)
-                //TODO 需先註冊或登入按鈕事件
-                setupRegisterButton()
             }
 
         }
@@ -326,7 +287,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
          * 投注金額變更、賠率變化，重新檢查金額、餘額及各按鈕是否需暫停功能
          * 影響功能:投注按鈕、投注金額輸入欄位、輸入欄位錯誤訊息
          */
-        //TODO 更新上一層的投注按鈕及總金額
         private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd?, itemData: BetInfoListData) {
             if (TextUtils.isEmpty(it)) {
                 binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
@@ -368,41 +328,29 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             onItemClickListener.refreshAmount()
         }
 
-        //TODO review this method
-        private fun componentStatusByOdds(
-            betVisible: Int, warningVisible: Int,
-            betTextBg: Int, clickable: Boolean,
-            moreTextBg: Int, moreTextColor: Int, moreClickable: Boolean,
-            platClose: Boolean
-        ) {
-            binding.llBet.visibility = betVisible
-            binding.tvCloseWarning.apply {
-                visibility = warningVisible
-            }
+        private fun componentStatusByOdds(data: BetInfoListData) {
 
+            val platClose = when (data.matchOdd.status) {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                    true
+                }
+                else -> { //BetStatus.ACTIVATED.code
+                    setChangeOdds(adapterPosition, data.matchOdd)
+                    data.matchOdd.betAddError != null
+                }
+            }
             //盤口狀態
             binding.apply {
                 if (platClose) {
                     llItem.background = ContextCompat.getDrawable(root.context, R.color.colorWhite2)
                     ivLock.visibility = View.VISIBLE
+                    etBet.isEnabled = false
                 } else {
                     llItem.background = ContextCompat.getDrawable(root.context, R.color.colorWhite)
                     ivLock.visibility = View.GONE
+                    etBet.isEnabled = true
                 }
             }
-
-            //TODO 投注按鈕是否可點擊
-            /*binding.betInfoAction.tv_bet.apply {
-                background = ContextCompat.getDrawable(binding.root.context, betTextBg)
-                isClickable = clickable
-            }
-
-            binding.betInfoAction.tv_add_more.apply {
-                background = ContextCompat.getDrawable(binding.root.context, moreTextBg)
-                setTextColor(ContextCompat.getColor(binding.root.context, moreTextColor))
-                isClickable = moreClickable
-            }*/
-
         }
 
         private fun setupMaximumLimit(data: BetInfoListData) {
@@ -419,33 +367,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     llMaxBetAmount.visibility = View.VISIBLE
                 }
             }
-        }
-
-        //TODO 投注按鈕事件
-        private fun setupBetButton(data: BetInfoListData) {
-            /*binding.betInfoAction.tv_bet.apply {
-                visibility = if (isNeedRegister) View.INVISIBLE else View.VISIBLE
-
-                setOnClickListener(object : OnForbidClickListener() {
-                    override fun forbidClick(view: View?) {
-                        if (data.matchOdd.status == BetStatus.LOCKED.code || data.matchOdd.status == BetStatus.DEACTIVATED.code) return
-                        val stake = if (binding.etBet.text.toString().isEmpty()) {
-                            0.0
-                        } else {
-                            binding.etBet.text.toString().toDouble()
-                        }
-                        onItemClickListener.onBetClick(data, stake)
-                    }
-                })
-            }*/
-        }
-
-        //TODO 需先註冊或登入按鈕事件
-        private fun setupRegisterButton() {
-            /*binding.betInfoAction.tv_register.apply {
-                visibility = if (isNeedRegister) View.VISIBLE else View.INVISIBLE
-                setOnClickListener { onItemClickListener.onRegisterClick() }
-            }*/
         }
 
         private fun setChangeOdds(position: Int, matchOdd: MatchOdd) {
@@ -592,7 +513,10 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         private fun setupClickMoreItem(btnShowMore: View) {
             btnShowMore.setOnClickListener {
                 val collapse = !moreOptionCollapse
-                submitData({ moreOptionCollapse = collapse }, collapse)
+                submitData({
+                    moreOptionCollapse = collapse
+                    needScrollToBottom = true
+                }, collapse)
             }
         }
 
