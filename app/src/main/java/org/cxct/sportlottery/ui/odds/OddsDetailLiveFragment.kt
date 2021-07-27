@@ -2,11 +2,7 @@ package org.cxct.sportlottery.ui.odds
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.net.http.SslError
 import android.os.Bundle
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,16 +16,14 @@ import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
-import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
-import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -60,7 +54,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mSportCode = args.sportType.code
+        mSportCode = args.gameType.key
         matchId = args.matchId
     }
 
@@ -103,13 +97,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun initRecyclerView() {
         rv_game_card.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter = OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
-            it.let {
-                matchId = it.id
-                getData()
-                live_view_tool_bar.setWebViewUrl(matchId)
-            }
-        })
+        oddsGameCardAdapter =
+            OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
+                it.let {
+                    matchId = it.id
+                    getData()
+                    live_view_tool_bar.setWebViewUrl(matchId)
+                }
+            })
         rv_game_card.adapter = oddsGameCardAdapter
     }
 
@@ -251,7 +246,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun subscribeHallChannel(code: String, match: String?) {
-        service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match)
+        service.subscribeHallChannel(code, PlayCate.OU_HDP.value, match)
     }
 
 
@@ -267,7 +262,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             service.subscribeEventChannel(matchId)
         }
 
-        viewModel.getOddsList(args.sportType.code, MatchType.IN_PLAY.postValue)
+        viewModel.getOddsList(args.gameType.key, MatchType.IN_PLAY.postValue)
         loading()
     }
 
@@ -279,7 +274,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             matchOdd.matchInfo.awayScore = curAwayScore
             tv_score.text = "$curHomeScore / $curAwayScore"
 
-            viewModel.updateMatchBetList(matchType = MatchType.IN_PLAY, args.sportType, playCateName = oddsDetail.name, matchOdd = matchOdd, odd = odd)
+            viewModel.updateMatchBetList(
+                matchType = MatchType.IN_PLAY,
+                gameType = args.gameType,
+                playCateName = oddsDetail.name,
+                playName = odd.name ?: "",
+                matchInfo = matchOdd.matchInfo,
+                odd = odd
+            )
 
         }
     }

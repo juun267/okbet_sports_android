@@ -23,7 +23,7 @@ import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -51,7 +51,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSportCode = args.sportType.code
+        mSportCode = args.gameType.key
         matchId = args.matchId
     }
 
@@ -291,9 +291,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         matchOdd?.let { matchOdd ->
             viewModel.updateMatchBetList(
                 matchType = args.matchType,
-                args.sportType,
+                gameType = args.gameType,
                 playCateName = oddsDetail.name,
-                matchOdd = matchOdd,
+                playName = odd.name?:"",
+                matchInfo = matchOdd.matchInfo,
                 odd = odd
             )
         }

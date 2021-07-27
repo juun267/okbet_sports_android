@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
@@ -73,7 +74,6 @@ import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
-import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -86,6 +86,7 @@ import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
@@ -190,11 +191,25 @@ object ErrorUtils {
                     }
                     (url.contains(MATCH_BET_SETTLED_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return BetSettledListResult(it.code, it.msg, it.success, null, null, null) as T
+                        return BetSettledListResult(
+                            it.code,
+                            it.msg,
+                            it.success,
+                            null,
+                            null,
+                            null
+                        ) as T
                     }
                     (url.contains(MATCH_BET_SETTLED_DETAIL_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return BetSettledDetailListResult(it.code, it.msg, it.success, null, null, null) as T
+                        return BetSettledDetailListResult(
+                            it.code,
+                            it.msg,
+                            it.success,
+                            null,
+                            null,
+                            null
+                        ) as T
                     }
                     (url.contains(MATCH_PRELOAD)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -401,6 +416,10 @@ object ErrorUtils {
                     (url.contains(THIRD_REBATES)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ThirdRebatesResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_CATEGORY_RECOMMEND)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchRecommendResult(it.code, it.msg, it.success, null, null) as T
                     }
                     (url.contains(MATCH_CATEGORY_SPECIAL_MATCH)) -> {
                         @Suppress("UNCHECKED_CAST")

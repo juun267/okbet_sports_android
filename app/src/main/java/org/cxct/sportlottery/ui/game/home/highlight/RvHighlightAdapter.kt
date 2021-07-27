@@ -10,18 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd.view.*
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayType
-import org.cxct.sportlottery.network.common.SportType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.matchCategory.result.OddData
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.home.gameTable4.OnClickOddListener
+import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -44,11 +44,14 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 startTime = it.matchInfo?.startTime?.toString() ?: "",
                 status = it.matchInfo?.status ?: -1
             ).apply {
-                sportType = SportType.getSportType(sportCode)
+                gameType = sportCode
                 startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")
             }
-            val odds = it.odds ?: mutableMapOf()
+            val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
+            it.odds?.forEach { odd ->
+                odds[odd.key] = odd.value.toMutableList()
+            }
             MatchOdd(matchInfo, odds)
         } ?: listOf()
 
@@ -65,6 +68,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
+    //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY，是的話可以再簡化判斷邏輯
     private val matchType: MatchType = MatchType.TODAY
 
     var onClickOddListener: OnClickOddListener? = null
@@ -124,7 +128,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             setupOddButton(data)
 
             //TODO simon test review 賠率 icon 顯示邏輯
-            itemView.iv_match_in_play.visibility = if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
+            itemView.iv_match_in_play.visibility =
+                if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
 //            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
 //            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
 
@@ -170,51 +175,51 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
         private fun setupOddButton(data: MatchOdd) {
             itemView.apply {
-                val sportType = data.matchInfo?.sportType
+                val gameType = data.matchInfo?.gameType
 
-                val playTypeStr = when (sportType) {
-                    SportType.FOOTBALL, SportType.BASKETBALL -> context.getText(R.string.ou_hdp_hdp_title)
-                    SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> context.getText(R.string.ou_hdp_1x2_title)
+                val playCateStr = when (gameType) {
+                    GameType.FT.key, GameType.BK.key -> context.getText(R.string.ou_hdp_hdp_title)
+                    GameType.TN.key, GameType.VB.key -> context.getText(R.string.ou_hdp_1x2_title)
                     else -> ""
                 }.toString()
 
-                val oddListHDP = when (sportType) {
-                    SportType.TENNIS -> {
-                        data.odds[PlayType.SET_HDP.code]
+                val oddListHDP = when (gameType) {
+                    GameType.TN.key -> {
+                        data.odds[PlayCate.SET_HDP.value]
                     }
-                    SportType.BASKETBALL -> {
-                        data.odds[PlayType.HDP_INCL_OT.code]
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.HDP_INCL_OT.value]
                     }
                     else -> {
-                        data.odds[PlayType.HDP.code]
+                        data.odds[PlayCate.HDP.value]
                     }
                 }
 
-                val oddList1x2 = when (sportType) {
-                    SportType.BASKETBALL -> {
-                        data.odds[PlayType.X12_INCL_OT.code]
+                val oddList1x2 = when (gameType) {
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.SINGLE_OT.value]
                     }
                     else -> {
-                        data.odds[PlayType.X12.code]
+                        data.odds[PlayCate.SINGLE.value]
                     }
                 }
 
                 btn_match_odd1.apply {
-                    playType = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            PlayType.HDP
+                    playCate = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
+                            PlayCate.HDP
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            PlayType.X12
+                        GameType.TN.key, GameType.VB.key -> {
+                            PlayCate.SINGLE
                         }
                         else -> null
                     }
 
-                    isSelected = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    isSelected = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             oddListHDP?.get(0)?.isSelected ?: false
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             oddList1x2?.get(0)?.isSelected ?: false
                         }
                         else -> {
@@ -222,15 +227,15 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                         }
                     }
 
-                    betStatus = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    betStatus = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             if (oddListHDP == null || oddListHDP.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
                                 oddListHDP[0]?.status ?: BetStatus.LOCKED.code
                             }
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             if (oddList1x2 == null || oddList1x2.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
@@ -243,11 +248,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     }
 
                     this@ViewHolderHdpOu.setupOddState(
-                        this, when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        this, when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 oddListHDP?.get(0)
                             }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 oddList1x2?.get(0)
                             }
                             else -> {
@@ -258,11 +263,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                         override fun onOddStateChangedFinish() {
-                            when (sportType) {
-                                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            when (gameType) {
+                                GameType.FT.key, GameType.BK.key -> {
                                     oddListHDP?.get(0)?.oddState = OddState.SAME.state
                                 }
-                                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                GameType.TN.key, GameType.VB.key -> {
                                     oddList1x2?.get(0)?.oddState = OddState.SAME.state
                                 }
                             }
@@ -306,27 +311,27 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     }
 
                     setOnClickListener {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 if (oddListHDP != null && oddListHDP.size >= 2) {
                                     oddListHDP[0]?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.homeName
                                         )
                                     }
                                 }
                             }
 
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 if (oddList1x2 != null && oddList1x2.size >= 2) {
                                     oddList1x2[0]?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.homeName
                                         )
                                     }
@@ -337,21 +342,21 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 }
 
                 btn_match_odd2.apply {
-                    playType = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
-                            PlayType.HDP
+                    playCate = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
+                            PlayCate.HDP
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
-                            PlayType.X12
+                        GameType.TN.key, GameType.VB.key -> {
+                            PlayCate.SINGLE
                         }
                         else -> null
                     }
 
-                    isSelected = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    isSelected = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             oddListHDP?.get(1)?.isSelected ?: false
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             oddList1x2?.get(1)?.isSelected ?: false
                         }
                         else -> {
@@ -359,15 +364,15 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                         }
                     }
 
-                    betStatus = when (sportType) {
-                        SportType.FOOTBALL, SportType.BASKETBALL -> {
+                    betStatus = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
                             if (oddListHDP == null || oddListHDP.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
                                 oddListHDP[1]?.status ?: BetStatus.LOCKED.code
                             }
                         }
-                        SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                        GameType.TN.key, GameType.VB.key -> {
                             if (oddList1x2 == null || oddList1x2.size < 2) {
                                 BetStatus.LOCKED.code
                             } else {
@@ -380,11 +385,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     }
 
                     this@ViewHolderHdpOu.setupOddState(
-                        this, when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        this, when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 oddListHDP?.get(1)
                             }
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 oddList1x2?.get(1)
                             }
                             else -> {
@@ -395,11 +400,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
                         override fun onOddStateChangedFinish() {
-                            when (sportType) {
-                                SportType.FOOTBALL, SportType.BASKETBALL -> {
+                            when (gameType) {
+                                GameType.FT.key, GameType.BK.key -> {
                                     oddListHDP?.get(1)?.oddState = OddState.SAME.state
                                 }
-                                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                                GameType.TN.key, GameType.VB.key -> {
                                     oddList1x2?.get(1)?.oddState = OddState.SAME.state
                                 }
                             }
@@ -443,27 +448,27 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     }
 
                     setOnClickListener {
-                        when (sportType) {
-                            SportType.FOOTBALL, SportType.BASKETBALL -> {
+                        when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
                                 if (oddListHDP != null && oddListHDP.size >= 2) {
                                     oddListHDP[1]?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.awayName
                                         )
                                     }
                                 }
                             }
 
-                            SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> {
+                            GameType.TN.key, GameType.VB.key -> {
                                 if (oddList1x2 != null && oddList1x2.size >= 2) {
                                     oddList1x2[1]?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playTypeStr,
+                                            playCateStr,
                                             data.matchInfo.awayName
                                         )
                                     }

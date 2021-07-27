@@ -21,13 +21,13 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.error.BetAddErrorParser
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
@@ -144,7 +144,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        viewModel.removeBetInfoAll()
+        viewModel.removeBetInfoSingle()
         OddSpannableString.clearHandler()
     }
 
@@ -221,7 +221,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 tv_check_maximum_limit.visibility = View.VISIBLE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.GONE
-                button_bet.isCanSendOut = false
 
             } else {
 
@@ -229,8 +228,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 tv_check_maximum_limit.visibility = View.GONE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.VISIBLE
-                button_bet.isCanSendOut = true
-
 
                 val quota = it.toDouble()
 

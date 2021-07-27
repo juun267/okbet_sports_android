@@ -38,6 +38,7 @@
     <color name="colorGrayLight2">#E4E4E4</color>
     <color name="colorGray">#666666</color>
     <color name="colorGrayDark">#404040</color>
+    <color name="colorGrayDark2">#444444</color>
 
     <color name="colorBlackLight">#333333</color>
     <color name="colorBlack">#000000</color>

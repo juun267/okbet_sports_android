@@ -14,19 +14,19 @@ import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.PlayTypeUtils
+import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
@@ -42,7 +42,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(args.matchType, args.leagueId, it)
+                viewModel.switchPlay(args.matchType, args.leagueId.toList(), it)
                 loading()
             }
         }
@@ -141,7 +141,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onStart() {
         super.onStart()
 
-        viewModel.getLeagueOddsList(args.matchType, args.leagueId, isReloadPlayCate = true)
+        viewModel.getLeagueOddsList(args.matchType, args.leagueId.toList(), isReloadPlayCate = true)
         loading()
     }
 
@@ -181,7 +181,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
-                                leagueOdd.sportType = args.sportType
+                                leagueOdd.gameType = args.gameType
                             }
                         }
                     }
@@ -189,8 +189,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     leagueOdds.forEach { leagueOdd ->
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
-                                args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
+                                args.gameType.key,
+                                PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
                         }
@@ -233,10 +233,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun updateSportBackground(sportCode: String?) {
         Glide.with(requireContext()).load(
             when (sportCode) {
-                SportType.FOOTBALL.code -> R.drawable.soccer48
-                SportType.BASKETBALL.code -> R.drawable.basketball48
-                SportType.TENNIS.code -> R.drawable.tennis48
-                SportType.VOLLEYBALL.code -> R.drawable.volleyball48
+                GameType.FT.key -> R.drawable.soccer48
+                GameType.BK.key -> R.drawable.basketball48
+                GameType.TN.key -> R.drawable.tennis48
+                GameType.VB.key -> R.drawable.volleyball48
                 else -> null
             }
         ).into(game_league_toolbar_bg)
@@ -252,7 +252,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
-                viewModel.switchPlayCategory(args.matchType, args.leagueId, data.code)
+                viewModel.switchPlayCategory(args.matchType, args.leagueId.toList(), data.code)
                 bottomSheet.dismiss()
                 loading()
             })
@@ -311,10 +311,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                                     updateMatchOdd?.let {
                                         updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
-                                            SportType.FOOTBALL.code -> {
+                                            GameType.FT.key -> {
                                                 matchClockCO.matchTime
                                             }
-                                            SportType.BASKETBALL.code -> {
+                                            GameType.BK.key -> {
                                                 matchClockCO.remainingTimeInPeriod
                                             }
                                             else -> null
@@ -355,9 +355,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             }
 
                             if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                updateMatchOdd?.odds = PlayTypeUtils.filterOdds(
+                                updateMatchOdd?.odds = PlayCateUtils.filterOdds(
                                     oddTypeSocketMap.toMutableMap(),
-                                    args.sportType.code
+                                    args.gameType.key
                                 )
 
                             } else {
@@ -480,8 +480,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
-                                args.sportType.code,
-                                CateMenuCode.HDP_AND_OU.code,
+                                args.gameType.key,
+                                PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
                         }
@@ -495,7 +495,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         val action =
             GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
                 args.matchType,
-                args.sportType,
+                args.gameType,
                 matchId,
                 matchInfoList.toTypedArray()
             )
@@ -505,7 +505,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun navOddsDetailLive(matchId: String) {
         val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
-            args.sportType,
+            args.gameType,
             matchId
         )
 
@@ -518,14 +518,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         playCateName: String,
         playName: String
     ) {
-        viewModel.updateMatchBetList(
-            args.matchType,
-            args.sportType,
-            playCateName,
-            playName,
-            matchOdd,
-            odd
-        )
+        matchOdd.matchInfo?.let { matchInfo ->
+            viewModel.updateMatchBetList(
+                args.matchType,
+                args.gameType,
+                playCateName,
+                playName,
+                matchInfo,
+                odd
+            )
+        }
     }
 
     override fun onStop() {

@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -119,8 +119,8 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     outrightOddAdapter.matchOdd = matchOdd
 
                     service.subscribeHallChannel(
-                        args.sportType.code,
-                        CateMenuCode.OUTRIGHT.code,
+                        args.gameType.key,
+                        PlayCate.OUTRIGHT.value,
                         args.eventId
                     )
                 }
@@ -266,8 +266,8 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
                 service.subscribeHallChannel(
-                    args.sportType.code,
-                    CateMenuCode.OUTRIGHT.code,
+                    args.gameType.key,
+                    PlayCate.OUTRIGHT.value,
                     args.eventId
                 )
             }
@@ -278,11 +278,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         matchOdd: MatchOdd,
         odd: Odd
     ) {
-        viewModel.updateMatchBetList(
-            MatchType.OUTRIGHT,
-            args.sportType,
-            matchOdd,
-            odd
+        viewModel.updateMatchBetListForOutRight(
+            matchType = MatchType.OUTRIGHT,
+            gameType = args.gameType,
+            matchOdd = matchOdd,
+            odd = odd
         )
     }
 
