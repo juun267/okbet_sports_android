@@ -20,11 +20,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetListBatchControlBinding
 import org.cxct.sportlottery.databinding.ContentBetListItemBinding
 import org.cxct.sportlottery.databinding.ItemBetListBatchControlConnectBinding
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.CHANGING_ITEM_BG_COLOR_DURATION
 import org.cxct.sportlottery.ui.bet.list.INPLAY
@@ -32,7 +32,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import timber.log.Timber
 
 @SuppressLint("ClickableViewAccessibility")
 class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetListDiffCallBack()) {
@@ -65,7 +64,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
     var moreOptionCollapse = false
 
     var needScrollToBottom = false //用來紀錄是否為點擊更多選項需滾動至底部
-    private fun submitData(doFirst: () -> Unit = {}, showMore: Boolean = false) {
+    private fun submitData(doFirst: () -> Unit = {}) {
         doFirst.invoke()
         val itemList = when {
             betList.isEmpty() -> listOf(DataItem.NoData())
@@ -119,7 +118,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Timber.e("Dean, bind view holder itemCount = $itemCount , currentList = $currentList")
         val itemData = getItem(holder.adapterPosition)
         when (holder) {
             is ViewHolder -> holder.bind((itemData as DataItem.BetInfoData).betInfoListData, oddsType)
@@ -188,7 +186,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 val itemOdd = TextUtil.formatForOdd(getOdds(itemData.matchOdd, oddsType))
                 betInfoDetail.tvOdds.text = itemOdd
                 betInfoDetail.ivDelete.setOnClickListener {
-                    Timber.e("Dean, delete click event")
                     onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
                 }
                 ivClearText.setOnClickListener { etBet.text.clear() }
@@ -208,8 +205,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                         )
                     } else itemData.matchOdd.playCateName
 
-                Timber.e("Dean, parlayList[0].allSingleInput = ${parlayList[0].allSingleInput}")
-                Timber.e("Dean, itemData.input = ${itemData.input}")
                 (parlayList[0].allSingleInput ?: itemData.input)?.let {
                     etBet.setText(it)
                 }
@@ -369,6 +364,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             }
         }
 
+        //TODO 賠率變動尚未完成
         private fun setChangeOdds(position: Int, matchOdd: MatchOdd) {
             when (matchOdd.oddState) {
                 OddState.LARGER.state, OddState.SMALLER.state -> {
@@ -448,7 +444,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
                         setupParlayItemTest(binding.itemFirstConnect, itemData)
                         setupSingleItem(betList, itemData)
-                        //TODO 點擊查看所有多個選項
+
                         setupClickMoreItem(llMoreOption)
                     }
                 }
@@ -513,10 +509,10 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         private fun setupClickMoreItem(btnShowMore: View) {
             btnShowMore.setOnClickListener {
                 val collapse = !moreOptionCollapse
-                submitData({
+                submitData {
                     moreOptionCollapse = collapse
                     needScrollToBottom = true
-                }, collapse)
+                }
             }
         }
 
@@ -551,8 +547,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
                     tvParlayOdd.text = itemOdd
                     tvComCount.text = data.num.toString()
-
-                    btnRule.setOnClickListener { Timber.e("Dean, Test show rule = ${itemData.parlayRule}") }
 
                     etBet.apply {
                         /* set listener */
