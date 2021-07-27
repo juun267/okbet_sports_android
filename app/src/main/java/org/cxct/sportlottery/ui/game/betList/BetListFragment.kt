@@ -45,6 +45,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var betListDiffAdapter: BetListDiffAdapter? = null
 
+    private var betAllAmount = 0.0
+
+    private var hasOddPlatClose = false
+
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -79,9 +83,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initObserver()
         initSocketObserver()
 
-        //test parlay
-        getParlayList()
-
         queryData()
     }
 
@@ -98,7 +99,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initBtnView() {
         binding.apply {
-            setBetButtonEnable(false)
+            checkBetButtonEnable()
             tvBtnBetAmount.text = "${TextUtil.formatMoney(0.0)} ${getString(R.string.currency)}"
         }
     }
@@ -146,8 +147,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
                 override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                     super.onItemRangeInserted(positionStart, itemCount)
-                    if (positionStart == 0 && betListDiffAdapter?.moreOptionCollapse == true)
+                    if (positionStart == 0 && betListDiffAdapter?.moreOptionCollapse == true && needScrollToBottom) {
                         rv_bet_list.smoothScrollToPosition(0)
+                        needScrollToBottom = false
+                    }
                 }
             })
         }
@@ -175,7 +178,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             totalBetAmountNotNull.let {
                 binding.apply {
                     tvBtnBetAmount.text = "${TextUtil.formatMoney(it)} ${getString(R.string.currency)}"
-                    setBetButtonEnable(it > 0)
+                    betAllAmount = it
+                    checkBetButtonEnable()
                 }
             }
         } catch (e: Exception) {
@@ -289,9 +293,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     /**
      * 投注按鈕可否互動控制
      */
-    private fun setBetButtonEnable(enable: Boolean) {
+    private fun checkBetButtonEnable() {
         binding.apply {
-            if (enable) {
+            if (betAllAmount > 0 && !hasOddPlatClose) {
                 tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
                 tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
                 btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorBlue)
@@ -343,6 +347,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun showHideOddsCloseWarn(show: Boolean) {
         ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
+        checkBetButtonEnable()
     }
 
     /**
