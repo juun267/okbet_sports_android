@@ -12,7 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCOCompare
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -32,6 +32,15 @@ class TypeSCOAdapter(
     private val oddsType: OddsType,
     private val onMoreClickListener: OnMoreClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
+    private val mOddStateRefreshListener by lazy {
+        object : OddStateViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
+            }
+        }
+    }
 
 
     enum class ItemType {
@@ -80,7 +89,7 @@ class TypeSCOAdapter(
     }
 
 
-    inner class ViewHolder(view: View) : OddDetailStateViewHolder(view) {
+    inner class ViewHolder(view: View) : OddStateViewHolder(view) {
 
         private val btnOdds1st = itemView.findViewById<OddsButton>(R.id.button_odds_1st)
         private val btnOddsAnt = itemView.findViewById<OddsButton>(R.id.button_odds_ant)
@@ -89,7 +98,6 @@ class TypeSCOAdapter(
         private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
 
         fun bindModel(key: String) {
-
             clItem.visibility = if (!oddsDetail.isMoreExpand && adapterPosition > 4) View.GONE else View.VISIBLE
 
             tvName.text = key
@@ -104,11 +112,6 @@ class TypeSCOAdapter(
                 setupOdd(fOdds, oddsType)
                 setupOddState(this, fOdds)
                 isSelected = betInfoList.any { it.matchOdd.oddsId == fOdds?.id }
-                oddStateChangeListener = object : OddStateChangeListener {
-                    override fun refreshOddButton(odd: Odd) {
-                        notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
-                    }
-                }
                 setOnClickListener {
                     fOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
@@ -120,11 +123,6 @@ class TypeSCOAdapter(
                 setupOdd(aOdds, oddsType)
                 setupOddState(this, aOdds)
                 isSelected = betInfoList.any { it.matchOdd.oddsId == aOdds?.id }
-                oddStateChangeListener = object : OddStateChangeListener {
-                    override fun refreshOddButton(odd: Odd) {
-                        notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
-                    }
-                }
                 setOnClickListener {
                     aOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
@@ -136,11 +134,6 @@ class TypeSCOAdapter(
                 setupOdd(lOdds, oddsType)
                 setupOddState(this, lOdds)
                 isSelected = betInfoList.any { it.matchOdd.oddsId == lOdds?.id }
-                oddStateChangeListener = object : OddStateChangeListener {
-                    override fun refreshOddButton(odd: Odd) {
-                        notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
-                    }
-                }
                 setOnClickListener {
                     lOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
@@ -148,17 +141,20 @@ class TypeSCOAdapter(
                 tv_spread.text = ""
             }
         }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = mOddStateRefreshListener
+
     }
 
 
-    inner class NoGoalsViewHolder(view: View) : OddDetailStateViewHolder(view) {
+    inner class NoGoalsViewHolder(view: View) : OddStateViewHolder(view) {
 
         private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
         private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
         private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
 
         fun bindModel(key: String) {
-
             clItem.visibility = if (!oddsDetail.isMoreExpand && adapterPosition > 4) View.GONE else View.VISIBLE
 
             tvName.text = key
@@ -170,19 +166,17 @@ class TypeSCOAdapter(
                 setupOdd(odds, oddsType)
                 setupOddState(this, odds)
                 isSelected = betInfoList.any { it.matchOdd.oddsId == odds?.id }
-                oddStateChangeListener = object : OddStateChangeListener {
-                    override fun refreshOddButton(odd: Odd) {
-                        notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
-                    }
-                }
                 setOnClickListener {
                     odds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
                 tv_name.visibility = View.GONE
                 tv_spread.visibility = View.GONE
             }
-
         }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = mOddStateRefreshListener
+
     }
 
 
