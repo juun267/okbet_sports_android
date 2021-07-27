@@ -98,12 +98,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initBtnView() {
         binding.apply {
-            btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilverLight)
-            tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
-            tvBtnBetAmount.apply {
-                setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
-                text = "${TextUtil.formatMoney(0.0)} ${getString(R.string.currency)}"
-            }
+            setBetButtonEnable(false)
+            tvBtnBetAmount.text = "${TextUtil.formatMoney(0.0)} ${getString(R.string.currency)}"
         }
     }
 
@@ -179,16 +175,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             totalBetAmountNotNull.let {
                 binding.apply {
                     tvBtnBetAmount.text = "${TextUtil.formatMoney(it)} ${getString(R.string.currency)}"
-                    if (it > 0) {
-                        tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
-                        tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
-                        btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorBlue)
-                    } else {
-                        tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
-                        tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
-                        btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilverLight)
-
-                    }
+                    setBetButtonEnable(it > 0)
                 }
             }
         } catch (e: Exception) {
@@ -299,6 +286,24 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         return betListDiffAdapter.parlayList
     }
 
+    /**
+     * 投注按鈕可否互動控制
+     */
+    private fun setBetButtonEnable(enable: Boolean) {
+        binding.apply {
+            if (enable) {
+                tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
+                tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
+                btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorBlue)
+                btnBet.isClickable = true
+            } else {
+                tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
+                tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
+                btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilverLight)
+                btnBet.isClickable = false
+            }
+        }
+    }
     private fun queryData() {
         //獲取餘額
         viewModel.getMoney()
