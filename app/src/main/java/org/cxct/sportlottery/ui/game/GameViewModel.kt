@@ -817,17 +817,17 @@ class GameViewModel(
     }
 
     fun clearQuickPlayCateSelected() {
-        val updateGameHallList = _oddsListGameHallResult.value?.peekContent()
+        _oddsListGameHallResult.postValue(
+            Event(
+                _oddsListGameHallResult.value?.peekContent()?.clearQuickPlayCateSelected()
+            )
+        )
 
-        updateGameHallList?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                    quickPlayCate.isSelected = false
-                }
-            }
-        }
-
-        _oddsListGameHallResult.postValue(Event(updateGameHallList))
+        _oddsListResult.postValue(
+            Event(
+                _oddsListResult.value?.peekContent()?.clearQuickPlayCateSelected()
+            )
+        )
     }
 
     private fun getLeagueList(
@@ -1504,6 +1504,18 @@ class GameViewModel(
                 }
             }
         }
+        return this
+    }
+
+    private fun OddsListResult.clearQuickPlayCateSelected(): OddsListResult {
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.isSelected = false
+                }
+            }
+        }
+
         return this
     }
 }
