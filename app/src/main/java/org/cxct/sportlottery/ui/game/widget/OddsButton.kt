@@ -99,6 +99,7 @@ class OddsButton @JvmOverloads constructor(
     }
 
 
+    //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
         img_odd_lock.apply {
             background = ContextCompat.getDrawable(
@@ -118,6 +119,7 @@ class OddsButton @JvmOverloads constructor(
     }
 
 
+    //依狀態需要隱藏按鈕
     private fun setupBetStatusWithHideItem(betStatus: Int) {
         visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
             View.INVISIBLE

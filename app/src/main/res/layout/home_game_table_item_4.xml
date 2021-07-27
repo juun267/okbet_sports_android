@@ -120,12 +120,12 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <org.cxct.sportlottery.ui.game.widget.OddButton
+            <org.cxct.sportlottery.ui.game.widget.OddsButton
                 android:id="@+id/btn_match_odd1"
                 android:layout_width="78dp"
                 android:layout_height="48dp" />
 
-            <org.cxct.sportlottery.ui.game.widget.OddButton
+            <org.cxct.sportlottery.ui.game.widget.OddsButton
                 android:id="@+id/btn_match_odd2"
                 android:layout_width="78dp"
                 android:layout_height="48dp"
