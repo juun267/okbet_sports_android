@@ -94,6 +94,9 @@ class VpRecommendAdapter(
 
         private fun setupOddButton(oddButton: OddButtonV4, odd: Odd) {
             oddButton.apply homeButtonSettings@{
+
+                odd_type_text.visibility = View.VISIBLE
+                odd_top_text.visibility = View.VISIBLE
                 odd_type_text.text = odd.name
                 odd_top_text.text = odd.spread
 
