@@ -14,7 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
