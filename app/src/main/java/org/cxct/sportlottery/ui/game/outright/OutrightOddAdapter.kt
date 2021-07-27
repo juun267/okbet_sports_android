@@ -10,8 +10,8 @@ import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder

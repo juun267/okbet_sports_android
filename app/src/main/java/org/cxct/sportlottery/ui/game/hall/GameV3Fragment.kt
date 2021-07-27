@@ -20,13 +20,13 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.MatchOdd
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -958,14 +958,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
         sportType?.let {
-            viewModel.updateMatchBetList(
-                args.matchType,
-                sportType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            matchOdd.matchInfo?.let { matchInfo ->
+                viewModel.updateMatchBetList(
+                    args.matchType,
+                    sportType,
+                    playCateName,
+                    playName,
+                    matchInfo,
+                    odd
+                )
+            }
         }
     }
 

@@ -21,6 +21,8 @@ import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
@@ -49,6 +51,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import java.util.*
 import kotlin.collections.ArrayList
@@ -549,9 +552,9 @@ class GameViewModel(
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
                         oddData.odds?.forEach { map ->
                             map.value.forEach { odd ->
-                                odd?.isSelected =
+                                odd.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd?.id
+                                        it.matchOdd.oddsId == odd.id
                                     }
                             }
                         }
@@ -579,9 +582,9 @@ class GameViewModel(
                 result.t?.odds?.forEach { oddData ->
                     oddData.odds?.forEach { map ->
                         map.value.forEach { odd ->
-                            odd?.isSelected =
+                            odd.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd?.id
+                                    it.matchOdd.oddsId == odd.id
                                 }
                         }
                     }
@@ -734,8 +737,8 @@ class GameViewModel(
 
                 val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
                 matchOdd?.let {
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime, DMY_FORMAT)
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime, "HH:mm")
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), DMY_FORMAT)
+                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), HM_FORMAT)
                 }
 
                 _outrightOddsListResult.postValue(Event(result))
@@ -980,7 +983,7 @@ class GameViewModel(
         matchOdd.odds?.forEach { map ->
             val key = map.key
             val value = map.value
-            val filteredOddList = mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
+            val filteredOddList = mutableListOf<Odd?>()
             value.odds?.forEach { odd ->
                 filteredOddList.add(odd)
             }
@@ -1008,35 +1011,34 @@ class GameViewModel(
         sportType: SportType,
         playCateName: String,
         playName: String,
-        matchOdd: MatchOdd,
+        matchInfo: MatchInfo,
         odd: Odd
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType,
-                sportType,
-                playCateName,
-                playName,
-                matchOdd,
-                odd
-            )
+            matchInfo.let {
+                betInfoRepository.addInBetInfo(
+                    matchType = matchType,
+                    sportType = sportType,
+                    playCateName = playCateName,
+                    playName = playName,
+                    matchInfo = matchInfo,
+                    odd = odd
+                )
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
     }
 
-    fun updateMatchBetList(
+    fun updateMatchBetListForOutRight(
         matchType: MatchType,
         sportType: SportType,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: Odd
     ) {
-        val betItem = betInfoRepository.betInfoList.value?.peekContent()
-            ?.find { it.matchOdd.oddsId == odd.id }
-
         val outrightCateName = matchOdd.dynamicMarkets[odd.outrightCateKey].let {
             when (LanguageManager.getSelectLanguage(androidContext)) {
                 LanguageManager.Language.ZH -> {
@@ -1048,33 +1050,17 @@ class GameViewModel(
             }
         }
 
-        if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType,
-                sportType,
-                outrightCateName,
-                odd.spread,
-                matchOdd,
-                odd
-            )
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
-    fun updateMatchBetList(
-        matchType: MatchType,
-        sportType: SportType,
-        playCateName: String,
-        matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.detail.Odd
-    ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
             betInfoRepository.addInBetInfo(
-                matchType, sportType, playCateName, matchOdd, odd
+                matchType = matchType,
+                sportType = sportType,
+                playCateName = outrightCateName ?: "",
+                playName = odd.spread ?: "",
+                matchInfo = matchOdd.matchInfo,
+                odd = odd
             )
         } else {
             odd.id?.let { removeBetInfoItem(it) }
@@ -1092,7 +1078,7 @@ class GameViewModel(
         updatedOddsDetail: ArrayList<OddsDetailListData>
     ) {
         val oldOddList = oddsDetail.oddArrayList
-        var newOddList = listOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
+        var newOddList = listOf<Odd?>()
 
         for (item in updatedOddsDetail) {
             if (item.gameType == oddsDetail.gameType) {
@@ -1106,22 +1092,6 @@ class GameViewModel(
 
                 if (oldOddData != null && newOddData != null) {
                     if (oldOddData.id == newOddData.id) {
-
-                        //如果是球員 忽略名字替換
-                        if (!TextUtil.compareWithGameKey(
-                                oddsDetail.gameType,
-                                PlayCate.SCO.value
-                            )
-                        ) {
-                            if (newOddData.name?.isNotEmpty() == true) {
-                                oldOddData.name = newOddData.name
-                            }
-                        }
-
-                        if (newOddData.extInfo?.isNotEmpty() == true) {
-                            oldOddData.extInfo = newOddData.extInfo
-                        }
-
                         oldOddData.spread = newOddData.spread
 
                         //先判斷大小
@@ -1153,13 +1123,13 @@ class GameViewModel(
                 result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                     betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
                         value.odds.forEach { odd ->
-                            odd?.isSelect = list.any {
+                            odd?.isSelected = list.any {
                                 it.matchOdd.oddsId == odd?.id
                             }
                         }
                     }
                     val filteredOddList =
-                        mutableListOf<org.cxct.sportlottery.network.odds.detail.Odd?>()
+                        mutableListOf<Odd?>()
                     value.odds.forEach { detailOdd ->
                         //因排版問題 null也需要添加
                         filteredOddList.add(detailOdd)
