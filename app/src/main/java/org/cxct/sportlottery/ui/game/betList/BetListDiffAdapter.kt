@@ -62,20 +62,37 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             submitData()
         }
 
-    private fun submitData() {
+    var moreOptionCollapse = false
+
+    private fun submitData(doFirst: () -> Unit = {}, showMore: Boolean = false) {
+        doFirst.invoke()
         val itemList = when {
             betList.isEmpty() -> listOf(DataItem.NoData())
             betList.size == 1 -> betList.map { DataItem.BetInfoData(it) }
             else -> {
-                betList.map { DataItem.BetInfoData(it) } + parlayList.mapIndexed { index, parlayOdd ->
-                    if (index == 0) DataItem.ParlayData(
-                        parlayOdd = parlayOdd,
-                        firstItem = true
-                    ) else DataItem.ParlayData(parlayOdd)
+                betList.map { DataItem.BetInfoData(it) } + when (moreOptionCollapse) {
+                    //查看所有多個選項未展開
+                    true -> {
+                        parlayList.mapIndexed { index, parlayOdd ->
+                            if (index == 0) DataItem.ParlayData(
+                                parlayOdd = parlayOdd,
+                                firstItem = true
+                            ) else DataItem.ParlayData(parlayOdd)
+                        }
+                    }
+                    //查看所有多個選項未展開,只加入第一項
+                    false -> {
+                        parlayList.filterIndexed { index, _ -> index < 1 }.map {
+                            DataItem.ParlayData(
+                                parlayOdd = it,
+                                firstItem = true
+                            )
+                        }
+                    }
                 }
             }
         }
-        submitList(itemList)
+        submitList(itemList.reversed())
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -478,7 +495,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                         setupParlayItemTest(binding.itemFirstConnect, itemData)
                         setupSingleItem(betList, itemData)
                         //TODO 點擊查看所有多個選項
-                        setupClickMoreItem()
+                        setupClickMoreItem(llMoreOption)
                     }
                 }
             }
@@ -508,8 +525,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                                 }
                             }
 
-                            //單注填充所有單注選項, 刷新單注選項資料
-                            Handler().post { notifyItemRangeChanged(0, betList.size) }
+                            //單注填充所有單注選項, 刷新單注選項資料, 因資料做過反轉故投注單為最後一項開始
+                            Handler().post { notifyItemRangeChanged(itemCount - 1, betList.size) }
                         }
 
                         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -539,7 +556,12 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             }
         }
 
-        private fun setupClickMoreItem() {}
+        private fun setupClickMoreItem(btnShowMore: View) {
+            btnShowMore.setOnClickListener {
+                val collapse = !moreOptionCollapse
+                submitData({ moreOptionCollapse = collapse }, collapse)
+            }
+        }
 
         /**
          * 填充所有單注後獲取總可贏額

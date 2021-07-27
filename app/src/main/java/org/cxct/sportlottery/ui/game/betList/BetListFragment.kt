@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
@@ -111,7 +112,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             rvBetList.layoutManager =
-                LinearLayoutManager(this@BetListFragment.context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(this@BetListFragment.context, LinearLayoutManager.VERTICAL, true).apply {
+                    stackFromEnd = true
+                }
             rvBetList.adapter = betListDiffAdapter
         }
     }
@@ -141,9 +144,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun refreshAmount() {
                     refreshAllAmount()
                 }
-
             }
-        )
+        ).apply {
+            //展開查看所有多個選項時將滾動至底部
+            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeInserted(positionStart, itemCount)
+                    if (positionStart == 0 && betListDiffAdapter?.moreOptionCollapse == true)
+                        rv_bet_list.smoothScrollToPosition(0)
+                }
+            })
+        }
     }
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
