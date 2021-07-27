@@ -359,6 +359,47 @@
                     tools:listitem="@layout/home_game_table_4" />
 
                 <LinearLayout
+                    android:id="@+id/recommend_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="56dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                    <TextView
+                        android:id="@+id/tv_recommend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="@string/label_match_recommend"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/textSize20sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorSilverLight" />
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/home_recommend_item" />
+
+                <LinearLayout
                     android:id="@+id/highlight_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

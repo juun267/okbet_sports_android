@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 
 data class OddsDetailListData(
     var gameType: String, //GameType.HDP ...

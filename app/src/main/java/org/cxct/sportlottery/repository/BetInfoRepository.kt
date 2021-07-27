@@ -4,13 +4,15 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil
@@ -152,82 +154,20 @@ class BetInfoRepository(val androidContext: Context) {
         sportType: SportType,
         playCateName: String,
         playName: String,
-        matchOdd: org.cxct.sportlottery.network.odds.list.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
+        matchInfo: MatchInfo,
+        odd: Odd
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
-            matchType, sportType.code, playCateName, playName, matchOdd, odd
-        )
-
-        betInfoMatchOdd?.let {
-            val data = BetInfoListData(
-                betInfoMatchOdd,
-                getParlayOdd(matchType, sportType, mutableListOf(it)).first()
-            ).apply {
-                this.matchType = matchType
-            }
-
-            if (betList.size == 0) {
-                _showBetInfoSingle.postValue(Event(true))
-            }
-
-            betList.add(data)
-            _betInfoList.postValue(Event(betList))
-        }
-    }
-
-
-    fun addInBetInfo(
-        matchType: MatchType,
-        sportType: SportType,
-        playCateName: String?,
-        playName: String?,
-        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.list.Odd
-    ) {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
-        if (betList.size >= BET_INFO_MAX_COUNT) return
-
-        val betInfoMatchOdd = MatchOddUtil.transfer(
-            sportType.code, playCateName, playName, matchOdd, odd
-        )
-
-        betInfoMatchOdd?.let {
-            val data = BetInfoListData(
-                betInfoMatchOdd,
-                getParlayOdd(matchType, sportType, mutableListOf(it)).first()
-            ).apply {
-                this.matchType = matchType
-            }
-
-            if (betList.size == 0) {
-                _showBetInfoSingle.postValue(Event(true))
-            }
-
-            betList.add(data)
-            _betInfoList.postValue(Event(betList))
-        }
-    }
-
-
-    fun addInBetInfo(
-        matchType: MatchType,
-        sportType: SportType,
-        playCateName: String,
-        matchOdd: org.cxct.sportlottery.network.odds.detail.MatchOdd,
-        odd: org.cxct.sportlottery.network.odds.detail.Odd
-    ) {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
-        if (betList.size >= BET_INFO_MAX_COUNT) return
-
-        val betInfoMatchOdd = MatchOddUtil.transfer(
-            matchType, sportType.code, playCateName, matchOdd, odd
+            matchType = matchType,
+            gameType = sportType.code,
+            playCateName = playCateName,
+            playName = playName,
+            matchInfo = matchInfo,
+            odd = odd
         )
 
         betInfoMatchOdd?.let {
