@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.row_game_filter_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
@@ -21,6 +20,7 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.GameConfigManager
 
 
@@ -98,8 +98,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
 //                    outright_filter_row.sportName = outrightOddsListResult.outrightOddsListData?.sport?.name ?: "" //TODO Cheryl : 等api修好後待確認用哪個值正確
-                    outright_filter_row.sportName = SportType.getSportType(args.sportType.code)?.name
-
+                    outright_filter_row.sportName = GameType.values().find { gameType -> gameType.key == args.sportType.code }?.string?.let { stringId -> getString(stringId) }
 
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)?.let { gameImg ->
                         game_filter_back_img.setBackgroundResource(gameImg)

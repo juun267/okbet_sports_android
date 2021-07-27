@@ -14,5 +14,5 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     BK("BK", R.string.basketball),
     TN("TN", R.string.tennis),
     BM("BM", R.string.badminton),
-    VB("VB", R.string.volleyball)
+    VB("VB", R.string.volleyball),
 }
