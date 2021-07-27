@@ -116,11 +116,25 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupMatchTime(item, matchType, isTimerEnable)
 
-            setupOddButton(item, leagueOddListener, oddsType)
+            setupOddButton(
+                item.matchInfo,
+                item.odds,
+                oddsType,
+                leagueOddListener,
+                itemView.odd_button_main
+            )
 
             setupQuickCategory(item, leagueOddListener)
 
-            setupOddButtonOther(item, oddsType)
+            setupOddButton(
+                item.matchInfo,
+                item.quickPlayCateList?.find { it.isSelected }?.quickOdds?.mapValues {
+                    it.value?.odds ?: listOf()
+                },
+                oddsType,
+                leagueOddListener,
+                itemView.odd_button_other
+            )
         }
 
         private fun setupMatchInfo(
@@ -235,11 +249,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         private fun setupOddButton(
-            item: MatchOdd,
-            leagueOddListener: LeagueOddListener?,
+            matchInfo: MatchInfo?,
+            odds: Map<String, List<Odd?>>?,
             oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?,
+            viewGroup: ViewGroup
         ) {
-            item.odds.forEach {
+            odds?.forEach {
                 val view = LayoutInflater.from(itemView.context).inflate(
                     R.layout.view_odd_btn_column_v4,
                     itemView.odd_button_main,
@@ -247,7 +263,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 ).apply {
 
                     val playCateName = PlayCateUtils
-                        .getPlayCateTitleResId(it.key, item.matchInfo?.gameType)?.let {
+                        .getPlayCateTitleResId(it.key, matchInfo?.gameType)?.let {
                             itemView.context.getString(it)
                         } ?: ""
 
@@ -317,11 +333,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                         itemView.context.getString(R.string.odd_button_ou_o)
                                     }
                                     else -> {
-                                        item.matchInfo?.homeName
+                                        matchInfo?.homeName
                                     }
                                 } ?: ""
 
-                                leagueOddListener?.onClickBet(item, odd, playCateName, playName)
+                                leagueOddListener?.onClickBet(
+                                    matchInfo,
+                                    odd,
+                                    playCateName,
+                                    playName
+                                )
                             }
                         }
                     }
@@ -390,11 +411,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                         itemView.context.getString(R.string.odd_button_ou_u)
                                     }
                                     else -> {
-                                        item.matchInfo?.awayName
+                                        matchInfo?.awayName
                                     }
                                 } ?: ""
 
-                                leagueOddListener?.onClickBet(item, odd, playCateName, playName)
+                                leagueOddListener?.onClickBet(
+                                    matchInfo,
+                                    odd,
+                                    playCateName,
+                                    playName
+                                )
                             }
                         }
                     }
@@ -431,7 +457,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         setOnClickListener { _ ->
                             it.value[2]?.let { odd ->
                                 leagueOddListener?.onClickBet(
-                                    item,
+                                    matchInfo,
                                     odd,
                                     playCateName,
                                     itemView.context.getString(R.string.draw)
@@ -450,7 +476,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize8sp)
                     }
 
-                    itemView.odd_button_main.addView(it, layoutParams)
+                    viewGroup.addView(it, layoutParams)
                 }
             }
         }
@@ -459,6 +485,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?
         ) {
+
             itemView.league_odd_quick_cate_border.visibility =
                 if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.GONE
@@ -530,9 +557,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
                 }
             }
-        }
 
-        private fun setupOddButtonOther(item: MatchOdd, oddsType: OddsType) {
             itemView.league_odd_quick_button_border.apply {
                 visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
                     View.GONE
@@ -574,170 +599,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     View.GONE
                 } else {
                     View.VISIBLE
-                }
-
-                item.quickPlayCateList?.find {
-                    it.isSelected
-                }?.quickOdds?.forEach { quickOdd ->
-                    val view = LayoutInflater.from(itemView.context).inflate(
-                        R.layout.view_odd_btn_column_v4,
-                        itemView.odd_button_main,
-                        false
-                    ).apply {
-                        val playCateName = PlayCateUtils
-                            .getPlayCateTitleResId(quickOdd.key, item.matchInfo?.gameType)
-                            ?.let {
-                                itemView.context.getString(it)
-                            } ?: ""
-
-                        this.odd_btn_type.text = playCateName
-
-                        this.odd_btn_home.apply homeButtonSettings@{
-                            when {
-                                (quickOdd.value?.odds?.size ?: 0 < 2) -> {
-                                    betStatus = BetStatus.LOCKED.code
-                                    return@homeButtonSettings
-                                }
-                                else -> {
-                                    betStatus = quickOdd.value?.odds?.get(0)?.status
-                                }
-                            }
-
-                            odd_type_text.apply {
-                                visibility = when {
-                                    PlayCateUtils.getOUSeries().map { it.value }
-                                        .contains(quickOdd.key) -> View.VISIBLE
-                                    else -> {
-                                        when (!quickOdd.value?.odds?.get(0)?.spread.isNullOrEmpty()) {
-                                            true -> View.INVISIBLE
-                                            false -> View.GONE
-                                        }
-                                    }
-                                }
-
-                                text = when {
-                                    PlayCateUtils.getOUSeries().map { it.value }
-                                        .contains(quickOdd.key) -> {
-                                        itemView.context.getString(R.string.odd_button_ou_o)
-                                    }
-                                    else -> ""
-                                }
-                            }
-
-                            odd_top_text.apply {
-                                visibility =
-                                    when (!quickOdd.value?.odds?.get(0)?.spread.isNullOrEmpty()) {
-                                        true -> View.VISIBLE
-                                        false -> {
-                                            when {
-                                                PlayCateUtils.getOUSeries().map { it.value }
-                                                    .contains(quickOdd.key) -> View.INVISIBLE
-                                                else -> View.GONE
-                                            }
-                                        }
-                                    }
-
-                                text = quickOdd.value?.odds?.get(0)?.spread ?: ""
-                            }
-
-                            odd_bottom_text.text = when (oddsType) {
-                                OddsType.EU -> quickOdd.value?.odds?.get(0)?.odds.toString()
-                                OddsType.HK -> quickOdd.value?.odds?.get(0)?.hkOdds.toString()
-                            }
-                        }
-
-                        this.odd_btn_away.apply awayButtonSettings@{
-                            when {
-                                (quickOdd.value?.odds?.size ?: 0 < 2) -> {
-                                    betStatus = BetStatus.LOCKED.code
-                                    return@awayButtonSettings
-                                }
-                                else -> {
-                                    betStatus = quickOdd.value?.odds?.get(1)?.status
-                                }
-                            }
-
-                            odd_type_text.apply {
-                                visibility = when {
-                                    PlayCateUtils.getOUSeries().map { it.value }
-                                        .contains(quickOdd.key) -> View.VISIBLE
-                                    else -> {
-                                        when (!quickOdd.value?.odds?.get(1)?.spread.isNullOrEmpty()) {
-                                            true -> View.INVISIBLE
-                                            false -> View.GONE
-                                        }
-                                    }
-                                }
-
-                                text = when {
-                                    PlayCateUtils.getOUSeries().map { it.value }
-                                        .contains(quickOdd.key) -> {
-                                        itemView.context.getString(R.string.odd_button_ou_u)
-                                    }
-                                    else -> ""
-                                }
-                            }
-
-                            odd_top_text.apply {
-                                visibility =
-                                    when (!quickOdd.value?.odds?.get(1)?.spread.isNullOrEmpty()) {
-                                        true -> View.VISIBLE
-                                        false -> {
-                                            when {
-                                                PlayCateUtils.getOUSeries().map { it.value }
-                                                    .contains(quickOdd.key) -> View.INVISIBLE
-                                                else -> View.GONE
-                                            }
-                                        }
-                                    }
-
-                                text = quickOdd.value?.odds?.get(1)?.spread ?: ""
-                            }
-
-                            odd_bottom_text.text = when (oddsType) {
-                                OddsType.EU -> quickOdd.value?.odds?.get(1)?.odds.toString()
-                                OddsType.HK -> quickOdd.value?.odds?.get(1)?.hkOdds.toString()
-                            }
-                        }
-
-                        this.odd_btn_draw.apply drawButtonSettings@{
-                            when {
-                                (quickOdd.value?.odds?.size ?: 0 < 3) -> {
-                                    betStatus = BetStatus.DEACTIVATED.code
-                                    return@drawButtonSettings
-                                }
-                                else -> {
-                                    betStatus = quickOdd.value?.odds?.get(2)?.status
-                                }
-                            }
-
-                            odd_type_text.apply {
-                                text = itemView.context.getString(R.string.draw)
-                                visibility = View.VISIBLE
-                            }
-
-                            odd_top_text.apply {
-                                visibility = View.INVISIBLE
-                            }
-
-                            odd_bottom_text.text = when (oddsType) {
-                                OddsType.EU -> quickOdd.value?.odds?.get(2)?.odds.toString()
-                                OddsType.HK -> quickOdd.value?.odds?.get(2)?.hkOdds.toString()
-                            }
-                        }
-                    }
-
-                    view?.let {
-                        val layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT
-                        ).apply {
-                            rightMargin =
-                                itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize8sp)
-                        }
-
-                        addView(it, layoutParams)
-                    }
                 }
             }
         }
@@ -810,22 +671,22 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 }
 
 class LeagueOddListener(
-    val clickListenerLive: (item: MatchOdd) -> Unit,
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
-    val clickListenerBet: (matchOdd: MatchOdd, odd: Odd, playCateName: String, playName: String) -> Unit,
-    val clickListenerQuickCataTab: (matchId: String?) -> Unit,
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String, playName: String) -> Unit,
+    val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit
 ) {
-    fun onClickLive(item: MatchOdd) =
-        clickListenerLive(item)
-
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
         clickListenerPlayType(matchId, matchInfoList)
 
-    fun onClickBet(matchOdd: MatchOdd, odd: Odd, playCateName: String = "", playName: String = "") =
-        clickListenerBet(matchOdd, odd, playCateName, playName)
+    fun onClickBet(
+        matchInfo: MatchInfo?,
+        odd: Odd,
+        playCateName: String = "",
+        playName: String = ""
+    ) = clickListenerBet(matchInfo, odd, playCateName, playName)
 
-    fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCataTab(matchId)
+    fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCateTab(matchId)
 
     fun onClickQuickCateClose() = clickListenerQuickCateClose()
 }

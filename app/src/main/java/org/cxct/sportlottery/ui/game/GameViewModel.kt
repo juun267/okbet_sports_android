@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
+import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
@@ -798,24 +799,19 @@ class GameViewModel(
             }
 
             result?.quickListData?.let {
-                val updateGameHallList = _oddsListGameHallResult.value?.peekContent()
+                _oddsListGameHallResult.postValue(
+                    Event(
+                        _oddsListGameHallResult.value?.peekContent()
+                            ?.updateQuickPlayCate(matchId, it)
+                    )
+                )
 
-                updateGameHallList?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-
-                            quickPlayCate.isSelected =
-                                (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
-
-                            quickPlayCate.quickOdds = PlayCateUtils.filterQuickOdds(
-                                it.quickOdds?.get(quickPlayCate.code),
-                                quickPlayCate.gameType ?: ""
-                            )
-                        }
-                    }
-                }
-
-                _oddsListGameHallResult.postValue(Event(updateGameHallList))
+                _oddsListResult.postValue(
+                    Event(
+                        _oddsListResult.value?.peekContent()
+                            ?.updateQuickPlayCate(matchId, it)
+                    )
+                )
             }
         }
     }
@@ -1488,5 +1484,26 @@ class GameViewModel(
                     betInfoListData.matchOdd.oddsId == odd?.id
                 }
         }
+    }
+
+    private fun OddsListResult.updateQuickPlayCate(
+        matchId: String,
+        quickListData: QuickListData
+    ): OddsListResult {
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+
+                    quickPlayCate.isSelected =
+                        (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
+
+                    quickPlayCate.quickOdds = PlayCateUtils.filterQuickOdds(
+                        quickListData.quickOdds?.get(quickPlayCate.code),
+                        quickPlayCate.gameType ?: ""
+                    )
+                }
+            }
+        }
+        return this
     }
 }
