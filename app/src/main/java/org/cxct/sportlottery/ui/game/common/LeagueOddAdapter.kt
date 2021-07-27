@@ -120,7 +120,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupQuickCategory(item, leagueOddListener)
 
-            setupOddButtonOther(item)
+            setupOddButtonOther(item, oddsType)
         }
 
         private fun setupMatchInfo(
@@ -532,7 +532,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupOddButtonOther(item: MatchOdd) {
+        private fun setupOddButtonOther(item: MatchOdd, oddsType: OddsType) {
             itemView.league_odd_quick_button_border.apply {
                 visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
                     View.GONE
@@ -591,6 +591,140 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             } ?: ""
 
                         this.odd_btn_type.text = playCateName
+
+                        this.odd_btn_home.apply homeButtonSettings@{
+                            when {
+                                (quickOdd.value?.odds?.size ?: 0 < 2) -> {
+                                    betStatus = BetStatus.LOCKED.code
+                                    return@homeButtonSettings
+                                }
+                                else -> {
+                                    betStatus = quickOdd.value?.odds?.get(0)?.status
+                                }
+                            }
+
+                            odd_type_text.apply {
+                                visibility = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(quickOdd.key) -> View.VISIBLE
+                                    else -> {
+                                        when (!quickOdd.value?.odds?.get(0)?.spread.isNullOrEmpty()) {
+                                            true -> View.INVISIBLE
+                                            false -> View.GONE
+                                        }
+                                    }
+                                }
+
+                                text = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(quickOdd.key) -> {
+                                        itemView.context.getString(R.string.odd_button_ou_o)
+                                    }
+                                    else -> ""
+                                }
+                            }
+
+                            odd_top_text.apply {
+                                visibility =
+                                    when (!quickOdd.value?.odds?.get(0)?.spread.isNullOrEmpty()) {
+                                        true -> View.VISIBLE
+                                        false -> {
+                                            when {
+                                                PlayTypeUtils.getOUSeries().map { it.code }
+                                                    .contains(quickOdd.key) -> View.INVISIBLE
+                                                else -> View.GONE
+                                            }
+                                        }
+                                    }
+
+                                text = quickOdd.value?.odds?.get(0)?.spread ?: ""
+                            }
+
+                            odd_bottom_text.text = when (oddsType) {
+                                OddsType.EU -> quickOdd.value?.odds?.get(0)?.odds.toString()
+                                OddsType.HK -> quickOdd.value?.odds?.get(0)?.hkOdds.toString()
+                            }
+                        }
+
+                        this.odd_btn_away.apply awayButtonSettings@{
+                            when {
+                                (quickOdd.value?.odds?.size ?: 0 < 2) -> {
+                                    betStatus = BetStatus.LOCKED.code
+                                    return@awayButtonSettings
+                                }
+                                else -> {
+                                    betStatus = quickOdd.value?.odds?.get(1)?.status
+                                }
+                            }
+
+                            odd_type_text.apply {
+                                visibility = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(quickOdd.key) -> View.VISIBLE
+                                    else -> {
+                                        when (!quickOdd.value?.odds?.get(1)?.spread.isNullOrEmpty()) {
+                                            true -> View.INVISIBLE
+                                            false -> View.GONE
+                                        }
+                                    }
+                                }
+
+                                text = when {
+                                    PlayTypeUtils.getOUSeries().map { it.code }
+                                        .contains(quickOdd.key) -> {
+                                        itemView.context.getString(R.string.odd_button_ou_u)
+                                    }
+                                    else -> ""
+                                }
+                            }
+
+                            odd_top_text.apply {
+                                visibility =
+                                    when (!quickOdd.value?.odds?.get(1)?.spread.isNullOrEmpty()) {
+                                        true -> View.VISIBLE
+                                        false -> {
+                                            when {
+                                                PlayTypeUtils.getOUSeries().map { it.code }
+                                                    .contains(quickOdd.key) -> View.INVISIBLE
+                                                else -> View.GONE
+                                            }
+                                        }
+                                    }
+
+                                text = quickOdd.value?.odds?.get(1)?.spread ?: ""
+                            }
+
+                            odd_bottom_text.text = when (oddsType) {
+                                OddsType.EU -> quickOdd.value?.odds?.get(1)?.odds.toString()
+                                OddsType.HK -> quickOdd.value?.odds?.get(1)?.hkOdds.toString()
+                            }
+                        }
+
+                        this.odd_btn_draw.apply drawButtonSettings@{
+                            when {
+                                (quickOdd.value?.odds?.size ?: 0 < 3) -> {
+                                    betStatus = BetStatus.DEACTIVATED.code
+                                    return@drawButtonSettings
+                                }
+                                else -> {
+                                    betStatus = quickOdd.value?.odds?.get(2)?.status
+                                }
+                            }
+
+                            odd_type_text.apply {
+                                text = itemView.context.getString(R.string.draw)
+                                visibility = View.VISIBLE
+                            }
+
+                            odd_top_text.apply {
+                                visibility = View.INVISIBLE
+                            }
+
+                            odd_bottom_text.text = when (oddsType) {
+                                OddsType.EU -> quickOdd.value?.odds?.get(2)?.odds.toString()
+                                OddsType.HK -> quickOdd.value?.odds?.get(2)?.hkOdds.toString()
+                            }
+                        }
                     }
 
                     view?.let {
