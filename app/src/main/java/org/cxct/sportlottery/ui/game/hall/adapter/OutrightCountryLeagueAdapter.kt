@@ -34,10 +34,14 @@ class OutrightCountryLeagueAdapter :
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Season, outrightCountryLeagueListener: OutrightCountryLeagueListener?) {
-            itemView.country_league_name.text = item.name
-            itemView.country_league_count.text = item.num.toString()
-            itemView.setOnClickListener {
-                outrightCountryLeagueListener?.onClick(item)
+            itemView.apply {
+                country_league_choose.visibility = View.GONE
+                country_league_name.text = item.name
+                country_league_count.text = item.num.toString()
+
+                setOnClickListener {
+                    outrightCountryLeagueListener?.onClick(item)
+                }
             }
         }
 
