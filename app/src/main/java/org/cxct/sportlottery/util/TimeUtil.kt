@@ -12,7 +12,9 @@ import java.util.*
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_FORMAT = "yyyy-MM-dd"
+    const val DMY_FORMAT = "dd / MM / yyyy"
     const val MD_FORMAT = "MM-dd"
+    const val HM_FORMAT = "HH:mm"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"

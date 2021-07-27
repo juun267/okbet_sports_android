@@ -44,21 +44,22 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
 
     }
+
     private fun initOnclick() {
         iv_arrow.setOnClickListener {
-                if (expand_layout.isExpanded) {
-                    iv_arrow.animate().rotation(0f).setDuration(100).start()
-                    expand_layout.collapse()
-                } else {
-                    iv_arrow.animate().rotation(180f).setDuration(100).start()
-                    expand_layout.expand()
-                }
+            if (expand_layout.isExpanded) {
+                iv_arrow.animate().rotation(0f).setDuration(100).start()
+                expand_layout.collapse()
+            } else {
+                iv_arrow.animate().rotation(180f).setDuration(100).start()
+                expand_layout.expand()
+            }
         }
     }
 
 
     private fun setupTab() {
-        tab_layout.addOnTabSelectedListener( object : TabLayout.OnTabSelectedListener {
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
                 when (tab?.position) {

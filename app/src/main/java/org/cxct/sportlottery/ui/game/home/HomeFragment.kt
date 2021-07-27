@@ -56,6 +56,7 @@ import org.cxct.sportlottery.util.GameConfigManager
  * 1. 上下滑動 ToolBar 固定
  * 2. 賽事精選: icon 顯示 review
  * 3. 賽事推薦 - 冠軍樣式
+ * 4. 賽事推薦 投注
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
