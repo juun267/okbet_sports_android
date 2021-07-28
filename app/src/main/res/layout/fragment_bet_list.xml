@@ -286,43 +286,11 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <LinearLayout
+        <org.cxct.sportlottery.ui.bet.list.BetButton
             android:id="@+id/btn_bet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@color/colorSilverLight"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp">
-
-            <TextView
-                android:id="@+id/tv_btn_bet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/bet_info_list_bet" />
-
-            <TextView
-                android:id="@+id/tv_btn_bet_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="0.000 RMB" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/btn_refresh_odds"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorBlue"
-            android:gravity="center"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
-            android:text="@string/bet_info_accept_odds_change"
-            android:textColor="@android:color/white"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:layout_height="wrap_content"/>
 
         <!-- 選項關閉提示 -->
         <LinearLayout

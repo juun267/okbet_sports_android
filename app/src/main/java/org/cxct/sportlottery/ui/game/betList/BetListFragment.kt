@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
+import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
@@ -46,8 +46,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var betListDiffAdapter: BetListDiffAdapter? = null
 
     private var betAllAmount = 0.0
-
-    private var hasOddPlatClose = false
 
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
@@ -98,10 +96,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initBtnView() {
-        binding.apply {
-            checkBetButtonEnable()
-            tvBtnBetAmount.text = "${TextUtil.formatMoney(0.0)} ${getString(R.string.currency)}"
-        }
+        binding.btnBet.tv_quota.text = TextUtil.formatMoney(0.0)
     }
 
     private fun initRecyclerView() {
@@ -169,8 +164,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
-            tvTotalBetAmount.text = "${TextUtil.formatMoney(totalBetAmount ?: 0.0)} ${getString(R.string.currency)}"
-            tvTotalWinnableAmount.text = "${TextUtil.formatMoney(winnableAmount ?: 0.0)} ${getString(R.string.currency)}"
+            tvTotalBetAmount.text = "${TextUtil.formatMoney(totalBetAmount)} ${getString(R.string.currency)}"
+            tvTotalWinnableAmount.text = "${TextUtil.formatMoney(winnableAmount)} ${getString(R.string.currency)}"
         }
 
         setupBtnBetAmount(totalBetAmount)
@@ -181,9 +176,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             val totalBetAmountNotNull = totalBetAmount ?: 0.0
             totalBetAmountNotNull.let {
                 binding.apply {
-                    tvBtnBetAmount.text = "${TextUtil.formatMoney(it)} ${getString(R.string.currency)}"
+                    btnBet.tv_quota.text = TextUtil.formatMoney(it)
                     betAllAmount = it
-                    checkBetButtonEnable()
                 }
             }
         } catch (e: Exception) {
@@ -294,25 +288,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     /**
-     * 投注按鈕可否互動控制
-     */
-    private fun checkBetButtonEnable() {
-        binding.apply {
-            if (betAllAmount > 0 && !hasOddPlatClose) {
-                tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
-                tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), android.R.color.white))
-                btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorBlue)
-                btnBet.isClickable = true
-            } else {
-                tvBtnBet.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
-                tvBtnBetAmount.setTextColor(ContextCompat.getColor(context ?: requireContext(), R.color.colorGray))
-                btnBet.background = ContextCompat.getDrawable(context ?: requireContext(), R.color.colorSilverLight)
-                btnBet.isClickable = false
-            }
-        }
-    }
-
-    /**
      * 判斷是否有賠率關閉
      */
     private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
@@ -360,7 +335,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun showHideOddsChangeWarn(show: Boolean) {
         val visibilityControl = if (show) View.VISIBLE else View.GONE
 
-        btn_refresh_odds.visibility = visibilityControl
+        btn_bet.isOddsChanged = show
         tv_warn_odds_change.visibility = visibilityControl
     }
 
@@ -370,7 +345,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun showHideOddsCloseWarn(show: Boolean) {
         ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
-        checkBetButtonEnable()
     }
 
     /**
