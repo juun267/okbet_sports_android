@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
@@ -244,7 +245,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
                 viewModel.switchPlayCategory(args.matchType, args.leagueId.toList(), data.code)
-                bottomSheet.dismiss()
+                (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
     }
