@@ -17,7 +17,9 @@ data class MatchOdd(
         PlayCate.HDP.value to mutableListOf(),
         PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()
-    )
+    ),
+    @Json(name = "quickPlayCateList")
+    val quickPlayCateList: List<QuickPlayCate>? = null
 ) {
     var isExpand = false
     var leagueTime: Int? = null

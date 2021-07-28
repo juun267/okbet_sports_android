@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
@@ -162,7 +162,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             ) -> return PlayCate.SINGLE_FLG.ordinal
 
 
-            type == PlayCate.SINGLE.value -> return if (sportCode == SportType.FOOTBALL.code) {
+            type == PlayCate.SINGLE.value -> return if (sportCode == GameType.FT.key) {
                 PlayCate.SINGLE.ordinal
             } else {
                 PlayCate.SINGLE_2.ordinal
@@ -171,7 +171,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_1ST.value
-            ) -> return if (sportCode == SportType.FOOTBALL.code) {
+            ) -> return if (sportCode == GameType.FT.key) {
                 PlayCate.SINGLE_1ST.ordinal
             } else {
                 PlayCate.SINGLE_1ST_2.ordinal
@@ -180,13 +180,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_2ST.value
-            ) -> return if (sportCode == SportType.FOOTBALL.code) {
+            ) -> return if (sportCode == GameType.FT.key) {
                 PlayCate.SINGLE_2ST.ordinal
             } else {
                 PlayCate.SINGLE_2ST_2.ordinal
             }
 
-            type == PlayCate.SINGLE_OT.value -> return if (sportCode == SportType.FOOTBALL.code) {
+            type == PlayCate.SINGLE_OT.value -> return if (sportCode == GameType.FT.key) {
                 PlayCate.SINGLE_OT.ordinal
             } else {
                 PlayCate.SINGLE_OT_2.ordinal
@@ -195,7 +195,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_SEG.value
-            ) -> return if (sportCode == SportType.FOOTBALL.code) {
+            ) -> return if (sportCode == GameType.FT.key) {
                 PlayCate.SINGLE_SEG.ordinal
             } else {
                 PlayCate.SINGLE_SEG_2.ordinal
@@ -277,20 +277,37 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         }
 
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(layout, parent, false), viewType).apply {
+        return ViewHolder(
+            LayoutInflater.from(parent.context).inflate(layout, parent, false),
+            viewType
+        ).apply {
 
             when (layout) {
 
                 LayoutType.SCO.layout -> {
                     rvBet?.apply {
-                        addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_silverlight_1dp)))
+                        addItemDecoration(
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_color_silverlight_1dp
+                                )
+                            )
+                        )
                     }
                 }
 
                 LayoutType.GROUP_4.layout,
                 LayoutType.GROUP_6.layout -> {
                     rvBet?.apply {
-                        addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_color_white4_2dp)))
+                        addItemDecoration(
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_color_white4_2dp
+                                )
+                            )
+                        )
                     }
                 }
 
@@ -535,7 +552,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             tvHomeName?.text = homeName
             tvAwayName?.text = awayName
 
-            itemView.findViewById<LinearLayout>(R.id.ll_content).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            itemView.findViewById<LinearLayout>(R.id.ll_content).visibility =
+                if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             val homeList: MutableList<Odd> = mutableListOf()
             val drawList: MutableList<Odd> = mutableListOf()
@@ -587,17 +605,20 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             rvHome?.apply {
-                adapter = TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
+                adapter =
+                    TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvDraw?.apply {
-                adapter = TypeCSAdapter(oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
+                adapter =
+                    TypeCSAdapter(oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvAway?.apply {
-                adapter = TypeCSAdapter(oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
+                adapter =
+                    TypeCSAdapter(oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
@@ -616,13 +637,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun for2SpanCount(oddsDetail: OddsDetailListData) {
             rvBet?.apply {
-                adapter = TypeTwoSpanCountGridAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
+                adapter = TypeTwoSpanCountGridAdapter(
+                    oddsDetail,
+                    onOddClickListener,
+                    betInfoList,
+                    oddsType
+                )
                 layoutManager = GridLayoutManager(itemView.context, 2)
             }
         }
 
         private fun forFGLG(oddsDetail: OddsDetailListData) {
-            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility =
+                if (oddsDetail.isExpand) View.VISIBLE else View.GONE
             rvBet?.apply {
                 adapter = TypeOneListAdapter(
                     selectFGLG(oddsDetail),
@@ -636,18 +663,20 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             tvFg?.apply {
                 isSelected = oddsDetail.gameTypeFgLgSelect == FGLGType.FG
                 setOnClickListener {
-                    (rvBet?.adapter as TypeOneListAdapter).mOddsDetail = selectFGLG(oddsDetail.apply {
-                        gameTypeFgLgSelect = FGLGType.FG
-                    })
+                    (rvBet?.adapter as TypeOneListAdapter).mOddsDetail =
+                        selectFGLG(oddsDetail.apply {
+                            gameTypeFgLgSelect = FGLGType.FG
+                        })
                 }
             }
 
             tvLg?.apply {
                 isSelected = oddsDetail.gameTypeFgLgSelect == FGLGType.LG
                 setOnClickListener {
-                    (rvBet?.adapter as TypeOneListAdapter).mOddsDetail = selectFGLG(oddsDetail.apply {
-                        gameTypeFgLgSelect = FGLGType.LG
-                    })
+                    (rvBet?.adapter as TypeOneListAdapter).mOddsDetail =
+                        selectFGLG(oddsDetail.apply {
+                            gameTypeFgLgSelect = FGLGType.LG
+                        })
                 }
             }
         }
@@ -692,11 +721,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             val teamNameList = setupSCOTeamName(oddsDetail)
 
-            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
+            itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility =
+                if (oddsDetail.isExpand) View.VISIBLE else View.GONE
 
             rvBet?.apply {
                 adapter = TypeSCOAdapter(
-                    selectSCO(oddsDetail, oddsDetail.gameTypeSCOSelect ?: teamNameList[0], teamNameList),
+                    selectSCO(
+                        oddsDetail,
+                        oddsDetail.gameTypeSCOSelect ?: teamNameList[0],
+                        teamNameList
+                    ),
                     onOddClickListener,
                     betInfoList,
                     oddsType,
@@ -745,13 +779,25 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val groupTeamName = oddsDetail.oddArrayList.groupBy {
                 it?.extInfo
             }
-            return mutableListOf<String>().apply { groupTeamName.forEach { it.key?.let { key -> add(key) } } }.apply {
+            return mutableListOf<String>().apply {
+                groupTeamName.forEach {
+                    it.key?.let { key ->
+                        add(
+                            key
+                        )
+                    }
+                }
+            }.apply {
                 tvHomeName?.text = this[0]
                 tvAwayName?.text = this[1]
             }
         }
 
-        private fun selectSCO(oddsDetail: OddsDetailListData, teamName: String, teamNameList: MutableList<String>): OddsDetailListData {
+        private fun selectSCO(
+            oddsDetail: OddsDetailListData,
+            teamName: String,
+            teamNameList: MutableList<String>
+        ): OddsDetailListData {
             oddsDetail.gameTypeSCOSelect = teamName
 
             tvHomeName?.isSelected = teamName == teamNameList[0]
@@ -852,7 +898,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun group6AdapterSetup(oddsDetail: OddsDetailListData): Type6GroupAdapter =
             Type6GroupAdapter(
-                oddsDetail.apply { groupItem = oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>> },
+                oddsDetail.apply {
+                    groupItem =
+                        oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>>
+                },
                 onOddClickListener,
                 betInfoList,
                 oddsType

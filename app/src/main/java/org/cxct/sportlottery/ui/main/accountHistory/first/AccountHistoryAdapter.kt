@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemAccountHistoryBinding
 import org.cxct.sportlottery.network.bet.settledList.Row
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -145,12 +146,13 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
         fun bind(backClickListener: BackClickListener, sportSelectListener: SportSelectListener) {
             itemView.apply {
 
-                val sportStatusList = listOf(StatusSheetData("", context?.getString(R.string.all_sport)),
-                                             StatusSheetData("FT", context?.getString(R.string.soccer)),
-                                             StatusSheetData("BK", context?.getString(R.string.basketball)),
-                                             StatusSheetData("TN", context?.getString(R.string.tennis)),
-                                             StatusSheetData("VB", context?.getString(R.string.volleyball)),
-                                             StatusSheetData("BM", context?.getString(R.string.badminton)))
+                val sportStatusList = listOf(
+                    StatusSheetData("", context?.getString(R.string.all_sport)),
+                    StatusSheetData(GameType.FT.key, context?.getString(GameType.FT.string)),
+                    StatusSheetData(GameType.BK.key, context?.getString(GameType.BK.string)),
+                    StatusSheetData(GameType.TN.key, context?.getString(GameType.TN.string)),
+                    StatusSheetData(GameType.VB.key, context?.getString(GameType.VB.string)),
+                )
 
                 iv_back.setOnClickListener {
                     backClickListener.onClick()

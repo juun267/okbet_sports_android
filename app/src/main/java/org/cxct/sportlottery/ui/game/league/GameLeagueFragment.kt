@@ -17,7 +17,6 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -50,11 +49,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ->
-                    matchOdd.matchInfo?.id?.let {
-                        navOddsDetailLive(it)
-                    }
-                },
                 { matchId, matchInfoList ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
@@ -69,9 +63,17 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
                 },
-                { matchOdd, odd, playCateName, playName ->
-                    addOddsDialog(matchOdd, odd, playCateName, playName)
+                { matchInfo, odd, playCateName, playName ->
+                    addOddsDialog(matchInfo, odd, playCateName, playName)
                     hideKeyboard()
+                },
+                { matchId ->
+                    matchId?.let {
+                        viewModel.getQuickList(it)
+                    }
+                },
+                {
+                    viewModel.clearQuickPlayCateSelected()
                 }
             )
         }
@@ -170,7 +172,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     game_league_odd_list.apply {
                         adapter = leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
-                                leagueOdd.sportType = args.sportType
+                                leagueOdd.gameType = args.gameType
                             }
                         }
                     }
@@ -178,7 +180,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     leagueOdds.forEach { leagueOdd ->
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
-                                args.sportType.code,
+                                args.gameType.key,
                                 PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
@@ -222,10 +224,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun updateSportBackground(sportCode: String?) {
         Glide.with(requireContext()).load(
             when (sportCode) {
-                SportType.FOOTBALL.code -> R.drawable.soccer48
-                SportType.BASKETBALL.code -> R.drawable.basketball48
-                SportType.TENNIS.code -> R.drawable.tennis48
-                SportType.VOLLEYBALL.code -> R.drawable.volleyball48
+                GameType.FT.key -> R.drawable.soccer48
+                GameType.BK.key -> R.drawable.basketball48
+                GameType.TN.key -> R.drawable.tennis48
+                GameType.VB.key -> R.drawable.volleyball48
                 else -> null
             }
         ).into(game_league_toolbar_bg)
@@ -300,10 +302,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                                     updateMatchOdd?.let {
                                         updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
-                                            SportType.FOOTBALL.code -> {
+                                            GameType.FT.key -> {
                                                 matchClockCO.matchTime
                                             }
-                                            SportType.BASKETBALL.code -> {
+                                            GameType.BK.key -> {
                                                 matchClockCO.remainingTimeInPeriod
                                             }
                                             else -> null
@@ -346,7 +348,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             if (updateMatchOdd?.odds.isNullOrEmpty()) {
                                 updateMatchOdd?.odds = PlayCateUtils.filterOdds(
                                     oddTypeSocketMap.toMutableMap(),
-                                    args.sportType.code
+                                    args.gameType.key
                                 )
 
                             } else {
@@ -469,7 +471,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                         leagueOdd.matchOdds.forEach { matchOdd ->
                             service.subscribeHallChannel(
-                                args.sportType.code,
+                                args.gameType.key,
                                 PlayCate.OU_HDP.value,
                                 matchOdd.matchInfo?.id
                             )
@@ -484,7 +486,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         val action =
             GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailFragment(
                 args.matchType,
-                args.sportType,
+                args.gameType,
                 matchId,
                 matchInfoList.toTypedArray()
             )
@@ -494,7 +496,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun navOddsDetailLive(matchId: String) {
         val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
-            args.sportType,
+            args.gameType,
             matchId
         )
 
@@ -502,15 +504,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun addOddsDialog(
-        matchOdd: MatchOdd,
+        matchInfo: MatchInfo?,
         odd: Odd,
         playCateName: String,
         playName: String
     ) {
-        matchOdd.matchInfo?.let { matchInfo ->
+        matchInfo?.let {
             viewModel.updateMatchBetList(
                 args.matchType,
-                args.sportType,
+                args.gameType,
                 playCateName,
                 playName,
                 matchInfo,
