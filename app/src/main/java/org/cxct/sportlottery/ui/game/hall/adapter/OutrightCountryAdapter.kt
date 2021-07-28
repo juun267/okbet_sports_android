@@ -36,7 +36,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            CountryAdapter.ItemType.ITEM.ordinal -> {
+            ItemType.ITEM.ordinal -> {
                 ItemViewHolder.from(parent).apply {
                     this.itemView.league_list.apply {
                         this.layoutManager =
@@ -63,7 +63,6 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ItemViewHolder -> {
                 val item = data[position]
-
                 holder.bind(item, outrightCountryLeagueListener)
             }
         }
@@ -107,18 +106,9 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private fun setupCountryExpand(item: Row) {
             itemView.country_league_expand.setExpanded(item.isExpand, false)
-            updateArrowExpand()
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.country_league_expand.setExpanded(item.isExpand, true)
-                updateArrowExpand()
-            }
-        }
-
-        private fun updateArrowExpand() {
-            when (itemView.country_league_expand.isExpanded) {
-                true -> itemView.country_arrow.setImageResource(R.drawable.ic_arrow_dark)
-                false -> itemView.country_arrow.setImageResource(R.drawable.ic_arrow_down_dark)
             }
         }
 
