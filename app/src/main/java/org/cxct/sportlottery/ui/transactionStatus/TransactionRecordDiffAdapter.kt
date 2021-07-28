@@ -20,8 +20,8 @@ import kotlinx.android.synthetic.main.content_outright_record.view.title_league_
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 

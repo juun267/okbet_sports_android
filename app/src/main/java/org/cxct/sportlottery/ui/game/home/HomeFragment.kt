@@ -16,9 +16,9 @@ import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MenuCode
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
@@ -35,8 +35,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
-import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.SportTypeListener
+import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.highlight.RvHighlightAdapter
 import org.cxct.sportlottery.ui.game.home.recommend.OddBean
@@ -56,6 +56,7 @@ import org.cxct.sportlottery.util.GameConfigManager
  * 1. 上下滑動 ToolBar 固定
  * 2. 賽事精選: icon 顯示 review
  * 3. 賽事推薦 - 冠軍樣式
+ * 4. 賽事推薦 投注
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
@@ -65,7 +66,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var mInPlayResult: MatchPreloadResult? = null
     private var mAtStartResult: MatchPreloadResult? = null
 
-    private val mHighlightSportTypeAdapter = SportTypeAdapter()
+    private val mHighlightGameTypeAdapter = GameTypeAdapter()
     private val mRvHighlightAdapter = RvHighlightAdapter()
 
     private val mRecommendAdapter = RvRecommendAdapter()
@@ -142,7 +143,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
             override fun onClick(select: MatchOdd) {
                 scroll_view.smoothScrollTo(0, 0)
-                val code = select.matchInfo?.sportType?.code
+                val code = select.matchInfo?.gameType
                 val matchId = select.matchInfo?.id
                 navOddsDetailFragment(code, matchId, mSelectMatchType)
             }
@@ -154,7 +155,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.navSpecialEntrance(
                         SpecialEntranceSource.HOME,
                         mSelectMatchType,
-                        SportType.getSportType(select.code)
+                        GameType.getGameType(select.code)
                     )
                 }
             }
@@ -187,8 +188,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initHighlight() {
-        rv_highlight_sport_type.adapter = mHighlightSportTypeAdapter
-        mHighlightSportTypeAdapter.sportTypeListener = SportTypeListener { selectItem ->
+        rv_highlight_sport_type.adapter = mHighlightGameTypeAdapter
+        mHighlightGameTypeAdapter.gameTypeListener = GameTypeListener { selectItem ->
             highlight_tv_game_name.text = selectItem.name
 
             GameConfigManager.getGameIcon(selectItem.code)?.let {
@@ -199,25 +200,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 highlight_titleBar.setBackgroundResource(it)
             }
 
-            tv_play_type.text = when (SportType.getSportType(selectItem.code)) {
-                SportType.FOOTBALL, SportType.BASKETBALL -> getText(R.string.ou_hdp_hdp_title)
-                SportType.TENNIS, SportType.VOLLEYBALL, SportType.BADMINTON -> getText(R.string.ou_hdp_1x2_title)
+            tv_play_type.text = when (GameType.getGameType(selectItem.code)) {
+                GameType.FT, GameType.BK -> getText(R.string.ou_hdp_hdp_title)
+                GameType.TN, GameType.VB -> getText(R.string.ou_hdp_1x2_title)
                 else -> ""
             }
 
             unsubscribeHighlightHallChannel() //先取消訂閱當前的精選賽事
 
-            mHighlightSportTypeAdapter.dataSport.forEach { item ->
+            mHighlightGameTypeAdapter.dataSport.forEach { item ->
                 item.isSelected = item.code == selectItem.code
             }
-            mHighlightSportTypeAdapter.notifyDataSetChanged()
+            mHighlightGameTypeAdapter.notifyDataSetChanged()
             viewModel.getHighlightMatch(selectItem.code)
         }
 
         btn_display_all.setOnClickListener {
-            mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.let { data ->
-                val sportType = SportType.getSportType(data.code)
-                viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, sportType)
+            mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.let { data ->
+                val gameType = GameType.getGameType(data.code)
+                viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, gameType)
             }
         }
 
@@ -226,7 +227,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRvHighlightAdapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
             override fun onClick(select: MatchOdd) {
                 scroll_view.smoothScrollTo(0, 0)
-                val code = select.matchInfo?.sportType?.code
+                val code = select.matchInfo?.gameType
                 val matchId = select.matchInfo?.id
 
                 //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY
@@ -260,7 +261,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun refreshHighlight(result: MatchCategoryResult?) {
-        val sportCode = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
+        val sportCode = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
         mRvHighlightAdapter.setData(sportCode, result?.t?.odds)
     }
 
@@ -270,15 +271,17 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         playCateName: String,
         playName: String
     ) {
-        matchOdd.matchInfo?.sportType?.let { sportType ->
-            viewModel.updateMatchBetList(
-                mSelectMatchType,
-                sportType,
-                playCateName,
-                playName,
-                matchOdd.matchInfo,
-                odd
-            )
+        GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
+            matchOdd.matchInfo?.let { matchInfo ->
+                viewModel.updateMatchBetList(
+                    mSelectMatchType,
+                    gameType,
+                    playCateName,
+                    playName,
+                    matchInfo,
+                    odd
+                )
+            }
         }
     }
 
@@ -287,7 +290,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             viewModel.navSpecialEntrance(
                 SpecialEntranceSource.HOME,
                 MatchType.TODAY,
-                SportType.FOOTBALL
+                GameType.FT
             )
         }
 
@@ -295,7 +298,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             viewModel.navSpecialEntrance(
                 SpecialEntranceSource.HOME,
                 MatchType.TODAY,
-                SportType.BASKETBALL
+                GameType.BK
             )
         }
 
@@ -303,15 +306,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             viewModel.navSpecialEntrance(
                 SpecialEntranceSource.HOME,
                 MatchType.TODAY,
-                SportType.TENNIS
-            )
-        }
-
-        card_badminton.setOnClickListener {
-            viewModel.navSpecialEntrance(
-                SpecialEntranceSource.HOME,
-                MatchType.TODAY,
-                SportType.BADMINTON
+                GameType.TN
             )
         }
 
@@ -319,7 +314,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             viewModel.navSpecialEntrance(
                 SpecialEntranceSource.HOME,
                 MatchType.TODAY,
-                SportType.VOLLEYBALL
+                GameType.VB
             )
         }
 
@@ -432,7 +427,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //訂閱 精選賽事 賠率
     private fun subscribeHighlightHallChannel() {
-        val code = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
+        val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
         mRvHighlightAdapter.getData().forEach { matchOdd ->
             service.subscribeHallChannel(
                 code,
@@ -443,7 +438,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun unsubscribeHighlightHallChannel() {
-        val code = mHighlightSportTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
+        val code = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
         mRvHighlightAdapter.getData().forEach { matchOdd ->
             service.unsubscribeHallChannel(
                 code,
@@ -583,20 +578,20 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun navOddsDetailFragment(
-        sportTypeCode: String?,
+        gameTypeCode: String?,
         matchId: String?,
         matchType: MatchType
     ) {
-        val sportType = SportType.getSportType(sportTypeCode)
-        if (sportType != null && matchId != null) {
+        val gameType = GameType.getGameType(gameTypeCode)
+        if (gameType != null && matchId != null) {
             val action = if (matchType == MatchType.IN_PLAY) {
                 HomeFragmentDirections
-                    .actionHomeFragmentToOddsDetailLiveFragment(sportType, matchId)
+                    .actionHomeFragmentToOddsDetailLiveFragment(gameType, matchId)
             } else {
                 HomeFragmentDirections
                     .actionHomeFragmentToOddsDetailFragment(
                         matchType,
-                        sportType,
+                        gameType,
                         matchId,
                         arrayOf()
                     )
@@ -610,13 +605,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun refreshHighlightMenu(result: MatchCategoryResult) {
-        mHighlightSportTypeAdapter.dataSport = result.t?.menu?.map { menu ->
+        mHighlightGameTypeAdapter.dataSport = result.t?.menu?.map { menu ->
             Item(menu.code ?: "", menu.name ?: "", 0, null, menu.sortNum ?: 0)
         } ?: listOf()
 
         //default 選擇第一個
-        mHighlightSportTypeAdapter.dataSport.firstOrNull()?.let {
-            mHighlightSportTypeAdapter.sportTypeListener?.onClick(it)
+        mHighlightGameTypeAdapter.dataSport.firstOrNull()?.let {
+            mHighlightGameTypeAdapter.gameTypeListener?.onClick(it)
         }
     }
 
@@ -643,8 +638,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                 if (updateMatchOdd.matchInfo?.id == result.matchClockCO?.matchId) {
                     updateMatchOdd.leagueTime = when (result.matchClockCO?.gameType) {
-                        SportType.FOOTBALL.code -> result.matchClockCO.matchTime
-                        SportType.BASKETBALL.code -> result.matchClockCO.remainingTimeInPeriod
+                        GameType.FT.key -> result.matchClockCO.matchTime
+                        GameType.BK.key -> result.matchClockCO.remainingTimeInPeriod
                         else -> null
                     }
 

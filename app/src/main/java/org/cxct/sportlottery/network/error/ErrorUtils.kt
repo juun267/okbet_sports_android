@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_QUICK_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
@@ -92,6 +93,7 @@ import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.odds.quick.QuickListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
@@ -216,6 +218,9 @@ object ErrorUtils {
                     (url.contains(MATCH_ODDS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return OddsListResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_ODDS_QUICK_LIST)) -> {
+                        return QuickListResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")

@@ -54,7 +54,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mSportCode = args.sportType.code
+        mSportCode = args.gameType.key
         matchId = args.matchId
     }
 
@@ -262,7 +262,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             service.subscribeEventChannel(matchId)
         }
 
-        viewModel.getOddsList(args.sportType.code, MatchType.IN_PLAY.postValue)
+        viewModel.getOddsList(args.gameType.key, MatchType.IN_PLAY.postValue)
         loading()
     }
 
@@ -276,7 +276,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             viewModel.updateMatchBetList(
                 matchType = MatchType.IN_PLAY,
-                sportType = args.sportType,
+                gameType = args.gameType,
                 playCateName = oddsDetail.name,
                 playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,

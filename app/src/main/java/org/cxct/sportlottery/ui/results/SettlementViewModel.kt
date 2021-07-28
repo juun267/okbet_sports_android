@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.network.matchresult.list.MatchInfo
@@ -227,7 +228,6 @@ class SettlementViewModel(
             GameType.FT.key -> ListType.FIRST_ITEM_FT
             GameType.BK.key -> ListType.FIRST_ITEM_BK
             GameType.TN.key -> ListType.FIRST_ITEM_TN
-            GameType.BM.key -> ListType.FIRST_ITEM_BM
             GameType.VB.key -> ListType.FIRST_ITEM_VB
             else -> ListType.DETAIL
         }

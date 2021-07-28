@@ -132,6 +132,7 @@
     <string name="label_match_recommend">赛事推荐</string>
     <string name="label_highlight">精选</string>
     <string name="display_all">显示全部</string>
+    <string name="display_more">显示更多</string>
 
     <string name="return_to_top">回到顶部</string>
     <string name="versus">v</string>
@@ -406,6 +407,9 @@
     <string name="game_play_type_tg_ou_c_ot">球队得分数&amp;大/小-{C}(含加时)</string>
     <string name="game_play_type_tg_ou_h_1st">球队得分数&amp;大/小-{H}-上半场</string>
     <string name="game_play_type_tg_ou_c_1st">球队得分数&amp;大/小-{C}-上半场</string>
+    <string name="game_play_type_eps">更优赔率</string>
+    <string name="game_play_type_c_ou">角球大/小</string>
+    <string name="game_play_type_c_oe">角球单/双</string>
 
     <string name="game_tab_league_odd">赛事</string>
     <string name="game_tab_outright_odd">冠军</string>
