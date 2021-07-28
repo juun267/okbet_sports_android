@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd_v4.view.*
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
 import org.cxct.sportlottery.R
@@ -116,7 +116,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupMatchTime(item, matchType, isTimerEnable)
 
-            setupOddButton(
+            setupOddsButton(
                 item.matchInfo,
                 item.odds,
                 oddsType,
@@ -126,7 +126,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupQuickCategory(item, leagueOddListener)
 
-            setupOddButton(
+            setupOddsButton(
                 item.matchInfo,
                 item.quickPlayCateList?.find { it.isSelected }?.quickOdds?.mapValues {
                     it.value?.odds ?: listOf()
@@ -248,7 +248,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
         }
 
-        private fun setupOddButton(
+        private fun setupOddsButton(
             matchInfo: MatchInfo?,
             odds: Map<String, List<Odd?>>?,
             oddsType: OddsType,
@@ -280,7 +280,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                         }
 
-                        odd_type_text.apply {
+                        tv_name.apply {
                             visibility = when {
                                 PlayCateUtils.getOUSeries().map { it.value }
                                     .contains(it.key) -> View.VISIBLE
@@ -300,7 +300,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                         }
 
-                        odd_top_text.apply {
+                        tv_spread.apply {
                             visibility = when (!it.value[0]?.spread.isNullOrEmpty()) {
                                 true -> View.VISIBLE
                                 false -> {
@@ -315,7 +315,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             text = it.value[0]?.spread ?: ""
                         }
 
-                        odd_bottom_text.text = when (oddsType) {
+                        tv_odds.text = when (oddsType) {
                             OddsType.EU -> it.value[0]?.odds.toString()
                             OddsType.HK -> it.value[0]?.hkOdds.toString()
                         }
@@ -358,7 +358,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                         }
 
-                        odd_type_text.apply {
+                        tv_name.apply {
                             visibility = when {
                                 PlayCateUtils.getOUSeries().map { it.value }
                                     .contains(it.key) -> View.VISIBLE
@@ -378,7 +378,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                         }
 
-                        odd_top_text.apply {
+                        tv_spread.apply {
                             visibility = when (!it.value[1]?.spread.isNullOrEmpty()) {
                                 true -> View.VISIBLE
                                 false -> {
@@ -393,7 +393,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             text = it.value[1]?.spread ?: ""
                         }
 
-                        odd_bottom_text.text = when (oddsType) {
+                        tv_odds.text = when (oddsType) {
                             OddsType.EU -> it.value[1]?.odds.toString()
                             OddsType.HK -> it.value[1]?.hkOdds.toString()
                         }
@@ -436,16 +436,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                         }
 
-                        odd_type_text.apply {
+                        tv_name.apply {
                             text = itemView.context.getString(R.string.draw)
                             visibility = View.VISIBLE
                         }
 
-                        odd_top_text.apply {
+                        tv_spread.apply {
                             visibility = View.INVISIBLE
                         }
 
-                        odd_bottom_text.text = when (oddsType) {
+                        tv_odds.text = when (oddsType) {
                             OddsType.EU -> it.value[2]?.odds.toString()
                             OddsType.HK -> it.value[2]?.hkOdds.toString()
                         }

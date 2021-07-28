@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
@@ -12,7 +11,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
-import org.cxct.sportlottery.ui.game.widget.OddButtonV4
+import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 
 
@@ -71,20 +70,20 @@ class VpRecommendAdapter(
 
                     if (spanCount > 0 && data.oddList.isNotEmpty()) {
                         odd_btn_home.visibility = View.VISIBLE
-                        setupOddButton(odd_btn_home, data.oddList[0])
+                        setupOddsButton(odd_btn_home, data.oddList[0])
                     } else {
                         odd_btn_home.visibility = View.GONE
                     }
 
                     if (spanCount > 1 && data.oddList.size > 1) {
                         odd_btn_away.visibility = View.VISIBLE
-                        setupOddButton(odd_btn_away, data.oddList[1])
+                        setupOddsButton(odd_btn_away, data.oddList[1])
                     } else {
                         odd_btn_away.visibility = View.GONE
                     }
                     if (spanCount > 2 && data.oddList.size > 2) {
                         odd_btn_draw.visibility = View.VISIBLE
-                        setupOddButton(odd_btn_draw, data.oddList[2])
+                        setupOddsButton(odd_btn_draw, data.oddList[2])
                     } else {
                         odd_btn_draw.visibility = View.GONE
                     }
@@ -92,18 +91,9 @@ class VpRecommendAdapter(
             }
         }
 
-        private fun setupOddButton(oddButton: OddButtonV4, odd: Odd) {
-            oddButton.apply homeButtonSettings@{
-
-                odd_type_text.visibility = View.VISIBLE
-                odd_top_text.visibility = View.VISIBLE
-                odd_type_text.text = odd.name
-                odd_top_text.text = odd.spread
-
-                odd_bottom_text.text = when (oddsType) {
-                    OddsType.EU -> odd.odds.toString()
-                    OddsType.HK -> odd.hkOdds.toString()
-                }
+        private fun setupOddsButton(oddsButton: OddsButton, odd: Odd) {
+            oddsButton.apply homeButtonSettings@{
+                setupOdd(odd, oddsType)
 
                 isSelected = odd.isSelected ?: false
 

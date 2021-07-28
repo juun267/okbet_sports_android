@@ -11,10 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GridItemDecoration
-import java.util.*
 
 
 /**
@@ -58,7 +56,7 @@ class Type4GroupAdapter(
     override fun getItemCount(): Int = oddsDetail.groupItem.size
 
 
-    inner class ViewHolder(view: View) : OddDetailStateViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindModel(oddsList: List<Odd?>, key: String) {
 

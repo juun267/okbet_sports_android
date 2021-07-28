@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.game.common.OddDetailStateViewHolder
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 
@@ -20,12 +20,23 @@ class TypeOneListAdapter(
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
 
+
+    private val mOddStateRefreshListener by lazy {
+        object : OddStateViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
+            }
+        }
+    }
+
+
     var mOddsDetail: OddsDetailListData? = null
         set(value) {
             field = value
             oddsDetail = value as OddsDetailListData
             notifyDataSetChanged()
         }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
@@ -37,7 +48,7 @@ class TypeOneListAdapter(
     override fun getItemCount(): Int = oddsDetail.oddArrayList.size
 
 
-    inner class ViewHolder(view: View) : OddDetailStateViewHolder(view) {
+    inner class ViewHolder(view: View) : OddStateViewHolder(view) {
 
         private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
 
@@ -46,17 +57,16 @@ class TypeOneListAdapter(
                 setupOdd(odd, oddsType)
                 setupOddState(this, odd)
                 isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-                oddStateChangeListener = object : OddStateChangeListener {
-                    override fun refreshOddButton(odd: Odd) {
-                        notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
-                    }
-                }
             }
 
             itemView.setOnClickListener {
                 odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
             }
         }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = mOddStateRefreshListener
+
     }
 
 

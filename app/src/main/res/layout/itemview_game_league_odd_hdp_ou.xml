@@ -134,7 +134,7 @@
         android:background="@color/colorWhite"
         app:layout_constraintTop_toBottomOf="@id/match_row" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/match_odd_column2_home"
         android:layout_width="65dp"
         android:layout_height="50dp"
@@ -143,7 +143,7 @@
         app:layout_constraintEnd_toEndOf="@id/match_odd_block"
         app:layout_constraintTop_toTopOf="@id/match_odd_block" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/match_odd_column1_home"
         android:layout_width="65dp"
         android:layout_height="50dp"
@@ -181,7 +181,7 @@
         app:layout_constraintTop_toTopOf="@id/match_odd_column2_home"
         tools:text="皇家马德里" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/match_odd_column2_away"
         android:layout_width="65dp"
         android:layout_height="50dp"
@@ -190,7 +190,7 @@
         app:layout_constraintEnd_toEndOf="@id/match_odd_block"
         app:layout_constraintTop_toBottomOf="@id/match_odd_column2_home" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/match_odd_column1_away"
         android:layout_width="65dp"
         android:layout_height="50dp"

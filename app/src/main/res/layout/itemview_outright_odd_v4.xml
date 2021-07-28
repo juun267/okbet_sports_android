@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="56dp"
-    android:paddingVertical="8dp"
-    android:paddingHorizontal="16dp"
+    android:paddingVertical="4dp"
+    android:paddingHorizontal="@dimen/activity_vertical_margin"
     android:background="@color/colorWhite">
 
-    <org.cxct.sportlottery.ui.game.widget.OddButton
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/outright_odd_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
+        app:ob_hide_item_flag="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
