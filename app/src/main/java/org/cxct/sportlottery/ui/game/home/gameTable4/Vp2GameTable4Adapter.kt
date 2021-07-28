@@ -74,7 +74,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
 
-        private var gameType: GameType? = null
+        private var gameType: String? = null
 
         private var oddListHDP: MutableList<Odd?>? = null
         private var oddList1x2: MutableList<Odd?>? = null
@@ -341,8 +341,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     setOnClickListener {
                         when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
-                                if (oddListHDP != null && oddListHDP.size >= 2) {
-                                    oddListHDP[0]?.let { odd ->
+                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
+                                    oddListHDP?.get(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -354,8 +354,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             }
 
                             GameType.TN.key, GameType.VB.key -> {
-                                if (oddList1x2 != null && oddList1x2.size >= 2) {
-                                    oddList1x2[0]?.let { odd ->
+                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
+                                    oddList1x2?.get(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,

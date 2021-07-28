@@ -115,7 +115,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
 
 
-        private var gameType: GameType? = null
+        private var gameType: String? = null
 
         private var oddListHDP: MutableList<Odd?>? = null
         private var oddList1x2: MutableList<Odd?>? = null
@@ -183,7 +183,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     else -> ""
                 }.toString()
 
-                val oddListHDP = when (gameType) {
+                oddListHDP = when (gameType) {
                     GameType.TN.key -> {
                         data.odds[PlayCate.SET_HDP.value]
                     }
@@ -195,7 +195,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     }
                 }
 
-                val oddList1x2 = when (gameType) {
+                oddList1x2 = when (gameType) {
                     GameType.BK.key -> {
                         data.odds[PlayCate.SINGLE_OT.value]
                     }
@@ -219,14 +219,14 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     betStatus = when (gameType) {
                         GameType.FT.key, GameType.BK.key -> {
-                            if (oddListHDP == null || oddListHDP.size < 2) {
+                            if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
                                 oddListHDP?.get(0)?.status ?: BetStatus.LOCKED.code
                             }
                         }
                         GameType.TN.key, GameType.VB.key -> {
-                            if (oddList1x2 == null || oddList1x2.size < 2) {
+                            if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
                                 oddList1x2?.get(0)?.status ?: BetStatus.LOCKED.code
@@ -263,8 +263,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     setOnClickListener {
                         when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
-                                if (oddListHDP != null && oddListHDP.size >= 2) {
-                                    oddListHDP[0]?.let { odd ->
+                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
+                                    oddListHDP?.get(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -276,8 +276,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             }
 
                             GameType.TN.key, GameType.VB.key -> {
-                                if (oddList1x2 != null && oddList1x2.size >= 2) {
-                                    oddList1x2[0]?.let { odd ->
+                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
+                                    oddList1x2?.get(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -306,17 +306,17 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     betStatus = when (gameType) {
                         GameType.FT.key, GameType.BK.key -> {
-                            if (oddListHDP == null || oddListHDP.size < 2) {
+                            if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
-                                oddListHDP[1]?.status ?: BetStatus.LOCKED.code
+                                oddListHDP?.get(1)?.status ?: BetStatus.LOCKED.code
                             }
                         }
                         GameType.TN.key, GameType.VB.key -> {
-                            if (oddList1x2 == null || oddList1x2.size < 2) {
+                            if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
-                                oddList1x2[1]?.status ?: BetStatus.LOCKED.code
+                                oddList1x2?.get(1)?.status ?: BetStatus.LOCKED.code
                             }
                         }
                         else -> {
@@ -338,7 +338,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                         }
                     )
 
-
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
                             setupOdd(oddListHDP?.get(1), oddsType)
@@ -351,8 +350,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     setOnClickListener {
                         when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
-                                if (oddListHDP != null && oddListHDP.size >= 2) {
-                                    oddListHDP[1]?.let { odd ->
+                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
+                                    oddListHDP?.get(1)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -364,8 +363,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             }
 
                             GameType.TN.key, GameType.VB.key -> {
-                                if (oddList1x2 != null && oddList1x2.size >= 2) {
-                                    oddList1x2[1]?.let { odd ->
+                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
+                                    oddList1x2?.get(1)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
