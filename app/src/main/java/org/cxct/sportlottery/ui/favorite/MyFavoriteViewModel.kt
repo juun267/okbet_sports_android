@@ -7,7 +7,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.query.Play
+import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -30,12 +33,13 @@ class MyFavoriteViewModel(
     betInfoRepository,
     infoCenterRepository
 ) {
+    val sportQueryData: LiveData<Event<SportQueryData?>>
+        get() = _sportQueryData
+    private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
 
-    val gameTypeList: LiveData<Event<List<Item>?>>
-        get() = _gameTypeList
-
-    private val _gameTypeList = MutableLiveData<Event<List<Item>?>>()
-
+    val curPlay: LiveData<Play>
+        get() = _curPlay
+    private val _curPlay = MutableLiveData<Play>()
 
     fun getSportQuery() {
         viewModelScope.launch {
@@ -51,35 +55,79 @@ class MyFavoriteViewModel(
 
             result?.sportQueryData?.let {
 
-                _gameTypeList.postValue(Event(
-                    it.items?.map { item ->
-                        Item(
-                            code = item.code ?: "",
-                            name = item.name ?: "",
-                            num = item.num ?: 0,
-                            play = null,
-                            sortNum = item.sortNum ?: 0
-                        )
-                    }.apply {
-                        this?.firstOrNull()?.isSelected = true
-                    })
-                )
+                _sportQueryData.postValue(Event(
+                    it.apply {
+                        it.items?.firstOrNull()?.apply {
+                            this.isSelected = true
+                            this.play?.firstOrNull()?.isSelected = true
+                        }
+                    }
+                ))
 
             }
         }
     }
 
     fun switchGameType(item: Item) {
-        _gameTypeList.postValue(
+        _sportQueryData.postValue(
             Event(
-                _gameTypeList.value?.peekContent()?.updateGameTypeSelected(item)
+                _sportQueryData.value?.peekContent()?.updateGameTypeSelected(item).apply {
+                    val curPlayList = this?.items?.find { it.isSelected }?.play
+
+                    curPlayList?.forEach {
+                        it.isSelected = (curPlayList.indexOf(it) == 0)
+                    }
+                }
             )
         )
     }
 
-    private fun List<Item>.updateGameTypeSelected(item: Item): List<Item> {
-        this.forEach {
+    fun switchPlay(play: Play) {
+        _sportQueryData.postValue(
+            Event(
+                _sportQueryData.value?.peekContent()?.updatePlaySelected(play).apply {
+                    val curPlayCate =
+                        this?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList
+
+                    curPlayCate?.forEach {
+                        it.isSelected =
+                            (curPlayCate.indexOf(it) == 0)
+                                    && (this?.items?.find { item -> item.isSelected }?.play?.find { play -> play.isSelected }?.selectionType == SelectionType.SELECTABLE.code)
+                    }
+                }
+            )
+        )
+
+        if (play.selectionType == SelectionType.SELECTABLE.code) {
+            _curPlay.postValue(play)
+        }
+    }
+
+    fun switchPlayCategory(playCateCode: String?) {
+        _sportQueryData.postValue(
+            Event(
+                _sportQueryData.value?.peekContent()?.updatePlayCateSelected(playCateCode)
+            )
+        )
+    }
+
+    private fun SportQueryData.updateGameTypeSelected(item: Item): SportQueryData {
+        this.items?.forEach {
             it.isSelected = (it.code == item.code)
+        }
+        return this
+    }
+
+    private fun SportQueryData.updatePlaySelected(play: Play): SportQueryData {
+        this.items?.find { it.isSelected }?.play?.forEach {
+            it.isSelected = (it == play)
+        }
+        return this
+    }
+
+    private fun SportQueryData.updatePlayCateSelected(playCateCode: String?): SportQueryData {
+        this.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.forEach {
+            it.isSelected = (it.code == playCateCode)
         }
         return this
     }
