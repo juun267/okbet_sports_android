@@ -134,6 +134,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     keyboard?.showKeyboard(editText)
                 }
 
+                override fun onHideKeyBoard() {
+                    keyboard?.hideKeyboard()
+                }
+
                 override fun saveOddsHasChanged(matchOdd: MatchOdd) {
                     viewModel.saveOddsHasChanged(matchOdd)
                 }
