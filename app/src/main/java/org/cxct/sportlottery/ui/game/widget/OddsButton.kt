@@ -94,8 +94,8 @@ class OddsButton @JvmOverloads constructor(
         }
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null)
-            BetStatus.LOCKED.code else odd.status
+
+        betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
 

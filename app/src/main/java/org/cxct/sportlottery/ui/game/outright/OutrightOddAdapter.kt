@@ -1,24 +1,19 @@
 package org.cxct.sportlottery.ui.game.outright
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd.view.*
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 
 class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
@@ -109,40 +104,18 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             oddsType: OddsType
         ) {
             itemView.outright_odd_btn.apply {
+                setupOdd(item, oddsType)
 
-                odd_outright_name_text.apply {
-                    visibility = View.VISIBLE
+                //特殊處理 : 該回傳沒有name
+                tv_name.apply {
                     text = item.spread
+                    visibility = View.VISIBLE
                 }
+                tv_spread.text = ""
 
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        item.oddState = OddState.SAME.state
-                    }
-                }
-                playCate = PlayCate.OUTRIGHT
-
-                visibility = if (item.odds == null) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
-                }
-
-                isSelected = item.isSelected ?: false
-
-                betStatus = item.status
-
-                /*oddStatus = item.oddState*/
                 this@OddViewHolder.setupOddState(this, item)
 
-                odd_outright_text.text = when (oddsType) {
-                    OddsType.EU -> {
-                        item.odds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    OddsType.HK -> {
-                        item.hkOdds?.let { TextUtil.formatForOdd(it) }
-                    }
-                }
+                isSelected = item.isSelected ?: false
 
                 setOnClickListener {
                     outrightOddListener?.onClickBet(matchOdd, item)

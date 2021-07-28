@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
