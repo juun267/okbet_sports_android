@@ -136,6 +136,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 },
                 {
                     viewModel.clearQuickPlayCateSelected()
+                },
+                { matchId ->
+                    matchId?.let {
+                        viewModel.pinFavorite(FavoriteType.MATCH, it)
+                    }
                 }
             )
         }
@@ -544,6 +549,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     league.id
                 })
             }
+        })
+
+        viewModel.favorMatchList.observe(this.viewLifecycleOwner, {
+            leagueAdapter.data.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.matchInfo?.isFavorite = it.contains(matchOdd.matchInfo?.id)
+                }
+            }
+
+            leagueAdapter.notifyDataSetChanged()
         })
     }
 

@@ -787,6 +787,8 @@ class GameViewModel(
             } else {
                 _oddsListGameHallResult.postValue(Event(result))
             }
+
+            notifyFavorite(FavoriteType.MATCH)
         }
     }
 
