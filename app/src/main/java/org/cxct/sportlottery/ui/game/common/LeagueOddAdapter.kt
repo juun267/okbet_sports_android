@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.button_odd_v4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
@@ -182,7 +182,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     updateTimer(
                         isTimerEnable,
                         item.leagueTime ?: 0,
-                        item.matchInfo?.sportType == SportType.BASKETBALL
+                        item.matchInfo?.gameType == GameType.BK.key
                     )
                 }
 
@@ -241,7 +241,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 ).apply {
 
                     val playCateName = PlayCateUtils
-                        .getPlayCateTitleResId(it.key, item.matchInfo?.sportType?.code)?.let {
+                        .getPlayCateTitleResId(it.key, item.matchInfo?.gameType)?.let {
                             itemView.context.getString(it)
                         } ?: ""
 

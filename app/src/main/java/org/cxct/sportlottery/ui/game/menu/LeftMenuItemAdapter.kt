@@ -39,7 +39,7 @@ class LeftMenuItemAdapter(private val clickListener: ItemClickListener) :
                     itemView.txv_price.text = item.title
                     itemView.btn_select.setImageResource(R.drawable.ic_pin_v4)
                     itemView.btn_select.setOnClickListener {
-                        clickListener.onClick(item.sportType)
+                        clickListener.onClick(item.gameType)
                     }
                     setVisibility(true)
                 }

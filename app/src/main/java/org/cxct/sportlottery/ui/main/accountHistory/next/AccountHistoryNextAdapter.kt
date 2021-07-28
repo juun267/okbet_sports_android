@@ -17,6 +17,7 @@ import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -247,12 +248,13 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
                 }
                 
                 val sportStatusList =
-                    listOf(StatusSheetData("", context?.getString(R.string.all_sport)),
-                           StatusSheetData("FT", context?.getString(R.string.soccer)),
-                           StatusSheetData("BK", context?.getString(R.string.basketball)),
-                           StatusSheetData("TN", context?.getString(R.string.tennis)),
-                           StatusSheetData("VB", context?.getString(R.string.volleyball)),
-                           StatusSheetData("BM", context?.getString(R.string.badminton)))
+                    listOf(
+                        StatusSheetData("", context?.getString(R.string.all_sport)),
+                        StatusSheetData(GameType.FT.key, context?.getString(GameType.FT.string)),
+                        StatusSheetData(GameType.BK.key, context?.getString(GameType.BK.string)),
+                        StatusSheetData(GameType.TN.key, context?.getString(GameType.TN.string)),
+                        StatusSheetData(GameType.VB.key, context?.getString(GameType.VB.string))
+                    )
 
                 val dateString = { minusDate: Int ->
                     "${TimeUtil.getMinusDate(minusDate)} ${context.getString(TimeUtil.getMinusDayOfWeek(minusDate))}"

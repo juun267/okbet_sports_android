@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.common.PlayCate
@@ -22,7 +23,6 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.results.GameType
 import org.cxct.sportlottery.util.GameConfigManager
 
 
@@ -94,7 +94,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
 
 //                    outright_filter_row.sportName = outrightOddsListResult.outrightOddsListData?.sport?.name ?: "" //TODO Cheryl : 等api修好後待確認用哪個值正確
-                    game_toolbar_sport_type.text = GameType.values().find { gameType -> gameType.key == args.sportType.code }?.string?.let { stringId -> getString(stringId) }
+                    game_toolbar_sport_type.text = GameType.values().find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId -> getString(stringId) }
 
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)?.let { gameImg ->
                         game_toolbar_bg.setBackgroundResource(gameImg)
@@ -110,7 +110,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                     outrightOddAdapter.matchOdd = matchOdd
 
-                    service.subscribeHallChannel(args.sportType.code, PlayCate.OUTRIGHT.value, args.eventId)
+                    service.subscribeHallChannel(
+                        args.gameType.key,
+                        PlayCate.OUTRIGHT.value,
+                        args.eventId
+                    )
                 }
             }
         })
@@ -251,7 +255,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
-                service.subscribeHallChannel(args.sportType.code, PlayCate.OUTRIGHT.value, args.eventId)
+                service.subscribeHallChannel(
+                    args.gameType.key,
+                    PlayCate.OUTRIGHT.value,
+                    args.eventId
+                )
             }
         })
     }
@@ -260,7 +268,12 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         matchOdd: MatchOdd,
         odd: Odd,
     ) {
-        viewModel.updateMatchBetListForOutRight(matchType = MatchType.OUTRIGHT, sportType = args.sportType, matchOdd = matchOdd, odd = odd)
+        viewModel.updateMatchBetListForOutRight(
+            matchType = MatchType.OUTRIGHT,
+            gameType = args.gameType,
+            matchOdd = matchOdd,
+            odd = odd
+        )
     }
 
     override fun onStop() {
