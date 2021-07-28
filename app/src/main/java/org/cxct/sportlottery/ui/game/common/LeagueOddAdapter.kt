@@ -175,6 +175,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
+            itemView.league_odd_match_favorite.apply {
+                isSelected = item.matchInfo?.isFavorite ?: false
+
+                setOnClickListener {
+                    leagueOddListener?.onClickFavorite(item.matchInfo?.id)
+                }
+            }
+
             itemView.league_odd_match_border_row1.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
@@ -674,7 +682,8 @@ class LeagueOddListener(
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
     val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String, playName: String) -> Unit,
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
-    val clickListenerQuickCateClose: () -> Unit
+    val clickListenerQuickCateClose: () -> Unit,
+    val clickListenerFavorite: (matchId: String?) -> Unit
 ) {
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
         clickListenerPlayType(matchId, matchInfoList)
@@ -689,4 +698,6 @@ class LeagueOddListener(
     fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCateTab(matchId)
 
     fun onClickQuickCateClose() = clickListenerQuickCateClose()
+
+    fun onClickFavorite(matchId: String?) = clickListenerFavorite(matchId)
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.sport.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.sport.SaveMyFavoriteRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -41,6 +42,11 @@ abstract class BaseFavoriteViewModel(
         get() = _favorLeagueList
     private val _favorLeagueList = MutableLiveData<List<String>>()
 
+    val favorMatchList: LiveData<List<String>>
+        get() = _favorMatchList
+    private val _favorMatchList = MutableLiveData<List<String>>()
+
+
     fun getFavorite() {
         if (isLogin.value != true) {
             _notifyLogin.postValue(true)
@@ -55,6 +61,7 @@ abstract class BaseFavoriteViewModel(
             result?.t?.let {
                 _favorSportList.postValue(TextUtil.split(it.sport))
                 _favorLeagueList.postValue(TextUtil.split(it.league))
+                _favorMatchList.postValue(TextUtil.split(it.match))
             }
         }
     }
@@ -62,12 +69,14 @@ abstract class BaseFavoriteViewModel(
     fun clearFavorite() {
         _favorSportList.postValue(listOf())
         _favorLeagueList.postValue(listOf())
+        _favorMatchList.postValue(listOf())
     }
 
     fun notifyFavorite(type: FavoriteType) {
         when (type) {
             FavoriteType.SPORT -> _favorSportList.postValue(_favorSportList.value)
             FavoriteType.LEAGUE -> _favorLeagueList.postValue(_favorLeagueList.value)
+            FavoriteType.MATCH -> _favorMatchList.postValue((_favorMatchList.value))
             else -> {
                 //TODO add other FavoriteType
             }
@@ -83,6 +92,7 @@ abstract class BaseFavoriteViewModel(
         val saveList = when (type) {
             FavoriteType.SPORT -> _favorSportList.value?.toMutableList() ?: mutableListOf()
             FavoriteType.LEAGUE -> _favorLeagueList.value?.toMutableList() ?: mutableListOf()
+            FavoriteType.MATCH -> _favorMatchList.value?.toMutableList() ?: mutableListOf()
             else -> mutableListOf()
         }
 
@@ -102,6 +112,7 @@ abstract class BaseFavoriteViewModel(
                 when (type) {
                     FavoriteType.SPORT -> _favorSportList.postValue(TextUtil.split(it.sport))
                     FavoriteType.LEAGUE -> _favorLeagueList.postValue(TextUtil.split(it.league))
+                    FavoriteType.MATCH -> _favorMatchList.postValue(TextUtil.split(it.match))
                     else -> {
                         //TODO add other FavoriteType
                     }
