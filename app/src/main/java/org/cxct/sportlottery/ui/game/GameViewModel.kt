@@ -26,6 +26,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.list.*
+import org.cxct.sportlottery.network.odds.quick.QuickListData
+import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
@@ -788,6 +790,46 @@ class GameViewModel(
         }
     }
 
+    fun getQuickList(matchId: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getQuickList(
+                    QuickListRequest(matchId)
+                )
+            }
+
+            result?.quickListData?.let {
+                _oddsListGameHallResult.postValue(
+                    Event(
+                        _oddsListGameHallResult.value?.peekContent()
+                            ?.updateQuickPlayCate(matchId, it)
+                    )
+                )
+
+                _oddsListResult.postValue(
+                    Event(
+                        _oddsListResult.value?.peekContent()
+                            ?.updateQuickPlayCate(matchId, it)
+                    )
+                )
+            }
+        }
+    }
+
+    fun clearQuickPlayCateSelected() {
+        _oddsListGameHallResult.postValue(
+            Event(
+                _oddsListGameHallResult.value?.peekContent()?.clearQuickPlayCateSelected()
+            )
+        )
+
+        _oddsListResult.postValue(
+            Event(
+                _oddsListResult.value?.peekContent()?.clearQuickPlayCateSelected()
+            )
+        )
+    }
+
     private fun getLeagueList(
         gameType: String,
         matchType: String,
@@ -1442,5 +1484,38 @@ class GameViewModel(
                     betInfoListData.matchOdd.oddsId == odd?.id
                 }
         }
+    }
+
+    private fun OddsListResult.updateQuickPlayCate(
+        matchId: String,
+        quickListData: QuickListData
+    ): OddsListResult {
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+
+                    quickPlayCate.isSelected =
+                        (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
+
+                    quickPlayCate.quickOdds = PlayCateUtils.filterQuickOdds(
+                        quickListData.quickOdds?.get(quickPlayCate.code),
+                        quickPlayCate.gameType ?: ""
+                    )
+                }
+            }
+        }
+        return this
+    }
+
+    private fun OddsListResult.clearQuickPlayCateSelected(): OddsListResult {
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.isSelected = false
+                }
+            }
+        }
+
+        return this
     }
 }

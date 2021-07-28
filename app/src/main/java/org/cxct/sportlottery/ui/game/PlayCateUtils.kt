@@ -4,6 +4,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.quick.QuickOdd
 
 object PlayCateUtils {
 
@@ -17,6 +18,20 @@ object PlayCateUtils {
             }.toMutableList()
 
         }.toMutableMap()
+    }
+
+    fun filterQuickOdds(
+        odds: Map<String, QuickOdd?>?,
+        sportCode: String
+    ): Map<String, QuickOdd?>? {
+
+        odds?.forEach {
+            it.value?.odds = it.value?.odds?.filterIndexed { index, _ ->
+                index < getPlayCateSpanCount(it.key, sportCode)
+            }
+        }
+
+        return odds
     }
 
     fun getPlayCateSpanCount(playCate: PlayCate, gameType: GameType) {

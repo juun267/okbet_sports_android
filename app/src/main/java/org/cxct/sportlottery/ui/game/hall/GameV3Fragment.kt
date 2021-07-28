@@ -25,7 +25,6 @@ import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
@@ -111,11 +110,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
             leagueOddListener = LeagueOddListener(
-                { matchOdd ->
-                    matchOdd.matchInfo?.id?.let {
-                        navOddsDetailLive(it)
-                    }
-                },
                 { matchId, matchInfoList ->
                     when (args.matchType) {
                         MatchType.IN_PLAY -> {
@@ -132,8 +126,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchOdd, odd, playCateName, playName ->
-                    addOddsDialog(matchOdd, odd, playCateName, playName)
+                { matchInfo, odd, playCateName, playName ->
+                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                },
+                { matchId ->
+                    matchId?.let {
+                        viewModel.getQuickList(it)
+                    }
+                },
+                {
+                    viewModel.clearQuickPlayCateSelected()
                 }
             )
         }
@@ -180,7 +182,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
             MatchType.AT_START -> getString(R.string.home_tab_at_start)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
-            else -> ""
         }
 
         view.game_toolbar_champion.apply {
@@ -354,8 +355,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 MatchType.AT_START -> {
                     updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
-                }
-                else -> {
                 }
             }
         })
@@ -914,7 +913,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun addOddsDialog(
-        matchOdd: MatchOdd,
+        matchInfo: MatchInfo?,
         odd: Odd,
         playCateName: String,
         playName: String
@@ -923,7 +922,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
         gameType?.let {
-            matchOdd.matchInfo?.let { matchInfo ->
+            matchInfo?.let { matchInfo ->
                 viewModel.updateMatchBetList(
                     args.matchType,
                     gameType,
