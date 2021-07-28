@@ -213,8 +213,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun initEditText() {
         et_bet.afterTextChanged {
-
-            button_bet.tv_quota.text = TextUtil.format(if (it.isEmpty()) 0.0 else it.toDouble())
+            button_bet.tv_quota.text = TextUtil.formatBetQuota(if (it.isEmpty()) 0 else it.toInt())
 
             if (it.isEmpty()) {
 

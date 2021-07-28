@@ -27,6 +27,7 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
                 if (key.codes[0] == KeyBoardCode.DOT.code ||
                     key.codes[0] == KeyBoardCode.PLUS_10.code ||
                     key.codes[0] == KeyBoardCode.PLUS_50.code ||
+                    key.codes[0] == KeyBoardCode.PLUS_100.code ||
                     key.codes[0] == KEYCODE_DONE
                 ) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_count)

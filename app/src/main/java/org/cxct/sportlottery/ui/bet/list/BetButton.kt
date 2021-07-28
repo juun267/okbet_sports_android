@@ -62,7 +62,7 @@ class BetButton @JvmOverloads constructor(
 
     private fun setupQuotaListener() {
         tv_quota.doAfterTextChanged {
-            isCanSendOut = it.toString().replace(",", "").toDouble() != 0.0
+            isCanSendOut = it.toString().replace(",", "").toInt() != 0
         }
     }
 

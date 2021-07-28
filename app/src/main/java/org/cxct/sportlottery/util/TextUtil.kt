@@ -33,6 +33,11 @@ object TextUtil {
         return df.format(any)
     }
 
+    fun formatBetQuota(any: Any): String {
+        val df = DecimalFormat("###,###,###,###")
+        return df.format(any)
+    }
+
     fun formatForVipRebates(any: Any): String {
         val df = DecimalFormat("#.# %").apply { roundingMode = RoundingMode.HALF_UP }
         return df.format(any)
