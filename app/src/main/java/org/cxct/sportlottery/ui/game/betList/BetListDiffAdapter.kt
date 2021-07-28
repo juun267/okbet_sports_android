@@ -187,6 +187,10 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     root.cl_quota_detail.visibility = View.GONE
                 }
 
+                ivClose.setOnClickListener {
+                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+                }
+
                 root.apply {
                     tv_check_maximum_limit.setOnClickListener {
                         it.visibility = View.GONE
