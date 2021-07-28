@@ -1293,6 +1293,9 @@ class GameViewModel(
             MatchType.AT_START -> {
                 sportMenuRes?.sportMenuData?.atStart?.items?.size ?: 0
             }
+            else -> {
+                0
+            }
         }
     }
 
@@ -1331,6 +1334,9 @@ class GameViewModel(
                 sportMenuRes?.sportMenuData?.atStart?.items?.find { it.code == gameType.key }?.num
                     ?: 0
             }
+            else -> {
+                0
+            }
         }
     }
 
@@ -1353,6 +1359,7 @@ class GameViewModel(
         MatchType.AT_START -> {
             sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }
         }
+        else -> null
     }
 
     private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }
