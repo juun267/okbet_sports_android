@@ -140,6 +140,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun refreshAmount() {
                     refreshAllAmount()
                 }
+
+                override fun showParlayRule(parlayType: String, parlayRule: String) {
+                    showParlayDescription(parlayType, parlayRule)
+                }
             }
         ).apply {
             //展開查看所有多個選項時將滾動至底部
@@ -314,13 +318,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     /**
      * 顯示串關說明
      */
-    private fun showParlayDescription() {
+    private fun showParlayDescription(parlayType: String, parlayRule: String) {
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_dialog_parlay_description, null)
         val dialog = BottomSheetDialog(context ?: requireContext())
         dialog.apply {
             setContentView(bottomSheetView)
             setCancelable(false)
             setCanceledOnTouchOutside(false)
+            view.apply {
+                tv_parlay_type.text = parlayType
+                tv_parlay_rule.text = parlayRule
+            }
             btn_close.setOnClickListener {
                 dismiss()
             }

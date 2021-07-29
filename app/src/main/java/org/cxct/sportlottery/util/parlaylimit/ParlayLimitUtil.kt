@@ -144,7 +144,7 @@ object ParlayLimitUtil {
             val parlayCom = ParlayCom()
             parlayCom.num = list.size
             parlayCom.parlayType = list[0].size.toString() + "C1"
-            parlayCom.rule = "${String.format(context.getString(R.string.parlay_rule_nc1), list[0].size.toString())}\n$cantParlayWarn"
+            parlayCom.rule = "${String.format(context.getString(R.string.parlay_rule_nc1), list[0].size, list[0].size + 1)}\n$cantParlayWarn"
             nC1RuleList.add(String.format(context.getString(R.string.parlay_rule_list_nc1), list.size, list[0].size.toString()))
             parlayCom.setComList(list)
             parlayComSOList.add(parlayCom)
