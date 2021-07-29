@@ -284,7 +284,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 R.anim.pop_bottom_to_top_exit
             )
             .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack("BetListFragment")
+            .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
     }
 
@@ -435,7 +435,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     override fun onBackPressed() {
         //返回鍵優先關閉投注單fragment
-        if (supportFragmentManager.backStackEntryCount != 0){
+        if (supportFragmentManager.backStackEntryCount != 0) {
             supportFragmentManager.popBackStack()
             return
         }

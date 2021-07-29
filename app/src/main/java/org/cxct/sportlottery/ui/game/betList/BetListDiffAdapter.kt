@@ -39,6 +39,7 @@ import org.cxct.sportlottery.util.getOdds
 class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetListDiffCallBack()) {
     var focusPosition = -1
 
+    val changeHandler = Handler()
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -156,6 +157,39 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
         fun bind(itemData: BetInfoListData, oddsType: OddsType) {
             binding.apply {
+                //view binding data
+                parlayOdd = itemData.parlayOdds
+
+                /* check input focus */
+                if (adapterPosition == focusPosition) {
+                    etBet.requestFocus()
+                    etBet.setSelection(binding.etBet.text.length)
+                } else {
+                    etBet.clearFocus()
+                }
+
+                setupBetAmountInput(binding, itemData)
+
+                setupOddInfo(binding, itemData)
+
+                setupOddStatus(binding, itemData)
+
+                setupDeleteButton(binding, itemData)
+
+                setupMaximumLimitView(binding)
+
+
+                //TODO 賠率變化、顯示賠率更新提示
+                /*if (itemData.matchOdd.spreadState != SpreadState.SAME.state || itemData.matchOdd.oddState != OddState.SAME.state) {
+                    tv_odd_content_changed.visibility = View.VISIBLE
+                    button_bet.isOddsChanged = true
+                }*/
+            }
+
+        }
+
+        private fun setupOddInfo(binding: ContentBetInfoItemBinding, itemData: BetInfoListData) {
+            binding.apply {
                 OddSpannableString.setupOddsContent(itemData.matchOdd, oddsType, tvOddsContent)
                 tvMatch.text = "${itemData.matchOdd.homeName}${root.context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 tvName.text = if (itemData.matchOdd.inplay == INPLAY) {
@@ -167,6 +201,15 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     )
                 } else itemData.matchOdd.playCateName
 
+                //投注額
+                (parlayList[0].allSingleInput ?: itemData.input)?.let {
+                    etBet.setText(it)
+                }
+            }
+        }
+
+        private fun setupOddStatus(binding: ContentBetInfoItemBinding, itemData: BetInfoListData) {
+            binding.apply {
                 if (itemData.matchOdd.status == BetStatus.ACTIVATED.code) {
                     clItemBackground.setBackgroundColor(ContextCompat.getColor(root.context, R.color.colorWhite))
                     ivBetLock.visibility = View.GONE
@@ -186,38 +229,29 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     onItemClickListener.onHideKeyBoard()
                     root.cl_quota_detail.visibility = View.GONE
                 }
+            }
+        }
 
-                ivClose.setOnClickListener {
-                    onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+        private fun setupDeleteButton(binding: ContentBetInfoItemBinding, itemData: BetInfoListData) {
+            binding.ivClose.setOnClickListener {
+                onItemClickListener.onDeleteClick(itemData.matchOdd.oddsId, itemCount)
+            }
+        }
+
+        private fun setupMaximumLimitView(binding: ContentBetInfoItemBinding) {
+            binding.root.apply {
+                tv_check_maximum_limit.setOnClickListener {
+                    it.visibility = View.GONE
+                    ll_bet_quota_detail.visibility = View.VISIBLE
                 }
+            }
+        }
 
-                root.apply {
-                    tv_check_maximum_limit.setOnClickListener {
-                        it.visibility = View.GONE
-                        ll_bet_quota_detail.visibility = View.VISIBLE
-                    }
-                }
-
-                //TODO 賠率變化、顯示賠率更新提示
-                /*if (itemData.matchOdd.spreadState != SpreadState.SAME.state || itemData.matchOdd.oddState != OddState.SAME.state) {
-                    tv_odd_content_changed.visibility = View.VISIBLE
-                    button_bet.isOddsChanged = true
-                }*/
-
-                parlayOdd = itemData.parlayOdds
-
-                (parlayList[0].allSingleInput ?: itemData.input)?.let {
-                    etBet.setText(it)
-                }
-
-                /* check input focus */
-                if (adapterPosition == focusPosition) {
-                    etBet.requestFocus()
-                    etBet.setSelection(binding.etBet.text.length)
-                } else {
-                    etBet.clearFocus()
-                }
-
+        /**
+         * setup TextWatcher, OnFocusChangeListener
+         */
+        private fun setupBetAmountInput(binding: ContentBetInfoItemBinding, itemData: BetInfoListData) {
+            binding.apply {
                 /* set listener */
                 val tw = object : TextWatcher {
                     override fun afterTextChanged(it: Editable?) {
@@ -285,34 +319,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                         false
                     }
                 }
-
-                componentStatusByOdds(itemData)
-            }
-
-        }
-
-        private fun componentStatusByOdds(data: BetInfoListData) {
-
-            val platClose = when (data.matchOdd.status) {
-                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
-                    true
-                }
-                else -> { //BetStatus.ACTIVATED.code
-                    setChangeOdds(adapterPosition, data.matchOdd)
-                    data.matchOdd.betAddError != null
-                }
-            }
-            //盤口狀態
-            binding.apply {
-                if (platClose) {
-                    clItemBackground.background = ContextCompat.getDrawable(root.context, R.color.colorWhite2)
-                    ivBetLock.visibility = View.VISIBLE
-                    etBet.isEnabled = false
-                } else {
-                    clItemBackground.background = ContextCompat.getDrawable(root.context, R.color.colorWhite)
-                    ivBetLock.visibility = View.GONE
-                    etBet.isEnabled = true
-                }
             }
         }
 
@@ -374,7 +380,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             }
 
                             //單注填充所有單注選項, 刷新單注選項資料, 因資料做過反轉故投注單為最後一項開始
-                            Handler().post { notifyItemRangeChanged(itemCount - betList.size, betList.size) }
+                            changeHandler.post { notifyItemRangeChanged(itemCount - betList.size, betList.size) }
                         }
 
                         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
