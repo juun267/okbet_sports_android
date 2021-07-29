@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -20,6 +22,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
@@ -46,7 +49,22 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private val leagueAdapter by lazy {
-        LeagueAdapter(MatchType.MY_EVENT)
+        LeagueAdapter(MatchType.MY_EVENT).apply {
+            leagueOddListener = LeagueOddListener(
+                { _, _ ->
+                    //TODO 目前後端回傳資料無法分辨MatchType類型，等可以分辨時會在區分要連到OddsDetail/OddsDetailLive
+                },
+                { matchInfo, odd, playCateName, playName ->
+                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                },
+                { matchId ->
+                },
+                {
+                },
+                { matchId ->
+                }
+            )
+        }
     }
 
 
@@ -164,6 +182,26 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             hideLoading()
             leagueAdapter.data = it
         })
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.peekContent().let {
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { oddList ->
+                            oddList.forEach { odd ->
+                                odd?.isSelected = it.any { betInfoListData ->
+                                    betInfoListData.matchOdd.oddsId == odd?.id
+                                }
+                            }
+                        }
+                    }
+                }
+
+                leagueAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
     private fun updateGameTypeList(items: List<Item>?) {
@@ -209,5 +247,28 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 viewModel.switchPlayCategory(data.code)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
             })
+    }
+
+    private fun addOddsDialog(
+        matchInfo: MatchInfo?,
+        odd: Odd,
+        playCateName: String,
+        playName: String
+    ) {
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+
+        if (gameType == null || matchInfo == null) {
+            return
+        }
+
+        viewModel.updateMatchBetList(
+            MatchType.MY_EVENT,
+            gameType,
+            playCateName,
+            playName,
+            matchInfo,
+            odd
+        )
     }
 }

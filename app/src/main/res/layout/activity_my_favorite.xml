@@ -10,9 +10,17 @@
         android:id="@+id/my_favorite_container"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/my_favorite_bottom_navigation"
+        app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/my_favorite_navigation"
         tools:layout="@layout/fragment_my_favorite" />
 
+    <include
+        android:id="@+id/my_favorite_bottom_navigation"
+        layout="@layout/view_bottom_navigation_sport"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
