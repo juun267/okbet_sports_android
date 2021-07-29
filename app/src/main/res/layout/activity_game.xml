@@ -102,7 +102,7 @@
         <FrameLayout
             android:id="@+id/fl_left_menu"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <!-- 右側導覽列 -->
         <include layout="@layout/view_nav_right" />
@@ -131,5 +131,11 @@
         android:layout_width="match_parent"
         android:layout_height="55dp"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- 投注單 -->
+    <FrameLayout
+        android:id="@+id/fl_bet_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -86,7 +86,7 @@ class MultiLanguagesApplication : Application() {
         single { SettlementRepository() }
         single { InfoCenterRepository() }
         single { MoneyRepository(get()) }
-        single { BetInfoRepository() }
+        single { BetInfoRepository(get()) }
         single { AvatarRepository(get(), get()) }
         single { FeedbackRepository() }
         single { HostRepository(get()) }

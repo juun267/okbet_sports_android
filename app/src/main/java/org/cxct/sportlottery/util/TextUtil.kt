@@ -13,6 +13,11 @@ object TextUtil {
         return df.format(any)
     }
 
+    fun formatInputMoney(any: Any): String {
+        val df = DecimalFormat("0.###")
+        return df.format(any)
+    }
+
     fun formatMoney(double: Double): String {
         val df = DecimalFormat("###,###,###,##0.000")
         return df.format(ArithUtil.toMoneyFormat(double).toDouble())
