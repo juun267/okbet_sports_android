@@ -3,15 +3,10 @@ package org.cxct.sportlottery.ui.odds
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -19,10 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
+import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
+import kotlinx.android.synthetic.main.fragment_odds_detail.tab_cat
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
+import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -35,17 +35,14 @@ import org.cxct.sportlottery.util.TimeUtil
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     OnOddClickListener {
 
+
     private val args: OddsDetailFragmentArgs by navArgs()
 
-    companion object {
-        const val TIME_LENGTH = 5
-    }
 
     var matchId: String? = null
     private var mSportCode: String? = null
     private var matchOdd: MatchOdd? = null
 
-    private lateinit var dataBinding: FragmentOddsDetailBinding
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
@@ -56,20 +53,17 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         matchId = args.matchId
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
-        dataBinding.apply {
-            view = this@OddsDetailFragment
-            gameViewModel = this@OddsDetailFragment.viewModel
-            lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
-        }
-        return dataBinding.root
-    }
+    ): View = FragmentOddsDetailBinding.inflate(inflater, container, false).apply {
+        fragment = this@OddsDetailFragment
+        gameViewModel = this@OddsDetailFragment.viewModel
+        lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
+        executePendingBindings()
+    }.root
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -104,40 +98,14 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
 
     private fun initUI() {
-
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
             sportCode = mSportCode
         }
 
-        dataBinding.rvDetail.apply {
+        rv_detail.apply {
             (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
-        }
-
-        tv_more.apply {
-            visibility = if (args.matchInfoList.size > 1) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-            setOnClickListener {
-                parentFragmentManager.let {
-                    matchId?.let { id ->
-                        OddsDetailMoreFragment.newInstance(
-                            id,
-                            args.matchInfoList,
-                            object : OddsDetailMoreFragment.ChangeGameListener {
-                                override fun refreshData(matchId: String) {
-                                    this@OddsDetailFragment.matchId = matchId
-                                    getData()
-                                }
-                            }).apply {
-                            show(it, OddsDetailMoreFragment::class.java.simpleName)
-                        }
-                    }
-                }
-            }
         }
 
         tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -154,8 +122,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        }
-        )
+        })
     }
 
 
@@ -165,21 +132,21 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             it.getContentIfNotHandled()?.let { result ->
                 result.success.let { success ->
                     if (success) {
-                        dataBinding.tabCat.removeAllTabs()
+                        tab_cat.removeAllTabs()
                         if (result.rows.isNotEmpty()) {
                             for (row in result.rows) {
                                 val customTabView = layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
                                     findViewById<TextView>(R.id.tv_tab).text = row.name
                                 }
 
-                                dataBinding.tabCat.addTab(
-                                    dataBinding.tabCat.newTab().setCustomView(customTabView),
+                                tab_cat.addTab(
+                                    tab_cat.newTab().setCustomView(customTabView),
                                     false
                                 )
                             }
-                            dataBinding.tabCat.getTabAt(0)?.select()
+                            tab_cat.getTabAt(0)?.select()
                         } else {
-                            dataBinding.tabCat.visibility = View.GONE
+                            tab_cat.visibility = View.GONE
                         }
                     }
                 }
@@ -188,53 +155,21 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-
                 when (result.success) {
                     true -> {
                         matchOdd = result.oddsDetailData?.matchOdd
-                        result.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                            val strTime = TimeUtil.timeFormat(time.toLong(), "MM/dd  HH:mm")
-                            val color = ContextCompat.getColor(requireContext(), R.color.colorRedDark)
-                            val startPosition = strTime.length - TIME_LENGTH
-                            val endPosition = strTime.length
-                            val style = SpannableStringBuilder(strTime)
-                            style.setSpan(
-                                ForegroundColorSpan(color),
-                                startPosition,
-                                endPosition,
-                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                            )
-                            dataBinding.tvTime.text = style
-                        }
-
                         result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                             result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                                val strVerse = getString(R.string.verse_)
-                                val strMatch = "$home$strVerse$away"
-                                val color =
-                                    ContextCompat.getColor(requireContext(), R.color.colorOrange)
-                                val startPosition = strMatch.indexOf(strVerse)
-                                val endPosition = startPosition + strVerse.length
-                                val style = SpannableStringBuilder(strMatch)
-                                style.setSpan(
-                                    ForegroundColorSpan(color),
-                                    startPosition,
-                                    endPosition,
-                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                                )
-                                dataBinding.tvMatch.text = style
-
                                 oddsDetailListAdapter?.homeName = home
                                 oddsDetailListAdapter?.awayName = away
                             }
                         }
+                        setupStartTime(matchOdd?.matchInfo)
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
-
-
             }
         })
 
@@ -279,16 +214,16 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
 
-    fun back() {
-        findNavController().navigateUp()
+    private fun navGameInPlay() {
+        findNavController().navigate(OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY))
     }
 
 
-    private fun navGameInPlay() {
-        val action =
-            OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY)
-
-        findNavController().navigate(action)
+    private fun setupStartTime(matchInfo: MatchInfo?) {
+        matchInfo?.apply {
+            tv_time_top.text = TimeUtil.timeFormat(startTime.toLong(), TimeUtil.DM_FORMAT)
+            tv_time_bottom.text = TimeUtil.timeFormat(startTime.toLong(), TimeUtil.HM_FORMAT)
+        }
     }
 
 
@@ -298,7 +233,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 matchType = args.matchType,
                 gameType = args.gameType,
                 playCateName = oddsDetail.name,
-                playName = odd.name?:"",
+                playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,
                 odd = odd
             )
@@ -313,7 +248,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onStop() {
         super.onStop()
-
         service.unsubscribeEventChannel(matchId)
     }
 

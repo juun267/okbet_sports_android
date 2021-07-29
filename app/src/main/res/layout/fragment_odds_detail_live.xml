@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="view"
-            type="org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment" />
+            name="fragment"
+            type="org.cxct.sportlottery.ui.base.BaseFragment" />
 
         <variable
             name="gameViewModel"
@@ -42,25 +42,9 @@
                 <include
                     android:id="@+id/v_toolbar"
                     layout="@layout/view_odds_detail_toolbar"
+                    app:fragment="@{fragment}"
                     app:gameViewModel="@{gameViewModel}"
-                    app:receiver="@{receiver}"
-                    app:view="@{view}" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_game_card"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    app:layout_constraintBottom_toTopOf="@id/v_toolbar"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:itemCount="5"
-                    tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/content_odds_detail_game_card"
-                    tools:orientation="horizontal" />
+                    app:receiver="@{receiver}" />
 
                 <org.cxct.sportlottery.ui.component.LiveViewToolbar
                     android:id="@+id/live_view_tool_bar"
@@ -69,6 +53,26 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintTop_toBottomOf="@id/v_toolbar" />
 
+                <View
+                    android:id="@+id/v_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorWhite8"
+                    app:layout_constraintTop_toBottomOf="@+id/live_view_tool_bar" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_cat"
+                    android:layout_width="match_parent"
+                    android:layout_height="62dp"
+                    android:background="@color/colorWhite"
+                    android:clipToPadding="false"
+                    android:paddingHorizontal="10dp"
+                    app:layout_constraintTop_toBottomOf="@+id/v_divider"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabMode="scrollable"
+                    app:tabPaddingEnd="6dp"
+                    app:tabPaddingStart="6dp"
+                    app:tabRippleColor="@color/transparent" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"
@@ -76,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
+                    app:layout_constraintTop_toBottomOf="@id/tab_cat"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

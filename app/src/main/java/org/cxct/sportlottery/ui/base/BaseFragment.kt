@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import org.cxct.sportlottery.R
@@ -125,6 +126,10 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     fun onNetworkUnavailable() {
         Toast.makeText(activity, R.string.connect_first, Toast.LENGTH_SHORT).show()
+    }
+
+    fun back() {
+        findNavController().navigateUp()
     }
 
 }
