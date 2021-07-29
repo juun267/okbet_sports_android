@@ -5,13 +5,16 @@ import android.view.MenuItem
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_my_favorite.*
+import kotlinx.android.synthetic.main.fragment_game_v3.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
@@ -36,6 +39,10 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
         }
     }
 
+    private val leagueAdapter by lazy {
+        LeagueAdapter(MatchType.MY_EVENT)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_favorite)
@@ -43,6 +50,7 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
         setupToolbar()
         setupGameTypeList()
         setupPlayCategory()
+        setupLeagueOddList()
 
         initObserver()
     }
@@ -95,10 +103,19 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
         }
     }
 
+    private fun setupLeagueOddList() {
+        favorite_game_list.apply {
+            this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            this.adapter = leagueAdapter
+        }
+    }
+
     override fun onStart() {
         super.onStart()
 
         viewModel.getSportQuery()
+        loading()
     }
 
     private fun initObserver() {
@@ -126,6 +143,11 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
 
         viewModel.curPlay.observe(this, {
             showPlayCateBottomSheet(it)
+        })
+
+        viewModel.favorMatchOddList.observe(this, {
+            hideLoading()
+            leagueAdapter.data = it
         })
     }
 

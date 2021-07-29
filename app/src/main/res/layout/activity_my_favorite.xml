@@ -88,7 +88,7 @@
                 tools:listitem="@layout/itemview_play_category_v4" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gavorite_game_list"
+                android:id="@+id/favorite_game_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"

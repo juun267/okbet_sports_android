@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.sport.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.sport.SaveMyFavoriteRequest
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -46,6 +48,10 @@ abstract class BaseFavoriteViewModel(
         get() = _favorMatchList
     private val _favorMatchList = MutableLiveData<List<String>>()
 
+    val favorMatchOddList: LiveData<List<LeagueOdd>>
+        get() = _favorMatchOddList
+    private val _favorMatchOddList = MutableLiveData<List<LeagueOdd>>()
+
 
     fun getFavorite() {
         if (isLogin.value != true) {
@@ -62,6 +68,32 @@ abstract class BaseFavoriteViewModel(
                 _favorSportList.postValue(TextUtil.split(it.sport))
                 _favorLeagueList.postValue(TextUtil.split(it.league))
                 _favorMatchList.postValue(TextUtil.split(it.match))
+            }
+        }
+    }
+
+    fun getFavoriteMatch(gameType: String?, playCateMenu: String?) {
+        if (isLogin.value != true) {
+            _notifyLogin.postValue(true)
+            return
+        }
+
+        if (gameType == null || playCateMenu == null) {
+            return
+        }
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.favoriteService.getMyFavoriteMatch(
+                    MyFavoriteMatchRequest(gameType, playCateMenu)
+                )
+            }
+
+            result?.rows?.let {
+                it.forEach { leagueOdd ->
+                    leagueOdd.gameType = GameType.getGameType(gameType)
+                }
+                _favorMatchOddList.postValue(it)
             }
         }
     }

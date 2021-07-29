@@ -20,6 +20,7 @@ import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
+
 class MyFavoriteViewModel(
     androidContext: Application,
     userInfoRepository: UserInfoRepository,
@@ -64,6 +65,10 @@ class MyFavoriteViewModel(
                     }
                 ))
 
+                getFavoriteMatch(
+                    it.items?.firstOrNull()?.code,
+                    it.items?.firstOrNull()?.play?.firstOrNull()?.code
+                )
             }
         }
     }
@@ -79,6 +84,11 @@ class MyFavoriteViewModel(
                     }
                 }
             )
+        )
+
+        getFavoriteMatch(
+            item.code,
+            _sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.firstOrNull()?.code
         )
     }
 
@@ -100,6 +110,11 @@ class MyFavoriteViewModel(
 
         if (play.selectionType == SelectionType.SELECTABLE.code) {
             _curPlay.postValue(play)
+        } else {
+            getFavoriteMatch(
+                sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
+                play.code
+            )
         }
     }
 
@@ -108,6 +123,11 @@ class MyFavoriteViewModel(
             Event(
                 _sportQueryData.value?.peekContent()?.updatePlayCateSelected(playCateCode)
             )
+        )
+
+        getFavoriteMatch(
+            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
+            playCateCode
         )
     }
 
