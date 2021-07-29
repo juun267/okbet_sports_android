@@ -13,6 +13,11 @@
         <variable
             name="gameViewModel"
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
+
+        <variable
+            name="receiver"
+            type="org.cxct.sportlottery.service.ServiceBroadcastReceiver" />
+
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -34,113 +39,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/iv_title_bar"
-                    android:maxHeight="48dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/img_odd_detail_title_bg_white"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <ImageView
-                    android:id="@+id/ll_back"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:padding="16dp"
-                    android:src="@drawable/ic_arrow_left_game_back"
-                    android:onClick="@{() -> view.back()}"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_title_bar"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_game_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="欧洲足球锦标赛2020"
-                    android:textColor="@color/colorBlackLight"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize18sp"
-                    android:gravity="center"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_title_bar" />
-
-
-                <ImageView
-                    android:id="@+id/img_game_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:maxHeight="68dp"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toTopOf="@id/live_view_tool_bar"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_title_bar"
-                    android:src="@drawable/img_odd_detail_title_bg" />
-
-                <TextView
-                    android:id="@+id/tv_home_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="義大利"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/colorWhite"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/textSize16sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/img_game_detail"/>
-
-                <TextView
-                    android:id="@+id/tv_away_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="10dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSize16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_game_detail"
-                    app:layout_constraintStart_toStartOf="@id/tv_home_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_home_name"
-                    tools:text="瑞士" />
-
-                <TextView
-                    android:id="@+id/tv_score"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="17dp"
-                    android:textColor="@color/colorSilver"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/img_game_detail"
-                    tools:text="17 / 16" />
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="17dp"
-                    android:textColor="@color/colorSilver"
-                    android:textSize="@dimen/textSize12sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_game_detail"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_score"
-                    app:layout_constraintTop_toBottomOf="@id/tv_score"
-                    tools:text="03:00" />
+                <include
+                    android:id="@+id/v_toolbar"
+                    layout="@layout/view_odds_detail_toolbar"
+                    app:gameViewModel="@{gameViewModel}"
+                    app:receiver="@{receiver}"
+                    app:view="@{view}" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="gone"
                     android:id="@+id/rv_game_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintBottom_toTopOf="@id/live_view_tool_bar"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/v_toolbar"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/ll_back"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="5"
                     tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -149,17 +64,17 @@
 
                 <org.cxct.sportlottery.ui.component.LiveViewToolbar
                     android:id="@+id/live_view_tool_bar"
-                    android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/rv_game_card"/>
+                    app:layout_constraintTop_toBottomOf="@id/v_toolbar" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"
-                    android:background="@color/colorWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
                     android:nestedScrollingEnabled="false"
                     app:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
                     tools:listitem="@layout/content_odds_detail_list_item" />

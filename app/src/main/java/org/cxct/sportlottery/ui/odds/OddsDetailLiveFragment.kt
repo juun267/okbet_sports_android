@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
+import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
@@ -27,25 +28,35 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), OnOddClickListener {
 
+
     private val args: OddsDetailLiveFragmentArgs by navArgs()
+
 
     private var mSportCode: String? = null
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
 
+
     private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
 
+
     private lateinit var dataBinding: FragmentOddsDetailLiveBinding
+
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
     private var oddsGameCardAdapter: OddsGameCardAdapter? = null
 
+
     private var sport = ""
+
 
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
@@ -69,6 +80,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             view = this@OddsDetailLiveFragment
             gameViewModel = this@OddsDetailLiveFragment.viewModel
             lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
+            receiver = this@OddsDetailLiveFragment.receiver //TODO 後續需要將比分帶入
         }
         return dataBinding.root
     }
@@ -89,11 +101,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         live_view_tool_bar.setWebViewUrl(matchId)
     }
 
+
     override fun onStop() {
         super.onStop()
         unsubscribeAllHallChannel()
         service.unsubscribeAllEventChannel()
     }
+
 
     private fun initRecyclerView() {
         rv_game_card.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
@@ -123,8 +137,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             it?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
                 curHomeScore = homeScore
                 curAwayScore = awayScore
-
-                tv_score.text = "$curHomeScore / $curAwayScore"
             }
         })
 
@@ -173,6 +185,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                                 oddsDetailListAdapter?.awayName = away
                             }
                         }
+                        setupStartTime(matchOdd?.matchInfo)
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -218,9 +231,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                     sport = oddsListResult.oddsListData?.sport?.code.toString()
                     oddsGameCardAdapter?.data = matchOddList
-
-                    setView(matchOddList.firstOrNull())
-
                 }
             }
 
@@ -236,14 +246,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     }
 
-    private fun setView(matchInfo: MatchInfo?) {
+
+    private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
-            tv_home_name.text = homeName
-            tv_away_name.text = awayName
-            tv_time.text = startTime
-            tv_score.text = "$homeScore / $awayScore"
+            tv_time_top.text = TimeUtil.timeFormat(startTime.toLong(), DM_FORMAT)
+            tv_time_bottom.text = TimeUtil.timeFormat(startTime.toLong(), HM_FORMAT)
         }
     }
+
 
     private fun subscribeHallChannel(code: String, match: String?) {
         service.subscribeHallChannel(code, PlayCate.OU_HDP.value, match)
@@ -272,7 +282,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             matchOdd.matchInfo.homeScore = curHomeScore
             matchOdd.matchInfo.awayScore = curAwayScore
-            tv_score.text = "$curHomeScore / $curAwayScore"
 
             viewModel.updateMatchBetList(
                 matchType = MatchType.IN_PLAY,
@@ -295,5 +304,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     fun back() {
         findNavController().navigateUp()
     }
+
 
 }
