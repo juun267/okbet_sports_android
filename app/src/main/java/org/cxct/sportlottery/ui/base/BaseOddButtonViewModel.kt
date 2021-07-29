@@ -14,8 +14,10 @@ import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddError
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
@@ -24,6 +26,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.getOdds
 
 
@@ -33,6 +36,10 @@ abstract class BaseOddButtonViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseSocketViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+
+    val showBetInfoSingle = betInfoRepository.showBetInfoSingle
+
+    val betInfoList = betInfoRepository.betInfoList
 
     val oddsType: LiveData<OddsType> = loginRepository.mOddsType
 
@@ -69,6 +76,67 @@ abstract class BaseOddButtonViewModel(
                 else -> OddsType.EU
             }
         )
+    }
+
+    fun updateMatchBetList(
+        matchType: MatchType,
+        gameType: GameType,
+        playCateName: String,
+        playName: String,
+        matchInfo: MatchInfo,
+        odd: org.cxct.sportlottery.network.odds.Odd
+    ) {
+        val betItem = betInfoRepository.betInfoList.value?.peekContent()
+            ?.find { it.matchOdd.oddsId == odd.id }
+
+        if (betItem == null) {
+            matchInfo.let {
+                betInfoRepository.addInBetInfo(
+                    matchType = matchType,
+                    gameType = gameType,
+                    playCateName = playCateName,
+                    playName = playName,
+                    matchInfo = matchInfo,
+                    odd = odd
+                )
+            }
+        } else {
+            odd.id?.let { removeBetInfoItem(it) }
+        }
+    }
+
+    fun updateMatchBetListForOutRight(
+        matchType: MatchType,
+        gameType: GameType,
+        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
+        odd: org.cxct.sportlottery.network.odds.Odd
+    ) {
+        val outrightCateName = matchOdd.dynamicMarkets[odd.outrightCateKey].let {
+            when (LanguageManager.getSelectLanguage(androidContext)) {
+                LanguageManager.Language.ZH -> {
+                    it?.zh
+                }
+                else -> {
+                    it?.en
+                }
+            }
+        }
+
+        val betItem = betInfoRepository.betInfoList.value?.peekContent()
+            ?.find { it.matchOdd.oddsId == odd.id }
+
+        if (betItem == null) {
+            betInfoRepository.addInBetInfo(
+                matchType = matchType,
+                gameType = gameType,
+                playCateName = outrightCateName ?: "",
+                playName = odd.spread ?: "",
+                matchInfo = matchOdd.matchInfo,
+                odd = odd
+            )
+        } else {
+            odd.id?.let { removeBetInfoItem(it) }
+        }
     }
 
     fun updateMatchOddForParlay(matchOdd: MatchOddsChangeEvent) {
