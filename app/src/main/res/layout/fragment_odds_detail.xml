@@ -38,7 +38,8 @@
                 <include
                     android:id="@+id/v_toolbar"
                     layout="@layout/view_odds_detail_toolbar"
-                    app:fragment="@{fragment}" />
+                    app:fragment="@{fragment}"
+                    app:gameViewModel="@{gameViewModel}" />
 
                 <View
                     android:id="@+id/v_divider"
