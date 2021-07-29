@@ -91,7 +91,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initView() {
         initBtnView()
         initRecyclerView()
-        initDeleteAllOnClickEvent()
+        initToolBar()
+
         initKeyBoard()
     }
 
@@ -109,6 +110,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             rvBetList.adapter = betListDiffAdapter
         }
+    }
+
+    private fun initToolBar() {
+        binding.ivArrow.setOnClickListener {
+            activity?.supportFragmentManager?.popBackStack()
+        }
+        initDeleteAllOnClickEvent()
     }
 
     private fun initDiffAdapter() {
