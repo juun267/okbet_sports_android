@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -167,8 +168,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         dataBinding.tabCat.removeAllTabs()
                         if (result.rows.isNotEmpty()) {
                             for (row in result.rows) {
+                                val customTabView = layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
+                                    findViewById<TextView>(R.id.tv_tab).text = row.name
+                                }
+
                                 dataBinding.tabCat.addTab(
-                                    dataBinding.tabCat.newTab().setText("   ${row.name}   "),
+                                    dataBinding.tabCat.newTab().setCustomView(customTabView),
                                     false
                                 )
                             }
