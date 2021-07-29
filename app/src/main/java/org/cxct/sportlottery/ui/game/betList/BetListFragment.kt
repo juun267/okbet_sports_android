@@ -19,6 +19,8 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -237,7 +239,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 getParlayList()
                 refreshAllAmount(list)
-                checkBetInfoPlatStatus(list)
+                checkBetInfo(list)
             }
         })
 
@@ -276,7 +278,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
             betListDiffAdapter?.betList = (betList ?: mutableListOf())
-            checkBetInfoPlatStatus(betList ?: mutableListOf())
+            checkBetInfo(betList ?: mutableListOf())
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
@@ -297,6 +299,27 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun getCurrentParlayList(betListDiffAdapter: BetListDiffAdapter): MutableList<ParlayOdd> {
         return betListDiffAdapter.parlayList
+    }
+
+    /**
+     * 檢查注單中賠率、盤口狀態
+     */
+    private fun checkBetInfo(betInfoList: MutableList<BetInfoListData>) {
+        checkBetInfoOddChanged(betInfoList)
+        checkBetInfoPlatStatus(betInfoList)
+    }
+
+    /**
+     * 判斷是否有賠率變更
+     */
+    private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
+        var hasOddChanged = false
+        betInfoList.forEach {
+            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
+                hasOddChanged = true
+            }
+        }
+        showHideOddsChangeWarn(hasOddChanged)
     }
 
     /**
