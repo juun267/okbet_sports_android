@@ -96,7 +96,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initBtnView() {
-        binding.btnBet.tv_quota.text = TextUtil.formatMoney(0.0)
+        binding.btnBet.tv_quota.text = TextUtil.formatBetQuota(0)
     }
 
     private fun initRecyclerView() {
@@ -164,7 +164,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
-            tvTotalBetAmount.text = "${TextUtil.formatMoney(totalBetAmount)} ${getString(R.string.currency)}"
+            tvTotalBetAmount.text = "${TextUtil.formatBetQuota(totalBetAmount)} ${getString(R.string.currency)}"
             tvTotalWinnableAmount.text = "${TextUtil.formatMoney(winnableAmount)} ${getString(R.string.currency)}"
         }
 
@@ -176,7 +176,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             val totalBetAmountNotNull = totalBetAmount ?: 0.0
             totalBetAmountNotNull.let {
                 binding.apply {
-                    btnBet.tv_quota.text = TextUtil.formatMoney(it)
+                    btnBet.tv_quota.text = TextUtil.formatBetQuota(it)
                     betAllAmount = it
                 }
             }
