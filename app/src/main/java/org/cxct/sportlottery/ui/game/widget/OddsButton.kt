@@ -25,6 +25,7 @@ import org.cxct.sportlottery.util.getOdds
  * @edit:
  * 2021/07/05 擴展配適直角
  * 2021/07/27 合併其他odd button
+ * 2021/07/29 新增特優賠率樣式
  */
 class OddsButton @JvmOverloads constructor(
     context: Context,
@@ -94,6 +95,23 @@ class OddsButton @JvmOverloads constructor(
         }
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+
+        betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+    }
+
+
+    fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
+        tv_name.apply {
+            text = odd?.extInfo
+            paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
+        }
+
+        tv_spread.visibility = View.GONE
+
+        tv_odds.apply {
+            setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_bottom_text_eps))
+            text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+        }
 
         betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
@@ -180,12 +198,6 @@ class OddsButton @JvmOverloads constructor(
                 isActivated = false
             }
         }
-    }
-
-
-    /*設置中間線*/
-    fun setupSpreadCenterLine() {
-        tv_spread?.paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG
     }
 
 
