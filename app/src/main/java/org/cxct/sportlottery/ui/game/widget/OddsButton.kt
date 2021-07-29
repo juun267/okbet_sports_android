@@ -201,9 +201,4 @@ class OddsButton @JvmOverloads constructor(
     }
 
 
-    /*設置賠率顏色*/
-    fun setupOddsTextColor(color: Int) {
-        tv_odds?.setTextColor(ContextCompat.getColor(context, color))
-    }
-
 }
