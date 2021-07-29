@@ -17,7 +17,12 @@
     </item>
 
 
-    <item android:drawable="@drawable/ic_keyboard_delete" />
+    <item
+        android:width="24dp"
+        android:height="16dp"
+        android:gravity="center"
+        android:drawable="@drawable/ic_keyboard_delete"
+        tools:ignore="UnusedAttribute" />
 
 
 </layer-list>

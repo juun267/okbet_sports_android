@@ -29,7 +29,12 @@ object TextUtil {
     }
 
     fun formatForOdd(any: Any): String {
-        val df = DecimalFormat("###,###,###,##0.000")
+        val df = DecimalFormat("###,###,###,##0.00")
+        return df.format(any)
+    }
+
+    fun formatBetQuota(any: Any): String {
+        val df = DecimalFormat("###,###,###,###")
         return df.format(any)
     }
 
