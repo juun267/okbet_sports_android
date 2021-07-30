@@ -391,15 +391,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
 
-                    leagueOdds.forEach { leagueOdd ->
-                        leagueOdd.matchOdds.forEach { matchOdd ->
-                            service.subscribeHallChannel(
-                                gameType?.key,
-                                PlayCate.OU_HDP.value,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
+                    subscribeHallChannel()
                 }
             }
         })
@@ -767,22 +759,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let { _ ->
                 service.unsubscribeAllHallChannel()
-
-                val gameType = gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code
-                val leagueOdds = leagueAdapter.data
-
-                leagueOdds.forEach { leagueOdd ->
-                    if (leagueOdd.isExpand) {
-
-                        leagueOdd.matchOdds.forEach { matchOdd ->
-                            service.subscribeHallChannel(
-                                gameType,
-                                PlayCate.OU_HDP.value,
-                                matchOdd.matchInfo?.id
-                            )
-                        }
-                    }
-                }
+                subscribeHallChannel()
             }
         })
     }
@@ -945,6 +922,31 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     playName,
                     matchInfo,
                     odd
+                )
+            }
+        }
+    }
+
+    private fun subscribeHallChannel() {
+        val playSelected = playCategoryAdapter.data.find { it.isSelected }
+
+        val playCateMenuCode = when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                playSelected.playCateList?.find { it.isSelected }?.code
+            }
+            SelectionType.UN_SELECTABLE.code -> {
+                playSelected.code
+            }
+            else -> null
+        }
+
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+
+                service.subscribeHallChannel(
+                    leagueOdd.gameType?.key,
+                    playCateMenuCode,
+                    matchOdd.matchInfo?.id
                 )
             }
         }
