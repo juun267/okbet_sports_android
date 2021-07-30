@@ -1448,7 +1448,7 @@ class GameViewModel(
             it.isSelected = (it == date)
         }
 
-        _curDate.postValue(this)
+        _curDate.value = this
         _curDatePosition.postValue(this.indexOf(date))
     }
 
