@@ -64,6 +64,7 @@ class GameViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
+    myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
 ) : BaseFavoriteViewModel(
@@ -71,7 +72,8 @@ class GameViewModel(
     userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    myFavoriteRepository
 ) {
 
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>

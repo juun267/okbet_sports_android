@@ -72,13 +72,13 @@ class MultiLanguagesApplication : Application() {
         viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get()) }
-        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get()) }
+        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -95,6 +95,7 @@ class MultiLanguagesApplication : Application() {
         single { ThirdGameRepository() }
         single { WithdrawRepository(get(), get()) }
         single { PlayQuotaComRepository() }
+        single { MyFavoriteRepository() }
     }
 
     private val dbModule = module {

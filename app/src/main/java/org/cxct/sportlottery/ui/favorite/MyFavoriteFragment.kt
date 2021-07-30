@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -57,11 +58,15 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 { matchInfo, odd, playCateName, playName ->
                     addOddsDialog(matchInfo, odd, playCateName, playName)
                 },
-                { matchId ->
+                {
+                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接點選PlayCategory行為
                 },
                 {
+                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接關閉PlayCategory行為
                 },
                 { matchId ->
+                    viewModel.pinFavorite(FavoriteType.MATCH, matchId)
+                    loading()
                 }
             )
         }

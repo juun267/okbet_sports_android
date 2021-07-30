@@ -12,10 +12,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
@@ -26,13 +23,15 @@ class MyFavoriteViewModel(
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    myFavoriteRepository: MyFavoriteRepository
 ) : BaseFavoriteViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    myFavoriteRepository
 ) {
     val sportQueryData: LiveData<Event<SportQueryData?>>
         get() = _sportQueryData
