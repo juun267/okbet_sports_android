@@ -1468,9 +1468,7 @@ class GameViewModel(
                                 play.isSelected
                             }?.playCateList?.find { playCate ->
                                 playCate.isSelected
-                            }?.code ?: it.find { play ->
-                                play.isSelected
-                            }?.playCateList?.firstOrNull()?.code
+                            }?.code
                         }
                         false -> {
                             null
