@@ -883,6 +883,7 @@ class GameViewModel(
                 }
 
                 _playList.value = playList
+                _playCate.value = null
             }
         }
     }
