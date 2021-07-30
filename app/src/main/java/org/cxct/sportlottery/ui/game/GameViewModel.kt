@@ -1173,6 +1173,12 @@ class GameViewModel(
                     )
                 }
 
+                list.find { it.gameType == PlayCate.EPS.value }.apply {
+                    if (this != null) {
+                        list.add(0, list.removeAt(list.indexOf(this)))
+                    }
+                }
+
                 _oddsDetailList.postValue(Event(list))
             }
         }

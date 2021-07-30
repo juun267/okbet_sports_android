@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center|start"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/button_odds"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="意大利落后反超获胜" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/button_odds"
+        android:layout_width="92dp"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
