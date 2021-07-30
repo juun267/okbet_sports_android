@@ -1173,6 +1173,7 @@ class GameViewModel(
                     )
                 }
 
+                //因UI需求 特優賠率移到第一項
                 list.find { it.gameType == PlayCate.EPS.value }.apply {
                     if (this != null) {
                         list.add(0, list.removeAt(list.indexOf(this)))

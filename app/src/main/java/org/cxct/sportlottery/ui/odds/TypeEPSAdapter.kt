@@ -56,7 +56,7 @@ class TypeEPSAdapter(
             tvName.text = odd?.name
 
             btnOdds?.apply {
-                setupOdd(odd, oddsType)
+                setupOddForEPS(odd, oddsType)
                 setupOddState(this, odd)
                 isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
             }
