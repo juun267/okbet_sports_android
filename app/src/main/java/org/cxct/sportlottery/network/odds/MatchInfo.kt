@@ -38,4 +38,6 @@ data class MatchInfo(
     //Other
     var startDateDisplay: String? = null
     var startTimeDisplay: String? = null
+
+    var isFavorite = false
 }
