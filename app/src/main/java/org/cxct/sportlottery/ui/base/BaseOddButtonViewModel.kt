@@ -193,6 +193,22 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+    /**
+     * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
+     * @date 20210730
+     */
+    fun addBetList(betAddRequest: BetAddRequest, matchType: MatchType?) {
+        viewModelScope.launch {
+            val result = getBetApi(matchType, betAddRequest)
+            _betAddResult.postValue(Event(result))
+            Event(result).getContentIfNotHandled()?.success?.let {
+                if (it) {
+                    betInfoRepository.clear()
+                }
+            }
+        }
+    }
+
 
     fun addBetSingle(stake: Double, betInfoListData: BetInfoListData) {
         val parlayType =

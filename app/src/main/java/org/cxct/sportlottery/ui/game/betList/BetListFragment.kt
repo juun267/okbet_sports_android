@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,9 @@ import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
+import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -28,6 +32,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyBoardUtil
 import org.cxct.sportlottery.util.TextUtil
@@ -86,6 +91,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         queryData()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        betListDiffAdapter?.let {
+            unsubscribeChannel(getCurrentBetList(it))
+        }
+    }
+
     private fun getParlayList() {
         viewModel.getBetInfoListForParlay()
     }
@@ -99,7 +111,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initBtnView() {
-        binding.btnBet.tv_quota.text = TextUtil.formatBetQuota(0)
+        binding.btnBet.apply {
+            tv_quota.text = TextUtil.formatBetQuota(0)
+
+            tv_login.setOnClickListener {
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+            }
+
+            cl_bet.setOnClickListener { addBet() }
+
+            tv_accept_odds_change.setOnClickListener { addBet() }
+        }
     }
 
     private fun initRecyclerView() {
@@ -237,6 +259,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 tv_bet_list_count.text = list.size.toString()
                 betListDiffAdapter?.betList = list
 
+                subscribeChannel(list)
                 getParlayList()
                 refreshAllAmount(list)
                 checkBetInfo(list)
@@ -299,6 +322,49 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun getCurrentParlayList(betListDiffAdapter: BetListDiffAdapter): MutableList<ParlayOdd> {
         return betListDiffAdapter.parlayList
+    }
+
+    private fun addBet() {
+
+        betListDiffAdapter?.let { betListAdapter ->
+            val matchList: MutableList<Odd> = mutableListOf()
+            val outrightMatchList: MutableList<Odd> = mutableListOf()
+            getCurrentBetList(betListAdapter).forEach {
+                if (it.betAmount > 0) {
+                    when (it.matchType) {
+                        MatchType.OUTRIGHT -> outrightMatchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
+                        else -> matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
+                    }
+                }
+            }
+
+            val parlayList: MutableList<Stake> = mutableListOf()
+            getCurrentParlayList(betListAdapter).forEach {
+                if (it.betAmount > 0) {
+                    parlayList.add(Stake(TextUtil.replaceCByParlay(it.parlayType), it.betAmount))
+                }
+            }
+
+            if (matchList.size > 1)
+                viewModel.addBetList(
+                    BetAddRequest(
+                        matchList,
+                        parlayList,
+                        1,
+                        oddsType.code
+                    ), MatchType.PARLAY
+                )
+
+            if (outrightMatchList.size > 1)
+                viewModel.addBetList(
+                    BetAddRequest(
+                        outrightMatchList,
+                        mutableListOf(),
+                        1,
+                        oddsType.code
+                    ), MatchType.OUTRIGHT
+                )
+        }
     }
 
     /**
@@ -395,22 +461,32 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
+        val subscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
                 service.subscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
             } else {
-                service.subscribeEventChannel(listData.matchOdd.matchId)
+                val subscribeMatchId = listData.matchOdd.matchId
+                if (!subscribedList.contains(subscribeMatchId)) {
+                    subscribedList.add(subscribeMatchId)
+                    service.subscribeEventChannel(subscribeMatchId)
+                }
             }
         }
     }
 
 
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
+        val unsubscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
                 service.unsubscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
             } else {
-                service.unsubscribeEventChannel(listData.matchOdd.matchId)
+                val unsubscribeMatchId = listData.matchOdd.matchId
+                if (!unsubscribedList.contains(unsubscribeMatchId)) {
+                    unsubscribedList.add(unsubscribeMatchId)
+                    service.unsubscribeEventChannel(unsubscribeMatchId)
+                }
             }
         }
     }

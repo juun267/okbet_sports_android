@@ -53,8 +53,13 @@ object TextUtil {
         return df.format(any)
     }
 
+    //TODO 應以resource代入, 配合多國語
     fun replaceParlayByC(str: String): String {
         return str.replace("C", "串")
+    }
+
+    fun replaceCByParlay(str: String): String {
+        return str.replace("串", "C")
     }
 
     fun maskFullName(fullName: String): String {
