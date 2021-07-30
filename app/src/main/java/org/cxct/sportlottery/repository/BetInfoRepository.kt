@@ -61,6 +61,10 @@ class BetInfoRepository(val androidContext: Context) {
     val removeItem: LiveData<String>
         get() = _removeItem
 
+    private val _betParlaySuccess = MutableLiveData(true)
+    val betParlaySuccess: LiveData<Boolean>
+        get() = _betParlaySuccess
+
 
     var playQuotaComData: PlayQuotaComData? = null
         set(value) {
@@ -71,6 +75,7 @@ class BetInfoRepository(val androidContext: Context) {
         }
 
 
+    @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
     fun addInBetInfoParlay() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
@@ -90,6 +95,57 @@ class BetInfoRepository(val androidContext: Context) {
             _parlayList.value = updateParlayOddOrder(
                 getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
             )
+        }
+    }
+
+    /**
+     * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
+     */
+    fun addInBetOrderParlay() {
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+
+        if (betList.size == 0) {
+            return
+        }
+
+        var hasPointMark = false //若有被標記就進行串關組合了
+        //先檢查有沒有冠軍類別, 若有則全部紅色標記
+        val hasMatchType = betList.firstOrNull { it.matchType == MatchType.OUTRIGHT } != null
+
+        //檢查是否有不同的球賽種類
+        val gameType = GameType.getGameType(betList[0].matchOdd.gameType)
+
+        //檢查是否有相同賽事
+        val matchIdList: MutableMap<String, MutableList<Int>> = mutableMapOf()
+        betList.forEachIndexed { index, betInfoListData ->
+            matchIdList[betInfoListData.matchOdd.matchId]?.add(index) ?: run { matchIdList[betInfoListData.matchOdd.matchId] = mutableListOf(index) }
+        }
+
+        betList.forEach {
+            if (hasMatchType || gameType != GameType.getGameType(it.matchOdd.gameType) || matchIdList[it.matchOdd.matchId]?.size ?: 0 > 1) {
+                hasPointMark = true
+                it.pointMarked = true
+            } else {
+                it.pointMarked = false
+            }
+        }
+
+        gameType?.let {
+            val parlayMatchOddList = betList.map { betInfoListData ->
+                betInfoListData.matchOdd
+            }.toMutableList()
+
+            _matchOddList.value = parlayMatchOddList
+
+            if (!hasPointMark) {
+                _parlayList.value = updateParlayOddOrder(
+                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
+                )
+                _betParlaySuccess.value = true
+            } else {
+                _parlayList.value = mutableListOf()
+                _betParlaySuccess.value = false
+            }
         }
     }
 

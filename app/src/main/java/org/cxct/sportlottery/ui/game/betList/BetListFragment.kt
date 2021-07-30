@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
@@ -98,8 +99,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun getParlayList() {
-        viewModel.getBetInfoListForParlay()
+    private fun getBetOrderParlay() {
+        viewModel.getBetOrderListForParlay()
     }
 
     private fun initView() {
@@ -133,6 +134,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     stackFromEnd = true
                 }
             rvBetList.adapter = betListDiffAdapter
+            (rvBetList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
     }
 
@@ -260,7 +262,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 betListDiffAdapter?.betList = list
 
                 subscribeChannel(list)
-                getParlayList()
+                getBetOrderParlay()
                 refreshAllAmount(list)
                 checkBetInfo(list)
             }
@@ -274,6 +276,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner, {
             betListDiffAdapter?.parlayList = it
+        })
+
+        viewModel.betParlaySuccess.observe(viewLifecycleOwner, {
+            showHideCantParlayWarn(!it)
         })
     }
 

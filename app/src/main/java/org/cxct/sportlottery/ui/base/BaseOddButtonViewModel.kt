@@ -45,6 +45,9 @@ abstract class BaseOddButtonViewModel(
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
 
+    val betParlaySuccess: LiveData<Boolean>
+        get() = betInfoRepository.betParlaySuccess
+
     fun getMoney() {
         if (isLogin.value == false) return
 
@@ -264,6 +267,10 @@ abstract class BaseOddButtonViewModel(
 
     fun getBetInfoListForParlay() {
         betInfoRepository.addInBetInfoParlay()
+    }
+
+    fun getBetOrderListForParlay() {
+        betInfoRepository.addInBetOrderParlay()
     }
 
     fun addInBetInfo() {

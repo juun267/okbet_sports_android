@@ -190,6 +190,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
         private fun setupOddInfo(binding: ContentBetInfoItemBinding, itemData: BetInfoListData) {
             binding.apply {
+                //是否為無法串關注單
+                vPoint.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
                 OddSpannableString.setupOddsContent(itemData.matchOdd, oddsType, tvOddsContent)
                 tvMatch.text = "${itemData.matchOdd.homeName}${root.context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 tvName.text = if (itemData.matchOdd.inplay == INPLAY) {
@@ -202,7 +204,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 } else itemData.matchOdd.playCateName
 
                 //投注額
-                (parlayList[0].allSingleInput ?: itemData.input)?.let {
+                (parlayList.firstOrNull()?.allSingleInput ?: itemData.input)?.let {
                     etBet.setText(it)
                 }
             }
@@ -592,23 +594,26 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
 class BetListDiffCallBack : DiffUtil.ItemCallback<DataItem>() {
     override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem == newItem
+        return oldItem.oddsId == newItem.oddsId
     }
 
     override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem.oddsId == newItem.oddsId && oldItem.oddsId != null
+        return oldItem == newItem
     }
 
 }
 
 sealed class DataItem {
     abstract var oddsId: String?
+    abstract var pointMarked: Boolean?
 
-    data class BetInfoData(val betInfoListData: BetInfoListData, override var oddsId: String? = betInfoListData.matchOdd.oddsId) : DataItem()
+    data class BetInfoData(val betInfoListData: BetInfoListData, override var oddsId: String? = betInfoListData.matchOdd.oddsId, override var pointMarked: Boolean? = betInfoListData.pointMarked) :
+        DataItem()
 
-    data class ParlayData(val parlayOdd: ParlayOdd?, var firstItem: Boolean = false, override var oddsId: String? = null) : DataItem()
+    data class ParlayData(val parlayOdd: ParlayOdd?, var firstItem: Boolean = false, override var oddsId: String? = null, override var pointMarked: Boolean? = null) : DataItem()
 
     class NoData : DataItem() {
         override var oddsId: String? = null
+        override var pointMarked: Boolean? = null
     }
 }
