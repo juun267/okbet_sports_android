@@ -53,6 +53,7 @@
                     android:layout_height="match_parent"
                     android:text="@string/bet_info_list_title"
                     android:textColor="@color/colorWhite6"
+                    app:layout_constraintBottom_toTopOf="@+id/tv_balance"
                     app:layout_constraintStart_toEndOf="@+id/iv_arrow"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,11 +84,13 @@
                     android:layout_height="wrap_content"
                     android:text="0.000"
                     android:textColor="@color/colorWhite6"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tv_bet_list"
                     app:layout_constraintTop_toBottomOf="@+id/tv_bet_list"
                     tools:text="9,875,241.000" />
 
                 <TextView
+                    android:id="@+id/tv_balance_currency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -288,9 +291,9 @@
 
         <org.cxct.sportlottery.ui.bet.list.BetButton
             android:id="@+id/btn_bet"
-            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
 
         <!-- 選項關閉提示 -->
         <LinearLayout

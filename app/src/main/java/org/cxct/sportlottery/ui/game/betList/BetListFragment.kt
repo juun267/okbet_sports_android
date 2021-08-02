@@ -55,6 +55,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var betAllAmount = 0.0
 
+    private var isLogin: Boolean? = null
+        set(value) {
+            field = value
+            field?.let {
+                setupUserBalanceView(it)
+                setupBetButtonType(it)
+            }
+        }
+
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -252,6 +261,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initObserver() {
+        //是否登入
+        viewModel.isLogin.observe(this.viewLifecycleOwner, {
+            isLogin = it
+        })
+
         viewModel.userMoney.observe(viewLifecycleOwner, {
             it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
         })
@@ -371,6 +385,26 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     ), MatchType.OUTRIGHT
                 )
         }
+    }
+
+    /**
+     * 顯示、隱藏使用者餘額(登入、未登入)
+     */
+    private fun setupUserBalanceView(isLogin: Boolean) {
+        if (isLogin) {
+            tv_balance.visibility = View.VISIBLE
+            tv_balance_currency.visibility = View.VISIBLE
+        } else {
+            tv_balance.visibility = View.GONE
+            tv_balance_currency.visibility = View.GONE
+        }
+    }
+
+    /**
+     * 投注按鈕狀態(登入、未登入)
+     */
+    private fun setupBetButtonType(isLogin: Boolean) {
+        btn_bet.isLogin = isLogin
     }
 
     /**
