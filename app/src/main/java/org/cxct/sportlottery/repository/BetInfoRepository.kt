@@ -57,8 +57,8 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _isParlayPage
 
 
-    private val _removeItem = MutableLiveData<String>()
-    val removeItem: LiveData<String>
+    private val _removeItem = MutableLiveData<Event<String?>>()
+    val removeItem: LiveData<Event<String?>>
         get() = _removeItem
 
     private val _betParlaySuccess = MutableLiveData(true)
@@ -177,7 +177,7 @@ class BetInfoRepository(val androidContext: Context) {
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
-        _removeItem.postValue(item?.matchOdd?.matchId)
+        _removeItem.postValue(Event(item?.matchOdd?.matchId))
         _betInfoList.postValue(Event(betList))
     }
 

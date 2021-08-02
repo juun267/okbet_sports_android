@@ -284,8 +284,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         })
 
         //移除注單解除訂閱
-        viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, {
-            service.unsubscribeEventChannel(it)
+        viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                service.unsubscribeEventChannel(it)
+            }
         })
 
         //串關列表
