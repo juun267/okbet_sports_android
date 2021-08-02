@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.TimeUtil
 
 
 @Suppress("DEPRECATION")
@@ -240,7 +241,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         matchInfo?.apply {
             tv_home_name.text = homeName
             tv_away_name.text = awayName
-            tv_time.text = startTime
+            tv_time.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
             tv_score.text = "$homeScore / $awayScore"
         }
     }

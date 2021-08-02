@@ -4,7 +4,7 @@ data class BetAddErrorData(
     val id: String?,
     val odds: Double?,
     val hkOdds: Double?,
-    val producerId: Int?,
-    val spread: String?,
+    val producerId: Int,
+    val spread: String,
     val status: Int?
 )

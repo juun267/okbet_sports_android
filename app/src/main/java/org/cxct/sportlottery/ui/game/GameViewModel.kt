@@ -498,7 +498,7 @@ class GameViewModel(
                     data.matchOdds.forEach { matchOdd ->
                         //計算且賦值 即將開賽 的倒數時間
                         matchOdd.matchInfo?.apply {
-                            remainTime = TimeUtil.getRemainTime(startTime.toLong())
+                            remainTime = startTime?.let { TimeUtil.getRemainTime(it) }
                         }
 
                         //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
@@ -710,27 +710,28 @@ class GameViewModel(
     fun getOutrightOddsList(leagueId: String) {
         getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
+
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
                             item.code,
-                            leagueIdList = listOf(leagueId)
+                            leagueIdList = listOf("27068")
                         )
                     )
                 }
 
                 result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { oddList ->
-                            oddList.updateOddSelectState()
+                    leagueOdd.matchOdds?.forEach { matchOdd ->
+                        matchOdd?.odds?.values?.forEach { oddList ->
+                            oddList?.updateOddSelectState()
                         }
                     }
                 }
 
-                val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
+                val matchOdd = result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
                 matchOdd?.let {
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), DMY_FORMAT)
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), HM_FORMAT)
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
+                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
                 }
 
                 _outrightOddsListResult.postValue(Event(result))
@@ -763,12 +764,12 @@ class GameViewModel(
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "MM/dd")
+                            TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
 
                         matchOdd.matchInfo.startTimeDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "HH:mm")
+                            TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
-                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
+                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
                     matchOdd.odds =
@@ -1157,13 +1158,11 @@ class GameViewModel(
                     _outrightSeasonListResult.value?.peekContent()?.rows?.filter {
 
                         it.searchList = it.list.filter { season ->
-                            season.name.trim().toLowerCase(Locale.ENGLISH)
-                                .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
+                            season.name?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) == true
                         }
 
                         it.list.any { season ->
-                            season.name.trim().toLowerCase(Locale.ENGLISH)
-                                .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
+                            season.name?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) == true
                         }
                     }
                 _outrightCountryListSearchResult.postValue(searchResult ?: listOf())
