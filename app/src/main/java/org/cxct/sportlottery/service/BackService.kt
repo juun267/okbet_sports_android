@@ -248,6 +248,7 @@ class BackService : Service() {
             if (mOriginalSubscribedMap.containsValue(it)) {
                 mOriginalSubscribedMap.remove(url)
             } else {
+                Timber.i("<<< unsubscribe channel: $url")
                 mCompositeDisposable?.remove(it)
                 mSubscribedMap.remove(url)
             }
