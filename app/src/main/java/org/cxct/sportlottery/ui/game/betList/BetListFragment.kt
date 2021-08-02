@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -32,13 +34,11 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.KeyBoardUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
-import org.cxct.sportlottery.util.messageByResultCode
+import org.cxct.sportlottery.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -144,6 +144,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     stackFromEnd = true
                 }
             rvBetList.adapter = betListDiffAdapter
+            rvBetList.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+                ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
+                    setDrawable(it)
+                }
+            })
             (rvBetList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
     }
@@ -309,6 +314,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ) {}
                 checkBetInfo(betListDiffAdapter?.betList ?: mutableListOf())
                 refreshAllAmount()
+                showHideOddsChangeWarn(false)
             }
         })
 
@@ -437,13 +443,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * 判斷是否有賠率變更
      */
     private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
-        var hasOddChanged = false
         betInfoList.forEach {
             if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
-                hasOddChanged = true
+                showHideOddsChangeWarn(true)
             }
         }
-        showHideOddsChangeWarn(hasOddChanged)
     }
 
     /**
