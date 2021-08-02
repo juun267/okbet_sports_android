@@ -24,4 +24,6 @@ data class MatchOdd(
     var isExpand = false
     var leagueTime: Int? = null
     var matchStatusList: List<MatchStatus> = listOf()
+
+    var positionButtonPage = 0
 }
