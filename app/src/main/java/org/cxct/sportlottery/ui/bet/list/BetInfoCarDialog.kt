@@ -71,10 +71,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         set(value) {
             field = value
             field?.let {
-                if (!subscribeFlag) {
-                    subscribeChannel(it)
-                    subscribeFlag = true
-                }
                 setupData(it)
             }
         }
@@ -104,10 +100,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 setupBetButtonType(it)
             }
         }
-
-
-    private var subscribeFlag = false
-
 
     init {
         setStyle(STYLE_NORMAL, R.style.LightBackgroundBottomSheet)
@@ -147,13 +139,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         viewModel.removeBetInfoSingle()
         OddSpannableString.clearHandler()
     }
-
-
-    override fun onStop() {
-        super.onStop()
-        service.unsubscribeEventChannel(matchOdd?.matchId)
-    }
-
 
     private fun initClose() {
         iv_close.setOnClickListener {
@@ -286,7 +271,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner, { event ->
             event?.peekContent()?.let {
-                if(!it)dismiss()
+                if (!it) dismiss()
             }
         })
     }
@@ -301,11 +286,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             it?.let { event ->
                 viewModel.updateMatchOdd(event)
             }
-        })
-
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
-            service.unsubscribeAllEventChannel()
-            service.subscribeEventChannel(matchOdd?.matchId)
         })
 
         receiver.globalStop.observe(viewLifecycleOwner, { event ->
@@ -368,12 +348,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         OddSpannableString.setupOddsContent(matchOdd, oddsType, tv_odds_content)
     }
-
-
-    private fun subscribeChannel(matchOdd: MatchOdd) {
-        service.subscribeEventChannel(matchOdd.matchId)
-    }
-
 
     fun addToBetInfoList() {
         viewModel.addInBetInfo()
