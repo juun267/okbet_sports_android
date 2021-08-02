@@ -176,14 +176,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
                 setupDeleteButton(binding, itemData)
 
-                setupMaximumLimitView(binding)
+                setupMaximumLimitView(binding, itemData)
 
-
-                //TODO 賠率變化、顯示賠率更新提示
-                /*if (itemData.matchOdd.spreadState != SpreadState.SAME.state || itemData.matchOdd.oddState != OddState.SAME.state) {
-                    tv_odd_content_changed.visibility = View.VISIBLE
-                    button_bet.isOddsChanged = true
-                }*/
             }
 
         }
@@ -240,11 +234,20 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             }
         }
 
-        private fun setupMaximumLimitView(binding: ContentBetInfoItemBinding) {
+        private fun setupMaximumLimitView(binding: ContentBetInfoItemBinding, itemData: BetInfoListData) {
             binding.root.apply {
                 tv_check_maximum_limit.setOnClickListener {
                     it.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.VISIBLE
+                }
+
+                ll_bet_quota_detail.setOnClickListener {
+                    binding.etBet.apply {
+                        setText(itemData.parlayOdds?.max.toString())
+                        isFocusable = true
+                        setSelection(text.length)
+                    }
+                    onItemClickListener.onShowKeyboard(binding.etBet, itemData.matchOdd)
                 }
             }
         }
@@ -323,9 +326,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 }
             }
         }
-
-        //TODO 賠率變動尚未完成
-        private fun setChangeOdds(position: Int, matchOdd: MatchOdd) {}
     }
 
     inner class BatchSingleViewHolder(val binding: ContentBetListBatchControlBinding) : BatchViewHolder(binding) {
@@ -524,6 +524,15 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     it.visibility = View.GONE
                     llMaxBetAmount.visibility = View.VISIBLE
                     tvMaxBetAmount.text = data.max.toString()
+                }
+
+                llMaxBetAmount.setOnClickListener {
+                    etBet.apply {
+                        setText(data.max.toString())
+                        isFocusable = true
+                        setSelection(text.length)
+                    }
+                    onItemClickListener.onShowParlayKeyboard(etBet, data)
                 }
             }
         }
