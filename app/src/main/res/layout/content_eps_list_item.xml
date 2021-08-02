@@ -20,7 +20,7 @@
             android:layout_weight="1"
             tools:text="法国会赢 4-0" />
 
-        <org.cxct.sportlottery.ui.game.widget.OddButton
+        <org.cxct.sportlottery.ui.game.widget.EpsOddButton
             android:id="@+id/btn_odd"
             android:layout_width="92dp"
             android:layout_height="48dp"

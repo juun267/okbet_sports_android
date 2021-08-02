@@ -9,9 +9,11 @@ import kotlinx.android.synthetic.main.content_eps_list_item.view.*
 import kotlinx.android.synthetic.main.content_eps_match_info_v2.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 
-class EpsListV2Adapter(private val clickListener: ItemClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EpsListV2Adapter(private val clickListener: ItemClickListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { MATCHINFO, ODD }
 
@@ -24,8 +26,14 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener): RecyclerVi
     class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: EpsOdds, clickListener: ItemClickListener) {
             itemView.tv_title.text = "${item.epsItem?.name}"
-            itemView.btn_odd.setOnClickListener {
-                clickListener.onClick("")
+
+            itemView.btn_odd.apply {
+                setOnClickListener {
+                    isActivated = !isActivated
+                    item.epsItem?.let { epsOdds -> clickListener.onClick(epsOdds) }
+                }
+                setOddsValue(item.epsItem?.extInfo ?: "", item.epsItem?.odds.toString())
+                setFlag()
             }
         }
 
@@ -63,13 +71,14 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener): RecyclerVi
             else -> MatchInfoViewHolder.from(parent)
         }
     }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MatchInfoViewHolder -> {
                 holder.bind(dataList[position].matchInfo)
             }
             is OddViewHolder -> {
-                holder.bind(dataList[position],clickListener)
+                holder.bind(dataList[position], clickListener)
             }
         }
     }
