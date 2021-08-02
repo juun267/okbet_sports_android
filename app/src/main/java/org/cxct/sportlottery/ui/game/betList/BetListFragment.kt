@@ -346,6 +346,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             betListDiffAdapter?.apply {
                 val betInfList = getCurrentBetList(this)
+                service.betListPageUnSubScribeEvent()
                 unsubscribeChannel(betInfList)
                 subscribeChannel(betInfList)
             }
@@ -518,6 +519,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
+        service.betListPageSubscribeEvent()
         val subscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
@@ -546,6 +548,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
         }
+        service.betListPageUnSubScribeEvent()
     }
 
     companion object {
