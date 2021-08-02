@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -112,7 +113,8 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         //我的賽事
         menu_my_favorite.setOnClickListener {
-            //TODO 我的賽事入口
+            startActivity(Intent(context, MyFavoriteActivity::class.java))
+            mDownMenuListener?.onClick(menu_my_favorite)
         }
 
         //TODO v4版沒有，待刪除

@@ -21,7 +21,6 @@ import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
@@ -65,6 +64,7 @@ class GameViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
+    myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
 ) : BaseFavoriteViewModel(
@@ -72,12 +72,9 @@ class GameViewModel(
     userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    myFavoriteRepository
 ) {
-
-    val showBetInfoSingle = betInfoRepository.showBetInfoSingle
-
-    val betInfoList = betInfoRepository.betInfoList
 
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = betInfoRepository.matchOddList
@@ -1043,67 +1040,6 @@ class GameViewModel(
 
     }
 
-    fun updateMatchBetList(
-        matchType: MatchType,
-        gameType: GameType,
-        playCateName: String,
-        playName: String,
-        matchInfo: MatchInfo,
-        odd: Odd
-    ) {
-        val betItem = betInfoRepository.betInfoList.value?.peekContent()
-            ?.find { it.matchOdd.oddsId == odd.id }
-
-        if (betItem == null) {
-            matchInfo.let {
-                betInfoRepository.addInBetInfo(
-                    matchType = matchType,
-                    gameType = gameType,
-                    playCateName = playCateName,
-                    playName = playName,
-                    matchInfo = matchInfo,
-                    odd = odd
-                )
-            }
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
-    fun updateMatchBetListForOutRight(
-        matchType: MatchType,
-        gameType: GameType,
-        matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
-        odd: Odd
-    ) {
-        val outrightCateName = matchOdd.dynamicMarkets[odd.outrightCateKey].let {
-            when (LanguageManager.getSelectLanguage(androidContext)) {
-                LanguageManager.Language.ZH -> {
-                    it?.zh
-                }
-                else -> {
-                    it?.en
-                }
-            }
-        }
-
-        val betItem = betInfoRepository.betInfoList.value?.peekContent()
-            ?.find { it.matchOdd.oddsId == odd.id }
-
-        if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType = matchType,
-                gameType = gameType,
-                playCateName = outrightCateName ?: "",
-                playName = odd.spread ?: "",
-                matchInfo = matchOdd.matchInfo,
-                odd = odd
-            )
-        } else {
-            odd.id?.let { removeBetInfoItem(it) }
-        }
-    }
-
     private fun updateItemForOddsDetail(
         oddsDetail: OddsDetailListData,
         updatedOddsDetail: ArrayList<OddsDetailListData>
@@ -1295,6 +1231,9 @@ class GameViewModel(
             MatchType.AT_START -> {
                 sportMenuRes?.sportMenuData?.atStart?.items?.size ?: 0
             }
+            else -> {
+                0
+            }
         }
     }
 
@@ -1333,6 +1272,9 @@ class GameViewModel(
                 sportMenuRes?.sportMenuData?.atStart?.items?.find { it.code == gameType.key }?.num
                     ?: 0
             }
+            else -> {
+                0
+            }
         }
     }
 
@@ -1355,6 +1297,7 @@ class GameViewModel(
         MatchType.AT_START -> {
             sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }
         }
+        else -> null
     }
 
     private fun getPlayCateSelected(): Play? = _playList.value?.find { it.isSelected }

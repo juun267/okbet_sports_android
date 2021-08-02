@@ -21,11 +21,6 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
 
     val viewModel: T by sharedViewModel(clazz = clazz)
 
-    private val bottomSheetView: View by lazy {
-        LayoutInflater.from(context).inflate(R.layout.dialog_bottom_sheet_custom, null)
-    }
-    protected val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(requireContext()) }
-
 
     /*弹出加载界面*/
     open fun loading() {
@@ -95,27 +90,15 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         itemClickListener: StatusSheetAdapter.ItemCheckedListener,
         isShowSelectAll: Boolean = false,
     ) {
-        bottomSheetView.apply {
-            sheet_tv_title.text = title
-
-            checkbox_select_all.visibility = if (isShowSelectAll) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
-
-            sheet_rv_more.adapter =
-                StatusSheetAdapter(itemClickListener).apply {
-                    this.dataList = dataList
-                    this.defaultCheckedCode = defaultData.code
-                }
-
-            sheet_tv_close.setOnClickListener {
-                bottomSheet.dismiss()
-            }
+        if (activity is BaseActivity<*>) {
+            (activity as BaseActivity<*>).showBottomSheetDialog(
+                title,
+                dataList,
+                defaultData,
+                itemClickListener,
+                isShowSelectAll
+            )
         }
-        bottomSheet.setContentView(bottomSheetView)
-        bottomSheet.show()
     }
 
     override fun onDestroy() {
