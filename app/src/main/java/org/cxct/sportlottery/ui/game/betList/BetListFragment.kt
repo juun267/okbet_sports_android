@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.KeyBoardUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.messageByResultCode
 
 /**
  * A simple [Fragment] subclass.
@@ -295,6 +296,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner, {
             showHideCantParlayWarn(!it)
         })
+
+        //投注結果
+        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = messageByResultCode(requireContext(), result),
+                    success = result.success
+                ) {}
+                checkBetInfo(betListDiffAdapter?.betList ?: mutableListOf())
+                refreshAllAmount()
+            }
+        })
+
     }
 
     private fun initSocketObserver() {
@@ -365,7 +380,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
 
-            if (matchList.size > 1)
+            if (matchList.size > 0)
                 viewModel.addBetList(
                     BetAddRequest(
                         matchList,
@@ -375,7 +390,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     ), MatchType.PARLAY
                 )
 
-            if (outrightMatchList.size > 1)
+            if (outrightMatchList.size > 0)
                 viewModel.addBetList(
                     BetAddRequest(
                         outrightMatchList,
