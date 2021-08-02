@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_date_line.view.*
 import kotlinx.android.synthetic.main.content_eps_league_rv.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 import org.cxct.sportlottery.network.odds.list.MatchOddsItem
@@ -63,7 +64,7 @@ class EpsListAdapter(private val clickListener: ItemClickListener): RecyclerView
             )
 
             val epsListV2Adapter = EpsListV2Adapter(EpsListV2Adapter.ItemClickListener{
-                clickListener.onClick("")
+                clickListener.onClick(it)
             })
 
             itemView.rv_league_odd_list.apply {
@@ -115,7 +116,7 @@ class EpsListAdapter(private val clickListener: ItemClickListener): RecyclerView
 
     override fun getItemCount() = dataList.size
 
-    class ItemClickListener(private val clickListener: (string: String) -> Unit) {
-        fun onClick(string: String) = clickListener(string)
+    class ItemClickListener(private val clickListener: (odd: Odd) -> Unit) {
+        fun onClick(odd: Odd) = clickListener(odd)
     }
 }

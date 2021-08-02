@@ -93,7 +93,7 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener) :
         }
     }
 
-    class ItemClickListener(private val clickListener: (string: String) -> Unit) {
-        fun onClick(string: String) = clickListener(string)
+    class ItemClickListener(private val clickListener: (odd: Odd) -> Unit) {
+        fun onClick(odd: Odd) = clickListener(odd)
     }
 }
