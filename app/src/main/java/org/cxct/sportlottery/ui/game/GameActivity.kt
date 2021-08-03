@@ -455,10 +455,6 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
-        receiver.orderSettlement.observe(this, {
-            viewModel.getSettlementNotification(it)
-        })
-
         viewModel.settlementNotificationMsg.observe(this, {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }

@@ -69,6 +69,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 viewModel.updatePlayQuota(playQuotaComData)
             }
         })
+
+        receiver.orderSettlement.observe(this, {
+            viewModel.getSettlementNotification(it)
+        })
     }
 
     override fun onStart() {

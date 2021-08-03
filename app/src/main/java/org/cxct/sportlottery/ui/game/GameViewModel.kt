@@ -126,9 +126,6 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
-    val settlementNotificationMsg: LiveData<Event<SportBet>>
-        get() = _settlementNotificationMsg
-
     val errorPromptMessage: LiveData<Event<String>>
         get() = _errorPromptMessage
 
@@ -164,7 +161,6 @@ class GameViewModel(
     private val _curDatePosition = MutableLiveData<Int>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _isNoHistory = MutableLiveData<Boolean>()
-    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
     private val _outrightCountryListSearchResult =
@@ -1205,16 +1201,6 @@ class GameViewModel(
         }
 
         _leagueListSearchResult.postValue(searchResult ?: listOf())
-    }
-
-    fun getSettlementNotification(event: OrderSettlementEvent?) {
-        event?.sportBet?.let {
-            when (it.status) {
-                Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
-                    _settlementNotificationMsg.value = Event(it)
-                }
-            }
-        }
     }
 
     private fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {

@@ -102,10 +102,6 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
             tv_odds_type.text = getString(it.res)
         })
 
-        receiver.orderSettlement.observe(this, {
-            viewModel.getSettlementNotification(it)
-        })
-
         viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
         })
