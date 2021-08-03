@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_list_item.view.*
 import kotlinx.android.synthetic.main.content_eps_match_info_v2.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.eps.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 
-class EpsListV2Adapter(private val clickListener: ItemClickListener) :
+class EpsListV2Adapter(private val clickListener: ItemClickListener,private val infoClickListener: InfoClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { MATCHINFO, ODD }
@@ -49,9 +49,12 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener) :
 
     class MatchInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
-        fun bind(matchInfo: MatchInfo?) {
+        fun bind(matchInfo: MatchInfo?,infoClickListener: InfoClickListener) {
             itemView.tv_game_title.text = "${matchInfo?.homeName} V ${matchInfo?.awayName}"
             itemView.line.visibility = if (adapterPosition == 0) View.GONE else View.VISIBLE
+            itemView.btn_info.setOnClickListener {
+                matchInfo?.let { matchInfo -> infoClickListener.onClick(matchInfo) }
+            }
         }
 
         companion object {
@@ -75,7 +78,7 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is MatchInfoViewHolder -> {
-                holder.bind(dataList[position].matchInfo)
+                holder.bind(dataList[position].matchInfo,infoClickListener)
             }
             is OddViewHolder -> {
                 holder.bind(dataList[position], clickListener)
@@ -95,5 +98,8 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener) :
 
     class ItemClickListener(private val clickListener: (odd: Odd) -> Unit) {
         fun onClick(odd: Odd) = clickListener(odd)
+    }
+    class InfoClickListener(private val clickListener: (matchInfo: MatchInfo) -> Unit) {
+        fun onClick(matchInfo: MatchInfo) = clickListener(matchInfo)
     }
 }

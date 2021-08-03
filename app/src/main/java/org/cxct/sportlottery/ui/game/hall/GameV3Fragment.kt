@@ -143,7 +143,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val epsListAdapter by lazy {
         EpsListAdapter(EpsListAdapter.ItemClickListener{
-
+         //TODO 下注資料加入購物車
+        },
+        EpsListAdapter.InfoClickListener{
+            setEpsBottomSheet(it)
         })
     }
 
