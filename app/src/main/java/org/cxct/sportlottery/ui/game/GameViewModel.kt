@@ -897,6 +897,7 @@ class GameViewModel(
                 }
 
                 _playList.value = playList
+                _playCate.value = null
             }
         }
     }
@@ -1126,6 +1127,13 @@ class GameViewModel(
                             filteredOddList,
                         )
                     )
+                }
+
+                //因UI需求 特優賠率移到第一項
+                list.find { it.gameType == PlayCate.EPS.value }.apply {
+                    if (this != null) {
+                        list.add(0, list.removeAt(list.indexOf(this)))
+                    }
                 }
 
                 _oddsDetailList.postValue(Event(list))
@@ -1405,7 +1413,7 @@ class GameViewModel(
             it.isSelected = (it == date)
         }
 
-        _curDate.postValue(this)
+        _curDate.value = this
         _curDatePosition.postValue(this.indexOf(date))
     }
 
@@ -1425,9 +1433,7 @@ class GameViewModel(
                                 play.isSelected
                             }?.playCateList?.find { playCate ->
                                 playCate.isSelected
-                            }?.code ?: it.find { play ->
-                                play.isSelected
-                            }?.playCateList?.firstOrNull()?.code
+                            }?.code
                         }
                         false -> {
                             null

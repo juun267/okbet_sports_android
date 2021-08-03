@@ -43,7 +43,7 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
 
             itemView.play_category_name.apply {
                 visibility =
-                    if (item.isSelected && item.selectionType == SelectionType.SELECTABLE.code) {
+                    if (item.isSelected && item.selectionType == SelectionType.SELECTABLE.code && item.playCateList?.find { it.isSelected } != null) {
                         View.VISIBLE
                     } else {
                         View.GONE
