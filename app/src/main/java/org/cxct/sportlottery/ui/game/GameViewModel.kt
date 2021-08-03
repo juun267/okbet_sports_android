@@ -90,6 +90,9 @@ class GameViewModel(
     val curMatchType: LiveData<MatchType?>
         get() = _curMatchType
 
+    val curChildMatchType: LiveData<MatchType?>
+        get() = _curChildMatchType
+
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
@@ -152,6 +155,7 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
+    private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -308,6 +312,13 @@ class GameViewModel(
 
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
+    }
+
+    fun switchChildMatchType(childMatchType: MatchType ?= null) {
+        _curChildMatchType.value = childMatchType
+        curMatchType.value?.let {
+            getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
+        }
     }
 
     private fun checkShoppingCart() {
@@ -617,39 +628,42 @@ class GameViewModel(
         date: String? = null,
         isReloadPlayCate: Boolean = false
     ) {
+
+        val nowMatchType = curChildMatchType.value ?: matchType
+
         if (isReloadPlayCate) {
-            getPlayCategory(matchType)
+            getPlayCategory(nowMatchType)
         }
 
         if (isReloadDate) {
-            getDateRow(matchType)
+            getDateRow(nowMatchType)
         }
 
         val sportItem = getSportSelected(matchType)
 
         sportItem?.let { item ->
-            when (matchType) {
+            when (nowMatchType) {
                 MatchType.IN_PLAY -> {
-                    getOddsList(item.code, matchType.postValue)
+                    getOddsList(item.code, nowMatchType.postValue)
                 }
                 MatchType.TODAY -> {
                     getLeagueList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.EARLY -> {
                     getLeagueList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.PARLAY -> {
                     getLeagueList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams(),
                         date
                     )
@@ -661,7 +675,7 @@ class GameViewModel(
                 MatchType.AT_START -> {
                     getOddsList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
@@ -697,7 +711,9 @@ class GameViewModel(
             getPlayCategory(matchType)
         }
 
-        getSportSelected(matchType)?.let { item ->
+        val nowMatchType = curChildMatchType.value ?: matchType
+
+        getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
                 item.code,
                 matchType.postValue,
