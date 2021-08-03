@@ -115,6 +115,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initView() {
         initBtnView()
+        initBtnEvent()
         initRecyclerView()
         initToolBar()
 
@@ -124,7 +125,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnView() {
         binding.btnBet.apply {
             tv_quota.text = TextUtil.formatBetQuota(0)
+        }
+    }
 
+    private fun initBtnEvent() {
+        binding.btnBet.apply {
             tv_login.setOnClickListener {
                 startActivity(Intent(requireContext(), LoginActivity::class.java))
             }
@@ -132,6 +137,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             cl_bet.setOnClickListener { addBet() }
 
             tv_accept_odds_change.setOnClickListener { addBet() }
+        }
+
+        ll_odds_close_warn.setOnClickListener {
+            removeClosedPlat()
         }
     }
 
@@ -451,7 +460,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     /**
-     * 判斷是否有賠率關閉
+     * 判斷是否有盤口關閉
      */
     private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
         var hasPlatClose = false
@@ -467,6 +476,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         }
         showHideOddsCloseWarn(hasPlatClose)
+    }
+
+    /**
+     * 移除盤口關閉的投注選項
+     */
+    private fun removeClosedPlat() {
+        viewModel.removeClosedPlatBetInfo()
     }
 
     private fun queryData() {
@@ -504,6 +520,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         btn_bet.isOddsChanged = show
         tv_warn_odds_change.visibility = visibilityControl
+        tv_odds_closed_changed.visibility = visibilityControl
     }
 
     /**
@@ -511,6 +528,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * @param show true:顯示, false:隱藏
      */
     private fun showHideOddsCloseWarn(show: Boolean) {
+        btn_bet.isEnabled = show
         ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
 

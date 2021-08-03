@@ -256,6 +256,10 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+    fun removeClosedPlatBetInfo() {
+        betInfoRepository.removeClosedPlatItem()
+    }
+
     fun removeBetInfoAll() {
         betInfoRepository.clear()
     }

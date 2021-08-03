@@ -4,6 +4,7 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -178,6 +179,17 @@ class BetInfoRepository(val androidContext: Context) {
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
         _removeItem.postValue(Event(item?.matchOdd?.matchId))
+        _betInfoList.postValue(Event(betList))
+    }
+
+    fun removeClosedPlatItem() {
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val needRemoveList = betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
+        needRemoveList.forEach {
+            betList.remove(it)
+            _removeItem.value = Event(it.matchOdd.matchId)
+        }
+
         _betInfoList.postValue(Event(betList))
     }
 
