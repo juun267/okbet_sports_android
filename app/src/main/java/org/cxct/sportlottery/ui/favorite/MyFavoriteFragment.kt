@@ -58,8 +58,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 { matchInfo, odd, playCateName, playName ->
                     addOddsDialog(matchInfo, odd, playCateName, playName)
                 },
-                {
-                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接點選PlayCategory行為
+                { matchId ->
+                    viewModel.getQuickList(matchId)
                 },
                 {
                     //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接關閉PlayCategory行為
