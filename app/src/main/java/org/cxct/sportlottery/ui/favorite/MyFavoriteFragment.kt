@@ -93,16 +93,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                activity?.finish()
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun setupGameTypeList(view: View) {
         view.favorite_game_type_list.apply {
             this.layoutManager =
