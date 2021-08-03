@@ -16,6 +16,7 @@ object TimeUtil {
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
+    const val DMY_HM_FORMAT = "dd/MM/yyyy HH:mm"
 
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
@@ -338,6 +339,14 @@ object TimeUtil {
 
     fun getRemainTime(timeStamp: Long): Long {
         return timeStamp - System.currentTimeMillis()
+    }
+
+    fun stampToDateHM(time: Long): String {
+        return timeFormat(time, DMY_HM_FORMAT)
+    }
+
+    fun stampToMD(time: Long): String {
+        return timeFormat(time, MD_FORMAT)
     }
 
 }
