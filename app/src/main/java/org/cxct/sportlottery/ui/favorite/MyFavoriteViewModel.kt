@@ -152,6 +152,12 @@ class MyFavoriteViewModel(
         )
     }
 
+    fun clearQuickPlayCateSelected() {
+        mfavorMatchOddList.postValue(
+            mfavorMatchOddList.value?.clearQuickPlayCateSelected()
+        )
+    }
+
     private fun SportQueryData.updateGameTypeSelected(item: Item): SportQueryData {
         this.items?.forEach {
             it.isSelected = (it.code == item.code)
@@ -187,6 +193,17 @@ class MyFavoriteViewModel(
                         quickListData.quickOdds?.get(quickPlayCate.code),
                         quickPlayCate.gameType ?: ""
                     )
+                }
+            }
+        }
+        return this
+    }
+
+    private fun List<LeagueOdd>.clearQuickPlayCateSelected(): List<LeagueOdd> {
+        this.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.isSelected = false
                 }
             }
         }

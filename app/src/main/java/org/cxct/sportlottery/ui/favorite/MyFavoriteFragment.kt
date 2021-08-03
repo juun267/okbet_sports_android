@@ -62,7 +62,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     viewModel.getQuickList(matchId)
                 },
                 {
-                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接關閉PlayCategory行為
+                    viewModel.clearQuickPlayCateSelected()
                 },
                 { matchId ->
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
