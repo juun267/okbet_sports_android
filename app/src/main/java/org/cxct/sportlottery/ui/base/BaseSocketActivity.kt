@@ -46,6 +46,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         receiver.sysMaintenance.observe(this, Observer {
             startActivity(Intent(this, MaintenanceActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -68,6 +69,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             it?.playQuotaComData?.let { playQuotaComData ->
                 viewModel.updatePlayQuota(playQuotaComData)
             }
+        })
+
+        receiver.userMoney.observe(this, {
+            viewModel.updateMoney(it)
         })
 
         receiver.orderSettlement.observe(this, {

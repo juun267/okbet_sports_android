@@ -96,7 +96,6 @@ class ProfileCenterActivity :
         initBottomNav()
         getUserInfo()
         initObserve()
-        initSocketObserver()
     }
 
     override fun onResume() {
@@ -358,16 +357,6 @@ class ProfileCenterActivity :
                 showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
-        })
-    }
-
-    private fun initSocketObserver() {
-        receiver.userMoney.observe(this, Observer {
-            val formatMoney = it?.let {
-                TextUtil.format(it)
-            }
-
-            tv_account_balance.text = formatMoney ?: ""
         })
     }
 

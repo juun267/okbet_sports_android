@@ -218,11 +218,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
     private fun initSocketObserver() {
-
-        receiver.userMoney.observe(viewLifecycleOwner, {
-            it?.let { money -> setMoney(money) }
-        })
-
         receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             viewModel.updateMatchOdd(it)

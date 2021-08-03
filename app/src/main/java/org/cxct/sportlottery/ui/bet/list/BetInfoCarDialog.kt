@@ -293,10 +293,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun initSocketObserver() {
-        receiver.userMoney.observe(this.viewLifecycleOwner, {
-            currentMoney = it
-        })
-
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
             it?.let { event ->
                 viewModel.updateMatchOdd(event)

@@ -64,7 +64,6 @@ class FinanceViewModel(
         get() = _isFinalPage
 
     private val _isLoading = MutableLiveData<Boolean>()
-    private val _userMoney = MutableLiveData<Double?>()
     private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
     private val _userWithdrawResult = MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
 

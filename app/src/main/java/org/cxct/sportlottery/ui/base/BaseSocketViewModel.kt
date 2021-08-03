@@ -42,6 +42,10 @@ abstract class BaseSocketViewModel(
         betInfoRepository.playQuotaComData = playQuotaComData
     }
 
+    fun updateMoney(money: Double?) {
+        mUserMoney.postValue(money)
+    }
+
     fun getSettlementNotification(event: OrderSettlementEvent?) {
         event?.sportBet?.let {
             when (it.status) {
