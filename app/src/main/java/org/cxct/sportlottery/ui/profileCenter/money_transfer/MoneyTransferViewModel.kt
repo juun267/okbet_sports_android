@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.profileCenter.money_transfer
 
-import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +18,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.Event
 
@@ -29,7 +28,7 @@ class MoneyTransferViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     val userInfoRepository: UserInfoRepository
-) : BaseOddButtonViewModel(
+) : BaseSocketViewModel(
     androidContext,
     loginRepository,
     betInfoRepository,

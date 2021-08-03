@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.de
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -26,7 +26,7 @@ class OtherBetRecordViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+) : BaseSocketViewModel(
     androidContext,
     loginRepository,
     betInfoRepository,

@@ -14,7 +14,7 @@ import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
-    BaseActivity<T>(clazz) {
+    BaseOddButtonActivity<T>(clazz) {
 
     val receiver by lazy {
         ServiceBroadcastReceiver()

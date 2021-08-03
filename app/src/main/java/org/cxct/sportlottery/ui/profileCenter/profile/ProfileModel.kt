@@ -9,7 +9,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 
 class ProfileModel(
@@ -19,7 +19,7 @@ class ProfileModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     private val avatarRepository: AvatarRepository
-) : BaseOddButtonViewModel(
+) : BaseSocketViewModel(
     androidContext,
     loginRepository,
     betInfoRepository,

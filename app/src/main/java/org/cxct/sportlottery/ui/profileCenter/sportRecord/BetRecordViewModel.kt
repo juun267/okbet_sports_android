@@ -12,7 +12,7 @@ import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -21,7 +21,7 @@ class BetRecordViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseOddButtonViewModel(
+) : BaseSocketViewModel(
     androidContext,
     loginRepository,
     betInfoRepository,

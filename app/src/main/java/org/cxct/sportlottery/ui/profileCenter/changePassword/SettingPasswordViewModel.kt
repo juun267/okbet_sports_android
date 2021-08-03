@@ -18,6 +18,7 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
@@ -27,7 +28,7 @@ class SettingPasswordViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+) : BaseSocketViewModel(
     androidContext,
     loginRepository,
     betInfoRepository,

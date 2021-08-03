@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.user.nickname.NicknameResult
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoRequest
 import org.cxct.sportlottery.network.user.setWithdrawInfo.WithdrawInfoResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class ModifyProfileInfoViewModel(
@@ -25,7 +25,7 @@ class ModifyProfileInfoViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+) : BaseSocketViewModel(
     androidContext,
     loginRepository,
     betInfoRepository,

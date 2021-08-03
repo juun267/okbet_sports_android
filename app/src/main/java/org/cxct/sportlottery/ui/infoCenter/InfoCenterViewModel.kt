@@ -11,13 +11,14 @@ import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MsgType
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 class InfoCenterViewModel(
     androidContext: Application,
     infoCenterRepository: InfoCenterRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository
-) : BaseOddButtonViewModel(
+) : BaseSocketViewModel(
     androidContext,
     loginRepository,
     betInfoRepository,

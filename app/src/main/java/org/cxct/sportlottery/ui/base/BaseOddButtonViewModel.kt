@@ -35,7 +35,7 @@ abstract class BaseOddButtonViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseSocketViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
