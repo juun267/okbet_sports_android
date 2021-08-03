@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,14 +36,14 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: EpsLeagueOddsItem) {
             if(adapterPosition != 0 ){
                 val params = itemView.ll_content.layoutParams as LinearLayout.LayoutParams
                 params.setMargins(0,14,0,0)
                 itemView.ll_content.layoutParams = params
             }
-            itemView.tv_date.text = itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))
-
+            itemView.tv_date.text = TimeUtil.stampToMD(item.date) + itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))
         }
     }
 
