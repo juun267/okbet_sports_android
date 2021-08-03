@@ -12,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
@@ -40,6 +42,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import org.cxct.sportlottery.util.TimeUtil
 import timber.log.Timber
 
 
@@ -143,6 +146,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         })
     }
+
+    private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -800,6 +805,32 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         })
+    }
+
+    private fun setEpsBottomSheet(matchInfo: org.cxct.sportlottery.network.odds.eps.MatchInfo) {
+        try {
+            val contentView: ViewGroup? =
+                activity?.window?.decorView?.findViewById(android.R.id.content)
+
+            val bottomSheetView =
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_eps, contentView, false)
+            moreEpsInfoBottomSheet = BottomSheetDialog(this.requireContext())
+            moreEpsInfoBottomSheet.apply {
+                setContentView(bottomSheetView)
+                btn_close.setOnClickListener {
+                    this.dismiss()
+                }
+                tv_league_title.text = matchInfo.leagueName
+                rv_more_eps_info_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+                rv_more_eps_info_item.adapter = EpsMoreInfoAdapter().apply {
+                    dataList = listOf(matchInfo)
+                }
+            }
+
+            moreEpsInfoBottomSheet.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun updateSportType(sportTypeList: List<Item>) {
