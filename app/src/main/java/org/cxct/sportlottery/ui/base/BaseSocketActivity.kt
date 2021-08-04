@@ -200,6 +200,14 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService.unsubscribeEventChannel(eventId)
     }
 
+    fun unSubscribeChannelHallAll() {
+        backService.unsubscribeAllHallChannel()
+    }
+
+    fun unSubscribeChannelEventAll() {
+        backService.unsubscribeAllEventChannel()
+    }
+
     override fun onStart() {
         super.onStart()
 

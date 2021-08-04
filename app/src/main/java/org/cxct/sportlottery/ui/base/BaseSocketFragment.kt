@@ -1,18 +1,9 @@
 package org.cxct.sportlottery.ui.base
 
-import org.cxct.sportlottery.service.BackService
 import kotlin.reflect.KClass
 
 abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     BaseFragment<T>(clazz) {
-
-    val receiver by lazy {
-        (activity as BaseSocketActivity<*>).receiver
-    }
-
-    val service: BackService
-        get() = (activity as BaseSocketActivity<*>).backService
-
 
     protected fun registerChannelHall(receiverChannelHall: BaseSocketActivity.ReceiverChannelHall) {
         (activity as BaseSocketActivity<*>).registerChannelHall(receiverChannelHall)
@@ -44,5 +35,13 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     protected fun unSubscribeChannelEvent(eventId: String?) {
         (activity as BaseSocketActivity<*>).unSubscribeChannelEvent(eventId)
+    }
+
+    protected fun unSubscribeChannelHallAll() {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHallAll()
+    }
+
+    protected fun unSubscribeChannelEventAll() {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelEventAll()
     }
 }
