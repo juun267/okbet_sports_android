@@ -69,5 +69,7 @@ enum class PlayCate(val value: String) {
     TG_OU_C_INCL_OT("TG&O/U-C-INCL-OT"),
     HDP_1ST("HDP-1ST"),
     TG_OU_H_1ST("TG&O/U-H-1ST"),
-    TG_OU_C_1ST("TG&O/U-C-1ST")
+    TG_OU_C_1ST("TG&O/U-C-1ST"),
+
+    EPS("EPS") //更优赔率
 }

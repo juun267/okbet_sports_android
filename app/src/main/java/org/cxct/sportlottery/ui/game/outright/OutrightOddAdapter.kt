@@ -4,20 +4,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.button_odd.view.*
-import kotlinx.android.synthetic.main.itemview_outright_odd_subtitlev3.view.*
-import kotlinx.android.synthetic.main.itemview_outright_oddv3.view.*
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
+import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.list.Odd
-import org.cxct.sportlottery.network.odds.list.OddState
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
-import org.cxct.sportlottery.ui.game.widget.OddButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 
 class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
@@ -107,38 +103,19 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             outrightOddListener: OutrightOddListener?,
             oddsType: OddsType
         ) {
-            itemView.outright_odd_name.text = item.spread
-
             itemView.outright_odd_btn.apply {
+                setupOdd(item, oddsType)
 
-                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
-                    override fun onOddStateChangedFinish() {
-                        item.oddState = OddState.SAME.state
-                    }
+                //特殊處理 : 該回傳沒有name
+                tv_name.apply {
+                    text = item.spread
+                    visibility = View.VISIBLE
                 }
-                playCate = PlayCate.OUTRIGHT
+                tv_spread.text = ""
 
-                visibility = if (item.odds == null) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
-                }
-
-                isSelected = item.isSelected ?: false
-
-                betStatus = item.status
-
-                /*oddStatus = item.oddState*/
                 this@OddViewHolder.setupOddState(this, item)
 
-                odd_outright_text.text = when (oddsType) {
-                    OddsType.EU -> {
-                        item.odds?.let { TextUtil.formatForOdd(it) }
-                    }
-                    OddsType.HK -> {
-                        item.hkOdds?.let { TextUtil.formatForOdd(it) }
-                    }
-                }
+                isSelected = item.isSelected ?: false
 
                 setOnClickListener {
                     outrightOddListener?.onClickBet(matchOdd, item)
@@ -150,7 +127,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): OddViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_oddv3, parent, false)
+                    .inflate(R.layout.itemview_outright_odd_v4, parent, false)
 
                 return OddViewHolder(view, refreshListener)
             }
@@ -174,13 +151,14 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             }
+            itemView.outright_odd_instruction.text = "1/3, 顶级 2" //TODO Cheryl: 等後端api的新數值再做更改
         }
 
         companion object {
             fun from(parent: ViewGroup): SubTitleViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd_subtitlev3, parent, false)
+                    .inflate(R.layout.itemview_outright_odd_subtitle_v4, parent, false)
 
                 return SubTitleViewHolder(view)
             }

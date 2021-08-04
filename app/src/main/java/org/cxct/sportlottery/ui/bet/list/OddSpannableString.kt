@@ -13,9 +13,9 @@ import android.text.style.StyleSpan
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -53,23 +53,23 @@ object OddSpannableString {
         if (textView == null) return
 
         when{
-            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState == MatchOdd.OddState.SAME.state -> {
+            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState == OddState.SAME.state -> {
                 matchOdd.runnable?.let {
                     return
                 }?:run { setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false) }
             }
 
-            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState == MatchOdd.OddState.SAME.state -> {
+            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState == OddState.SAME.state -> {
                 setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = false)
                 resetRunnable(matchOdd, oddsType, textView)
             }
 
-            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState != MatchOdd.OddState.SAME.state -> {
+            matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState != OddState.SAME.state -> {
                 setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = true)
                 resetRunnable(matchOdd, oddsType, textView)
             }
 
-            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState != MatchOdd.OddState.SAME.state -> {
+            matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState != OddState.SAME.state -> {
                 setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = true)
                 resetRunnable(matchOdd, oddsType, textView)
             }

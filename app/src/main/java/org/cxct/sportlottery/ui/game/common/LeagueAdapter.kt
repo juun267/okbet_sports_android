@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -139,7 +139,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                     } else {
                         item.matchOdds
                     }.onEach {
-                        it.matchInfo?.sportType = item.sportType
+                        it.matchInfo?.gameType = item.gameType?.key
                     }
 
                     this.leagueOddListener = leagueOddListener
@@ -153,18 +153,18 @@ class LeagueAdapter(private val matchType: MatchType) :
             matchType: MatchType,
         ) {
             itemView.league_expand.setExpanded(item.isExpand, false)
-            updateTimer(matchType, item.sportType)
+            updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
                 item.isExpand = !item.isExpand
                 itemView.league_expand.setExpanded(item.isExpand, true)
-                updateTimer(matchType, item.sportType)
+                updateTimer(matchType, item.gameType)
             }
         }
 
-        private fun updateTimer(matchType: MatchType, sportType: SportType?) {
+        private fun updateTimer(matchType: MatchType, gameType: GameType?) {
             leagueOddAdapter.isTimerEnable =
-                itemView.league_expand.isExpanded && (sportType == SportType.FOOTBALL || sportType == SportType.BASKETBALL || matchType == MatchType.AT_START)
+                itemView.league_expand.isExpanded && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.AT_START)
         }
 
         companion object {

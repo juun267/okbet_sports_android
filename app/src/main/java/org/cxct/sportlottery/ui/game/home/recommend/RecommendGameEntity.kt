@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.game.home.recommend
 
 import org.cxct.sportlottery.network.matchCategory.result.MatchInfo
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 
 class RecommendGameEntity(
     val code: String?, //球種 code

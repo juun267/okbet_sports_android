@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -33,15 +34,13 @@ fun TextView.setDateTimeNoYear(timeStamp: Long?) {
 }
 
 
-
 @BindingAdapter("gameType")
 fun TextView.setGameType(gameType: String?) {
     text = when (gameType) {
-        "FT" -> context.getString(R.string.soccer)
-        "BK" -> context.getString(R.string.basketball)
-        "TN" -> context.getString(R.string.tennis)
-        "VB" -> context.getString(R.string.volleyball)
-        "BM" -> context.getString(R.string.badminton)
+        GameType.FT.key -> context.getString(GameType.FT.string)
+        GameType.BK.key -> context.getString(GameType.BK.string)
+        GameType.TN.key -> context.getString(GameType.TN.string)
+        GameType.VB.key -> context.getString(GameType.VB.string)
         else -> ""
     }
 }

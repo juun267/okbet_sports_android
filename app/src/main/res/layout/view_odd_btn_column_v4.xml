@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:maxWidth="64dp">
+    android:maxWidth="64dp"
+    tools:ignore="SpUsage">
 
     <TextView
         android:id="@+id/odd_btn_type"
@@ -32,7 +33,7 @@
         tools:text="1st half"
         tools:visibility="gone" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddButtonV4
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_home"
         android:layout_width="64dp"
         android:layout_height="48dp"
@@ -41,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/odd_btn_type" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddButtonV4
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_away"
         android:layout_width="64dp"
         android:layout_height="48dp"
@@ -50,13 +51,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/odd_btn_home" />
 
-    <org.cxct.sportlottery.ui.game.widget.OddButtonV4
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_draw"
         android:layout_width="64dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/odd_btn_away" />
+        app:layout_constraintTop_toBottomOf="@id/odd_btn_away"
+        app:ob_hide_item_flag="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

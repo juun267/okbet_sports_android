@@ -22,21 +22,21 @@
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <org.cxct.sportlottery.ui.game.widget.OddButtonV4
+        <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_home"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_margin="8dp"
             android:layout_weight="1"/>
 
-        <org.cxct.sportlottery.ui.game.widget.OddButtonV4
+        <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_away"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_margin="8dp"
             android:layout_weight="1" />
 
-        <org.cxct.sportlottery.ui.game.widget.OddButtonV4
+        <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_draw"
             android:layout_width="0dp"
             android:layout_height="48dp"

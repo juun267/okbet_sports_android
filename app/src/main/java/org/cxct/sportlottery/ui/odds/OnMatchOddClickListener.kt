@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
-import org.cxct.sportlottery.network.odds.list.Odd
+import org.cxct.sportlottery.network.odds.Odd
 
 interface OnMatchOddClickListener {
     fun getBetInfoList(odd: Odd)

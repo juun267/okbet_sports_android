@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.network.odds.eps
 
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 
 
 data class EpsOdds(

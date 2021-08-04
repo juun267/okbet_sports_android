@@ -38,6 +38,7 @@
     <string name="keyboard_code_insert_0">48</string>
     <string name="keyboard_code_plus_10">-10</string>
     <string name="keyboard_code_plus_50">-50</string>
+    <string name="keyboard_code_plus_100">-100</string>
     <string name="keyboard_code_done">-4</string>
 
     <!--Time-->

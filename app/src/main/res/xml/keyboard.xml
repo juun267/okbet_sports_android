@@ -52,16 +52,16 @@
     <Row>
 
         <Key
-            android:codes="@string/keyboard_code_insert_dot"
-            android:keyEdgeFlags="left"
-            android:keyLabel="." />
-
-        <Key
             android:codes="@string/keyboard_code_plus_10"
+            android:keyEdgeFlags="left"
             android:keyLabel="+10" />
         <Key
             android:codes="@string/keyboard_code_plus_50"
             android:keyLabel="+50" />
+
+        <Key
+            android:codes="@string/keyboard_code_plus_100"
+            android:keyLabel="+100" />
 
         <Key android:codes="@string/keyboard_code_delete" />
 

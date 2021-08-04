@@ -82,6 +82,8 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
 
             KeyBoardCode.PLUS_50.code -> plus(KeyBoardCode.PLUS_50.value.toLong())
 
+            KeyBoardCode.PLUS_100.code -> plus(KeyBoardCode.PLUS_100.value.toLong())
+
             KeyBoardCode.INSERT_0.code -> {
                 if (editable.isNotEmpty()) {
                     editable.insert(start, primaryCode.toChar().toString())

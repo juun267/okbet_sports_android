@@ -5,13 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
+    <ImageView
+        android:id="@+id/game_toolbar_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:src="@drawable/img_home_title_soccer_background"/>
+
     <ImageButton
         android:id="@+id/game_toolbar_back"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="16dp"
         android:background="@color/transparent"
-        android:padding="4dp"
         android:src="@drawable/ic_arrowleft"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

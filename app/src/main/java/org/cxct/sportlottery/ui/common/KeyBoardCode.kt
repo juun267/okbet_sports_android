@@ -6,4 +6,5 @@ enum class KeyBoardCode (val code: Int, val value: String){
     DOT(-48, "."),
     PLUS_10(-10, "10"),
     PLUS_50(-50, "50"),
+    PLUS_100(-100, "100"),
 }

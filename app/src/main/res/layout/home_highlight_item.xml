@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.game.home.highlight.RvHighlightAdapter">
+    tools:context=".ui.game.home.highlight.RvHighlightAdapter"
+    tools:ignore="SpUsage">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -60,12 +61,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0">
 
-        <org.cxct.sportlottery.ui.game.widget.OddButton
+        <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/btn_match_odd1"
             android:layout_width="78dp"
             android:layout_height="48dp" />
 
-        <org.cxct.sportlottery.ui.game.widget.OddButton
+        <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/btn_match_odd2"
             android:layout_width="78dp"
             android:layout_height="48dp"

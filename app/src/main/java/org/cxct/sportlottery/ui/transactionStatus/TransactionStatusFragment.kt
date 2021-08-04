@@ -8,6 +8,7 @@ import androidx.core.widget.NestedScrollView
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 
 class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(TransactionStatusViewModel::class) {

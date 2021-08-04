@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.bet.info
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.error.BetAddError
 
@@ -57,13 +58,5 @@ data class MatchOdd(
     var betAddError: BetAddError? = null
     var oddsHasChanged = false
     var spreadState: Int = SpreadState.SAME.state
-
-    //socket進來的新賠率較大或較小
-    enum class OddState(val state: Int) {
-        SAME(0),
-        LARGER(1),
-        SMALLER(2)
-    }
-
 }
 

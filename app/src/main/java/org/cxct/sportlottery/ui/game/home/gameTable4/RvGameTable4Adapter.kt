@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
@@ -24,7 +24,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
     fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
         mDataList = matchPreloadData?.datas?.map { data ->
             data.matchOdds.forEach {
-                it.matchInfo?.sportType = SportType.getSportType(data.code)
+                it.matchInfo?.gameType = data.code
             }
             GameEntity(data.code, data.name, data.num, data.matchOdds)
         } ?: listOf()

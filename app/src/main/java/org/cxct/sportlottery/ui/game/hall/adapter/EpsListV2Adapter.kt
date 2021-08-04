@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.content_eps_list_item.view.*
 import kotlinx.android.synthetic.main.content_eps_match_info_v2.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.eps.MatchInfo
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 
 class EpsListV2Adapter(private val clickListener: ItemClickListener,private val infoClickListener: InfoClickListener) :
