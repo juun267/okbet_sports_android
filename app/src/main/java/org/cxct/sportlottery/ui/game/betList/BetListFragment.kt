@@ -34,7 +34,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -107,10 +106,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betListDiffAdapter?.let {
             unsubscribeChannel(getCurrentBetList(it))
         }
-    }
-
-    private fun getBetOrderParlay() {
-        viewModel.getBetOrderListForParlay()
     }
 
     private fun initView() {
@@ -291,7 +286,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 betListDiffAdapter?.betList = list
 
                 subscribeChannel(list)
-                getBetOrderParlay()
                 refreshAllAmount(list)
                 checkBetInfo(list)
             }

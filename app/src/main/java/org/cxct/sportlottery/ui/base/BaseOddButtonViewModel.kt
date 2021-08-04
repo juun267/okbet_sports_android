@@ -273,10 +273,6 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.addInBetInfoParlay()
     }
 
-    fun getBetOrderListForParlay() {
-        betInfoRepository.addInBetOrderParlay()
-    }
-
     fun addInBetInfo() {
         betInfoRepository.addInBetInfo()
     }

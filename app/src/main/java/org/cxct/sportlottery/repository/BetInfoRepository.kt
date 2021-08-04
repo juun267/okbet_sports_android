@@ -102,9 +102,7 @@ class BetInfoRepository(val androidContext: Context) {
     /**
      * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
      */
-    fun addInBetOrderParlay() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
+    private fun addInBetOrderParlay(betList: MutableList<BetInfoListData>) {
         if (betList.size == 0) {
             return
         }
@@ -209,7 +207,9 @@ class BetInfoRepository(val androidContext: Context) {
         _showBetInfoSingle.postValue(Event(false))
     }
 
-
+    /**
+     * 點擊賠率按鈕加入投注清單, 並產生串關注單
+     */
     fun addInBetInfo(
         matchType: MatchType,
         gameType: GameType,
@@ -244,6 +244,8 @@ class BetInfoRepository(val androidContext: Context) {
             }
 
             betList.add(data)
+            //產生串關注單
+            addInBetOrderParlay(betList)
             _betInfoList.postValue(Event(betList))
         }
     }
@@ -349,6 +351,7 @@ class BetInfoRepository(val androidContext: Context) {
                 val newList = mutableListOf<BetInfoListData>()
                 updateBetInfoList.forEach { betInfoListData ->
                     betInfoListData.matchType?.let { matchType ->
+                        //TODO Dean : review
                         val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
                         gameType?.let {
                             val newBetInfoListData = BetInfoListData(
@@ -361,6 +364,8 @@ class BetInfoRepository(val androidContext: Context) {
                             )
                             newBetInfoListData.matchType = betInfoListData.matchType
                             newBetInfoListData.input = betInfoListData.input
+                            newBetInfoListData.betAmount = betInfoListData.betAmount
+                            newBetInfoListData.pointMarked = betInfoListData.pointMarked
                             newList.add(newBetInfoListData)
                         }
                     }
