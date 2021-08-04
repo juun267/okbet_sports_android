@@ -15,5 +15,7 @@ data class OddsEpsListResult(
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "rows")
-    val oddsEpsListData: List<OddsEpsListData>
+    val rows: List<OddsEpsListData>,
+    @Json(name = "total")
+     val total: Int
 ) : BaseResult()

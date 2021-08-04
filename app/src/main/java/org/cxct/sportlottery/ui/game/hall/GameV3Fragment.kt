@@ -28,7 +28,6 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
-import org.cxct.sportlottery.network.odds.list.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
@@ -46,8 +45,6 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.TimeUtil
-import timber.log.Timber
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -450,11 +447,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         })
+        
         viewModel.epsListResult.observe(this.viewLifecycleOwner,{
             hideLoading()
             it.getContentIfNotHandled()?.let { epsListResult ->
                 if (epsListResult.success) {
-                    val oddsEpsListData = epsListResult.oddsEpsListData
+                    val oddsEpsListData = epsListResult.rows
                     val epsLeagueOddsItemList =  mutableListOf<EpsLeagueOddsItem>()
                     oddsEpsListData.forEach { oddsEpdListData ->
                         val newLeagueOddsItem =

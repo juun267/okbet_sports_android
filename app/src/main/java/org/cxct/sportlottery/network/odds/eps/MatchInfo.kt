@@ -29,5 +29,7 @@ data class MatchInfo(
     @Json(name = "img")
     val img: String?,//圖片
     @Json(name = "msg")
-    val msg: String?//訊息
+    val msg: String?,//訊息
+    @Json(name = "liveVideo")
+    val liveVideo: String?//有无赛事直播 0:无 1:有
 )
