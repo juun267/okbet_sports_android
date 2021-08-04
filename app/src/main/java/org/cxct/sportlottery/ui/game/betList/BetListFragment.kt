@@ -334,9 +334,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
+        TODO("Not yet implemented")
     }
 
     override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
+        TODO("Not yet implemented")
     }
 
     override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
@@ -344,6 +346,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
+        TODO("Not yet implemented")
     }
 
     override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
