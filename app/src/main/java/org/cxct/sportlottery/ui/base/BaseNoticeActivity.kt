@@ -9,7 +9,7 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import kotlin.reflect.KClass
 
 abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
-    BaseSocketActivity<T>(clazz) {
+    BaseOddButtonActivity<T>(clazz) {
 
     private var mNoticeButton: TextView? = null
     private var noticeCount: Int? = null
@@ -40,12 +40,6 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
         viewModel.userInfo.observe(this, {
             //是否测试用户（0-正常用户，1-游客，2-内部测试）
             updateUserIdentity(it?.testFlag)
-        })
-
-        receiver.userNotice.observe(this, Observer {
-            it?.userNoticeList?.let { list ->
-                viewModel.setUserNoticeList(list)
-            }
         })
     }
 

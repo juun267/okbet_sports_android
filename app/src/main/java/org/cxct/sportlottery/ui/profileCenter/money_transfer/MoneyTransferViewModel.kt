@@ -12,10 +12,7 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GameData
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersRequest
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.query_transfers.Row
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
@@ -27,12 +24,15 @@ class MoneyTransferViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-    val userInfoRepository: UserInfoRepository
+    userInfoRepository: UserInfoRepository,
+    favoriteRepository: MyFavoriteRepository
 ) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     companion object {

@@ -32,14 +32,18 @@ class MoneyRechViewModel(
     androidContext: Application,
     private val moneyRepository: MoneyRepository,
     private val avatarRepository: AvatarRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
 ) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     val token = loginRepository.token

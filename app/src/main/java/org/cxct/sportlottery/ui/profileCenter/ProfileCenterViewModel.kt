@@ -18,15 +18,17 @@ class ProfileCenterViewModel(
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val withdrawRepository: WithdrawRepository
+    private val withdrawRepository: WithdrawRepository,
+    favoriteRepository: MyFavoriteRepository
 ) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
-    val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
 
     val withdrawSystemOperation =

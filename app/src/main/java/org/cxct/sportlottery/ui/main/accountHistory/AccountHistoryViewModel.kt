@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -25,12 +25,14 @@ class AccountHistoryViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseNoticeViewModel(
+    favoriteRepository: MyFavoriteRepository,
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     companion object {

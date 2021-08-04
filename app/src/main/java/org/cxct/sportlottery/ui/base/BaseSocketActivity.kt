@@ -14,7 +14,7 @@ import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
-    BaseOddButtonActivity<T>(clazz) {
+    BaseFavoriteActivity<T>(clazz) {
 
     val receiver by lazy {
         ServiceBroadcastReceiver()
@@ -77,6 +77,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.orderSettlement.observe(this, {
             viewModel.getSettlementNotification(it)
+        })
+
+        receiver.userNotice.observe(this, Observer {
+            it?.userNoticeList?.let { list ->
+                viewModel.setUserNoticeList(list)
+            }
         })
     }
 

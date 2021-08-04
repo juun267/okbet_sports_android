@@ -2,10 +2,8 @@ package org.cxct.sportlottery.ui.profileCenter.profile
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
@@ -18,17 +16,18 @@ class ProfileModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository,
     private val avatarRepository: AvatarRepository
 ) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
-
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     fun uploadImage(uploadImgRequest: UploadImgRequest) {
         viewModelScope.launch {

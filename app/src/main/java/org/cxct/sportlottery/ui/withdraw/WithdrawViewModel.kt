@@ -39,19 +39,20 @@ class WithdrawViewModel(
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
 ) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
         get() = _loading
-
-    val userInfo = userInfoRepository.userInfo.asLiveData()
 
     val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList

@@ -4,12 +4,10 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.nickname.NicknameRequest
 import org.cxct.sportlottery.network.user.nickname.NicknameResult
@@ -24,12 +22,15 @@ class ModifyProfileInfoViewModel(
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
 ) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     private val _loading = MutableLiveData<Boolean>()
@@ -63,8 +64,6 @@ class ModifyProfileInfoViewModel(
     val withdrawInfoResult: LiveData<WithdrawInfoResult?>
         get() = _withdrawInfoResult
 
-
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     fun confirmProfileInfo(modifyType: ModifyType, inputContent: String) {
         if (checkInput(modifyType, inputContent)) {
