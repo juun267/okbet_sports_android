@@ -169,6 +169,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
             MatchType.AT_START -> getString(R.string.home_tab_at_start)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
+            MatchType.EPS -> getString(R.string.home_title_eps)
             else -> ""
         }
     }
@@ -278,7 +279,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun setupSportBackground(view: View) {
         view.game_bg_layer2.visibility = when (args.matchType) {
-            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT -> View.VISIBLE
+            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS  -> View.VISIBLE
             else -> View.GONE
         }
 
