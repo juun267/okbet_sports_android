@@ -647,7 +647,6 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             MatchType.TODAY -> updateSelectTabState(3)
             MatchType.EARLY -> updateSelectTabState(4)
             MatchType.PARLAY -> updateSelectTabState(5)
-            MatchType.OUTRIGHT -> updateSelectTabState(6)
         }
     }
 

@@ -142,9 +142,9 @@ object Constants {
     const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list"
 
     //outright
-    const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/list"
+    const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/v1/list"
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
-    const val OUTRIGHT_SEASON_LIST = "/api/front/outright/season/list"
+    const val OUTRIGHT_LEAGUE_LIST = "/api/front/outright/league/list" // outright/season/list棄用
     const val OUTRIGHT_BET_ADD = "/api/front/outright/bet/add"
     const val OUTRIGHT_BET_INFO = "/api/front/outright/bet/info"
 

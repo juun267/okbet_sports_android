@@ -81,7 +81,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onStart() {
         super.onStart()
 
-        viewModel.getOutrightOddsList(args.eventId)
+        viewModel.getOutrightOddsList(args.gameType.key, args.eventId)
         loading()
     }
 
@@ -118,6 +118,12 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
 
         viewModel.curMatchType.observe(viewLifecycleOwner, {
+            it?.name.apply {
+                game_toolbar_match_type.text = this
+            }
+        })
+
+        viewModel.curChildMatchType.observe(viewLifecycleOwner, {
             it?.name.apply {
                 game_toolbar_match_type.text = this
             }
