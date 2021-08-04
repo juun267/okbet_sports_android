@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,13 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
@@ -26,10 +30,9 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.KeyBoardUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -84,19 +87,46 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         queryData()
     }
 
-    private fun getParlayList() {
-        viewModel.getBetInfoListForParlay()
+    override fun onDestroy() {
+        super.onDestroy()
+        betListDiffAdapter?.let {
+            unsubscribeChannel(getCurrentBetList(it))
+        }
+    }
+
+    private fun getBetOrderParlay() {
+        viewModel.getBetOrderListForParlay()
     }
 
     private fun initView() {
         initBtnView()
+        initBtnEvent()
         initRecyclerView()
-        initDeleteAllOnClickEvent()
+        initToolBar()
+
         initKeyBoard()
     }
 
     private fun initBtnView() {
-        binding.btnBet.tv_quota.text = TextUtil.formatMoney(0.0)
+        binding.btnBet.apply {
+            tv_quota.text = TextUtil.formatBetQuota(0)
+        }
+    }
+
+    private fun initBtnEvent() {
+        binding.btnBet.apply {
+            tv_login.setOnClickListener {
+                startActivity(Intent(requireContext(), LoginActivity::class.java))
+            }
+
+            cl_bet.setOnClickListener { addBet() }
+
+            tv_accept_odds_change.setOnClickListener { addBet() }
+        }
+
+        ll_odds_close_warn.setOnClickListener {
+            removeClosedPlat()
+        }
     }
 
     private fun initRecyclerView() {
@@ -108,7 +138,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     stackFromEnd = true
                 }
             rvBetList.adapter = betListDiffAdapter
+            rvBetList.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+                ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
+                    setDrawable(it)
+                }
+            })
+            (rvBetList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
+    }
+
+    private fun initToolBar() {
+        binding.ivArrow.setOnClickListener {
+            activity?.supportFragmentManager?.popBackStack()
+        }
+        initDeleteAllOnClickEvent()
     }
 
     private fun initDiffAdapter() {
@@ -140,6 +183,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 override fun refreshAmount() {
                     refreshAllAmount()
                 }
+
+                override fun showParlayRule(parlayType: String, parlayRule: String) {
+                    showParlayDescription(parlayType, parlayRule)
+                }
             }
         ).apply {
             //展開查看所有多個選項時將滾動至底部
@@ -164,7 +211,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
-            tvTotalBetAmount.text = "${TextUtil.formatMoney(totalBetAmount)} ${getString(R.string.currency)}"
+            tvTotalBetAmount.text = "${TextUtil.formatBetQuota(totalBetAmount)} ${getString(R.string.currency)}"
             tvTotalWinnableAmount.text = "${TextUtil.formatMoney(winnableAmount)} ${getString(R.string.currency)}"
         }
 
@@ -176,7 +223,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             val totalBetAmountNotNull = totalBetAmount ?: 0.0
             totalBetAmountNotNull.let {
                 binding.apply {
-                    btnBet.tv_quota.text = TextUtil.formatMoney(it)
+                    btnBet.tv_quota.text = TextUtil.formatBetQuota(it)
                     betAllAmount = it
                 }
             }
@@ -214,6 +261,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initObserver() {
+        //是否登入
+        viewModel.isLogin.observe(this.viewLifecycleOwner, {
+            setupUserBalanceView(it)
+            setupBetButtonType(it)
+        })
+
         viewModel.userMoney.observe(viewLifecycleOwner, {
             it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
         })
@@ -223,21 +276,53 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 tv_bet_list_count.text = list.size.toString()
                 betListDiffAdapter?.betList = list
 
-                getParlayList()
+                subscribeChannel(list)
+                getBetOrderParlay()
                 refreshAllAmount(list)
-                checkBetInfoPlatStatus(list)
+                viewModel.checkBetInfoContent(list)
             }
         })
 
         //移除注單解除訂閱
-        viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, {
-            service.unsubscribeEventChannel(it)
+        viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                service.unsubscribeEventChannel(it)
+            }
         })
 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner, {
             betListDiffAdapter?.parlayList = it
         })
+
+        viewModel.betParlaySuccess.observe(viewLifecycleOwner, {
+            showHideCantParlayWarn(!it)
+        })
+
+        //投注結果
+        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                showPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = messageByResultCode(requireContext(), result),
+                    success = result.success
+                ) {}
+                viewModel.checkBetInfoContent(betListDiffAdapter?.betList ?: mutableListOf())
+                refreshAllAmount()
+                showHideOddsChangeWarn(false)
+            }
+        })
+
+        //賠率變更提示
+        viewModel.showOddsChangeWarn.observe(this.viewLifecycleOwner, {
+            showHideOddsChangeWarn(it)
+        })
+
+        //盤口關閉提示
+        viewModel.showOddsCloseWarn.observe(this.viewLifecycleOwner, {
+            showHideOddsCloseWarn(it)
+        })
+
     }
 
     private fun initSocketObserver() {
@@ -264,7 +349,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
             betListDiffAdapter?.betList = (betList ?: mutableListOf())
-            checkBetInfoPlatStatus(betList ?: mutableListOf())
+            viewModel.checkBetInfoContent(betList ?: mutableListOf())
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
@@ -272,6 +357,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             betListDiffAdapter?.apply {
                 val betInfList = getCurrentBetList(this)
+                service.betListPageUnSubScribeEvent()
                 unsubscribeChannel(betInfList)
                 subscribeChannel(betInfList)
             }
@@ -287,23 +373,37 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         return betListDiffAdapter.parlayList
     }
 
-    /**
-     * 判斷是否有賠率關閉
-     */
-    private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
-        var hasPlatClose = false
-        betInfoList.forEach {
-            when (it.matchOdd.status) {
-                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
-                    hasPlatClose = true
-                    return@forEach
-                }
-                else -> { //BetStatus.ACTIVATED.code
-                    it.matchOdd.betAddError != null
-                }
-            }
+    private fun addBet() {
+        betListDiffAdapter?.let { betListAdapter ->
+            viewModel.addBetList(getCurrentBetList(betListAdapter), getCurrentParlayList(betListAdapter), oddsType)
         }
-        showHideOddsCloseWarn(hasPlatClose)
+    }
+
+    /**
+     * 顯示、隱藏使用者餘額(登入、未登入)
+     */
+    private fun setupUserBalanceView(isLogin: Boolean) {
+        if (isLogin) {
+            tv_balance.visibility = View.VISIBLE
+            tv_balance_currency.visibility = View.VISIBLE
+        } else {
+            tv_balance.visibility = View.GONE
+            tv_balance_currency.visibility = View.GONE
+        }
+    }
+
+    /**
+     * 投注按鈕狀態(登入、未登入)
+     */
+    private fun setupBetButtonType(isLogin: Boolean) {
+        btn_bet.isLogin = isLogin
+    }
+
+    /**
+     * 移除盤口關閉的投注選項
+     */
+    private fun removeClosedPlat() {
+        viewModel.removeClosedPlatBetInfo()
     }
 
     private fun queryData() {
@@ -314,13 +414,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     /**
      * 顯示串關說明
      */
-    private fun showParlayDescription() {
+    private fun showParlayDescription(parlayType: String, parlayRule: String) {
         val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_dialog_parlay_description, null)
         val dialog = BottomSheetDialog(context ?: requireContext())
         dialog.apply {
             setContentView(bottomSheetView)
             setCancelable(false)
             setCanceledOnTouchOutside(false)
+            view.apply {
+                tv_parlay_type.text = parlayType
+                tv_parlay_rule.text = parlayRule
+            }
             btn_close.setOnClickListener {
                 dismiss()
             }
@@ -337,6 +441,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         btn_bet.isOddsChanged = show
         tv_warn_odds_change.visibility = visibilityControl
+        tv_odds_closed_changed.visibility = visibilityControl
     }
 
     /**
@@ -344,6 +449,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * @param show true:顯示, false:隱藏
      */
     private fun showHideOddsCloseWarn(show: Boolean) {
+        btn_bet.isEnabled = show
         ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
 
@@ -356,24 +462,36 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
+        service.betListPageSubscribeEvent()
+        val subscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
                 service.subscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
             } else {
-                service.subscribeEventChannel(listData.matchOdd.matchId)
+                val subscribeMatchId = listData.matchOdd.matchId
+                if (!subscribedList.contains(subscribeMatchId)) {
+                    subscribedList.add(subscribeMatchId)
+                    service.subscribeEventChannel(subscribeMatchId)
+                }
             }
         }
     }
 
 
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
+        val unsubscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
                 service.unsubscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
             } else {
-                service.unsubscribeEventChannel(listData.matchOdd.matchId)
+                val unsubscribeMatchId = listData.matchOdd.matchId
+                if (!unsubscribedList.contains(unsubscribeMatchId)) {
+                    unsubscribedList.add(unsubscribeMatchId)
+                    service.unsubscribeEventChannel(unsubscribeMatchId)
+                }
             }
         }
+        service.betListPageUnSubScribeEvent()
     }
 
     companion object {

@@ -179,8 +179,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             }
         })
 
-        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
-            service.unsubscribeEventChannel(it)
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                service.unsubscribeEventChannel(it)
+            }
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
@@ -305,7 +307,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                     ),
                     listOf(Stake(parlayType ?: "", stake)),
                     1,
-                    oddsType.code
+                    oddsType.code,
+                    2
                 ), betInfoListData.matchType
             )
         }
