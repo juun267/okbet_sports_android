@@ -63,7 +63,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
     override fun getItemViewType(position: Int): Int {
-        return when (data[position]) {
+        return when (data.getOrNull(position)) {
             is Odd -> ItemType.ODD.ordinal
             else -> ItemType.SUB_TITLE.ordinal
         }

@@ -16,8 +16,12 @@
         android:networkSecurityConfig="${NETWORK_SECURITY_CONFIG}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.transactionStatus.TransactionStatusActivity"></activity>
-        <activity android:name=".ui.main.accountHistory.AccountHistoryActivity"
+        <activity
+            android:name="org.cxct.sportlottery.ui.favorite.MyFavoriteActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.transactionStatus.TransactionStatusActivity" />
+        <activity
+            android:name=".ui.main.accountHistory.AccountHistoryActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.vip.VipActivity" />
         <activity

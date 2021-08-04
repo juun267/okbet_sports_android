@@ -118,11 +118,11 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
     val matchInfo = MatchInfo(
         gameType = null,
         awayName = this.matchInfo?.awayName.toString(),
-        endTime = this.matchInfo?.endTime.toString(),
+        endTime = this.matchInfo?.endTime,
         homeName = this.matchInfo?.homeName?: "",
         id = this.matchInfo?.id?: "",
         playCateNum = this.matchInfo?.playCateNum?: -1,
-        startTime = this.matchInfo?.startTime.toString(),
+        startTime = this.matchInfo?.startTime,
         status = this.matchInfo?.status?: -1
     )
     val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()

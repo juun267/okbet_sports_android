@@ -32,11 +32,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             val matchInfo = MatchInfo(
                 gameType = null,
                 awayName = it.matchInfo?.awayName ?: "",
-                endTime = it.matchInfo?.endTime?.toString(),
+                endTime = it.matchInfo?.endTime,
                 homeName = it.matchInfo?.homeName ?: "",
                 id = it.matchInfo?.id ?: "",
                 playCateNum = it.matchInfo?.playCateNum ?: 0,
-                startTime = it.matchInfo?.startTime?.toString() ?: "",
+                startTime = it.matchInfo?.startTime,
                 status = it.matchInfo?.status ?: -1
             ).apply {
                 gameType = sportCode
