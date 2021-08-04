@@ -28,6 +28,10 @@ import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.error.BetAddErrorParser
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
@@ -42,7 +46,8 @@ import org.cxct.sportlottery.util.*
  * @description
  */
 @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
-class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
+class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class),
+    BaseSocketActivity.ReceiverChannelEvent, BaseSocketActivity.ReceiverChannelPublic {
 
 
     private lateinit var binding: DialogBottomSheetBetinfoItemBinding
@@ -118,8 +123,18 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         KeyBoardUtil(kv_keyboard, null)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        registerChannelEvent(this)
+        registerChannelPublic(this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DialogBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
@@ -137,7 +152,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         initQuota()
         initEditText()
         initObserve()
-        initSocketObserver()
         getCurrentMoney()
     }
 
@@ -151,7 +165,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onStop() {
         super.onStop()
-        service.unsubscribeEventChannel(matchOdd?.matchId)
+        unSubscribeChannelEvent(matchOdd?.matchId)
     }
 
 
@@ -286,32 +300,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner, { event ->
             event?.peekContent()?.let {
-                if(!it)dismiss()
+                if (!it) dismiss()
             }
         })
     }
-
-
-    private fun initSocketObserver() {
-        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
-            it?.let { event ->
-                viewModel.updateMatchOdd(event)
-            }
-        })
-
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
-            service.unsubscribeAllEventChannel()
-            service.subscribeEventChannel(matchOdd?.matchId)
-        })
-
-        receiver.globalStop.observe(viewLifecycleOwner, { event ->
-            if (matchOdd?.producerId == null || matchOdd?.producerId == event?.producerId) {
-                matchOdd?.status = BetStatus.LOCKED.code
-                matchOdd?.let { setupData(it) }
-            }
-        })
-    }
-
 
     private fun setupCurrentMoney(money: Double) {
         tv_current_money.text = getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
@@ -367,7 +359,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun subscribeChannel(matchOdd: MatchOdd) {
-        service.subscribeEventChannel(matchOdd.matchId)
+        subscribeChannelEvent(matchOdd.matchId)
     }
 
 
@@ -407,5 +399,19 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         }
     }
 
+    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
+        viewModel.updateMatchOdd(matchOddsChangeEvent)
+    }
 
+    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
+        if (matchOdd?.producerId == null || matchOdd?.producerId == globalStopEvent.producerId) {
+            matchOdd?.status = BetStatus.LOCKED.code
+            matchOdd?.let { setupData(it) }
+        }
+    }
+
+    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
+        unSubscribeChannelEventAll()
+        subscribeChannelEvent(matchOdd?.matchId)
+    }
 }
