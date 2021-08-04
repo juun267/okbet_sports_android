@@ -235,8 +235,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
-            tv_time_top.text = TimeUtil.timeFormat(startTime.toLong(), DM_FORMAT)
-            tv_time_bottom.text = TimeUtil.timeFormat(startTime.toLong(), HM_FORMAT)
+            tv_home_name.text = homeName
+            tv_away_name.text = awayName
+            tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
+            tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
         }
     }
 

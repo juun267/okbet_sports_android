@@ -126,14 +126,10 @@ abstract class BaseOddButtonViewModel(
             ?.find { it.matchOdd.oddsId == odd.id }
 
         if (betItem == null) {
-            betInfoRepository.addInBetInfo(
-                matchType = matchType,
-                gameType = gameType,
-                playCateName = outrightCateName ?: "",
-                playName = odd.spread ?: "",
-                matchInfo = matchOdd.matchInfo,
-                odd = odd
-            )
+            matchOdd.matchInfo?.let {
+                betInfoRepository.addInBetInfo(matchType = matchType, gameType = gameType, playCateName = outrightCateName
+                    ?: "", playName = odd.spread ?: "", matchInfo = matchOdd.matchInfo, odd = odd)
+            }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
         }
@@ -161,14 +157,14 @@ abstract class BaseOddButtonViewModel(
             betAddErrorData.let { data ->
                 data.status?.let { status ->
                     val newOdd = org.cxct.sportlottery.network.odds.Odd(
-                        null,
-                        data.id,
-                        null,
-                        data.odds,
-                        data.hkOdds,
-                        data.producerId,
-                        data.spread,
-                        status,
+                        extInfoMap = null,
+                        id = data.id,
+                        name = null,
+                        odds = data.odds,
+                        hkOdds = data.hkOdds,
+                        producerId = data.producerId,
+                        spread = data.spread,
+                        status = status,
                     )
                     newList.add(newOdd)
                 }
@@ -191,14 +187,14 @@ abstract class BaseOddButtonViewModel(
                     value.forEach { odd ->
                         odd?.let {
                             val newOdd = org.cxct.sportlottery.network.odds.Odd(
-                                null,
-                                odd.id,
-                                null,
-                                odd.odds,
-                                odd.hkOdds,
-                                odd.producerId,
-                                odd.spread,
-                                odd.status,
+                                extInfoMap = null,
+                                id = odd.id,
+                                name = null,
+                                odds = odd.odds,
+                                hkOdds = odd.hkOdds,
+                                producerId = odd.producerId,
+                                spread = odd.spread,
+                                status = odd.status,
                             )
                             newList.add(newOdd)
                         }
@@ -229,14 +225,14 @@ abstract class BaseOddButtonViewModel(
             betAddErrorData.let { data ->
                 data.status?.let { status ->
                     val newOdd = org.cxct.sportlottery.network.odds.Odd(
-                        null,
-                        data.id,
-                        null,
-                        data.odds,
-                        data.hkOdds,
-                        data.producerId,
-                        data.spread,
-                        status,
+                        extInfoMap = null,
+                        id = data.id,
+                        name = null,
+                        odds = data.odds,
+                        hkOdds = data.hkOdds,
+                        producerId = data.producerId,
+                        spread = data.spread,
+                        status = status,
                     )
                     newList.add(newOdd)
                 }

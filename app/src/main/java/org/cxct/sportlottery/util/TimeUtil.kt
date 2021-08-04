@@ -339,8 +339,17 @@ object TimeUtil {
         return weekDateList
     }
 
-    fun getRemainTime(timeStamp: Long): Long {
-        return timeStamp - System.currentTimeMillis()
+    fun getRemainTime(timeStamp: Long?): Long {
+        var remainTime = 0L
+        try {
+            timeStamp?.apply {
+                remainTime = timeStamp - System.currentTimeMillis()
+            }
+        } catch (e: Exception) {
+            Timber.e("時間計算失敗!!! \n$e")
+            e.printStackTrace()
+        }
+        return remainTime
     }
 
     fun stampToDateHM(time: Long): String {
