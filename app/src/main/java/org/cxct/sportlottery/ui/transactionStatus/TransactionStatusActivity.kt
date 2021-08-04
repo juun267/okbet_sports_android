@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseNoticeActivity
 import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -150,7 +151,7 @@ class TransactionStatusActivity : BaseNoticeActivity<TransactionStatusViewModel>
                     false
                 }
                 R.id.item_bet_list -> {
-                    //TODO open bet list page
+                    showBetListPage()
                     false
                 }
                 R.id.navigation_account_history -> {
@@ -164,6 +165,20 @@ class TransactionStatusActivity : BaseNoticeActivity<TransactionStatusViewModel>
                 else -> false
             }
         }
+    }
+
+    private fun showBetListPage() {
+        val betListFragment = BetListFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
     }
 
     private fun initRvMarquee() {

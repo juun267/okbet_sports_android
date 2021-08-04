@@ -8,12 +8,16 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.SelectionType
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.quick.QuickListData
+import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
+import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -67,6 +71,24 @@ class MyFavoriteViewModel(
                 getFavoriteMatch(
                     it.items?.firstOrNull()?.code,
                     it.items?.firstOrNull()?.play?.firstOrNull()?.code
+                )
+            }
+        }
+    }
+
+    fun getQuickList(matchId: String?) {
+        if (matchId == null) return
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.oddsService.getQuickList(
+                    QuickListRequest(matchId)
+                )
+            }
+
+            result?.quickListData?.let { quickListData ->
+                mFavorMatchOddList.postValue(
+                    mFavorMatchOddList.value?.updatePlayCate(matchId, quickListData)
                 )
             }
         }
@@ -130,6 +152,12 @@ class MyFavoriteViewModel(
         )
     }
 
+    fun clearQuickPlayCateSelected() {
+        mFavorMatchOddList.postValue(
+            mFavorMatchOddList.value?.clearQuickPlayCateSelected()
+        )
+    }
+
     private fun SportQueryData.updateGameTypeSelected(item: Item): SportQueryData {
         this.items?.forEach {
             it.isSelected = (it.code == item.code)
@@ -147,6 +175,37 @@ class MyFavoriteViewModel(
     private fun SportQueryData.updatePlayCateSelected(playCateCode: String?): SportQueryData {
         this.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.forEach {
             it.isSelected = (it.code == playCateCode)
+        }
+        return this
+    }
+
+    private fun List<LeagueOdd>.updatePlayCate(
+        matchId: String,
+        quickListData: QuickListData
+    ): List<LeagueOdd> {
+        this.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.isSelected =
+                        (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
+
+                    quickPlayCate.quickOdds = PlayCateUtils.filterQuickOdds(
+                        quickListData.quickOdds?.get(quickPlayCate.code),
+                        quickPlayCate.gameType ?: ""
+                    )
+                }
+            }
+        }
+        return this
+    }
+
+    private fun List<LeagueOdd>.clearQuickPlayCateSelected(): List<LeagueOdd> {
+        this.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    quickPlayCate.isSelected = false
+                }
+            }
         }
         return this
     }
