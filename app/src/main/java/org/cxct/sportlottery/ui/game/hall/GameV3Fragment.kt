@@ -232,10 +232,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         view.game_tabs.apply {
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    //TODO add odd tab switch behavior
-                    Toast.makeText(requireContext(), "${tab?.text} is selected", Toast.LENGTH_SHORT)
-                        .show()
-
                     when (tab?.text.toString()) { //固定寫死
                         getString(R.string.game_tab_league_odd) -> { //賽事
                             viewModel.switchChildMatchType(childMatchType = args.matchType)
