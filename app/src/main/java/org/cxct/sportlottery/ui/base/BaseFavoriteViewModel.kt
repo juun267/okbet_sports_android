@@ -33,8 +33,8 @@ abstract class BaseFavoriteViewModel(
     private val _notifyLogin = MutableLiveData<Boolean>()
 
     val favorMatchOddList: LiveData<List<LeagueOdd>>
-        get() = mfavorMatchOddList
-    protected val mfavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
+        get() = mFavorMatchOddList
+    protected val mFavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
 
     val favorSportList = myFavoriteRepository.favorSportList
 
@@ -82,7 +82,7 @@ abstract class BaseFavoriteViewModel(
                         }
                     }
                 }
-                mfavorMatchOddList.postValue(it)
+                mFavorMatchOddList.postValue(it)
             }
         }
     }
@@ -114,8 +114,8 @@ abstract class BaseFavoriteViewModel(
 
                 when (type) {
                     FavoriteType.MATCH -> {
-                        mfavorMatchOddList.postValue(
-                            mfavorMatchOddList.value?.removeFavorMatchOdd(
+                        mFavorMatchOddList.postValue(
+                            mFavorMatchOddList.value?.removeFavorMatchOdd(
                                 content
                             )?.removeFavorLeague()
                         )

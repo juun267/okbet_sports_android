@@ -87,8 +87,8 @@ class MyFavoriteViewModel(
             }
 
             result?.quickListData?.let { quickListData ->
-                mfavorMatchOddList.postValue(
-                    mfavorMatchOddList.value?.updatePlayCate(matchId, quickListData)
+                mFavorMatchOddList.postValue(
+                    mFavorMatchOddList.value?.updatePlayCate(matchId, quickListData)
                 )
             }
         }
@@ -153,8 +153,8 @@ class MyFavoriteViewModel(
     }
 
     fun clearQuickPlayCateSelected() {
-        mfavorMatchOddList.postValue(
-            mfavorMatchOddList.value?.clearQuickPlayCateSelected()
+        mFavorMatchOddList.postValue(
+            mFavorMatchOddList.value?.clearQuickPlayCateSelected()
         )
     }
 
