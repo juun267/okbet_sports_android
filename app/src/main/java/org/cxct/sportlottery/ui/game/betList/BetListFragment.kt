@@ -23,6 +23,14 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -36,7 +44,9 @@ import org.cxct.sportlottery.util.getOdds
  * Use the [BetListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
+    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic,
+    BaseSocketActivity.ReceiverChannelEvent {
     private lateinit var binding: FragmentBetListBinding
 
     private var oddsType: OddsType = OddsType.EU
@@ -62,6 +72,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        registerChannelHall(this)
+        registerChannelEvent(this)
+        registerChannelPublic(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,7 +97,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         initView()
         initObserver()
-        initSocketObserver()
 
         queryData()
     }
@@ -231,47 +248,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //移除注單解除訂閱
         viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, {
-            service.unsubscribeEventChannel(it)
+            unSubscribeChannelEvent(it)
         })
 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner, {
             betListDiffAdapter?.parlayList = it
-        })
-    }
-
-    private fun initSocketObserver() {
-        receiver.matchOddsChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            viewModel.updateMatchOdd(it)
-        })
-
-        receiver.oddsChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            viewModel.updateMatchOdd(it)
-        })
-
-        receiver.globalStop.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
-            betList?.forEach { listData ->
-                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
-                    listData.matchOdd.status = BetStatus.LOCKED.code
-                }
-            }
-            betListDiffAdapter?.betList = (betList ?: mutableListOf())
-            checkBetInfoPlatStatus(betList ?: mutableListOf())
-        })
-
-        receiver.producerUp.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-
-            betListDiffAdapter?.apply {
-                val betInfList = getCurrentBetList(this)
-                unsubscribeChannel(betInfList)
-                subscribeChannel(betInfList)
-            }
-
         })
     }
 
@@ -351,12 +333,50 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         ll_cant_parlay_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
 
+    override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
+    }
+
+    override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
+    }
+
+    override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
+        viewModel.updateMatchOdd(oddsChangeEvent)
+    }
+
+    override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
+    }
+
+    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
+        val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
+        betList?.forEach { listData ->
+            if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
+                listData.matchOdd.status = BetStatus.LOCKED.code
+            }
+        }
+        betListDiffAdapter?.betList = (betList ?: mutableListOf())
+        checkBetInfoPlatStatus(betList ?: mutableListOf())
+    }
+
+    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
+        betListDiffAdapter?.apply {
+            val betInfList = getCurrentBetList(this)
+            unsubscribeChannel(betInfList)
+            subscribeChannel(betInfList)
+        }
+    }
+
+    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
+        viewModel.updateMatchOdd(matchOddsChangeEvent)
+    }
+
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.subscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
+                subscribeChannelHall(
+                    listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId
+                )
             } else {
-                service.subscribeEventChannel(listData.matchOdd.matchId)
+                subscribeChannelEvent(listData.matchOdd.matchId)
             }
         }
     }
@@ -365,9 +385,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.unsubscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
+                unSubscribeChannelHall(
+                    listData.matchOdd.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    listData.matchOdd.matchId
+                )
             } else {
-                service.unsubscribeEventChannel(listData.matchOdd.matchId)
+                unSubscribeChannelEvent(listData.matchOdd.matchId)
             }
         }
     }
