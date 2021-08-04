@@ -677,8 +677,7 @@ class GameViewModel(
                 }
                 MatchType.EPS -> {
                     val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(),TimeUtil.YMD_FORMAT)
-                    val sportType =  _sportMenuResult.value?.sportMenuData?.atStart?.items?.find { item -> item.isSelected }?.code ?: ""//判斷運動類型
-                    getEpsList(sportType,time)
+                    getEpsList(item.code,time)
                 }
             }
         }
