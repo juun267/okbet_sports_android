@@ -21,7 +21,7 @@ data class Odd(
     val name: String? = null, //玩法名称（如果是球员玩法，则名称代码球员名称）
 
     @Json(name = "spread")
-    var spread: String, //让分或大小分值 (如果是球员玩法，则表示球员ID)
+    var spread: String? = null, //让分或大小分值 (如果是球员玩法，则表示球员ID)
 
     @Json(name = "odds")
     var odds: Double? = null, //赔率
@@ -33,7 +33,7 @@ data class Odd(
     var status: Int = BetStatus.ACTIVATED.code, //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
 
     @Json(name = "producerId")
-    var producerId: Int, //赔率生产者
+    var producerId: Int? = null, //赔率生产者
 
     @Json(name = "nameMap")
     val nameMap: Map<String?, String?>? = null, //保存各语系name对应值的map

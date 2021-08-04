@@ -102,7 +102,7 @@ class OddsButton @JvmOverloads constructor(
 
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            text = odd?.extInfoMap.toString()
+            text = odd?.extInfoMap.toString() //TODO Cheryl: check when api has value return.
             paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
         }
 
