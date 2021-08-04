@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.eps.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class EpsListV2Adapter(private val clickListener: ItemClickListener,private val infoClickListener: InfoClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,8 +24,16 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener,private val 
             notifyDataSetChanged()
         }
 
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
+
     class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(item: EpsOdds, clickListener: ItemClickListener) {
+        fun bind(item: EpsOdds,oddsType: OddsType, clickListener: ItemClickListener) {
             itemView.tv_title.text = "${item.epsItem?.name}"
 
             itemView.btn_odd.apply {
@@ -32,7 +41,8 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener,private val 
                     isActivated = !isActivated
                     item.epsItem?.let { epsOdds -> clickListener.onClick(epsOdds) }
                 }
-                setOddsValue(item.epsItem?.extInfo ?: "", item.epsItem?.odds.toString())
+                val odds = if(oddsType == OddsType.EU)  item.epsItem?.odds.toString() else  item.epsItem?.hkOdds.toString()
+                setOddsValue(item.epsItem?.extInfo ?: "", odds)
                 setFlag()
             }
         }
@@ -81,7 +91,7 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener,private val 
                 holder.bind(dataList[position].matchInfo,infoClickListener)
             }
             is OddViewHolder -> {
-                holder.bind(dataList[position], clickListener)
+                holder.bind(dataList[position], oddsType , clickListener)
             }
         }
     }

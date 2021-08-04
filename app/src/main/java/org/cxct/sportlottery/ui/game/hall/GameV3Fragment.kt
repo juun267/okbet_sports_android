@@ -524,6 +524,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
+                epsListAdapter.oddsType = oddsType
             }
         })
 

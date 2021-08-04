@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 import org.cxct.sportlottery.network.odds.list.MatchOddsItem
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 
 class EpsListAdapter(private val clickListener: ItemClickListener,private val infoClickListener: InfoClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -26,6 +27,15 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
             field = value
             notifyDataSetChanged()
         }
+
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
+        }
+
     class DateViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun from(parent: ViewGroup): DateViewHolder {
@@ -58,7 +68,7 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
             }
         }
 
-        fun bind(item: EpsLeagueOddsItem, clickListener: ItemClickListener,infoClickListener: InfoClickListener) {
+        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,clickListener: ItemClickListener,infoClickListener: InfoClickListener) {
             itemView.tv_league_title.text = "${item.league?.name}"
             itemView.rv_league_odd_list.layoutManager = LinearLayoutManager(
                 itemView.context,
@@ -75,6 +85,7 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
                 layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
                 adapter = epsListV2Adapter.apply {
                     dataList = filterEpsOddsList(item.matchOdds)
+                    oddsType = mOddsType
                 }
             }
         }
@@ -110,7 +121,7 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                holder.bind(dataList[position], clickListener,infoClickListener)
+                holder.bind(dataList[position], oddsType, clickListener, infoClickListener)
             }
             is DateViewHolder -> {
                 holder.bind(dataList[position])
