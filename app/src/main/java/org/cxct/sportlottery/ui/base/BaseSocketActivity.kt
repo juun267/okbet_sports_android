@@ -7,14 +7,42 @@ import android.os.IBinder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
+import java.lang.Exception
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     BaseFavoriteActivity<T>(clazz) {
+
+    interface ReceiverChannelHall {
+        fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent)
+        fun onMatchClockChanged(matchClockEvent: MatchClockEvent)
+        fun onOddsChanged(oddsChangeEvent: OddsChangeEvent)
+        fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent)
+    }
+
+    interface ReceiverChannelEvent {
+        fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent)
+    }
+
+    interface ReceiverChannelPublic {
+        fun onGlobalStop(globalStopEvent: GlobalStopEvent)
+        fun onProducerUp(producerUpEvent: ProducerUpEvent)
+    }
+
+    private var receiverChannelHall: ReceiverChannelHall? = null
+    private var receiverChannelEvent: ReceiverChannelEvent? = null
+    private var receiverChannelPublic: ReceiverChannelPublic? = null
 
     val receiver by lazy {
         ServiceBroadcastReceiver()
@@ -84,6 +112,92 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 viewModel.setUserNoticeList(list)
             }
         })
+
+        receiver.matchStatusChange.observe(this, {
+            it?.let { matchStatusChangeEvent ->
+                receiverChannelHall?.onMatchStatusChanged(matchStatusChangeEvent)
+            }
+        })
+
+        receiver.matchClock.observe(this, {
+            it?.let { matchClockEvent ->
+                receiverChannelHall?.onMatchClockChanged(matchClockEvent)
+            }
+        })
+
+        receiver.oddsChange.observe(this, {
+            it?.let { oddsChangeEvent ->
+                receiverChannelHall?.onOddsChanged(oddsChangeEvent.updateOddsSelectedState())
+            }
+        })
+
+        receiver.leagueChange.observe(this, {
+            it?.let { leagueChangeEvent ->
+                receiverChannelHall?.onLeagueChanged(leagueChangeEvent)
+            }
+        })
+
+        receiver.matchOddsChange.observe(this, {
+            it?.let { matchOddsChangeEvent ->
+                receiverChannelEvent?.onMatchOddsChanged(matchOddsChangeEvent)
+            }
+        })
+
+        receiver.globalStop.observe(this, {
+            it?.let { globalStopEvent ->
+                receiverChannelPublic?.onGlobalStop(globalStopEvent)
+            }
+        })
+
+        receiver.producerUp.observe(this, {
+            it?.let { producerUpEvent ->
+                receiverChannelPublic?.onProducerUp(producerUpEvent)
+            }
+        })
+    }
+
+    fun registerChannelHall(receiverChannelHall: ReceiverChannelHall) {
+        this.receiverChannelHall = receiverChannelHall
+    }
+
+    fun registerChannelEvent(receiverChannelEvent: ReceiverChannelEvent) {
+        this.receiverChannelEvent = receiverChannelEvent
+    }
+
+    fun registerChannelPublic(receiverChannelPublic: ReceiverChannelPublic) {
+        this.receiverChannelPublic = receiverChannelPublic
+    }
+
+    fun subscribeChannelHall(
+        gameType: String?,
+        cateMenuCode: String?,
+        eventId: String?
+    ) {
+        if (receiverChannelHall == null) throw Exception("You must register receiverChannelHall first OnCreate")
+        if (receiverChannelPublic == null) throw Exception("You must register receiverChannelPublic first OnCreate")
+
+        backService.subscribeHallChannel(gameType, cateMenuCode, eventId)
+    }
+
+    fun subscribeChannelEvent(
+        eventId: String?
+    ) {
+        if (receiverChannelEvent == null) throw Exception("You must register receiverChannelEvent first OnCreate")
+        if (receiverChannelPublic == null) throw Exception("You must register receiverChannelPublic first OnCreate")
+
+        backService.subscribeEventChannel(eventId)
+    }
+
+    fun unSubscribeChannelHall(
+        gameType: String?,
+        cateMenuCode: String?,
+        eventId: String?
+    ) {
+        backService.unsubscribeHallChannel(gameType, cateMenuCode, eventId)
+    }
+
+    fun unSubscribeChannelEvent(eventId: String?) {
+        backService.unsubscribeEventChannel(eventId)
     }
 
     override fun onStart() {
@@ -136,5 +250,20 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     private fun removeBroadCastReceiver() {
         unregisterReceiver(receiver)
+    }
+
+    private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.onEach { odd ->
+                    odd?.isSelected =
+                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
+        return this
     }
 }
