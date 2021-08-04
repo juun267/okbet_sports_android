@@ -44,11 +44,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     private var receiverChannelEvent: ReceiverChannelEvent? = null
     private var receiverChannelPublic: ReceiverChannelPublic? = null
 
-    val receiver by lazy {
+    private val receiver by lazy {
         ServiceBroadcastReceiver()
     }
 
-    lateinit var backService: BackService
+    private lateinit var backService: BackService
 
     private var isServiceBound = false
     private val serviceConnection = object : ServiceConnection {
