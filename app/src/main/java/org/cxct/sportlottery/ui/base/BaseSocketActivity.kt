@@ -173,8 +173,8 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         cateMenuCode: String?,
         eventId: String?
     ) {
-        if (receiverChannelHall == null) throw Exception("You must register receiverChannelHall first OnCreate")
-        if (receiverChannelPublic == null) throw Exception("You must register receiverChannelPublic first OnCreate")
+        if (receiverChannelHall == null) throw Exception("You must register receiverChannelHall interface before call fun subscribeChannelHall")
+        if (receiverChannelPublic == null) throw Exception("You must register receiverChannelPublic interface before call fun subscribeChannelHall")
 
         backService.subscribeHallChannel(gameType, cateMenuCode, eventId)
     }
@@ -182,8 +182,8 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     fun subscribeChannelEvent(
         eventId: String?
     ) {
-        if (receiverChannelEvent == null) throw Exception("You must register receiverChannelEvent first OnCreate")
-        if (receiverChannelPublic == null) throw Exception("You must register receiverChannelPublic first OnCreate")
+        if (receiverChannelEvent == null) throw Exception("You must register receiverChannelEvent interface before call fun subscribeChannelEvent")
+        if (receiverChannelPublic == null) throw Exception("You must register receiverChannelPublic interface before call fun subscribeChannelEvent")
 
         backService.subscribeEventChannel(eventId)
     }
