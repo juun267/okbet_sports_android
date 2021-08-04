@@ -147,7 +147,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    val gameToolbarMatchTypeText = { matchType: MatchType ->
+    private val gameToolbarMatchTypeText = { matchType: MatchType ->
         when (matchType) {
             MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
             MatchType.TODAY -> getString(R.string.home_tab_today)
@@ -438,7 +438,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, {
+        viewModel.outrightLeagueListResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                 hideLoading()
 

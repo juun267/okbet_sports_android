@@ -105,8 +105,8 @@ class GameViewModel(
     val leagueListResult: LiveData<Event<LeagueListResult?>>
         get() = _leagueListResult
 
-    val outrightSeasonListResult: LiveData<Event<OutrightLeagueListResult?>>
-        get() = _outrightSeasonListResult
+    val outrightLeagueListResult: LiveData<Event<OutrightLeagueListResult?>>
+        get() = _outrightLeagueListResult
 
     val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
@@ -160,7 +160,7 @@ class GameViewModel(
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
-    private val _outrightSeasonListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
+    private val _outrightLeagueListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
     private val _countryListSearchResult = MutableLiveData<List<Row>>()
     private val _leagueListSearchResult = MutableLiveData<List<LeagueOdd>>()
@@ -881,7 +881,7 @@ class GameViewModel(
                 )
             }
 
-            _outrightSeasonListResult.postValue(Event(result))
+            _outrightLeagueListResult.postValue(Event(result))
         }
     }
 
@@ -1179,7 +1179,7 @@ class GameViewModel(
             MatchType.OUTRIGHT -> {
 
                 val searchResult =
-                    _outrightSeasonListResult.value?.peekContent()?.rows?.filter {
+                    _outrightLeagueListResult.value?.peekContent()?.rows?.filter {
 
                         it.searchList = it.list.filter { season ->
                             season.name?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) == true
