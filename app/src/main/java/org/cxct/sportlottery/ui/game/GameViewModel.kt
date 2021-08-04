@@ -731,7 +731,7 @@ class GameViewModel(
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
                             item.code,
-                            leagueIdList = listOf("27068")
+                            leagueIdList = listOf(leagueId)
                         )
                     )
                 }
