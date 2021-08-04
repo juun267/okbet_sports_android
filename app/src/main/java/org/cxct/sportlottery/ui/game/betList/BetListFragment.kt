@@ -23,18 +23,12 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.SpreadState
-import org.cxct.sportlottery.network.bet.Odd
-import org.cxct.sportlottery.network.bet.add.BetAddRequest
-import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -55,15 +49,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var betListDiffAdapter: BetListDiffAdapter? = null
 
     private var betAllAmount = 0.0
-
-    private var isLogin: Boolean? = null
-        set(value) {
-            field = value
-            field?.let {
-                setupUserBalanceView(it)
-                setupBetButtonType(it)
-            }
-        }
 
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
@@ -278,7 +263,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initObserver() {
         //是否登入
         viewModel.isLogin.observe(this.viewLifecycleOwner, {
-            isLogin = it
+            setupUserBalanceView(it)
+            setupBetButtonType(it)
         })
 
         viewModel.userMoney.observe(viewLifecycleOwner, {
@@ -293,7 +279,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 subscribeChannel(list)
                 getBetOrderParlay()
                 refreshAllAmount(list)
-                checkBetInfo(list)
+                viewModel.checkBetInfoContent(list)
             }
         })
 
@@ -321,10 +307,20 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     message = messageByResultCode(requireContext(), result),
                     success = result.success
                 ) {}
-                checkBetInfo(betListDiffAdapter?.betList ?: mutableListOf())
+                viewModel.checkBetInfoContent(betListDiffAdapter?.betList ?: mutableListOf())
                 refreshAllAmount()
                 showHideOddsChangeWarn(false)
             }
+        })
+
+        //賠率變更提示
+        viewModel.showOddsChangeWarn.observe(this.viewLifecycleOwner, {
+            showHideOddsChangeWarn(it)
+        })
+
+        //盤口關閉提示
+        viewModel.showOddsCloseWarn.observe(this.viewLifecycleOwner, {
+            showHideOddsCloseWarn(it)
         })
 
     }
@@ -353,7 +349,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
             betListDiffAdapter?.betList = (betList ?: mutableListOf())
-            checkBetInfo(betList ?: mutableListOf())
+            viewModel.checkBetInfoContent(betList ?: mutableListOf())
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
@@ -378,45 +374,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun addBet() {
-
         betListDiffAdapter?.let { betListAdapter ->
-            val matchList: MutableList<Odd> = mutableListOf()
-            val outrightMatchList: MutableList<Odd> = mutableListOf()
-            getCurrentBetList(betListAdapter).forEach {
-                if (it.betAmount > 0) {
-                    when (it.matchType) {
-                        MatchType.OUTRIGHT -> outrightMatchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
-                        else -> matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
-                    }
-                }
-            }
-
-            val parlayList: MutableList<Stake> = mutableListOf()
-            getCurrentParlayList(betListAdapter).forEach {
-                if (it.betAmount > 0) {
-                    parlayList.add(Stake(TextUtil.replaceCByParlay(it.parlayType), it.betAmount))
-                }
-            }
-
-            if (matchList.size > 0)
-                viewModel.addBetList(
-                    BetAddRequest(
-                        matchList,
-                        parlayList,
-                        1,
-                        oddsType.code
-                    ), MatchType.PARLAY
-                )
-
-            if (outrightMatchList.size > 0)
-                viewModel.addBetList(
-                    BetAddRequest(
-                        outrightMatchList,
-                        mutableListOf(),
-                        1,
-                        oddsType.code
-                    ), MatchType.OUTRIGHT
-                )
+            viewModel.addBetList(getCurrentBetList(betListAdapter), getCurrentParlayList(betListAdapter), oddsType)
         }
     }
 
@@ -438,44 +397,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun setupBetButtonType(isLogin: Boolean) {
         btn_bet.isLogin = isLogin
-    }
-
-    /**
-     * 檢查注單中賠率、盤口狀態
-     */
-    private fun checkBetInfo(betInfoList: MutableList<BetInfoListData>) {
-        checkBetInfoOddChanged(betInfoList)
-        checkBetInfoPlatStatus(betInfoList)
-    }
-
-    /**
-     * 判斷是否有賠率變更
-     */
-    private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
-        betInfoList.forEach {
-            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
-                showHideOddsChangeWarn(true)
-            }
-        }
-    }
-
-    /**
-     * 判斷是否有盤口關閉
-     */
-    private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
-        var hasPlatClose = false
-        betInfoList.forEach {
-            when (it.matchOdd.status) {
-                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
-                    hasPlatClose = true
-                    return@forEach
-                }
-                else -> { //BetStatus.ACTIVATED.code
-                    it.matchOdd.betAddError != null
-                }
-            }
-        }
-        showHideOddsCloseWarn(hasPlatClose)
     }
 
     /**

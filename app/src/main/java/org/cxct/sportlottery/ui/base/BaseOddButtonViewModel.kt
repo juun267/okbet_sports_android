@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
 
@@ -200,12 +202,39 @@ abstract class BaseOddButtonViewModel(
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
      * @date 20210730
      */
-    fun addBetList(betAddRequest: BetAddRequest, matchType: MatchType?) {
+    fun addBetList(normalBetList: List<BetInfoListData>, parlayBetList: List<ParlayOdd>, oddsType: OddsType) {
+
+        //一般注單
+        val matchList: MutableList<Odd> = mutableListOf()
+        normalBetList.forEach {
+            if (it.betAmount > 0) {
+                matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
+            }
+        }
+
+        //串關注單
+        val parlayList: MutableList<Stake> = mutableListOf()
+        parlayBetList.forEach {
+            if (it.betAmount > 0) {
+                parlayList.add(Stake(TextUtil.replaceCByParlay(it.parlayType), it.betAmount))
+            }
+        }
+
         viewModelScope.launch {
-            val result = getBetApi(matchType, betAddRequest)
-            _betAddResult.postValue(Event(result))
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.betService.addBet(
+                    BetAddRequest(
+                        matchList,
+                        parlayList,
+                        1,
+                        oddsType.code,
+                        2
+                    )
+                )
+            }
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
+                    _betAddResult.postValue(Event(result))
                     betInfoRepository.clear()
                 }
             }
@@ -227,7 +256,8 @@ abstract class BaseOddButtonViewModel(
             ),
             listOf(Stake(parlayType ?: "", stake)),
             1,
-            oddsType.value?.code ?: OddsType.EU.code
+            oddsType.value?.code ?: OddsType.EU.code,
+            2
         )
 
         viewModelScope.launch {

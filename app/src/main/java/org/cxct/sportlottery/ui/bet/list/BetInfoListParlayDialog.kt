@@ -339,7 +339,8 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 matchList,
                 parlayList,
                 1,
-                oddsType.code
+                oddsType.code,
+                2
             ), MatchType.PARLAY
         )
     }

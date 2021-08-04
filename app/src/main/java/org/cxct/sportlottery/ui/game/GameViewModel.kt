@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -153,6 +156,12 @@ class GameViewModel(
     val playCate: LiveData<String?>
         get() = _playCate
 
+    val showOddsChangeWarn: LiveData<Boolean>
+        get() = _showOddsChangeWarn
+
+    val showOddsCloseWarn: LiveData<Boolean>
+        get() = _showOddsCloseWarn
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -176,6 +185,8 @@ class GameViewModel(
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
+    private val _showOddsChangeWarn = MutableLiveData<Boolean>()
+    private val _showOddsCloseWarn = MutableLiveData<Boolean>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -1517,5 +1528,44 @@ class GameViewModel(
         }
 
         return this
+    }
+
+
+    /**
+     * 檢查注單中賠率、盤口狀態
+     */
+    fun checkBetInfoContent(betInfoList: MutableList<BetInfoListData>) {
+        checkBetInfoOddChanged(betInfoList)
+        checkBetInfoPlatStatus(betInfoList)
+    }
+
+    /**
+     * 判斷是否有賠率變更
+     */
+    private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
+        betInfoList.forEach {
+            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
+                _showOddsChangeWarn.postValue(true)
+            }
+        }
+    }
+
+    /**
+     * 判斷是否有盤口關閉
+     */
+    private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
+        var hasPlatClose = false
+        betInfoList.forEach {
+            when (it.matchOdd.status) {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                    hasPlatClose = true
+                    return@forEach
+                }
+                else -> { //BetStatus.ACTIVATED.code
+                    it.matchOdd.betAddError != null
+                }
+            }
+        }
+        _showOddsCloseWarn.postValue(hasPlatClose)
     }
 }
