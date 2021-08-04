@@ -793,17 +793,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
 
     override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
         oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-
-            @Suppress("NAME_SHADOWING")
-            val oddTypeSocketMap = oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.toMutableList().onEach { odd ->
-                    odd?.isSelected =
-                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                }
-            }
-
             val leagueOdds = leagueAdapter.data
             val oddsType = leagueAdapter.oddsType
 
