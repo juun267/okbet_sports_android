@@ -154,6 +154,10 @@ class BetInfoRepository(val androidContext: Context) {
 
         if (betList.size >= BET_INFO_MAX_COUNT) return
 
+        val emptyFilter = { item: String? ->
+            if (item.isNullOrEmpty()) null else item
+        }
+
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
             gameType = gameType.key,

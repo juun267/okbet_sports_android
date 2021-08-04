@@ -49,11 +49,11 @@ class OddsDetailMoreFragment : BaseBottomSheetFragment<GameViewModel>(GameViewMo
                 val info = parcelable as MatchInfo
                 MoreGameEntity(
                     awayName = info.awayName,
-                    endTime = info.endTime,
+                    endTime = info.endTime.toString(),
                     homeName = info.homeName,
                     id = info.id,
                     playCateNum = info.playCateNum,
-                    startTime = info.startTime,
+                    startTime = info.startTime.toString(),
                     status = info.status
                 )
             }?.toMutableList() ?: mutableListOf()

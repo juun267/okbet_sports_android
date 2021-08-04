@@ -4,9 +4,9 @@ package org.cxct.sportlottery.network.odds.list
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
+import org.cxct.sportlottery.network.odds.MatchInfo
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(

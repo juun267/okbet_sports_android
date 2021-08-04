@@ -90,6 +90,9 @@ class GameViewModel(
     val curMatchType: LiveData<MatchType?>
         get() = _curMatchType
 
+    val curChildMatchType: LiveData<MatchType?>
+        get() = _curChildMatchType
+
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
@@ -152,6 +155,7 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
+    private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -308,6 +312,13 @@ class GameViewModel(
 
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
+    }
+
+    fun switchChildMatchType(childMatchType: MatchType ?= null) {
+        _curChildMatchType.value = childMatchType
+        curMatchType.value?.let {
+            getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
+        }
     }
 
     private fun checkShoppingCart() {
@@ -498,7 +509,7 @@ class GameViewModel(
                     data.matchOdds.forEach { matchOdd ->
                         //計算且賦值 即將開賽 的倒數時間
                         matchOdd.matchInfo?.apply {
-                            remainTime = TimeUtil.getRemainTime(startTime.toLong())
+                            remainTime = startTime?.let { TimeUtil.getRemainTime(it) }
                         }
 
                         //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
@@ -617,39 +628,42 @@ class GameViewModel(
         date: String? = null,
         isReloadPlayCate: Boolean = false
     ) {
+
+        val nowMatchType = curChildMatchType.value ?: matchType
+
         if (isReloadPlayCate) {
-            getPlayCategory(matchType)
+            getPlayCategory(nowMatchType)
         }
 
         if (isReloadDate) {
-            getDateRow(matchType)
+            getDateRow(nowMatchType)
         }
 
         val sportItem = getSportSelected(matchType)
 
         sportItem?.let { item ->
-            when (matchType) {
+            when (nowMatchType) {
                 MatchType.IN_PLAY -> {
-                    getOddsList(item.code, matchType.postValue)
+                    getOddsList(item.code, nowMatchType.postValue)
                 }
                 MatchType.TODAY -> {
                     getLeagueList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.EARLY -> {
                     getLeagueList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.PARLAY -> {
                     getLeagueList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams(),
                         date
                     )
@@ -661,7 +675,7 @@ class GameViewModel(
                 MatchType.AT_START -> {
                     getOddsList(
                         item.code,
-                        matchType.postValue,
+                        nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
@@ -697,7 +711,9 @@ class GameViewModel(
             getPlayCategory(matchType)
         }
 
-        getSportSelected(matchType)?.let { item ->
+        val nowMatchType = curChildMatchType.value ?: matchType
+
+        getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
                 item.code,
                 matchType.postValue,
@@ -710,6 +726,7 @@ class GameViewModel(
     fun getOutrightOddsList(leagueId: String) {
         getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
+
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
@@ -720,17 +737,17 @@ class GameViewModel(
                 }
 
                 result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { oddList ->
-                            oddList.updateOddSelectState()
+                    leagueOdd.matchOdds?.forEach { matchOdd ->
+                        matchOdd?.odds?.values?.forEach { oddList ->
+                            oddList?.updateOddSelectState()
                         }
                     }
                 }
 
-                val matchOdd = result?.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
+                val matchOdd = result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
                 matchOdd?.let {
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), DMY_FORMAT)
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo.startTime.toLong(), HM_FORMAT)
+                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
+                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
                 }
 
                 _outrightOddsListResult.postValue(Event(result))
@@ -763,12 +780,12 @@ class GameViewModel(
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "MM/dd")
+                            TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
 
                         matchOdd.matchInfo.startTimeDisplay =
-                            TimeUtil.timeFormat(matchInfo.startTime.toLong(), "HH:mm")
+                            TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
-                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime.toLong())
+                        matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
                     matchOdd.odds =
@@ -1165,13 +1182,11 @@ class GameViewModel(
                     _outrightSeasonListResult.value?.peekContent()?.rows?.filter {
 
                         it.searchList = it.list.filter { season ->
-                            season.name.trim().toLowerCase(Locale.ENGLISH)
-                                .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
+                            season.name?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) == true
                         }
 
                         it.list.any { season ->
-                            season.name.trim().toLowerCase(Locale.ENGLISH)
-                                .contains(searchText.trim().toLowerCase(Locale.ENGLISH))
+                            season.name?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) == true
                         }
                     }
                 _outrightCountryListSearchResult.postValue(searchResult ?: listOf())
