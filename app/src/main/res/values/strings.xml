@@ -647,6 +647,12 @@
     <string name="parlay_rule_list_nc1">%1$s个%2$s串1</string>
     <string name="parlay_rule_and">以及</string>
 
+    <!--  bet list receipt  -->
+    <string name="bet_list_receipt">注单收据</string>
+    <string name="already_bet_complete">您已成功投注</string>
+    <string name="complete">完成</string>
+    <string name="winnable_amount_colon">可赢额：</string>
+
     <!-- finance -->
     <string name="finance">资金明细</string>
     <string name="record_recharge">充值记录</string>
