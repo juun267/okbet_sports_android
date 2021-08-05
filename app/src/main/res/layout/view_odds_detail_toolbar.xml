@@ -13,11 +13,6 @@
         <variable
             name="gameViewModel"
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
-
-        <variable
-            name="receiver"
-            type="org.cxct.sportlottery.service.ServiceBroadcastReceiver" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

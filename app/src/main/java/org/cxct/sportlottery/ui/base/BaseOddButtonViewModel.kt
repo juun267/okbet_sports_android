@@ -29,7 +29,6 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
 
