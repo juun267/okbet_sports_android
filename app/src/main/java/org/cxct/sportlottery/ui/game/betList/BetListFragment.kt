@@ -53,15 +53,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var betAllAmount = 0.0
 
-    private var isLogin: Boolean? = null
-        set(value) {
-            field = value
-            field?.let {
-                setupUserBalanceView(it)
-                setupBetButtonType(it)
-            }
-        }
-
     private var betResultListener: BetResultListener? = null
 
     private val deleteAllLayoutAnimationListener by lazy {
@@ -288,6 +279,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
                 betListDiffAdapter?.betList = list
+                betListDiffAdapter?.setupBetAmountList(list)
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
@@ -460,7 +452,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      */
     private fun showHideOddsCloseWarn(show: Boolean) {
         btn_bet.isEnabled = show
-        ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
+        if (show) {
+            ll_odds_close_warn.visibility = View.VISIBLE
+            tv_warn_odds_change.visibility = View.GONE
+        } else {
+            ll_odds_close_warn.visibility = View.GONE
+            tv_warn_odds_change.visibility = if (btn_bet.isOddsChanged == true) View.VISIBLE else View.GONE
+        }
     }
 
     /**

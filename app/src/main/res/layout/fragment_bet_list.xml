@@ -278,7 +278,7 @@
             android:id="@+id/tv_warn_odds_change"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_bet"
+            android:layout_above="@+id/ll_odds_close_warn"
             android:background="@color/colorWhite"
             android:gravity="center"
             android:paddingTop="9dp"
