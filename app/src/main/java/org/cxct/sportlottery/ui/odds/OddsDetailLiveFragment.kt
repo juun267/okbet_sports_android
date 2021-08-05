@@ -223,7 +223,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         matchInfo?.apply {
             tv_home_name.text = homeName
             tv_away_name.text = awayName
-            tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
         }
     }
@@ -259,7 +258,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
-        matchStatusChangeEvent?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
+        matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
+            tv_time_top.text = this.statusName
+
             curHomeScore = homeScore
             curAwayScore = awayScore
         }
