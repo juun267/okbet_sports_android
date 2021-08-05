@@ -23,12 +23,7 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.SpreadState
-import org.cxct.sportlottery.network.bet.Odd
-import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.Row
-import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -39,7 +34,6 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import java.io.Serializable
 
 private const val BET_LIST_LISTENER = "betListListener"
 
@@ -519,13 +513,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
          */
         @JvmStatic
         fun newInstance(betResultListener: BetResultListener) = BetListFragment().apply {
-            arguments = Bundle().apply {
-                putSerializable(BET_LIST_LISTENER, betResultListener)
-            }
+            this.betResultListener = betResultListener
         }
     }
 
-    interface BetResultListener : Serializable {
+    interface BetResultListener {
         fun onBetResult(betResultData: List<Row>?)
     }
 }
