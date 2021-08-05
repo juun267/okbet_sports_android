@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -74,6 +75,15 @@ class BetInfoRepository(val androidContext: Context) {
                 notifyBetInfoChanged()
             }
         }
+
+    //用於投注單頁面顯示提醒介面
+    val showOddsChangeWarn: LiveData<Boolean>
+        get() = _showOddsChangeWarn
+    private val _showOddsChangeWarn = MutableLiveData<Boolean>()
+
+    val showOddsCloseWarn: LiveData<Boolean>
+        get() = _showOddsCloseWarn
+    private val _showOddsCloseWarn = MutableLiveData<Boolean>()
 
 
     @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
@@ -167,6 +177,7 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun getCurrentBetInfoList() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -178,6 +189,7 @@ class BetInfoRepository(val androidContext: Context) {
         betList.remove(item)
         _removeItem.postValue(Event(item?.matchOdd?.matchId))
         updateBetOrderParlay(betList)
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -189,6 +201,8 @@ class BetInfoRepository(val androidContext: Context) {
             _removeItem.value = Event(it.matchOdd.matchId)
         }
 
+        updateBetOrderParlay(betList)
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -200,6 +214,7 @@ class BetInfoRepository(val androidContext: Context) {
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
 
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -251,6 +266,7 @@ class BetInfoRepository(val androidContext: Context) {
             betList.add(data)
             //產生串關注單
             updateBetOrderParlay(betList)
+            checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
         }
     }
@@ -375,10 +391,49 @@ class BetInfoRepository(val androidContext: Context) {
                         }
                     }
                 }
+                checkBetInfoContent(newList)
                 _betInfoList.value = Event(newList)
             }
         }
     }
 
+
+    /**
+     * 檢查注單中賠率、盤口狀態
+     */
+    fun checkBetInfoContent(betInfoList: MutableList<BetInfoListData>) {
+        checkBetInfoOddChanged(betInfoList)
+        checkBetInfoPlatStatus(betInfoList)
+    }
+
+    /**
+     * 判斷是否有賠率變更
+     */
+    private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
+        betInfoList.forEach {
+            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
+                _showOddsChangeWarn.postValue(true)
+            }
+        }
+    }
+
+    /**
+     * 判斷是否有盤口關閉
+     */
+    private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
+        var hasPlatClose = false
+        betInfoList.forEach {
+            when (it.matchOdd.status) {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                    hasPlatClose = true
+                    return@forEach
+                }
+                else -> { //BetStatus.ACTIVATED.code
+                    it.matchOdd.betAddError != null
+                }
+            }
+        }
+        _showOddsCloseWarn.postValue(hasPlatClose)
+    }
 
 }

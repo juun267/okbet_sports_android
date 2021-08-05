@@ -283,7 +283,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
-                viewModel.checkBetInfoContent(list)
             }
         })
 
@@ -308,7 +307,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 betResultListener?.onBetResult(result.rows)
-                viewModel.checkBetInfoContent(betListDiffAdapter?.betList ?: mutableListOf())
                 refreshAllAmount()
                 showHideOddsChangeWarn(false)
             }
@@ -350,7 +348,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
             betListDiffAdapter?.betList = (betList ?: mutableListOf())
-            viewModel.checkBetInfoContent(betList ?: mutableListOf())
+            viewModel.betInfoRepository.checkBetInfoContent(betList ?: mutableListOf()) //TODO refactor :refresh bet status, @see BetInfoRepository checkBetInfoContent()
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
