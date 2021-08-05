@@ -58,11 +58,11 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 { matchInfo, odd, playCateName, playName ->
                     addOddsDialog(matchInfo, odd, playCateName, playName)
                 },
-                {
-                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接點選PlayCategory行為
+                { matchId ->
+                    viewModel.getQuickList(matchId)
                 },
                 {
-                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接關閉PlayCategory行為
+                    viewModel.clearQuickPlayCateSelected()
                 },
                 { matchId ->
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
@@ -91,16 +91,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                activity?.finish()
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setupGameTypeList(view: View) {

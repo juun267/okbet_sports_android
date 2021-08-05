@@ -18,4 +18,6 @@ data class QuickPlayCate(
 ) {
     var isSelected = false
     var quickOdds: Map<String, QuickOdd?>? = null
+
+    var positionButtonPage = 0
 }

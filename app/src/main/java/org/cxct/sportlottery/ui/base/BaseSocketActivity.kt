@@ -208,6 +208,14 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService.unsubscribeAllEventChannel()
     }
 
+    fun betListPageSubscribeEvent() {
+        backService.betListPageSubscribeEvent()
+    }
+
+    fun betListPageUnSubScribeEvent() {
+        backService.betListPageUnSubScribeEvent()
+    }
+
     override fun onStart() {
         super.onStart()
 

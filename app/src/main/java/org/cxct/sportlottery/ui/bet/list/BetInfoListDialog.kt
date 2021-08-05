@@ -198,31 +198,36 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             }
         })
 
-        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
-            unSubscribeChannelEvent(it)
-        })
-
-        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                showPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = messageByResultCode(requireContext(), result),
-                    success = result.success
-                ) {
-                    changeBetInfoContentByMessage(result)
-                }
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                unSubscribeChannelEvent(it)
             }
         })
 
-        viewModel.userInfo.observe(this, {
-            betInfoListAdapter.isNeedRegister =
-                (it == null) || (it.testFlag == TestFlag.GUEST.index)
-        })
+        viewModel.betAddResult.observe(this.viewLifecycleOwner,
+            {
+                it.getContentIfNotHandled()?.let { result ->
+                    showPromptDialog(
+                        title = getString(R.string.prompt),
+                        message = messageByResultCode(requireContext(), result),
+                        success = result.success
+                    ) {
+                        changeBetInfoContentByMessage(result)
+                    }
+                }
+            })
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
-            oddsType = it
-            betInfoListAdapter.oddsType = it
-        })
+        viewModel.userInfo.observe(this,
+            {
+                betInfoListAdapter.isNeedRegister =
+                    (it == null) || (it.testFlag == TestFlag.GUEST.index)
+            })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner,
+            {
+                oddsType = it
+                betInfoListAdapter.oddsType = it
+            })
     }
 
 
@@ -264,7 +269,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
     override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
         if (stake > money) {
-            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.bet_info_bet_balance_insufficient)
+            ) {}
             return
         }
 
@@ -286,7 +294,8 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                     ),
                     listOf(Stake(parlayType ?: "", stake)),
                     1,
-                    oddsType.code
+                    oddsType.code,
+                    2
                 ), betInfoListData.matchType
             )
         }
@@ -317,11 +326,21 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
         val playName = SpannableString(matchOdd.playName)
-        playName.setSpan(StyleSpan(Typeface.BOLD), 0, matchOdd.playName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        playName.setSpan(
+            StyleSpan(Typeface.BOLD),
+            0,
+            matchOdd.playName.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         val spreadEnd = matchOdd.spread.length + 2
         val spread = SpannableString("  ${matchOdd.spread}")
-        spread.setSpan(ForegroundColorSpan(colorOrange), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spread.setSpan(
+            ForegroundColorSpan(colorOrange),
+            0,
+            spreadEnd,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         spread.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         val oddsEnd = TextUtil.formatForOdd(getOdds(matchOdd, oddsType)).length + 3

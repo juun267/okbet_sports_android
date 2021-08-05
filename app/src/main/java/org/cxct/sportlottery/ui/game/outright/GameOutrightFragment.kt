@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.outright
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,18 +105,15 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
 
-                    val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.matchOdds?.get(0)
+                    val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
 
-//                    outright_filter_row.sportName = outrightOddsListResult.outrightOddsListData?.sport?.name ?: "" //TODO Cheryl : 等api修好後待確認用哪個值正確
                     game_toolbar_sport_type.text = GameType.values().find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId -> getString(stringId) }
 
                     GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)?.let { gameImg ->
                         game_toolbar_bg.setBackgroundResource(gameImg)
                     }
 
-
-                    outright_league_name.text = outrightOddsListResult.outrightOddsListData?.leagueOdds?.get(0)?.league?.name
-                        ?: ""
+                    outright_league_name.text = outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.league?.name?: ""
 
                     outright_league_date.text = matchOdd?.startDate ?: ""
 

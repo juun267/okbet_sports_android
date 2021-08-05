@@ -44,4 +44,12 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     protected fun unSubscribeChannelEventAll() {
         (activity as BaseSocketActivity<*>).unSubscribeChannelEventAll()
     }
+
+    protected fun betListPageSubscribeEvent() {
+        (activity as BaseSocketActivity<*>).betListPageSubscribeEvent()
+    }
+
+    protected fun betListPageUnSubScribeEvent() {
+        (activity as BaseSocketActivity<*>).betListPageUnSubScribeEvent()
+    }
 }

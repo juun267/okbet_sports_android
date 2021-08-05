@@ -111,7 +111,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     private val outrightCountryAdapter by lazy {
         OutrightCountryAdapter().apply {
             outrightCountryLeagueListener = OutrightCountryLeagueListener { season ->
-                navGameOutright(season.id)
+                season.id?.let { navGameOutright(it) }
             }
         }
     }
@@ -155,12 +155,25 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         }
     }
 
+    val gameToolbarMatchTypeText = { matchType: MatchType ->
+        when (matchType) {
+            MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
+            MatchType.TODAY -> getString(R.string.home_tab_today)
+            MatchType.EARLY -> getString(R.string.home_tab_early)
+            MatchType.PARLAY -> getString(R.string.home_tab_parlay)
+            MatchType.AT_START -> getString(R.string.home_tab_at_start)
+            MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
+            else -> ""
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         registerChannelHall(this)
         registerChannelPublic(this)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -196,15 +209,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     private fun setupToolbar(view: View) {
-        view.game_toolbar_match_type.text = when (args.matchType) {
-            MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
-            MatchType.TODAY -> getString(R.string.home_tab_today)
-            MatchType.EARLY -> getString(R.string.home_tab_early)
-            MatchType.PARLAY -> getString(R.string.home_tab_parlay)
-            MatchType.AT_START -> getString(R.string.home_tab_at_start)
-            MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
-            else -> ""
-        }
+
+        view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
@@ -245,6 +251,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                     //TODO add odd tab switch behavior
                     Toast.makeText(requireContext(), "${tab?.text} is selected", Toast.LENGTH_SHORT)
                         .show()
+
+                    when (tab?.text.toString()) { //固定寫死
+                        getString(R.string.game_tab_league_odd) -> { //賽事
+                            viewModel.switchChildMatchType(childMatchType = args.matchType)
+                        }
+                        getString(R.string.game_tab_outright_odd) -> { //冠軍
+                            viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
+                        }
+                        getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率
+
+                        }
+                    }
                 }
 
                 override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -337,6 +355,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
+            initChildMatchType()
             initObserve()
 
         } catch (e: Exception) {
@@ -344,10 +363,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         }
     }
 
+    private fun initChildMatchType() {
+        viewModel.switchChildMatchType(null)
+    }
+
     override fun onStart() {
         super.onStart()
 
-        viewModel.getGameHallList(args.matchType, true, isReloadPlayCate = true)
+        viewModel.getGameHallList(
+            matchType = args.matchType,
+            isReloadDate = true,
+            isReloadPlayCate = true
+        )
         loading()
     }
 
@@ -388,6 +415,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             (game_filter_type_list.layoutManager as LinearLayoutManager?)?.scrollToPositionWithOffset(
                 it, game_filter_type_list.width / 2
             )
+        })
+
+        viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
+
+            game_toolbar_match_type.text = gameToolbarMatchTypeText(it ?: args.matchType)
+
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, {

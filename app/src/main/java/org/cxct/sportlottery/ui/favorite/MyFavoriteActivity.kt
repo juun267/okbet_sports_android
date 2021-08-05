@@ -38,6 +38,16 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
         initObserver()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun setupBottomNavigation() {
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {

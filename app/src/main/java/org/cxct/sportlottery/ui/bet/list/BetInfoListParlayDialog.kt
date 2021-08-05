@@ -135,7 +135,11 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         }
 
         tv_to_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext(), Constants.COMBO), getString(R.string.game_rule))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getGameRuleUrl(requireContext(), Constants.COMBO),
+                getString(R.string.game_rule)
+            )
         }
 
         rl_expandable.setOnClickListener {
@@ -223,8 +227,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
-            unSubscribeChannelEvent(it)
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                unSubscribeChannelEvent(it)
+            }
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
@@ -301,17 +307,30 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private fun addBet() {
         val matchList: MutableList<Odd> = mutableListOf()
         for (i in matchOddAdapter.matchOddList.indices) {
-            matchList.add(Odd(matchOddAdapter.matchOddList[i].oddsId, getOdds(matchOddAdapter.matchOddList[i], oddsType)))
+            matchList.add(
+                Odd(
+                    matchOddAdapter.matchOddList[i].oddsId,
+                    getOdds(matchOddAdapter.matchOddList[i], oddsType)
+                )
+            )
         }
         val parlayList: MutableList<Stake> = mutableListOf()
         for (i in parlayAdapter.parlayOddList.indices) {
             if (parlayAdapter.sendBetQuotaList[i] > 0) {
-                parlayList.add(Stake(parlayAdapter.parlayOddList[i].parlayType, parlayAdapter.sendBetQuotaList[i]))
+                parlayList.add(
+                    Stake(
+                        parlayAdapter.parlayOddList[i].parlayType,
+                        parlayAdapter.sendBetQuotaList[i]
+                    )
+                )
             }
         }
 
         if (parlayAdapter.sendBetQuotaList.sum() > money) {
-            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.bet_info_bet_balance_insufficient)
+            ) {}
             return
         }
 
@@ -320,7 +339,8 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 matchList,
                 parlayList,
                 1,
-                oddsType.code
+                oddsType.code,
+                2
             ), MatchType.PARLAY
         )
     }
@@ -362,11 +382,17 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private fun changeBetButtonClickable(boolean: Boolean) {
         tv_bet.apply {
             isClickable = if (!boolean) {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected)
+                background = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.bg_radius_4_button_unselected
+                )
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 false
             } else {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_orange_light)
+                background = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.bg_radius_4_button_orange_light
+                )
                 setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 true
             }
