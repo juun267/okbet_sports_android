@@ -301,8 +301,8 @@ abstract class BaseOddButtonViewModel(
                 )
             }
             Event(result).getContentIfNotHandled()?.success?.let {
+                _betAddResult.postValue(Event(result))
                 if (it) {
-                    _betAddResult.postValue(Event(result))
                     betInfoRepository.clear()
                 }
             }

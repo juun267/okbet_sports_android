@@ -147,7 +147,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     setDrawable(it)
                 }
             })
-            (rvBetList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
         }
     }
 
@@ -306,9 +305,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
-                betResultListener?.onBetResult(result.rows)
-                refreshAllAmount()
-                showHideOddsChangeWarn(false)
+                if (result.success) {
+                    betResultListener?.onBetResult(result.rows)
+                    refreshAllAmount()
+                    showHideOddsChangeWarn(false)
+                } else {
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                }
             }
         })
 
