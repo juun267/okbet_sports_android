@@ -111,7 +111,11 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DialogBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
@@ -278,10 +282,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun initSocketObserver() {
-        receiver.userMoney.observe(this.viewLifecycleOwner, {
-            currentMoney = it
-        })
-
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let {
                 viewModel.updateMatchOdd(it)
@@ -304,7 +304,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text = getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
+        tv_current_money.text =
+            getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
     }
 
 
@@ -331,14 +332,24 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         } else matchOdd.playCateName
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
-            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
+            cl_item_background.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorWhite
+                )
+            )
             iv_bet_lock.visibility = View.GONE
             et_bet.isFocusable = true
             et_bet.isFocusableInTouchMode = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
         } else {
-            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite2))
+            cl_item_background.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorWhite2
+                )
+            )
             iv_bet_lock.visibility = View.VISIBLE
             et_bet.isFocusable = false
             et_bet.isFocusableInTouchMode = false
@@ -372,7 +383,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
         if (stake > currentMoney ?: 0.0) {
-            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.bet_info_bet_balance_insufficient)
+            ) {}
             return
         }
 

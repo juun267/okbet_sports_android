@@ -20,13 +20,22 @@ import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_RECHARGE_ID
 import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TextUtil
 
-class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
+class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
-    private val levelBubbleList by lazy { listOf<TextView>(bubble_level_one, bubble_level_two, bubble_level_three, bubble_level_four, bubble_level_five, bubble_level_six) }
+    private val levelBubbleList by lazy {
+        listOf<TextView>(
+            bubble_level_one,
+            bubble_level_two,
+            bubble_level_three,
+            bubble_level_four,
+            bubble_level_five,
+            bubble_level_six
+        )
+    }
 
     private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter() }
 

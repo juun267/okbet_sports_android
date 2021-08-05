@@ -20,7 +20,7 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.repository.MoneyRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.JumpUtil.toExternalWeb
@@ -32,14 +32,18 @@ class MoneyRechViewModel(
     androidContext: Application,
     private val moneyRepository: MoneyRepository,
     private val avatarRepository: AvatarRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     val token = loginRepository.token

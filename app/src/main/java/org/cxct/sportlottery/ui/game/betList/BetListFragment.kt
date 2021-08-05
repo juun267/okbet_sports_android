@@ -326,10 +326,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initSocketObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner, {
-            it?.let { money -> tv_balance.text = TextUtil.formatMoney(money) }
-        })
-
         receiver.matchOddsChange.observe(viewLifecycleOwner, {
             if (it == null) return@observe
             viewModel.updateMatchOdd(it)

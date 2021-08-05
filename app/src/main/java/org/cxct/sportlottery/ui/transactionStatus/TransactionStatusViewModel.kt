@@ -9,15 +9,10 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.TimeUtil
-import timber.log.Timber
 
 class TransactionStatusViewModel(
     androidContext: Application,
@@ -25,7 +20,15 @@ class TransactionStatusViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseNoticeViewModel(androidContext, userInfoRepository, loginRepository, betInfoRepository, infoCenterRepository) {
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository,
+    favoriteRepository
+) {
 
     //投注單球類
     var gameType: String? = null

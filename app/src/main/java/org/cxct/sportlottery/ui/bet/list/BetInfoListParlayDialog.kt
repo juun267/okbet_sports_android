@@ -243,10 +243,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             parlayAdapter.oddsType = it
         })
 
-        receiver.userMoney.observe(viewLifecycleOwner, {
-            it?.let { money -> setMoney(money) }
-        })
-
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
             viewModel.updateMatchOddForParlay(it)
