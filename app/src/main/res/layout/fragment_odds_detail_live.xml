@@ -13,11 +13,6 @@
         <variable
             name="gameViewModel"
             type="org.cxct.sportlottery.ui.game.GameViewModel" />
-
-        <variable
-            name="receiver"
-            type="org.cxct.sportlottery.service.ServiceBroadcastReceiver" />
-
     </data>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -43,8 +38,7 @@
                     android:id="@+id/v_toolbar"
                     layout="@layout/view_odds_detail_toolbar"
                     app:fragment="@{fragment}"
-                    app:gameViewModel="@{gameViewModel}"
-                    app:receiver="@{receiver}" />
+                    app:gameViewModel="@{gameViewModel}" />
 
                 <org.cxct.sportlottery.ui.component.LiveViewToolbar
                     android:id="@+id/live_view_tool_bar"

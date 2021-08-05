@@ -1,17 +1,15 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_finance.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity.Companion.RechargeViewLog
 
 
-class FinanceActivity : BaseOddButtonActivity<FinanceViewModel>(FinanceViewModel::class) {
+class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::class) {
 
     private val navController by lazy {
         findNavController(R.id.financeFragment)

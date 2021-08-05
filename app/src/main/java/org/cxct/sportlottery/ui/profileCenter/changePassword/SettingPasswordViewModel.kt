@@ -3,21 +3,16 @@ package org.cxct.sportlottery.ui.profileCenter.changePassword
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.VerifyConstUtil
 
@@ -26,12 +21,15 @@ class SettingPasswordViewModel(
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     private val _updatePwdResult = MutableLiveData<UpdatePwdResult?>()
@@ -51,7 +49,6 @@ class SettingPasswordViewModel(
     val confirmPwdError: LiveData<String>
         get() = _confirmPwdError
 
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     fun checkInputField(pwdPage: SettingPasswordActivity.PwdPage, currentPwd: String, newPwd: String, confirmPwd: String) {
         checkCurrentPwd(currentPwd)

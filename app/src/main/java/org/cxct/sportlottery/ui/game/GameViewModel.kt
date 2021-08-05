@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -46,6 +49,7 @@ import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
@@ -70,7 +74,7 @@ class GameViewModel(
     myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
-) : BaseFavoriteViewModel(
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
@@ -135,9 +139,6 @@ class GameViewModel(
     val isNoHistory: LiveData<Boolean>
         get() = _isNoHistory
 
-    val settlementNotificationMsg: LiveData<Event<SportBet>>
-        get() = _settlementNotificationMsg
-
     val errorPromptMessage: LiveData<Event<String>>
         get() = _errorPromptMessage
 
@@ -159,6 +160,12 @@ class GameViewModel(
     val playCate: LiveData<String?>
         get() = _playCate
 
+    val showOddsChangeWarn: LiveData<Boolean>
+        get() = _showOddsChangeWarn
+
+    val showOddsCloseWarn: LiveData<Boolean>
+        get() = _showOddsCloseWarn
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
@@ -175,7 +182,6 @@ class GameViewModel(
     private val _curDatePosition = MutableLiveData<Int>()
     private val _asStartCount = MutableLiveData<Int>()
     private val _isNoHistory = MutableLiveData<Boolean>()
-    private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
     private val _outrightCountryListSearchResult =
@@ -184,6 +190,8 @@ class GameViewModel(
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
+    private val _showOddsChangeWarn = MutableLiveData<Boolean>()
+    private val _showOddsCloseWarn = MutableLiveData<Boolean>()
 
     private val _matchPreloadInPlay = MutableLiveData<Event<MatchPreloadResult>>()
     val matchPreloadInPlay: LiveData<Event<MatchPreloadResult>>
@@ -1247,16 +1255,6 @@ class GameViewModel(
         _leagueListSearchResult.postValue(searchResult ?: listOf())
     }
 
-    fun getSettlementNotification(event: OrderSettlementEvent?) {
-        event?.sportBet?.let {
-            when (it.status) {
-                Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
-                    _settlementNotificationMsg.value = Event(it)
-                }
-            }
-        }
-    }
-
     private fun getMatchCount(matchType: MatchType, sportMenuResult: SportMenuResult? = null): Int {
         val sportMenuRes = sportMenuResult ?: _sportMenuResult.value
 
@@ -1528,5 +1526,44 @@ class GameViewModel(
         }
 
         return this
+    }
+
+
+    /**
+     * 檢查注單中賠率、盤口狀態
+     */
+    fun checkBetInfoContent(betInfoList: MutableList<BetInfoListData>) {
+        checkBetInfoOddChanged(betInfoList)
+        checkBetInfoPlatStatus(betInfoList)
+    }
+
+    /**
+     * 判斷是否有賠率變更
+     */
+    private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
+        betInfoList.forEach {
+            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
+                _showOddsChangeWarn.postValue(true)
+            }
+        }
+    }
+
+    /**
+     * 判斷是否有盤口關閉
+     */
+    private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
+        var hasPlatClose = false
+        betInfoList.forEach {
+            when (it.matchOdd.status) {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                    hasPlatClose = true
+                    return@forEach
+                }
+                else -> { //BetStatus.ACTIVATED.code
+                    it.matchOdd.betAddError != null
+                }
+            }
+        }
+        _showOddsCloseWarn.postValue(hasPlatClose)
     }
 }

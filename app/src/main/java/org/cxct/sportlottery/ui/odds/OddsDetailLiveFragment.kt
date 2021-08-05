@@ -24,11 +24,20 @@ import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -38,7 +47,9 @@ import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 
 
 @Suppress("DEPRECATION", "SetTextI18n")
-class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), OnOddClickListener {
+class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
+    OnOddClickListener, BaseSocketActivity.ReceiverChannelHall,
+    BaseSocketActivity.ReceiverChannelEvent, BaseSocketActivity.ReceiverChannelPublic {
 
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
@@ -63,6 +74,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         super.onCreate(savedInstanceState)
         mSportCode = args.gameType.key
         matchId = args.matchId
+
+        registerChannelHall(this)
+        registerChannelEvent(this)
+        registerChannelPublic(this)
     }
 
 
@@ -74,7 +89,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         fragment = this@OddsDetailLiveFragment
         gameViewModel = this@OddsDetailLiveFragment.viewModel
         lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
-        receiver = this@OddsDetailLiveFragment.receiver //TODO 後續需要將比分帶入
         executePendingBindings()
     }.root
 
@@ -83,7 +97,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
-        observeSocketData()
     }
 
 
@@ -96,37 +109,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onStop() {
         super.onStop()
-        unsubscribeAllHallChannel()
-        service.unsubscribeAllEventChannel()
+
+        unSubscribeChannelHallAll()
+        unSubscribeChannelEventAll()
     }
-
-
-    private fun observeSocketData() {
-        receiver.matchOddsChange.observe(viewLifecycleOwner, {
-            it?.let {
-                viewModel.updateOddForOddsDetail(it)
-            }
-        })
-
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
-            it?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
-                curHomeScore = homeScore
-                curAwayScore = awayScore
-            }
-        })
-
-        receiver.producerUp.observe(viewLifecycleOwner, {
-            service.unsubscribeAllHallChannel()
-            service.unsubscribeAllEventChannel()
-
-            matchOddList.forEach { matchOddList ->
-                mSportCode?.let { sportCode -> subscribeHallChannel(sportCode, matchOddList?.id) }
-            }
-
-            service.subscribeEventChannel(matchId)
-        })
-    }
-
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
@@ -242,23 +228,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
-
-    private fun subscribeHallChannel(code: String, match: String?) {
-        service.subscribeHallChannel(code, PlayCate.OU_HDP.value, match)
-    }
-
-
-    private fun unsubscribeAllHallChannel() {
-        //離開畫面時取消訂閱所有賽事
-        service.unsubscribeAllHallChannel()
-    }
-
-
     private fun getData() {
         mSportCode?.let { mSportCode ->
             matchId?.let { matchId ->
                 viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
-                service.subscribeEventChannel(matchId)
+                subscribeChannelEvent(matchId)
             }
         }
     }
@@ -280,10 +254,48 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
-
     override fun removeBetInfoItem(odd: Odd) {
         viewModel.removeBetInfoItem(odd.id)
     }
 
+    override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
+        matchStatusChangeEvent?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
+            curHomeScore = homeScore
+            curAwayScore = awayScore
+        }
+    }
 
+    override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
+        viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
+    }
+
+    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
+        unSubscribeChannelHallAll()
+        unSubscribeChannelEventAll()
+
+        matchOddList.forEach { matchOddList ->
+            mSportCode?.let { sportCode ->
+                //TODO change OU_HDP to correct value
+                subscribeChannelHall(sportCode, PlayCate.OU_HDP.value, matchOddList?.id)
+            }
+        }
+
+        subscribeChannelEvent(matchId)
+    }
 }
