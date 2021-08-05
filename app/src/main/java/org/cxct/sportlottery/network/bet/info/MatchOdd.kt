@@ -10,15 +10,15 @@ import org.cxct.sportlottery.network.error.BetAddError
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
     @Json(name = "awayName")
-    val awayName: String,
+    val awayName: String?,
     @Json(name = "homeName")
-    val homeName: String,
+    val homeName: String?,
     @Json(name = "inplay")
     val inplay: Int,
     @Json(name = "leagueId")
     val leagueId: String,
     @Json(name = "leagueName")
-    val leagueName: String,
+    val leagueName: String?,
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "odds")
@@ -42,7 +42,7 @@ data class MatchOdd(
     @Json(name = "spread")
     var spread: String,
     @Json(name = "startTime")
-    val startTime: Long,
+    val startTime: Long?,
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code,
     @Json(name = "gameType")

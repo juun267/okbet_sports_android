@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -757,6 +758,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet?.apply {
                 adapter = TypeSCOAdapter(
                     selectSCO(
+                        context,
                         oddsDetail,
                         oddsDetail.gameTypeSCOSelect ?: teamNameList[0],
                         teamNameList
@@ -778,6 +780,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[0]
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
+                        context = context,
                         oddsDetail = oddsDetail.apply {
                             gameTypeSCOSelect = teamNameList[0]
                             isMoreExpand = false
@@ -793,6 +796,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[1]
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
+                        context = context,
                         oddsDetail = oddsDetail.apply {
                             gameTypeSCOSelect = teamNameList[1]
                             isMoreExpand = false
@@ -806,8 +810,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun setupSCOTeamName(oddsDetail: OddsDetailListData): MutableList<String> {
+
             val groupTeamName = oddsDetail.oddArrayList.groupBy {
-                it?.extInfo
+                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(tvHomeName?.context))
             }
             return mutableListOf<String>().apply {
                 groupTeamName.forEach {
@@ -818,12 +823,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
             }.apply {
-                tvHomeName?.text = this[0]
-                tvAwayName?.text = this[1]
+                tvHomeName?.text = this.firstOrNull()
+                tvAwayName?.text = this.getOrNull(1)
             }
         }
 
         private fun selectSCO(
+            context: Context,
             oddsDetail: OddsDetailListData,
             teamName: String,
             teamNameList: MutableList<String>
@@ -844,7 +850,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         odd?.spread == OddSpreadForSCO.SCORE_LAST_O.spread ||
                         odd?.spread == OddSpreadForSCO.SCORE_N.spread
             }.groupBy {
-                it?.extInfo
+                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(context))
             }.forEach {
                 if (it.key == teamName) {
                     map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>

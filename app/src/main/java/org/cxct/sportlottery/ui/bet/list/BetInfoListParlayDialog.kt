@@ -203,8 +203,10 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
-            service.unsubscribeEventChannel(it)
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                service.unsubscribeEventChannel(it)
+            }
         })
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
@@ -333,7 +335,8 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 matchList,
                 parlayList,
                 1,
-                oddsType.code
+                oddsType.code,
+                2
             ), MatchType.PARLAY
         )
     }
