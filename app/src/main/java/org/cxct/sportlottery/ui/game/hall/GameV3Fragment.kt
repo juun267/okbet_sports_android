@@ -12,7 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
@@ -25,6 +27,7 @@ import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
@@ -155,6 +158,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         }
     }
 
+    private val epsListAdapter by lazy {
+        EpsListAdapter(EpsListAdapter.ItemClickListener{
+         //TODO 下注資料加入購物車
+        },
+        EpsListAdapter.InfoClickListener{
+            setEpsBottomSheet(it)
+        })
+    }
+
+    private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
+
     val gameToolbarMatchTypeText = { matchType: MatchType ->
         when (matchType) {
             MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
@@ -163,6 +177,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
             MatchType.AT_START -> getString(R.string.home_tab_at_start)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
+            MatchType.EPS -> getString(R.string.home_title_eps)
             else -> ""
         }
     }
@@ -209,7 +224,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     private fun setupToolbar(view: View) {
-
         view.game_toolbar_match_type.text = gameToolbarMatchTypeText(args.matchType)
 
         view.game_toolbar_champion.apply {
@@ -281,7 +295,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
 
     private fun setupSportBackground(view: View) {
         view.game_bg_layer2.visibility = when (args.matchType) {
-            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT -> View.VISIBLE
+            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS  -> View.VISIBLE
             else -> View.GONE
         }
 
@@ -351,7 +365,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
@@ -369,12 +382,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
 
     override fun onStart() {
         super.onStart()
-
-        viewModel.getGameHallList(
-            matchType = args.matchType,
-            isReloadDate = true,
-            isReloadPlayCate = true
-        )
+        viewModel.getGameHallList(matchType = args.matchType, isReloadDate = true, isReloadPlayCate = true)
         loading()
     }
 
@@ -404,6 +412,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 MatchType.AT_START -> {
                     updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
                 }
+
+                MatchType.EPS -> {
+                    updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf())
+                }
+
             }
         })
 
@@ -476,6 +489,29 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 }
             }
         })
+        
+        viewModel.epsListResult.observe(this.viewLifecycleOwner,{
+            hideLoading()
+            it.getContentIfNotHandled()?.let { epsListResult ->
+                if (epsListResult.success) {
+                    val oddsEpsListData = epsListResult.rows
+                    val epsLeagueOddsItemList =  mutableListOf<EpsLeagueOddsItem>()
+                    oddsEpsListData.forEach { oddsEpdListData ->
+                        val newLeagueOddsItem =
+                            EpsLeagueOddsItem(date = oddsEpdListData.date, league = null, matchOdds = null) //合併過後的資料結構
+                        epsLeagueOddsItemList.add(newLeagueOddsItem)
+                        oddsEpdListData.leagueOdd.forEach { leaguesOddsItems ->
+                            epsLeagueOddsItemList.add(EpsLeagueOddsItem(date = 0, league = leaguesOddsItems?.league, matchOdds = leaguesOddsItems?.matchOdds))
+                        }
+                    }
+                    game_list.apply {
+                        adapter = epsListAdapter.apply {
+                            dataList = epsLeagueOddsItemList
+                        }
+                    }
+                }
+            }
+        })
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner, {
             countryAdapter.data = it
@@ -530,6 +566,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
+                epsListAdapter.oddsType = oddsType
             }
         })
 
@@ -601,6 +638,31 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
 
             leagueAdapter.notifyDataSetChanged()
         })
+    }
+    private fun setEpsBottomSheet(matchInfo: org.cxct.sportlottery.network.odds.eps.MatchInfo) {
+        try {
+            val contentView: ViewGroup? =
+                activity?.window?.decorView?.findViewById(android.R.id.content)
+
+            val bottomSheetView =
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_eps, contentView, false)
+            moreEpsInfoBottomSheet = BottomSheetDialog(this.requireContext())
+            moreEpsInfoBottomSheet.apply {
+                setContentView(bottomSheetView)
+                btn_close.setOnClickListener {
+                    this.dismiss()
+                }
+                tv_league_title.text = matchInfo.leagueName
+                rv_more_eps_info_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+                rv_more_eps_info_item.adapter = EpsMoreInfoAdapter().apply {
+                    dataList = listOf(matchInfo)
+                }
+            }
+
+            moreEpsInfoBottomSheet.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun updateSportType(gameTypeList: List<Item>) {
