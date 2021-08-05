@@ -198,7 +198,9 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 } else itemData.matchOdd.playCateName
 
                 //投注額
-                etBet.setText(itemData.betAmount.toString())
+                etBet.setText(
+                    if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else ""
+                )
 
             }
         }
@@ -381,8 +383,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             }
 
                             //單注填充所有單注選項, 刷新單注選項資料, 因資料做過反轉故投注單為最後一項開始
-                            betList.forEach {
-                                if (it.parlayOdds?.max == null || inputValue > it.parlayOdds.max) it.betAmount = inputValue else it.betAmount = it.parlayOdds.max.toDouble()
+                            this@BetListDiffAdapter.betList.forEach {
+                                if (it.parlayOdds?.max == null || inputValue < it.parlayOdds.max) it.betAmount = inputValue else it.betAmount = it.parlayOdds.max.toDouble()
                             }
                             changeHandler.post { notifyItemRangeChanged(itemCount - betList.size, betList.size) }
                         }
@@ -514,7 +516,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     }
 
                     setText(data.betAmount.let {
-                        if (it > 0) it.toString() else ""
+                        if (it > 0) TextUtil.formatInputMoney(it) else ""
                     })
                 }
             }
