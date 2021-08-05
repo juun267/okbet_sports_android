@@ -160,7 +160,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     private fun goToMainActivity(thirdGameCategory: ThirdGameCategory) {
         val intent = Intent(this, MainActivity::class.java)
-            .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
+                .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
         startActivity(intent)
     }
 
@@ -198,7 +198,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
             //選單選擇結束要收起選單
             val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+                    supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
@@ -213,15 +213,15 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 })
 
                 supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque,
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque
-                    )
-                    .add(R.id.fl_left_menu, leftMenuFragment)
-                    .addToBackStack(null)
-                    .commit()
+                        .setCustomAnimations(
+                                R.anim.pop_left_to_right_enter_opaque,
+                                R.anim.push_right_to_left_exit_opaque,
+                                R.anim.pop_left_to_right_enter_opaque,
+                                R.anim.push_right_to_left_exit_opaque
+                        )
+                        .add(R.id.fl_left_menu, leftMenuFragment)
+                        .addToBackStack(null)
+                        .commit()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -277,15 +277,15 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     private fun showBetListPage() {
         val betListFragment = BetListFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
+                .setCustomAnimations(
+                        R.anim.push_bottom_to_top_enter,
+                        R.anim.pop_bottom_to_top_exit,
+                        R.anim.push_bottom_to_top_enter,
+                        R.anim.pop_bottom_to_top_exit
+                )
+                .add(R.id.fl_bet_list, betListFragment)
+                .addToBackStack(BetListFragment::class.java.simpleName)
+                .commit()
     }
 
     //公告
@@ -312,19 +312,19 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
             val countInPlay =
-                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
             val countAtStart =
-                sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             val countToday =
-                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             val countEarly =
-                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             val countParlay =
-                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
-                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
             val countEps =
-                sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tan_main)
@@ -408,26 +408,26 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             }
             R.id.gameLeagueFragment -> {
                 val action =
-                    GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
+                        GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
                 mNavController.navigate(action)
             }
             R.id.gameOutrightFragment -> {
                 val action =
-                    GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
-                        matchType
-                    )
+                        GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
+                                matchType
+                        )
                 mNavController.navigate(action)
             }
             R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(matchType)
+                        OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(matchType)
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
                 val action =
-                    OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
-                        matchType
-                    )
+                        OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
+                                matchType
+                        )
                 mNavController.navigate(action)
             }
         }
@@ -521,7 +521,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.errorPromptMessage.observe(this, {
             it.getContentIfNotHandled()
-                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+                    ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
         })
 
@@ -595,9 +595,9 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this).load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
-                iv_head
-            ) //載入頭像
+                .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
+                        iv_head
+                ) //載入頭像
     }
 
     private fun queryData() {
@@ -624,17 +624,17 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         when (matchType) {
             MatchType.PARLAY.postValue -> {
                 viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.PARLAY,
-                    gameType
+                        SpecialEntranceSource.SHOPPING_CART,
+                        MatchType.PARLAY,
+                        gameType
                 )
             }
 
             else -> {
                 viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.TODAY,
-                    gameType
+                        SpecialEntranceSource.SHOPPING_CART,
+                        MatchType.TODAY,
+                        gameType
                 )
             }
         }

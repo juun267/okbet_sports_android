@@ -92,6 +92,11 @@
             <argument
                 android:name="leagueId"
                 app:argType="string[]" />
+
+            <argument
+                android:name="matchId"
+                app:argType="string[]" />
+
         </action>
 
         <action
@@ -160,6 +165,10 @@
 
         <argument
             android:name="leagueId"
+            app:argType="string[]" />
+
+        <argument
+            android:name="matchId"
             app:argType="string[]" />
 
         <action

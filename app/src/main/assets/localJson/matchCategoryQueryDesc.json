@@ -1,0 +1,40 @@
+{
+  "coupon": {
+    "zh": {
+      "coupon_all": "所有赛事",
+      "coupon_australia": "澳大利亚赛事",
+      "coupon_brazil": "巴西赛事",
+      "coupon_china": "中国赛事",
+      "coupon_copa": "南美解放者杯&南美杯",
+      "coupon_japan": "日本赛事",
+      "coupon_south_korea": "韩国比赛",
+      "coupon_thailand": "泰国比赛",
+      "coupon_africa_me": "非洲和中东的顶级赛事",
+      "coupon_asia": "亚洲顶级赛事",
+      "coupon_european_domestic_cups": "欧洲顶级国内杯赛",
+      "coupon_european_leagues": "欧洲顶级联赛",
+      "coupon_north_america": "顶级北美比赛",
+      "coupon_south_america": "顶级南美比赛",
+      "coupon_uefa": "欧足联比赛",
+      "coupon_uk": "英国比赛"
+    },
+    "en": {
+      "coupon_all": "All Matches",
+      "coupon_australia": "Australia Matches",
+      "coupon_brazil": "Brazil Matches",
+      "coupon_china": "China Matches",
+      "coupon_copa": "Copa Libertadores & Sudamericana",
+      "coupon_japan": "Japan Matches",
+      "coupon_south_korea": "South Korea Matches",
+      "coupon_thailand": "Thailand Matches",
+      "coupon_africa_me": "Top Africa & Middle East Matches",
+      "coupon_asia": "Top Asia Matches",
+      "coupon_european_domestic_cups": "Top European Domestic Cups",
+      "coupon_european_leagues": "Top European Leagues",
+      "coupon_north_america": "Top North America Matches",
+      "coupon_south_america": "Top South America Matches",
+      "coupon_uefa": "UEFA Club Matches",
+      "coupon_uk": "UK Matches"
+    }
+  }
+}

@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.hall
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,7 +74,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private val matchCategoryPagerAdapter by lazy {
-        MatchCategoryViewPagerAdapter()
+        MatchCategoryViewPagerAdapter(OnItemClickListener {
+            navGameLeague(matchIdList = it.matchList)
+        })
     }
 
     private val playCategoryAdapter by lazy {
@@ -89,7 +92,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
                 { league ->
-                    navGameLeague(listOf(league.id))
+                    navGameLeague(leagueIdList = listOf(league.id))
                 },
                 { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
@@ -278,11 +281,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun setupMatchCategoryPager(view: View) {
         view.match_category_pager.adapter = matchCategoryPagerAdapter
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
-        view.game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY) {
+        view.game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
             View.VISIBLE
         } else {
             View.GONE
         }
+        viewModel.getMatchCategoryQuery(args.matchType)
     }
 
     private fun setupPlayCategory(view: View) {
@@ -386,6 +390,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     updateSportType(it?.sportMenuData?.atStart?.items ?: listOf())
                 }
             }
+
+            viewModel.getMatchCategoryQuery(args.matchType)
+
+        })
+
+        viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner, {
+
+            it.getContentIfNotHandled()?.rows?.let { resultList ->
+                game_match_category_pager.visibility = if (resultList.isNotEmpty()) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+                matchCategoryPagerAdapter.data = resultList
+            }
         })
 
         viewModel.curDate.observe(this.viewLifecycleOwner, {
@@ -399,9 +418,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
-
             game_toolbar_match_type.text = gameToolbarMatchTypeText(it ?: args.matchType)
-
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, {
@@ -567,7 +584,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.leagueSubmitList.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { leagueList ->
-                navGameLeague(leagueList.map { league ->
+                navGameLeague(leagueIdList = leagueList.map { league ->
                     league.id
                 })
             }
@@ -867,7 +884,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         startActivity(intent)
     }
 
-    private fun navGameLeague(matchId: List<String>) {
+    private fun navGameLeague(leagueIdList: List<String> = listOf(), matchIdList: List<String> = listOf()) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
@@ -882,7 +899,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             val action = GameV3FragmentDirections.actionGameV3FragmentToGameLeagueFragment(
                 matchType ?: args.matchType,
                 gameType,
-                matchId.toTypedArray()
+                leagueIdList.toTypedArray(),
+                matchIdList.toTypedArray()
             )
 
             findNavController().navigate(action)
