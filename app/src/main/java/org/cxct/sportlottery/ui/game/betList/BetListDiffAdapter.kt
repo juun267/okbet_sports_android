@@ -58,7 +58,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             submitData()
         }
 
-    //TODO : 移動至BaseOddButtonViewModel
     //儲存當前單注投注金額, 避免socket刷新過快覆蓋TextWatcher正在處理的輸入金額
     var betAmountList: MutableList<String> = mutableListOf()
     fun setupBetAmountList(betList: MutableList<BetInfoListData>) {
@@ -195,7 +194,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
 
                 //投注額
                 val tempBetAmount = betAmountList[itemCount - adapterPosition - 1]
-                val initValue = if (tempBetAmount.isNotEmpty()) tempBetAmount else if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else ""
+                val initValue = if (tempBetAmount.isNotEmpty() && tempBetAmount.toDouble() > 0) tempBetAmount else if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else ""
                 etBet.setText(initValue)
                 /* check input focus */
                 if (adapterPosition == focusPosition) {
@@ -399,8 +398,14 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             }
 
                             //單注填充所有單注選項, 刷新單注選項資料, 因資料做過反轉故投注單為最後一項開始
-                            this@BetListDiffAdapter.betList.forEach {
-                                if (it.parlayOdds?.max == null || inputValue < it.parlayOdds.max) it.betAmount = inputValue else it.betAmount = it.parlayOdds.max.toDouble()
+                            this@BetListDiffAdapter.betList.forEachIndexed { index, data ->
+                                if (data.parlayOdds?.max == null || inputValue < data.parlayOdds.max) {
+                                    data.betAmount = inputValue
+                                    betAmountList[index] = TextUtil.formatInputMoney(inputValue)
+                                } else {
+                                    data.betAmount = data.parlayOdds.max.toDouble()
+                                    betAmountList[index] = TextUtil.formatInputMoney(data.parlayOdds.max)
+                                }
                             }
                             changeHandler.post { notifyItemRangeChanged(itemCount - betList.size, betList.size) }
                         }
@@ -486,7 +491,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             binding.apply {
                 etBet.apply {
                     setText(data.betAmount.let {
-                        if (it > 0) TextUtil.formatMoney(it) else ""
+                        if (it > 0) TextUtil.formatInputMoney(it) else ""
                     })
                     /* check input focus */
                     if (adapterPosition == focusPosition) {
@@ -499,12 +504,13 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     val tw: TextWatcher?
                     tw = object : TextWatcher {
                         override fun afterTextChanged(it: Editable?) {
-                            val inputValue = if (it.isNullOrEmpty()) 0.0 else TextUtil.formatInputMoney(it).toDouble()
+                            val inputValue = if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
                             val winnableAmount = itemOdd.toDouble() * inputValue
                             if (inputValue > data.max) {
                                 val maxValue = TextUtil.formatInputMoney(data.max)
                                 setText(maxValue)
                                 setSelection(maxValue.length)
+                                return
                             }
                             when (winnableAmount > 0) {
                                 true -> {
@@ -519,7 +525,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                                 }
                             }
 
-                            data.betAmount = inputValue
+                            data.betAmount = TextUtil.formatInputMoney(inputValue).toDouble()
                             onItemClickListener.refreshAmount()
                         }
 
