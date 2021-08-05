@@ -102,7 +102,7 @@ class BetInfoRepository(val androidContext: Context) {
     /**
      * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
      */
-    private fun addInBetOrderParlay(betList: MutableList<BetInfoListData>) {
+    private fun updateBetOrderParlay(betList: MutableList<BetInfoListData>) {
         if (betList.size == 0) {
             return
         }
@@ -177,6 +177,7 @@ class BetInfoRepository(val androidContext: Context) {
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
         _removeItem.postValue(Event(item?.matchOdd?.matchId))
+        updateBetOrderParlay(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -249,7 +250,7 @@ class BetInfoRepository(val androidContext: Context) {
 
             betList.add(data)
             //產生串關注單
-            addInBetOrderParlay(betList)
+            updateBetOrderParlay(betList)
             _betInfoList.postValue(Event(betList))
         }
     }
