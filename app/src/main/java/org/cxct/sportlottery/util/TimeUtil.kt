@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
-import android.content.Context
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
@@ -14,6 +13,7 @@ object TimeUtil {
     const val YMD_FORMAT = "yyyy-MM-dd"
     const val DMY_FORMAT = "dd / MM / yyyy"
     const val MD_FORMAT = "MM-dd"
+    const val DM_FORMAT = "dd / MM"
     const val HM_FORMAT = "HH:mm"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
@@ -338,8 +338,17 @@ object TimeUtil {
         return weekDateList
     }
 
-    fun getRemainTime(timeStamp: Long): Long {
-        return timeStamp - System.currentTimeMillis()
+    fun getRemainTime(timeStamp: Long?): Long {
+        var remainTime = 0L
+        try {
+            timeStamp?.apply {
+                remainTime = timeStamp - System.currentTimeMillis()
+            }
+        } catch (e: Exception) {
+            Timber.e("時間計算失敗!!! \n$e")
+            e.printStackTrace()
+        }
+        return remainTime
     }
 
 }

@@ -324,7 +324,7 @@
                         android:checked="true"
                         android:paddingHorizontal="10dp"
                         android:text="@string/home_tab_in_play"
-                        android:textColor="@color/selector_blue_gray"
+                        android:textColor="@color/selector_blue_gray_light"
                         android:textSize="@dimen/textSize20sp"
                         android:textStyle="bold" />
 
@@ -336,7 +336,7 @@
                         android:button="@null"
                         android:paddingHorizontal="10dp"
                         android:text="@string/game_soon"
-                        android:textColor="@color/selector_blue_gray"
+                        android:textColor="@color/selector_blue_gray_light"
                         android:textSize="@dimen/textSize20sp"
                         android:textStyle="bold" />
 

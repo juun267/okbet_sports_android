@@ -109,10 +109,10 @@ class BetInfoRepository(val androidContext: Context) {
 
         var hasPointMark = false //若有被標記就進行串關組合了
         //先檢查有沒有冠軍類別, 若有則全部紅色標記
-        val hasMatchType = betList.firstOrNull { it.matchType == MatchType.OUTRIGHT } != null
+        val hasMatchType = betList.find { it.matchType == MatchType.OUTRIGHT } != null
 
         //檢查是否有不同的球賽種類
-        val gameType = GameType.getGameType(betList[0].matchOdd.gameType)
+        val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
 
         //檢查是否有相同賽事
         val matchIdList: MutableMap<String, MutableList<Int>> = mutableMapOf()
@@ -221,6 +221,10 @@ class BetInfoRepository(val androidContext: Context) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
         if (betList.size >= BET_INFO_MAX_COUNT) return
+
+        val emptyFilter = { item: String? ->
+            if (item.isNullOrEmpty()) null else item
+        }
 
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCO
 import org.cxct.sportlottery.network.common.GameType
@@ -17,6 +19,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
+import org.cxct.sportlottery.ui.common.IndicatorView
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
@@ -74,7 +77,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         FG_LG(R.layout.content_odds_detail_list_fg_lg),
         GROUP_6(R.layout.content_odds_detail_list_group_6_item),
         GROUP_4(R.layout.content_odds_detail_list_group_4_item),
-        SCO(R.layout.content_odds_detail_list_sco)
+        SCO(R.layout.content_odds_detail_list_sco),
+        EPS(R.layout.content_odds_detail_list_eps)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -205,6 +209,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == PlayCate.TWTN.value -> return PlayCate.TWTN.ordinal
 
+            type == PlayCate.EPS.value -> return PlayCate.EPS.ordinal
+
             else -> {
                 return PlayCate.UNCHECK.ordinal
             }
@@ -215,6 +221,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val layout: Int = when (viewType) {
+
+            PlayCate.EPS.ordinal -> LayoutType.EPS.layout
 
             PlayCate.OU_TTS1ST.ordinal,
             PlayCate.OU_OE.ordinal,
@@ -420,8 +428,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             itemView.layoutParams = param
         }
 
-        private val tvGameName = itemView.findViewById<TextView>(R.id.tv_game_name)
-        private val clItem = itemView.findViewById<ConstraintLayout>(R.id.cl_item)
+        private val tvGameName: TextView? = itemView.findViewById(R.id.tv_game_name)
+        private val clItem: ConstraintLayout? = itemView.findViewById(R.id.cl_item)
 
         val rvBet: RecyclerView? = itemView.findViewById(R.id.rv_bet)
 
@@ -431,24 +439,24 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         val rvAway: RecyclerView? = itemView.findViewById(R.id.rv_away)
 
         //FGLG
-        val tvFg: TextView? = itemView.findViewById(R.id.tv_fg)
-        val tvLg: TextView? = itemView.findViewById(R.id.tv_lg)
+        private val tvFg: TextView? = itemView.findViewById(R.id.tv_fg)
+        private val tvLg: TextView? = itemView.findViewById(R.id.tv_lg)
 
         //SCO, CS
-        val tvHomeName: TextView? = itemView.findViewById(R.id.tv_home_name)
-        val tvAwayName: TextView? = itemView.findViewById(R.id.tv_away_name)
+        private val tvHomeName: TextView? = itemView.findViewById(R.id.tv_home_name)
+        private val tvAwayName: TextView? = itemView.findViewById(R.id.tv_away_name)
 
         fun bindModel(oddsDetail: OddsDetailListData) {
 
             val type = oddsDetail.gameType
 
-            tvGameName.text = if (type.contains(":"))
+            tvGameName?.text = if (type.contains(":"))
                 oddsDetail.name.plus("  ").plus(type.split(":")[1])
             else oddsDetail.name
 
             controlExpandBottom(oddsDetail.isExpand)
 
-            clItem.setOnClickListener {
+            clItem?.setOnClickListener {
                 oddsDetail.isExpand = !oddsDetail.isExpand
                 notifyItemChanged(adapterPosition)
             }
@@ -457,6 +465,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
             when (viewType) {
+
+                PlayCate.EPS.ordinal -> forEPS(oddsDetail)
+
                 PlayCate.TWTN.ordinal,
                 PlayCate.CLSH.ordinal,
                 PlayCate.OU.ordinal,
@@ -522,17 +533,37 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
 
             for (element in oddsDetail.typeCodes) {
-                try {
-                    if (element == code) {
-                        setVisibility(true)
-                        break
-                    } else {
-                        setVisibility(false)
-                    }
-                } catch (e: Exception) {
+                //有特優賠率時常駐顯示
+                if (viewType == PlayCate.EPS.ordinal) {
                     setVisibility(true)
+                } else {
+                    try {
+                        if (element == code) {
+                            setVisibility(true)
+                            break
+                        } else {
+                            setVisibility(false)
+                        }
+                    } catch (e: Exception) {
+                        setVisibility(true)
+                    }
                 }
             }
+        }
+
+        private fun forEPS(oddsDetail: OddsDetailListData) {
+            val vpEps = itemView.findViewById<ViewPager2>(R.id.vp_eps)
+
+            vpEps?.apply {
+                adapter = TypeEPSAdapter(
+                    oddsDetail,
+                    onOddClickListener,
+                    betInfoList,
+                    oddsType
+                )
+            }
+
+            itemView.findViewById<IndicatorView>(R.id.idv_eps).setupWithViewPager2(vpEps)
         }
 
         private fun oneList(oddsDetail: OddsDetailListData) {
@@ -727,6 +758,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             rvBet?.apply {
                 adapter = TypeSCOAdapter(
                     selectSCO(
+                        context,
                         oddsDetail,
                         oddsDetail.gameTypeSCOSelect ?: teamNameList[0],
                         teamNameList
@@ -748,6 +780,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[0]
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
+                        context = context,
                         oddsDetail = oddsDetail.apply {
                             gameTypeSCOSelect = teamNameList[0]
                             isMoreExpand = false
@@ -763,6 +796,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 isSelected = oddsDetail.gameTypeSCOSelect == teamNameList[1]
                 setOnClickListener {
                     (rvBet?.adapter as TypeSCOAdapter).mOddsDetail = selectSCO(
+                        context = context,
                         oddsDetail = oddsDetail.apply {
                             gameTypeSCOSelect = teamNameList[1]
                             isMoreExpand = false
@@ -776,8 +810,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun setupSCOTeamName(oddsDetail: OddsDetailListData): MutableList<String> {
+
             val groupTeamName = oddsDetail.oddArrayList.groupBy {
-                it?.extInfo
+                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(tvHomeName?.context))
             }
             return mutableListOf<String>().apply {
                 groupTeamName.forEach {
@@ -788,12 +823,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
             }.apply {
-                tvHomeName?.text = this[0]
-                tvAwayName?.text = this[1]
+                tvHomeName?.text = this.firstOrNull()
+                tvAwayName?.text = this.getOrNull(1)
             }
         }
 
         private fun selectSCO(
+            context: Context,
             oddsDetail: OddsDetailListData,
             teamName: String,
             teamNameList: MutableList<String>
@@ -814,7 +850,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         odd?.spread == OddSpreadForSCO.SCORE_LAST_O.spread ||
                         odd?.spread == OddSpreadForSCO.SCORE_N.spread
             }.groupBy {
-                it?.extInfo
+                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(context))
             }.forEach {
                 if (it.key == teamName) {
                     map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>

@@ -7,14 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
+import android.widget.TextView
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.live_view_tool_bar
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.rv_detail
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.tab_cat
+import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
@@ -27,25 +32,28 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), OnOddClickListener {
 
+
     private val args: OddsDetailLiveFragmentArgs by navArgs()
+
 
     private var mSportCode: String? = null
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
 
+
     private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
 
-    private lateinit var dataBinding: FragmentOddsDetailLiveBinding
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-    private var oddsGameCardAdapter: OddsGameCardAdapter? = null
 
-    private var sport = ""
 
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
@@ -53,7 +61,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         mSportCode = args.gameType.key
         matchId = args.matchId
     }
@@ -63,15 +70,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail_live, container, false)
-        dataBinding.apply {
-            view = this@OddsDetailLiveFragment
-            gameViewModel = this@OddsDetailLiveFragment.viewModel
-            lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
-        }
-        return dataBinding.root
-    }
+    ): View = FragmentOddsDetailLiveBinding.inflate(inflater, container, false).apply {
+        fragment = this@OddsDetailLiveFragment
+        gameViewModel = this@OddsDetailLiveFragment.viewModel
+        lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
+        receiver = this@OddsDetailLiveFragment.receiver //TODO 後續需要將比分帶入
+        executePendingBindings()
+    }.root
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -79,7 +84,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         initUI()
         observeData()
         observeSocketData()
-        initRecyclerView()
     }
 
 
@@ -89,23 +93,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         live_view_tool_bar.setWebViewUrl(matchId)
     }
 
+
     override fun onStop() {
         super.onStop()
         unsubscribeAllHallChannel()
         service.unsubscribeAllEventChannel()
-    }
-
-    private fun initRecyclerView() {
-        rv_game_card.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter =
-            OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
-                it.let {
-                    matchId = it.id
-                    getData()
-                    live_view_tool_bar.setWebViewUrl(matchId)
-                }
-            })
-        rv_game_card.adapter = oddsGameCardAdapter
     }
 
 
@@ -117,19 +109,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
-
-            oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
-
             it?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
                 curHomeScore = homeScore
                 curAwayScore = awayScore
-
-                tv_score.text = "$curHomeScore / $curAwayScore"
             }
-        })
-
-        receiver.matchClock.observe(viewLifecycleOwner, {
-            oddsGameCardAdapter?.updateGameCard(it?.matchClockCO)
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
@@ -137,7 +120,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             service.unsubscribeAllEventChannel()
 
             matchOddList.forEach { matchOddList ->
-                subscribeHallChannel(sport, matchOddList?.id)
+                mSportCode?.let { sportCode -> subscribeHallChannel(sportCode, matchOddList?.id) }
             }
 
             service.subscribeEventChannel(matchId)
@@ -146,22 +129,61 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun initUI() {
-
-        (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
             sportCode = mSportCode
         }
 
-        dataBinding.rvDetail.apply {
+        rv_detail.apply {
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
+
+        tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.position?.let { t ->
+                    viewModel.playCateListResult.value?.peekContent()?.rows?.get(t)?.code?.let {
+                        oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
+                    }
+                }
+            }
+        })
     }
 
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                result.success.let { success ->
+                    if (success) {
+                        tab_cat.removeAllTabs()
+                        if (result.rows.isNotEmpty()) {
+                            for (row in result.rows) {
+                                val customTabView = layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
+                                    findViewById<TextView>(R.id.tv_tab).text = row.name
+                                }
+
+                                tab_cat.addTab(
+                                    tab_cat.newTab().setCustomView(customTabView),
+                                    false
+                                )
+                            }
+                            tab_cat.getTabAt(0)?.select()
+                        } else {
+                            tab_cat.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        })
+
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
@@ -173,6 +195,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                                 oddsDetailListAdapter?.awayName = away
                             }
                         }
+                        setupStartTime(matchOdd?.matchInfo)
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -204,46 +227,21 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         })
 
-        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, {
-            hideLoading()
-            unsubscribeAllHallChannel()
-
-            it.getContentIfNotHandled()?.let { oddsListResult ->
-                if (oddsListResult.success) {
-                    matchOddList.clear()
-                    oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
-                        LeagueOdd.matchOdds.forEach { MatchOdd ->
-                            matchOddList.add(MatchOdd.matchInfo)
-                        }
-                    }
-                    sport = oddsListResult.oddsListData?.sport?.code.toString()
-                    oddsGameCardAdapter?.data = matchOddList
-
-                    setView(matchOddList.firstOrNull())
-
-                }
-            }
-
-            //訂閱所有賽事
-            matchOddList.forEach { matchOddList ->
-                subscribeHallChannel(sport, matchOddList?.id)
-            }
-        })
-
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.oddsType = it
         })
-
     }
 
-    private fun setView(matchInfo: MatchInfo?) {
+
+    private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
             tv_home_name.text = homeName
             tv_away_name.text = awayName
-            tv_time.text = startTime
-            tv_score.text = "$homeScore / $awayScore"
+            tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
+            tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
         }
     }
+
 
     private fun subscribeHallChannel(code: String, match: String?) {
         service.subscribeHallChannel(code, PlayCate.OU_HDP.value, match)
@@ -257,22 +255,19 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun getData() {
-        matchId?.let { matchId ->
-            viewModel.getOddsDetailByMatchId(matchId)
-            service.subscribeEventChannel(matchId)
+        mSportCode?.let { mSportCode ->
+            matchId?.let { matchId ->
+                viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+                service.subscribeEventChannel(matchId)
+            }
         }
-
-        viewModel.getOddsList(args.gameType.key, MatchType.IN_PLAY.postValue)
-        loading()
     }
 
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
-
             matchOdd.matchInfo.homeScore = curHomeScore
             matchOdd.matchInfo.awayScore = curAwayScore
-            tv_score.text = "$curHomeScore / $curAwayScore"
 
             viewModel.updateMatchBetList(
                 matchType = MatchType.IN_PLAY,
@@ -282,7 +277,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 matchInfo = matchOdd.matchInfo,
                 odd = odd
             )
-
         }
     }
 
@@ -291,9 +285,5 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         viewModel.removeBetInfoItem(odd.id)
     }
 
-
-    fun back() {
-        findNavController().navigateUp()
-    }
 
 }

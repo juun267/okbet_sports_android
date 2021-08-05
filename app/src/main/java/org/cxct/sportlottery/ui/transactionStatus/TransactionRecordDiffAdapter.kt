@@ -28,7 +28,7 @@ import org.cxct.sportlottery.util.TimeUtil
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
 class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
-    var totalAmount: Long = 0
+    var totalAmount: Double = 0.0
     var oddsType: OddsType = OddsType.EU
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
@@ -36,10 +36,10 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
         oddsType = betListData.oddsType
-        totalAmount = betListData.totalMoney
+        totalAmount = betListData.totalMoney.toDouble()
         val itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
-            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount.toString()))
+            else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
         }
         submitList(itemList)
     }
@@ -103,10 +103,12 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playName}"
                 spread_name.text = matchOdds.homeName
-                content_odds.text = when (oddsType) {
-                    OddsType.HK -> matchOdds.hkOdds
-                    else -> matchOdds.odds
-                }.toString()
+                content_odds.text = TextUtil.formatForOdd(
+                    when (oddsType) {
+                        OddsType.HK -> matchOdds.hkOdds
+                        else -> matchOdds.odds
+                    }
+                )
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -136,10 +138,12 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.spread
-                content_odds.text = when (oddsType) {
-                    OddsType.HK -> matchOdds.hkOdds
-                    else -> matchOdds.odds
-                }.toString()
+                content_odds.text = TextUtil.formatForOdd(
+                    when (oddsType) {
+                        OddsType.HK -> matchOdds.hkOdds
+                        else -> matchOdds.odds
+                    }
+                )
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -162,9 +166,9 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
             }
         }
 
-        fun bind(totalAmount: String) {
+        fun bind(totalAmount: Double) {
             itemView.apply {
-                last_total_amount.text = "$totalAmount ${context.getString(R.string.currency)}"
+                last_total_amount.text = "${TextUtil.format(totalAmount)} ${context.getString(R.string.currency)}"
             }
         }
     }
@@ -242,7 +246,7 @@ sealed class DataItem {
     ) :
         DataItem()
 
-    data class Total(val totalAmount: String) : DataItem() {
+    data class Total(val totalAmount: Double) : DataItem() {
         override var parlayType: String? = null
         override var orderNo: String? = null
     }
