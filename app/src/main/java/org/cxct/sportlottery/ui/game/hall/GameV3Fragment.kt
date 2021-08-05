@@ -52,7 +52,8 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic {
+    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic,
+    BaseSocketActivity.ReceiverChannelMatch {
 
     private val args: GameV3FragmentArgs by navArgs()
 
@@ -171,6 +172,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         super.onCreate(savedInstanceState)
 
         registerChannelHall(this)
+        registerChannelMatch(this)
         registerChannelPublic(this)
     }
 
