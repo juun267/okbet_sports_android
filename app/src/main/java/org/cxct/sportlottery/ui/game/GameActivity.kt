@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.add.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.betList.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -275,14 +277,24 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun showBetListPage() {
-        val betListFragment = BetListFragment.newInstance()
-        supportFragmentManager.beginTransaction()
+        val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit,
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit
             )
+        val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+            override fun onBetResult(betResultData: List<Row>?) {
+                supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit, R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit)
+                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData))
+                    .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                    .commit()
+            }
+
+        })
+        transaction
             .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
@@ -436,7 +448,9 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     override fun onBackPressed() {
         //返回鍵優先關閉投注單fragment
         if (supportFragmentManager.backStackEntryCount != 0) {
-            supportFragmentManager.popBackStack()
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
             return
         }
         when (mNavController.currentDestination?.id) {

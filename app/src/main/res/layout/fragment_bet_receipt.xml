@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite8"
+    tools:context=".ui.game.betList.BetReceiptFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlackLight"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_bet_list_receipt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bet_list_receipt"
+            android:textColor="@color/colorWhite6"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_balance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorWhite6"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_currency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_bet_list_receipt"
+            tools:text="9,875,241.000" />
+
+        <TextView
+            android:id="@+id/tv_currency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="@string/currency"
+            android:textColor="@color/colorWhite6"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_balance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_balance"
+            app:layout_constraintTop_toTopOf="@+id/tv_balance" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bet_receipt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/cl_total_info"
+        app:layout_constraintTop_toBottomOf="@+id/cl_title"
+        tools:listitem="@layout/item_match_receipt" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_total_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:paddingStart="16dp"
+        android:paddingTop="13dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_already_bet_complete"
+        app:layout_constraintTop_toBottomOf="@+id/rv_bet_receipt">
+
+        <TextView
+            android:id="@+id/title_all_bet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bet_info_all_bet"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/divider_all_bet"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="6dp"
+            android:background="@color/colorGray"
+            app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
+            app:layout_constraintStart_toEndOf="@+id/title_all_bet"
+            app:layout_constraintTop_toTopOf="@+id/title_all_bet" />
+
+        <TextView
+            android:id="@+id/tv_all_bet_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
+            app:layout_constraintStart_toEndOf="@+id/divider_all_bet"
+            app:layout_constraintTop_toTopOf="@+id/title_all_bet"
+            tools:text="0" />
+
+        <TextView
+            android:id="@+id/tv_total_bet_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:gravity="end"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/title_all_bet"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_all_bet_count"
+            app:layout_constraintTop_toTopOf="@+id/title_all_bet"
+            tools:text="0.000 RMB" />
+
+        <TextView
+            android:id="@+id/title_winnable_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bet_info_list_win_quota"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_all_bet" />
+
+        <TextView
+            android:id="@+id/tv_total_winnable_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:gravity="end"
+            android:textColor="@color/colorBlue"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/title_winnable_amount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/title_winnable_amount"
+            app:layout_constraintTop_toTopOf="@+id/title_winnable_amount"
+            tools:text="0.000 RMB" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_already_bet_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="@string/already_bet_complete"
+        android:textColor="@color/colorBlue"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_complete"
+        app:layout_constraintTop_toBottomOf="@+id/cl_total_info" />
+
+    <TextView
+        android:id="@+id/btn_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlue"
+        android:gravity="center"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:text="@string/complete"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

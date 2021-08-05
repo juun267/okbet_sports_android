@@ -23,6 +23,12 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
+import org.cxct.sportlottery.network.bet.Odd
+import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.Row
+import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -33,6 +39,9 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import java.io.Serializable
+
+private const val BET_LIST_LISTENER = "betListListener"
 
 /**
  * A simple [Fragment] subclass.
@@ -49,6 +58,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private var betListDiffAdapter: BetListDiffAdapter? = null
 
     private var betAllAmount = 0.0
+
+    private var isLogin: Boolean? = null
+        set(value) {
+            field = value
+            field?.let {
+                setupUserBalanceView(it)
+                setupBetButtonType(it)
+            }
+        }
+
+    private var betResultListener: BetResultListener? = null
 
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
@@ -69,6 +89,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        arguments?.let {
+            betResultListener = it.getSerializable(BET_LIST_LISTENER) as BetResultListener
+        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)
         binding.apply {
             gameViewModel = this@BetListFragment.viewModel
@@ -145,7 +168,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initToolBar() {
         binding.ivArrow.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            activity?.onBackPressed()
         }
         initDeleteAllOnClickEvent()
     }
@@ -297,11 +320,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //投注結果
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                showPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = messageByResultCode(requireContext(), result),
-                    success = result.success
-                ) {}
+                hideLoading()
+                betResultListener?.onBetResult(result.rows)
                 viewModel.checkBetInfoContent(betListDiffAdapter?.betList ?: mutableListOf())
                 refreshAllAmount()
                 showHideOddsChangeWarn(false)
@@ -369,6 +389,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun addBet() {
+        loading()
         betListDiffAdapter?.let { betListAdapter ->
             viewModel.addBetList(getCurrentBetList(betListAdapter), getCurrentParlayList(betListAdapter), oddsType)
         }
@@ -497,6 +518,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
          * @return A new instance of fragment BetListFragment.
          */
         @JvmStatic
-        fun newInstance() = BetListFragment()
+        fun newInstance(betResultListener: BetResultListener) = BetListFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(BET_LIST_LISTENER, betResultListener)
+            }
+        }
+    }
+
+    interface BetResultListener : Serializable {
+        fun onBetResult(betResultData: List<Row>?)
     }
 }
