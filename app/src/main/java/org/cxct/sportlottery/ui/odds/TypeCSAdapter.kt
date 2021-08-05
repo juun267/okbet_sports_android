@@ -25,7 +25,7 @@ class TypeCSAdapter(
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
+                notifyItemChanged(oddsList.indexOf(oddsList.find { o -> o == odd }))
             }
         }
     }
