@@ -426,7 +426,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner, {
 
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                game_match_category_pager.visibility = if (resultList.isNotEmpty()) {
+                game_match_category_pager.visibility = if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty()) {
                     View.VISIBLE
                 } else {
                     View.GONE
