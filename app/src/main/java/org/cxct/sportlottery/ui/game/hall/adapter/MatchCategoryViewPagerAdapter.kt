@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_match_category_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.today.Row
 
-class MatchCategoryViewPagerAdapter : RecyclerView.Adapter<MatchCategoryViewHolder>() {
-    //TODO replace to api 12.1 date previous 1 and 2
-    var data = listOf(Pair("今日賽事", 6), Pair("所有賽事", 10))
+class MatchCategoryViewPagerAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<MatchCategoryViewHolder>() {
+    var data = listOf<Row>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -20,18 +20,25 @@ class MatchCategoryViewPagerAdapter : RecyclerView.Adapter<MatchCategoryViewHold
     }
 
     override fun onBindViewHolder(holder: MatchCategoryViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(itemClickListener, data[position])
     }
 
     override fun getItemCount(): Int = data.size
 }
 
+class OnItemClickListener(val clickListener: (data: Row) -> Unit) {
+    fun onClick(data: Row) = clickListener(data)
+}
+
 class MatchCategoryViewHolder private constructor(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
 
-    fun bind(item: Pair<String, Int>) {
-        itemView.match_category_name.text = item.first
-        itemView.match_category_count.text = item.second.toString()
+    fun bind(itemClickListener: OnItemClickListener, item: Row) {
+        itemView.match_category_name.text = item.categoryDesc
+        itemView.match_category_count.text = item.matchNums.toString()
+        itemView.setOnClickListener {
+            itemClickListener.onClick(item)
+        }
     }
 
     companion object {

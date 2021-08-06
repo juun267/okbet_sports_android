@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 
+
 @JsonClass(generateAdapter = true)
 data class OddsEpsListResult(
     @Json(name = "code")
@@ -13,6 +14,8 @@ data class OddsEpsListResult(
     override val msg: String,
     @Json(name = "success")
     override val success: Boolean,
-    @Json(name = "t")
-    val leagueOdds: LeagueOdd?
+    @Json(name = "rows")
+    val rows: List<OddsEpsListData>,
+    @Json(name = "total")
+     val total: Int
 ) : BaseResult()

@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
@@ -24,6 +26,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
+import org.cxct.sportlottery.network.sport.Menu
+import org.cxct.sportlottery.network.sport.Sport
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
@@ -49,6 +53,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
+import timber.log.Timber
 
 
 class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
@@ -161,7 +166,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
     private fun goToMainActivity(thirdGameCategory: ThirdGameCategory) {
         val intent = Intent(this, MainActivity::class.java)
-            .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
+                .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
         startActivity(intent)
     }
 
@@ -199,7 +204,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
             //選單選擇結束要收起選單
             val menuFrag =
-                supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
+                    supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
             menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
 
@@ -214,15 +219,15 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 })
 
                 supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque,
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque
-                    )
-                    .add(R.id.fl_left_menu, leftMenuFragment)
-                    .addToBackStack(null)
-                    .commit()
+                        .setCustomAnimations(
+                                R.anim.pop_left_to_right_enter_opaque,
+                                R.anim.push_right_to_left_exit_opaque,
+                                R.anim.pop_left_to_right_enter_opaque,
+                                R.anim.push_right_to_left_exit_opaque
+                        )
+                        .add(R.id.fl_left_menu, leftMenuFragment)
+                        .addToBackStack(null)
+                        .commit()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -278,15 +283,15 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
     private fun showBetListPage() {
         val betListFragment = BetListFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit,
-                R.anim.push_bottom_to_top_enter,
-                R.anim.pop_bottom_to_top_exit
-            )
-            .add(R.id.fl_bet_list, betListFragment)
-            .addToBackStack(BetListFragment::class.java.simpleName)
-            .commit()
+                .setCustomAnimations(
+                        R.anim.push_bottom_to_top_enter,
+                        R.anim.pop_bottom_to_top_exit,
+                        R.anim.push_bottom_to_top_enter,
+                        R.anim.pop_bottom_to_top_exit
+                )
+                .add(R.id.fl_bet_list, betListFragment)
+                .addToBackStack(BetListFragment::class.java.simpleName)
+                .commit()
     }
 
     //公告
@@ -313,19 +318,19 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
     private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
         try {
             val countInPlay =
-                sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
             val countAtStart =
-                sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             val countToday =
-                sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             val countEarly =
-                sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             val countParlay =
-                sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             val countOutright =
-                sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
             val countEps =
-                sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
+                    sportMenuResult?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tan_main)
@@ -393,9 +398,12 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
                 loading()
             }
+            7 -> {
+                viewModel.switchMatchType(MatchType.EPS)
+                loading()
+            }
         }
     }
-
     private fun navGameFragment(matchType: MatchType) {
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
@@ -409,26 +417,26 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
             }
             R.id.gameLeagueFragment -> {
                 val action =
-                    GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
+                        GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
                 mNavController.navigate(action)
             }
             R.id.gameOutrightFragment -> {
                 val action =
-                    GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
-                        matchType
-                    )
+                        GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
+                                matchType
+                        )
                 mNavController.navigate(action)
             }
             R.id.oddsDetailFragment -> {
                 val action =
-                    OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(matchType)
+                        OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(matchType)
                 mNavController.navigate(action)
             }
             R.id.oddsDetailLiveFragment -> {
                 val action =
-                    OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
-                        matchType
-                    )
+                        OddsDetailLiveFragmentDirections.actionOddsDetailLiveFragmentToGameV3Fragment(
+                                matchType
+                        )
                 mNavController.navigate(action)
             }
         }
@@ -493,6 +501,9 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                     MatchType.OUTRIGHT -> {
                         tabLayout.getTabAt(6)?.select()
                     }
+                    MatchType.EPS -> {
+                        tabLayout.getTabAt(7)?.select()
+                    }
                 }
             }
         })
@@ -518,7 +529,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.errorPromptMessage.observe(this, {
             it.getContentIfNotHandled()
-                ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
+                    ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
         })
 
@@ -592,9 +603,9 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
     private fun updateAvatar(iconUrl: String?) {
         Glide.with(this).load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
-                iv_head
-            ) //載入頭像
+                .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
+                        iv_head
+                ) //載入頭像
     }
 
     private fun queryData() {
@@ -621,17 +632,17 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
         when (matchType) {
             MatchType.PARLAY.postValue -> {
                 viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.PARLAY,
-                    gameType
+                        SpecialEntranceSource.SHOPPING_CART,
+                        MatchType.PARLAY,
+                        gameType
                 )
             }
 
             else -> {
                 viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.TODAY,
-                    gameType
+                        SpecialEntranceSource.SHOPPING_CART,
+                        MatchType.TODAY,
+                        gameType
                 )
             }
         }
@@ -645,6 +656,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
             MatchType.EARLY -> updateSelectTabState(4)
             MatchType.PARLAY -> updateSelectTabState(5)
             MatchType.OUTRIGHT -> updateSelectTabState(6)
+            MatchType.EPS -> updateSelectTabState(7)
         }
     }
 
