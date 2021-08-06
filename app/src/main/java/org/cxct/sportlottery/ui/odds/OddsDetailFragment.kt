@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -89,7 +90,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
             oddsDetailListener = OddsDetailListener {
-                //TODO post save favorite api
+                viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, args.gameType.key)
             }
 
             sportCode = mSportCode
