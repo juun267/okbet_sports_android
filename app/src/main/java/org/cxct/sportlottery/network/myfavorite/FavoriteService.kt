@@ -1,6 +1,7 @@
-package org.cxct.sportlottery.network.sport
+package org.cxct.sportlottery.network.myfavorite
 
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.sport.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
