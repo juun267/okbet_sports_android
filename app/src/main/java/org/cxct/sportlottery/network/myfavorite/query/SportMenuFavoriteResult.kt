@@ -1,11 +1,12 @@
-package org.cxct.sportlottery.network.sport
+package org.cxct.sportlottery.network.myfavorite.query
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.myfavorite.MyFavorite
 
 @JsonClass(generateAdapter = true)
-data class MyFavoriteBaseResult (
+data class SportMenuFavoriteResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
@@ -14,4 +15,4 @@ data class MyFavoriteBaseResult (
     override val success: Boolean,
     @Json(name = "t")
     val t: MyFavorite?
-    ): BaseResult()
+) : BaseResult()

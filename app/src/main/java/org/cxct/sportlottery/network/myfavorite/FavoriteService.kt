@@ -1,7 +1,11 @@
 package org.cxct.sportlottery.network.myfavorite
 
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.sport.*
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
+import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
+import org.cxct.sportlottery.network.myfavorite.save.SaveMyFavoriteRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

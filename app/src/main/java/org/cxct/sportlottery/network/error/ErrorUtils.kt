@@ -97,9 +97,9 @@ import org.cxct.sportlottery.network.odds.quick.QuickListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
-import org.cxct.sportlottery.network.sport.MyFavoriteBaseResult
-import org.cxct.sportlottery.network.sport.MyFavoriteMatchResult
-import org.cxct.sportlottery.network.sport.SportMenuFavoriteResult
+import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.SportQueryResult
 import org.cxct.sportlottery.network.third_game.AutoTransferResult
