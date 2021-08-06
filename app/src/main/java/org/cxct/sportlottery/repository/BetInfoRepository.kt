@@ -4,6 +4,7 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -57,9 +58,13 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _isParlayPage
 
 
-    private val _removeItem = MutableLiveData<String>()
-    val removeItem: LiveData<String>
+    private val _removeItem = MutableLiveData<Event<String?>>()
+    val removeItem: LiveData<Event<String?>>
         get() = _removeItem
+
+    private val _betParlaySuccess = MutableLiveData(true)
+    val betParlaySuccess: LiveData<Boolean>
+        get() = _betParlaySuccess
 
 
     var playQuotaComData: PlayQuotaComData? = null
@@ -71,6 +76,7 @@ class BetInfoRepository(val androidContext: Context) {
         }
 
 
+    @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
     fun addInBetInfoParlay() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
@@ -90,6 +96,57 @@ class BetInfoRepository(val androidContext: Context) {
             _parlayList.value = updateParlayOddOrder(
                 getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
             )
+        }
+    }
+
+    /**
+     * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
+     */
+    fun addInBetOrderParlay() {
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+
+        if (betList.size == 0) {
+            return
+        }
+
+        var hasPointMark = false //若有被標記就進行串關組合了
+        //先檢查有沒有冠軍類別, 若有則全部紅色標記
+        val hasMatchType = betList.find { it.matchType == MatchType.OUTRIGHT } != null
+
+        //檢查是否有不同的球賽種類
+        val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
+
+        //檢查是否有相同賽事
+        val matchIdList: MutableMap<String, MutableList<Int>> = mutableMapOf()
+        betList.forEachIndexed { index, betInfoListData ->
+            matchIdList[betInfoListData.matchOdd.matchId]?.add(index) ?: run { matchIdList[betInfoListData.matchOdd.matchId] = mutableListOf(index) }
+        }
+
+        betList.forEach {
+            if (hasMatchType || gameType != GameType.getGameType(it.matchOdd.gameType) || matchIdList[it.matchOdd.matchId]?.size ?: 0 > 1) {
+                hasPointMark = true
+                it.pointMarked = true
+            } else {
+                it.pointMarked = false
+            }
+        }
+
+        gameType?.let {
+            val parlayMatchOddList = betList.map { betInfoListData ->
+                betInfoListData.matchOdd
+            }.toMutableList()
+
+            _matchOddList.value = parlayMatchOddList
+
+            if (!hasPointMark) {
+                _parlayList.value = updateParlayOddOrder(
+                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
+                )
+                _betParlaySuccess.value = true
+            } else {
+                _parlayList.value = mutableListOf()
+                _betParlaySuccess.value = false
+            }
         }
     }
 
@@ -121,7 +178,18 @@ class BetInfoRepository(val androidContext: Context) {
 
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
-        _removeItem.postValue(item?.matchOdd?.matchId)
+        _removeItem.postValue(Event(item?.matchOdd?.matchId))
+        _betInfoList.postValue(Event(betList))
+    }
+
+    fun removeClosedPlatItem() {
+        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        val needRemoveList = betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
+        needRemoveList.forEach {
+            betList.remove(it)
+            _removeItem.value = Event(it.matchOdd.matchId)
+        }
+
         _betInfoList.postValue(Event(betList))
     }
 
