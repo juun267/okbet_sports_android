@@ -20,6 +20,4 @@ data class Row(
     val matchNums: Int?,
         @Json(name = "sort")
     val sort: Int?
-) {
-    var categoryName: String = ""
-}
+)

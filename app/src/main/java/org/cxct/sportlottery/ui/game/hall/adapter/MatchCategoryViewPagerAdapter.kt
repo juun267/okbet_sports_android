@@ -34,7 +34,7 @@ class MatchCategoryViewHolder private constructor(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
 
     fun bind(itemClickListener: OnItemClickListener, item: Row) {
-        itemView.match_category_name.text = item.categoryName
+        itemView.match_category_name.text = item.categoryDesc
         itemView.match_category_count.text = item.matchNums.toString()
         itemView.setOnClickListener {
             itemClickListener.onClick(item)

@@ -44,7 +44,6 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
-import org.cxct.sportlottery.network.today.MatchCategoryQueryDesc
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
@@ -761,20 +760,6 @@ class GameViewModel(
                     )
                 }
 
-                val json = LocalJsonReaderUtil.loadJSONFromAsset(androidContext, "localJson/matchCategoryQueryDesc.json")
-                        val localJsonResult = json.fromJson<MatchCategoryQueryDesc>()
-
-                        val localJsonMap = when (LanguageManager.getSelectLanguage(androidContext)) {
-                            LanguageManager.Language.EN ->
-                                localJsonResult?.coupon?.en
-                            else ->
-                                localJsonResult?.coupon?.zh
-                        }
-                        result?.rows?.forEach { item ->
-                            localJsonMap?.getOrDefault(item.categoryDesc, "")?. let {
-                                item.categoryName = it
-                            }
-                        }
                 _matchCategoryQueryResult.value = Event(result)
 
             }
