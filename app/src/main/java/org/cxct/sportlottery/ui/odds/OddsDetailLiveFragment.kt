@@ -307,7 +307,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                 }
 
-                if (timeMillis > 0) {
+                if (timeMillis >= 0) {
                     Handler(Looper.getMainLooper()).post {
 
                         tv_time_bottom?.apply {
