@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class TypeTwoSidesAdapter(
-    private val oddsList: List<Odd>,
+    private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?
+    private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeTwoSidesAdapter.ViewHolder>() {
 
 
@@ -22,20 +23,21 @@ class TypeTwoSidesAdapter(
 
 
     override fun getItemCount(): Int {
-        return oddsList.size
+        return oddsDetail.oddArrayList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsList[position])
+        holder.bindModel(oddsDetail.oddArrayList[position])
     }
 
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
+            nameChangeColor = false
             setData(
-                odd, onOddClickListener, betInfoList, curMatchId,
-                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM
+                oddsDetail, odd, onOddClickListener, betInfoList,
+                if (odd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType
             )
         }
     }

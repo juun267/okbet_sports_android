@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.splash
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
@@ -50,8 +49,9 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     //過程中任一流程請求失敗，點擊確定按鈕重試
-    private fun showErrorRetryDialog(message: String) {
+    private fun showErrorRetryDialog(title: String, message: String) {
         val dialog = CustomAlertDialog(this)
+        dialog.setTitle(title)
         dialog.setMessage(message)
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
@@ -70,49 +70,27 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.configResult.observe(this, Observer {
+        viewModel.configResult.observe(this, {
             when {
                 it?.configData?.maintainStatus == FLAG_OPEN -> {
                     goMaintenancePage()
                 }
                 it?.success == true -> checkAppMinVersion()
-                else -> showErrorRetryDialog(getString(R.string.error_config))
+                else -> showErrorRetryDialog(getString(R.string.error_config_title), getString(R.string.error_config))
             }
         })
 
-        mVersionUpdateViewModel.appMinVersionState.observe(this, Observer {
+        mVersionUpdateViewModel.appMinVersionState.observe(this, {
             if (it.isForceUpdate || it.isShowUpdateDialog)
-                showAppUpdateDialog(it.isForceUpdate, it.version)
+                showAppDownloadDialog(it.isForceUpdate, it.version)
             else
                 goHomePage()
         })
     }
 
     //提示APP更新對話框
-    private fun showAppUpdateDialog(isForceUpdate: Boolean, lastVersion: String) {
-        val dialog = CustomAlertDialog(this)
-        dialog.setTitle(getString(R.string.version_update))
-        dialog.setMessage("【${getString(R.string.app_name)}】${getString(R.string.find_new_version)} $lastVersion")
-        dialog.setCanceledOnTouchOutside(false) //設置無法點擊外部關閉
-        dialog.setCancelable(false) //設置無法點擊 Back 關閉
-        if (isForceUpdate) //若為強制更新隱藏取消按鈕
-            dialog.setNegativeButtonText(null)
-        dialog.setNegativeClickListener(View.OnClickListener {
-            goHomePage()
-            mVersionUpdateViewModel.lastShowUpdateTime = System.currentTimeMillis() //點擊取消 => 記錄此次提醒時間
-            dialog.dismiss()
-        })
-        dialog.setPositiveButtonText(getString(R.string.update_new))
-        dialog.setPositiveClickListener(View.OnClickListener {
-            showAppDownloadDialog(isForceUpdate)
-            dialog.dismiss()
-        })
-        dialog.show()
-    }
-
-    //APP下載對話框
-    private fun showAppDownloadDialog(isForceUpdate: Boolean) {
-        AppDownloadDialog(this, isForceUpdate, object : AppDownloadDialog.OnDownloadCallBack {
+    private fun showAppDownloadDialog(isForceUpdate: Boolean, lastVersion: String) {
+        AppDownloadDialog(this, isForceUpdate, lastVersion, object : AppDownloadDialog.OnDownloadCallBack {
             override fun onDownloadError() {
                 startActivity(Intent(this@SplashActivity, SplashActivity::class.java))
                 finish()
@@ -120,6 +98,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
             override fun goHomeActivity() {
                 goHomePage()
+                mVersionUpdateViewModel.lastShowUpdateTime = System.currentTimeMillis() //點擊取消 => 記錄此次提醒時間
             }
 
         }).show()

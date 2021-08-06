@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.vip
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,12 +20,17 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 class VipViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val userLevelGrowthResult: LiveData<LevelGrowthResult>
         get() = _userLevelGrowthResult

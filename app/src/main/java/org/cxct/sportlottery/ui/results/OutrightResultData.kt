@@ -1,8 +1,5 @@
 package org.cxct.sportlottery.ui.results
 
-import org.cxct.sportlottery.network.matchresult.list.League
-import org.cxct.sportlottery.network.matchresult.list.Match
-import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
 import org.cxct.sportlottery.network.outright.Result
 import org.cxct.sportlottery.network.outright.Season
 
@@ -15,7 +12,7 @@ data class OutrightResultData(
     val outrightData: Result? = null,
 ) {
     var seasonShow: Boolean = false //聯賽過濾顯示, 顯示:true , 不顯示:false
-    var seasonExpanded: Boolean = false
+    var seasonExpanded: Boolean = true
 }
 
-enum class OutrightType { TITLE, OUTRIGHT }
+enum class OutrightType { TITLE, OUTRIGHT, NO_DATA }

@@ -3,58 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ic_list_vip_card">
+    android:background="@drawable/ic_list_vip_card"
+    android:paddingStart="40dp">
+
+
+    <TextView
+        android:id="@+id/tv_level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/level_one"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="@dimen/textSize26sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_level_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/member_name_level_one"
+        android:textColor="@color/colorBlueDark"
+        android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tv_level"
+        app:layout_constraintTop_toBottomOf="@+id/tv_level" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="24dp"
-        android:orientation="vertical"
+        android:layout_marginTop="17dp"
+        android:layout_marginBottom="19dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="@+id/tv_level"
+        app:layout_constraintTop_toBottomOf="@+id/tv_level_name">
 
         <TextView
-            android:id="@+id/tv_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/level_one"
-            android:textColor="@color/colorBlueDark"
-            android:textSize="@dimen/textSize26sp"
-            android:textStyle="bold" />
+            android:text="@string/growth_requirement"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize12sp" />
 
         <TextView
-            android:id="@+id/tv_level_name"
+            android:id="@+id/tv_growth_requirement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/member_name_level_one"
-            android:textColor="@color/colorBlueDark"
-            android:textSize="@dimen/textSize14sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/growth_requirement"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize12sp" />
-
-            <TextView
-                android:id="@+id/tv_growth_requirement"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no_value"
-                android:textColor="@color/colorGray"
-                android:textSize="12sp" />
-        </LinearLayout>
+            android:text="@string/no_value"
+            android:textColor="@color/colorGray"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <ImageView

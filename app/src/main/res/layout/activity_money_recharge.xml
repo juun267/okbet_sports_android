@@ -8,95 +8,70 @@
     android:orientation="vertical"
     tools:context=".ui.money.recharge.MoneyRechargeActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/money_rech_app_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBlue">
+    <include
+        layout="@layout/view_base_tool_bar_no_drawer"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/btn_toolbar_back"
-                android:layout_width="@dimen/tool_bar_height"
-                android:layout_height="@dimen/tool_bar_height"
-                android:contentDescription="@null"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/colorWhite" />
-
-            <TextView
-                android:id="@+id/tv_toolbar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/recharge"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/textSize16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Tab bar-->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/block_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBlueLight"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_frame_6dp_white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp">
 
-            <TextView
-                android:id="@+id/btn_transfer_pay"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_left"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="@string/txv_transfer_pay"
-                android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize14sp" />
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/frame_4dp_white"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/btn_online_pay"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_right"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="@string/txv_online_pay"
-                android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize14sp" />
+                <RadioButton
+                    android:id="@+id/btn_transfer_pay"
+                    android:text="@string/txv_transfer_pay"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize16sp" />
 
-        </LinearLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite" />
 
-    </RelativeLayout>
+                <RadioButton
+                    android:id="@+id/btn_online_pay"
+                    android:text="@string/txv_online_pay"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize16sp" />
+
+            </RadioGroup>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
@@ -141,7 +116,6 @@
                         android:visibility="gone"
                         tools:visibility="visible" />
 
-                <!--                TODO Bill 這裡沒綁定銀行卡UI還沒出圖-->
                 <RelativeLayout
                     android:id="@+id/block_no_type"
                     android:layout_width="match_parent"

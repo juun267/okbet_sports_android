@@ -40,6 +40,7 @@
                 android:maxLines="1"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
                 tools:text="Miền Bắc" />
 
         </LinearLayout>
@@ -54,48 +55,48 @@
                 android:id="@+id/tv_first_half"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/first_half_game"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
                 tools:text="@string/first_half_game" />
 
             <TextView
                 android:id="@+id/tv_second_half"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/second_half_game"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
                 tools:text="@string/second_half_game" />
 
             <TextView
                 android:id="@+id/tv_full_game"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/full_game"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
                 tools:text="@string/full_game" />
 
             <TextView
                 android:id="@+id/tv_end_game"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/game_result"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
                 tools:text="@string/game_result" />
 
         </LinearLayout>

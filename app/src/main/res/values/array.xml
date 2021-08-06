@@ -18,8 +18,15 @@
         <!--        <item>@drawable/ic_icondrawbonusrecord</item>-->
     </integer-array>
 
+    <string-array name="transfer_state_array">
+        <item>@string/all_status</item>
+        <item>@string/recharge_state_processing</item>
+        <item>@string/recharge_state_success</item>
+        <item>@string/recharge_state_failed</item>
+    </string-array>
+
     <string-array name="recharge_state_array">
-        <item>@string/recharge_state_all</item>
+        <item>@string/all_order_status</item>
         <item>@string/recharge_state_processing</item>
         <item>@string/recharge_state_success</item>
         <item>@string/recharge_state_failed</item>
@@ -32,11 +39,12 @@
         <item>@string/recharge_channel_weixin</item>
         <item>@string/recharge_channel_alipay</item>
         <item>@string/recharge_channel_cft</item>
+        <item>@string/recharge_channel_crypto</item>
         <item>@string/recharge_channel_admin</item>
     </string-array>
 
     <string-array name="withdraw_state_array">
-        <item>@string/withdraw_log_state_all</item>
+        <item>@string/all_order_status</item>
         <item>@string/withdraw_log_state_processing</item>
         <item>@string/withdraw_log_state_pass</item>
         <item>@string/withdraw_log_state_un_pass</item>
@@ -46,5 +54,6 @@
         <item>@string/withdraw_log_type_all</item>
         <item>@string/withdraw_log_type_bank_trans</item>
         <item>@string/withdraw_log_type_admin</item>
+        <item>@string/withdraw_log_crypto_transfer</item>
     </string-array>
 </resources>

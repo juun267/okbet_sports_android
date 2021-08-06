@@ -39,7 +39,7 @@ class LiveFragment(private val gameCateData: GameCateData) : BaseFragment<MainVi
 
     private fun initRecycleView() {
         //20200226 紀錄：真人遊戲只會有一個 tab
-        val gameList = gameCateData.tabDataList.firstOrNull()?.gameList
+        val gameList = gameCateData.tabDataList.firstOrNull()?.gameList?.toMutableList()
         val adapter = RvLiveAdapter()
         adapter.setData(gameList)
         adapter.setOnSelectThirdGameListener(mOnSelectThirdGameListener)

@@ -33,6 +33,7 @@
             android:ellipsize="end"
             android:gravity="start|center_vertical"
             android:maxLines="1"
+            android:textStyle="bold"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             tools:text="@string/league" />
@@ -44,6 +45,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/winner"
+            android:textStyle="bold"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             tools:text="@string/winner" />

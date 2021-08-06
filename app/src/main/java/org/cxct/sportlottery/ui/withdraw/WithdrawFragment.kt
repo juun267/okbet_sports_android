@@ -10,6 +10,7 @@ import android.widget.BaseAdapter
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
@@ -17,10 +18,9 @@ import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
-import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.profileCenter.SettingTipsDialog
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
@@ -62,6 +62,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             clearIsShow = false
             getAllIsShow = true
         }
+        block_tab.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
     }
 
     private fun initEvent() {
@@ -76,17 +77,11 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupDealView(type: TransferType) {
         when (type) {
             TransferType.BANK -> {
-                tab_bank_card.isSelected = true
-                tab_crypto.isSelected = false
-
                 tv_channel_select.text = getString(R.string.select_bank)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_amount))
             }
             TransferType.CRYPTO -> {
-                tab_bank_card.isSelected = false
-                tab_crypto.isSelected = true
-
-                tv_channel_select.text = getString(R.string.currency_protocol)
+                tv_channel_select.text = getString(R.string.select_crypto_address)
                 et_withdrawal_amount.setTitle(getString(R.string.withdraw_number))
             }
         }
@@ -117,7 +112,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
 
         et_withdrawal_amount.getAllButton {
-            it.setText(viewModel.getWithdrawAmountLimit().max.toString())
+            it.setText(viewModel.getWithdrawAmountLimit().max.toLong().toString())
             et_withdrawal_amount.et_input.apply { setSelection(this.length()) }
         }
     }
@@ -135,7 +130,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupEyeButtonVisibility(setupView: LoginEditText, checkFun: (String) -> Unit) {
         setupView.let { view ->
             view.afterTextChanged {
-                view.eyeVisibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
                 checkFun(it)
             }
         }
@@ -183,18 +177,28 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.moneyCardExist.observe(this.viewLifecycleOwner, Observer { moneyCardSet ->
             val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
             val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
-
+            
             when {
                 bankCardExist == true -> {
+                    tab_bank_card.isChecked = true
                     viewModel.setDealType(TransferType.BANK)
                 }
                 cryptoCardExist == true -> {
+                    tab_crypto.isChecked = true
                     viewModel.setDealType(TransferType.CRYPTO)
                 }
                 else -> {
                     jumpToMoneyCardSetting()
                 }
             }
+        })
+        //Tab 顯示判斷
+        viewModel.withdrawSystemOperation.observe(this.viewLifecycleOwner, Observer {
+            isShow ->
+            if (isShow.getContentIfNotHandled() == true)
+                block_tab.visibility = View.VISIBLE
+            else
+                block_tab.visibility = View.GONE
         })
 
         //資金設定
@@ -263,13 +267,17 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
      * @param assignType 是否指定跳轉新增型態(銀行卡, 虛擬幣)
      */
     private fun jumpToMoneyCardSetting(assignType: Boolean = false, transferType: TransferType? = null) {
-        SettingTipsDialog(requireContext(), SettingTipsDialog.SettingTipsDialogListener {
+        val content = when (transferType) {
+                TransferType.CRYPTO -> {
+                    getString(R.string.please_setting_crypto)
+                }
+                else -> {
+                    getString(R.string.please_setting_bank_card)
+                }
+            }
+        showPromptDialog(getString(R.string.withdraw_setting),  content) {
             this@WithdrawFragment.activity?.finish()
             startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
-        }).apply {
-            setTipsTitle(R.string.withdraw_setting)
-            setTipsContent(R.string.please_setting_bank_card)
-            show(this@WithdrawFragment.parentFragmentManager, "")
         }
     }
 
@@ -306,7 +314,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
             bankCardBottomSheet.tv_game_type_title.text = when (bankCardList.firstOrNull()?.transferType) {
                 TransferType.CRYPTO -> getString(R.string.select_crypto_card)
-                else -> getString(R.string.select_bank_card)
+                else -> getString(R.string.select_bank)
             }
             bankCardBottomSheet.btn_close.setOnClickListener {
                 this.dismiss()
@@ -335,6 +343,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
             view.tag = holder
 
             view.apply {
+                holder.imgCheck = img_check_bank
                 holder.ivBankIcon = iv_bank_icon
                 holder.tvBank = tv_bank_card
                 holder.llSelectBankCard = ll_select_bank_card
@@ -350,7 +359,8 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
 
     private fun setView(holder: ListViewHolder, data: BankCardList, position: Int, listener: BankCardAdapterListener) {
         holder.apply {
-            tvBank?.text = data.bankName
+            imgCheck?.visibility = if (position == selectedPosition) View.VISIBLE else View.GONE
+            tvBank?.text = tvBank?.context?.getString(R.string.selected_bank_card)?.let { String.format(it, data.bankName, data.cardNo) }
             val cardIcon = when (data.transferType) {
                 TransferType.BANK -> getBankIconByBankName(data.bankName)
                 TransferType.CRYPTO -> getCryptoIconByCryptoName(data.transferType.type)

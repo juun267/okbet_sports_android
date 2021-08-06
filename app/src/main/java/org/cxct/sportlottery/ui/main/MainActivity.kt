@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -13,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
-import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
@@ -31,6 +29,7 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
 
@@ -42,7 +41,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             context.startActivity(intent)
         }
 
-        private var isPopImageDialog = true //第一次進 APP 才要跳 彈窗圖 dialog
+        const val ARGS_THIRD_GAME_CATE = "key-thirdGameCategory"
     }
 
     private val mSplashViewModel: SplashViewModel by viewModel()
@@ -59,12 +58,12 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         initToolBar()
         initMenu()
         initBottomNav()
-        getPopImage()
         initObserve()
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
-        if (mSplashViewModel.isNeedGetHost())
-            mSplashViewModel.getHost()
+        //20210414修改邏輯, 若local host可以使用, 就直接使用, 若無法使用才getHost取得可以使用之域名
+        /*if (mSplashViewModel.isNeedGetHost())
+            mSplashViewModel.getHost()*/
     }
 
     override fun onBackPressed() {
@@ -74,6 +73,26 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         }
 
         super.onBackPressed()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        jumpScreen()
+    }
+
+    private fun jumpScreen() {
+        try {
+            val cate = intent.getSerializableExtra(ARGS_THIRD_GAME_CATE) as ThirdGameCategory
+            Timber.d("Jump screen: ${cate.name}")
+            when (cate) {
+                ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
+                ThirdGameCategory.CGCP -> goToMainFragment()
+                else -> goToMainMoreFragment(cate.name)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun initToolBar() {
@@ -109,7 +128,7 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             //選單選擇結束要收起選單
             val menuFrag =
                 supportFragmentManager.findFragmentById(R.id.fragment_menu) as MenuFragment
-            menuFrag.setDownMenuListener(View.OnClickListener { drawer_layout.closeDrawers() })
+            menuFrag.setDownMenuListener { drawer_layout.closeDrawers() }
 
             nav_right.layoutParams.width = MetricsUtil.getMenuWidth() //動態調整側邊欄寬
         } catch (e: Exception) {
@@ -159,44 +178,24 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
     }
 
-    private fun getPopImage() {
-        viewModel.getPopImage()
-    }
-
     private fun getMsgDialog() {
-        viewModel.getMsgDialog()
+        viewModel.getAnnouncement()
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this, Observer {
+        viewModel.isLogin.observe(this, {
             getMsgDialog() //登入/登出刷新彈窗公告
             updateUiWithLogin(it)
         })
 
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this, {
             updateAvatar(it?.iconUrl)
         })
 
-        //彈窗圖
-        viewModel.popImageList.observe(this, Observer {
-            setPopImage(it ?: listOf())
-        })
-
         //公告彈窗
-        viewModel.messageDialogResult.observe(this, Observer { it ->
+        viewModel.promoteNoticeResult.observe(this, {
             it.getContentIfNotHandled()?.let { result ->
                 setNewsDialog(result)
-            }
-        })
-
-        viewModel.goToThirdGamePage.observe(this, Observer {
-            it.getContentIfNotHandled().let { cate ->
-                when {
-                    cate == ThirdGameCategory.MAIN -> iv_logo.performClick() //跳轉到首頁
-                    cate != null -> goToMainMoreFragment(cate.name)
-                    else -> {
-                    }
-                }
             }
         })
     }
@@ -212,14 +211,6 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             btn_register.visibility = View.VISIBLE
             toolbar_divider.visibility = View.VISIBLE
             iv_head.visibility = View.GONE
-        }
-    }
-
-    //彈窗圖
-    private fun setPopImage(popImageList: List<ImageData>) {
-        if (isPopImageDialog) {
-            isPopImageDialog = false
-            PopImageDialog(this, popImageList).show()
         }
     }
 
@@ -241,8 +232,17 @@ class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
             .into(iv_head)
     }
 
+    private fun goToMainFragment() {
+        viewModel.goToLottery()
+    }
+
     private fun goToMainMoreFragment(cateCode: String?, firmCode: String? = null) {
         val bundle = MainMoreFragmentArgs(cateCode ?: "", firmCode ?: "").toBundle()
         navController.navigate(R.id.mainMoreFragment, bundle)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        resetButton()
     }
 }

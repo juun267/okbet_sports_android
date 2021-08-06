@@ -1,13 +1,11 @@
 package org.cxct.sportlottery.ui.main
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.config.ImageData
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -19,38 +17,33 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.Event
 
 
 class MainViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseNoticeViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseNoticeViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
+    val token
+        get() = loginRepository.token
 
-    val isLogin: LiveData<Boolean> by lazy {
-        loginRepository.isLogin
-    }
-
-    val token = loginRepository.token
     val userId = loginRepository.userId
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
-    private val _messageListResult = MutableLiveData<MessageListResult>()
-    val messageListResult: LiveData<MessageListResult>
-        get() = _messageListResult
-
-    private val _messageDialogResult = MutableLiveData<Event<MessageListResult>>()
-    val messageDialogResult: LiveData<Event<MessageListResult>>
-        get() = _messageDialogResult
-
-    private val _userMoney = MutableLiveData<Double?>()
-    val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
+    private val _promoteNoticeResult = MutableLiveData<Event<MessageListResult>>()
+    val promoteNoticeResult: LiveData<Event<MessageListResult>>
+        get() = _promoteNoticeResult
 
     private val _bannerList = MutableLiveData<List<ImageData>?>()
     val bannerList: LiveData<List<ImageData>?>
@@ -67,34 +60,29 @@ class MainViewModel(
     val enterThirdGameResult: LiveData<EnterThirdGameResult>
         get() = _enterThirdGameResult
 
+    val withdrawSystemOperation =
+        withdrawRepository.withdrawSystemOperation
+    val rechargeSystemOperation =
+        withdrawRepository.rechargeSystemOperation
     val needToUpdateWithdrawPassword =
         withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
     val settingNeedToUpdateWithdrawPassword =
         withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToCompleteProfileInfo =
+        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToCompleteProfileInfo =
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
-        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
-    //獲取系統公告
-    fun getMarquee() {
-        viewModelScope.launch {
-            doNetwork(androidContext) {
-                val typeList = arrayOf(1)
-                OneBoSportApi.messageService.getPromoteNotice(typeList)
-            }?.let { result ->
-                _messageListResult.postValue(result)
-            }
-        }
-    }
-
-    fun getMsgDialog() {
+    //獲取系統公告及跑馬燈
+    fun getAnnouncement() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 val typeList = arrayOf(2, 3)
                 OneBoSportApi.messageService.getPromoteNotice(typeList)
             }?.let { result ->
-                _messageDialogResult.postValue(Event(result))
+                _promoteNoticeResult.postValue(Event(result))
             }
         }
     }
@@ -107,20 +95,11 @@ class MainViewModel(
         }
     }
 
-    //獲取彈窗圖
+    //獲取彈窗圖 //20210414 紀錄：體育暫不使用首頁彈窗圖功能
     fun getPopImage() {
         //H5彈窗圖: imageType = 7
         sConfigData?.imageList?.filter { it.imageType == 7 }.apply {
             _popImageList.postValue(this)
-        }
-    }
-
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-            _userMoney.postValue(userMoneyResult?.money)
         }
     }
 
@@ -130,6 +109,11 @@ class MainViewModel(
                 thirdGameRepository.getThirdGame()
             }
         }
+    }
+
+    fun goToLottery() {
+        val lotteryData = gameCateDataList.value?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.first()?.gameList?.first()?.thirdGameData
+        requestEnterThirdGame(lotteryData)
     }
 
     fun createSingleThirdGame(gameCategory: GameCategory, gameFirm: GameFirmValues): GameItemData {
@@ -156,15 +140,6 @@ class MainViewModel(
                     )
                 )
             }
-            (userInfo.value?.testFlag == TestFlag.GUEST.index) -> {
-                _enterThirdGameResult.postValue(
-                    EnterThirdGameResult(
-                        resultType = EnterThirdGameResult.ResultType.GUEST,
-                        url = null,
-                        errorMsg = androidContext.getString(R.string.message_guest_no_permission)
-                    )
-                )
-            }
             else -> {
                 viewModelScope.launch {
                     val thirdLoginResult = thirdGameLogin(gameData)
@@ -173,16 +148,16 @@ class MainViewModel(
                     if (sConfigData?.thirdTransferOpen == FLAG_OPEN)
                         autoTransfer(gameData)
 
-                    when (thirdLoginResult?.success) {
-                        true -> {
+                    //20210526 result == null，代表 webAPI 處理跑出 exception，exception 處理統一在 BaseActivity 實作，這邊 result = null 直接略過
+                    thirdLoginResult?.let {
+                        if (it.success) {
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.SUCCESS,
                                     url = thirdLoginResult.msg
                                 )
                             )
-                        }
-                        else -> {
+                        } else {
                             _enterThirdGameResult.postValue(
                                 EnterThirdGameResult(
                                     resultType = EnterThirdGameResult.ResultType.FAIL,
@@ -192,6 +167,7 @@ class MainViewModel(
                             )
                         }
                     }
+
                 }
             }
         }
@@ -224,10 +200,21 @@ class MainViewModel(
     }
 
 
-    //提款判斷權限
-    fun withdrawCheckPermissions() {
+    //提款功能是否啟用
+    fun checkWithdrawSystem() {
         viewModelScope.launch {
-            withdrawRepository.withdrawCheckPermissions()
+            doNetwork(androidContext) {
+                withdrawRepository.checkWithdrawSystem()
+            }
+        }
+    }
+
+    //充值功能是否啟用
+    fun checkRechargeSystem() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkRechargeSystem()
+            }
         }
     }
 
@@ -255,4 +242,5 @@ class MainViewModel(
             }
         }
     }
+
 }

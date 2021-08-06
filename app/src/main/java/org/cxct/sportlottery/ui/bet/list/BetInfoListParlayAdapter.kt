@@ -1,24 +1,26 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoParlayItemBinding
+import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
-import java.math.RoundingMode
+import org.cxct.sportlottery.util.getOdds
 
+@SuppressLint("ClickableViewAccessibility")
 class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaListener) :
     RecyclerView.Adapter<BetInfoListParlayAdapter.ViewHolder>() {
 
@@ -30,6 +32,14 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     val winQuotaList: MutableList<Double> = mutableListOf()
     val betQuotaList: MutableList<Double> = mutableListOf()//用於計算
     val sendBetQuotaList: MutableList<Double> = mutableListOf()//用於送出
+
+
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -65,20 +75,12 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
                 when {
                     quota > parlayOdd.max -> {
-                        binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit),
-                                parlayOdd.max.toString()
-                            )
+                        binding.tvErrorMessage.text =  binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit)
                         sendOutStatus = false
                     }
 
                     quota < parlayOdd.min -> {
-                        binding.tvErrorMessage.text =
-                            String.format(
-                                binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit),
-                                parlayOdd.min.toString()
-                            )
+                        binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit)
                         sendOutStatus = false
                     }
 
@@ -86,17 +88,19 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
                         sendOutStatus = true
                     }
                 }
+                var win = it.toDouble() * getOdds(parlayOdd, oddsType)
 
-                winQuotaList[position] = it.toDouble() * parlayOdd.odds
+                if (oddsType == OddsType.EU) {
+                    win -= quota * parlayOdd.num
+                }
+
+                winQuotaList[position] = win
                 betQuotaList[position] = it.toDouble() * parlayOdd.num
                 sendBetQuotaList[position] = it.toDouble()
 
-                binding.tvParlayWinQuota.text =
-                    ArithUtil.round(
-                        it.toDouble() * parlayOdd.odds,
-                        3,
-                        RoundingMode.HALF_UP
-                    ).plus(" ").plus(binding.root.context.getString(R.string.bet_info_list_rmb))
+                binding.tvParlayWinQuota.text = TextUtil.format(win)
+                    .plus(" ")
+                    .plus(binding.root.context.getString(R.string.bet_info_list_rmb))
 
             }
             onTotalQuotaListener.count(winQuotaList.sum(), betQuotaList.sum())
@@ -108,7 +112,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.etBet.setBackgroundResource(if (sendOutStatus) R.drawable.effect_select_bet_edit_text else R.drawable.bg_radius_4_edittext_error)
 
             binding.etBet.setTextColor(
-                if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                if (sendOutStatus) ContextCompat.getColor(binding.root.context, R.color.colorBlackLight)
                 else ContextCompat.getColor(binding.root.context, R.color.colorRedDark)
             )
             return sendOutStatus
@@ -133,7 +137,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
 
             binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
 
-            binding.tvParlayOdds.text = TextUtil.formatForOdd(parlayOdd.odds)
+            binding.tvParlayOdds.text = TextUtil.formatForOdd(getOdds(parlayOdd, oddsType))
 
             binding.tvParlayOdds.visibility = if (position == 0) View.VISIBLE else View.GONE
 
@@ -176,6 +180,10 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
             binding.etBet.addTextChangedListener(tw)
             binding.etBet.tag = tw
 
+            binding.etBet.setOnTouchListener { v, event ->
+                onTotalQuotaListener.onShowKeyboard(binding.etBet)
+                false
+            }
 
             binding.executePendingBindings()
 
@@ -198,6 +206,7 @@ class BetInfoListParlayAdapter(private val onTotalQuotaListener: OnTotalQuotaLis
     interface OnTotalQuotaListener {
         fun count(totalWin: Double, totalBet: Double)
         fun sendOutStatus(parlayOddList: MutableList<ParlayOdd>)
+        fun onShowKeyboard(editText: EditText)
     }
 
 

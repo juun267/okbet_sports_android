@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
@@ -22,6 +23,13 @@ class MainTab @JvmOverloads constructor(context: Context, attrs: AttributeSet? =
         } finally {
             typedArray.recycle()
         }
+    }
+
+    override fun setSelected(selected: Boolean) {
+        super.setSelected(selected)
+        //被選中時字體加粗
+        val typeface = if (selected) Typeface.BOLD else Typeface.NORMAL
+        tv_title.setTypeface(null, typeface)
     }
 
 }

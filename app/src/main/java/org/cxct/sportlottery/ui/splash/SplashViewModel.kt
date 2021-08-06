@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.Constants.httpFormat
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.index.IndexService
 import org.cxct.sportlottery.network.index.config.ConfigResult
+import org.cxct.sportlottery.network.index.playquotacom.PlayQuotaComResult
 import org.cxct.sportlottery.network.manager.RequestManager
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseViewModel
@@ -21,8 +22,12 @@ class SplashViewModel(
     private val hostRepository: HostRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    private val playQuotaComRepository: PlayQuotaComRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+
+    val playQuotaCom: LiveData<PlayQuotaComResult>
+        get() = playQuotaComRepository._playquotacom
 
     //當獲取 host 失敗時，就使用下一順位的 serverUrl，重新 request，直到遍歷 ServerUrlList，或成功獲取 host 即停止
     private var mServerUrlIndex = 0
@@ -50,17 +55,22 @@ class SplashViewModel(
             if (hostUrl.isNotEmpty()) {
                 Timber.i("==> checkLocalHost: $hostUrl")
                 val retrofit = RequestManager.instance.createRetrofit(hostUrl.httpFormat())
-                val result = doNetwork(androidContext) {
+                val result = doNetwork(androidContext, exceptionHandle = false) {
                     retrofit.create(IndexService::class.java).getConfig()
                 }
                 if (result?.success == true) {
                     setConfig(result)
                     setBaseUrl(hostUrl, retrofit)
+                    getPlayQuotaCom()
                     return@launch
+                } else {
+                    getHost()
                 }
+            } else {
+                getHost()
             }
-
-            getHost()
+            //確定localHost無法獲取config後才去獲取其他域名
+//            getHost()
         }
     }
 
@@ -111,7 +121,7 @@ class SplashViewModel(
         viewModelScope.launch {
             Timber.i("==> checkHostByGettingConfig: $baseUrl")
             val retrofit = RequestManager.instance.createRetrofit(baseUrl.httpFormat())
-            val result = doNetwork(androidContext) {
+            val result = doNetwork(androidContext, exceptionHandle = false) {
                 val indexService = retrofit.create(IndexService::class.java)
                 indexService.getConfig()
             }
@@ -125,6 +135,7 @@ class SplashViewModel(
                 hostRepository.isNeedGetHost = false
                 setConfig(result)
                 setBaseUrl(baseUrl, retrofit)
+                getPlayQuotaCom()
             } else {
                 Timber.e("==> Check host fail!!! baseUrl = $baseUrl")
                 val listSize = mAppUrlList?.size ?: 0
@@ -151,4 +162,17 @@ class SplashViewModel(
     fun isNeedGetHost(): Boolean {
         return hostRepository.isNeedGetHost
     }
+
+    private fun getPlayQuotaCom() {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                playQuotaComRepository.getPlayQuotaCom()
+            }
+            result?.let {
+                playQuotaComRepository.postPlayQuotaCom(it)
+                betInfoRepository.playQuotaComData = it.playQuotaComData
+            }
+        }
+    }
+
 }

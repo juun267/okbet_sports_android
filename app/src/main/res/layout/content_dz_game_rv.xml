@@ -3,17 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
+    android:layout_marginHorizontal="3dp"
+    android:layout_marginVertical="5dp"
     android:background="@drawable/bg_square_shape_6dp_gray_stroke"
     android:gravity="center"
     android:orientation="vertical"
+    android:padding="8dp"
     tools:context=".ui.main.more.RvDZAdapter">
 
     <ImageView
         android:id="@+id/iv_image"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:contentDescription="@null"
         android:src="@drawable/ic_image_load" />
@@ -23,7 +24,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:ellipsize="end"
         android:gravity="center"
+        android:includeFontPadding="false"
+        android:maxLines="1"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize14sp"
         tools:text="game name" />

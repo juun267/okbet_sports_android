@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_bank_list.*
 import kotlinx.android.synthetic.main.fragment_bank_list.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseFragment
 
 class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::class) {
@@ -24,15 +24,15 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         BankListAdapter(
             BankListClickListener(
                 editBankListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType, null)
                     mNavController.navigate(action)
                 },
                 editCryptoListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(it, it.transferType, null)
                     mNavController.navigate(action)
                 },
                 addListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, TransferType.values().first())
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, if (it.bankTransfer) TransferType.BANK else TransferType.CRYPTO, it)
                     mNavController.navigate(action)
                 }
             )
@@ -69,6 +69,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
 
         viewModel.rechargeConfigs.observe(this.viewLifecycleOwner, Observer {
+            mBankListAdapter.moneyConfig = it
             viewModel.checkBankCardCount()
         })
 
@@ -87,7 +88,15 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
 
         viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner, Observer {
-            mBankListAdapter.addSwitch = it
+            mBankListAdapter.transferAddSwitch = it
+            tv_no_bank_card.text = it.run {
+                when {
+                    cryptoTransfer && bankTransfer -> getString(R.string.bind_credit_card_not_yet)
+                    cryptoTransfer -> getString(R.string.add_crypto_card)
+                    bankTransfer -> getString(R.string.add_credit_card)
+                    else -> getString(R.string.add_new)
+                }
+            }
         })
     }
 

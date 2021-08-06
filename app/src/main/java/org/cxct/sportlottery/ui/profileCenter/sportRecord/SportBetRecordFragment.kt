@@ -10,10 +10,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.fragment_sport_bet_record.*
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.iv_scroll_to_top
-import kotlinx.android.synthetic.main.fragment_sport_bet_record.status_selector
 import kotlinx.android.synthetic.main.view_total_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
@@ -88,9 +85,8 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
 
     private fun initView() {
         layout_total.tv_total.text = getString(R.string.total_bet_amount)
-        status_selector.setCloseBtnText(getString(R.string.cancel_select))
+        status_selector.setCloseBtnText(getString(R.string.bottom_sheet_close))
         status_selector.dataList = betStatusList
-        status_selector.selectedTag = betStatusList.firstOrNull()?.code
     }
 
     private fun initOnclick() {
@@ -100,6 +96,8 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
         }
 
         date_search_bar.setOnClickSearchListener {
+            //每次查詢，清除資料重載，list 才會置頂
+            rvAdapter.addFooterAndSubmitList(null, true)
             viewModel.searchBetRecord(btn_champion.isChecked, date_search_bar.startTime.toString(), date_search_bar.endTime.toString(), status_selector.selectedTag)
         }
 
@@ -121,13 +119,18 @@ class SportBetRecordFragment : BaseFragment<BetRecordViewModel>(BetRecordViewMod
                 rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
                 layout_total.apply {
                     tv_total_number.setMoneyFormat(it.other?.totalAmount ?: 0).toString()
-                    tv_total_bet_profit.setProfitFormat(it.other?.win)
+                    tv_total_bet_profit.setProfitFormat(it.other?.win, true)
                     tv_total_bet_profit.setMoneyColor(it.other?.win ?: 0.0)
                 }
             } else {
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }
         })
+
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            rvAdapter.oddsType = it
+        })
+
     }
 
     private fun initRv() {

@@ -2,8 +2,8 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/writhdraw_navigation"
-    app:startDestination="@id/bankListFragment">
+    android:id="@+id/bank_navigation"
+    app:startDestination="@+id/bankListFragment">
     <fragment
         android:id="@+id/bankListFragment"
         android:name="org.cxct.sportlottery.ui.withdraw.BankListFragment"
@@ -19,7 +19,12 @@
                 app:nullable="true" />
             <argument
                 android:name="transferType"
-                app:argType="org.cxct.sportlottery.network.money.TransferType" />
+                app:argType="org.cxct.sportlottery.network.money.config.TransferType" />
+            <argument
+                android:name="transferTypeAddSwitch"
+                android:defaultValue="@null"
+                app:argType="org.cxct.sportlottery.ui.withdraw.TransferTypeAddSwitch"
+                app:nullable="true"/>
         </action>
     </fragment>
     <fragment
@@ -34,7 +39,12 @@
             app:nullable="true" />
         <argument
             android:name="transferType"
-            app:argType="org.cxct.sportlottery.network.money.TransferType" />
+            app:argType="org.cxct.sportlottery.network.money.config.TransferType" />
+        <argument
+            android:name="transferTypeAddSwitch"
+            android:defaultValue="@null"
+            app:argType="org.cxct.sportlottery.ui.withdraw.TransferTypeAddSwitch"
+            app:nullable="true"/>
     </fragment>
 
 </navigation>

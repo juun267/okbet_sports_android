@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.network.third_game.third_games.other_bet_history
 
-import org.cxct.sportlottery.network.common.IdParams
 import org.cxct.sportlottery.network.common.PagingParams
 import org.cxct.sportlottery.network.common.TimeRangeParams
 

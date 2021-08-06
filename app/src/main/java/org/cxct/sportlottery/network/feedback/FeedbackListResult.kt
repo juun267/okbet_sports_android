@@ -3,7 +3,6 @@ package org.cxct.sportlottery.network.feedback
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 
 @JsonClass(generateAdapter = true)
 data class FeedbackListResult(

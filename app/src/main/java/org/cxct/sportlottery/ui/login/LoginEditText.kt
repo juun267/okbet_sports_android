@@ -5,11 +5,13 @@ import android.graphics.Bitmap
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.text.method.DigitsKeyListener
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.View.OnFocusChangeListener
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -40,6 +42,8 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             btn_clear.visibility = if (value) View.VISIBLE else View.GONE
         }
 
+    private var clearListener: OnClickListener? = null
+
     var getAllIsShow
         get() = btn_withdraw_all.visibility == View.VISIBLE
         set(value) {
@@ -52,16 +56,20 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         val view = LayoutInflater.from(context).inflate(R.layout.edittext_login, this, false)
         addView(view)
 
-        val typedArray = context.theme
-            .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
+        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
-            view.tv_title.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 0))
+            view.tv_title.setTypeface(null, typedArray.getInt(R.styleable.CustomView_cvTitleTextStyle, 1))
             view.et_input.setText(typedArray.getText(R.styleable.CustomView_cvText))
             view.et_input.hint = typedArray.getText(R.styleable.CustomView_cvHint)
             typedArray.getInt(R.styleable.CustomView_cvEms, -1).let {
-                if (it != -1) {
+                if (it > 0) {
                     view.et_input.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(it))
+                }
+            }
+            typedArray.getInt(R.styleable.CustomView_cvTitleMinEms, -1).let {
+                if (it > 0) {
+                    view.tv_title.minEms = it
                 }
             }
             view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
@@ -69,10 +77,20 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
             view.et_input.inputType = inputType
 
+            view.et_input.isEnabled = typedArray.getBoolean(R.styleable.CustomView_cvEnable, true).apply {
+                if (this)
+                    clearIsShow = false
+            }
+
             view.tv_start.visibility = typedArray.getInt(R.styleable.CustomView_necessarySymbol, 0x00000008) //預設隱藏 需要再打開
             view.btn_withdraw_all.visibility = View.GONE //預設關閉 需要再打開
             view.btn_clear.visibility = View.GONE
             view.btn_eye.visibility = if (inputType == 0x00000081) View.VISIBLE else View.GONE
+
+            //控制物件與下方的間距, default = 10dp
+            val itemMarginBottom: Int = typedArray.getDimensionPixelOffset(R.styleable.CustomView_cvMarginBottom, 10.dp)
+            setMarginBottom(itemMarginBottom)
+
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -81,7 +99,7 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         afterTextChanged { }
         setupFocus()
         setupEye()
-        setupClear()
+        setupEditTextClearListener()
         setupVerificationCode()
         setError(null)
         setupKeyBoardPressDown()
@@ -105,9 +123,19 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun setupClear() {
-        btn_clear.setOnClickListener {
-            et_input.setText("")
+    fun setupEditTextClearListener(listener: (() -> Unit)? = null) {
+        listener?.let {
+            clearListener = OnClickListener {
+                et_input.setText("")
+                listener.invoke()
+            }
+        }
+        clearListener?.let {
+            btn_clear.setOnClickListener(it)
+        } ?: run {
+            btn_clear.setOnClickListener {
+                et_input.setText("")
+            }
         }
     }
 
@@ -147,14 +175,16 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
     fun setError(value: String?) {
         tv_error.text = value
         if (tv_error.text.isNullOrEmpty()) {
-            tv_error.visibility = View.INVISIBLE
-            (tv_error.layoutParams as LayoutParams).setMargins(0, 0, 0, 0)
+            tv_error.visibility = View.GONE
             block_editText.isActivated = false
         } else {
             tv_error.visibility = View.VISIBLE
-            (tv_error.layoutParams as LayoutParams).setMargins(0, 4.dp, 0, 10.dp)
             block_editText.isActivated = true
         }
+    }
+
+    fun setMarginBottom(px: Int) {
+        (layout.layoutParams as LayoutParams).setMargins(0, 0, 0, px)
     }
 
     fun setText(value: String?) {
@@ -165,13 +195,26 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
         return et_input.text.toString()
     }
 
+    fun setDigits(input: String) {
+        et_input.keyListener = DigitsKeyListener.getInstance(input)
+    }
+
+    fun resetText() {
+        et_input.setText("")
+        setError(null)
+    }
+
     fun afterTextChanged(afterTextChanged: (String) -> Unit) {
         et_input.afterTextChanged {
-            if (inputType != 0x00000081) {
+            if (inputType != 0x00000081 && inputType != 0x00000012 && et_input.isEnabled) {
                 clearIsShow = it.isNotEmpty()
             }
             afterTextChanged.invoke(it)
         }
+    }
+
+    fun setCursor() {
+        et_input.setSelection(et_input.text.length)
     }
 
     fun getAllButton(clickGetAll: (EditText) -> Unit) {

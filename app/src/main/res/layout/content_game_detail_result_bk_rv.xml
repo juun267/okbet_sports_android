@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="@string/section"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize12sp" />
 
                 <LinearLayout
@@ -47,7 +48,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/first"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -56,7 +57,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/second"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -65,7 +66,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/third"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
 
                     <TextView
@@ -74,7 +75,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/fourth"
-                        android:textColor="@color/colorBlackLight"
+                        android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
 
                 </LinearLayout>
@@ -87,7 +88,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/total_score_over_time"
-                android:textColor="@color/colorBlackLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp" />
 
 
@@ -96,7 +97,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/light_gray" />
+            android:background="@color/colorWhite6" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,13 +122,13 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_home_first"
@@ -138,14 +139,14 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/light_gray" />
+                android:background="@color/colorWhite6" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -164,13 +165,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_home_third"
@@ -181,13 +182,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_home_fourth"
@@ -198,13 +199,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_home_over_time"
@@ -215,7 +216,7 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text=""
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>
@@ -226,7 +227,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/light_gray" />
+            android:background="@color/colorWhite6" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -251,13 +252,13 @@
                     android:paddingTop="6dp"
                     android:paddingEnd="10dp"
                     android:paddingBottom="6dp"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_away_first"
@@ -268,14 +269,14 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
             </LinearLayout>
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/light_gray" />
+                android:background="@color/colorWhite6" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -294,13 +295,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_away_third"
@@ -311,13 +312,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_away_fourth"
@@ -328,13 +329,13 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text="0"
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
+                    android:background="@color/colorWhite6" />
 
                 <TextView
                     android:id="@+id/tv_away_over_time"
@@ -345,7 +346,7 @@
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:text=""
-                    android:textColor="@color/colorBlackLight"
+                    android:textColor="@color/colorGray"
                     android:textSize="@dimen/textSize14sp" />
 
             </LinearLayout>
@@ -354,9 +355,10 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/light_gray" />
+            android:background="@color/colorWhite6" />
 
     </LinearLayout>
 </LinearLayout>

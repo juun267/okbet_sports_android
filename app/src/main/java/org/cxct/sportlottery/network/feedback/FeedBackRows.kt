@@ -27,6 +27,4 @@ data class FeedBackRows(
     val lastFeedbackTime: Long?,
     @Json(name = "feedbackCode")
     val feedbackCode: String?
-) {
-    val profileImg: String? = null
-}
+)

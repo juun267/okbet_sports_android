@@ -58,6 +58,8 @@ class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: 
     fun startAuto() {
         stopAuto()
 
+        if (adapter?.itemCount == null || adapter?.itemCount == 0)
+            return
         //每 250L 毫秒執行一次 smoothScrollBy()
         //紀錄: smoothScrollBy() 的時間間隔為 250L，所以 period 設 250L 達到平順滑動的感覺
         val delay = 0

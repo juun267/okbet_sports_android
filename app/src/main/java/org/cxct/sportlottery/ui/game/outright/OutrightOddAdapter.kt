@@ -1,24 +1,21 @@
 package org.cxct.sportlottery.ui.game.outright
 
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_outright_odd.view.*
-import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle.view.*
+import kotlinx.android.synthetic.main.button_odd.view.*
+import kotlinx.android.synthetic.main.itemview_outright_odd_subtitlev3.view.*
+import kotlinx.android.synthetic.main.itemview_outright_oddv3.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.common.PlayType
 import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.widget.OddButton
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-
-const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
 class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
@@ -28,13 +25,12 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var matchOdd: MatchOdd? = null
         set(value) {
             field = value
-
-            value?.let {
+            field?.let {
                 data = it.displayList
             }
         }
 
-    private var data = listOf<Any>()
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -42,18 +38,21 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var outrightOddListener: OutrightOddListener? = null
 
-    var betInfoListData: List<BetInfoListData>? = null
+    private val oddStateRefreshListener by lazy {
+        object : OddStateViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(data.indexOf(data.firstOrNull { data ->
+                    if (data is Odd)
+                        data == odd
+                    else false
+                }))
+            }
+        }
+    }
+
+    private var data = listOf<Any>()
         set(value) {
             field = value
-            data.forEach { item ->
-                when (item) {
-                    is Odd -> {
-                        item.isSelected = value?.any {
-                            it.matchOdd.oddsId == item.id
-                        } ?: false
-                    }
-                }
-            }
             notifyDataSetChanged()
         }
 
@@ -67,7 +66,7 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.SUB_TITLE.ordinal -> SubTitleViewHolder.from(parent)
-            else -> ViewHolder.from(parent)
+            else -> OddViewHolder.from(parent, oddStateRefreshListener)
         }
     }
 
@@ -77,127 +76,96 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val item = data[position] as String
                 holder.bind(item)
             }
-            is ViewHolder -> {
+            is OddViewHolder -> {
                 val item = data[position] as Odd
-                holder.bind(item, outrightOddListener, betInfoListData)
+                holder.bind(matchOdd, item, outrightOddListener, oddsType)
             }
         }
+
     }
 
     override fun getItemCount(): Int = data.size
 
-    class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class OddViewHolder private constructor(itemView: View, private val refreshListener: OddStateChangeListener) : OddStateViewHolder(itemView) {
 
         fun bind(
+            matchOdd: MatchOdd?,
             item: Odd,
             outrightOddListener: OutrightOddListener?,
-            betInfoListData: List<BetInfoListData>?
+            oddsType: OddsType
         ) {
-            itemView.apply {
-                kotlin.run status@{
-                    betInfoListData?.forEach {
-                        if (it.matchOdd.oddsId == item.id) {
-                            item.isSelected = true
-                            return@status
-                        } else {
-                            item.isSelected = false
-                        }
+            itemView.outright_odd_name.text = item.spread
+
+            itemView.outright_odd_btn.apply {
+
+                onOddStatusChangedListener = object : OddButton.OnOddStatusChangedListener {
+                    override fun onOddStateChangedFinish() {
+                        item.oddState = OddState.SAME.state
                     }
                 }
-                outright_name.text = item.spread
-                item.odds?.let { odd -> outright_bet.text = TextUtil.formatForOdd(odd) }
+                playType = PlayType.OUTRIGHT
+
+                visibility = if (item.odds == null) {
+                    View.INVISIBLE
+                } else {
+                    View.VISIBLE
+                }
+
                 isSelected = item.isSelected ?: false
-                outright_bet.setOnClickListener {
-                    outrightOddListener?.onClick(item)
-                }
-                setHighlight(outright_bet, item.oddState)
-                setStatus(outright_bet, bet_lock_img, item.odds.toString().isEmpty(), item.status)
-            }
-        }
 
+                betStatus = item.status
 
-        private fun setStatus(
-            textView: TextView,
-            lockImg: ImageView,
-            isOddsNull: Boolean,
-            status: Int
-        ) {
-            var itemState = status
-            if (isOddsNull) itemState = 2
+                /*oddStatus = item.oddState*/
+                this@OddViewHolder.setupOddState(this, item)
 
-            when (itemState) {
-                BetStatus.ACTIVATED.code -> {
-                    lockImg.visibility = View.GONE
-                    textView.visibility = View.VISIBLE
-                    textView.isEnabled = true
+                odd_outright_text.text = when (oddsType) {
+                    OddsType.EU -> {
+                        item.odds?.let { TextUtil.formatForOdd(it) }
+                    }
+                    OddsType.HK -> {
+                        item.hkOdds?.let { TextUtil.formatForOdd(it) }
+                    }
                 }
-                BetStatus.LOCKED.code -> {
-                    lockImg.visibility = View.VISIBLE
-                    textView.visibility = View.VISIBLE
-                    textView.isEnabled = false
-                }
-                BetStatus.DEACTIVATED.code -> {
-                    lockImg.visibility = View.GONE
-                    textView.visibility = View.GONE
-                    textView.isEnabled = false
+
+                setOnClickListener {
+                    outrightOddListener?.onClickBet(matchOdd, item)
                 }
             }
-        }
-
-        private fun setHighlight(button: TextView, status: Int? = OddState.SAME.state) {
-            when (status) {
-                OddState.LARGER.state ->
-                    button.background = ContextCompat.getDrawable(
-                        button.context,
-                        R.drawable.shape_play_category_bet_bg_green
-                    )
-                OddState.SMALLER.state ->
-                    button.background = ContextCompat.getDrawable(
-                        button.context,
-                        R.drawable.shape_play_category_bet_bg_red
-                    )
-            }
-
-            Handler().postDelayed(
-                {
-                    button.background = ContextCompat.getDrawable(
-                        button.context,
-                        R.drawable.shape_play_category_bet_bg
-                    )
-                }, CHANGING_ITEM_BG_COLOR_DURATION
-            )
         }
 
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): OddViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd, parent, false)
+                    .inflate(R.layout.itemview_outright_oddv3, parent, false)
 
-                return ViewHolder(view)
+                return OddViewHolder(view, refreshListener)
             }
         }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = refreshListener
     }
 
     class SubTitleViewHolder private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: String) {
-            itemView.outright_detail_list_subtitle.text = item
+            itemView.outright_odd_subtitle.text = item
         }
 
         companion object {
             fun from(parent: ViewGroup): SubTitleViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_outright_odd_subtitle, parent, false)
+                    .inflate(R.layout.itemview_outright_odd_subtitlev3, parent, false)
 
                 return SubTitleViewHolder(view)
             }
         }
     }
+}
 
-    class OutrightOddListener(val clickListener: (odd: Odd) -> Unit) {
-        fun onClick(odd: Odd) = clickListener(odd)
-    }
+class OutrightOddListener(val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd) -> Unit) {
+    fun onClickBet(matchOdd: MatchOdd?, odd: Odd) = clickListenerBet(matchOdd, odd)
 }

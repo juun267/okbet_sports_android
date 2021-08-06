@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.base
 
 import android.content.Context
+import android.os.Bundle
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -14,8 +15,12 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
     val viewModel: T by sharedViewModel(clazz = clazz)
 
     init {
-        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) //hide keyboard
         setStyle(STYLE_NO_TITLE, R.style.MyDialogStyle)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) //預設鍵盤不要開啟
     }
 
     protected fun setStyle (style: Int) {

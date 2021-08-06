@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.results
 
 import android.annotation.SuppressLint
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,12 +20,17 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 
 
 class SettlementViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val settlementRepository: SettlementRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     private var matchResultReformatted = mutableListOf<MatchResultData>() //重構後的資料結構
     private val _showMatchResultData = MutableLiveData<List<MatchResultData>>() //過濾後的資料
@@ -63,7 +68,6 @@ class SettlementViewModel(
             }?.let { result ->
                 reformatMatchResultData(result.matchResultList).let {
                     matchResultReformatted = it
-                    //TODO Dean : review 過濾資料
                     //獲取賽果資料後,更新聯賽列表
                     setupLeagueFilterList(it)
                     //過濾資料
@@ -305,7 +309,7 @@ class SettlementViewModel(
                         ListType.TITLE -> {
                             nowLeagueItem = matchResultData
                             matchResultData.leagueShow = gameLeagueSet.contains(matchResultData.titleData?.name) &&
-                                    (gameKeyWord.isEmpty() || (matchResultData.titleData?.name?.toLowerCase()?.contains(gameKeyWord) == true))
+                                    (gameKeyWord.isEmpty() || (matchResultData.titleData?.name?.toLowerCase()?.contains(gameKeyWord.toLowerCase()) == true))
 
                         }
                         ListType.MATCH -> {
@@ -325,7 +329,7 @@ class SettlementViewModel(
                         OutrightType.TITLE -> {
                             nowOutrightItem = outrightResultData
                             outrightResultData.seasonShow = gameLeagueSet.contains(outrightResultData.seasonData?.name) &&
-                                    (gameKeyWord.isEmpty() || (outrightResultData.seasonData?.name?.toLowerCase()?.contains(gameKeyWord) == true))
+                                    (gameKeyWord.isEmpty() || (outrightResultData.seasonData?.name?.toLowerCase()?.contains(gameKeyWord.toLowerCase()) == true))
                         }
                         OutrightType.OUTRIGHT -> {
                             if (filterOutrightByKeyWord(outrightResultData, gameKeyWord)) {

@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.Row
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.util.Event
 
 class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -54,7 +55,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bind(item, rechargeLogListener)
             }
             is NoDataViewHolder -> {
-                holder.bind(isFinalPage)
+                holder.bind(isFinalPage, data.isNotEmpty())
             }
         }
     }
@@ -74,11 +75,12 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 RechType.WEIXIN.type -> itemView.context.getString(R.string.recharge_channel_weixin)
                 RechType.ALIPAY.type -> itemView.context.getString(R.string.recharge_channel_alipay)
                 RechType.BANK_TRANSFER.type -> itemView.context.getString(R.string.recharge_channel_bank)
+                RechType.CRYPTO.type -> itemView.context.getString(R.string.recharge_channel_crypto)
                 else -> ""
             }
             itemView.rech_log_state.text = item.rechState
             itemView.setOnClickListener {
-                rechargeLogListener?.onClick(item)
+                rechargeLogListener?.onClick(Event(item))
             }
 
             setupStateTextColor(item)
@@ -86,19 +88,11 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private fun setupStateTextColor(item: Row) {
             when (item.status) {
-                Status.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.textGray
-                        )
-                    )
-                }
                 Status.SUCCESS.code -> {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.green_blue
+                            R.color.colorGreen
                         )
                     )
                 }
@@ -107,7 +101,16 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.orangeRed
+                            R.color.colorRed
+                        )
+                    )
+                }
+
+                else -> {
+                    itemView.rech_log_state.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            R.color.colorGray
                         )
                     )
                 }
@@ -128,8 +131,8 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(isFinalPage: Boolean) {
-            itemView.visibility = if (isFinalPage) {
+        fun bind(isFinalPage: Boolean, hasData: Boolean) {
+            itemView.visibility = if (isFinalPage && hasData) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -146,6 +149,6 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 }
 
-class RechargeLogListener(val clickListener: (row: Row) -> Unit) {
-    fun onClick(row: Row) = clickListener(row)
+class RechargeLogListener(val clickListener: (row: Event<Row>) -> Unit) {
+    fun onClick(row: Event<Row>) = clickListener(row)
 }

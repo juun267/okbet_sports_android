@@ -20,6 +20,10 @@
         android:label="fragment_other_bet_record_detail"
         tools:layout="@layout/fragment_other_bet_record_detail" >
         <argument
+            android:name="platCode"
+            app:argType="string"
+            app:nullable="true"/>
+        <argument
             android:name="todayDate"
             app:argType="string"
             app:nullable="true"/>

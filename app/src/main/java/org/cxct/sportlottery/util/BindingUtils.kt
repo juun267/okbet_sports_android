@@ -7,24 +7,31 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
-    timeStamp?.let {
-        text = TimeUtil.timeStampToDate(timeStamp)
-    }
+    text = TimeUtil.timeFormat(timeStamp, YMD_HMS_FORMAT)
 }
 
 @BindingAdapter("date")
 fun TextView.setDate(timeStamp: Long?) {
-    timeStamp?.let {
-        text = TimeUtil.timeStampToDay(timeStamp)
-    }
+    text = TimeUtil.timeFormat(timeStamp, YMD_FORMAT)
 }
 
 @BindingAdapter("gameStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setGameStatus(status: Int?) {
+    text = when (status) {
+        0 -> context.getString(R.string.not_start_yet)
+        1 -> context.getString(R.string.game_playing)
+        2 -> context.getString(R.string.ended)
+        3 -> context.getString(R.string.suspend)
+        4 -> context.getString(R.string.canceled)
+        else -> ""
+    }
 }
+
 @BindingAdapter("status")
 fun TextView.setStatus(status: Int?) {
     status?.let {
@@ -39,6 +46,26 @@ fun TextView.setStatus(status: Int?) {
             7 -> context.getString(R.string.canceled) //已取消
             else -> ""
         }
+    }
+}
+
+@BindingAdapter("betStatus", "betStatusMoney")
+fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
+    status?.let {
+        text = when (status) {
+            0, 1, 7 -> context.getString(R.string.nothing)
+            2, 3 -> "+${TextUtil.formatMoney(money ?: 0.0)}"
+            4, 5 -> TextUtil.formatMoney(money ?: 0.0)
+            else -> context.getString(R.string.draw_or_cancel)
+        }
+
+        val color = when (status) {
+            0, 1, 6, 7 -> R.color.colorGrayDark
+            2, 3 -> R.color.colorGreen
+            else -> R.color.colorRed
+        }
+
+        this.setTextColor(ContextCompat.getColor(context, color))
     }
 }
 
@@ -72,17 +99,18 @@ fun TextView.setRecordStatusColor(status: Int?) {
 
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Double?) {
-    money?.let {
-        text = TextUtil.format(it)
-    }
+    text = TextUtil.formatMoney(money ?: 0.0)
 }
 
 
-@BindingAdapter("profitFormat")
-fun TextView.setProfitFormat(money: Double?) {
+@BindingAdapter(value = ["bind:profitFormat", "bind:profitTotal"], requireAll = false)
+fun TextView.setProfitFormat(money: Double?, isTotal: Boolean? = false) {
     money?.let {
         text = if (it > 0.0) {
-            "+${TextUtil.format(it)}"
+            if (isTotal == true)
+                TextUtil.format(it)
+            else
+                "+${TextUtil.format(it)}"
         } else {
             TextUtil.format(it)
         }
@@ -113,11 +141,18 @@ val gameNameMap: Map<String?, Int> = mapOf(
 fun TextView.setPlatName(platCode: String?) {
 
     platCode?.let {
-        text = if (gameNameMap[it]!= null) {
+        text = if (gameNameMap[it] != null) {
             gameNameMap[it]?.let { it1 -> context.getString(it1) }
         } else {
             platCode
         }
+    }
+}
+
+@BindingAdapter("oddFormat")
+fun TextView.setOddFormat(odd: Double?) {
+    odd?.let {
+        text = "@${TextUtil.formatForOdd(it)}"
     }
 }
 

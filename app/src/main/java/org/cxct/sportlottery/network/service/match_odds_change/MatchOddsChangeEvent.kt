@@ -9,11 +9,11 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true)
 data class MatchOddsChangeEvent(
     @Json(name = "eventType")
-    override val eventType: String = EventType.MATCH_ODDS_CHANGE.value,
+    override val eventType: String? = EventType.MATCH_ODDS_CHANGE.value,
     @Json(name = "eventId")
-    val eventId: String,
+    val eventId: String?,
     @Json(name = "isLongTermEvent")
-    val isLongTermEvent: Int,
+    val isLongTermEvent: Int?,
     @Json(name = "odds")
-    val odds: Map<String, Odds> // key -> GameBetType ; value -> Odds
-): ServiceEventType
+    val odds: Map<String, Odds>? // key -> GameBetType ; value -> Odds
+) : ServiceEventType

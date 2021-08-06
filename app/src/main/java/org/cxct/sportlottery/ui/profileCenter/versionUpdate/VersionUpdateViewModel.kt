@@ -120,8 +120,10 @@ class VersionUpdateViewModel(
 
     private fun compareMinVersion(result: CheckAppVersionResult) {
         val after72Hours = System.currentTimeMillis() - lastShowUpdateTime > 24 * 60 * 60 * 1000
-        val isShowUpdateDialog =
-            after72Hours && result.check == FLAG_OPEN && judgeNewVersion(result)
+
+        //當 check = 1 時，才比較全部版號，否則比較只比較大版號
+        val isNewVersionCode = if (result.check == FLAG_OPEN) judgeNewVersion(result) else judgeBigCodeVersion(result)
+        val isShowUpdateDialog = after72Hours && isNewVersionCode
         val isForceUpdate = judgeForceUpdate(result)
         _appMinVersionState.postValue(
             AppMinVersionState(
@@ -187,4 +189,11 @@ class VersionUpdateViewModel(
 
         return false
     }
+
+    private fun judgeBigCodeVersion(result: CheckAppVersionResult): Boolean {
+        val androidBigCode = result.version?.split("_")?.firstOrNull()?.toInt() ?: 0
+        val localBigCode = BuildConfig.VERSION_CODE
+        return androidBigCode > localBigCode
+    }
+
 }

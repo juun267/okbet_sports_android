@@ -11,14 +11,14 @@
         android:id="@+id/mask"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
+        android:background="@color/transparent_black_50"
         android:clickable="true"
-        android:background="@color/transparent_black_50" />
+        android:focusable="true" />
 
     <ImageView
         android:id="@+id/motion_back_home"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_marginBottom="30dp"
         android:contentDescription="@null"
         android:src="@drawable/motion_back_home"
@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/motion_cash_save"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="38.75dp"
         android:contentDescription="@null"
@@ -39,22 +39,20 @@
 
     <ImageView
         android:id="@+id/motion_cash_get"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_marginTop="30dp"
         android:contentDescription="@null"
         android:src="@drawable/motion_cash_get"
         app:layout_constraintStart_toStartOf="@id/motion_cash_save"
         app:layout_constraintTop_toBottomOf="@id/motion_cash_save" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
         android:id="@+id/motion_close"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:backgroundTint="#C69058"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
         android:contentDescription="@null"
-        android:src="@drawable/ic_close"
-        app:fabCustomSize="65dp"
+        android:src="@drawable/ic_btnclose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -62,10 +60,10 @@
 
     <org.cxct.sportlottery.ui.common.MovableLinearLayout
         android:id="@+id/menu_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_margin="16dp"
-        android:background="@drawable/motion_dragon"
+        android:background="@drawable/motion_sport"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_money_transfer.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
@@ -11,7 +12,7 @@ import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTrans
 
 class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
-    private val navController = my_nav_host_fragment.findNavController()
+    private val navController by lazy { my_nav_host_fragment.findNavController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,7 @@ class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(Mone
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.text = getString(R.string.account_transfer)
         btn_toolbar_back.setOnClickListener {
             //因需求 轉換信息點擊左上角返回鍵要回到額度轉換 故採用同android 虛擬返回鍵
             onBackPressed()

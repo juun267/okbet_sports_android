@@ -89,7 +89,7 @@ class VersionUpdateActivity : BaseActivity<VersionUpdateViewModel>(VersionUpdate
 
                         override fun onFinish(fileUrl: String) {
                             btn_internal_download.isEnabled = true
-                            btn_internal_download.setText(R.string.update_new)
+                            btn_internal_download.setText(R.string.update_now)
                             mFileUrl = fileUrl
                         }
 

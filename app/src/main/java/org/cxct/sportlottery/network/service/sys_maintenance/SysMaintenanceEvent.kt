@@ -8,7 +8,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true)
 data class SysMaintenanceEvent(
     @Json(name = "eventType")
-    override val eventType: String = EventType.SYS_MAINTENANCE.value,
+    override val eventType: String? = EventType.SYS_MAINTENANCE.value,
     @Json(name = "status")
     val status: Int? = null
-): ServiceEventType
+) : ServiceEventType

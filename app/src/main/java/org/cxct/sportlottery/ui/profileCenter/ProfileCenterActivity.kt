@@ -26,7 +26,6 @@ import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
@@ -99,6 +98,11 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         initSocketObserver()
     }
 
+    override fun onResume() {
+        super.onResume()
+        getMoney()
+    }
+
     private fun setupHeadButton() {
         iv_head.setOnClickListener {
             AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
@@ -114,7 +118,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
     }
 
     private fun setupBalance() {
-        getMoney()
         btn_refresh_money.setOnClickListener {
             getMoney()
         }
@@ -122,13 +125,13 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupRechargeButton() {
         btn_recharge.setOnClickListener {
-            startActivity(Intent(this, MoneyRechargeActivity::class.java))
+            viewModel.checkRechargeSystem()
         }
     }
 
     private fun setupWithdrawButton() {
         btn_withdraw.setOnClickListener {
-            viewModel.withdrawCheckPermissions()
+            viewModel.checkWithdrawSystem()
         }
     }
 
@@ -147,10 +150,12 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun setupLogout() {
         btn_logout.setOnClickListener {
-            viewModel.logout()
-            run {
-                MainActivity.reStart(this)
+            viewModel.doLogoutCleanUser {
+                run {
+                    MainActivity.reStart(this)
+                }
             }
+
         }
     }
 
@@ -216,7 +221,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             //20200303 紀錄：跳轉其他 Activity 頁面，不需要切換 BottomNav 選取狀態
             when (it.itemId) {
                 R.id.home_page -> {
-                    viewModel.setGoToThirdGamePage(ThirdGameCategory.MAIN)
                     startActivity(Intent(this, MainActivity::class.java))
                     false
                 }
@@ -260,23 +264,38 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun initObserve() {
         viewModel.userMoney.observe(this, Observer {
-            refreshMoneyHideLoading()
-            tv_account_balance.text = it ?: ""
+            it?.let {
+                refreshMoneyHideLoading()
+                tv_account_balance.text = TextUtil.format(it)
+            }
         })
 
         viewModel.userInfo.observe(this, Observer {
             updateUI(it)
         })
 
+        viewModel.withdrawSystemOperation.observe(this, {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false) {
+                showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
+            }
+        })
+
+        viewModel.rechargeSystemOperation.observe(this, {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(this, MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
+                }
+            }
+        })
+
         viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_setting_withdraw_password)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -287,12 +306,8 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.needToCompleteProfileInfo.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, ProfileActivity::class.java))
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_complete_profile_info)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     viewModel.checkBankCardPermissions()
@@ -301,14 +316,10 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         })
 
         viewModel.needToBindBankCard.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { b ->
-                if (b) {
-                    SettingTipsDialog(this, SettingTipsDialog.SettingTipsDialogListener {
+            it.getContentIfNotHandled()?.let { messageId ->
+                if (messageId != -1) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(messageId),getString(R.string.go_to_setting),  true) {
                         startActivity(Intent(this, BankActivity::class.java))
-                    }).apply {
-                        setTipsTitle(R.string.withdraw_setting)
-                        setTipsContent(R.string.please_setting_bank_card)
-                        show(supportFragmentManager, "")
                     }
                 } else {
                     startActivity(Intent(this, WithdrawActivity::class.java))
@@ -319,7 +330,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password)) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
                         startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
                     }
                 } else if (!b) {
@@ -328,11 +339,24 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
             }
         })
 
-        viewModel.editIconUrlResult.observe(this, Observer {
-            if (it?.success == true)
-                ToastUtil.showToastInCenter(this, getString(R.string.save_avatar_success))
+        viewModel.settingNeedToCompleteProfileInfo.observe(this, {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
+                        startActivity(Intent(this, ProfileActivity::class.java))
+                    }
+                } else if (!b) {
+                    startActivity(Intent(this, BankActivity::class.java))
+                }
+            }
+        })
+
+        viewModel.editIconUrlResult.observe(this, {
+            val iconUrlResult = it?.getContentIfNotHandled()
+            if (iconUrlResult?.success == true)
+                showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
             else
-                ToastUtil.showToastInCenter(this, it?.msg)
+                iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         })
     }
 
@@ -366,7 +390,7 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file)
+        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 

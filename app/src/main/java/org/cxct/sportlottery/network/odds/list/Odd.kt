@@ -9,15 +9,20 @@ data class Odd(
     val id: String? = "",
     @Json(name = "odds")
     var odds: Double? = null,
+    @Json(name = "hkOdds")
+    var hkOdds: Double? = null,
     @Json(name = "producerId")
     var producerId: Int? = null,
     @Json(name = "spread")
     val spread: String? = null,
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code
-) {
-    var isSelected :Boolean? = false
-    var oddState: Int = OddState.SAME.state
+) : OddStateParams {
+    var isSelected: Boolean? = false
+    override var oddState: Int = OddState.SAME.state
+    @Transient
+    override var runnable: Runnable? = null
+    var outrightCateName: String? = null
 }
 
 //socket進來的新賠率較大或較小

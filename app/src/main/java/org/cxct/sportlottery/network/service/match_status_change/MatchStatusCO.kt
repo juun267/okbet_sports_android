@@ -6,6 +6,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MatchStatusCO(
+    @Json(name = "gameType")
+    val gameType: String?,
     @Json(name = "awayCards")
     val awayCards: Int? = null,
     @Json(name = "awayCornerKicks")

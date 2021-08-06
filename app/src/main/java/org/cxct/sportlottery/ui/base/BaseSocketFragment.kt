@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.base
 
+import org.cxct.sportlottery.service.BackService
 import kotlin.reflect.KClass
 
 abstract class BaseSocketFragment<T : BaseViewModel>(clazz: KClass<T>) : BaseFragment<T>(clazz) {
@@ -8,7 +9,6 @@ abstract class BaseSocketFragment<T : BaseViewModel>(clazz: KClass<T>) : BaseFra
         (activity as BaseSocketActivity<*>).receiver
     }
 
-    val service by lazy {
-        (activity as BaseSocketActivity<*>).backService
-    }
+    val service: BackService
+        get() = (activity as BaseSocketActivity<*>).backService
 }

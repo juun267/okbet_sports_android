@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter.nickname
 
+import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,12 +20,17 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
 import org.cxct.sportlottery.util.VerifyConstUtil
 
 class ModifyProfileInfoViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     private val _loading = MutableLiveData<Boolean>()
     private val _nicknameResult = MutableLiveData<NicknameResult?>()
@@ -169,8 +175,8 @@ class ModifyProfileInfoViewModel(
 
     private fun checkNickname(context: Context, nickname: String?) {
         _nickNameErrorMsg.value = when {
-            nickname.isNullOrBlank() -> context.getString(R.string.error_nickname_empty)
-            !VerifyConstUtil.verifyNickname(nickname) -> context.getString(R.string.error_incompatible_format)
+            nickname.isNullOrBlank() -> context.getString(R.string.error_input_empty)
+            !VerifyConstUtil.verifyNickname(nickname) -> context.getString(R.string.error_nickname)
             else -> ""
         }
     }
@@ -178,7 +184,7 @@ class ModifyProfileInfoViewModel(
     private fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
             fullName.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName) -> context.getString(R.string.error_incompatible_format)
+            !VerifyConstUtil.verifyFullName(fullName) -> context.getString(R.string.error_create_name)
             else -> ""
         }
     }

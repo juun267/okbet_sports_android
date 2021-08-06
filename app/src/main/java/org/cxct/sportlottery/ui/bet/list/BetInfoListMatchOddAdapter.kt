@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.bet.list
 
+
 import android.content.Context
 import android.graphics.Color
 import android.os.Handler
@@ -14,12 +15,12 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoMatchOddItemBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.Odd
 import org.cxct.sportlottery.network.odds.list.OddState
-import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.TextUtil
-import java.lang.Exception
+import org.cxct.sportlottery.util.getOdds
+
 
 class BetInfoListMatchOddAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
         RecyclerView.Adapter<BetInfoListMatchOddAdapter.ViewHolder>() {
@@ -31,40 +32,12 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
             notifyDataSetChanged()
         }
 
-    var updatedBetInfoList: MutableList<Odd> = mutableListOf()
+
+    var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
             notifyDataSetChanged()
         }
-
-
-    private fun updateItemDataFromSocket(matchOdd: MatchOdd, updatedBetInfoList: MutableList<Odd>) {
-        for (newItem in updatedBetInfoList) {
-            //null check後還是會crash 先以不crash為主
-            try {
-                newItem.id.let {
-                    if (it == matchOdd.oddsId) {
-                        matchOdd.oddState = getOddState(matchOdd.odds, newItem)
-                        newItem.odds?.let { odds -> matchOdd.odds = odds }
-                        newItem.status.let { status -> matchOdd.status = status }
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
-
-
-    private fun getOddState(oldItemOdd: Double, it: Odd): Int {
-        val newOdd = it.odds ?: 0.0
-        return when {
-            newOdd == oldItemOdd -> OddState.SAME.state
-            newOdd > oldItemOdd -> OddState.LARGER.state
-            newOdd < oldItemOdd -> OddState.SMALLER.state
-            else -> OddState.SAME.state
-        }
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -80,7 +53,6 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        updateItemDataFromSocket(matchOddList[position], updatedBetInfoList)
         holder.bind(matchOddList[position], position)
     }
 
@@ -89,7 +61,7 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
 
         fun bind(matchOdd: MatchOdd, position: Int) {
             binding.matchOdd = matchOdd
-            binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(matchOdd.odds)
+            binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
             val strVerse = context.getString(R.string.verse_lower)
             val strMatch = "${matchOdd.homeName}${strVerse}${matchOdd.awayName}"
@@ -105,23 +77,35 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
                     )
                 } else matchOdd.playCateName
 
-            when (matchOdd.status) {
-                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
-                    binding.tvCloseWarning.apply {
-                        visibility = View.VISIBLE
-                        text = context.getString(R.string.bet_info_list_game_closed)
+
+            if(matchOdd.gameType == matchOddList[0].gameType) {
+
+                binding.tvCloseWarning.text = context.getString(
+                    matchOdd.betAddError?.string ?: R.string.bet_info_list_game_closed
+                )
+
+                when (matchOdd.status) {
+                    BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                        binding.tvCloseWarning.visibility = View.VISIBLE
+                        (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 0.dp
                     }
-                    (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 0.dp
+
+                    BetStatus.ACTIVATED.code -> {
+                        binding.tvCloseWarning.visibility = if (matchOdd.betAddError == null) View.GONE else View.VISIBLE
+                        setChangeOdds(
+                            binding.betInfoDetail.tvOdds,
+                            binding.tvOddChange,
+                            matchOdd,
+                        )
+                        (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp
+                    }
                 }
 
-                BetStatus.ACTIVATED.code -> {
-                    binding.tvCloseWarning.visibility = View.GONE
-                    setChangeOdds(
-                            binding.betInfoDetail.tvOdds,
-                            binding.tvCloseWarning,
-                            matchOdd,
-                    )
-                    (binding.betInfoDetail.tvMatch.layoutParams as LinearLayout.LayoutParams).bottomMargin = 3.dp
+
+            }else{
+                binding.tvCloseWarning.apply {
+                    visibility = View.VISIBLE
+                    text = context.getString(R.string.bet_info_different_game_type)
                 }
             }
             binding.executePendingBindings()
@@ -135,45 +119,38 @@ class BetInfoListMatchOddAdapter(private val context: Context, private val onIte
     }
 
 
-    private fun setChangeOdds(tv_odds: TextView, tv_close_warning: TextView, matchOdd: MatchOdd) {
+    private fun setChangeOdds(tvOdds: TextView, tvOddChange: TextView, matchOdd: MatchOdd) {
         when (matchOdd.oddState) {
             OddState.LARGER.state -> {
-                changeColorByOdds(tv_close_warning)
-                tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
-                    text = TextUtil.formatForOdd(matchOdd.odds)
+                tvOddChange.visibility = View.VISIBLE
+                tvOdds.apply {
+                    setBackgroundColor(ContextCompat.getColor(tvOdds.context, R.color.colorRed))
+                    setTextColor(Color.WHITE)
+                    text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
                 onItemClickListener.onOddChange()
             }
 
             OddState.SMALLER.state -> {
-                changeColorByOdds(tv_close_warning)
-                tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.green))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.white))
-                    text = TextUtil.formatForOdd(matchOdd.odds)
+                tvOddChange.visibility = View.VISIBLE
+                tvOdds.apply {
+                    setBackgroundColor(ContextCompat.getColor(tvOdds.context, R.color.colorRed))
+                    setTextColor(Color.WHITE)
+                    text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
                 }
                 onItemClickListener.onOddChange()
             }
         }
 
         Handler().postDelayed({
-            tv_close_warning.visibility = View.GONE
-            tv_odds.apply {
-                setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.transparent))
-                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorOrange))
+            tvOddChange.visibility = View.GONE
+            tvOdds.apply {
+                setBackgroundColor(ContextCompat.getColor(tvOdds.context, R.color.transparent))
+                setTextColor(ContextCompat.getColor(tvOdds.context, R.color.colorOrange))
             }
         }, CHANGING_ITEM_BG_COLOR_DURATION)
 
     }
 
-
-    private fun changeColorByOdds(tv_close_warning: TextView) {
-        tv_close_warning.apply {
-            visibility = View.VISIBLE
-            text = context.getString(R.string.bet_info_list_game_odds_changed)
-        }
-    }
 
 }

@@ -53,7 +53,7 @@ class OtherBetRecordDetailFragment : BaseSocketFragment<OtherBetRecordViewModel>
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        viewModel.querySecondOrders(args.todayDate)
+        viewModel.querySecondOrders(args.platCode, args.todayDate)
         return inflater.inflate(R.layout.fragment_other_bet_record_detail, container, false)
     }
 

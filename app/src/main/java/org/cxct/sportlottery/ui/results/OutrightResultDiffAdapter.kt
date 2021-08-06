@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_outright_result_outright.view.*
 import kotlinx.android.synthetic.main.item_outright_result_title.view.*
 import org.cxct.sportlottery.R
-import java.text.SimpleDateFormat
-import java.util.*
+import org.cxct.sportlottery.util.TimeUtil
 
 class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightItemClickListener) : ListAdapter<OutrightResultData, RecyclerView.ViewHolder>(OutrightResultDiffCallBack()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -22,7 +21,7 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             OutrightType.OUTRIGHT.ordinal -> {
                 OutrightViewHolder.from(parent)
             }
-            else -> OutrightViewHolder.from(parent)
+            else -> NoDataViewHolder.from(parent)
         }
     }
 
@@ -39,10 +38,15 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             }
             is OutrightViewHolder -> {
                 holder.apply {
+                    setupBottomLine(position, holder.bottomLine)
                     bind(getItem(adapterPosition))
                 }
             }
         }
+    }
+
+    private fun setupBottomLine(position: Int, bottomLine: View) {
+        bottomLine.visibility = if (position + 1 < itemCount && getItemViewType(position + 1) != OutrightType.TITLE.ordinal) View.VISIBLE else View.GONE
     }
 
     class OutrightTitleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -93,24 +97,28 @@ class OutrightResultDiffAdapter(private val outrightItemClickListener: OutrightI
             }
         }
 
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
+
         fun bind(outrightResultData: OutrightResultData) {
             itemView.apply {
                 val seasonData = outrightResultData.seasonData
                 val outrightData = outrightResultData.outrightData
-
-                //TODO Dean : 之後多國語要check要怎麼顯示
-                val calendar = Calendar.getInstance()
-                val dateFormat = SimpleDateFormat("yyyy年MM月dd日 HH:mm")
-                tv_date.text = seasonData?.start?.let {
-                    calendar.timeInMillis = it.toLong()
-                    calendar.time
-                }?.let { date ->
-                    dateFormat.format(date)
-                }
-
+                tv_date.text = TimeUtil.timeFormat(seasonData?.start, "yyyy-MM-dd HH:mm")
                 tv_content.text = outrightData?.playCateName
-
                 tv_winner.text = outrightData?.playName
+            }
+        }
+    }
+
+    //無資料
+    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(parent: ViewGroup): NoDataViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_game_no_record, parent, false)
+
+                return NoDataViewHolder(view)
             }
         }
     }

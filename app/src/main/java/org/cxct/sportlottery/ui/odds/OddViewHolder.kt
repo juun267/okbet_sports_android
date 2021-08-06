@@ -5,13 +5,15 @@ import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.OddButtonHighLight
+import org.cxct.sportlottery.util.getOdds
 
 
 const val BUTTON_SPREAD_TYPE_CENTER: Int = 0
@@ -20,57 +22,68 @@ const val BUTTON_SPREAD_TYPE_BOTTOM: Int = 2
 
 
 abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+    interface OddStateChangeListener {
+        fun refreshOddButton(odd: Odd)
+    }
 
     private val rlOddItem = itemView.findViewById<RelativeLayout>(R.id.rl_odd_item)
     private val vCover = itemView.findViewById<View>(R.id.iv_disable_cover)
-    private val tvOdds = itemView.findViewById<TextView>(R.id.tv_odds)
-    private val tvName = itemView.findViewById<TextView>(R.id.tv_name)
+    private val tvName: TextView? = itemView.findViewById(R.id.tv_name)
     private val tvSpread = itemView.findViewById<TextView>(R.id.tv_spread)
 
+    val tvOdds: TextView? = itemView.findViewById(R.id.tv_odds)
 
-    fun setData(odd: Odd, onOddClickListener: OnOddClickListener, betInfoList: MutableList<BetInfoListData>, curMatchId: String?, spreadType: Int) {
+    var nameChangeColor: Boolean = true
 
-        if (rlOddItem != null) rlOddItem.visibility = if (odd.itemViewVisible) View.VISIBLE else View.GONE
+    fun setData(
+        oddsDetail: OddsDetailListData,
+        odd: Odd,
+        onOddClickListener: OnOddClickListener,
+        betInfoList: MutableList<BetInfoListData>,
+        spreadType: Int,
+        oddsType: OddsType
+    ) {
 
-        setData(odd)
-
-        OddButtonHighLight.set(tvOdds, tvSpread, odd)
-
-        when (spreadType) {
-            BUTTON_SPREAD_TYPE_CENTER -> {
-                tvOdds.gravity = Gravity.CENTER
-                tvOdds.setPadding(0, 0, 0, 0)
+        oddsDetail.gameType.let { type ->
+            when {
+                TextUtil.compareWithGameKey(type, OddsDetailListAdapter.GameType.HDP.value) -> showName(false)
             }
-            BUTTON_SPREAD_TYPE_END -> {
-                tvOdds.gravity = Gravity.END or Gravity.CENTER_VERTICAL
-            }
-            BUTTON_SPREAD_TYPE_BOTTOM -> {
-                tvOdds.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-            }
+        }
+
+        setItemVisibility(odd)
+        setOdds(odd, oddsType)
+        setName(odd)
+        setSpread(odd, spreadType)
+
+        tvOdds?.let {
+            OddButtonHighLight.set(
+                nameChangeColor,
+                tvName,
+                it,
+                tvSpread,
+                odd,
+                object : OddStateChangeListener {
+                    override fun refreshOddButton(odd: Odd) {
+                        odd.oddState = OddState.SAME.state
+                    }
+                })
         }
 
         when (odd.status) {
             BetStatus.ACTIVATED.code -> {
                 itemView.visibility = View.VISIBLE
                 vCover.visibility = View.GONE
-                tvOdds.isEnabled = true
+                tvOdds?.isEnabled = true
 
                 val select = betInfoList.any { it.matchOdd.oddsId == odd.id }
 
                 odd.isSelect = select
 
-                tvOdds.isSelected = odd.isSelect ?: false
+                tvOdds?.isSelected = odd.isSelect ?: false
                 tvSpread?.let { it.isSelected = odd.isSelect ?: false }
-                tvOdds.setOnClickListener {
-                    if (odd.isSelect != true) {
-                        if (curMatchId != null && betInfoList.any { it.matchOdd.matchId == curMatchId }) {
-                            return@setOnClickListener
-                        }
-                        onOddClickListener.getBetInfoList(odd)
-                    } else {
-                        onOddClickListener.removeBetInfoItem(odd)
-                    }
+                tvName?.let { it.isSelected = odd.isSelect ?: false }
+                itemView.setOnClickListener {
+                    onOddClickListener.getBetInfoList(odd, oddsDetail)
                 }
 
             }
@@ -78,7 +91,7 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             BetStatus.LOCKED.code -> {
                 itemView.visibility = View.VISIBLE
                 vCover.visibility = View.VISIBLE
-                tvOdds.isEnabled = false
+                tvOdds?.isEnabled = false
             }
 
 
@@ -86,24 +99,57 @@ abstract class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
                 //比照h5照樣顯示（文件為不顯示）
                 itemView.visibility = View.VISIBLE
                 vCover.visibility = View.VISIBLE
-                tvOdds.isEnabled = false
+                tvOdds?.isEnabled = false
             }
 
         }
     }
 
 
-    private fun setData(odd: Odd) {
+    fun showName(visible: Boolean) {
+        if (tvName != null) {
+            tvName.visibility = if (visible) View.VISIBLE else View.GONE
+        }
+    }
+
+
+    private fun setItemVisibility(odd: Odd) {
+        if (rlOddItem != null) rlOddItem.visibility = if (odd.itemViewVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+    }
+
+
+    private fun setOdds(odd: Odd, oddsType: OddsType) {
+        tvOdds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+    }
+
+
+    private fun setSpread(odd: Odd, spreadType: Int) {
         if (tvSpread != null && !odd.spread.isNullOrEmpty()) {
             tvSpread.text = odd.spread
         }
 
+        when (spreadType) {
+            BUTTON_SPREAD_TYPE_CENTER -> {
+                tvOdds?.gravity = Gravity.CENTER
+                tvOdds?.setPadding(0, 0, 0, 0)
+            }
+            BUTTON_SPREAD_TYPE_END -> {
+                tvOdds?.gravity = Gravity.END or Gravity.CENTER_VERTICAL
+            }
+            BUTTON_SPREAD_TYPE_BOTTOM -> {
+                tvOdds?.gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            }
+        }
+    }
+
+
+    private fun setName(odd: Odd) {
         if (tvName != null && !odd.name.isNullOrEmpty()) {
             tvName.text = odd.name
-        }
-
-        odd.odds?.let { odds ->
-            tvOdds.text = TextUtil.formatForOdd(odds)
         }
     }
 

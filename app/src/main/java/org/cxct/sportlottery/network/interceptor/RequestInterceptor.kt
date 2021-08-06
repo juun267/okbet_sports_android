@@ -17,10 +17,6 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
         context?.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
-    companion object {
-        val TAG = RequestInterceptor::class.java.simpleName
-    }
-
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         if (context == null) {
@@ -40,6 +36,7 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
         // ex : builder.addHeader("appKey", BuildConfig.APP_KEY)
 
         builder.addHeader("x-lang", LanguageManager.getSelectLanguage(context).key)
+
         sharedPref?.getString(KEY_TOKEN, "")?.let {
             builder.addHeader("x-session-token", it)
         }
@@ -53,7 +50,5 @@ class RequestInterceptor(private val context: Context?) : Interceptor {
             Timber.e("intercept Exception:$e")
             chain.proceed(request)
         }
-
     }
-
 }

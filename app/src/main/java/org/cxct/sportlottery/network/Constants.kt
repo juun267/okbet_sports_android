@@ -9,8 +9,8 @@ import java.net.URLEncoder
 
 object Constants {
     val SERVER_URL_LIST = listOf("app66app.com", "app99app.vip", "app66app.vip", "app88app.vip")
-    private var mBaseUrl = ""
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
+    private var mBaseUrl = ""
 
     fun setBaseUrl(baseUrl: String) {
         mBaseUrl = baseUrl
@@ -35,7 +35,12 @@ object Constants {
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
     fun getPromotionUrl(token: String?): String? {
         return try {
-            "${getBaseUrl()}/activity/mobile/#/useractilist?token=${URLEncoder.encode(token, "utf-8")}"
+            "${getBaseUrl()}/activity/mobile/#/useractilist?token=${
+                URLEncoder.encode(
+                    token,
+                    "utf-8"
+                )
+            }"
         } catch (e: UnsupportedEncodingException) {
             e.printStackTrace()
             null
@@ -57,7 +62,6 @@ object Constants {
         }
     }
 
-
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
         return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android.json"
@@ -65,7 +69,7 @@ object Constants {
 
     //.apk 下載 url
     fun getAppDownloadUrl(): String {
-        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk";
+        return "https://download." + currentServerUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/cp.apk"
     }
 
     fun getHostListUrl(serverUrl: String?): String {
@@ -89,8 +93,8 @@ object Constants {
 
     //bet
     const val MATCH_BET_INFO = "/api/front/match/bet/info"
-    const val MATCH_BET_ADD = "/api/front/match/bet/add"
-    const val MATCH_BET_LIST = "/api/front/match/bet/list"
+    const val MATCH_BET_ADD = "/api/front/match/bet/v1/add"
+    const val MATCH_BET_LIST = "/api/front/match/bet/v1/list"
 
     //index
     const val INDEX_LOGIN = "/api/front/index/login"
@@ -102,21 +106,25 @@ object Constants {
     const val INDEX_CHECK_EXIST = "/api/front/index/checkexist/{userName}" //检查账号名称是否已存在
     const val INDEX_CHECK_TOKEN = "/api/front/index/checktoken" //验证token 是否过期
     const val LOGIN_FOR_GUEST = "/api/front/index/loginforguest" //游客登录
-    const val INDEX_PROMOTENOTICE = "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
+    const val INDEX_PROMOTENOTICE =
+        "/api/front/index/promotenotice" //公告API 未登入不帶token 在投注区查询的时候带[1] 在首页的时候带[2,3]
+
+    //parlay limit
+    const val PLAYQUOTACOM_LIST = "/api/front/playQuotaCom/list" //获取所有体育玩法限额
 
     //league
     const val LEAGUE_LIST = "/api/front/match/league/list"
 
     //match
-    const val MATCH_PRELOAD = "/api/front/match/preload"
+    const val MATCH_PRELOAD = "/api/front/match/v1/preload"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"
     const val MATCH_RESULT_PLAY_LIST = "/api/front/match/result/play/list"
 
     //odds
-    const val MATCH_ODDS_LIST = "/api/front/match/odds/simple/list"
-    const val MATCH_ODDS_DETAIL = "/api/front/match/odds/detail"
+    const val MATCH_ODDS_LIST = "/api/front/match/odds/v1/simple/list"
+    const val MATCH_ODDS_DETAIL = "/api/front/match/odds/v1/detail"
 
     //sport
     const val SPORT_MENU = "/api/front/sport/mobile/menu"
@@ -125,7 +133,7 @@ object Constants {
     const val PLAYCATE_TYPE_LIST = "/api/front/playcate/type/list"
 
     //outright
-    const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/list"
+    const val OUTRIGHT_ODDS_LIST = "/api/front/outright/odds/v1/list"
     const val OUTRIGHT_RESULT_LIST = "/api/front/outright/result/list"
     const val OUTRIGHT_SEASON_LIST = "/api/front/outright/season/list"
     const val OUTRIGHT_BET_ADD = "/api/front/outright/bet/add"
@@ -179,7 +187,8 @@ object Constants {
     const val THIRD_ALL_TRANSFER_OUT = "/api/front/thirdapi/allTransferOut"
     const val THIRD_TRANSFER = "/api/front/thirdapi/{outPlat}/{inPlat}/transfer?=amount"
     const val THIRD_QUERY_TRANSFERS = "/api/front/thirdapi/queryTransfers"
-    const val THIRD_AUTO_TRANSFER = "/api/front/thirdapi/{inPlat}/autoTransfer" //自动转入、转出（先将第三方都转至彩票，再将彩票的余额转至第三方）
+    const val THIRD_AUTO_TRANSFER =
+        "/api/front/thirdapi/{inPlat}/autoTransfer" //自动转入、转出（先将第三方都转至彩票，再将彩票的余额转至第三方）
     const val THIRD_LOGIN = "/api/front/thirdapi/{firmType}/login" //登录
 
     const val QUERY_FIRST_ORDERS = "/api/front/thirdapi/queryFirstOrders"
@@ -192,5 +201,4 @@ object Constants {
 
     //rule type
     const val COMBO = "combo"
-
 }

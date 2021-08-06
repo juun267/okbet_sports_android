@@ -29,8 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="公告假文：工商银行停用通知；人护是仍现升诗时坐价一！有孩维样的师中院？大倒发机，说广的西家时，种常的形小质到不功片统业，友年度器量居味静，告作头这城思没师王保，心有作况业后去，工商银行停用通知；了选下步，到去般分想后史位当步那已；家前的…" />
@@ -41,6 +39,7 @@
         android:id="@+id/txv_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:gravity="start"
         android:textColor="@color/colorSilverDirk"
         android:textSize="@dimen/textSize12sp"

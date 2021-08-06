@@ -34,6 +34,7 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
             typedArray.recycle()
         }
     }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         homeGameDrawerAdapter.stopAllTimer()
@@ -63,7 +64,7 @@ class HomeGameTable @JvmOverloads constructor(context: Context, attrs: Attribute
 
             data.matchs.forEachIndexed { index, match ->
                 val itemType = if (index == data.matchs.lastIndex) ItemType.FOOTER else ItemType.ITEM
-                val itemEntity = GameEntity(itemType, data.code, data.name, data.num, match)
+                val itemEntity = GameEntity(itemType, data.code, data.name, data.num, match).apply { matchType = matchPreloadData.matchType }
                 gameDataList.add(itemEntity)
             }
         }

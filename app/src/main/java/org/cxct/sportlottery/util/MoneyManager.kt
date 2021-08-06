@@ -8,7 +8,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.TransferType
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -56,6 +56,7 @@ object MoneyManager {
             MoneyType.WX.code -> R.drawable.ic_wechat_pay
             MoneyType.CTF.code -> R.drawable.ic_tenpay
             MoneyType.ONLINE.code -> R.drawable.ic_online_pay
+            MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -66,6 +67,7 @@ object MoneyManager {
             MoneyType.WX_TYPE.code -> R.drawable.ic_wechat_pay_type
             MoneyType.CTF_TYPE.code -> R.drawable.ic_tenpay_type
             MoneyType.ONLINE_TYPE.code -> R.drawable.ic_online_pay_type
+            MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             else -> R.drawable.ic_bank_atm
         }
     }

@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.FeedBackRows
+import org.cxct.sportlottery.util.setDateTime
 
 class FeedbackListAdapter(var context: Context, private val clickListener: ItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -41,7 +43,6 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                holder.tvStatus.text = data[position].type?.let { getMsgStatus(it) }
                 val item = data[position]
                 holder.bind(item, clickListener)
             }
@@ -66,15 +67,31 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
 
         private val tvTime: TextView = itemView.findViewById(R.id.tv_time)
         private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
-        val tvStatus: TextView = itemView.findViewById(R.id.tv_status)
+        private val tvStatus: TextView = itemView.findViewById(R.id.tv_status)
         private val llContent: LinearLayout = itemView.findViewById(R.id.ll_content)
 
+        enum class Status(val status: Int) {
+            NOT_REPLY(0),
+            REPLIED(1)
+        }
+
+        private fun getMsgStatus(status: Int?): Int {
+            return when (status) {
+                Status.NOT_REPLY.status -> R.string.feedback_not_reply_yet
+                Status.REPLIED.status -> R.string.feedback_replied
+                else -> R.string.feedback_not_reply_yet
+            }
+        }
+
         fun bind(item: FeedBackRows, clickListener: ItemClickListener) {
-            tvTime.text = item.lastFeedbackTime?.toString()
+            tvTime.setDateTime(item.lastFeedbackTime)
             tvDescription.text = item.content
             llContent.setOnClickListener {
                 clickListener.onClick(item)
             }
+            tvStatus.text = tvStatus.context.getString(getMsgStatus(item.status))
+            val statusColor = if (item.status == 0) R.color.colorGray else R.color.colorGreen
+            tvStatus.setTextColor(ContextCompat.getColor(tvStatus.context, statusColor))
         }
 
         companion object {
@@ -110,11 +127,4 @@ class FeedbackListAdapter(var context: Context, private val clickListener: ItemC
         fun onClick(feedBackRows: FeedBackRows) = clickListener(feedBackRows)
     }
 
-    private fun getMsgStatus(status: Int): String {
-        return when (status) {
-            0 -> context.getString(R.string.feedback_not_reply_yet)
-            1 -> context.getString(R.string.feedback_replied)
-            else -> ""
-        }
-    }
 }

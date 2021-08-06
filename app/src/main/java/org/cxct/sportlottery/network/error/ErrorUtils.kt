@@ -78,7 +78,7 @@ import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
-import org.cxct.sportlottery.network.money.MoneyRechCfgResult
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult

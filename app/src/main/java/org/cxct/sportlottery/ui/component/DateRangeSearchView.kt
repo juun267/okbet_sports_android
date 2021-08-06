@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.finance.data.RechargeTime
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import java.util.*
 
 class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
@@ -66,11 +67,13 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     private fun initOnclick() {
         ll_start_date.setOnClickListener {
             bottomSheetView.calendar.setDateSelectedType(DateSelectedType.START)
+            bottomSheetView.tv_calendar_title.setText(R.string.start_date)
             calendarBottomSheet.show()
         }
 
         ll_end_date.setOnClickListener {
             bottomSheetView.calendar.setDateSelectedType(DateSelectedType.END)
+            bottomSheetView.tv_calendar_title.setText(R.string.end_date)
             calendarBottomSheet.show()
         }
     }
@@ -93,15 +96,11 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
     }
 
     private fun setRecordStartTime(start: Calendar) {
-        val startDateStr = TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd")
-        val startDate = RechargeTime(startDateStr, TimeUtil.getDayDateTimeRangeParams(startDateStr))
-        tv_start_date.text = startDate.date
+        tv_start_date.text = TimeUtil.timeFormat(start.timeInMillis, YMD_FORMAT)
     }
 
     private fun setRecordEndTime(end: Calendar) {
-        val endDateStr = TimeUtil.timeFormat(end.timeInMillis, "yyyy-MM-dd")
-        val endDate = RechargeTime(endDateStr, TimeUtil.getDayDateTimeRangeParams(endDateStr))
-        tv_end_date.text = endDate.date
+        tv_end_date.text = TimeUtil.timeFormat(end.timeInMillis, YMD_FORMAT)
     }
 
     private fun setupCalendarBottomSheet() {
@@ -125,7 +124,7 @@ class DateRangeSearchView @JvmOverloads constructor(context: Context, attrs: Att
         val calendarPastMonth = TimeUtil.getTodayEndTimeCalendar()
         calendarPastMonth.add(Calendar.DATE, -30)
         bottomSheetView.calendar.setSelectableDateRange(calendarPastMonth, calendarToday)
-        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(7).first, TimeUtil.getCalendarForDates(7).second)
+        bottomSheetView.calendar.setSelectedDateRange(TimeUtil.getCalendarForDates(6).first, TimeUtil.getCalendarForDates(6).second)
     }
 
 }

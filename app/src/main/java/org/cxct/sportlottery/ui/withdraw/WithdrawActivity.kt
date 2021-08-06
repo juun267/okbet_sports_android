@@ -7,10 +7,6 @@ import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 
 class WithdrawActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
-    companion object {
-        const val navigateKey = "NAVIGATE_FROM"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_withdraw)

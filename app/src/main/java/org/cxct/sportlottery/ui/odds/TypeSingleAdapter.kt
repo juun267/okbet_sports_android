@@ -7,33 +7,34 @@ import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class TypeSingleAdapter (
-    private val oddsList: List<Odd>,
+    private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val curMatchId: String?
+    private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeSingleAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_single_grid_3_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_single_grid_item, parent, false))
     }
 
 
     override fun getItemCount(): Int {
-        return oddsList.size
+        return oddsDetail.oddArrayList.size
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindModel(oddsList[position])
+        holder.bindModel(oddsDetail.oddArrayList[position])
     }
 
 
     inner class ViewHolder(view: View) : OddViewHolder(view) {
         fun bindModel(odd: Odd) {
-            setData(odd, onOddClickListener, betInfoList, curMatchId, BUTTON_SPREAD_TYPE_CENTER)
+            setData(oddsDetail, odd, onOddClickListener, betInfoList, BUTTON_SPREAD_TYPE_CENTER, oddsType)
         }
     }
 

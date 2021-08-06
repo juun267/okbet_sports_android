@@ -3,10 +3,10 @@ package org.cxct.sportlottery.ui.withdraw
 import android.os.Bundle
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_bank.*
-import kotlinx.android.synthetic.main.activity_setting_password.btn_back
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.TransferType
+import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+
 
 class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -38,11 +38,11 @@ class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel:
         modifyType?.let { type ->
             when (type) {
                 TransferType.BANK -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
                     mNavController.navigate(action)
                 }
                 TransferType.CRYPTO -> {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
                     mNavController.navigate(action)
                 }
             }
@@ -63,7 +63,7 @@ class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel:
 
     private fun setupBackButton() {
         btn_back.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 

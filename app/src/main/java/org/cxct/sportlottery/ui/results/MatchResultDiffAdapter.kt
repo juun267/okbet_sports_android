@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.results
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,8 +29,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.matchresult.list.Match
 import org.cxct.sportlottery.network.matchresult.list.MatchStatus
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
-import java.text.SimpleDateFormat
-import java.util.*
+import org.cxct.sportlottery.util.TimeUtil
 
 class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickListener) : ListAdapter<MatchResultData, RecyclerView.ViewHolder>(MatchResultDiffCallBack()) {
     var gameType: String = ""
@@ -49,7 +49,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             ListType.FIRST_ITEM_BM.ordinal -> BmDetailFirstItemViewHolder.from(parent)
             ListType.FIRST_ITEM_VB.ordinal -> VbDetailFirstItemViewHolder.from(parent)
             ListType.DETAIL.ordinal -> DetailItemViewHolder.from(parent)
-            else -> MatchViewHolder.from(parent)
+            else -> NoDataViewHolder.from(parent)
         }
     }
 
@@ -69,39 +69,50 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             is MatchViewHolder -> {
                 holder.apply {
                     bind(gameType, rvDataList, matchItemClickListener)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is FtDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData?.matchStatusList)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is BkDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is TnDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is BmDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is VbDetailFirstItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
             is DetailItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchDetailData)
+                    setupBottomLine(position, holder.bottomLine)
                 }
             }
         }
+    }
+
+    private fun setupBottomLine(position: Int, bottomLine: View) {
+        bottomLine.visibility = if (position + 1 < itemCount && (getItemViewType(position + 1) != ListType.TITLE.ordinal || getItemViewType(position) == ListType.MATCH.ordinal)) View.VISIBLE else View.GONE
     }
 
     class MatchTitleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -120,7 +131,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
         private fun setupData(itemView: View, gameType: String, item: MatchResultData) {
             itemView.apply {
-
                 titleArrowRotate(itemView, item)
 
                 tv_type.text = item.titleData?.name
@@ -143,7 +153,12 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
                     }
-                    else -> ""
+                    else -> {
+                        tv_first_half.visibility = View.GONE
+                        tv_second_half.visibility = View.GONE
+                        tv_end_game.visibility = View.GONE
+                        tv_full_game.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -174,6 +189,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 return MatchViewHolder(view)
             }
         }
+
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
             setupView(itemView, item)
@@ -212,7 +229,12 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
                     }
-                    else -> ""
+                    else -> {
+                        tv_first_half_score.visibility = View.GONE
+                        tv_second_half_score.visibility = View.GONE
+                        tv_end_game_score.visibility = View.GONE
+                        tv_full_game_score.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -226,14 +248,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 matchInfo?.let {
                     tv_home_name.text = matchInfo.homeName
                     tv_away_name.text = matchInfo.awayName
-
-                    //TODO Dean : 之後可以寫成Util
-                    val calendar = Calendar.getInstance()
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
-                    tv_time.text = dateFormat.format(matchInfo.startTime.let {
-                        calendar.timeInMillis = it.toLong()
-                        calendar.time
-                    })
+                    tv_time.text = TimeUtil.timeFormat(matchInfo.startTime, "yyyy-MM-dd HH:mm")
                 }
 
                 matchStatusList?.let {
@@ -248,19 +263,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                     tv_end_game_score.text = endGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                     tv_full_game_score.text = fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                 }
-
-
-/*                //判斷詳情展開或關閉
-                el_game_result_detail.setExpanded(mIsOpenList[position], false)
-
-                when (mIsOpenList[position]) {
-                    true -> {
-                        iv_switch.setImageResource(R.drawable.ic_more_on)
-                    }
-                    false -> {
-                        iv_switch.setImageResource(R.drawable.ic_more)
-                    }
-                }*/
             }
         }
 
@@ -285,6 +287,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
+
         fun bind(data: List<MatchStatus>?) {
             setupFtDetailFirstItem(data)
         }
@@ -292,9 +296,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun setupFtDetailFirstItem(data: List<MatchStatus>?) {
             val firstHalf = data?.find { it.status == StatusType.FIRST_HALF.code }
             val fullGame = data?.find { it.status == StatusType.OVER_TIME.code } ?: data?.find { it.status == StatusType.END_GAME.code }
-            fun getSituation(matchStatus: MatchStatus?, situationType: GameResultDetailAdapter.SituationType): String {
+            fun getSituation(matchStatus: MatchStatus?, situationType: SituationType): String {
                 when (situationType) {
-                    GameResultDetailAdapter.SituationType.YELLOW_CARD -> {
+                    SituationType.YELLOW_CARD -> {
                         matchStatus.let {
                             return if (it?.homeYellowCards == null || it.awayYellowCards == null)
                                 ""
@@ -302,7 +306,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                                 "${it.homeYellowCards} - ${it.awayYellowCards}"
                         }
                     }
-                    GameResultDetailAdapter.SituationType.CORNER_KICK -> {
+                    SituationType.CORNER_KICK -> {
                         matchStatus.let {
                             return if (it?.homeCornerKicks == null || it.awayCornerKicks == null)
                                 ""
@@ -314,10 +318,10 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
             itemView.apply {
                 ll_game_detail_first_item.visibility = View.VISIBLE
-                tv_first_half_card.text = getSituation(firstHalf, GameResultDetailAdapter.SituationType.YELLOW_CARD)
-                tv_full_game_card.text = getSituation(fullGame, GameResultDetailAdapter.SituationType.YELLOW_CARD)
-                tv_first_half_corner.text = getSituation(firstHalf, GameResultDetailAdapter.SituationType.CORNER_KICK)
-                tv_full_game_corner.text = getSituation(fullGame, GameResultDetailAdapter.SituationType.CORNER_KICK)
+                tv_first_half_card.text = getSituation(firstHalf, SituationType.YELLOW_CARD)
+                tv_full_game_card.text = getSituation(fullGame, SituationType.YELLOW_CARD)
+                tv_first_half_corner.text = getSituation(firstHalf, SituationType.CORNER_KICK)
+                tv_full_game_corner.text = getSituation(fullGame, SituationType.CORNER_KICK)
             }
         }
     }
@@ -331,6 +335,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 return BkDetailFirstItemViewHolder(view)
             }
         }
+
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupBkDetailFirstItem(detailData)
@@ -395,6 +401,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 return TnDetailFirstItemViewHolder(view)
             }
         }
+
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupTnDetailFirstItem(detailData)
@@ -475,6 +483,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+
         fun bind(detailData: Match?) {
             setupBmDetailFirstItem(detailData)
         }
@@ -554,6 +564,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+
         fun bind(detailData: Match?) {
             setupBmDetailFirstItem(detailData)
         }
@@ -632,14 +644,30 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
+        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+
         fun bind(detailData: MatchResultPlayList?) {
             setupDetailItem(detailData)
         }
 
+        @SuppressLint("SetTextI18n")
         private fun setupDetailItem(detailData: MatchResultPlayList?) {
             itemView.apply {
                 tv_play_cate_name.text = "${detailData?.playCateName} ${detailData?.spread}"
                 tv_play_name.text = detailData?.playName
+            }
+        }
+    }
+
+    //無資料
+    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(parent: ViewGroup): NoDataViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_game_no_record, parent, false)
+
+                return NoDataViewHolder(view)
             }
         }
     }

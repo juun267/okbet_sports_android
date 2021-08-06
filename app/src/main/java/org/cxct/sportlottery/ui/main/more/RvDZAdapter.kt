@@ -15,6 +15,7 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
 
 class RvDZAdapter : RecyclerView.Adapter<RvDZAdapter.ItemViewHolder>() {
 
@@ -69,7 +70,10 @@ class RvDZAdapter : RecyclerView.Adapter<RvDZAdapter.ItemViewHolder>() {
                 .thumbnail(0.5f)
                 .into(mIvImage)
 
-            mTvTitle.text = data?.englishName
+            mTvTitle.text = when (LanguageManager.getSelectLanguage(itemView.context)) {
+                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> data?.chineseName
+                else -> data?.englishName
+            }
 
             itemView.setOnClickListener {
                 if (!mIsEnabled) return@setOnClickListener

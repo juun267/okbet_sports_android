@@ -13,7 +13,9 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ItemBetRecordResultBinding
 import org.cxct.sportlottery.network.bet.list.Row
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 
 class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -21,23 +23,20 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
         ITEM, FOOTER, NO_DATA
     }
 
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     fun addFooterAndSubmitList(list: List<Row>?, isLastPage: Boolean) {
         adapterScope.launch {
-            val items = when (list) {
-                null -> listOf(DataItem.NoData)
-                else -> {
-                    when {
-                        list.isEmpty() -> listOf(DataItem.NoData)
-                        isLastPage -> {
-                            list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
-                        }
-                        else -> {
-                            list.map { DataItem.Item(it) }
-                        }
-                    }
-                }
+            val items = when {
+                list.isNullOrEmpty() -> listOf(DataItem.NoData)
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                else -> list.map { DataItem.Item(it) }
             }
 
             withContext(Dispatchers.Main) { //update in main ui thread
@@ -58,12 +57,14 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
         when (holder) {
             is ItemViewHolder -> {
                 val data = getItem(position) as DataItem.Item
-                holder.bind(data.row, clickListener)
+                holder.bind(data.row, clickListener, oddsType)
             }
 
-            is FooterViewHolder -> {}
+            is FooterViewHolder -> {
+            }
 
-            is NoDataViewHolder -> {}
+            is NoDataViewHolder -> {
+            }
         }
     }
 
@@ -76,11 +77,22 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
     }
 
     class ItemViewHolder private constructor(val binding: ItemBetRecordResultBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: Row, clickListener: ItemClickListener) {
+        fun bind(data: Row, clickListener: ItemClickListener, oddsType: OddsType) {
             binding.row = data
             binding.clickListener = clickListener
             binding.textUtil = TextUtil
+
+            binding.llRowsContent.visibility = if (data.parlayType == "1C1" || data.parlayType == "OUTRIGHT") View.VISIBLE else View.GONE
+            binding.tvParlayType.visibility = if (data.parlayType == "1C1" || data.parlayType == "OUTRIGHT") View.GONE else View.VISIBLE
+
+            val odds = getOdds(data.matchOdds[0], oddsType)
+            binding.tvOdds.text = if (odds > 0) {
+                String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
+            } else null
+
             binding.executePendingBindings()
+
+
         }
 
         companion object {

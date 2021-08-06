@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
-        android:text="0"
+        android:text="0.000"
         android:textStyle="bold"
         android:letterSpacing="0.1"
         android:textColor="@color/colorOrange"
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
-        android:text="0"
+        android:text="0.000"
         android:textStyle="bold"
         android:textColor="@color/colorGreen"
         android:letterSpacing="0.1"
@@ -103,7 +103,7 @@
         android:id="@+id/tv_register"
         android:layout_width="0dp"
         android:layout_height="40dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
         android:background="@drawable/bg_radius_4_button_orangelight"
         android:gravity="center"
@@ -113,7 +113,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_win_name"
-        app:layout_constraintWidth_percent="0.526" />
+        app:layout_constraintWidth_percent="0.546" />
 
     <TextView
         android:id="@+id/tv_add_more"

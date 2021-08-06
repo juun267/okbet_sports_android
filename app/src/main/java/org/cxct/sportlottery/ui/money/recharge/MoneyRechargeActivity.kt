@@ -1,15 +1,18 @@
 package org.cxct.sportlottery.ui.money.recharge
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_money_recharge.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
@@ -25,14 +28,16 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     var currentTab = RechargeType.TRANSFER_PAY
 
     private var bankTypeAdapter: MoneyBankTypeAdapter? = null
-
-
     private var transferPayList = mutableListOf<MoneyPayWayData>()
     private var onlinePayList = mutableListOf<MoneyPayWayData>()
 
     private var mCurrentFragment: Fragment? = null
 
     var apiResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
+
+    var cryptoResult: MoneyAddResult = MoneyAddResult(0, "", false, "")
+
+    private val CYRPTOPAY_INDEX = 11 //11-虚拟币支付
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +54,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     }
 
     private fun initToolbar() {
+        tv_toolbar_title.text = getString(R.string.recharge)
         btn_toolbar_back.setOnClickListener {
             finish()
         }
@@ -92,20 +98,19 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
             }
         })
 
-        viewModel.apiResult.observe(this@MoneyRechargeActivity, Observer {
+        //轉帳支付 - 銀行 微信 支付寶...
+        viewModel.transferPayResult.observe(this@MoneyRechargeActivity, Observer {
             apiResult = it ?: return@Observer
 
-            val payWay = if (btn_transfer_pay.isSelected)
-                this.getString(R.string.txv_transfer_pay)
-            else
-                this.getString(R.string.txv_online_pay)
+            val payWay = this.getString(R.string.txv_transfer_pay)
 
             if (!apiResult.success) {
                 //顯示彈窗
                 val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
                 with(customAlertDialog) {
-                    setTitle("提示")
+                    setTitle(resources.getString(R.string.prompt))
                     setMessage(apiResult.msg)
+                    setNegativeButtonText(null)
                 }.let {
                     customAlertDialog.show()
                 }
@@ -123,18 +128,52 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                             )
                         })
                     }, {
-                        showPromptDialog(
-                            getString(R.string.prompt),
-                            getString(R.string.content_coming_soon)
-                        ) {}
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
+                    })
+                )
+                moneySubmitDialog.show(supportFragmentManager, "")
+            }
+        })
+        //轉帳支付 - 虛擬幣
+        viewModel.cryptoPayResult.observe(this@MoneyRechargeActivity, Observer {
+            cryptoResult = it ?: return@Observer
+
+            val payWay = this.getString(R.string.txv_crypto_pay)
+
+            if (!cryptoResult.success) {
+                //顯示彈窗
+                val customAlertDialog = CustomAlertDialog(this@MoneyRechargeActivity)
+                with(customAlertDialog) {
+                    setTitle(resources.getString(R.string.prompt))
+                    setMessage(cryptoResult.msg)
+                    setNegativeButtonText(null)
+                    setTextColor(R.color.colorRed)
+                }.let {
+                    customAlertDialog.show()
+                }
+            } else {
+                //顯示成功彈窗
+                val moneySubmitDialog = MoneySubmitDialog(
+                    payWay,
+                    (cryptoResult.result ?: 0).toString(),
+                    MoneySubmitDialog.MoneySubmitDialogListener({
+                        finish()
+                        startActivity(Intent(this, FinanceActivity::class.java).apply {
+                            putExtra(
+                                RechargeViewLog,
+                                getString(R.string.record_recharge)
+                            )
+                        })
+                    }, {
+                        startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                     })
                 )
                 moneySubmitDialog.show(supportFragmentManager, "")
             }
         })
 
-        //在線支付提交申請
-        viewModel.onlinePaySubmit.observe(this@MoneyRechargeActivity, Observer {
+        //在線支付 - 提交申請
+        viewModel.onlinePayResult.observe(this@MoneyRechargeActivity, Observer {
             val payWay = this.getString(R.string.txv_online_pay)
 
             //顯示成功彈窗
@@ -150,17 +189,40 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                         )
                     })
                 }, {
-                    showPromptDialog(
-                        getString(R.string.prompt),
-                        getString(R.string.content_coming_soon)
-                    ) {}
+                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
                 })
             )
 
             moneySubmitDialog.show(supportFragmentManager, "")
+            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
         })
 
+        //在線支付 - 虛擬幣
+        viewModel.onlinePayCryptoResult.observe(this@MoneyRechargeActivity, Observer {
+            val payWay = this.getString(R.string.txv_online_pay)
+
+            //顯示成功彈窗
+            val moneySubmitDialog = MoneySubmitDialog(
+                payWay,
+                it.toString(),
+                MoneySubmitDialog.MoneySubmitDialogListener({
+                    finish()
+                    startActivity(Intent(this, FinanceActivity::class.java).apply {
+                        putExtra(
+                            RechargeViewLog,
+                            getString(R.string.record_recharge)
+                        )
+                    })
+                }, {
+                    startActivity(Intent(Intent.ACTION_VIEW).setData(Uri.parse(sConfigData?.customerServiceUrl)))
+                })
+            )
+
+            moneySubmitDialog.show(supportFragmentManager, "")
+            moneySubmitDialog.dialog?.setCanceledOnTouchOutside(true)
+        })
     }
+
 
     private fun initButton() {
         btn_transfer_pay.setOnClickListener {
@@ -178,8 +240,6 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     }
 
     private fun initView() {
-        btn_transfer_pay.isSelected = true
-        btn_online_pay.isSelected = false
 
         if ((!transferPayList.isNullOrEmpty() && currentTab == RechargeType.TRANSFER_PAY) || (!onlinePayList.isNullOrEmpty() && currentTab == RechargeType.ONLINE_PAY)) {
             block_no_type.visibility = View.VISIBLE
@@ -193,9 +253,16 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     }
 
     private fun getPayFragment(moneyPayWay: MoneyPayWayData): Fragment {
-        return when (moneyPayWay.rechType) {
-            "onlinePayment" -> OnlinePayFragment().setArguments(moneyPayWay)
+        return when {
+            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType == CYRPTOPAY_INDEX -> {
+                OnlineCryptoPayFragment().setArguments(moneyPayWay)
+            }
+            moneyPayWay.rechType == "onlinePayment" && moneyPayWay.onlineType != CYRPTOPAY_INDEX -> {
+                OnlinePayFragment().setArguments(moneyPayWay)
+            }
+            moneyPayWay.rechType == "cryptoPay" -> CryptoPayFragment().setArguments(moneyPayWay)
             else -> TransferPayFragment().setArguments(moneyPayWay)
+
         }
     }
 
@@ -205,6 +272,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     private fun changePage() {
         when (currentTab) {
             RechargeType.TRANSFER_PAY -> {
+                btn_transfer_pay.isChecked = true
                 bankTypeAdapter?.data = transferPayList
                 switchFragment(
                     getPayFragment(transferPayList[0]),
@@ -212,6 +280,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
                 )
             }
             RechargeType.ONLINE_PAY -> {
+                btn_online_pay.isChecked =true
                 bankTypeAdapter?.data = onlinePayList
                 switchFragment(
                     getPayFragment(onlinePayList[0]),
@@ -223,16 +292,6 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
 
     private fun setTab(selectTab: RechargeType) {
         currentTab = selectTab
-        when (currentTab) {
-            RechargeType.TRANSFER_PAY -> {
-                btn_transfer_pay.isSelected = true
-                btn_online_pay.isSelected = false
-            }
-            RechargeType.ONLINE_PAY -> {
-                btn_transfer_pay.isSelected = false
-                btn_online_pay.isSelected = true
-            }
-        }
     }
 
     /**
@@ -257,6 +316,7 @@ class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRec
     private fun initRecyclerView() {
         bankTypeAdapter = MoneyBankTypeAdapter(MoneyBankTypeAdapter.ItemClickListener {
             switchFragment(getPayFragment(it), it.rechType)
+            this@MoneyRechargeActivity.currentFocus?.clearFocus()
             viewModel.clearnRechargeStatus()
         })
         rv_pay_type.layoutManager = GridLayoutManager(this@MoneyRechargeActivity, 2)

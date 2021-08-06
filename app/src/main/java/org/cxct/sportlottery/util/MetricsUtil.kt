@@ -2,6 +2,8 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import android.content.res.Resources
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import kotlin.math.max
 
 object MetricsUtil {
 
@@ -53,6 +55,13 @@ object MetricsUtil {
 
     //側邊欄寬度(依螢幕寬比例)
     fun getMenuWidth(): Int {
-        return (getScreenWidth() * 0.6).toInt()
+        return max((getScreenWidth() * 0.68).toInt(), 255.dp)
     }
+
+    fun getStatusBarHeight(): Int {
+        val rid = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android")
+        return if (rid > 0) Resources.getSystem().getDimensionPixelSize(rid) else 0
+
+    }
+
 }

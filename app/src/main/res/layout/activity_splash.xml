@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/loading_get_config"
-                android:textColor="@color/gray4" />
+                android:textColor="@color/colorBlack" />
 
         </LinearLayout>
 

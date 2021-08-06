@@ -33,85 +33,114 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/bg_update"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolBar">
+        app:layout_constraintTop_toBottomOf="@id/toolBar" />
 
-        <com.makeramen.roundedimageview.RoundedImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@null"
-            android:src="@mipmap/ic_launcher"
-            app:riv_corner_radius="10dp" />
+    <!-- 20210422 紀錄：調整 iv_logo 中心點在 layout 三分之一位置-->
+    <View
+        android:id="@+id/guideline"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline_h" />
 
-        <TextView
-            android:id="@+id/tv_version"
-            android:layout_width="wrap_content"
+    <View
+        android:id="@+id/guideline_h"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolBar"
+        app:layout_constraintVertical_bias="0.3333" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp"
-            tools:text="v2.0.37" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_version_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize12sp"
-            tools:text="有新的版本(v13_1.2.3)可更新" />
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/iv_logo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"
+                android:src="@mipmap/ic_launcher"
+                app:riv_corner_radius="10dp" />
 
-        <ProgressBar
-            android:id="@+id/pb_update"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="8dp"
-            android:layout_marginTop="15dp"
-            android:indeterminate="false"
-            android:max="100"
-            android:minWidth="280dp"
-            android:progressDrawable="@drawable/gradient_progress"
-            tools:progress="33" />
+            <TextView
+                android:id="@+id/tv_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
+                tools:text="v2.0.37" />
 
-        <Button
-            android:id="@+id/btn_internal_download"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/bg_radius_20_button_dusk"
-            android:minWidth="240dp"
-            android:minHeight="36dp"
-            android:text="@string/internal_download"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize14sp" />
+            <TextView
+                android:id="@+id/tv_version_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="有新的版本(v13_1.2.3)可更新" />
 
-        <Button
-            android:id="@+id/btn_external_download"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/bg_radius_20_button_dusk_stroke"
-            android:minWidth="240dp"
-            android:minHeight="36dp"
-            android:text="@string/external_download"
-            android:textAllCaps="false"
-            android:textColor="@color/colorBlue"
-            android:textSize="@dimen/textSize14sp"
-            android:textStyle="bold" />
+            <ProgressBar
+                android:id="@+id/pb_update"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="8dp"
+                android:layout_marginTop="15dp"
+                android:indeterminate="false"
+                android:max="100"
+                android:minWidth="280dp"
+                android:progressDrawable="@drawable/gradient_progress"
+                tools:progress="33" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_internal_download"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_radius_20_button_dusk"
+                android:minWidth="240dp"
+                android:minHeight="36dp"
+                android:text="@string/internal_download"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize14sp" />
+
+            <Button
+                android:id="@+id/btn_external_download"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_radius_20_button_dusk_stroke"
+                android:minWidth="240dp"
+                android:minHeight="36dp"
+                android:text="@string/external_download"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <include
         android:id="@+id/layout_loading"

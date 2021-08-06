@@ -5,6 +5,8 @@ import android.content.*
 import android.os.Bundle
 import android.os.IBinder
 import androidx.lifecycle.Observer
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
@@ -50,9 +52,21 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             })
         })
 
-        viewModel.errorResultToken.observe(this, Observer {
-            backService.apply {
-                //TODO Dean : 待解除訂閱方法完善後加入解除訂閱私人頻道
+        receiver.serviceConnectStatus.observe(this, Observer { status ->
+            when (status) {
+                ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT -> {
+                    hideLoading()
+                    showErrorPromptDialog(getString(R.string.message_socket_connect)) { backService.doReconnect() }
+                }
+                else -> {
+                    //do nothing
+                }
+            }
+        })
+
+        receiver.playQuotaChange.observe(this, {
+            it?.playQuotaComData?.let { playQuotaComData ->
+                viewModel.updatePlayQuota(playQuotaComData)
             }
         })
     }

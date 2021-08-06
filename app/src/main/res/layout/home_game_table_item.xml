@@ -22,6 +22,7 @@
             android:paddingEnd="4dp"
             android:textColor="@color/colorRedDark"
             android:textSize="@dimen/textSize18sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="0" />
@@ -35,6 +36,7 @@
             android:paddingEnd="4dp"
             android:textColor="@color/colorRedDark"
             android:textSize="@dimen/textSize18sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_score1"
             tools:text="0" />

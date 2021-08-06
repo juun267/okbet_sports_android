@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.money_transfer.record
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +63,8 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewModel.getAllBalance()
         viewModel.queryTransfers()
-        viewModel.setToolbarName(getString(R.string.record_conversion))
+        viewModel.setToolbarName(getString(R.string.account_transfer))
+
         return inflater.inflate(R.layout.fragment_money_transfer_record, container, false)
     }
 
@@ -86,19 +88,34 @@ class MoneyTransferRecordFragment : BaseSocketFragment<MoneyTransferViewModel>(M
         }
 
         date_search_bar.setOnClickSearchListener {
-            viewModel.queryTransfers(startTime = date_search_bar.startTime.toString(), endTime = date_search_bar.endTime.toString(), firmTypeIn = selector_in_plat.selectedTag, firmTypeOut = selector_out_plat.selectedTag, status = selector_transfer_status.selectedTag)
+            viewModel.queryTransfers(startTime = date_search_bar.startTime.toString(),
+                                     endTime = date_search_bar.endTime.toString(),
+                                     firmTypeIn = selector_in_plat.selectedTag,
+                                     firmTypeOut = selector_out_plat.selectedTag,
+                                     status = selector_transfer_status.selectedTag)
         }
-    }
 
+        selector_out_plat.setOnItemSelectedListener {
+            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.IN_PLAT, it.showName)
+        }
+
+        selector_in_plat.setOnItemSelectedListener {
+            viewModel.filterRecordList(MoneyTransferViewModel.PLAT.OUT_PLAT, it.showName)
+        }
+
+    }
 
     private fun initObserver() {
         viewModel.queryTransfersResult.observe(viewLifecycleOwner) {
             rvAdapter.addFooterAndSubmitList(viewModel.recordDataList, viewModel.isLastPage)
         }
 
-        viewModel.allBalanceResultList.observe(viewLifecycleOwner) {
-            selector_out_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.OUT_PLAT, it)
-            selector_in_plat.dataList = viewModel.getRecordPlatNameList(MoneyTransferViewModel.PLAT.IN_PLAT, it)
+        viewModel.recordInPlatSheetList.observe(viewLifecycleOwner) {
+            selector_in_plat.dataList = it
+        }
+
+        viewModel.recordOutPlatSheetList.observe(viewLifecycleOwner) {
+            selector_out_plat.dataList = it
         }
     }
 

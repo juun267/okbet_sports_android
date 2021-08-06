@@ -17,9 +17,9 @@ import org.cxct.sportlottery.ui.main.MainViewModel
 class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewModel>(MainViewModel::class) {
 
     private val mRvTabManager by lazy { LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) }
-    private val mNewsTabAdapter by lazy { NewsTabAdapter(context) }
+    private val mNewsTabAdapter by lazy { NewsTabAdapter(context, mMessageList) }
     private val mRvContentManager by lazy { LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) }
-    private val mNewsContentAdapter by lazy {NewsContentAdapter() }
+    private val mNewsContentAdapter by lazy { NewsContentAdapter() }
 
     init {
         setStyle(R.style.CustomDialogStyle)
@@ -55,7 +55,7 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     switchRvTabArrow()
                 }
-           }
+            }
         })
         PagerSnapHelper().attachToRecyclerView(rv_tab)
 

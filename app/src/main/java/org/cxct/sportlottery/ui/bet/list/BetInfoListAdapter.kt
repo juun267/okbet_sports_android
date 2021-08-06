@@ -1,16 +1,17 @@
 package org.cxct.sportlottery.ui.bet.list
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Handler
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
@@ -19,20 +20,18 @@ import org.cxct.sportlottery.databinding.ContentBetInfoItemSingleBinding
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.detail.Odd
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.network.odds.list.OddState
-import org.cxct.sportlottery.ui.game.outright.CHANGING_ITEM_BG_COLOR_DURATION
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.OnForbidClickListener
 import org.cxct.sportlottery.util.TextUtil
-import java.lang.Exception
-import java.math.RoundingMode
+import org.cxct.sportlottery.util.getOdds
 
-const val NOT_INPLAY: Int = 0
 const val INPLAY: Int = 1
+const val CHANGING_ITEM_BG_COLOR_DURATION: Long = 3000
 
+@SuppressLint("SetTextI18n", "ClickableViewAccessibility")
 class BetInfoListAdapter(private val context: Context, private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<BetInfoListAdapter.ViewHolder>() {
 
@@ -47,45 +46,20 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
 
-    var updatedBetInfoList: MutableList<Odd> = mutableListOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     var isNeedRegister: Boolean = false
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    private fun updateItemDataFromSocket(betInfo: BetInfoListData, updatedBetInfoList: MutableList<Odd>) {
-        for (newItem in updatedBetInfoList) {
-            //null check後還是會crash 先以不crash為主
-            try {
-                newItem.id.let {
-                    if (it == betInfo.matchOdd.oddsId) {
-                        betInfo.matchOdd.oddState = getOddState(betInfo.matchOdd.odds, newItem)
-                        newItem.odds?.let { odds -> betInfo.matchOdd.odds = odds }
-                        newItem.status?.let { status -> betInfo.matchOdd.status = status }
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 
-
-    private fun getOddState(oldItemOdd: Double, it: Odd): Int {
-        val newOdd = it.odds ?: 0.0
-        return when {
-            newOdd == oldItemOdd -> OddState.SAME.state
-            newOdd > oldItemOdd -> OddState.LARGER.state
-            newOdd < oldItemOdd -> OddState.SMALLER.state
-            else -> OddState.SAME.state
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            field = value
+            notifyDataSetChanged()
         }
-    }
+
+    private val mHandler = Handler()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -99,10 +73,15 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         return betInfoList.size
     }
 
+    //20210603 紀錄問題：修正 notifyDataSetChanged() 造成 EditText focus 錯亂問題
+    //https://blog.csdn.net/chenli_001/article/details/114752021
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        updateItemDataFromSocket(betInfoList[position], updatedBetInfoList)
-        holder.bind(betInfoList[position], position)
+        holder.bind(position)
     }
 
 
@@ -110,30 +89,28 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
         var inputError: Boolean = false
 
-        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd) {
-
+        private fun check(it: String, matchOdd: MatchOdd, parlayOdd: ParlayOdd?) {
             if (TextUtils.isEmpty(it)) {
                 binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
-                binding.betInfoAction.tv_bet_quota.text = "0"
-                binding.betInfoAction.tv_win_quota.text = "0"
+                binding.betInfoAction.tv_bet_quota.text = "0.000"
+                binding.betInfoAction.tv_win_quota.text = "0.000"
                 binding.tvErrorMessage.visibility = View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = 11.dp
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = true
                     background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
-                    setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorWhite))
                 }
             } else {
                 val quota = it.toLong()
                 when {
-                    quota > parlayOdd.max -> {
+                    quota > parlayOdd?.max ?: 0 -> {
                         inputError = true
-                        binding.tvErrorMessage.text = String.format(binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit), parlayOdd.max.toString())
+                        binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_bigger_than_max_limit)
                         binding.etBet.setBackgroundResource(R.drawable.bg_radius_4_edittext_error)
                     }
-                    quota < parlayOdd.min -> {
+                    quota < parlayOdd?.min ?: 0 -> {
                         inputError = true
-                        binding.tvErrorMessage.text = String.format(binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit), parlayOdd.min.toString())
+                        binding.tvErrorMessage.text = binding.root.context.getString(R.string.bet_info_list_less_than_minimum_limit)
                         binding.etBet.setBackgroundResource(R.drawable.bg_radius_4_edittext_error)
                     }
                     else -> {
@@ -141,23 +118,25 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         binding.etBet.setBackgroundResource(R.drawable.effect_select_bet_edit_text)
                     }
                 }
-                val win = ArithUtil.round(it.toDouble() * matchOdd.odds, 3, RoundingMode.HALF_UP).toDouble()
+                var win = it.toDouble() * getOdds(matchOdd, oddsType)
+
+                if (oddsType == OddsType.EU) {
+                    win -= quota
+                }
                 binding.betInfoAction.tv_bet_quota.text = TextUtil.format(quota)
                 binding.betInfoAction.tv_win_quota.text = TextUtil.format(win)
 
                 binding.tvErrorMessage.visibility = if (inputError) View.VISIBLE else View.GONE
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = if (inputError) 0.dp else 11.dp
                 binding.etBet.setTextColor(
-                    if (inputError) ContextCompat.getColor(binding.root.context, R.color.colorRedDark) else ContextCompat.getColor(binding.root.context, R.color.main_dark)
+                    if (inputError) ContextCompat.getColor(binding.root.context, R.color.colorRedDark) else ContextCompat.getColor(binding.root.context, R.color.colorBlackLight)
                 )
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = if (inputError) {
                         background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_unselected)
-                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.bright_gray))
                         false
                     } else {
                         background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
-                        setTextColor(ContextCompat.getColor(binding.root.context, R.color.colorWhite))
                         true
                     }
                 }
@@ -165,18 +144,16 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         }
 
         private fun componentStatusByOdds(
-            betVisible: Int, warningVisible: Int, warningString: Int,
-            betTextBg: Int, betTextColor: Int, clickable: Boolean,
+            betVisible: Int, warningVisible: Int,
+            betTextBg: Int, clickable: Boolean,
             moreTextBg: Int, moreTextColor: Int, moreClickable: Boolean
         ) {
             binding.llBet.visibility = betVisible
             binding.tvCloseWarning.apply {
                 visibility = warningVisible
-                text = context.getString(warningString)
             }
             binding.betInfoAction.tv_bet.apply {
                 background = ContextCompat.getDrawable(binding.root.context, betTextBg)
-                setTextColor(ContextCompat.getColor(binding.root.context, betTextColor))
                 isClickable = clickable
             }
 
@@ -188,21 +165,24 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
 
         }
 
-        fun bind(mBetInfoList: BetInfoListData, position: Int) {
 
+        fun bind(position: Int) {
             /* fix focus */
             if (binding.etBet.tag is TextWatcher) {
                 binding.etBet.removeTextChangedListener(binding.etBet.tag as TextWatcher)
             }
             binding.etBet.onFocusChangeListener = null
 
-
-            val matchOdd = mBetInfoList.matchOdd
-            val parlayOdd = mBetInfoList.parlayOdds
+            val data = betInfoList[position]
+            val matchOdd = data.matchOdd
+            val parlayOdd = data.parlayOdds
             binding.matchOdd = matchOdd
-            binding.parlayOdd = parlayOdd
+            parlayOdd?.let {
+                binding.parlayOdd = parlayOdd
+            }
+
             binding.betInfoDetail.apply {
-                when (mBetInfoList.matchType) {
+                when (data.matchType) {
                     MatchType.OUTRIGHT -> {
                         tvOddsSpread.visibility = View.GONE
                         tvMatch.visibility = View.GONE
@@ -220,11 +200,15 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     }
                 }
             }
-
-            binding.etBet.hint = String.format(binding.root.context.getString(R.string.bet_info_list_hint), TextUtil.formatForBetHint(parlayOdd.max))
-            binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(matchOdd.odds)
+            parlayOdd?.let {
+                binding.etBet.hint = String.format(
+                    binding.root.context.getString(R.string.bet_info_list_hint),
+                    TextUtil.formatForBetHint(parlayOdd.max)
+                )
+            }
+            binding.betInfoDetail.tvOdds.text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
             binding.betInfoDetail.ivDelete.setOnClickListener { onItemClickListener.onDeleteClick(position) }
-            binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(mBetInfoList) }
+            binding.betInfoAction.tv_add_more.setOnClickListener { onItemClickListener.onAddMoreClick(data) }
             binding.ivClearText.setOnClickListener { binding.etBet.text.clear() }
 
             val strVerse = context.getString(R.string.verse_lower)
@@ -242,19 +226,24 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     )
                 } else matchOdd.playCateName
 
-            binding.etBet.setText(mBetInfoList.input)
+            binding.etBet.setText(data.input)
+
             check(binding.etBet.text.toString(), matchOdd, parlayOdd)
 
             /* check input focus */
             if (position == focusPosition) {
                 binding.etBet.requestFocus()
                 binding.etBet.setSelection(binding.etBet.text.length)
+            } else {
+                binding.etBet.clearFocus()
             }
 
             /* set listener */
             val tw = object : TextWatcher {
                 override fun afterTextChanged(it: Editable?) {
-                    check(it.toString(), matchOdd, parlayOdd)
+                    parlayOdd?.let { pOdd ->
+                        check(it.toString(), matchOdd, pOdd)
+                    }
                     if (TextUtils.isEmpty(it)) {
                         betInfoList[position].input = ""
                     } else {
@@ -267,108 +256,153 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
             }
 
             val fc = View.OnFocusChangeListener { _, hasFocus ->
-                if (hasFocus) {
-                    focusPosition = position
-                    binding.etBet.requestFocus()
-                } else {
+                if (hasFocus && position != focusPosition)
                     binding.etBet.clearFocus()
-                }
             }
 
             binding.etBet.onFocusChangeListener = fc
             binding.etBet.addTextChangedListener(tw)
             binding.etBet.tag = tw
 
+            binding.etBet.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_UP) {
+                    focusPosition = position
+                    onItemClickListener.onShowKeyboard(binding.etBet, matchOdd)
+                }
+                false
+            }
+
+            binding.tvCloseWarning.text = context.getString(
+                matchOdd.betAddError?.string ?: R.string.bet_info_list_game_closed
+            )
+
             when (matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
                     componentStatusByOdds(
                         betVisible = View.GONE,
                         warningVisible = View.VISIBLE,
-                        warningString = R.string.bet_info_list_game_closed,
                         betTextBg = R.drawable.bg_radius_4_button_unselected,
-                        betTextColor = R.color.colorWhite,
                         clickable = false,
                         moreTextBg = R.drawable.bg_radius_4_button_unselected,
                         moreTextColor = R.color.colorWhite,
                         moreClickable = false
                     )
+
+                    binding.betInfoAction.tv_bet.apply {
+                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_unselected)
+                        isClickable = false
+                        text = context.getString(R.string.bet_info_list_bet)
+                    }
+
                 }
+
 
                 BetStatus.ACTIVATED.code -> {
                     componentStatusByOdds(
                         betVisible = View.VISIBLE,
-                        warningVisible = View.GONE,
-                        warningString = R.string.bet_info_list_bet,
+                        warningVisible = if (matchOdd.betAddError == null) View.GONE else View.VISIBLE,
                         betTextBg = R.drawable.bg_radius_4_button_orangelight,
-                        betTextColor = R.color.colorWhite,
                         clickable = true,
                         moreTextBg = R.drawable.bg_radius_4_button_colorwhite6,
                         moreTextColor = R.color.colorGray,
                         moreClickable = true
                     )
-                    setChangeOdds(
-                        binding.betInfoAction.tv_bet,
-                        binding.betInfoDetail.tvOdds,
-                        binding.tvCloseWarning,
-                        matchOdd,
-                        inputError
-                    )
+
+                    binding.betInfoAction.tv_bet.apply {
+                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
+                        isClickable = true
+                        text = context.getString(
+                            if (data.matchOdd.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
+                        )
+                    }
+                    setChangeOdds(position, matchOdd)
                 }
             }
             binding.executePendingBindings()
 
 
-            setupBetButton()
+            setupBetButton(data)
             setupRegisterButton()
+        }
+
+        private fun setChangeOdds(position: Int, matchOdd: MatchOdd) {
+            when (matchOdd.oddState) {
+                OddState.LARGER.state, OddState.SMALLER.state -> {
+                    binding.tvOddChange.visibility = View.VISIBLE
+
+                    binding.betInfoDetail.tvOdds.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorRed))
+                        setTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        text = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+                    }
+                    onItemClickListener.saveOddsHasChanged(matchOdd)
+
+                    //先清除前一次任務
+                    matchOdd.changeOddsTask?.let { mHandler.removeCallbacks(it) }
+                    val changeOddsTask = Runnable {
+                        matchOdd.changeOddsTask = null
+                        notifyItemChanged(position)
+                    }
+
+                    //三秒後 恢復 Odd 狀態
+                    mHandler.postDelayed(changeOddsTask, CHANGING_ITEM_BG_COLOR_DURATION)
+                    matchOdd.changeOddsTask = changeOddsTask
+                }
+
+                else -> {
+                    //若有 賠率變更 任務還未執行完，就不刷新
+                    if (matchOdd.changeOddsTask != null)
+                        return
+
+                    when (inputError) {
+                        true -> {
+                            binding.betInfoAction.tv_bet.apply {
+                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_unselected)
+                                setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
+                                isClickable = false
+                            }
+                        }
+                        false -> {
+                            binding.betInfoAction.tv_bet.apply {
+                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orangelight)
+                                setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
+                                isClickable = true
+                            }
+                        }
+                    }
+
+                    binding.tvOddChange.visibility = View.GONE
+
+                    binding.betInfoDetail.tvOdds.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.transparent))
+                        setTextColor(ContextCompat.getColor(context, R.color.colorOrange))
+                    }
+                }
+            }
         }
 
         private fun setupRegisterButton() {
             binding.betInfoAction.tv_register.apply {
-                visibility = if (isNeedRegister) {
-                    View.VISIBLE
-                } else {
-                    View.INVISIBLE
-                }
-
-                setOnClickListener {
-                    onItemClickListener.onRegisterClick()
-                }
+                visibility = if (isNeedRegister) View.VISIBLE else View.INVISIBLE
+                setOnClickListener { onItemClickListener.onRegisterClick() }
             }
         }
 
-        private fun setupBetButton() {
+        private fun setupBetButton(data: BetInfoListData) {
             binding.betInfoAction.tv_bet.apply {
-                visibility = if (isNeedRegister) {
-                    View.INVISIBLE
-                } else {
-                    View.VISIBLE
-                }
+                visibility = if (isNeedRegister) View.INVISIBLE else View.VISIBLE
 
                 setOnClickListener(object : OnForbidClickListener() {
                     override fun forbidClick(view: View?) {
-                        val stake = if (TextUtils.isEmpty(binding.etBet.text.toString())) {
+                        if (data.matchOdd.status == BetStatus.LOCKED.code || data.matchOdd.status == BetStatus.DEACTIVATED.code) return
+                        val stake = if (binding.etBet.text.toString().isEmpty()) {
                             0.0
                         } else {
                             binding.etBet.text.toString().toDouble()
                         }
-                        onItemClickListener.onBetClick(betInfoList[position], stake)
+                        onItemClickListener.onBetClick(data, stake)
                     }
                 })
-            }
-        }
-    }
-
-
-    fun modify(list: MutableList<BetInfoListData>, position: Int) {
-        if (betInfoList.size == 0) {
-            betInfoList.addAll(list)
-            notifyDataSetChanged()
-        } else if (list.size < betInfoList.size) {
-            with(betInfoList) {
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(0, betInfoList.size)
-                clear()
-                addAll(list)
             }
         }
     }
@@ -379,64 +413,8 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
         fun onBetClick(betInfoListData: BetInfoListData, stake: Double)
         fun onAddMoreClick(betInfoList: BetInfoListData)
         fun onRegisterClick()
-    }
-
-
-    private fun setChangeOdds(tv_bet: TextView, tv_odds: TextView, tv_close_warning: TextView, matchOdd: MatchOdd, error: Boolean) {
-        when (matchOdd.oddState) {
-            OddState.LARGER.state -> {
-                changeColorByOdds(tv_bet, tv_close_warning)
-                tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.orangeRed))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
-                    text = TextUtil.formatForOdd(matchOdd.odds)
-                }
-            }
-
-            OddState.SMALLER.state -> {
-                changeColorByOdds(tv_bet, tv_close_warning)
-                tv_odds.apply {
-                    setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.colorGreen))
-                    setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorWhite))
-                    text = TextUtil.formatForOdd(matchOdd.odds)
-                }
-            }
-        }
-
-        Handler().postDelayed({
-            when (error) {
-                true -> {
-                    tv_bet.apply {
-                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_unselected)
-                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.bright_gray))
-                        isClickable = false
-                    }
-                }
-                false -> {
-                    tv_bet.apply {
-                        background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orangelight)
-                        setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
-                        isClickable = true
-                    }
-                }
-            }
-            tv_close_warning.visibility = View.GONE
-            tv_odds.apply {
-                setBackgroundColor(ContextCompat.getColor(tv_odds.context, R.color.transparent))
-                setTextColor(ContextCompat.getColor(tv_odds.context, R.color.colorOrange))
-            }
-        }, CHANGING_ITEM_BG_COLOR_DURATION)
-
-    }
-
-
-    private fun changeColorByOdds(tv_bet: TextView, tv_close_warning: TextView) {
-        tv_bet.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(tv_bet.context, R.color.red))
-        tv_bet.text = context.getText(R.string.bet_info_list_odds_change)
-        tv_close_warning.apply {
-            visibility = View.VISIBLE
-            text = context.getString(R.string.bet_info_list_game_odds_changed)
-        }
+        fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd)
+        fun saveOddsHasChanged(matchOdd: MatchOdd)
     }
 
 }

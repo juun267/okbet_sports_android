@@ -16,22 +16,21 @@
         android:contentDescription="@null"
         android:scaleType="fitStart"
         android:src="@drawable/ic_logo"
-        app:tint="@color/blue6"
-        app:layout_constraintVertical_bias="0.15"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:text="@string/sorry_website_is_now_maintenance"
-        android:textColor="@color/black2"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize22sp"
         android:textStyle="bold"
-        android:layout_marginTop="15dp"
         app:layout_constraintEnd_toEndOf="@+id/iv_logo"
         app:layout_constraintStart_toStartOf="@+id/iv_logo"
         app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
@@ -41,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
-        android:textColor="@color/black2"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,24 +52,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/if_there_is_any_question_please_consult"
-        android:textColor="@color/black2"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_customer_service"
         app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_maintenance_time" />
 
     <TextView
         android:id="@+id/tv_customer_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="https://upload.cxct.org"
-        android:textColor="@color/black2"
+        android:autoLink="web"
+        android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:autoLink="web"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/tv_maintenance_time" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_maintenance_time"
+        tools:text="https://upload.cxct.org" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

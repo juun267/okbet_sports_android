@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:ignore="SpUsage,UselessParent">
 
-    <LinearLayout
+    <org.cxct.sportlottery.ui.common.DragFloatActionButton
         android:id="@+id/ll_bet_float_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -34,6 +34,6 @@
             android:textSize="@dimen/textSize12sp" />
 
 
-    </LinearLayout>
+    </org.cxct.sportlottery.ui.common.DragFloatActionButton>
 
 </RelativeLayout>

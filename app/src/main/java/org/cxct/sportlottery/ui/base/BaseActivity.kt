@@ -24,12 +24,11 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mLayoutHandler = Handler(Looper.getMainLooper())
     private var mPromptDialog: CustomAlertDialog? = null
     private var mTokenPromptDialog: CustomAlertDialog? = null
+    private var mOnNetworkExceptionListener: View.OnClickListener? = null
 
     val viewModel: T by viewModel(clazz = clazz)
 
     private var loadingView: View? = null
-
-    private var floatButtonView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,15 +45,30 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun showDialogLogout(message: String) {
         showTokenPromptDialog(message) {
-            MainActivity.reStart(this)
-            viewModel.doLogoutCleanUser()
+            viewModel.doLogoutCleanUser { MainActivity.reStart(this) }
         }
     }
 
     private fun onNetworkException() {
-        viewModel.networkExceptionUnknown.observe(this, Observer {
-            //TODO show network exception message
+        viewModel.networkExceptionUnavailable.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
         })
+
+        viewModel.networkExceptionTimeout.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
+        })
+
+        viewModel.networkExceptionUnknown.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
+        })
+    }
+
+    //20210526 紀錄：call webAPI 的 exception 錯誤提示統一在 BackActivity 處理，若有需要 callback 再使用此 fun
+    fun setOnNetworkExceptionListener(listener: View.OnClickListener?) {
+        mOnNetworkExceptionListener = listener
     }
 
     /*弹出加载界面*/
@@ -111,7 +125,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                     return@Runnable
 
                 mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
-                    setTextColor(R.color.orangeRed)
+                    setTextColor(R.color.colorRed)
                     setTitle(getString(R.string.prompt))
                     setMessage(errorMessage)
                     setPositiveButtonText(getString(R.string.btn_determine))
@@ -136,11 +150,19 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
 
+    fun showPromptDialog(title: String, message: String, buttonText: String?, isShowDivider: Boolean, positiveClickListener: () -> Unit?) {
+        showPromptDialog(title, message, buttonText, positiveClickListener, false, isShowDivider)
+    }
+
+    fun showErrorPromptDialog(message: String, positiveClickListener: () -> Unit?) {
+        showErrorPromptDialog(getString(R.string.error), message, positiveClickListener)
+    }
+
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
         showPromptDialog(title, message, null, positiveClickListener, true)
     }
 
-    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?, isError: Boolean) {
+    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?, isError: Boolean, isShowDivider: Boolean ?= false) {
         safelyUpdateLayout(Runnable {
             try {
                 //防止跳出多個 error dialog
@@ -153,8 +175,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
                 mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
                     if (isError) {
-                        setTextColor(R.color.orangeRed)
+                        setTextColor(R.color.colorRed)
                     }
+                    setShowDivider(isShowDivider)
                     setTitle(title)
                     setMessage(errorMessage)
                     setPositiveButtonText(buttonText ?: getString(R.string.btn_determine))

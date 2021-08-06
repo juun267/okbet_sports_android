@@ -35,6 +35,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
+import org.cxct.sportlottery.network.Constants.PLAYQUOTACOM_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
@@ -62,10 +63,6 @@ import java.io.IOException
 import kotlin.jvm.Throws
 
 class MockApiInterceptor(private val context: Context) : Interceptor {
-
-    companion object {
-        private val TAG = MockApiInterceptor::class.java.simpleName
-    }
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -229,12 +226,15 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(THIRD_REBATES) -> {
                     response = getMockJsonData(request, "vip_third_rebates.mock")
                 }
+                path.contains(PLAYQUOTACOM_LIST) -> {
+                    response = getMockJsonData(request, "playquotacom_list.mock")
+                }
             }
         }
         return response
     }
 
-    private fun getMockJsonData(request: Request, fileName: String): Response? {
+    private fun getMockJsonData(request: Request, fileName: String): Response {
         val assetManager = context.assets
         val path = "mock_api/$fileName"
         val data = readStringFromAssetManager(assetManager, path)

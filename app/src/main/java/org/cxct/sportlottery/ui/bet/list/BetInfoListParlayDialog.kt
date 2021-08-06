@@ -1,49 +1,59 @@
 package org.cxct.sportlottery.ui.bet.list
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.content_bet_info_item_action.*
-import kotlinx.android.synthetic.main.content_bet_info_item_action.tv_bet
 import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.dialog_bet_info_list.iv_close
 import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.*
-import kotlinx.android.synthetic.main.dialog_bet_info_parlay_list.tv_money
-import kotlinx.android.synthetic.main.play_category_bet_btn.view.*
+import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
+import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoParlayListBinding
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
+import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.error.BetAddErrorParser
+import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.list.BetStatus
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
-import org.cxct.sportlottery.util.JumpUtil
-import org.cxct.sportlottery.util.OnForbidClickListener
-import org.cxct.sportlottery.util.SpaceItemDecoration
-import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.odds.OddsDetailFragment
+import org.cxct.sportlottery.util.*
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class), BetInfoListMatchOddAdapter.OnItemClickListener,
     BetInfoListParlayAdapter.OnTotalQuotaListener {
 
 
-    companion object {
-        val TAG = BetInfoListParlayDialog::class.java.simpleName
-    }
+    private var isSubScribe = false
+
+
+    private var oddsType: OddsType = OddsType.EU
+
+
+    private var keyboard: KeyBoardUtil? = null
+
+
+    private var money: Double = 0.0
 
 
     private lateinit var matchOddAdapter: BetInfoListMatchOddAdapter
@@ -76,7 +86,24 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
     private fun initUI() {
         iv_close.setOnClickListener { dismiss() }
-        tv_add_more.setOnClickListener { dismiss() }
+        tv_clean.setOnClickListener { viewModel.removeBetInfoAll() }
+
+        tv_close.setOnClickListener {
+            keyboard?.hideKeyboard()
+        }
+
+        tv_add_more.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("gameType", matchOddAdapter.matchOddList.first().gameType)
+                putString("matchType", MatchType.PARLAY.postValue)
+            }
+            val intent = Intent(context, GameActivity::class.java).apply {
+                putExtras(bundle)
+            }
+            context?.startActivity(intent)
+            dismiss()
+        }
+
         tv_bet.setOnClickListener(object : OnForbidClickListener() {
             override fun forbidClick(view: View?) {
                 addBet()
@@ -127,6 +154,9 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
                 )
             )
         }
+
+        keyboard = KeyBoardUtil(kv_keyboard, ll_keyboard)
+
     }
 
 
@@ -136,56 +166,60 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             it?.let { money -> setMoney(money) }
         })
 
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer { it ->
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, { it ->
             val eventResult = it.getContentIfNotHandled()
             eventResult?.success?.let { success ->
-                if (!success) {
-                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg){}
+                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
+                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
                 }
             }
         })
 
-        viewModel.newMatchOddList.observe(this.viewLifecycleOwner, {
-            val updatedBetInfoList: MutableList<org.cxct.sportlottery.network.odds.list.Odd> = mutableListOf()
-            it.forEach { odd ->
-                val newOdd = org.cxct.sportlottery.network.odds.list.Odd(
-                    odd.oddsId,
-                    odd.odds,
-                    odd.producerId,
-                    odd.spread,
-                    odd.status,
-                )
-                newOdd.oddState = odd.oddState
-                updatedBetInfoList.add(newOdd)
+        viewModel.matchOddList.observe(this.viewLifecycleOwner, {
+            if (!isSubScribe) {
+                isSubScribe = true
+                it.forEach { matchOdd ->
+                    service.subscribeEventChannel(matchOdd.matchId)
+                }
             }
-            matchOddAdapter.updatedBetInfoList = updatedBetInfoList
-        })
-
-        viewModel.matchOddList.observe(this.viewLifecycleOwner, Observer {
             matchOddAdapter.matchOddList = it
+            changeBetButtonClickable(!checkGameTypeAndBetStatus())
         })
 
-        viewModel.parlayList.observe(this.viewLifecycleOwner, Observer {
+        viewModel.parlayList.observe(this.viewLifecycleOwner, {
             parlayAdapter.modify(it)
         })
 
-        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, Observer {
-            if (it.size == 0) {
-                dismiss()
+        viewModel.betInfoRepository.betInfoList.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let {
+                when (it.size) {
+                    0 -> {
+                        dismiss()
+                    }
+                    1 -> {
+                        changeBetButtonClickable(false)
+                    }
+                }
             }
         })
 
-        viewModel.betAddResult.observe(this.viewLifecycleOwner, Observer {
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
+            service.unsubscribeEventChannel(it)
+        })
+
+        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 showPromptDialog(
                     title = getString(R.string.prompt),
-                    message = if (result.success) getString(R.string.bet_info_add_bet_success) else result.msg,
+                    message = messageByResultCode(requireContext(), result),
                     success = result.success
-                ) {}
+                ) {
+                    changeBetInfoContentByMessage(result)
+                }
             }
         })
 
-        viewModel.userInfo.observe(this.viewLifecycleOwner, Observer {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, {
             val isNeedRegister = (it == null) || (it.testFlag == TestFlag.GUEST.index)
 
             tv_bet.visibility = if (isNeedRegister) {
@@ -201,23 +235,19 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         })
 
-        viewModel.updateOddList.observe(this.viewLifecycleOwner, {
-                matchOddAdapter.updatedBetInfoList = it
-
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            oddsType = it
+            matchOddAdapter.oddsType = it
+            parlayAdapter.oddsType = it
         })
 
         receiver.userMoney.observe(viewLifecycleOwner, {
             it?.let { money -> setMoney(money) }
         })
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            viewModel.updateOdd(it)
-        })
-
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            viewModel.updateMatchOdd(it)
+            viewModel.updateMatchOddForParlay(it)
         })
 
         receiver.globalStop.observe(viewLifecycleOwner, Observer {
@@ -233,28 +263,54 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
         receiver.producerUp.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
+
+            //0331 取消全部訂閱
+            service.unsubscribeAllEventChannel()
+
             val list = matchOddAdapter.matchOddList
             list.forEach { listData ->
-                if (it.producerId == null || listData.producerId == it.producerId) {
-                    listData.status = BetStatus.ACTIVATED.code
-                }
+
+                //0331 重新訂閱所以項目
+                service.subscribeEventChannel(listData.matchId)
+
             }
             matchOddAdapter.matchOddList = list
         })
     }
 
 
-    private fun getParlayList() {
-        viewModel.getBetInfoListForParlay(false)
+    private fun changeBetInfoContentByMessage(result: BetAddResult) {
+        getBetAddError(result.code)?.let { betAddError ->
+            if (!result.success) {
+                val errorData = BetAddErrorParser.getBetAddErrorData(result.msg)
+                errorData?.let { viewModel.updateMatchOddForParlay(it, betAddError) }
+            }
+        }
     }
 
 
-    private fun getMoney(){
+    private fun getParlayList() {
+        viewModel.getBetInfoListForParlay()
+    }
+
+
+    private fun getMoney() {
         viewModel.getMoney()
     }
 
 
+    private fun getSubscribingInOddsDetail(): String? {
+        var matchId: String? = null
+        val oddsDetail = parentFragmentManager.findFragmentByTag(GameActivity.Page.ODDS_DETAIL.name)
+        if (oddsDetail?.isAdded == true) {
+            matchId = (oddsDetail as OddsDetailFragment).matchId
+        }
+        return matchId
+    }
+
+
     private fun setMoney(money: Double) {
+        this.money = money
         tv_money.text = getString(R.string.bet_info_current_money, TextUtil.formatMoney(money))
     }
 
@@ -262,7 +318,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     private fun addBet() {
         val matchList: MutableList<Odd> = mutableListOf()
         for (i in matchOddAdapter.matchOddList.indices) {
-            matchList.add(Odd(matchOddAdapter.matchOddList[i].oddsId, matchOddAdapter.matchOddList[i].odds))
+            matchList.add(Odd(matchOddAdapter.matchOddList[i].oddsId, getOdds(matchOddAdapter.matchOddList[i], oddsType)))
         }
         val parlayList: MutableList<Stake> = mutableListOf()
         for (i in parlayAdapter.parlayOddList.indices) {
@@ -271,12 +327,17 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
             }
         }
 
+        if (parlayAdapter.sendBetQuotaList.sum() > money) {
+            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            return
+        }
+
         viewModel.addBet(
             BetAddRequest(
                 matchList,
                 parlayList,
                 1,
-                "EU"
+                oddsType.code
             ), MatchType.PARLAY
         )
     }
@@ -290,8 +351,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
     override fun onOddChange() {
         if (tv_bet.isClickable) {
             tv_bet.apply {
-                background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected_red)
-                setTextColor(ContextCompat.getColor(tv_bet.context, R.color.white))
+                setTextColor(Color.WHITE)
                 text = getString(R.string.bet_info_list_odds_change)
             }
         }
@@ -305,12 +365,14 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
 
 
     override fun sendOutStatus(parlayOddList: MutableList<ParlayOdd>) {
-
-        val parlayOdd = parlayOddList.find {
+        changeBetButtonClickable(if (checkGameTypeAndBetStatus()) false else parlayOddList.find {
             !it.sendOutStatus
-        }
+        } == null)
+    }
 
-        parlayOdd?.sendOutStatus?.let { changeBetButtonClickable(it) }
+
+    override fun onShowKeyboard(editText: EditText) {
+        keyboard?.showKeyboard(editText)
     }
 
 
@@ -318,13 +380,29 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         tv_bet.apply {
             isClickable = if (!boolean) {
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_unselected)
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite6))
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 false
             } else {
                 background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_radius_4_button_orangelight)
-                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite6))
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
                 true
             }
+        }
+    }
+
+
+    private fun checkGameTypeAndBetStatus(): Boolean {
+        return matchOddAdapter.matchOddList.any {
+            it.gameType != matchOddAdapter.matchOddList[0].gameType || it.status != BetStatus.ACTIVATED.code
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        service.unsubscribeAllEventChannel()
+        getSubscribingInOddsDetail()?.let {
+            service.subscribeEventChannel(it)
         }
     }
 

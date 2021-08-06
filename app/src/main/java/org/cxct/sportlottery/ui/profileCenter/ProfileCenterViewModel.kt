@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.profileCenter
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -11,55 +11,44 @@ import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val withdrawRepository: WithdrawRepository,
-    private val thirdGameRepository: ThirdGameRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+    private val withdrawRepository: WithdrawRepository
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
 
-    private val _userMoney = MutableLiveData<String?>()
-    val userMoney: LiveData<String?>
-        get() = _userMoney
-
+    val withdrawSystemOperation =
+        withdrawRepository.withdrawSystemOperation
+    val rechargeSystemOperation =
+        withdrawRepository.rechargeSystemOperation
     val needToUpdateWithdrawPassword =
         withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
     val settingNeedToUpdateWithdrawPassword =
         withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToCompleteProfileInfo =
+        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToCompleteProfileInfo =
         withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
     val needToBindBankCard =
-        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 true: 需要, false:不需要
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
 
-    val editIconUrlResult: LiveData<IconUrlResult?> = avatarRepository.editIconUrlResult
+    val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
-
-            val formatMoney = userMoneyResult?.money?.let {
-                TextUtil.format(it)
-            }
-
-            _userMoney.postValue(formatMoney)
-        }
-    }
-
-    fun logout() {
-        doLogoutCleanUser()
-    }
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -67,10 +56,20 @@ class ProfileCenterViewModel(
         }
     }
 
-    //提款判斷權限
-    fun withdrawCheckPermissions() {
+    //提款功能是否啟用
+    fun checkWithdrawSystem() {
         viewModelScope.launch {
-            withdrawRepository.withdrawCheckPermissions()
+            doNetwork(androidContext) {
+                withdrawRepository.checkWithdrawSystem()
+            }
+        }
+    }
+    //充值功能是否啟用
+    fun checkRechargeSystem() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkRechargeSystem()
+            }
         }
     }
 
@@ -107,7 +106,4 @@ class ProfileCenterViewModel(
         }
     }
 
-    fun setGoToThirdGamePage(catePage: ThirdGameCategory?) {
-        thirdGameRepository.setGoToThirdGamePage(catePage)
-    }
 }

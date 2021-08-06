@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/btn_game"
     android:layout_width="match_parent"
-    android:layout_height="140dp"
+    android:layout_height="wrap_content"
     android:layout_margin="15dp"
+    android:adjustViewBounds="true"
     android:contentDescription="@null"
     tools:context="org.cxct.sportlottery.ui.main.more.RvLiveAdapter"
     tools:src="@drawable/live_coming_soon" />

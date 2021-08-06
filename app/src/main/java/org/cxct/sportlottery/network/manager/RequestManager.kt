@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.manager
 
+import android.app.Application
 import android.content.Context
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
@@ -22,11 +23,26 @@ import java.security.SecureRandom
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
-import javax.net.ssl.*
-import kotlin.jvm.Throws
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 
 class RequestManager private constructor(context: Context) {
+
+    companion object {
+        private lateinit var staticContext: Application
+        val instance: RequestManager by lazy {
+            RequestManager(staticContext)
+        }
+
+        fun init(context: Application) {
+            staticContext = context
+        }
+    }
+
+    var retrofit: Retrofit
 
     private val mOkHttpClientBuilder: OkHttpClient.Builder = getUnsafeOkHttpClient()
         .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -46,21 +62,14 @@ class RequestManager private constructor(context: Context) {
         .add(NullValueAdapter())
         .build()
         .apply {
-            adapter<Map<String, CateDetailData>>(Types.newParameterizedType(MutableMap::class.java, String::class.java, CateDetailData::class.java))
+            adapter<Map<String, CateDetailData>>(
+                Types.newParameterizedType(
+                    MutableMap::class.java,
+                    String::class.java,
+                    CateDetailData::class.java
+                )
+            )
         }
-
-    var retrofit: Retrofit
-
-    companion object {
-        private lateinit var staticContext: Context
-        val instance: RequestManager by lazy {
-            RequestManager(staticContext)
-        }
-
-        fun init(context: Context) {
-            staticContext = context
-        }
-    }
 
     init {
         retrofit = createRetrofit(Constants.getBaseUrl())
@@ -78,14 +87,20 @@ class RequestManager private constructor(context: Context) {
     private fun getUnsafeOkHttpClient(): OkHttpClient.Builder {
         return try {
             // Create a trust manager that does not validate certificate chains
-            val trustAllCerts: Array<TrustManager> = arrayOf<TrustManager>(
+            val trustAllCerts: Array<TrustManager> = arrayOf(
                 object : X509TrustManager {
                     @Throws(CertificateException::class)
-                    override fun checkClientTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+                    override fun checkClientTrusted(
+                        chain: Array<X509Certificate?>?, authType: String?
+                    ) {
+                        checkServerTrusted(chain)
                     }
 
                     @Throws(CertificateException::class)
-                    override fun checkServerTrusted(chain: Array<X509Certificate?>?, authType: String?) {
+                    override fun checkServerTrusted(
+                        chain: Array<X509Certificate?>?, authType: String?
+                    ) {
+                        checkServerTrusted(chain)
                     }
 
                     override fun getAcceptedIssuers(): Array<X509Certificate> {
@@ -102,10 +117,22 @@ class RequestManager private constructor(context: Context) {
             val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
             val builder: OkHttpClient.Builder = OkHttpClient.Builder()
             builder.sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
-            builder.hostnameVerifier(HostnameVerifier { _, _ -> true })
+            builder.hostnameVerifier { _, _ -> true }
             builder
+
         } catch (e: Exception) {
             throw RuntimeException(e)
+        }
+    }
+
+    @Throws(CertificateException::class)
+    fun checkServerTrusted(chain: Array<X509Certificate?>?) {
+        chain?.let {
+            try {
+                chain[0]?.checkValidity()
+            } catch (e: java.lang.Exception) {
+                throw CertificateException("Certificate not valid or trusted.")
+            }
         }
     }
 }

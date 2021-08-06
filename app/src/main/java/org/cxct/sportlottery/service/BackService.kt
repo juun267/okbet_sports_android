@@ -11,6 +11,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.util.HTTPsUtil
 import timber.log.Timber
 import ua.naiksoftware.stomp.Stomp
@@ -27,6 +28,9 @@ import java.util.concurrent.TimeUnit
 class BackService : Service() {
     companion object {
         const val SERVICE_SEND_DATA = "SERVICE_SEND_DATA"
+        const val CHANNEL_KEY = "channel"
+        const val SERVER_MESSAGE_KEY = "serverMessage"
+        const val CONNECT_STATUS = "connectStatus"
 
         private val URL_SOCKET_HOST_AND_PORT: String get() = "${Constants.getBaseUrl()}/api/ws/app/im" //app连接端点,无sockjs
         const val URL_ALL = "/ws/notify/all" //全体公共频道
@@ -42,6 +46,7 @@ class BackService : Service() {
         const val URL_HALL = "/ws/notify/hall" //大厅赔率频道 //cateMenuCode：HDP&OU=讓球&大小, 1X2=獨贏
 
         private const val HEART_BEAT_RATE = 10 * 1000 //每隔10秒進行一次對長連線的心跳檢測
+        private const val RECONNECT_LIMIT = 10 //斷線後重連次數限制
     }
 
     private var mToken = ""
@@ -50,6 +55,8 @@ class BackService : Service() {
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
+    private var errorFlag = false // Stomp connect錯誤
+    private var reconnectionNum = 0//重新連接次數
 
     inner class MyBinder : Binder() {
         val service: BackService
@@ -85,6 +92,7 @@ class BackService : Service() {
     private fun connect() {
         try {
             Timber.i(">>>token = ${mToken}, url = $URL_SOCKET_HOST_AND_PORT")
+            resetSubscriptions()
 
             val httpClient = HTTPsUtil.trustAllSslClient(OkHttpClient())
                 .newBuilder()
@@ -94,7 +102,6 @@ class BackService : Service() {
             mStompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, URL_SOCKET_HOST_AND_PORT, null, httpClient)
             mStompClient?.let { stompClient ->
                 stompClient.withClientHeartbeat(HEART_BEAT_RATE).withServerHeartbeat(HEART_BEAT_RATE)
-                resetSubscriptions()
 
                 val lifecycleDisposable =
                     stompClient.lifecycle()
@@ -105,15 +112,22 @@ class BackService : Service() {
                                 LifecycleEvent.Type.OPENED -> Timber.d("Stomp connection opened")
                                 LifecycleEvent.Type.CLOSED -> {
                                     Timber.d("Stomp connection closed")
-                                    resetSubscriptions()
+                                    reconnectionNum++
+                                    if (errorFlag && reconnectionNum < RECONNECT_LIMIT) {
+                                        Timber.e("Stomp connection broken, the $reconnectionNum time reconnect.")
+                                        reconnect()
+                                    } else {
+                                        sendConnectStatusToActivity(ServiceConnectStatus.RECONNECT_FREQUENCY_LIMIT)
+                                    }
                                 }
                                 LifecycleEvent.Type.ERROR -> {
+                                    errorFlag = true
                                     Timber.e("Stomp connection error ==> ${lifecycleEvent.exception}")
-                                    reconnect()
+//                                    reconnect()
                                 }
                                 LifecycleEvent.Type.FAILED_SERVER_HEARTBEAT -> {
                                     Timber.d("Stomp connection failed server heartbeat")
-                                    reconnect()
+//                                    reconnect()
                                 }
                                 null -> Timber.e("Stomp connection failed")
                             }
@@ -158,6 +172,12 @@ class BackService : Service() {
         connect()
     }
 
+    fun doReconnect() {
+        errorFlag = false
+        reconnectionNum = 0
+        reconnect()
+    }
+
     //關閉所有連線通道，釋放資源
     private fun disconnect() {
         mCompositeDisposable?.dispose()
@@ -170,10 +190,20 @@ class BackService : Service() {
 
     private fun sendMessageToActivity(channel: String, message: String) {
         val bundle = Bundle()
-        bundle.putString("channel", channel)
-        bundle.putString("serverMessage", setJObjToJArray(message))
+        bundle.putString(CHANNEL_KEY, channel)
+        bundle.putString(SERVER_MESSAGE_KEY, setJObjToJArray(message))
         val intent = Intent(SERVICE_SEND_DATA)
         intent.putExtras(bundle)
+        sendBroadcast(intent)
+    }
+
+    private fun sendConnectStatusToActivity(connectStatus: ServiceConnectStatus) {
+        val bundle = Bundle().apply {
+            putSerializable(CONNECT_STATUS, connectStatus)
+        }
+        val intent = Intent(SERVICE_SEND_DATA).apply {
+            putExtras(bundle)
+        }
         sendBroadcast(intent)
     }
 
@@ -192,6 +222,8 @@ class BackService : Service() {
     }
 
     private fun subscribeChannel(url: String) {
+        if (mSubscribedMap.containsKey(url)) return
+
         Timber.i(">>> subscribe channel: $url")
         mStompClient?.run {
             this.topic(url, mHeader)

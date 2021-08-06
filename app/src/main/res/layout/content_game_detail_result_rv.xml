@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
@@ -25,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="start"
-                android:textColor="@color/textColorDark"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="让球" />
         </LinearLayout>
@@ -34,7 +35,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="@color/light_gray" />
+            android:background="@color/colorWhite6" />
 
         <TextView
             android:id="@+id/tv_play_name"
@@ -45,13 +46,14 @@
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize14sp"
             tools:text="RS巴西体育工会" />
     </LinearLayout>
 
     <View
+        android:id="@+id/bottom_line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/light_gray" />
+        android:background="@color/colorWhite6" />
 </LinearLayout>

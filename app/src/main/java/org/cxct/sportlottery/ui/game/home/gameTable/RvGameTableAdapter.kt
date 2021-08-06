@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home.gameTable
 
+import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import kotlinx.android.synthetic.main.home_game_table_header.view.*
 import kotlinx.android.synthetic.main.home_game_table_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusCO
 import org.cxct.sportlottery.util.TimeUtil
@@ -25,12 +27,13 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.HEADER.ordinal -> {
-                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_header, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.home_game_table_header, viewGroup, false)
                 HeaderViewHolder(layout)
             }
-
             else -> {
-                val layout = LayoutInflater.from(viewGroup.context).inflate(R.layout.home_game_table_item, viewGroup, false)
+                val layout = LayoutInflater.from(viewGroup.context)
+                    .inflate(R.layout.home_game_table_item, viewGroup, false)
                 ItemViewHolder(layout)
             }
         }
@@ -49,7 +52,14 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             val data = mDataList[position]
             when (viewHolder) {
                 is HeaderViewHolder -> viewHolder.bind(data)
-                is ItemViewHolder -> viewHolder.bind(data)
+                is ItemViewHolder -> {
+                    when (data.matchType) {
+                        MatchType.IN_PLAY -> viewHolder.bindInPlay(data)
+                        MatchType.TODAY -> viewHolder.bindToday(data)
+                        else -> {
+                        }
+                    }
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -117,15 +127,22 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var timer: Timer? = null
 
-        fun bind(data: GameEntity) {
+        @SuppressLint("SetTextI18n")
+        fun bindInPlay(data: GameEntity) {
             itemView.apply {
-                tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString()
-                tv_score2.text = data.matchStatusCO?.awayTotalScore?.toString()
+                tv_score1.text = data.matchStatusCO?.homeTotalScore?.toString() ?: "-"
+                tv_score2.text = data.matchStatusCO?.awayTotalScore?.toString() ?: "-"
 
                 team1.text = data.match?.homeName
                 team2.text = data.match?.awayName
 
-                tv_session.text = data.matchStatusCO?.statusName
+                val statusName = data.matchStatusCO?.statusName
+                if (statusName.isNullOrEmpty()) {
+                    tv_session.visibility = View.GONE
+                } else {
+                    tv_session.visibility = View.VISIBLE
+                    tv_session.text = statusName
+                }
 
                 when (data.code) {
                     "FT" -> { //足球
@@ -136,19 +153,22 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         showTime(data.matchClockCO?.remainingTimeInPeriod)
                         startBKTimer(data.matchClockCO)
                     }
+                    else -> showTime(null)
                 }
 
                 if (data.itemType == ItemType.FOOTER) {
                     line_item.visibility = View.GONE
                     card_footer.visibility = View.VISIBLE
-                    line_footer.visibility = View.VISIBLE
+                    line_footer.visibility =
+                        if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
                 } else {
                     line_item.visibility = View.VISIBLE
                     card_footer.visibility = View.GONE
                     line_footer.visibility = View.GONE
                 }
 
-                tv_footer_title.text = String.format(context.getString(R.string.label_all_something_in_play), data.name)
+                tv_footer_title.text =
+                    "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_in_play)}"
                 tv_footer_count.text = data.num.toString()
 
                 card_item.setOnClickListener {
@@ -162,11 +182,65 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
+        @SuppressLint("SetTextI18n")
+        fun bindToday(data: GameEntity) {
+            itemView.apply {
+                tv_score1.text = "–"
+                tv_score2.text = "–"
+
+                team1.text = data.match?.homeName
+                team2.text = data.match?.awayName
+
+                showStartTime(data.match?.startTime)
+
+                if (data.itemType == ItemType.FOOTER) {
+                    line_item.visibility = View.GONE
+                    card_footer.visibility = View.VISIBLE
+                    line_footer.visibility =
+                        if (adapterPosition == mDataList.lastIndex) View.GONE else View.VISIBLE
+                } else {
+                    line_item.visibility = View.VISIBLE
+                    card_footer.visibility = View.GONE
+                    line_footer.visibility = View.GONE
+                }
+
+
+                tv_footer_title.text =
+                    "${context.getString(R.string.label_all)} ${data.name} ${context.getString(R.string.home_tab_today)}"
+                tv_footer_count.text = data.num.toString()
+
+                card_item.setOnClickListener {
+                    if (data.match != null)
+                        mOnSelectItemListener?.onClick(data)
+                }
+
+                card_footer.setOnClickListener {
+                    mOnSelectFooterListener?.onClick(data)
+                }
+            }
+        }
+
+        private fun showStartTime(startTime: Long?) {
+            itemView.apply {
+                if (startTime == null) {
+                    tv_session.visibility = View.GONE
+                    tv_time.visibility = View.GONE
+                } else {
+                    tv_session.visibility = View.VISIBLE
+                    tv_time.visibility = View.VISIBLE
+                    tv_session.text = TimeUtil.timeFormat(startTime, "MM/dd")
+                    tv_time.text = TimeUtil.timeFormat(startTime, "HH:mm")
+                }
+            }
+        }
+
         private fun showTime(sec: Int?) {
-            itemView.tv_time.text = if (sec == null)
-                null
-            else
-                TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+            if (sec == null) {
+                itemView.tv_time.visibility = View.GONE
+            } else {
+                itemView.tv_time.visibility = View.VISIBLE
+                itemView.tv_time.text = TimeUtil.timeFormat(sec * 1000L, "mm:ss")
+            }
         }
 
         private fun startFTTimer(matchClockCO: MatchClockCO?) {
@@ -180,7 +254,8 @@ class RvGameTableAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun startBKTimer(matchClockCO: MatchClockCO?) {
             //籃球每秒時間倒數
             startTimer {
-                matchClockCO?.remainingTimeInPeriod = matchClockCO?.remainingTimeInPeriod?.let { it - 1 }
+                matchClockCO?.remainingTimeInPeriod =
+                    matchClockCO?.remainingTimeInPeriod?.let { it - 1 }
                 showTime(matchClockCO?.remainingTimeInPeriod)
             }
         }

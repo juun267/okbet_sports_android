@@ -1,28 +1,31 @@
 package org.cxct.sportlottery.ui.feedback
 
-import android.content.Context
+import android.app.Application
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.feedback.*
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.SheetData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 class FeedbackViewModel(
-    private val androidContext: Context,
+    androidContext: Application,
     private val feedbackRepository: FeedbackRepository,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseOddButtonViewModel(
+    androidContext,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository
+) {
 
     val userInfo = userInfoRepository.userInfo.asLiveData()
 
@@ -41,6 +44,10 @@ class FeedbackViewModel(
     val isShowToolbar: LiveData<Int>
         get() = _isShowToolbar
     private var _isShowToolbar = MutableLiveData<Int>().apply { this.value = View.VISIBLE }
+
+    val toolbarName: LiveData<String>
+        get() = _toolbarName
+    private val _toolbarName = MutableLiveData<String>()
 
     //意見反饋清單
     val feedbackList: LiveData<MutableList<FeedBackRows>?>
@@ -66,12 +73,6 @@ class FeedbackViewModel(
         get() = _isFinalPage
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
 
-    val statusList = listOf(
-        SheetData(allStatusTag, androidContext.getString(R.string.all_status)),
-        SheetData("0", androidContext.getString(R.string.feedback_not_reply_yet)),
-        SheetData("1", androidContext.getString(R.string.feedback_already_reply))
-    )
-
     companion object {
         private const val PAGE_SIZE = 20 //預設每次載入20筆資料
     }
@@ -80,6 +81,9 @@ class FeedbackViewModel(
     private var mIsGettingData = false //判斷請求任務是否進行中
     private var mNeedMoreLoading = false //資料判斷滑到底是否需要繼續加載
 
+    fun setToolbarName(name: String) {
+        _toolbarName.value = name
+    }
 
     //API
     fun getFbQueryList(
@@ -131,7 +135,7 @@ class FeedbackViewModel(
 
     fun fbSave(content: String) { //目前只確定使用者會傳意見
         _isLoading.value = true
-        val feedbackSaveRequest = FeedbackSaveRequest(content, 3, 0)
+        val feedbackSaveRequest = FeedbackSaveRequest(content = content)
         viewModelScope.launch {
             doNetwork(androidContext) {
                 feedbackRepository.fbSave(feedbackSaveRequest)

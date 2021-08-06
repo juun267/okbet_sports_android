@@ -7,9 +7,7 @@
 
     <!-- 資金明細 -->
     <include
-        android:id="@+id/finance_app_bar_layout"
-        layout="@layout/appbar_finance"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/view_base_tool_bar_no_drawer"/>
 
     <fragment
         android:id="@+id/financeFragment"
@@ -18,7 +16,7 @@
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/finance_app_bar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
         app:navGraph="@navigation/finance_navigation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
