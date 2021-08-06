@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 
 
 abstract class BaseOddButtonActivity<T : BaseOddButtonViewModel>(clazz: KClass<T>) :
-    BaseSocketActivity<T>(clazz) {
+    BaseActivity<T>(clazz) {
 
 
     private var oddListDialog: DialogFragment? = null

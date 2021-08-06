@@ -16,11 +16,11 @@ data class MatchOdd(
     @Json(name = "inplay")
     val inplay: Int,
     @Json(name = "leagueId")
-    val leagueId: String?,
+    val leagueId: String,
     @Json(name = "leagueName")
     val leagueName: String?,
     @Json(name = "matchId")
-    val matchId: String?,
+    val matchId: String,
     @Json(name = "odds")
     var odds: Double,
     @Json(name = "hkOdds")

@@ -71,13 +71,5 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
 
         viewModel.getMoney()
         viewModel.getRecordList()
-
-        initSocketObserver()
-    }
-
-    private fun initSocketObserver() {
-        receiver.userMoney.observe(this.viewLifecycleOwner, Observer {
-            tv_balance.text = ArithUtil.toMoneyFormat(it)
-        })
     }
 }

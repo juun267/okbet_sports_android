@@ -9,6 +9,7 @@ enum class EventType(val value: String) {
     MATCH_STATUS_CHANGE("MATCH_STATUS_CHANGE"), //賽事比分
     MATCH_CLOCK("MATCH_CLOCK"), //賽事時間
     ODDS_CHANGE("ODDS_CHANGE"), //赔率变更
+    LEAGUE_CHANGE("LEAGUE_CHANGE"), //联赛赛事状态修改
 
     /*賠率細項 /notify/event/{eventId}*/
     MATCH_ODDS_CHANGE("MATCH_ODDS_CHANGE"), //赔率变更

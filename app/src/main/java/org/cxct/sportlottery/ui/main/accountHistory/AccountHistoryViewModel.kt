@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.main.accountHistory
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,11 +12,9 @@ import org.cxct.sportlottery.network.bet.settledList.BetSettledListRequest
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -28,12 +25,14 @@ class AccountHistoryViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseNoticeViewModel(
+    favoriteRepository: MyFavoriteRepository,
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     companion object {
@@ -51,9 +50,6 @@ class AccountHistoryViewModel(
 
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
-
-    val settlementNotificationMsg: LiveData<Event<SportBet>>
-        get() = _settlementNotificationMsg
 
     val betDetailResult: LiveData<BetSettledDetailListResult>
         get() = _betDetailResult
@@ -143,18 +139,6 @@ class AccountHistoryViewModel(
             }
         } else {
             _messageListResult.value = null
-        }
-    }
-
-
-
-    fun getSettlementNotification(event: OrderSettlementEvent?) {
-        event?.sportBet?.let {
-            when (it.status) {
-                Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
-                    _settlementNotificationMsg.value = Event(it)
-                }
-            }
         }
     }
 

@@ -5,9 +5,9 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_feedback_main.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 
-class FeedbackMainActivity : BaseOddButtonActivity<FeedbackViewModel>(FeedbackViewModel::class) {
+class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewModel::class) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feedback_main)

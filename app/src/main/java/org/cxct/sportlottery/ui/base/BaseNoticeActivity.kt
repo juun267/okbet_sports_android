@@ -41,12 +41,6 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
             //是否测试用户（0-正常用户，1-游客，2-内部测试）
             updateUserIdentity(it?.testFlag)
         })
-
-        receiver.userNotice.observe(this, Observer {
-            it?.userNoticeList?.let { list ->
-                viewModel.setUserNoticeList(list)
-            }
-        })
     }
 
     private fun updateNoticeCount(noticeCount: Int) {

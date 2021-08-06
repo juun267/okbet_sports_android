@@ -41,6 +41,10 @@ data class Odd(
     @Json(name = "extInfoMap")
     val extInfoMap: Map<String?, String?>? = null, //保存各语系extInfo对应值的map
 
+    @Json(name = "extInfo")
+    val extInfo: String? = null
+
+
 ) : OddStateParams {
 
     var isSelected: Boolean? = false

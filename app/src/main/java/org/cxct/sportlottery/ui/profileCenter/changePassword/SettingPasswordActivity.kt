@@ -8,11 +8,10 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.util.ToastUtil
 
-class SettingPasswordActivity : BaseOddButtonActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
+class SettingPasswordActivity : BaseSocketActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
     companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }
