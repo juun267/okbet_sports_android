@@ -314,7 +314,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         } else {
             View.GONE
         }
-        viewModel.getMatchCategoryQuery(args.matchType)
     }
 
     private fun setupPlayCategory(view: View) {
@@ -385,6 +384,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     override fun onStart() {
         super.onStart()
         viewModel.getGameHallList(matchType = args.matchType, isReloadDate = true, isReloadPlayCate = true)
+        viewModel.getMatchCategoryQuery(args.matchType)
         loading()
     }
 
@@ -420,8 +420,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 }
 
             }
-
-            viewModel.getMatchCategoryQuery(args.matchType)
 
         })
 

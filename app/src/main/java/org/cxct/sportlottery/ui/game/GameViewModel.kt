@@ -622,6 +622,7 @@ class GameViewModel(
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
 
         getGameHallList(matchType, true, isReloadPlayCate = true)
+        getMatchCategoryQuery(matchType)
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {
