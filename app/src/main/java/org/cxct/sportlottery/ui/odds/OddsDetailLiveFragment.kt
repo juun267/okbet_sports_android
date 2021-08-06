@@ -109,6 +109,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
+            oddsDetailListener = OddsDetailListener {
+                //TODO post save favorite api
+            }
+
             sportCode = mSportCode
         }
 

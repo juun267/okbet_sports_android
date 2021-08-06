@@ -88,6 +88,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
+            oddsDetailListener = OddsDetailListener {
+                //TODO post save favorite api
+            }
+
             sportCode = mSportCode
         }
 
