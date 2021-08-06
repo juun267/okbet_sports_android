@@ -38,7 +38,7 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
-import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
@@ -97,7 +97,7 @@ import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
-import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.sport.MyFavoriteBaseResult
 import org.cxct.sportlottery.network.sport.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.sport.SportMenuFavoriteResult
@@ -261,13 +261,13 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return OutrightOddsListResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.contains(OUTRIGHT_SEASON_LIST)) -> {
+                    (url.contains(OUTRIGHT_LEAGUE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OutrightSeasonListResult(
-                            it.code,
-                            it.msg,
-                            null,
+                        return OutrightLeagueListResult(
                             it.success,
+                            it.msg,
+                            it.code,
+                            null,
                             null
                         ) as T
                     }

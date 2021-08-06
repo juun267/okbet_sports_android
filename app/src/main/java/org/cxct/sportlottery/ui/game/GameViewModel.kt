@@ -34,8 +34,8 @@ import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
-import org.cxct.sportlottery.network.outright.season.OutrightSeasonListRequest
-import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
+import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
@@ -112,8 +112,8 @@ class GameViewModel(
     val leagueListResult: LiveData<Event<LeagueListResult?>>
         get() = _leagueListResult
 
-    val outrightSeasonListResult: LiveData<Event<OutrightSeasonListResult?>>
-        get() = _outrightSeasonListResult
+    val outrightLeagueListResult: LiveData<Event<OutrightLeagueListResult?>>
+        get() = _outrightLeagueListResult
 
     val outrightOddsListResult: LiveData<Event<OutrightOddsListResult?>>
         get() = _outrightOddsListResult
@@ -173,7 +173,7 @@ class GameViewModel(
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
-    private val _outrightSeasonListResult = MutableLiveData<Event<OutrightSeasonListResult?>>()
+    private val _outrightLeagueListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
     private val _epsListResult =  MutableLiveData<Event<OddsEpsListResult?>>()
     private val _countryListSearchResult = MutableLiveData<List<Row>>()
@@ -745,15 +745,15 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(leagueId: String) {
+    fun getOutrightOddsList(gameType: String, leagueId: String) {
         getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
 
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
-                            item.code,
-                            leagueIdList = listOf(leagueId)
+                            gameType = gameType,
+                            leagueIdList = listOf(leagueId),
                         )
                     )
                 }
@@ -899,11 +899,11 @@ class GameViewModel(
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightSeasonList(
-                    OutrightSeasonListRequest(gameType)
+                    OutrightLeagueListRequest(gameType)
                 )
             }
 
-            _outrightSeasonListResult.postValue(Event(result))
+            _outrightLeagueListResult.postValue(Event(result))
         }
     }
 
@@ -1212,7 +1212,7 @@ class GameViewModel(
             MatchType.OUTRIGHT -> {
 
                 val searchResult =
-                    _outrightSeasonListResult.value?.peekContent()?.rows?.filter {
+                    _outrightLeagueListResult.value?.peekContent()?.rows?.filter {
 
                         it.searchList = it.list.filter { season ->
                             season.name?.trim()?.toLowerCase(Locale.ENGLISH)?.contains(searchText.trim().toLowerCase(Locale.ENGLISH)) == true
