@@ -29,7 +29,10 @@ import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.repository.HostRepository
+import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
+import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -52,27 +55,30 @@ class MultiLanguagesApplication : Application() {
     private val viewModelModule = module {
 
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { LoginViewModel(get(), get(), get(), get()) }
         viewModel { RegisterViewModel(get(), get(), get(), get()) }
-        viewModel { SettlementViewModel(get(), get(), get(), get(), get()) }
-        viewModel { BetRecordViewModel(get(), get(), get(), get()) }
-        viewModel { InfoCenterViewModel(get(), get(), get(), get()) }
-        viewModel { HelpCenterViewModel(get(), get(), get(), get()) }
-        viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get()) }
-        viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get()) }
-        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get()) }
-        viewModel { FinanceViewModel(get(), get(), get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { BetRecordViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
-        viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get()) }
-        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MaintenanceViewModel(get(), get(), get(), get(), get()) }
-        viewModel { OtherBetRecordViewModel(get(), get(), get(), get()) }
-        viewModel { VipViewModel(get(), get(), get(), get(), get()) }
+        viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
@@ -82,13 +88,14 @@ class MultiLanguagesApplication : Application() {
         single { SettlementRepository() }
         single { InfoCenterRepository() }
         single { MoneyRepository(get()) }
-        single { BetInfoRepository() }
+        single { BetInfoRepository(get()) }
         single { AvatarRepository(get(), get()) }
         single { FeedbackRepository() }
         single { HostRepository(get()) }
         single { ThirdGameRepository() }
         single { WithdrawRepository(get(), get()) }
         single { PlayQuotaComRepository() }
+        single { MyFavoriteRepository() }
     }
 
     private val dbModule = module {

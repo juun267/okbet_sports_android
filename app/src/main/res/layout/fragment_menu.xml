@@ -97,9 +97,18 @@
                 app:cvTitle="@string/profile_center" />
 
             <org.cxct.sportlottery.ui.menu.MenuItem
+                android:id="@+id/menu_my_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cvIcon="@drawable/ic_star_v4"
+                app:cvTitle="@string/my_favorite" />
+
+            <!-- TODO v4版沒有，待刪除-->
+            <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_sport_bet_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:cvIcon="@drawable/ic_menu_sport_bet_record"
                 app:cvTitle="@string/sport_bet_record" />
 

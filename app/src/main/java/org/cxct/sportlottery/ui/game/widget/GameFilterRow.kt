@@ -7,7 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.row_game_filter.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.PlayType
+import org.cxct.sportlottery.network.common.PlayCate
 import java.lang.Exception
 
 class GameFilterRow @JvmOverloads constructor(
@@ -32,7 +32,7 @@ class GameFilterRow @JvmOverloads constructor(
             }
         }
 
-    var isPlayTypeVisible: Boolean? = null
+    var isPlayCateVisible: Boolean? = null
         set(value) {
             field = value
 
@@ -51,12 +51,12 @@ class GameFilterRow @JvmOverloads constructor(
             }
         }
 
-    var playType: PlayType? = null
+    var playCate: PlayCate? = null
         set(value) {
             field = value
 
             field?.let {
-                updatePlayType(it)
+                updatePlayCate(it)
             }
         }
 
@@ -166,8 +166,8 @@ class GameFilterRow @JvmOverloads constructor(
         game_filter_sport_type.isSelected = (type != IN_PLAY && type != AT_START)
     }
 
-    private fun updatePlayType(type: PlayType) {
-        game_filter_1x2.isSelected = (type == PlayType.X12)
-        game_filter_ou.isSelected = (type == PlayType.OU_HDP)
+    private fun updatePlayCate(type: PlayCate) {
+        game_filter_1x2.isSelected = (type == PlayCate.SINGLE)
+        game_filter_ou.isSelected = (type == PlayCate.OU_HDP)
     }
 }

@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.item_match_result_match.view.tv_away_name
 import kotlinx.android.synthetic.main.item_match_result_match.view.tv_home_name
 import kotlinx.android.synthetic.main.item_match_result_title.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.matchresult.list.Match
 import org.cxct.sportlottery.network.matchresult.list.MatchStatus
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
@@ -147,7 +148,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
                     }
-                    GameType.TN.key, GameType.BM.key, GameType.VB.key -> {
+                    GameType.TN.key, GameType.VB.key -> {
                         tv_first_half.visibility = View.GONE
                         tv_second_half.visibility = View.GONE
                         tv_end_game.visibility = View.VISIBLE
@@ -223,7 +224,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
                     }
-                    GameType.TN.key, GameType.BM.key, GameType.VB.key -> { //賽果
+                    GameType.TN.key, GameType.VB.key -> { //賽果
                         tv_first_half_score.visibility = View.GONE
                         tv_second_half_score.visibility = View.GONE
                         tv_end_game_score.visibility = View.VISIBLE

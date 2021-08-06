@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.Constants.INDEX_CHECK_TOKEN
 import org.cxct.sportlottery.network.Constants.INDEX_CONFIG
 import org.cxct.sportlottery.network.Constants.INDEX_LOGIN
 import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
+import org.cxct.sportlottery.network.Constants.INDEX_PROMOTENOTICE
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
@@ -24,27 +25,37 @@ import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_DETAIL
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_QUICK_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_PLAY_LIST
+import org.cxct.sportlottery.network.Constants.MYFAVORITE_MATCH_QUERY
+import org.cxct.sportlottery.network.Constants.MYFAVORITE_QUERY
+import org.cxct.sportlottery.network.Constants.MYFAVORITE_SAVE
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
-import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.PLAYQUOTACOM_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
-import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
+import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
@@ -60,7 +71,6 @@ import org.cxct.sportlottery.network.Constants.WITHDRAW_LIST
 import org.cxct.sportlottery.util.FileUtil.readStringFromAssetManager
 import timber.log.Timber
 import java.io.IOException
-import kotlin.jvm.Throws
 
 class MockApiInterceptor(private val context: Context) : Interceptor {
 
@@ -109,6 +119,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(INDEX_CHECK_TOKEN) -> {
                     response = getMockJsonData(request, "index_check_token.mock")
                 }
+                path.contains(INDEX_PROMOTENOTICE) -> {
+                    response = getMockJsonData(request, "index_promotenotice.mock")
+                }
                 path.contains(MATCH_BET_INFO) -> {
                     response = getMockJsonData(request, "match_bet_info.mock")
                 }
@@ -118,17 +131,29 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(MATCH_BET_LIST) -> {
                     response = getMockJsonData(request, "match_bet_list.mock")
                 }
+                path.contains(MATCH_BET_SETTLED_LIST) -> {
+                    response = getMockJsonData(request, "match_bet_settled_list.mock")
+                }
+                path.contains(MATCH_BET_SETTLED_DETAIL_LIST) -> {
+                    response = getMockJsonData(request, "match_bet_settled_detail_list.mock")
+                }
                 path.contains(MATCH_PRELOAD) -> {
                     response = getMockJsonData(request, "match_preload.mock")
                 }
                 path.contains(MATCH_ODDS_LIST) -> {
                     response = getMockJsonData(request, "match_odds_list.mock")
                 }
+                path.contains(MATCH_ODDS_QUICK_LIST) -> {
+                    response = getMockJsonData(request, "match_odds_quick_list.mock")
+                }
                 path.contains(MATCH_ODDS_DETAIL) -> {
                     response = getMockJsonData(request, "match_odds_detail.mock")
                 }
                 path.contains(SPORT_MENU) -> {
                     response = getMockJsonData(request, "sport_menu.mock")
+                }
+                path.contains(SPORT_QUERY) -> {
+                    response = getMockJsonData(request, "sport_query.mock")
                 }
                 path.contains(LEAGUE_LIST) -> {
                     response = getMockJsonData(request, "league_list.mock")
@@ -148,7 +173,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(OUTRIGHT_ODDS_LIST) -> {
                     response = getMockJsonData(request, "outright_odds_list.mock")
                 }
-                path.contains(OUTRIGHT_SEASON_LIST) -> {
+                path.contains(OUTRIGHT_LEAGUE_LIST) -> {
                     response = getMockJsonData(request, "outright_season_list.mock")
                 }
                 path.contains(USER_INFO) -> {
@@ -228,6 +253,24 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(PLAYQUOTACOM_LIST) -> {
                     response = getMockJsonData(request, "playquotacom_list.mock")
+                }
+                path.contains(MATCH_CATEGORY_RECOMMEND) -> {
+                    response = getMockJsonData(request, "match_category_recommend.mock")
+                }
+                path.contains(MATCH_CATEGORY_SPECIAL_MATCH) -> {
+                    response = getMockJsonData(request, "match_category_special_match.mock")
+                }
+                path.contains(MATCH_CATEGORY_SPECIAL_MENU) -> {
+                    response = getMockJsonData(request, "match_category_special_menu.mock")
+                }
+                path.contains(MYFAVORITE_QUERY) -> {
+                    response = getMockJsonData(request, "my_favorite_query.mock")
+                }
+                path.contains(MYFAVORITE_MATCH_QUERY) -> {
+                    response = getMockJsonData(request, "my_favorite_match_query.mock")
+                }
+                path.contains(MYFAVORITE_SAVE) -> {
+                    response = getMockJsonData(request, "my_favorite_save.mock")
                 }
             }
         }

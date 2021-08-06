@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -50,7 +51,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         setupCloseBtn()
         initObserve()
-        initSocketObserver()
         initEvent()
         setupSelectLanguage()
         setupVersion()
@@ -86,12 +86,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     }
 
-    private fun initSocketObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner, Observer { money ->
-            tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
-        })
-    }
-
     private fun initEvent() {
 
         //個人中心
@@ -110,6 +104,13 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_profile_center)
         }
 
+        //我的賽事
+        menu_my_favorite.setOnClickListener {
+            startActivity(Intent(context, MyFavoriteActivity::class.java))
+            mDownMenuListener?.onClick(menu_my_favorite)
+        }
+
+        //TODO v4版沒有，待刪除
         //體育投注記錄
         menu_sport_bet_record.setOnClickListener {
             startActivity(Intent(context, BetRecordActivity::class.java))

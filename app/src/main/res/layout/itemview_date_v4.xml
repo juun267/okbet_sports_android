@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="56dp"
+    android:layout_height="64dp"
+    android:background="@drawable/shape_date_item_bg_v4">
+
+    <TextView
+        android:id="@+id/date_text_week"
+        android:layout_width="match_parent"
+        android:layout_height="22dp"
+        android:background="@drawable/shape_date_item_bg_week_v4"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="週二" />
+
+    <TextView
+        android:id="@+id/date_text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/selector_date_item_text_v4"
+        android:textSize="@dimen/textSize16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/date_text_month"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_text_week"
+        tools:text="23" />
+
+    <TextView
+        android:id="@+id/date_text_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:textColor="@color/selector_date_item_text_v4"
+        android:textSize="@dimen/textSize12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date_text_date"
+        tools:text="六月" />
+
+    <TextView
+        android:id="@+id/date_text_other"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_date_item_bg_other_v4"
+        android:gravity="center"
+        android:textColor="@color/selector_date_item_text_other_v4"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="所有日期"
+        tools:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

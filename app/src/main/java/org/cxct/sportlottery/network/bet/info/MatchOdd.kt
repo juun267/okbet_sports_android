@@ -2,20 +2,23 @@ package org.cxct.sportlottery.network.bet.info
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.error.BetAddError
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
     @Json(name = "awayName")
-    val awayName: String,
+    val awayName: String?,
     @Json(name = "homeName")
-    val homeName: String,
+    val homeName: String?,
     @Json(name = "inplay")
     val inplay: Int,
     @Json(name = "leagueId")
     val leagueId: String,
     @Json(name = "leagueName")
-    val leagueName: String,
+    val leagueName: String?,
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "odds")
@@ -37,7 +40,7 @@ data class MatchOdd(
     @Json(name = "producerId")
     val producerId: Int,
     @Json(name = "spread")
-    val spread: String,
+    var spread: String,
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")
@@ -51,23 +54,9 @@ data class MatchOdd(
 
     ) {
     var oddState: Int = OddState.SAME.state
-    var changeOddsTask: Runnable? = null //賠率變更，按鈕顏色變換任務
+    var runnable: Runnable? = null //賠率變更，按鈕顏色變換任務
     var betAddError: BetAddError? = null
     var oddsHasChanged = false
-
-    //socket進來的新賠率較大或較小
-    enum class OddState(val state: Int) {
-        SAME(0),
-        LARGER(1),
-        SMALLER(2)
-    }
-
-    //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
-    enum class BetStatus(val code: Int) {
-        ACTIVATED(0),
-        LOCKED(1),
-        DEACTIVATED(2)
-    }
-
+    var spreadState: Int = SpreadState.SAME.state
 }
 

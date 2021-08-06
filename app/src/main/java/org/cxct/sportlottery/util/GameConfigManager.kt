@@ -1,6 +1,9 @@
 package org.cxct.sportlottery.util
 
+import androidx.annotation.DrawableRes
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.network.common.GameType
 import java.util.*
 
 object GameConfigManager {
@@ -52,6 +55,32 @@ object GameConfigManager {
      */
     fun getThirdGameIconUrl(gameCategory: String?, h5ImageName: String?): String {
         return Constants.getBaseUrl() + "/staticResource/img/gameicons/${gameCategory?.toLowerCase(Locale.getDefault())}/newimg/$h5ImageName"
+    }
+
+
+    //
+    //賽事首頁
+    //
+    @DrawableRes
+    fun getGameIcon(code: String?): Int? {
+        return when (code) {
+            GameType.FT.key -> R.drawable.ic_soccer
+            GameType.BK.key -> R.drawable.ic_basketball_icon
+            GameType.TN.key -> R.drawable.ic_tennis_icon
+            GameType.VB.key -> R.drawable.ic_volley_ball
+            else -> null
+        }
+    }
+
+    @DrawableRes
+    fun getTitleBarBackground(code: String?): Int? {
+        return when (code) {
+            GameType.FT.key -> R.drawable.img_home_title_soccer_background
+            GameType.BK.key -> R.drawable.img_home_title_basketball_background
+            GameType.TN.key -> R.drawable.img_home_title_tennis_background
+            GameType.VB.key -> R.drawable.img_home_title_volleyball_background
+            else -> null
+        }
     }
 
 }

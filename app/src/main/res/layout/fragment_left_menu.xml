@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".ui.game.menu.LeftMenuFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite1"
+        android:minHeight="44dp">
+
+        <ImageView
+            android:id="@+id/img_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_menu_left_side"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_lobby"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_lobby"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:singleLine="true"
+            android:text="@string/menu"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
+            app:layout_constraintHorizontal_bias="10"
+            app:layout_constraintStart_toEndOf="@+id/img_menu"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:contentDescription="@null"
+            android:padding="11dp"
+            android:src="@drawable/ic_close_menu_v4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ct_inplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="44dp">
+
+        <ImageView
+            android:id="@+id/img_inplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:src="@drawable/ic_inplay_v4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txv_inplay"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txv_inplay"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:ellipsize="marquee"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:singleLine="true"
+            android:text="@string/match_type_row_in_play"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="10"
+            app:layout_constraintStart_toEndOf="@+id/img_inplay"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ct_premium_odds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="44dp">
+
+        <ImageView
+            android:id="@+id/img_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:src="@drawable/ic_price_v4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txv_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txv_price"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:ellipsize="marquee"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:singleLine="true"
+            android:text="@string/premium_odds"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="10"
+            app:layout_constraintStart_toEndOf="@+id/img_price"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorWhite6"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:orientation="vertical"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="2"
+        tools:listitem="@layout/content_left_menu_item" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_unselect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:orientation="vertical"
+        tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="2"
+        tools:listitem="@layout/content_left_menu_item"/>
+
+    <TextView
+        android:id="@+id/txv_news_center"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:ellipsize="marquee"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="14dp"
+        android:singleLine="true"
+        android:text="@string/infomation_center"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
+        android:textStyle="bold" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ct_game_rule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="44dp">
+
+        <ImageView
+            android:id="@+id/img_game_rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="23dp"
+            android:src="@drawable/ic_menu_game_rule"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/txv_game_rule"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txv_game_rule"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:ellipsize="marquee"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp"
+            android:singleLine="true"
+            android:text="@string/game_rule"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="10"
+            app:layout_constraintStart_toEndOf="@+id/img_game_rule"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 {
-	"dictionary_version": "1.0.19",
-	"short_version": "1",
+    "dictionary_version": "1.0.19",
+    "short_version": 1,
     "platform": [
         {
             "app_code": "spplat1",

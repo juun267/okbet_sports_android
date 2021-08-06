@@ -6,5 +6,7 @@ enum class MatchType(val postValue: String) {
     EARLY("EARLY"),
     PARLAY("PARLAY"),
     OUTRIGHT("OUTRIGHT"),
-    AT_START("ATSTART")
+    AT_START("ATSTART"),
+    EPS("EPS"),
+    MY_EVENT("MYEVENT")
 }

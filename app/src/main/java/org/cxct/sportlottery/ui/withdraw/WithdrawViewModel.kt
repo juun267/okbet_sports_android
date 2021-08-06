@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MD5Util
@@ -38,19 +39,20 @@ class WithdrawViewModel(
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> //使用者餘額
         get() = _loading
-
-    val userInfo = userInfoRepository.userInfo.asLiveData()
 
     val bankCardList: LiveData<List<BankCardList>>
         get() = _bankCardList

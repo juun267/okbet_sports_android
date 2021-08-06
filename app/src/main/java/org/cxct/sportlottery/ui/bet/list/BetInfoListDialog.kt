@@ -16,23 +16,28 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_bet_info_list.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_title.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBetInfoListBinding
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.MatchOdd
-import org.cxct.sportlottery.network.common.CateMenuCode
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
-import org.cxct.sportlottery.network.odds.list.BetStatus
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -44,7 +49,8 @@ import org.cxct.sportlottery.util.*
 
 @SuppressLint("SetTextI18n")
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
-    BetInfoListAdapter.OnItemClickListener {
+    BetInfoListAdapter.OnItemClickListener, BaseSocketActivity.ReceiverChannelEvent,
+    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic {
 
 
     private lateinit var binding: DialogBetInfoListBinding
@@ -73,7 +79,19 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        registerChannelEvent(this)
+        registerChannelHall(this)
+        registerChannelPublic(this)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_bet_info_list, container, false)
         binding.apply {
             gameViewModel = this@BetInfoListDialog.viewModel
@@ -87,7 +105,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
-        initSocketObserver()
         getMoney()
     }
 
@@ -132,9 +149,13 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.subscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
+                subscribeChannelHall(
+                    listData.matchOdd.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    listData.matchOdd.matchId
+                )
             } else {
-                service.subscribeEventChannel(listData.matchOdd.matchId)
+                subscribeChannelEvent(listData.matchOdd.matchId)
             }
         }
     }
@@ -143,9 +164,13 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.unsubscribeHallChannel(listData.matchOdd.gameType, CateMenuCode.OUTRIGHT.code, listData.matchOdd.matchId)
+                unSubscribeChannelHall(
+                    listData.matchOdd.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    listData.matchOdd.matchId
+                )
             } else {
-                service.unsubscribeEventChannel(listData.matchOdd.matchId)
+                unSubscribeChannelEvent(listData.matchOdd.matchId)
             }
         }
     }
@@ -171,31 +196,36 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             }
         })
 
-        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, {
-            service.unsubscribeEventChannel(it)
-        })
-
-        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                showPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = messageByResultCode(requireContext(), result),
-                    success = result.success
-                ) {
-                    changeBetInfoContentByMessage(result)
-                }
+        viewModel.betInfoRepository.removeItem.observe(this.viewLifecycleOwner, { event ->
+            event.getContentIfNotHandled()?.let {
+                unSubscribeChannelEvent(it)
             }
         })
 
-        viewModel.userInfo.observe(this, {
-            betInfoListAdapter.isNeedRegister =
-                (it == null) || (it.testFlag == TestFlag.GUEST.index)
-        })
+        viewModel.betAddResult.observe(this.viewLifecycleOwner,
+            {
+                it.getContentIfNotHandled()?.let { result ->
+                    showPromptDialog(
+                        title = getString(R.string.prompt),
+                        message = messageByResultCode(requireContext(), result),
+                        success = result.success
+                    ) {
+                        changeBetInfoContentByMessage(result)
+                    }
+                }
+            })
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
-            oddsType = it
-            betInfoListAdapter.oddsType = it
-        })
+        viewModel.userInfo.observe(this,
+            {
+                betInfoListAdapter.isNeedRegister =
+                    (it == null) || (it.testFlag == TestFlag.GUEST.index)
+            })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner,
+            {
+                oddsType = it
+                betInfoListAdapter.oddsType = it
+            })
     }
 
 
@@ -208,47 +238,9 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         }
     }
 
-
-    private fun initSocketObserver() {
-
-        receiver.userMoney.observe(viewLifecycleOwner, {
-            it?.let { money -> setMoney(money) }
-        })
-
-        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            viewModel.updateMatchOdd(it)
-        })
-
-        receiver.oddsChange.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            viewModel.updateMatchOdd(it)
-        })
-
-        receiver.globalStop.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            val list = betInfoListAdapter.betInfoList
-            list.forEach { listData ->
-                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
-                    listData.matchOdd.status = BetStatus.LOCKED.code
-                }
-            }
-            betInfoListAdapter.betInfoList = list
-        })
-
-        receiver.producerUp.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-
-            unsubscribeChannel(betInfoListAdapter.betInfoList)
-            subscribeChannel(betInfoListAdapter.betInfoList)
-        })
-    }
-
-
     private fun getMoney() {
         viewModel.getMoney()
     }
-
 
     private fun getSubscribingInOddsDetail(): String? {
         var matchId: String? = null
@@ -275,7 +267,10 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
     override fun onBetClick(betInfoListData: BetInfoListData, stake: Double) {
         if (stake > money) {
-            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.bet_info_bet_balance_insufficient)
+            ) {}
             return
         }
 
@@ -291,12 +286,14 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
                     listOf(
                         Odd(
                             betInfoListData.matchOdd.oddsId,
-                            getOdds(betInfoListData.matchOdd, oddsType)
+                            getOdds(betInfoListData.matchOdd, oddsType),
+                            stake
                         )
                     ),
                     listOf(Stake(parlayType ?: "", stake)),
                     1,
-                    oddsType.code
+                    oddsType.code,
+                    2
                 ), betInfoListData.matchType
             )
         }
@@ -327,11 +324,21 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
 
 
         val playName = SpannableString(matchOdd.playName)
-        playName.setSpan(StyleSpan(Typeface.BOLD), 0, matchOdd.playName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        playName.setSpan(
+            StyleSpan(Typeface.BOLD),
+            0,
+            matchOdd.playName.length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
 
         val spreadEnd = matchOdd.spread.length + 2
         val spread = SpannableString("  ${matchOdd.spread}")
-        spread.setSpan(ForegroundColorSpan(colorOrange), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spread.setSpan(
+            ForegroundColorSpan(colorOrange),
+            0,
+            spreadEnd,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
         spread.setSpan(StyleSpan(Typeface.BOLD), 0, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         val oddsEnd = TextUtil.formatForOdd(getOdds(matchOdd, oddsType)).length + 3
@@ -356,14 +363,37 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         viewModel.saveOddsHasChanged(matchOdd)
     }
 
+    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
+        viewModel.updateMatchOdd(matchOddsChangeEvent)
+    }
+
+    override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
+        viewModel.updateMatchOdd(oddsChangeEvent)
+    }
+
+    override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
+    }
+
+    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
+        val list = betInfoListAdapter.betInfoList
+        list.forEach { listData ->
+            if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
+                listData.matchOdd.status = BetStatus.LOCKED.code
+            }
+        }
+        betInfoListAdapter.betInfoList = list
+    }
+
+    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
+        unsubscribeChannel(betInfoListAdapter.betInfoList)
+        subscribeChannel(betInfoListAdapter.betInfoList)
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-        service.unsubscribeAllEventChannel()
+        unSubscribeChannelEventAll()
         getSubscribingInOddsDetail()?.let {
-            service.subscribeEventChannel(it)
+            subscribeChannelEvent(it)
         }
     }
-
-
 }

@@ -13,7 +13,6 @@ import com.stx.xhb.androidx.transformers.Transformer
 import kotlinx.android.synthetic.main.activity_vip.*
 import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.SportType
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_BET_ID
@@ -21,13 +20,22 @@ import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_RECHARGE_ID
 import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TextUtil
 
-class VipActivity : BaseOddButtonActivity<VipViewModel>(VipViewModel::class) {
+class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
-    private val levelBubbleList by lazy { listOf<TextView>(bubble_level_one, bubble_level_two, bubble_level_three, bubble_level_four, bubble_level_five, bubble_level_six) }
+    private val levelBubbleList by lazy {
+        listOf<TextView>(
+            bubble_level_one,
+            bubble_level_two,
+            bubble_level_three,
+            bubble_level_four,
+            bubble_level_five,
+            bubble_level_six
+        )
+    }
 
     private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter() }
 

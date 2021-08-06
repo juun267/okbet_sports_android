@@ -46,7 +46,7 @@
     </style>
 
     <style name="OddsButton" parent="Widget.AppCompat.TextView">
-        <item name="android:background">@drawable/select_button_radius_4_odds</item>
+        <item name="android:background">@drawable/selector_button_radius_4_odds</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_select_text_odds</item>
         <item name="android:textSize">@dimen/textSize16sp</item>
@@ -68,4 +68,14 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">@dimen/textSize12sp</item>
     </style>
+
+    <style name="LightBackgroundBottomSheet" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
+
 </resources>

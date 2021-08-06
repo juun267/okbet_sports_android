@@ -17,11 +17,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_bet_info_item_action.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ContentBetInfoItemSingleBinding
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.odds.list.BetStatus
-import org.cxct.sportlottery.network.odds.list.OddState
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.OnForbidClickListener
@@ -98,10 +98,10 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                 (binding.clInput.layoutParams as LinearLayout.LayoutParams).bottomMargin = 11.dp
                 binding.betInfoAction.tv_bet.apply {
                     isClickable = true
-                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
+                    background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange_light)
                 }
             } else {
-                val quota = it.toLong()
+                val quota = it.toDouble()
                 when {
                     quota > parlayOdd?.max ?: 0 -> {
                         inputError = true
@@ -136,7 +136,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_unselected)
                         false
                     } else {
-                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orangelight)
+                        background = ContextCompat.getDrawable(binding.root.context, R.drawable.bg_radius_4_button_orange_light)
                         true
                     }
                 }
@@ -301,7 +301,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     componentStatusByOdds(
                         betVisible = View.VISIBLE,
                         warningVisible = if (matchOdd.betAddError == null) View.GONE else View.VISIBLE,
-                        betTextBg = R.drawable.bg_radius_4_button_orangelight,
+                        betTextBg = R.drawable.bg_radius_4_button_orange_light,
                         clickable = true,
                         moreTextBg = R.drawable.bg_radius_4_button_colorwhite6,
                         moreTextColor = R.color.colorGray,
@@ -309,7 +309,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     )
 
                     binding.betInfoAction.tv_bet.apply {
-                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orangelight)
+                        background = ContextCompat.getDrawable(context, R.drawable.bg_radius_4_button_orange_light)
                         isClickable = true
                         text = context.getString(
                             if (data.matchOdd.oddsHasChanged) R.string.bet_info_list_odds_change else R.string.bet_info_list_bet
@@ -338,20 +338,20 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                     onItemClickListener.saveOddsHasChanged(matchOdd)
 
                     //先清除前一次任務
-                    matchOdd.changeOddsTask?.let { mHandler.removeCallbacks(it) }
-                    val changeOddsTask = Runnable {
-                        matchOdd.changeOddsTask = null
+                    matchOdd.runnable?.let { mHandler.removeCallbacks(it) }
+                    val runnable = Runnable {
+                        matchOdd.runnable = null
                         notifyItemChanged(position)
                     }
 
                     //三秒後 恢復 Odd 狀態
-                    mHandler.postDelayed(changeOddsTask, CHANGING_ITEM_BG_COLOR_DURATION)
-                    matchOdd.changeOddsTask = changeOddsTask
+                    mHandler.postDelayed(runnable, CHANGING_ITEM_BG_COLOR_DURATION)
+                    matchOdd.runnable = runnable
                 }
 
                 else -> {
                     //若有 賠率變更 任務還未執行完，就不刷新
-                    if (matchOdd.changeOddsTask != null)
+                    if (matchOdd.runnable != null)
                         return
 
                     when (inputError) {
@@ -364,7 +364,7 @@ class BetInfoListAdapter(private val context: Context, private val onItemClickLi
                         }
                         false -> {
                             binding.betInfoAction.tv_bet.apply {
-                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orangelight)
+                                background = ContextCompat.getDrawable(tv_bet.context, R.drawable.bg_radius_4_button_orange_light)
                                 setTextColor(ContextCompat.getColor(tv_bet.context, R.color.colorWhite))
                                 isClickable = true
                             }

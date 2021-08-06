@@ -13,24 +13,26 @@ import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.Ot
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OrderData
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.detail.OtherBetHistoryDetailResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
-import org.cxct.sportlottery.ui.component.StatusSheetData
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.util.TimeUtil
 
 
 class OtherBetRecordViewModel(
     androidContext: Application,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     val allPlatTag = "ALL_PLAT"

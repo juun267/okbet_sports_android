@@ -1,118 +1,72 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.SportType
-import org.cxct.sportlottery.network.odds.detail.Odd
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.TextUtil
 
-
-const val MORE_ITEM = 1
-
-const val OVER_COUNT = 5
 
 class TypeOneListAdapter(
-    private val sportCode: String,
-    private val oddsDetail: OddsDetailListData,
+    private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
     private val betInfoList: MutableList<BetInfoListData>,
-    private val onMoreClickListener: OnMoreClickListener,
     private val oddsType: OddsType
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<TypeOneListAdapter.ViewHolder>() {
 
 
-    enum class ItemType {
-        ITEM, MORE
-    }
-
-
-    private val oddsList = oddsDetail.oddArrayList
-
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            (oddsList.size) -> {
-                ItemType.MORE.ordinal
-            }
-            else -> ItemType.ITEM.ordinal
-        }
-    }
-
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ItemType.ITEM.ordinal -> ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
-            else -> MoreViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_more_item, parent, false))
-        }
-    }
-
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is ViewHolder -> holder.bindModel(oddsList[position])
-            is MoreViewHolder -> holder.bind()
-        }
-    }
-
-
-    override fun getItemCount(): Int {
-        return oddsList.size + MORE_ITEM
-    }
-
-
-    inner class ViewHolder(view: View) : OddViewHolder(view) {
-        fun bindModel(originOdd: Odd) {
-            nameChangeColor = false
-
-            //玩法為進球球員時 spread為英數字id 所以強制轉為null
-            if (TextUtil.compareWithGameKey(oddsDetail.gameType, OddsDetailListAdapter.GameType.SCO.value)) {
-                originOdd.spread = null
-            }
-
-            setData(
-                oddsDetail, originOdd, onOddClickListener, betInfoList,
-                if (originOdd.spread.isNullOrEmpty()) BUTTON_SPREAD_TYPE_CENTER else BUTTON_SPREAD_TYPE_BOTTOM, oddsType
-            )
-
-            when (sportCode) {
-                SportType.FOOTBALL.code,
-                SportType.BASKETBALL.code -> {}
-                else -> {
-                    //網羽排顯示為單列 需要顯示名稱
-                    showName(true)
-                }
-            }
-
-        }
-    }
-
-
-    inner class MoreViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val tvExpandControl: TextView = itemView.findViewById(R.id.tv_expand_control)
-        fun bind() {
-            tvExpandControl.apply {
-                setOnClickListener {
-                    onMoreClickListener.click()
-                }
-                visibility = if (oddsList.size > OVER_COUNT) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-                text = if (oddsDetail.isMoreExpand) context.getString(R.string.odds_detail_less) else context.getString(R.string.odds_detail_more)
+    private val mOddStateRefreshListener by lazy {
+        object : OddStateViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
             }
         }
     }
 
 
-    interface OnMoreClickListener {
-        fun click()
+    var mOddsDetail: OddsDetailListData? = null
+        set(value) {
+            field = value
+            oddsDetail = value as OddsDetailListData
+            notifyDataSetChanged()
+        }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_one_list_item, parent, false))
+
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsDetail.oddArrayList[position])
+
+
+    override fun getItemCount(): Int = oddsDetail.oddArrayList.size
+
+
+    inner class ViewHolder(view: View) : OddStateViewHolder(view) {
+
+        private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
+
+        fun bindModel(odd: Odd?) {
+            btnOdds?.apply {
+                setupOdd(odd, oddsType)
+                setupOddState(this, odd)
+                isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
+            }
+
+            itemView.setOnClickListener {
+                odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+            }
+        }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = mOddStateRefreshListener
+
     }
 
 

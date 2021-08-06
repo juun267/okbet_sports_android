@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -10,6 +11,14 @@ import java.util.*
 object TimeUtil {
     const val YMD_HMS_FORMAT = "yyyy-MM-dd HH:mm:ss"
     const val YMD_FORMAT = "yyyy-MM-dd"
+    const val DMY_FORMAT = "dd / MM / yyyy"
+    const val MD_FORMAT = "MM-dd"
+    const val DM_FORMAT = "dd / MM"
+    const val HM_FORMAT = "HH:mm"
+    const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
+    private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
+    private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
+    const val DMY_HM_FORMAT = "dd/MM/yyyy HH:mm"
 
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
@@ -32,10 +41,15 @@ object TimeUtil {
         return stampToDateHMSTimeZone(time.time)
     }
 
-    fun timeFormat(time: Long?, format: String, timeZone: TimeZone = TimeZone.getDefault()): String {
+    fun timeFormat(
+        time: Long?,
+        format: String,
+        timeZone: TimeZone = TimeZone.getDefault(),
+        locale: Locale = Locale.getDefault()
+    ): String {
         var formattedTime = ""
         try {
-            val dateFormat = SimpleDateFormat(format, Locale.getDefault())
+            val dateFormat = SimpleDateFormat(format, locale)
             dateFormat.timeZone = timeZone
             formattedTime = dateFormat.format(time)
         } catch (e: Exception) {
@@ -49,12 +63,54 @@ object TimeUtil {
         START_OF_DAY, END_OF_DAY
     }
 
-    fun dateToTimeStamp(date: String?, timeType: TimeType = TimeType.START_OF_DAY): Long? {
+    fun dateToTimeStamp(
+        date: String?,
+        timeType: TimeType = TimeType.START_OF_DAY,
+        dateFormatPattern: String = YMD_HMS_FORMAT
+    ): Long? {
         if (date.isNullOrEmpty()) return null
-        val formatter = SimpleDateFormat("$YMD_HMS_FORMAT S", Locale.getDefault())
+        val formatter = SimpleDateFormat("$dateFormatPattern S", Locale.getDefault())
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
+    }
+
+    /**
+     * return : 星期幾
+     */
+    fun setupDayOfWeek(todayMillis: Long?): Int {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = todayMillis ?:0
+
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
+            else -> R.string.sunday
+        }
+    }
+
+    /**
+     * return : 星期幾
+     */
+    fun setupDayOfWeek(date: String?): Int {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = dateToTimeStamp(date = date) ?:0
+
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
+            else -> R.string.sunday
+        }
     }
 
     fun getDefaultTimeStamp(): TimeRangeParams {
@@ -80,6 +136,40 @@ object TimeUtil {
             override val endTime: String
                 get() = today
         }
+    }
+
+    fun getMinusDateTimeStamp(minusDays: Int ?= 0): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
+        val minusDayTimeStamp = cPair.first.timeInMillis
+        val todayTimeStamp = cPair.second.timeInMillis
+        return object : TimeRangeParams {
+            //TODO simon review: TimeRangeParams 裡的 startTime、endTime 同時可能代表 timeStamp 也可能代表 日期(yyyy-MM-dd)，感覺最好拆開定義
+            override val startTime: String
+                get() = minusDayTimeStamp.toString()
+            override val endTime: String
+                get() = todayTimeStamp.toString()
+        }
+    }
+
+    fun getMinusDate(minusDays: Int, dateFormatPattern: String = MD_FORMAT): String {
+        val mCalendar = getCalendarForDates(minusDays)
+        return timeFormat(mCalendar.first.timeInMillis, dateFormatPattern)
+    }
+
+    fun getMinusDayOfWeek(minusDays: Int): Int {
+        val mCalendar = getCalendarForDates(minusDays)
+
+        return when (mCalendar.first.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday
+            Calendar.MONDAY -> R.string.monday
+            Calendar.TUESDAY -> R.string.tuesday
+            Calendar.WEDNESDAY -> R.string.wednesday
+            Calendar.THURSDAY -> R.string.thursday
+            Calendar.FRIDAY -> R.string.friday
+            Calendar.SATURDAY -> R.string.saturday
+            else -> R.string.sunday
+        }
+
     }
 
     fun getNowTimeStamp(): Long {
@@ -134,9 +224,17 @@ object TimeUtil {
         //date : yyyy-MM-dd
         return object : TimeRangeParams {
             override val startTime: String
-                get() = dateToTimeStamp(date, TimeType.START_OF_DAY).toString()
+                get() = dateToTimeStamp(
+                    date,
+                    TimeType.START_OF_DAY,
+                    dateFormatPattern = YMDE_HMS_FORMAT
+                ).toString()
             override val endTime: String
-                get() = dateToTimeStamp(date, TimeType.END_OF_DAY).toString()
+                get() = dateToTimeStamp(
+                    date,
+                    TimeType.END_OF_DAY,
+                    dateFormatPattern = YMDE_HMS_FORMAT
+                ).toString()
         }
     }
 
@@ -230,19 +328,36 @@ object TimeUtil {
         }
     }
 
-    fun getFutureDate(day: Int): List<String> {
+    fun getFutureDate(day: Int, locale: Locale = Locale.getDefault()): List<String> {
         val weekDateList = mutableListOf<String>()
         val calendar = Calendar.getInstance()
 
         repeat(day) {
             calendar.add(Calendar.DATE, 1)
-            weekDateList.add(timeFormat(calendar.timeInMillis, YMD_FORMAT))
+            weekDateList.add(timeFormat(calendar.timeInMillis, YMDE_FORMAT, locale = locale))
         }
         return weekDateList
     }
 
-    fun getRemainTime(timeStamp: Long): Long {
-        return timeStamp - System.currentTimeMillis()
+    fun getRemainTime(timeStamp: Long?): Long {
+        var remainTime = 0L
+        try {
+            timeStamp?.apply {
+                remainTime = timeStamp - System.currentTimeMillis()
+            }
+        } catch (e: Exception) {
+            Timber.e("時間計算失敗!!! \n$e")
+            e.printStackTrace()
+        }
+        return remainTime
+    }
+
+    fun stampToDateHM(time: Long): String {
+        return timeFormat(time, DMY_HM_FORMAT)
+    }
+
+    fun stampToMD(time: Long): String {
+        return timeFormat(time, MD_FORMAT)
     }
 
 }

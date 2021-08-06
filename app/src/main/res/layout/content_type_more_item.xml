@@ -1,22 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:ignore="SpUsage" >
+    android:layout_height="64dp"
+    android:background="@color/colorWhite"
+    tools:ignore="SpUsage">
 
     <TextView
         android:id="@+id/tv_expand_control"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@drawable/bg_radius_4_odds_item_more"
-        android:gravity="center"
-        android:letterSpacing="0.09"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize15sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/odds_detail_more"
-        tools:text="更多"
-        tools:ignore="SpUsage" />
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage"
+        tools:text="显示更多" />
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/iv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="10dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/ic_arrow_down_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_expand_control"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/colorGray" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

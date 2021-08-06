@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    tools:context=".ui.game.home.recommend.RvRecommendAdapter">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/block_match_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGrayDark2"
+        android:minHeight="64dp">
+
+        <ImageView
+            android:id="@+id/iv_match_image"
+            android:layout_width="113dp"
+            android:layout_height="0dp"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_game_name_home"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize16sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_game_name_away"
+            app:layout_constraintEnd_toStartOf="@id/tv_match_time"
+            app:layout_constraintStart_toEndOf="@id/iv_match_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="皇家馬德里" />
+
+        <TextView
+            android:id="@+id/tv_game_name_away"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_match_time"
+            app:layout_constraintStart_toEndOf="@id/iv_match_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_game_name_home"
+            tools:text="利物浦" />
+
+        <TextView
+            android:id="@+id/tv_match_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="18dp"
+            android:gravity="center"
+            android:textColor="@color/colorSilver"
+            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="04/15 \n 03:00" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="128dp" />
+
+    <org.cxct.sportlottery.ui.common.IndicatorView
+        android:id="@+id/indicator_view"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:layout_marginBottom="4dp" />
+
+</LinearLayout>

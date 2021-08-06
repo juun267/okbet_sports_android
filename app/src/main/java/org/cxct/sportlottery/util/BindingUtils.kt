@@ -7,6 +7,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
+import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
 
@@ -18,6 +21,38 @@ fun TextView.setDateTime(timeStamp: Long?) {
 @BindingAdapter("date")
 fun TextView.setDate(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, YMD_FORMAT)
+}
+
+@BindingAdapter("dateNoYear")
+fun TextView.setDateNoYear(timeStamp: Long?) {
+    text = TimeUtil.timeFormat(timeStamp, MD_FORMAT)
+}
+
+@BindingAdapter("dateTimeNoYear")
+fun TextView.setDateTimeNoYear(timeStamp: Long?) {
+    text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
+}
+
+
+@BindingAdapter("gameType")
+fun TextView.setGameType(gameType: String?) {
+    text = when (gameType) {
+        GameType.FT.key -> context.getString(GameType.FT.string)
+        GameType.BK.key -> context.getString(GameType.BK.string)
+        GameType.TN.key -> context.getString(GameType.TN.string)
+        GameType.VB.key -> context.getString(GameType.VB.string)
+        else -> ""
+    }
+}
+
+@BindingAdapter("dayOfWeek")
+fun TextView.setWeekDay(timeStamp: Long?) {
+    text = context.getString(TimeUtil.setupDayOfWeek(timeStamp))
+}
+
+@BindingAdapter("dayOfWeek")
+fun TextView.setWeekDay(date: String?) {
+    text = context.getString(TimeUtil.setupDayOfWeek(date))
 }
 
 @BindingAdapter("gameStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
@@ -49,6 +84,7 @@ fun TextView.setStatus(status: Int?) {
     }
 }
 
+//状态 0：未确认，1：未结算，2：赢，3：赢半，4：输，5：输半，6：和，7：已取消
 @BindingAdapter("betStatus", "betStatusMoney")
 fun TextView.setBetStatusMoney(status: Int?, money: Double?) {
     status?.let {
@@ -91,7 +127,6 @@ fun TextView.setRecordStatusColor(status: Int?) {
             3 -> R.color.colorRed
             else -> R.color.colorGray
         }
-
         this.setTextColor(ContextCompat.getColor(context, color))
     }
 }

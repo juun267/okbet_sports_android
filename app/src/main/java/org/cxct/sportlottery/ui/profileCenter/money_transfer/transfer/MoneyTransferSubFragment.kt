@@ -75,12 +75,6 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
     }
 
     private fun initObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner) {
-            it?.apply {
-                layout_balance.tv_account_balance.text = TextUtil.format(it)
-            }
-        }
-
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it) hideKeyboard()
             et_transfer_money.isEnabled = !it

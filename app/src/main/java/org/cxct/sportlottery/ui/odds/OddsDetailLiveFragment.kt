@@ -2,194 +2,171 @@ package org.cxct.sportlottery.ui.odds
 
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
-import android.net.http.SslError
 import android.os.Bundle
-import android.os.Message
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
-import androidx.databinding.DataBindingUtil
-import androidx.navigation.fragment.findNavController
+import android.widget.TextView
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
-import org.cxct.sportlottery.BuildConfig
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.live_view_tool_bar
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.rv_detail
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.tab_cat
+import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
+import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
-import org.cxct.sportlottery.network.common.CateMenuCode
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
-import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
+import java.util.*
 
 
-@Suppress("DEPRECATION")
+@Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener {
+    OnOddClickListener,
+    BaseSocketActivity.ReceiverChannelEvent, BaseSocketActivity.ReceiverChannelPublic,
+    BaseSocketActivity.ReceiverChannelMatch {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
+
+    private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
     private var mSportCode: String? = null
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
 
-    private val matchOddList: MutableList<MatchInfo?> = mutableListOf()
-
-    private lateinit var dataBinding: FragmentOddsDetailLiveBinding
-
-    private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-    private var oddsGameCardAdapter: OddsGameCardAdapter? = null
-
-    private var sport = ""
-
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
 
+    private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        mSportCode = args.sportType.code
+        mSportCode = args.gameType.key
         matchId = args.matchId
-    }
 
+        registerChannelEvent(this)
+        registerChannelMatch(this)
+        registerChannelPublic(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        dataBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail_live, container, false)
-        dataBinding.apply {
-            view = this@OddsDetailLiveFragment
-            gameViewModel = this@OddsDetailLiveFragment.viewModel
-            lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
-        }
-        return dataBinding.root
-    }
-
+        savedInstanceState: Bundle?,
+    ): View = FragmentOddsDetailLiveBinding.inflate(inflater, container, false).apply {
+        fragment = this@OddsDetailLiveFragment
+        gameViewModel = this@OddsDetailLiveFragment.viewModel
+        lifecycleOwner = this@OddsDetailLiveFragment.viewLifecycleOwner
+        executePendingBindings()
+    }.root
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
-        observeSocketData()
-        initRecyclerView()
-
-        setupWebView(web_view)
     }
-
 
     override fun onStart() {
         super.onStart()
-        getData()
-        setWebView()
-    }
 
+        getData()
+
+        live_view_tool_bar.setWebViewUrl(matchId)
+    }
 
     override fun onStop() {
         super.onStop()
-        unsubscribeAllHallChannel()
-        service.unsubscribeAllEventChannel()
+
+        unSubscribeChannelEventAll()
+
+        timer?.cancel()
     }
-
-
-    private fun setWebView() {
-        if (sConfigData?.sportAnimation.isNullOrBlank()) {
-            web_view_layout.visibility = View.GONE
-        } else {
-            web_view_layout.visibility = View.VISIBLE
-            web_view.loadUrl(
-                "${sConfigData?.sportAnimation}?matchId=${
-                    matchId?.replace(
-                        "sr:match:",
-                        ""
-                    )
-                }&lang=${LanguageManager.getSelectLanguage(context).key}"
-            )
-        }
-    }
-
-
-    private fun initRecyclerView() {
-        rv_game_card.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        oddsGameCardAdapter =
-            OddsGameCardAdapter(context = context, this@OddsDetailLiveFragment.matchId, mSportCode, OddsGameCardAdapter.ItemClickListener {
-                it.let {
-                    matchId = it.id
-                    getData()
-                    setWebView()
-                }
-            })
-        rv_game_card.adapter = oddsGameCardAdapter
-    }
-
-
-    private fun observeSocketData() {
-        receiver.matchOddsChange.observe(viewLifecycleOwner, {
-            it?.let {
-                viewModel.updateOddForOddsDetail(it)
-            }
-        })
-
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
-
-            oddsGameCardAdapter?.updateGameCard(it?.matchStatusCO)
-
-            it?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
-                curHomeScore = homeScore
-                curAwayScore = awayScore
-            }
-        })
-
-        receiver.matchClock.observe(viewLifecycleOwner, {
-            oddsGameCardAdapter?.updateGameCard(it?.matchClockCO)
-        })
-
-        receiver.producerUp.observe(viewLifecycleOwner, {
-            service.unsubscribeAllHallChannel()
-            service.unsubscribeAllEventChannel()
-
-            matchOddList.forEach { matchOddList ->
-                subscribeHallChannel(sport, matchOddList?.id)
-            }
-
-            service.subscribeEventChannel(matchId)
-        })
-    }
-
 
     private fun initUI() {
-
-        (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
+            oddsDetailListener = OddsDetailListener {
+                //TODO post save favorite api
+            }
+
             sportCode = mSportCode
         }
 
-        dataBinding.rvDetail.apply {
+        rv_detail.apply {
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
             adapter = oddsDetailListAdapter
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
-    }
 
+        tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.position?.let { t ->
+                    viewModel.playCateListResult.value?.peekContent()?.rows?.get(t)?.code?.let {
+                        oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
+                    }
+                }
+            }
+        })
+    }
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
+        viewModel.playCateListResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                result.success.let { success ->
+                    if (success) {
+                        tab_cat.removeAllTabs()
+                        if (result.rows.isNotEmpty()) {
+                            for (row in result.rows) {
+                                val customTabView =
+                                    layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
+                                        findViewById<TextView>(R.id.tv_tab).text = row.name
+                                    }
+
+                                tab_cat.addTab(
+                                    tab_cat.newTab().setCustomView(customTabView),
+                                    false
+                                )
+                            }
+                            tab_cat.getTabAt(0)?.select()
+                        } else {
+                            tab_cat.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        })
+
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
@@ -201,6 +178,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                                 oddsDetailListAdapter?.awayName = away
                             }
                         }
+                        setupStartTime(matchOdd?.matchInfo)
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -232,177 +210,112 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         })
 
-        viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, {
-            hideLoading()
-            unsubscribeAllHallChannel()
-
-            it.getContentIfNotHandled()?.let { oddsListResult ->
-                if (oddsListResult.success) {
-                    matchOddList.clear()
-                    oddsListResult.oddsListData?.leagueOdds?.forEach { LeagueOdd ->
-                        LeagueOdd.matchOdds.forEach { MatchOdd ->
-                            matchOddList.add(MatchOdd.matchInfo)
-                        }
-                    }
-                    sport = oddsListResult.oddsListData?.sport?.code.toString()
-                    oddsGameCardAdapter?.data = matchOddList
-                }
-            }
-
-            //訂閱所有賽事
-            matchOddList.forEach { matchOddList ->
-                subscribeHallChannel(sport, matchOddList?.id)
-            }
-        })
-
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.oddsType = it
         })
-
     }
 
-
-    private fun subscribeHallChannel(code: String, match: String?) {
-        service.subscribeHallChannel(code, CateMenuCode.HDP_AND_OU.code, match)
+    private fun setupStartTime(matchInfo: MatchInfo?) {
+        matchInfo?.apply {
+            tv_home_name.text = homeName
+            tv_away_name.text = awayName
+            tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
+        }
     }
-
-
-    private fun unsubscribeAllHallChannel() {
-        //離開畫面時取消訂閱所有賽事
-        service.unsubscribeAllHallChannel()
-    }
-
 
     private fun getData() {
-        matchId?.let { matchId ->
-            viewModel.getOddsDetailByMatchId(matchId)
-            service.subscribeEventChannel(matchId)
+        mSportCode?.let { mSportCode ->
+            matchId?.let { matchId ->
+                viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+                subscribeChannelEvent(matchId)
+            }
         }
-
-        viewModel.getOddsList(args.sportType.code, MatchType.IN_PLAY.postValue)
-        loading()
     }
-
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
-
             matchOdd.matchInfo.homeScore = curHomeScore
             matchOdd.matchInfo.awayScore = curAwayScore
+
             viewModel.updateMatchBetList(
                 matchType = MatchType.IN_PLAY,
-                args.sportType,
+                gameType = args.gameType,
                 playCateName = oddsDetail.name,
-                matchOdd = matchOdd,
+                playName = odd.name ?: "",
+                matchInfo = matchOdd.matchInfo,
                 odd = odd
             )
-
         }
     }
-
 
     override fun removeBetInfoItem(odd: Odd) {
         viewModel.removeBetInfoItem(odd.id)
     }
 
+    override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
+        matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
+            tv_time_top?.let {
+                it.text = this.statusName
+            }
 
-    fun back() {
-        findNavController().navigateUp()
+            curHomeScore = homeScore
+            curAwayScore = awayScore
+        }
     }
 
+    override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
+        val updateTime = when (args.gameType) {
+            GameType.FT -> {
+                matchClockEvent.matchClockCO?.matchTime
+            }
+            GameType.BK -> {
+                matchClockEvent.matchClockCO?.remainingTimeInPeriod
+            }
+            else -> null
+        }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun setupWebView(webView: WebView) {
-        //是否需要載入滾球動畫
-        if (sConfigData?.sportAnimation.isNullOrBlank())
-            return
+        updateTime?.let {
+            startMatchTimer(updateTime)
+        }
+    }
 
-        if (BuildConfig.DEBUG)
-            WebView.setWebContentsDebuggingEnabled(true)
+    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
+        viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
+    }
 
-        val settings: WebSettings = webView.settings
-        settings.javaScriptEnabled = true
-        settings.blockNetworkImage = false
-        settings.domStorageEnabled = true //对H5支持
-        settings.useWideViewPort = true //将图片调整到适合webview的大小
-        settings.loadWithOverviewMode = true // 缩放至屏幕的大小
-        settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-        settings.javaScriptCanOpenWindowsAutomatically = true
-        settings.defaultTextEncodingName = "utf-8"
-        settings.cacheMode = WebSettings.LOAD_NO_CACHE
-        settings.databaseEnabled = false
-        settings.setAppCacheEnabled(false)
-        settings.setSupportMultipleWindows(true) //20191120 記錄問題： target=_black 允許跳轉新窗口處理
+    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
+    }
 
-        webView.webChromeClient = object : WebChromeClient() {
-            override fun onCreateWindow(
-                view: WebView,
-                isDialog: Boolean,
-                isUserGesture: Boolean,
-                resultMsg: Message
-            ): Boolean {
-                val newWebView = WebView(view.context)
-                newWebView.webViewClient = object : WebViewClient() {
-                    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                        //20191120 記錄問題： target=_black 允許跳轉新窗口處理
-                        //在此处进行跳转URL的处理, 一般情况下_black需要重新打开一个页面
-                        try {
-                            //使用系統默認外部瀏覽器跳轉
-                            val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            i.flags =
-                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            startActivity(i)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
+    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
+        unSubscribeChannelEventAll()
+        subscribeChannelEvent(matchId)
+    }
+
+    private fun startMatchTimer(startTime: Int) {
+        timer?.cancel()
+        timer = Timer()
+        timer?.schedule(object : TimerTask() {
+            override fun run() {
+                var timeMillis = startTime * 1000L
+
+                when (args.gameType) {
+                    GameType.FT -> {
+                        timeMillis += 1000
+                    }
+                    GameType.BK -> {
+                        timeMillis -= 1000
+                    }
+                }
+
+                if (timeMillis >= 0) {
+                    Handler(Looper.getMainLooper()).post {
+
+                        tv_time_bottom?.apply {
+                            text = TimeUtil.timeFormat(timeMillis, "mm:ss")
                         }
-                        return true
                     }
                 }
-                val transport = resultMsg.obj as WebView.WebViewTransport
-                transport.webView = newWebView
-                resultMsg.sendToTarget()
-                return true
             }
-
-            // For Android 5.0+
-            override fun onShowFileChooser(
-                webView: WebView,
-                filePathCallback: ValueCallback<Array<Uri>>,
-                fileChooserParams: FileChooserParams
-            ): Boolean {
-                return true
-            }
-        }
-
-        webView.webViewClient = object : WebViewClient() {
-
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                if (!url.startsWith("http")) {
-                    try {
-                        val i = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                        i.flags = (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                        startActivity(i)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    return true
-                }
-
-                view.loadUrl(url)
-                return true
-            }
-
-            override fun onReceivedSslError(
-                view: WebView,
-                handler: SslErrorHandler,
-                error: SslError
-            ) {
-                //此方法是为了处理在5.0以上Https的问题，必须加上
-                handler.proceed()
-            }
-        }
-
+        }, 1000L, 1000L)
     }
-
-
 }

@@ -1,4 +1,6 @@
 import java.text.SimpleDateFormat
+import groovy.json.JsonOutput
+import groovy.json.StringEscapeUtils
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -249,4 +251,37 @@ dependencies {
 
 multiLanguages {
     enable = true
+}
+
+task syncConfigJson {
+    doLast {        
+        Map<String, String> jsonObject = [:]//['dictionary_version': android.defaultConfig.versionName, 'short_version': android.defaultConfig.versionCode]
+        jsonObject['dictionary_version'] = android.defaultConfig.versionName
+        jsonObject['short_version'] = android.defaultConfig.versionCode
+        jsonObject['platform'] = []
+
+        Map<String, String> nameMapping = ["forqa": "spplat1"]
+
+        android.productFlavors.all { flavor->
+            if (flavor.name != 'fastlane') {
+                Map<String, String> appObject = [:]
+                appObject['app_code'] = nameMapping.containsKey(flavor.name) ? nameMapping[flavor.name] : flavor.name
+                appObject['appid'] = flavor.applicationId
+                appObject['app_name'] = flavor.resValues.app_name.value
+                appObject['jpush_appKey'] = flavor.manifestPlaceholders['JPUSH_APPKEY']
+                
+                jsonObject['platform'].add(appObject)
+            }            
+        }
+        
+        def json = JsonOutput.toJson(jsonObject)
+        // pretty format
+        json = JsonOutput.prettyPrint(json)
+        // remove unicode string escape sequences
+        json = StringEscapeUtils.unescapeJavaScript(json)
+        println "json:\n" + json
+
+        File file = new File("./fastlane/config.json")
+        file.write(json)
+    }
 }

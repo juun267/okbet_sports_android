@@ -118,18 +118,34 @@
     <string name="fishing">捕鱼</string>
     <string name="more">更多</string>
 
-    <string name="home_tab_all">全部</string>
+    <string name="home_tan_main">主页</string>
     <string name="home_tab_in_play">滚球</string>
     <string name="home_tab_today">今日</string>
     <string name="home_tab_early">早盘</string>
     <string name="home_tab_parlay">串关</string>
     <string name="home_tab_outright">冠军</string>
+    <string name="home_tab_at_start">即将</string>
+    <string name="home_tab_eps">特优</string>
+    <string name="home_title_eps">特优赔率</string>
+    <string name="title_eps_more">更高赔率</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
+    <string name="label_match_recommend">赛事推荐</string>
+    <string name="label_highlight">精选</string>
+    <string name="display_all">显示全部</string>
+    <string name="display_more">显示更多</string>
+
+    <string name="return_to_top">回到顶部</string>
+    <string name="versus">v</string>
+    <string name="label_sport_game">赛程</string>
+    <string name="label_account_history">账戶历史</string>
+    <string name="label_transaction_status">交易状况</string>
+    <string name="label_title_parlay">综合过关</string>
+    <string name="conspire">串</string>
 
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
-    <string name="message_no_today">目前没有今日的赛事</string>
+    <string name="message_no_in_play">目前没有滚球的赛事</string>
 
 
     <string name="champion">冠军</string>
@@ -158,6 +174,11 @@
     <string name="poker_game">棋牌游戏</string>
     <string name="slot_game">电子游戏</string>
     <string name="fish_game">捕鱼游戏</string>
+    <string name="price">价格</string>
+    <string name="menu">菜单</string>
+    <string name="premium_odds">特优赔率</string>
+    <string name="infomation_center">信息中心</string>
+
 
     <!-- MenuFragment -->
     <string name="profile_center">个人中心</string>
@@ -368,13 +389,52 @@
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
 
+    <string name="game_play_type_1x2">独赢</string>
+    <string name="game_play_type_1x2_1st">独赢-上半场</string>
+    <string name="game_play_type_1x2_seg1">独赢-第一盘</string>
+    <string name="game_play_type_hdp_ft">让球</string>
+    <string name="game_play_type_hdp_tn">让局</string>
+    <string name="game_play_type_hdp_vb">让分</string>
+    <string name="game_play_type_hdp_1st">让球-上半场</string>
+    <string name="game_play_type_set_hdp">让盘</string>
+    <string name="game_play_type_hdp_seg1">让分-第一盘</string>
+    <string name="game_play_type_hdp_incl_ot">让球(含加时)</string>
+    <string name="game_play_type_ou_ft">大/小</string>
+    <string name="game_play_type_ou_tn">总局数-大/小</string>
+    <string name="game_play_type_ou_1st">大/小-上半场</string>
+    <string name="game_play_type_ou_incl_ot">大/小(含加时)</string>
+    <string name="game_play_type_bts">双方球队进球</string>
+    <string name="game_play_type_oe">单/双</string>
+    <string name="game_play_type_tg_ou_h_ot">球队得分数&amp;大/小-{H}(含加时)</string>
+    <string name="game_play_type_tg_ou_c_ot">球队得分数&amp;大/小-{C}(含加时)</string>
+    <string name="game_play_type_tg_ou_h_1st">球队得分数&amp;大/小-{H}-上半场</string>
+    <string name="game_play_type_tg_ou_c_1st">球队得分数&amp;大/小-{C}-上半场</string>
+    <string name="game_play_type_eps">更优赔率</string>
+    <string name="game_play_type_c_ou">角球大/小</string>
+    <string name="game_play_type_c_oe">角球单/双</string>
+
+    <string name="game_tab_league_odd">赛事</string>
+    <string name="game_tab_outright_odd">冠军</string>
+    <string name="game_tab_price_boosts_odd">特优赔率</string>
+
+    <string name="button_league_submit">提交 (%d)</string>
+    <string name="login_notify">请登录以便使用此功能</string>
+
     <string name="total_bet_amount">总投注额：</string>
 
     <!--odds detail-->
-    <string name="odds_detail_more">更多</string>
+    <string name="odds_detail_more">显示更多</string>
     <string name="odds_detail_less">显示更少</string>
     <string name="odds_detail_cs_other">其他比分</string>
-
+    <string name="odds_detail_play_type_fg">最先进球</string>
+    <string name="odds_detail_play_type_lg">最后进球</string>
+    <string name="odds_detail_play_type_bts_y">双方球队进球</string>
+    <string name="odds_detail_play_type_bts_n">并非双方球队进球</string>
+    <string name="odds_detail_play_type_dc_1X">1&#047;X</string>
+    <string name="odds_detail_play_type_dc_2X">2&#047;X</string>
+    <string name="odds_detail_play_type_dc_12">1&#047;2</string>
+    <string name="odds_detail_play_type_ou_o">大</string>
+    <string name="odds_detail_play_type_ou_u">小</string>
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
@@ -561,12 +621,33 @@
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
     <string name="bet_info_add_bet_success">投注成功</string>
     <string name="bet_info_current_money">余额:%s</string>
-    <string name="bet_info_in_play_score">滚球&#160;&#160;%1$s&#160;(%2$s:%3$s)</string>
+    <string name="bet_info_in_play_score">滚球&#160;%1$s&#160;(%2$s-%3$s)</string>
     <string name="bet_info_system_close_incompatible_item">您选择的部分玩法不适用于串关规则的玩法,系统已帮您自动取消</string>
     <string name="bet_info_list_clean">一键清空</string>
     <string name="bet_info_bet_balance_insufficient">余额不足</string>
     <string name="bet_info_different_game_type">不同球种不可进行串关</string>
-
+    <string name="bet_info_input_quota">输入金额</string>
+    <string name="bet_info_check_maximum_limit">查看最高限额</string>
+    <string name="bet_info_bet_quota">投注额</string>
+    <string name="bet_info_win_quota">可赢额</string>
+    <string name="bet_info_accept_odds_change">接受更改并投注</string>
+    <string name="bet_info_add_to_bet_info">加入投注单</string>
+    <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
+    <string name="bet_info_current_rmb">%s&#160;RMB</string>
+    <string name="bet_info_all_bet">所有投注</string>
+    <string name="bet_list_delete_all">全删除</string>
+    <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
+    <string name="bet_list_single">单注</string>
+    <string name="bet_list_view_more_options">查看所有多个选项</string>
+    <string name="bet_list_cant_parlay_warn">提醒若同一赛事投注项目不可进行串关</string>
+    <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
+    <string name="bet_info_remove_closed">移除已关闭的选项</string>
+    <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
+    <string name="parlay_rule_at_least">至少2个选项获胜以确保派彩</string>
+    <string name="parlay_rule_cant_warn">不同球种及冠军玩法不能进行串关投注</string>
+    <string name="parlay_rule_ncm">%1$s串%2$s是由%1$s个不同赛事组成的%2$s个不同的投注</string>
+    <string name="parlay_rule_list_nc1">%1$s个%2$s串1</string>
+    <string name="parlay_rule_and">以及</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
@@ -676,6 +757,7 @@
     <string name="live">真人</string>
     <string name="lottery_description">超过百种彩票玩法任您赢！提供玩家丰富多样的游戏内容，\n致力打造高品质娱乐游戏环境，只为公平、公正的开奖结果。</string>
     <string name="sport_bet_record">体育投注记录</string>
+    <string name="my_favorite">我的赛事</string>
     <string name="other_bet_record">其他投注记录</string>
     <string name="all_plat_type">全部平台类型</string>
     <string name="visit_first">來去逛逛</string>
@@ -716,5 +798,28 @@
     <string name="odds_id_not_allow_bet">该赔率玩法不允许下注</string>
     <string name="odds_have_changed">该盘口赔率已经变更,请重新投注</string>
     <string name="bet_info_content_has_been_changed">您所选择的玩法赔率或状态已变更,请重新进行投注</string>
+    <string name="account_history_overview">账户历史总览</string>
+    <string name="bet_num_and_bet_date">注单号 / 结算日期</string>
+
+    <!--account history-->
+    <string name="date">日期</string>
+    <string name="bet_amount">投注金额</string>
+    <string name="available_amount">有效金额</string>
+    <string name="win_lose">赢 / 输</string>
+    <string name="win_lose_mark">赢 / 输：</string>
+    <string name="all_sport">所有体育</string>
+    <string name="back_to_top">回到顶部</string>
+    <string name="total">总共</string>
+    <string name="verse">v</string>
+    <string name="sum_pass">综合过关</string>
+
+    <!--keyboard-->
+    <string name="keyboard_done">已完成</string>
+    <string name="no_game_description">选择上面的图标，会将其添加到”我的赛事”中。 您可以对其进行分组并轻松访问你感兴趣的所有赛事。</string>
+
+    <!--odds button-->
+    <string name="odds_button_name_first">第一</string>
+    <string name="odds_button_name_ant">任何</string>
+    <string name="odds_button_name_last">最后</string>
 
 </resources>

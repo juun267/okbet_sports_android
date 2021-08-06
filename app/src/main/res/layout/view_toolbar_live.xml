@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/expand_layout"
+        android:layout_width="match_parent"
+        android:layout_height="292dp"
+        app:el_duration="500"
+        app:el_expanded="true"
+        app:el_parallax="0.5"
+        tools:el_expanded="true">
+
+        <LinearLayout
+            android:id="@+id/web_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </net.cachapa.expandablelayout.ExpandableLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/colorWhite"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@color/colorBlue"
+            app:tabIndicatorFullWidth="false"
+            app:tabRippleColor="@color/transparent"
+            app:tabSelectedTextColor="@color/colorWhite"
+            app:tabTextColor="@color/colorGray"
+            >
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_icon_game_schedule_ec"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_mic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/selector_icon_mic"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_statistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/selector_icon_statistics"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_vs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/selector_icon_vs"/>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/selector_icon_detail"/>
+
+        </com.google.android.material.tabs.TabLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:scaleType="centerInside"
+            android:paddingHorizontal="16dp"
+            android:layout_gravity="center_vertical|end"
+            android:src="@drawable/ic_icon_arrow_gray" />
+    </FrameLayout>
+</LinearLayout>

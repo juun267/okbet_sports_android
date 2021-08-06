@@ -13,6 +13,11 @@ object TextUtil {
         return df.format(any)
     }
 
+    fun formatInputMoney(any: Any): String {
+        val df = DecimalFormat("0.###")
+        return df.format(any)
+    }
+
     fun formatMoney(double: Double): String {
         val df = DecimalFormat("###,###,###,##0.000")
         return df.format(ArithUtil.toMoneyFormat(double).toDouble())
@@ -29,7 +34,12 @@ object TextUtil {
     }
 
     fun formatForOdd(any: Any): String {
-        val df = DecimalFormat("###,###,###,##0.000")
+        val df = DecimalFormat("###,###,###,##0.00")
+        return df.format(any)
+    }
+
+    fun formatBetQuota(any: Any): String {
+        val df = DecimalFormat("###,###,###,###")
         return df.format(any)
     }
 
@@ -43,8 +53,13 @@ object TextUtil {
         return df.format(any)
     }
 
+    //TODO 應以resource代入, 配合多國語
     fun replaceParlayByC(str: String): String {
         return str.replace("C", "串")
+    }
+
+    fun replaceCByParlay(str: String): String {
+        return str.replace("串", "C")
     }
 
     fun maskFullName(fullName: String): String {

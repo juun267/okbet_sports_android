@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network.error
 
 import androidx.annotation.Nullable
 import okhttp3.ResponseBody
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.BANK_ADD
 import org.cxct.sportlottery.network.Constants.BANK_DELETE
 import org.cxct.sportlottery.network.Constants.BANK_MY
@@ -23,25 +24,34 @@ import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_ADD
 import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_QUERY
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_EPS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_ODDS_QUICK_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_PRELOAD
 import org.cxct.sportlottery.network.Constants.MATCH_RESULT_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
-import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
+import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
 import org.cxct.sportlottery.network.Constants.THIRD_AUTO_TRANSFER
 import org.cxct.sportlottery.network.Constants.THIRD_GAMES
-import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_GET_ALL_BALANCE
 import org.cxct.sportlottery.network.Constants.THIRD_LOGIN
 import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
+import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
@@ -64,6 +74,8 @@ import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.bet.add.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
+import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
@@ -75,16 +87,23 @@ import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
 import org.cxct.sportlottery.network.infoCenter.InfoCenterResult
 import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
+import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.odds.list.OddsListResult
+import org.cxct.sportlottery.network.odds.quick.QuickListResult
 import org.cxct.sportlottery.network.outright.OutrightResultListResult
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
-import org.cxct.sportlottery.network.outright.season.OutrightSeasonListResult
+import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
+import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.query.SportQueryResult
 import org.cxct.sportlottery.network.third_game.AutoTransferResult
 import org.cxct.sportlottery.network.third_game.BlankResult
 import org.cxct.sportlottery.network.third_game.ThirdLoginResult
@@ -92,6 +111,7 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResu
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
+import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -172,7 +192,33 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return BetListResult(it.code, it.msg, null, it.success, null, null) as T
                     }
+                    (url.contains(MATCH_BET_SETTLED_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BetSettledListResult(
+                            it.code,
+                            it.msg,
+                            it.success,
+                            null,
+                            null,
+                            null
+                        ) as T
+                    }
+                    (url.contains(MATCH_BET_SETTLED_DETAIL_LIST)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return BetSettledDetailListResult(
+                            it.code,
+                            it.msg,
+                            it.success,
+                            null,
+                            null,
+                            null
+                        ) as T
+                    }
                     (url.contains(MATCH_PRELOAD)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchPreloadResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_ODDS_EPS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MatchPreloadResult(it.code, it.msg, it.success, null) as T
                     }
@@ -180,9 +226,24 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return OddsListResult(it.code, it.msg, it.success, null) as T
                     }
+                    (url.contains(MATCH_ODDS_QUICK_LIST)) -> {
+                        return QuickListResult(it.code, it.msg, it.success, null) as T
+                    }
                     (url.contains(SPORT_MENU)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SportMenuResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.MYFAVORITE_QUERY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportMenuFavoriteResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(Constants.MYFAVORITE_MATCH_QUERY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MyFavoriteMatchResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(Constants.MYFAVORITE_SAVE)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MyFavoriteBaseResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(LEAGUE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -202,13 +263,13 @@ object ErrorUtils {
                         @Suppress("UNCHECKED_CAST")
                         return OutrightOddsListResult(it.code, it.msg, it.success, null) as T
                     }
-                    (url.contains(OUTRIGHT_SEASON_LIST)) -> {
+                    (url.contains(OUTRIGHT_LEAGUE_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return OutrightSeasonListResult(
-                            it.code,
-                            it.msg,
-                            null,
+                        return OutrightLeagueListResult(
                             it.success,
+                            it.msg,
+                            it.code,
+                            null,
                             null
                         ) as T
                     }
@@ -362,6 +423,32 @@ object ErrorUtils {
                     (url.contains(THIRD_REBATES)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return ThirdRebatesResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_CATEGORY_RECOMMEND)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchRecommendResult(it.code, it.msg, it.success, null, null) as T
+                    }
+                    (url.contains(MATCH_CATEGORY_SPECIAL_MATCH)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchCategoryResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_CATEGORY_SPECIAL_MENU)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchCategoryResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(SPORT_QUERY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return SportQueryResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_CATEGORY_QUERY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchCategoryQueryResult(
+                            it.code,
+                            it.msg,
+                            it.success,
+                            null,
+                            null
+                        ) as T
                     }
                 }
             }
