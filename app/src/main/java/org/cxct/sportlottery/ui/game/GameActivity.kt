@@ -85,7 +85,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private val mMenuLeftListener = object : MenuLeftFragment.MenuLeftListener {
-        override fun onClick(id: Int) {
+        override fun onClick(id : Int) {
             when (id) {
                 R.id.btn_lobby -> iv_logo.performClick()
                 R.id.menu_sport_game -> tabLayout.getTabAt(0)?.select()
@@ -109,7 +109,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     enum class Page { ODDS_DETAIL, OUTRIGHT }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
@@ -140,7 +140,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
-    private fun goToSportGame(gameType: GameType) {
+    private fun goToSportGame(gameType : GameType) {
         //規則：
         //1. 優先跳轉到當前頁籤下選擇要跳轉的球類賽事
         //2. 若此當前頁籤無該種球類比賽，則後續導入優先順序為 今日 > 早盤 > 串關
@@ -158,7 +158,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         viewModel.navSpecialEntrance(SpecialEntranceSource.LEFT_MENU, matchType, gameType)
     }
 
-    private fun goToMainActivity(thirdGameCategory: ThirdGameCategory) {
+    private fun goToMainActivity(thirdGameCategory : ThirdGameCategory) {
         val intent = Intent(this, MainActivity::class.java)
                 .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
         startActivity(intent)
@@ -205,7 +205,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
                 val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                    override fun onClick(menuStatus: Int) {
+                    override fun onClick(menuStatus : Int) {
                         when (menuStatus) {
                             MenuStatusType.CLOSE.ordinal -> onBackPressed()
                         }
@@ -223,7 +223,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                         .addToBackStack(null)
                         .commit()
             }
-        } catch (e: Exception) {
+        } catch (e : Exception) {
             e.printStackTrace()
         }
     }
@@ -231,7 +231,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
-        fun onClick(menuStatus: Int)
+        fun onClick(menuStatus : Int)
     }
 
     private fun initSubmitBtn() {
@@ -296,20 +296,20 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
     private fun initTabLayout() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
+            override fun onTabSelected(tab : TabLayout.Tab?) {
                 selectTab(tab?.position)
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            override fun onTabUnselected(tab : TabLayout.Tab?) {
             }
 
-            override fun onTabReselected(tab: TabLayout.Tab?) {
+            override fun onTabReselected(tab : TabLayout.Tab?) {
                 selectTab(tab?.position)
             }
         })
     }
 
-    private fun refreshTabLayout(sportMenuResult: SportMenuResult?) {
+    private fun refreshTabLayout(sportMenuResult : SportMenuResult?) {
         try {
             val countInPlay =
                     sportMenuResult?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
@@ -358,12 +358,12 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             tabEps?.tv_title?.setText(R.string.home_tab_eps)
             tabEps?.tv_number?.text = countEps.toString()
 
-        } catch (e: Exception) {
+        } catch (e : Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun selectTab(position: Int?) {
+    private fun selectTab(position : Int?) {
         when (position) {
             0 -> {
                 mNavController.popBackStack(R.id.homeFragment, false)
@@ -395,7 +395,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun navGameFragment(matchType: MatchType) {
+    private fun navGameFragment(matchType : MatchType) {
         when (mNavController.currentDestination?.id) {
             R.id.homeFragment -> {
                 val action = HomeFragmentDirections.actionHomeFragmentToGameFragment(matchType)
@@ -556,7 +556,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         })
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    private fun updateUiWithLogin(isLogin : Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE
@@ -572,8 +572,8 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun updateUiWithResult(messageListResult: MessageListResult?) {
-        val titleList: MutableList<String> = mutableListOf()
+    private fun updateUiWithResult(messageListResult : MessageListResult?) {
+        val titleList : MutableList<String> = mutableListOf()
         messageListResult?.let {
             it.rows?.forEach { data -> titleList.add(data.title + " - " + data.message) }
 
@@ -587,13 +587,13 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun updateUiWithResult(sportMenuResult: SportMenuResult?) {
+    private fun updateUiWithResult(sportMenuResult : SportMenuResult?) {
         if (sportMenuResult?.success == true) {
             refreshTabLayout(sportMenuResult)
         }
     }
 
-    private fun updateAvatar(iconUrl: String?) {
+    private fun updateAvatar(iconUrl : String?) {
         Glide.with(this).load(iconUrl)
                 .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
                         iv_head
@@ -614,7 +614,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         viewModel.getSportMenu()
     }
 
-    override fun onNewIntent(intent: Intent) {
+    override fun onNewIntent(intent : Intent) {
         super.onNewIntent(intent)
 
         val bundle = intent.extras
@@ -640,7 +640,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun updateSelectTabState(matchType: MatchType?) {
+    private fun updateSelectTabState(matchType : MatchType?) {
         when (matchType) {
             MatchType.IN_PLAY -> updateSelectTabState(1)
             MatchType.AT_START -> updateSelectTabState(2)
@@ -651,7 +651,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun updateSelectTabState(position: Int) {
+    private fun updateSelectTabState(position : Int) {
         val tab = tabLayout.getTabAt(position)?.customView
 
         tab?.let {

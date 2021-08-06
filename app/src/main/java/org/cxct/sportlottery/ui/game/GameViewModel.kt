@@ -1,11 +1,9 @@
 package org.cxct.sportlottery.ui.game
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.squareup.moshi.Types
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
@@ -47,7 +45,6 @@ import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryDesc
 import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
-import org.cxct.sportlottery.network.today.Person
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseFavoriteViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -60,7 +57,6 @@ import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 

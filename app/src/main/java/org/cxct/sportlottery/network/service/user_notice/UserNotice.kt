@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class UserNotice(
     @Json(name = "addDate")
-    val addDate: Long,
+    val addDate: Long?,
     @Json(name = "content")
     val content: String?,
     @Json(name = "id")
