@@ -24,10 +24,11 @@
 
 
     <ImageView
+        android:id="@+id/odd_detail_pin"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:src="@drawable/ic_needle"
+        android:src="@drawable/selector_item_country_league_pin_v4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

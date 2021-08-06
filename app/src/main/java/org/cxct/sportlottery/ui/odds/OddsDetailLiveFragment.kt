@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.odds
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +25,7 @@ import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -38,8 +41,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
+import java.util.*
 
 
 @Suppress("DEPRECATION", "SetTextI18n")
@@ -48,18 +51,18 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     BaseSocketActivity.ReceiverChannelEvent, BaseSocketActivity.ReceiverChannelPublic,
     BaseSocketActivity.ReceiverChannelMatch {
 
-
     private val args: OddsDetailLiveFragmentArgs by navArgs()
+
+    private var oddsDetailListAdapter: OddsDetailListAdapter? = null
 
     private var mSportCode: String? = null
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
 
-    private var oddsDetailListAdapter: OddsDetailListAdapter? = null
-
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
 
+    private var timer: Timer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +73,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         registerChannelMatch(this)
         registerChannelPublic(this)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,29 +85,34 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         executePendingBindings()
     }.root
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
     }
 
-
     override fun onStart() {
         super.onStart()
+
         getData()
+
         live_view_tool_bar.setWebViewUrl(matchId)
     }
-
 
     override fun onStop() {
         super.onStop()
 
         unSubscribeChannelEventAll()
+
+        timer?.cancel()
     }
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
+            oddsDetailListener = OddsDetailListener {
+                //TODO post save favorite api
+            }
+
             sportCode = mSportCode
         }
 
@@ -132,7 +139,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
     }
 
-
     @SuppressLint("SetTextI18n")
     private fun observeData() {
         viewModel.playCateListResult.observe(this.viewLifecycleOwner, {
@@ -142,9 +148,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         tab_cat.removeAllTabs()
                         if (result.rows.isNotEmpty()) {
                             for (row in result.rows) {
-                                val customTabView = layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
-                                    findViewById<TextView>(R.id.tv_tab).text = row.name
-                                }
+                                val customTabView =
+                                    layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
+                                        findViewById<TextView>(R.id.tv_tab).text = row.name
+                                    }
 
                                 tab_cat.addTab(
                                     tab_cat.newTab().setCustomView(customTabView),
@@ -208,12 +215,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
     }
 
-
     private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
             tv_home_name.text = homeName
             tv_away_name.text = awayName
-            tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
         }
     }
@@ -226,7 +231,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
     }
-
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
@@ -249,14 +253,30 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
-        matchStatusChangeEvent?.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
+        matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
+            tv_time_top?.let {
+                it.text = this.statusName
+            }
+
             curHomeScore = homeScore
             curAwayScore = awayScore
         }
     }
 
     override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
-        TODO("Not yet implemented")
+        val updateTime = when (args.gameType) {
+            GameType.FT -> {
+                matchClockEvent.matchClockCO?.matchTime
+            }
+            GameType.BK -> {
+                matchClockEvent.matchClockCO?.remainingTimeInPeriod
+            }
+            else -> null
+        }
+
+        updateTime?.let {
+            startMatchTimer(updateTime)
+        }
     }
 
     override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
@@ -264,11 +284,38 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
-        TODO("Not yet implemented")
     }
 
     override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
         unSubscribeChannelEventAll()
         subscribeChannelEvent(matchId)
+    }
+
+    private fun startMatchTimer(startTime: Int) {
+        timer?.cancel()
+        timer = Timer()
+        timer?.schedule(object : TimerTask() {
+            override fun run() {
+                var timeMillis = startTime * 1000L
+
+                when (args.gameType) {
+                    GameType.FT -> {
+                        timeMillis += 1000
+                    }
+                    GameType.BK -> {
+                        timeMillis -= 1000
+                    }
+                }
+
+                if (timeMillis >= 0) {
+                    Handler(Looper.getMainLooper()).post {
+
+                        tv_time_bottom?.apply {
+                            text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                        }
+                    }
+                }
+            }
+        }, 1000L, 1000L)
     }
 }

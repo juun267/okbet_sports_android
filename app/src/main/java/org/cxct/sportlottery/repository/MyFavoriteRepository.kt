@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
-import org.cxct.sportlottery.network.sport.MyFavoriteBaseResult
-import org.cxct.sportlottery.network.sport.SaveMyFavoriteRequest
-import org.cxct.sportlottery.network.sport.SportMenuFavoriteResult
+import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
+import org.cxct.sportlottery.network.myfavorite.save.SaveMyFavoriteRequest
+import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
 import org.cxct.sportlottery.util.TextUtil
 import retrofit2.Response
 
@@ -30,9 +30,9 @@ class MyFavoriteRepository {
 
         if (result.isSuccessful) {
             result.body()?.t?.let {
-                _favorSportList.postValue(TextUtil.split(it.sport))
-                _favorLeagueList.postValue(TextUtil.split(it.league))
-                _favorMatchList.postValue(TextUtil.split(it.match))
+                _favorSportList.postValue(TextUtil.split(it.sport ?: ""))
+                _favorLeagueList.postValue(TextUtil.split(it.league ?: ""))
+                _favorMatchList.postValue(TextUtil.split(it.match ?: ""))
             }
         }
 
@@ -60,9 +60,9 @@ class MyFavoriteRepository {
 
         if (result.isSuccessful) {
             result.body()?.t?.let {
-                _favorSportList.postValue(TextUtil.split(it.sport))
-                _favorLeagueList.postValue(TextUtil.split(it.league))
-                _favorMatchList.postValue(TextUtil.split(it.match))
+                _favorSportList.postValue(TextUtil.split(it.sport ?: ""))
+                _favorLeagueList.postValue(TextUtil.split(it.league ?: ""))
+                _favorMatchList.postValue(TextUtil.split(it.match ?: ""))
             }
         }
 

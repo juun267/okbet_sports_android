@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.sport
+package org.cxct.sportlottery.network.myfavorite.match
 
 data class MyFavoriteMatchRequest(
     val gameType: String,

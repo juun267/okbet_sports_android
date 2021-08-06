@@ -14,6 +14,7 @@ data class OddsDetailListData(
     var groupItem = HashMap<String, List<Odd?>>()
     var gameTypeSCOSelect: String? = null
     var scoItem = HashMap<String, List<Odd?>>()
+    var isPin = false
 }
 
 enum class FGLGType {
