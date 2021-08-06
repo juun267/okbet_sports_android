@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_BET_INFO
 import org.cxct.sportlottery.network.Constants.MATCH_BET_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_DETAIL_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_BET_SETTLED_LIST
+import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_QUERY
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
@@ -110,6 +111,7 @@ import org.cxct.sportlottery.network.third_game.money_transfer.GetAllBalanceResu
 import org.cxct.sportlottery.network.third_game.query_transfers.QueryTransfersResult
 import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
+import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
@@ -437,6 +439,10 @@ object ErrorUtils {
                     (url.contains(SPORT_QUERY)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return SportQueryResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_CATEGORY_QUERY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchCategoryQueryResult(it.code, it.msg, it.success, null, null) as T
                     }
                 }
             }
