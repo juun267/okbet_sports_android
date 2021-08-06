@@ -12,6 +12,10 @@ abstract class BaseSocketDialog<T : BaseViewModel>(clazz: KClass<T>) : BaseDialo
         (activity as BaseSocketActivity<*>).registerChannelEvent(receiverChannelEvent)
     }
 
+    protected fun registerChannelMatch(receiverChannelMatch: BaseSocketActivity.ReceiverChannelMatch) {
+        (activity as BaseSocketActivity<*>).registerChannelMatch(receiverChannelMatch)
+    }
+
     protected fun registerChannelPublic(receiverChannelPublic: BaseSocketActivity.ReceiverChannelPublic) {
         (activity as BaseSocketActivity<*>).registerChannelPublic(receiverChannelPublic)
     }

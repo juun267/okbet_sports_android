@@ -62,7 +62,8 @@ import org.cxct.sportlottery.util.GameConfigManager
  * 4. 賽事推薦 投注
  */
 class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic {
+    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic,
+    BaseSocketActivity.ReceiverChannelMatch {
     private lateinit var homeBinding: FragmentHomeBinding
 
     private val mRvGameTable4Adapter = RvGameTable4Adapter()
@@ -90,6 +91,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         super.onCreate(savedInstanceState)
 
         registerChannelHall(this)
+        registerChannelMatch(this)
         registerChannelPublic(this)
     }
 

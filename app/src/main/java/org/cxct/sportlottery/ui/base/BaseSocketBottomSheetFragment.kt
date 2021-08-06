@@ -20,6 +20,10 @@ abstract class BaseSocketBottomSheetFragment<T : BaseViewModel>(clazz: KClass<T>
         (activity as BaseSocketActivity<*>).registerChannelEvent(receiverChannelEvent)
     }
 
+    protected fun registerChannelMatch(receiverChannelMatch: BaseSocketActivity.ReceiverChannelMatch) {
+        (activity as BaseSocketActivity<*>).registerChannelMatch(receiverChannelMatch)
+    }
+
     protected fun registerChannelPublic(receiverChannelPublic: BaseSocketActivity.ReceiverChannelPublic) {
         (activity as BaseSocketActivity<*>).registerChannelPublic(receiverChannelPublic)
     }

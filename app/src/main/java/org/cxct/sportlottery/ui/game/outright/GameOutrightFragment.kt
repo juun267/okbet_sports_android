@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.outright
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +21,6 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -37,6 +34,18 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic {
 
     private val args: GameOutrightFragmentArgs by navArgs()
+
+    private val gameToolbarMatchTypeText = { matchType: MatchType? ->
+        when (matchType) {
+            MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
+            MatchType.TODAY -> getString(R.string.home_tab_today)
+            MatchType.EARLY -> getString(R.string.home_tab_early)
+            MatchType.PARLAY -> getString(R.string.home_tab_parlay)
+            MatchType.AT_START -> getString(R.string.home_tab_at_start)
+            MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
+            else -> ""
+        }
+    }
 
     private val outrightOddAdapter by lazy {
         OutrightOddAdapter().apply {
@@ -94,7 +103,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onStart() {
         super.onStart()
 
-        viewModel.getOutrightOddsList(args.eventId)
+        viewModel.getOutrightOddsList(args.gameType.key, args.eventId)
         loading()
     }
 
@@ -131,9 +140,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
 
         viewModel.curMatchType.observe(viewLifecycleOwner, {
-            it?.name.apply {
-                game_toolbar_match_type.text = this
-            }
+                game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
+        })
+
+        viewModel.curChildMatchType.observe(viewLifecycleOwner, {
+                game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
@@ -176,14 +187,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         super.onStop()
 
         unSubscribeChannelHallAll()
-    }
-
-    override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
-        TODO("Not yet implemented")
     }
 
     override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
@@ -254,7 +257,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
-        TODO("Not yet implemented")
     }
 
     override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {

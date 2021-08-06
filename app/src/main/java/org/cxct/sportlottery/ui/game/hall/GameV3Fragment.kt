@@ -56,7 +56,8 @@ import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic {
+    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic,
+    BaseSocketActivity.ReceiverChannelMatch {
 
     private val args: GameV3FragmentArgs by navArgs()
 
@@ -189,6 +190,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         super.onCreate(savedInstanceState)
 
         registerChannelHall(this)
+        registerChannelMatch(this)
         registerChannelPublic(this)
     }
 
@@ -265,10 +267,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         view.game_tabs.apply {
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    //TODO add odd tab switch behavior
-                    Toast.makeText(requireContext(), "${tab?.text} is selected", Toast.LENGTH_SHORT)
-                        .show()
-
                     when (tab?.text.toString()) { //固定寫死
                         getString(R.string.game_tab_league_odd) -> { //賽事
                             viewModel.switchChildMatchType(childMatchType = args.matchType)
@@ -491,7 +489,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             }
         })
 
-        viewModel.outrightSeasonListResult.observe(this.viewLifecycleOwner, {
+        viewModel.outrightLeagueListResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { outrightSeasonListResult ->
                 hideLoading()
 
@@ -779,8 +777,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     private fun navGameOutright(matchId: String) {
-        val gameType =
-            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
         gameType?.let {
             val action =

@@ -25,14 +25,17 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     BaseFavoriteActivity<T>(clazz) {
 
     interface ReceiverChannelHall {
-        fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent)
-        fun onMatchClockChanged(matchClockEvent: MatchClockEvent)
         fun onOddsChanged(oddsChangeEvent: OddsChangeEvent)
         fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent)
     }
 
     interface ReceiverChannelEvent {
         fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent)
+    }
+
+    interface ReceiverChannelMatch {
+        fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent)
+        fun onMatchClockChanged(matchClockEvent: MatchClockEvent)
     }
 
     interface ReceiverChannelPublic {
@@ -42,6 +45,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     private var receiverChannelHall: ReceiverChannelHall? = null
     private var receiverChannelEvent: ReceiverChannelEvent? = null
+    private var receiverChannelMatch: ReceiverChannelMatch? = null
     private var receiverChannelPublic: ReceiverChannelPublic? = null
 
     private val receiver by lazy {
@@ -115,13 +119,13 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.matchStatusChange.observe(this, {
             it?.let { matchStatusChangeEvent ->
-                receiverChannelHall?.onMatchStatusChanged(matchStatusChangeEvent)
+                receiverChannelMatch?.onMatchStatusChanged(matchStatusChangeEvent)
             }
         })
 
         receiver.matchClock.observe(this, {
             it?.let { matchClockEvent ->
-                receiverChannelHall?.onMatchClockChanged(matchClockEvent)
+                receiverChannelMatch?.onMatchClockChanged(matchClockEvent)
             }
         })
 
@@ -162,6 +166,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     fun registerChannelEvent(receiverChannelEvent: ReceiverChannelEvent) {
         this.receiverChannelEvent = receiverChannelEvent
+    }
+
+    fun registerChannelMatch(receiverChannelMatch: ReceiverChannelMatch) {
+        this.receiverChannelMatch = receiverChannelMatch
     }
 
     fun registerChannelPublic(receiverChannelPublic: ReceiverChannelPublic) {
