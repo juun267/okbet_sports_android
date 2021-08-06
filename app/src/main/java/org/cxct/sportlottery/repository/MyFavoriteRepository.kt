@@ -30,9 +30,9 @@ class MyFavoriteRepository {
 
         if (result.isSuccessful) {
             result.body()?.t?.let {
-                _favorSportList.postValue(TextUtil.split(it.sport))
-                _favorLeagueList.postValue(TextUtil.split(it.league))
-                _favorMatchList.postValue(TextUtil.split(it.match))
+                _favorSportList.postValue(TextUtil.split(it.sport ?: ""))
+                _favorLeagueList.postValue(TextUtil.split(it.league ?: ""))
+                _favorMatchList.postValue(TextUtil.split(it.match ?: ""))
             }
         }
 
@@ -60,9 +60,9 @@ class MyFavoriteRepository {
 
         if (result.isSuccessful) {
             result.body()?.t?.let {
-                _favorSportList.postValue(TextUtil.split(it.sport))
-                _favorLeagueList.postValue(TextUtil.split(it.league))
-                _favorMatchList.postValue(TextUtil.split(it.match))
+                _favorSportList.postValue(TextUtil.split(it.sport ?: ""))
+                _favorLeagueList.postValue(TextUtil.split(it.league ?: ""))
+                _favorMatchList.postValue(TextUtil.split(it.match ?: ""))
             }
         }
 

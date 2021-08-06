@@ -6,13 +6,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class MyFavorite(
     @Json(name = "playCate")
-    val playCate: String,
+    val playCate: List<PlayCate>?,
     @Json(name = "league")
-    val league: String,
+    val league: String?,
     @Json(name = "match")
-    val match: String,
+    val match: String?,
     @Json(name = "outright")
-    val outright: String,
+    val outright: String?,
     @Json(name = "sport")
-    val sport: String
+    val sport: String?
 )
