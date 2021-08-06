@@ -33,9 +33,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.repository.TestFlag
@@ -369,20 +367,11 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         viewModel.updateMatchOdd(matchOddsChangeEvent)
     }
 
-    override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
-        TODO("Not yet implemented")
-    }
-
     override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
         viewModel.updateMatchOdd(oddsChangeEvent)
     }
 
     override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
-        TODO("Not yet implemented")
     }
 
     override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
