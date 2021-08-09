@@ -97,10 +97,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             itemView.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
-
-            itemView.btn_star.setOnClickListener {
-                onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
-            }
         }
 
         private fun setupMatchInfo(data: MatchOdd) {
@@ -108,6 +104,14 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 tv_game_name_home.text = data.matchInfo?.homeName
                 tv_game_name_away.text = data.matchInfo?.awayName
                 tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
+
+                btn_star.apply {
+                    isSelected = data.matchInfo?.isFavorite ?: false
+
+                    setOnClickListener {
+                        onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
+                    }
+                }
 
                 when (matchType) {
                     MatchType.IN_PLAY -> {

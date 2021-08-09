@@ -547,6 +547,8 @@ class GameViewModel(
                 _matchPreloadAtStart.postValue(Event(result))
             }
         }
+
+        notifyFavorite(FavoriteType.MATCH)
     }
 
     //遊戲大廳首頁: 精選賽事菜單

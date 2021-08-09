@@ -17,6 +17,7 @@ import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MenuCode
@@ -176,11 +177,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         mRvGameTable4Adapter.onClickFavoriteListener =
             object : OnClickFavoriteListener {
                 override fun onClickFavorite(matchId: String?) {
-                    Toast.makeText(
-                        requireContext(),
-                        "add $matchId to favorite list",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    viewModel.pinFavorite(FavoriteType.MATCH, matchId)
                 }
             }
 
@@ -758,6 +755,16 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 refreshHighlight(result)
                 subscribeHighlightHallChannel()
             }
+        })
+
+        viewModel.favorMatchList.observe(viewLifecycleOwner, { favorMatchList ->
+            mRvGameTable4Adapter.getData().forEach {
+                it.matchOdds.forEach { matchOdd ->
+                    matchOdd.matchInfo?.isFavorite = favorMatchList.contains(matchOdd.matchInfo?.id)
+                }
+            }
+
+            mRvGameTable4Adapter.notifyDataSetChanged()
         })
     }
 
