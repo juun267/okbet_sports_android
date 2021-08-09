@@ -40,8 +40,6 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
-private const val BET_LIST_LISTENER = "betListListener"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [BetListFragment.newInstance] factory method to
@@ -89,9 +87,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        arguments?.let {
-            betResultListener = it.getSerializable(BET_LIST_LISTENER) as BetResultListener
-        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)
         binding.apply {
             gameViewModel = this@BetListFragment.viewModel

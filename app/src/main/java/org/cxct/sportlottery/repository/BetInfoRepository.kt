@@ -440,7 +440,7 @@ class BetInfoRepository(val androidContext: Context) {
     /**
      * 檢查注單中賠率、盤口狀態
      */
-    fun checkBetInfoContent(betInfoList: MutableList<BetInfoListData>) {
+    private fun checkBetInfoContent(betInfoList: MutableList<BetInfoListData>) {
         checkBetInfoOddChanged(betInfoList)
         checkBetInfoPlatStatus(betInfoList)
     }
