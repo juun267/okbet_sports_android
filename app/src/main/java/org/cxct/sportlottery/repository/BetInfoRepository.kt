@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -71,9 +72,18 @@ class BetInfoRepository(val androidContext: Context) {
         set(value) {
             field = value
             field?.let {
-                notifyBetInfoChanged()
+                updatePlayQuota()
             }
         }
+
+    //用於投注單頁面顯示提醒介面
+    val showOddsChangeWarn: LiveData<Boolean>
+        get() = _showOddsChangeWarn
+    private val _showOddsChangeWarn = MutableLiveData<Boolean>()
+
+    val showOddsCloseWarn: LiveData<Boolean>
+        get() = _showOddsCloseWarn
+    private val _showOddsCloseWarn = MutableLiveData<Boolean>()
 
 
     @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
@@ -102,9 +112,7 @@ class BetInfoRepository(val androidContext: Context) {
     /**
      * 加入注單, 檢查串關邏輯, 無法串關的注單以紅點標記.
      */
-    fun addInBetOrderParlay() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
+    private fun updateBetOrderParlay(betList: MutableList<BetInfoListData>) {
         if (betList.size == 0) {
             return
         }
@@ -119,7 +127,8 @@ class BetInfoRepository(val androidContext: Context) {
         //檢查是否有相同賽事
         val matchIdList: MutableMap<String, MutableList<Int>> = mutableMapOf()
         betList.forEachIndexed { index, betInfoListData ->
-            matchIdList[betInfoListData.matchOdd.matchId]?.add(index) ?: run { matchIdList[betInfoListData.matchOdd.matchId] = mutableListOf(index) }
+            matchIdList[betInfoListData.matchOdd.matchId]?.add(index)
+                ?: run { matchIdList[betInfoListData.matchOdd.matchId] = mutableListOf(index) }
         }
 
         betList.forEach {
@@ -169,6 +178,7 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun getCurrentBetInfoList() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -179,17 +189,22 @@ class BetInfoRepository(val androidContext: Context) {
         val item = betList.find { it.matchOdd.oddsId == oddId }
         betList.remove(item)
         _removeItem.postValue(Event(item?.matchOdd?.matchId))
+        updateBetOrderParlay(betList)
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
     fun removeClosedPlatItem() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-        val needRemoveList = betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
+        val needRemoveList =
+            betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
         needRemoveList.forEach {
             betList.remove(it)
             _removeItem.value = Event(it.matchOdd.matchId)
         }
 
+        updateBetOrderParlay(betList)
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -201,6 +216,7 @@ class BetInfoRepository(val androidContext: Context) {
         _matchOddList.value?.clear()
         _parlayList.value?.clear()
 
+        checkBetInfoContent(betList)
         _betInfoList.postValue(Event(betList))
     }
 
@@ -209,7 +225,9 @@ class BetInfoRepository(val androidContext: Context) {
         _showBetInfoSingle.postValue(Event(false))
     }
 
-
+    /**
+     * 點擊賠率按鈕加入投注清單, 並產生串關注單
+     */
     fun addInBetInfo(
         matchType: MatchType,
         gameType: GameType,
@@ -248,12 +266,15 @@ class BetInfoRepository(val androidContext: Context) {
             }
 
             betList.add(data)
+            //產生串關注單
+            updateBetOrderParlay(betList)
+            checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
         }
     }
 
 
-    private fun getParlayOdd(
+    fun getParlayOdd(
         matchType: MatchType,
         gameType: GameType,
         matchOddList: MutableList<MatchOdd>
@@ -333,6 +354,7 @@ class BetInfoRepository(val androidContext: Context) {
         hasChanged?.matchOdd?.oddState = OddState.SAME.state
     }
 
+    //TODO review 待刪除
     fun notifyBetInfoChanged() {
         val updateBetInfoList = _betInfoList.value?.peekContent()
 
@@ -365,14 +387,92 @@ class BetInfoRepository(val androidContext: Context) {
                             )
                             newBetInfoListData.matchType = betInfoListData.matchType
                             newBetInfoListData.input = betInfoListData.input
+                            newBetInfoListData.betAmount = betInfoListData.betAmount
+                            newBetInfoListData.pointMarked = betInfoListData.pointMarked
                             newList.add(newBetInfoListData)
                         }
                     }
                 }
+                checkBetInfoContent(newList)
                 _betInfoList.value = Event(newList)
             }
         }
     }
 
+    private fun updatePlayQuota() {
+
+        val updateBetInfoList = _betInfoList.value?.peekContent()
+
+        if (updateBetInfoList.isNullOrEmpty()) return
+
+        val newList = mutableListOf<BetInfoListData>()
+        updateBetInfoList.forEach { betInfoListData ->
+            betInfoListData.matchType?.let { matchType ->
+                //TODO Dean : review
+                val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
+                gameType?.let {
+                    val newBetInfoListData = BetInfoListData(
+                        betInfoListData.matchOdd.copy(),
+                        getParlayOdd(
+                            matchType,
+                            gameType,
+                            mutableListOf(betInfoListData.matchOdd)
+                        ).first()
+                    )
+                    newBetInfoListData.matchType = betInfoListData.matchType
+                    newBetInfoListData.input = betInfoListData.input
+                    newBetInfoListData.betAmount = betInfoListData.betAmount
+                    newBetInfoListData.pointMarked = betInfoListData.pointMarked
+                    newList.add(newBetInfoListData)
+                }
+            }
+        }
+        checkBetInfoContent(newList)
+        _betInfoList.value = Event(newList)
+    }
+
+    fun notifyBetInfoChanged(newList: MutableList<BetInfoListData>) {
+        checkBetInfoContent(newList)
+        _betInfoList.value = Event(newList)
+    }
+
+
+    /**
+     * 檢查注單中賠率、盤口狀態
+     */
+    private fun checkBetInfoContent(betInfoList: MutableList<BetInfoListData>) {
+        checkBetInfoOddChanged(betInfoList)
+        checkBetInfoPlatStatus(betInfoList)
+    }
+
+    /**
+     * 判斷是否有賠率變更
+     */
+    private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
+        betInfoList.forEach {
+            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
+                _showOddsChangeWarn.postValue(true)
+            }
+        }
+    }
+
+    /**
+     * 判斷是否有盤口關閉
+     */
+    private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
+        var hasPlatClose = false
+        betInfoList.forEach {
+            when (it.matchOdd.status) {
+                BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                    hasPlatClose = true
+                    return@forEach
+                }
+                else -> { //BetStatus.ACTIVATED.code
+                    it.matchOdd.betAddError != null
+                }
+            }
+        }
+        _showOddsCloseWarn.postValue(hasPlatClose)
+    }
 
 }

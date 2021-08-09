@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
@@ -23,6 +22,7 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.network.bet.add.Row
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -57,6 +57,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     private var betListDiffAdapter: BetListDiffAdapter? = null
 
     private var betAllAmount = 0.0
+
+    private var betResultListener: BetResultListener? = null
 
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
@@ -109,10 +111,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         }
     }
 
-    private fun getBetOrderParlay() {
-        viewModel.getBetOrderListForParlay()
-    }
-
     private fun initView() {
         initBtnView()
         initBtnEvent()
@@ -157,25 +155,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                     stackFromEnd = true
                 }
             rvBetList.adapter = betListDiffAdapter
-            rvBetList.addItemDecoration(
-                DividerItemDecoration(
-                    context,
-                    LinearLayoutManager.VERTICAL
-                ).apply {
-                    ContextCompat.getDrawable(
-                        context ?: requireContext(),
-                        R.drawable.divider_color_white8
-                    )?.let {
-                        setDrawable(it)
-                    }
-                })
-            (rvBetList.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+            rvBetList.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+                ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
+                    setDrawable(it)
+                }
+            })
         }
     }
 
     private fun initToolBar() {
         binding.ivArrow.setOnClickListener {
-            activity?.supportFragmentManager?.popBackStack()
+            activity?.onBackPressed()
         }
         initDeleteAllOnClickEvent()
     }
@@ -231,11 +221,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
         val list = newBetList ?: betListDiffAdapter?.let { getCurrentBetList(it) }
         val parlayList = betListDiffAdapter?.let { getCurrentParlayList(it) }
-        val totalBetAmount = (list?.sumByDouble { it.betAmount }
-            ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * it.num } ?: 0.0)
+        val totalBetAmount =
+            (list?.sumByDouble { it.betAmount } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * it.num } ?: 0.0)
         val betCount =
-            (list?.count { it.betAmount > 0 } ?: 0) + (parlayList?.filter { it.betAmount > 0 }
-                ?.sumBy { it.num } ?: 0)
+            (list?.count { it.betAmount > 0 } ?: 0) + (parlayList?.filter { it.betAmount > 0 }?.sumBy { it.num } ?: 0)
         val winnableAmount = (list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) }
             ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * getOdds(it, oddsType) } ?: 0.0)
 
@@ -311,9 +300,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 betListDiffAdapter?.betList = list
 
                 subscribeChannel(list)
-                getBetOrderParlay()
                 refreshAllAmount(list)
-                viewModel.checkBetInfoContent(list)
             }
         })
 
@@ -336,16 +323,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         //投注結果
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                showPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = messageByResultCode(requireContext(), result),
-                    success = result.success
-                ) {}
-                viewModel.checkBetInfoContent(
-                    betListDiffAdapter?.betList ?: mutableListOf()
-                )
-                refreshAllAmount()
-                showHideOddsChangeWarn(false)
+                hideLoading()
+                if (result.success) {
+                    betResultListener?.onBetResult(result.rows)
+                    refreshAllAmount()
+                    showHideOddsChangeWarn(false)
+                } else {
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                }
             }
         })
 
@@ -370,6 +355,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     private fun addBet() {
+        loading()
         betListDiffAdapter?.let { betListAdapter ->
             viewModel.addBetList(
                 getCurrentBetList(betListAdapter),
@@ -451,7 +437,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
      */
     private fun showHideOddsCloseWarn(show: Boolean) {
         btn_bet.isEnabled = show
-        ll_odds_close_warn.visibility = if (show) View.VISIBLE else View.GONE
+        if (show) {
+            ll_odds_close_warn.visibility = View.VISIBLE
+            tv_warn_odds_change.visibility = View.GONE
+        } else {
+            ll_odds_close_warn.visibility = View.GONE
+            tv_warn_odds_change.visibility = if (btn_bet.isOddsChanged == true) View.VISIBLE else View.GONE
+        }
     }
 
     /**
@@ -477,7 +469,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             }
         }
         betListDiffAdapter?.betList = (betList ?: mutableListOf())
-        viewModel.checkBetInfoContent(betList ?: mutableListOf())
     }
 
     override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
@@ -542,6 +533,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
          * @return A new instance of fragment BetListFragment.
          */
         @JvmStatic
-        fun newInstance() = BetListFragment()
+        fun newInstance(betResultListener: BetResultListener) = BetListFragment().apply {
+            this.betResultListener = betResultListener
+        }
+    }
+
+    interface BetResultListener {
+        fun onBetResult(betResultData: List<Row>?)
     }
 }
