@@ -42,6 +42,7 @@ abstract class BaseFavoriteViewModel(
 
     val favorMatchList = myFavoriteRepository.favorMatchList
 
+    val favorPlayCateList = myFavoriteRepository.favorPlayCateList
 
     fun getFavorite() {
         if (isLogin.value != true) {
@@ -98,6 +99,7 @@ abstract class BaseFavoriteViewModel(
     fun pinFavorite(
         type: FavoriteType,
         content: String?,
+        gameType: String? = null
     ) {
         if (isLogin.value != true) {
             _notifyLogin.postValue(true)
@@ -106,7 +108,7 @@ abstract class BaseFavoriteViewModel(
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                myFavoriteRepository.pinFavorite(type, content)
+                myFavoriteRepository.pinFavorite(type, content, gameType)
             }
 
             result?.t?.let {
