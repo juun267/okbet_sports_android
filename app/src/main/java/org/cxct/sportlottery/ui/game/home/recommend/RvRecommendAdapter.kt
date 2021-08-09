@@ -37,6 +37,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     code = row.sport?.code,
                     name = row.sport?.name,
                     matchInfo = oddData.matchInfo,
+                    isOutright = row.isOutright,
                     oddBeans = beans
                 )
                 dataList.add(entity)
