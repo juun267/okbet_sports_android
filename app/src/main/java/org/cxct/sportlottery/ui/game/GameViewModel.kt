@@ -929,7 +929,7 @@ class GameViewModel(
 
             _leagueListResult.value = (Event(result))
 
-            _leagueSelectedList.postValue(mutableListOf())
+            clearSelectedLeague()
 
             notifyFavorite(FavoriteType.LEAGUE)
         }
@@ -1100,6 +1100,10 @@ class GameViewModel(
             _leagueSubmitList.postValue(Event(it))
         }
 
+        clearSelectedLeague()
+    }
+
+    fun clearSelectedLeague() {
         _leagueSelectedList.postValue(mutableListOf())
     }
 
