@@ -276,18 +276,18 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                showBottomSheetDialog(result)
-                /*
-                showPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = messageByResultCode(requireContext(), result),
-                    success = result.success
-                ) {
-                    changeBetInfoContentByMessage(result)
-                    dismiss()
+                if (!result.success) {
+                    showPromptDialog(
+                        title = getString(R.string.prompt),
+                        message = messageByResultCode(requireContext(), result),
+                        success = result.success
+                    ) {
+                        changeBetInfoContentByMessage(result)
+                        dismiss()
+                    }
+                } else {
+                    showBottomSheetDialog(result)
                 }
-                */
-
             }
         })
 
