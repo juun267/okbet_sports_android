@@ -52,14 +52,7 @@ class MoneyTransferFragment : BaseSocketFragment<MoneyTransferViewModel>(MoneyTr
     }
 
 
-
     private fun initObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner) {
-            it?.apply {
-                layout_balance.tv_account_balance.text = TextUtil.format(it)
-            }
-        }
-
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it)
                 loading()

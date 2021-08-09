@@ -16,7 +16,7 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
@@ -31,7 +31,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MainActivity : BaseNoticeActivity<MainViewModel>(MainViewModel::class) {
+class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
     companion object {
         //切換語系，activity 要重啟才會生效

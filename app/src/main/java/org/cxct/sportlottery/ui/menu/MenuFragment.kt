@@ -51,7 +51,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         setupCloseBtn()
         initObserve()
-        initSocketObserver()
         initEvent()
         setupSelectLanguage()
         setupVersion()
@@ -85,12 +84,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             setupOddsType(it)
         })
 
-    }
-
-    private fun initSocketObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner, Observer { money ->
-            tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
-        })
     }
 
     private fun initEvent() {

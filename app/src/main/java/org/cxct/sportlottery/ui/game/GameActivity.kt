@@ -27,7 +27,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.BetReceiptFragment
@@ -52,7 +52,7 @@ import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
-class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
@@ -287,7 +287,12 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
             override fun onBetResult(betResultData: List<Row>?) {
                 supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit, R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit)
+                    .setCustomAnimations(
+                        R.anim.push_right_to_left_enter,
+                        R.anim.pop_bottom_to_top_exit,
+                        R.anim.push_right_to_left_enter,
+                        R.anim.pop_bottom_to_top_exit
+                    )
                     .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData))
                     .addToBackStack(BetReceiptFragment::class.java.simpleName)
                     .commit()
@@ -404,6 +409,10 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
                 loading()
             }
+            7 -> {
+                viewModel.switchMatchType(MatchType.EPS)
+                loading()
+            }
         }
     }
 
@@ -469,10 +478,6 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
-        receiver.orderSettlement.observe(this, {
-            viewModel.getSettlementNotification(it)
-        })
-
         viewModel.settlementNotificationMsg.observe(this, {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
@@ -509,6 +514,9 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                     }
                     MatchType.OUTRIGHT -> {
                         tabLayout.getTabAt(6)?.select()
+                    }
+                    MatchType.EPS -> {
+                        tabLayout.getTabAt(7)?.select()
                     }
                 }
             }
@@ -662,6 +670,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             MatchType.EARLY -> updateSelectTabState(4)
             MatchType.PARLAY -> updateSelectTabState(5)
             MatchType.OUTRIGHT -> updateSelectTabState(6)
+            MatchType.EPS -> updateSelectTabState(7)
         }
     }
 

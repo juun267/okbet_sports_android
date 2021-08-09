@@ -22,12 +22,13 @@ import kotlinx.android.synthetic.main.item_listview_settlement_league_all.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ResultsSettlementActivity : BaseOddButtonActivity<SettlementViewModel>(SettlementViewModel::class) {
+class ResultsSettlementActivity :
+    BaseSocketActivity<SettlementViewModel>(SettlementViewModel::class) {
     lateinit var settlementLeagueBottomSheet: BottomSheetDialog
     private lateinit var settlementLeagueAdapter: SettlementLeagueAdapter
     lateinit var settlementGameTypeBottomSheet: BottomSheetDialog

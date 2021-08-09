@@ -23,7 +23,7 @@ object MoshiUtil {
     fun <T:Any>toJson(jsonObject: T,clazz: Class<T>):String{
 
         val userRebatesType =
-            Types.newParameterizedType(List::class.java, clazz)
+                Types.newParameterizedType(List::class.java, clazz)
         val moshi: Moshi = Moshi.Builder().build()
         val adapter: JsonAdapter<T> = moshi.adapter(userRebatesType)
         return adapter.toJson(jsonObject)

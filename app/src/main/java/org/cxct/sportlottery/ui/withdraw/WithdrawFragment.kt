@@ -46,7 +46,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         initView()
         initEvent()
         initObserve(view)
-        initSocketObserver()
 
         setupData()
     }
@@ -279,13 +278,6 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             this@WithdrawFragment.activity?.finish()
             startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
         }
-    }
-
-    private fun initSocketObserver() {
-        receiver.userMoney.observe(this.viewLifecycleOwner, Observer {
-            tv_balance.text = TextUtil.format(ArithUtil.toMoneyFormat(it).toDouble())
-            viewModel.getMoney() //TODO : 是否應該要讓將socket&api的userMoney統一來源
-        })
     }
 
     private fun initSelectBankCardBottomSheet(

@@ -3,6 +3,8 @@ package org.cxct.sportlottery.network.matchCategory
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
+import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -21,7 +23,12 @@ interface MatchCategoryService {
 
     @POST(Constants.MATCH_CATEGORY_SPECIAL_MENU)
     suspend fun getHighlightMenu(
-        @Body matchCategoryRequest: MatchCategoryRequest
+            @Body matchCategoryRequest: MatchCategoryRequest
     ): Response<MatchCategoryResult>
+
+    @POST(Constants.MATCH_CATEGORY_QUERY)
+    suspend fun getMatchCategoryQuery(
+            @Body matchCategoryQueryRequest: MatchCategoryQueryRequest
+    ): Response<MatchCategoryQueryResult>
 
 }

@@ -67,6 +67,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             notifyDataSetChanged()
         }
 
+    var oddsDetailListener: OddsDetailListener? = null
+
 
     enum class LayoutType(val layout: Int) {
         TWO_SPAN_COUNT(R.layout.content_odds_detail_list_2_span_count),
@@ -429,6 +431,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private val tvGameName: TextView? = itemView.findViewById(R.id.tv_game_name)
+        private val oddsDetailPin: ImageView? = itemView.findViewById(R.id.odd_detail_pin)
         private val clItem: ConstraintLayout? = itemView.findViewById(R.id.cl_item)
 
         val rvBet: RecyclerView? = itemView.findViewById(R.id.rv_bet)
@@ -453,6 +456,14 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             tvGameName?.text = if (type.contains(":"))
                 oddsDetail.name.plus("  ").plus(type.split(":")[1])
             else oddsDetail.name
+
+            oddsDetailPin?.apply {
+                isActivated = oddsDetail.isPin
+
+                setOnClickListener {
+                    oddsDetailListener?.onClickFavorite(oddsDetail.gameType)
+                }
+            }
 
             controlExpandBottom(oddsDetail.isExpand)
 
@@ -970,4 +981,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     }
 
+}
+
+class OddsDetailListener(
+    val clickListenerFavorite: (playCate: String) -> Unit
+) {
+    fun onClickFavorite(playCate: String) = clickListenerFavorite(playCate)
 }
