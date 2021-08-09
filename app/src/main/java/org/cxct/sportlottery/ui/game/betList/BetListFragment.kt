@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 
 private const val BET_LIST_LISTENER = "betListListener"
 
@@ -208,9 +209,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
         val list = newBetList ?: betListDiffAdapter?.let { getCurrentBetList(it) }
         val parlayList = betListDiffAdapter?.let { getCurrentParlayList(it) }
-        val totalBetAmount = (list?.sumByDouble { it.betAmount } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * it.num } ?: 0.0)
-        val betCount = (list?.count { it.betAmount > 0 } ?: 0) + (parlayList?.filter { it.betAmount > 0 }?.sumBy { it.num } ?: 0)
-        val winnableAmount = (list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * getOdds(it, oddsType) } ?: 0.0)
+        val totalBetAmount =
+            (list?.sumByDouble { it.betAmount } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * it.num } ?: 0.0)
+        val betCount =
+            (list?.count { it.betAmount > 0 } ?: 0) + (parlayList?.filter { it.betAmount > 0 }?.sumBy { it.num } ?: 0)
+        val winnableAmount = (list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) }
+            ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * getOdds(it, oddsType) } ?: 0.0)
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -278,7 +282,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
                 betListDiffAdapter?.betList = list
-                betListDiffAdapter?.setupBetAmountList(list)
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
@@ -342,6 +345,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             viewModel.updateMatchOdd(it)
         })
 
+        //TODO receiver.matchStatusChange
+        receiver.matchStatusChange.observe(viewLifecycleOwner, {
+
+        })
+
         receiver.globalStop.observe(viewLifecycleOwner, {
             if (it == null) return@observe
             val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
@@ -351,7 +359,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
             }
             betListDiffAdapter?.betList = (betList ?: mutableListOf())
-            viewModel.betInfoRepository.checkBetInfoContent(betList ?: mutableListOf()) //TODO refactor :refresh bet status, @see BetInfoRepository checkBetInfoContent()
+            viewModel.betInfoRepository.checkBetInfoContent(
+                betList ?: mutableListOf()
+            )
         })
 
         receiver.producerUp.observe(viewLifecycleOwner, {
@@ -475,7 +485,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val subscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.subscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
+                service.subscribeHallChannel(
+                    listData.matchOdd.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    listData.matchOdd.matchId
+                )
             } else {
                 val subscribeMatchId = listData.matchOdd.matchId
                 if (!subscribedList.contains(subscribeMatchId)) {
@@ -491,7 +505,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val unsubscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.unsubscribeHallChannel(listData.matchOdd.gameType, PlayCate.OUTRIGHT.value, listData.matchOdd.matchId)
+                service.unsubscribeHallChannel(
+                    listData.matchOdd.gameType,
+                    PlayCate.OUTRIGHT.value,
+                    listData.matchOdd.matchId
+                )
             } else {
                 val unsubscribeMatchId = listData.matchOdd.matchId
                 if (!unsubscribedList.contains(unsubscribeMatchId)) {

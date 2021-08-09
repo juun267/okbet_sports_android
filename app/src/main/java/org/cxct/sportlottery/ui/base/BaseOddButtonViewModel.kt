@@ -136,8 +136,10 @@ abstract class BaseOddButtonViewModel(
 
         if (betItem == null) {
             matchOdd.matchInfo?.let {
-                betInfoRepository.addInBetInfo(matchType = matchType, gameType = gameType, playCateName = outrightCateName
-                    ?: "", playName = odd.spread ?: "", matchInfo = matchOdd.matchInfo, odd = odd)
+                betInfoRepository.addInBetInfo(
+                    matchType = matchType, gameType = gameType, playCateName = outrightCateName
+                        ?: "", playName = odd.spread ?: "", matchInfo = matchOdd.matchInfo, odd = odd
+                )
             }
         } else {
             odd.id?.let { removeBetInfoItem(it) }
@@ -221,11 +223,8 @@ abstract class BaseOddButtonViewModel(
                 }
             }
         }
+        updateNewItem(newList)
 
-        betInfoRepository.betInfoList.value?.peekContent()?.forEach {
-            updateItem(it.matchOdd, newList)
-        }
-        betInfoRepository.notifyBetInfoChanged()
     }
 
     fun updateMatchOdd(betAddErrorDataList: List<BetAddErrorData>, betAddError: BetAddError) {
@@ -275,9 +274,7 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            if (it.betAmount > 0) {
-                matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
-            }
+            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
         }
 
         //串關注單
@@ -445,6 +442,78 @@ abstract class BaseOddButtonViewModel(
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun updateNewItem(updateList: MutableList<org.cxct.sportlottery.network.odds.Odd>) {
+        val updateBetInfoList = betInfoRepository.betInfoList.value?.peekContent()
+        if (updateBetInfoList.isNullOrEmpty()) return
+
+        val newList = mutableListOf<BetInfoListData>()
+        updateBetInfoList.forEach { betInfoListData ->
+            betInfoListData.matchType?.let { matchType ->
+                //TODO Dean : review
+                val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
+                gameType?.let {
+                    val newBetInfoListData = BetInfoListData(
+                        betInfoListData.matchOdd.copy(),
+                        betInfoRepository.getParlayOdd(
+                            matchType,
+                            gameType,
+                            mutableListOf(betInfoListData.matchOdd)
+                        ).first()
+                    )
+
+                    newBetInfoListData.matchType = betInfoListData.matchType
+                    newBetInfoListData.input = betInfoListData.input
+                    newBetInfoListData.betAmount = betInfoListData.betAmount
+                    newBetInfoListData.pointMarked = betInfoListData.pointMarked
+
+                    val newMatchOdd = newBetInfoListData.matchOdd
+
+                    for (newItem in updateList) {
+                        try {
+                            newItem.let {
+                                if (it.id == newMatchOdd.oddsId) {
+                                    newMatchOdd.oddState = getOddState(
+                                        getOdds(
+                                            newMatchOdd,
+                                            loginRepository.mOddsType.value ?: OddsType.EU
+                                        ), newItem
+                                    )
+
+                                    newMatchOdd.spreadState = getSpreadState(newMatchOdd.spread, it.spread ?: "")
+
+                                    newItem.status.let { status -> newMatchOdd.status = status }
+
+                                    if (newMatchOdd.status == BetStatus.ACTIVATED.code) {
+                                        newItem.odds.let { odds -> newMatchOdd.odds = odds ?: 0.0 }
+                                        newItem.hkOdds.let { hkOdds -> newMatchOdd.hkOdds = hkOdds ?: 0.0 }
+                                        newItem.spread.let { spread -> newMatchOdd.spread = spread ?: "" }
+                                    }
+
+                                    //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息
+                                    if (newMatchOdd.oddState != OddState.SAME.state &&
+                                        newMatchOdd.status == BetStatus.ACTIVATED.code
+                                    ) {
+                                        newMatchOdd.betAddError = null
+                                    }
+
+                                }
+                            }
+                        } catch (e: java.lang.Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    newList.add(newBetInfoListData)
+
+                    /*betInfoListData.parlayOdds =
+                        getParlayOdd(matchType, gameType, mutableListOf(betInfoListData.matchOdd)).firstOrNull()
+                    betInfoListData.matchOdd = betInfoListData.matchOdd*/
+                }
+            }
+        }
+        betInfoRepository.notifyBetInfoChanged(newList)
     }
 
     private fun updateItemForBetAddError(

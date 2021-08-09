@@ -72,7 +72,7 @@ class BetInfoRepository(val androidContext: Context) {
         set(value) {
             field = value
             field?.let {
-                notifyBetInfoChanged()
+                updatePlayQuota()
             }
         }
 
@@ -127,7 +127,8 @@ class BetInfoRepository(val androidContext: Context) {
         //檢查是否有相同賽事
         val matchIdList: MutableMap<String, MutableList<Int>> = mutableMapOf()
         betList.forEachIndexed { index, betInfoListData ->
-            matchIdList[betInfoListData.matchOdd.matchId]?.add(index) ?: run { matchIdList[betInfoListData.matchOdd.matchId] = mutableListOf(index) }
+            matchIdList[betInfoListData.matchOdd.matchId]?.add(index)
+                ?: run { matchIdList[betInfoListData.matchOdd.matchId] = mutableListOf(index) }
         }
 
         betList.forEach {
@@ -195,7 +196,8 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun removeClosedPlatItem() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-        val needRemoveList = betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
+        val needRemoveList =
+            betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
         needRemoveList.forEach {
             betList.remove(it)
             _removeItem.value = Event(it.matchOdd.matchId)
@@ -272,7 +274,7 @@ class BetInfoRepository(val androidContext: Context) {
     }
 
 
-    private fun getParlayOdd(
+    fun getParlayOdd(
         matchType: MatchType,
         gameType: GameType,
         matchOddList: MutableList<MatchOdd>
@@ -352,6 +354,7 @@ class BetInfoRepository(val androidContext: Context) {
         hasChanged?.matchOdd?.oddState = OddState.SAME.state
     }
 
+    //TODO review 待刪除
     fun notifyBetInfoChanged() {
         val updateBetInfoList = _betInfoList.value?.peekContent()
 
@@ -372,7 +375,6 @@ class BetInfoRepository(val androidContext: Context) {
                 val newList = mutableListOf<BetInfoListData>()
                 updateBetInfoList.forEach { betInfoListData ->
                     betInfoListData.matchType?.let { matchType ->
-                        //TODO Dean : review
                         val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
                         gameType?.let {
                             val newBetInfoListData = BetInfoListData(
@@ -395,6 +397,43 @@ class BetInfoRepository(val androidContext: Context) {
                 _betInfoList.value = Event(newList)
             }
         }
+    }
+
+    private fun updatePlayQuota() {
+
+        val updateBetInfoList = _betInfoList.value?.peekContent()
+
+        if (updateBetInfoList.isNullOrEmpty()) return
+
+        val newList = mutableListOf<BetInfoListData>()
+        updateBetInfoList.forEach { betInfoListData ->
+            betInfoListData.matchType?.let { matchType ->
+                //TODO Dean : review
+                val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
+                gameType?.let {
+                    val newBetInfoListData = BetInfoListData(
+                        betInfoListData.matchOdd.copy(),
+                        getParlayOdd(
+                            matchType,
+                            gameType,
+                            mutableListOf(betInfoListData.matchOdd)
+                        ).first()
+                    )
+                    newBetInfoListData.matchType = betInfoListData.matchType
+                    newBetInfoListData.input = betInfoListData.input
+                    newBetInfoListData.betAmount = betInfoListData.betAmount
+                    newBetInfoListData.pointMarked = betInfoListData.pointMarked
+                    newList.add(newBetInfoListData)
+                }
+            }
+        }
+        checkBetInfoContent(newList)
+        _betInfoList.value = Event(newList)
+    }
+
+    fun notifyBetInfoChanged(newList: MutableList<BetInfoListData>) {
+        checkBetInfoContent(newList)
+        _betInfoList.value = Event(newList)
     }
 
 

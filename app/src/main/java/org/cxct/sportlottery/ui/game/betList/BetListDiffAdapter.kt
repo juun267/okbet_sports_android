@@ -32,7 +32,8 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
 @SuppressLint("ClickableViewAccessibility")
-class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetListDiffCallBack()) {
+class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
+    ListAdapter<DataItem, RecyclerView.ViewHolder>(BetListDiffCallBack()) {
     var focusPosition = -1
 
     val changeHandler = Handler()
@@ -58,12 +59,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             submitData()
         }
 
-    //儲存當前單注投注金額, 避免socket刷新過快覆蓋TextWatcher正在處理的輸入金額
-    var betAmountList: MutableList<String> = mutableListOf()
-    fun setupBetAmountList(betList: MutableList<BetInfoListData>) {
-        if (betAmountList.size != betList.size)
-            betAmountList = betList.map { if (it.betAmount > 0) TextUtil.formatInputMoney(it.betAmount) else "" }.toMutableList()
-    }
 
     var moreOptionCollapse = false
 
@@ -125,7 +120,11 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         val itemData = getItem(holder.adapterPosition)
         when (holder) {
             is ViewHolder -> holder.bind((itemData as DataItem.BetInfoData).betInfoListData)
-            is BatchSingleViewHolder -> holder.bind((itemData as DataItem.ParlayData).parlayOdd, parlayList.size, betList)
+            is BatchSingleViewHolder -> holder.bind(
+                (itemData as DataItem.ParlayData).parlayOdd,
+                parlayList.size,
+                betList
+            )
             is BatchParlayViewHolder -> holder.bind((itemData as DataItem.ParlayData).parlayOdd)
         }
     }
@@ -182,7 +181,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 //是否為無法串關注單
                 vPoint.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
                 OddSpannableString.setupOddsContent(itemData.matchOdd, oddsType, tvOddsContent)
-                tvMatch.text = "${itemData.matchOdd.homeName}${root.context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+                tvMatch.text =
+                    "${itemData.matchOdd.homeName}${root.context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 tvName.text = if (itemData.matchOdd.inplay == INPLAY) {
                     root.context.getString(
                         R.string.bet_info_in_play_score,
@@ -193,11 +193,9 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                 } else itemData.matchOdd.playCateName
 
                 //投注額
-                val tempBetAmount = betAmountList[itemCount - adapterPosition - 1]
-                val initValue = if (tempBetAmount.isNotEmpty() && tempBetAmount.toDouble() > 0) tempBetAmount else if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else ""
-                etBet.setText(initValue)
+                etBet.setText(if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else "")
                 /* check input focus */
-                if (adapterPosition == focusPosition) {
+                if (adapterPosition == focusPosition && !etBet.hasFocus()) {
                     etBet.requestFocus()
                     etBet.setSelection(binding.etBet.text.length)
                 } else {
@@ -224,7 +222,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                         isFocusable = false
                         isFocusableInTouchMode = false
                     }
-                    onItemClickListener.onHideKeyBoard()
                     root.cl_quota_detail.visibility = View.GONE
                 }
             }
@@ -267,7 +264,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             if (it.isNullOrEmpty()) {
                                 itemData.betAmount = 0.000
                                 itemData.input = ""
-                                betAmountList[itemCount - adapterPosition - 1] = ""
                                 root.apply {
                                     tv_check_maximum_limit.visibility = View.VISIBLE
                                     ll_bet_quota_detail.visibility = View.GONE
@@ -285,7 +281,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                                 val quota = it.toString().toDouble()
                                 itemData.betAmount = quota
                                 itemData.input = TextUtil.formatInputMoney(quota)
-                                betAmountList[itemCount - adapterPosition - 1] = TextUtil.formatInputMoney(quota)
                                 itemData.parlayOdds?.max?.let { max ->
                                     if (quota > max) {
                                         etBet.apply {
@@ -317,7 +312,6 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     }
 
                     onFocusChangeListener = fc
-                    removeTextChangedListener(tw)
                     addTextChangedListener(tw)
                     tag = tw
 
@@ -371,7 +365,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     val initValue = if (!(itemData?.allSingleInput.isNullOrEmpty())) itemData?.allSingleInput else ""
                     setText(initValue)
                     /* check input focus */
-                    if (adapterPosition == focusPosition) {
+                    if (adapterPosition == focusPosition && !hasFocus()) {
                         requestFocus()
                         setSelection(text.length)
                     } else {
@@ -401,10 +395,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             this@BetListDiffAdapter.betList.forEachIndexed { index, data ->
                                 if (data.parlayOdds?.max == null || inputValue < data.parlayOdds.max) {
                                     data.betAmount = inputValue
-                                    betAmountList[index] = TextUtil.formatInputMoney(inputValue)
                                 } else {
                                     data.betAmount = data.parlayOdds.max.toDouble()
-                                    betAmountList[index] = TextUtil.formatInputMoney(data.parlayOdds.max)
                                 }
                             }
                             changeHandler.post { notifyItemRangeChanged(itemCount - betList.size, betList.size) }
@@ -487,7 +479,11 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             }
         }
 
-        private fun setupBetAmountInput(binding: ItemBetListBatchControlConnectBinding, data: ParlayOdd, itemOdd: String) {
+        private fun setupBetAmountInput(
+            binding: ItemBetListBatchControlConnectBinding,
+            data: ParlayOdd,
+            itemOdd: String
+        ) {
             binding.apply {
                 etBet.apply {
                     setText(data.betAmount.let {
@@ -602,7 +598,35 @@ class BetListDiffCallBack : DiffUtil.ItemCallback<DataItem>() {
     }
 
     override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem == newItem
+        return when (oldItem) {
+            is DataItem.BetInfoData -> {
+                if (newItem is DataItem.BetInfoData) {
+                    val old = oldItem.betInfoListData
+                    val new = newItem.betInfoListData
+                    newItem.betInfoListData.betAmount = oldItem.betInfoListData.betAmount
+                    //TODO review 是否還有需要更新的條件
+                    return old.matchOdd.odds == new.matchOdd.odds &&
+                            old.parlayOdds?.max == new.parlayOdds?.max &&
+                            old.matchOdd.spread == new.matchOdd.spread &&
+                            old.matchOdd.homeScore == new.matchOdd.homeScore &&
+                            old.matchOdd.awayScore == new.matchOdd.awayScore &&
+                            old.matchOdd.oddState == new.matchOdd.oddState &&
+                            old.matchOdd.spreadState == new.matchOdd.spreadState &&
+                            old.matchOdd.status == new.matchOdd.status &&
+                            old.pointMarked == new.pointMarked &&
+                            old.betAmount == new.betAmount
+
+                } else {
+                    oldItem == newItem
+                }
+            }
+            is DataItem.ParlayData -> {
+                oldItem == newItem
+            }
+            else -> {
+                oldItem == newItem
+            }
+        }
     }
 
 }
@@ -611,10 +635,19 @@ sealed class DataItem {
     abstract var oddsId: String?
     abstract var pointMarked: Boolean?
 
-    data class BetInfoData(val betInfoListData: BetInfoListData, override var oddsId: String? = betInfoListData.matchOdd.oddsId, override var pointMarked: Boolean? = betInfoListData.pointMarked) :
+    data class BetInfoData(
+        val betInfoListData: BetInfoListData,
+        override var oddsId: String? = betInfoListData.matchOdd.oddsId,
+        override var pointMarked: Boolean? = betInfoListData.pointMarked
+    ) :
         DataItem()
 
-    data class ParlayData(val parlayOdd: ParlayOdd?, var firstItem: Boolean = false, override var oddsId: String? = null, override var pointMarked: Boolean? = null) : DataItem()
+    data class ParlayData(
+        val parlayOdd: ParlayOdd?,
+        var firstItem: Boolean = false,
+        override var oddsId: String? = null,
+        override var pointMarked: Boolean? = null
+    ) : DataItem()
 
     class NoData : DataItem() {
         override var oddsId: String? = null
