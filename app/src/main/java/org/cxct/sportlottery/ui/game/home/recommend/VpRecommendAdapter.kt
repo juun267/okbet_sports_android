@@ -18,9 +18,14 @@ import org.cxct.sportlottery.ui.menu.OddsType
 class VpRecommendAdapter(
     val sportCode: String?,
     val dataList: List<OddBean>,
+    private val isOutright: Int?,
     val oddsType: OddsType,
     val matchOdd: MatchOdd
-) : RecyclerView.Adapter<VpRecommendAdapter.ViewHolderHdpOu>() {
+) : RecyclerView.Adapter<OddStateViewHolder>() {
+
+    enum class ItemType {
+        RECOMMEND_OUTRIGHT, RECOMMEND
+    }
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -35,16 +40,45 @@ class VpRecommendAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderHdpOu {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.home_recommend_vp, parent, false)
-        return ViewHolderHdpOu(view)
+    override fun getItemViewType(position: Int): Int {
+        return when (isOutright) {
+            0 -> {
+                ItemType.RECOMMEND.ordinal
+            }
+            else -> {
+                ItemType.RECOMMEND_OUTRIGHT.ordinal
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolderHdpOu, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddStateViewHolder {
+        return when (viewType) {
+            ItemType.RECOMMEND.ordinal -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.home_recommend_vp, parent, false)
+                ViewHolderHdpOu(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.home_recommend_champion, parent, false)
+                ViewHolderRecOutright(view)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: OddStateViewHolder, position: Int) {
         try {
-            val data = dataList[position]
-            holder.bind(data)
+            when (holder) {
+                is ViewHolderHdpOu -> {
+                    val data = dataList[position]
+                    holder.bind(data)
+                }
+
+                is ViewHolderRecOutright -> {
+                    val data = dataList[position]
+                    holder.bind(data)
+                }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -105,5 +139,15 @@ class VpRecommendAdapter(
             }
         }
 
+    }
+
+    inner class ViewHolderRecOutright(
+        itemView: View,
+        override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
+    ) : OddStateViewHolder(itemView) {
+
+        fun bind(data: OddBean) {
+
+        }
     }
 }

@@ -102,7 +102,13 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
 
                 if (data.vpRecommendAdapter == null)
-                    data.vpRecommendAdapter = VpRecommendAdapter(data.code, data.oddBeans, oddsType, data.toMatchOdd())
+                    data.vpRecommendAdapter = VpRecommendAdapter(
+                        data.code,
+                        data.oddBeans,
+                        data.isOutright,
+                        oddsType,
+                        data.toMatchOdd()
+                    )
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
 
