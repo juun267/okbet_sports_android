@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.money.MoneyService
 import org.cxct.sportlottery.network.odds.OddsService
 import org.cxct.sportlottery.network.outright.OutrightService
 import org.cxct.sportlottery.network.playcate.PlayCateListService
-import org.cxct.sportlottery.network.sport.FavoriteService
+import org.cxct.sportlottery.network.myfavorite.FavoriteService
 import org.cxct.sportlottery.network.sport.SportService
 import org.cxct.sportlottery.network.third_game.ThirdGameService
 import org.cxct.sportlottery.network.uploadImg.UploadImgService

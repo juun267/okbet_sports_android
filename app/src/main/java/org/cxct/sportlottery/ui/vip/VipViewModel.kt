@@ -13,23 +13,23 @@ import org.cxct.sportlottery.network.vip.LoadingResult
 import org.cxct.sportlottery.network.vip.growth.LevelGrowthResult
 import org.cxct.sportlottery.network.vip.thirdRebates.Debate
 import org.cxct.sportlottery.network.vip.thirdRebates.ThirdRebatesResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.UserInfoRepository
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 class VipViewModel(
     androidContext: Application,
     private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
-) : BaseOddButtonViewModel(
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     val userLevelGrowthResult: LiveData<LevelGrowthResult>

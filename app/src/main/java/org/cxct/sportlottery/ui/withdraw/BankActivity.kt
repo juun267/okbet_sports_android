@@ -5,10 +5,10 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.activity_bank.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.config.TransferType
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 
 
-class BankActivity : BaseOddButtonActivity<WithdrawViewModel>(WithdrawViewModel::class) {
+class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
     companion object {
         const val ModifyBankTypeKey = "modify_bank_type_key"

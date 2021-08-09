@@ -11,6 +11,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
+        tools:background="@drawable/ic_rectangle_match_category_v4"
         tools:layout="@layout/itemview_match_category_v4" />
 
     <org.cxct.sportlottery.ui.common.IndicatorView

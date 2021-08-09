@@ -1,20 +1,18 @@
-package org.cxct.sportlottery.network.outright.season
-
+package org.cxct.sportlottery.network.myfavorite.query
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
+import org.cxct.sportlottery.network.myfavorite.MyFavorite
 
 @JsonClass(generateAdapter = true)
-data class OutrightSeasonListResult(
+data class SportMenuFavoriteResult(
     @Json(name = "code")
     override val code: Int,
     @Json(name = "msg")
     override val msg: String,
-    @Json(name = "rows")
-    val rows: List<Row>?,
     @Json(name = "success")
     override val success: Boolean,
-    @Json(name = "total")
-    val total: Int?
+    @Json(name = "t")
+    val t: MyFavorite?
 ) : BaseResult()

@@ -3,7 +3,7 @@ package org.cxct.sportlottery.network.odds.list
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.network.odds.quick.QuickOdd
+import org.cxct.sportlottery.network.odds.Odd
 
 @JsonClass(generateAdapter = true)
 data class QuickPlayCate(
@@ -17,7 +17,7 @@ data class QuickPlayCate(
     val sort: Int?
 ) {
     var isSelected = false
-    var quickOdds: Map<String, QuickOdd?>? = null
+    var quickOdds: Map<String, List<Odd?>>? = null
 
     var positionButtonPage = 0
 }

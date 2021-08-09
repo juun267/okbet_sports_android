@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
@@ -29,22 +28,27 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import timber.log.Timber
-
-private const val BET_LIST_LISTENER = "betListListener"
 
 /**
  * A simple [Fragment] subclass.
  * Use the [BetListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
+    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic,
+    BaseSocketActivity.ReceiverChannelEvent {
     private lateinit var binding: FragmentBetListBinding
 
     private var oddsType: OddsType = OddsType.EU
@@ -72,13 +76,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        registerChannelHall(this)
+        registerChannelEvent(this)
+        registerChannelPublic(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        arguments?.let {
-            betResultListener = it.getSerializable(BET_LIST_LISTENER) as BetResultListener
-        }
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bet_list, container, false)
         binding.apply {
             gameViewModel = this@BetListFragment.viewModel
@@ -92,7 +101,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         initView()
         initObserver()
-        initSocketObserver()
 
         queryData()
     }
@@ -140,7 +148,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             rvBetList.layoutManager =
-                LinearLayoutManager(this@BetListFragment.context, LinearLayoutManager.VERTICAL, true).apply {
+                LinearLayoutManager(
+                    this@BetListFragment.context,
+                    LinearLayoutManager.VERTICAL,
+                    true
+                ).apply {
                     stackFromEnd = true
                 }
             rvBetList.adapter = betListDiffAdapter
@@ -219,8 +231,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
-            tvTotalBetAmount.text = "${TextUtil.formatBetQuota(totalBetAmount)} ${getString(R.string.currency)}"
-            tvTotalWinnableAmount.text = "${TextUtil.formatMoney(winnableAmount)} ${getString(R.string.currency)}"
+            tvTotalBetAmount.text =
+                "${TextUtil.formatBetQuota(totalBetAmount)} ${getString(R.string.currency)}"
+            tvTotalWinnableAmount.text =
+                "${TextUtil.formatMoney(winnableAmount)} ${getString(R.string.currency)}"
         }
 
         setupBtnBetAmount(totalBetAmount)
@@ -241,15 +255,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initDeleteAllOnClickEvent() {
-        val exitAnimation = AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
-            setAnimationListener(deleteAllLayoutAnimationListener)
-            duration = 300
-        }
+        val exitAnimation =
+            AnimationUtils.loadAnimation(context, R.anim.pop_left_to_right_exit).apply {
+                setAnimationListener(deleteAllLayoutAnimationListener)
+                duration = 300
+            }
         binding.apply {
             btnDeleteAll.setOnClickListener {
-                val enterAnimation = AnimationUtils.loadAnimation(context, R.anim.push_right_to_left_enter).apply {
-                    duration = 300
-                }
+                val enterAnimation =
+                    AnimationUtils.loadAnimation(context, R.anim.push_right_to_left_enter).apply {
+                        duration = 300
+                    }
 
                 llDeleteAll.visibility = View.VISIBLE
                 btnDeleteAllConfirm.startAnimation(enterAnimation)
@@ -292,7 +308,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //移除注單解除訂閱
         viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, { event ->
             event.getContentIfNotHandled()?.let {
-                service.unsubscribeEventChannel(it)
+                unSubscribeChannelEvent(it)
             }
         })
 
@@ -331,53 +347,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     }
 
-    private fun initSocketObserver() {
-        receiver.userMoney.observe(viewLifecycleOwner, {
-            it?.let { money -> tv_balance.text = TextUtil.formatMoney(money) }
-        })
-
-        receiver.matchOddsChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            viewModel.updateMatchOdd(it)
-        })
-
-        receiver.oddsChange.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            viewModel.updateMatchOdd(it)
-        })
-
-        //TODO receiver.matchStatusChange
-        receiver.matchStatusChange.observe(viewLifecycleOwner, {
-
-        })
-
-        receiver.globalStop.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-            val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
-            betList?.forEach { listData ->
-                if (it.producerId == null || listData.matchOdd.producerId == it.producerId) {
-                    listData.matchOdd.status = BetStatus.LOCKED.code
-                }
-            }
-            betListDiffAdapter?.betList = (betList ?: mutableListOf())
-            viewModel.betInfoRepository.checkBetInfoContent(
-                betList ?: mutableListOf()
-            )
-        })
-
-        receiver.producerUp.observe(viewLifecycleOwner, {
-            if (it == null) return@observe
-
-            betListDiffAdapter?.apply {
-                val betInfList = getCurrentBetList(this)
-                service.betListPageUnSubScribeEvent()
-                unsubscribeChannel(betInfList)
-                subscribeChannel(betInfList)
-            }
-
-        })
-    }
-
     private fun getCurrentBetList(betListDiffAdapter: BetListDiffAdapter): MutableList<BetInfoListData> {
         return betListDiffAdapter.betList
     }
@@ -389,7 +358,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun addBet() {
         loading()
         betListDiffAdapter?.let { betListAdapter ->
-            viewModel.addBetList(getCurrentBetList(betListAdapter), getCurrentParlayList(betListAdapter), oddsType)
+            viewModel.addBetList(
+                getCurrentBetList(betListAdapter),
+                getCurrentParlayList(betListAdapter),
+                oddsType
+            )
         }
     }
 
@@ -429,7 +402,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * 顯示串關說明
      */
     private fun showParlayDescription(parlayType: String, parlayRule: String) {
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_dialog_parlay_description, null)
+        val bottomSheetView =
+            layoutInflater.inflate(R.layout.bottom_sheet_dialog_parlay_description, null)
         val dialog = BottomSheetDialog(context ?: requireContext())
         dialog.apply {
             setContentView(bottomSheetView)
@@ -481,12 +455,42 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         ll_cant_parlay_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
 
+    override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
+        viewModel.updateMatchOdd(oddsChangeEvent)
+    }
+
+    override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
+    }
+
+    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
+        val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
+        betList?.forEach { listData ->
+            if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
+                listData.matchOdd.status = BetStatus.LOCKED.code
+            }
+        }
+        betListDiffAdapter?.betList = (betList ?: mutableListOf())
+    }
+
+    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
+        betListDiffAdapter?.apply {
+            val betInfList = getCurrentBetList(this)
+            betListPageUnSubScribeEvent()
+            unsubscribeChannel(betInfList)
+            subscribeChannel(betInfList)
+        }
+    }
+
+    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
+        viewModel.updateMatchOdd(matchOddsChangeEvent)
+    }
+
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
-        service.betListPageSubscribeEvent()
+        betListPageSubscribeEvent()
         val subscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.subscribeHallChannel(
+                subscribeChannelHall(
                     listData.matchOdd.gameType,
                     PlayCate.OUTRIGHT.value,
                     listData.matchOdd.matchId
@@ -495,7 +499,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 val subscribeMatchId = listData.matchOdd.matchId
                 if (!subscribedList.contains(subscribeMatchId)) {
                     subscribedList.add(subscribeMatchId)
-                    service.subscribeEventChannel(subscribeMatchId)
+                    subscribeChannelEvent(subscribeMatchId)
                 }
             }
         }
@@ -506,7 +510,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val unsubscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
             if (listData.matchType == MatchType.OUTRIGHT) {
-                service.unsubscribeHallChannel(
+                unSubscribeChannelHall(
                     listData.matchOdd.gameType,
                     PlayCate.OUTRIGHT.value,
                     listData.matchOdd.matchId
@@ -515,11 +519,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 val unsubscribeMatchId = listData.matchOdd.matchId
                 if (!unsubscribedList.contains(unsubscribeMatchId)) {
                     unsubscribedList.add(unsubscribeMatchId)
-                    service.unsubscribeEventChannel(unsubscribeMatchId)
+                    unSubscribeChannelEvent(unsubscribeMatchId)
                 }
             }
         }
-        service.betListPageUnSubScribeEvent()
+        betListPageUnSubScribeEvent()
     }
 
     companion object {

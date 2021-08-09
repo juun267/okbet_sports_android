@@ -37,7 +37,7 @@ abstract class BaseOddButtonViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
-) : BaseSocketViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
@@ -52,9 +52,9 @@ abstract class BaseOddButtonViewModel(
     val betAddResult: LiveData<Event<BetAddResult?>>
         get() = _betAddResult
 
-    private val _userMoney = MutableLiveData<Double?>()
+    protected val mUserMoney = MutableLiveData<Double?>()
     val userMoney: LiveData<Double?> //使用者餘額
-        get() = _userMoney
+        get() = mUserMoney
 
     private val _betAddResult = MutableLiveData<Event<BetAddResult?>>()
 
@@ -68,7 +68,7 @@ abstract class BaseOddButtonViewModel(
             val userMoneyResult = doNetwork(androidContext) {
                 OneBoSportApi.userService.getMoney()
             }
-            _userMoney.postValue(userMoneyResult?.money)
+            mUserMoney.postValue(userMoneyResult?.money)
         }
     }
 

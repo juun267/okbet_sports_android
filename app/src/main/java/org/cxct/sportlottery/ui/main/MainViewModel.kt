@@ -14,7 +14,7 @@ import org.cxct.sportlottery.network.third_game.third_games.GameCategory
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.main.entity.EnterThirdGameResult
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -27,14 +27,16 @@ class MainViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository,
     private val thirdGameRepository: ThirdGameRepository,
     private val withdrawRepository: WithdrawRepository
-) : BaseNoticeViewModel(
+) : BaseSocketViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
     val token
         get() = loginRepository.token
