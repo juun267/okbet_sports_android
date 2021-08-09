@@ -545,10 +545,10 @@ class GameViewModel(
                 }
 
                 _matchPreloadAtStart.postValue(Event(result))
+
+                notifyFavorite(FavoriteType.MATCH)
             }
         }
-
-        notifyFavorite(FavoriteType.MATCH)
     }
 
     //遊戲大廳首頁: 精選賽事菜單
@@ -616,6 +616,8 @@ class GameViewModel(
                 }
 
                 _highlightMatchResult.postValue(Event(result))
+
+                notifyFavorite(FavoriteType.MATCH)
             }
         }
     }

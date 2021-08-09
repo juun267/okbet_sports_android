@@ -255,6 +255,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 navOddsDetailFragment(code, matchId, MatchType.TODAY)
             }
         }
+        mRvHighlightAdapter.onClickFavoriteListener = object : OnClickFavoriteListener {
+            override fun onClickFavorite(matchId: String?) {
+                viewModel.pinFavorite(FavoriteType.MATCH, matchId)
+            }
+        }
     }
 
     private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
@@ -764,7 +769,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 }
             }
 
+            mRvHighlightAdapter.getData().forEach {
+                it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
+            }
+
             mRvGameTable4Adapter.notifyDataSetChanged()
+            mRvHighlightAdapter.notifyDataSetChanged()
         })
     }
 
