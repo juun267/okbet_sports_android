@@ -545,6 +545,8 @@ class GameViewModel(
                 }
 
                 _matchPreloadAtStart.postValue(Event(result))
+
+                notifyFavorite(FavoriteType.MATCH)
             }
         }
     }
@@ -614,6 +616,8 @@ class GameViewModel(
                 }
 
                 _highlightMatchResult.postValue(Event(result))
+
+                notifyFavorite(FavoriteType.MATCH)
             }
         }
     }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_game.*
@@ -16,6 +17,7 @@ import org.cxct.sportlottery.databinding.FragmentHomeBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MenuCode
@@ -172,6 +174,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 }
             }
 
+        mRvGameTable4Adapter.onClickFavoriteListener =
+            object : OnClickFavoriteListener {
+                override fun onClickFavorite(matchId: String?) {
+                    viewModel.pinFavorite(FavoriteType.MATCH, matchId)
+                }
+            }
+
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
             refreshTable(mSelectMatchType, mInPlayResult)
@@ -244,6 +253,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
 
                 //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY
                 navOddsDetailFragment(code, matchId, MatchType.TODAY)
+            }
+        }
+        mRvHighlightAdapter.onClickFavoriteListener = object : OnClickFavoriteListener {
+            override fun onClickFavorite(matchId: String?) {
+                viewModel.pinFavorite(FavoriteType.MATCH, matchId)
             }
         }
     }
@@ -746,6 +760,21 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 refreshHighlight(result)
                 subscribeHighlightHallChannel()
             }
+        })
+
+        viewModel.favorMatchList.observe(viewLifecycleOwner, { favorMatchList ->
+            mRvGameTable4Adapter.getData().forEach {
+                it.matchOdds.forEach { matchOdd ->
+                    matchOdd.matchInfo?.isFavorite = favorMatchList.contains(matchOdd.matchInfo?.id)
+                }
+            }
+
+            mRvHighlightAdapter.getData().forEach {
+                it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
+            }
+
+            mRvGameTable4Adapter.notifyDataSetChanged()
+            mRvHighlightAdapter.notifyDataSetChanged()
         })
     }
 

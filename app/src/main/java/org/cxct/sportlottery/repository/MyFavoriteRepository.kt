@@ -68,7 +68,11 @@ class MyFavoriteRepository {
         }
 
         val result = OneBoSportApi.favoriteService.saveMyFavorite(
-            SaveMyFavoriteRequest(type.code, saveList.toList(), gameType)
+            SaveMyFavoriteRequest(
+                type.code,
+                saveList.filter { it.isNotBlank() }.toList(),
+                gameType
+            )
         )
 
         if (result.isSuccessful) {

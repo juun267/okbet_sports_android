@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
@@ -28,6 +29,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
     var onClickOddListener: OnClickOddListener? = null
 
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉
+
+    var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -101,6 +104,14 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 tv_game_name_home.text = data.matchInfo?.homeName
                 tv_game_name_away.text = data.matchInfo?.awayName
                 tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
+
+                btn_star.apply {
+                    isSelected = data.matchInfo?.isFavorite ?: false
+
+                    setOnClickListener {
+                        onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
+                    }
+                }
 
                 when (matchType) {
                     MatchType.IN_PLAY -> {
