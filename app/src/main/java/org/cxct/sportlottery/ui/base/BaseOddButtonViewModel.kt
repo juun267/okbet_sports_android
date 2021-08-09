@@ -12,7 +12,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
-import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -571,8 +571,8 @@ abstract class BaseOddButtonViewModel(
 
     private fun afterBet(matchType: MatchType?, result: BetAddResult?) {
         if (matchType != MatchType.PARLAY) {
-            result?.rows?.let { rowList ->
-                removeBetInfoItem(rowList[0].matchOdds[0].oddsId)
+            result?.receipt?.let { receipt ->
+                removeBetInfoItem(receipt.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()?.oddsId)
             }
         } else {
             betInfoRepository.clear()

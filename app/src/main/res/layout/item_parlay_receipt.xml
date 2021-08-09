@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="20dp">
+
+    <TextView
+        android:id="@+id/tv_play_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize15sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_match_at"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold"
+        tools:text="3串1" />
+
+    <TextView
+        android:id="@+id/tv_match_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="\@"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tv_match_odd"
+        app:layout_constraintStart_toEndOf="@+id/tv_play_name"
+        app:layout_constraintTop_toTopOf="@id/tv_play_name" />
+
+    <TextView
+        android:id="@+id/tv_match_odd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize15sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_match_at"
+        app:layout_constraintTop_toTopOf="@id/tv_play_name"
+        android:textStyle="bold"
+        tools:text="0.89" />
+
+    <include
+        android:id="@+id/view_receipt_bet"
+        layout="@layout/view_match_receipt_bet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_play_name"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

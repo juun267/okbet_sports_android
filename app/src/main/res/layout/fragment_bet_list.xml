@@ -190,6 +190,19 @@
             </LinearLayout>
         </LinearLayout>
 
+        <include
+            android:id="@+id/view_bet_total"
+            layout="@layout/view_match_receipt_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_warn_odds_change"
+            android:background="@color/colorWhite"
+            android:paddingStart="16dp"
+            android:paddingTop="13dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="13dp"
+            />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"
             android:layout_width="match_parent"

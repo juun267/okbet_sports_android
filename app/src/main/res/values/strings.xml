@@ -825,5 +825,6 @@
     <string name="odds_button_name_first">第一</string>
     <string name="odds_button_name_ant">任何</string>
     <string name="odds_button_name_last">最后</string>
+    <string name="bet_succeeded">您已成功投注</string>
 
 </resources>

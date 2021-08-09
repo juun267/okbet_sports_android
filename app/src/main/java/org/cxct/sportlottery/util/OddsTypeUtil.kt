@@ -29,8 +29,15 @@ fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.settledDetailList.MatchO
     }
 }
 
+fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.add.betReceipt.MatchOdd?, oddsType: OddsType): Double {
+    return when (oddsType) {
+        OddsType.EU -> matchOdd?.odds ?: 0.0
+        OddsType.HK -> matchOdd?.hkOdds ?: 0.0
+    }
+}
 
-fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.MatchOdd, oddsType: OddsType): Double {
+
+fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.MatchOdd, oddsType: OddsType): Double? {
     return when (oddsType) {
         OddsType.EU -> matchOdd.odds
         OddsType.HK -> matchOdd.hkOdds

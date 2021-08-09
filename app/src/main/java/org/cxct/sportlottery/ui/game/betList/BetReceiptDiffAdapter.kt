@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
+import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.Row
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setStatus
+import org.cxct.sportlottery.util.*
 
-class BetReceiptDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(BetReceiptCallback()) {
+class BetReceiptDiffAdapter : ListAdapter<BetResult, RecyclerView.ViewHolder>(BetReceiptCallback()) {
     var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
@@ -40,26 +41,21 @@ class BetReceiptDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(BetRecei
             }
         }
 
-        fun bind(itemData: Row, oddsType: OddsType) {
+        fun bind(itemData: BetResult, oddsType: OddsType) {
             itemView.apply {
                 itemData.apply {
-                    matchOdds.firstOrNull()?.apply {
+                    matchOdds?.firstOrNull()?.apply {
                         tv_play_name.text = playName
-                        tv_match_odd.text = TextUtil.formatForOdd(
-                            when (oddsType) {
-                                OddsType.HK -> hkOdds
-                                else -> odds
-                            }
-                        )
+                        tv_match_odd.text = TextUtil.formatForOdd(getOdds(this, oddsType))
                         tv_league.text = leagueName
                         tv_team_home.text = homeName
                         tv_spread.text = spread
                         tv_team_away.text = awayName
                         tv_match_type.text = playCateName
                     }
-                    tv_bet_amount.text = TextUtil.formatBetQuota(stake)
-                    tv_order_number.text = if (orderNo.isEmpty()) "-" else orderNo
-                    tv_winnable_amount.text = TextUtil.formatMoney(winnable)
+                    tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
+                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+                    tv_winnable_amount.setMoneyFormat(winnable)
                     tv_bet_status.setStatus(status)
                 }
             }
@@ -67,12 +63,12 @@ class BetReceiptDiffAdapter : ListAdapter<Row, RecyclerView.ViewHolder>(BetRecei
     }
 }
 
-class BetReceiptCallback : DiffUtil.ItemCallback<Row>() {
-    override fun areItemsTheSame(oldItem: Row, newItem: Row): Boolean {
+class BetReceiptCallback : DiffUtil.ItemCallback<BetResult>() {
+    override fun areItemsTheSame(oldItem: BetResult, newItem: BetResult): Boolean {
         return oldItem.orderNo == newItem.orderNo
     }
 
-    override fun areContentsTheSame(oldItem: Row, newItem: Row): Boolean {
+    override fun areContentsTheSame(oldItem: BetResult, newItem: BetResult): Boolean {
         return oldItem == newItem
     }
 }
