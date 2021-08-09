@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_game.*
@@ -169,6 +170,17 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                         mSelectMatchType,
                         GameType.getGameType(select.code)
                     )
+                }
+            }
+
+        mRvGameTable4Adapter.onClickFavoriteListener =
+            object : OnClickFavoriteListener {
+                override fun onClickFavorite(matchId: String?) {
+                    Toast.makeText(
+                        requireContext(),
+                        "add $matchId to favorite list",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
