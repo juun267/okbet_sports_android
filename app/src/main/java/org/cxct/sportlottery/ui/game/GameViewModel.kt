@@ -1209,7 +1209,13 @@ class GameViewModel(
                     }
                 }
 
+                list.forEach {
+                    it.originPosition = list.indexOf(it)
+                }
+
                 _oddsDetailList.postValue(Event(list))
+
+                notifyFavorite(FavoriteType.PLAY_CATE)
             }
         }
     }

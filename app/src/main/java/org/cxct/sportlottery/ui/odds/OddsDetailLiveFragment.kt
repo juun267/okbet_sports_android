@@ -28,6 +28,7 @@ import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
@@ -41,6 +42,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import java.util.*
@@ -213,6 +215,50 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             oddsDetailListAdapter?.oddsType = it
+        })
+
+        viewModel.favorPlayCateList.observe(this.viewLifecycleOwner, {
+            oddsDetailListAdapter?.let { oddsDetailListAdapter ->
+                val playCate = it.find { playCate ->
+                    playCate.gameType == args.gameType.key
+                }
+
+                val playCateCodeList = playCate?.code?.let { it1 ->
+                    if (it1.isNotEmpty()) {
+                        TextUtil.split(it1)
+                    } else {
+                        mutableListOf()
+                    }
+                }
+
+                val pinList = oddsDetailListAdapter.oddsDetailDataList.filter {
+                    playCateCodeList?.contains(it.gameType) ?: false
+                }.sortedByDescending { it.originPosition }
+
+                val epsSize = oddsDetailListAdapter.oddsDetailDataList.groupBy {
+                    it.gameType == PlayCate.EPS.value
+                }[true]?.size ?: 0
+
+                oddsDetailListAdapter.oddsDetailDataList.sortBy { it.originPosition }
+                oddsDetailListAdapter.oddsDetailDataList.forEach {
+                    it.isPin = false
+                }
+
+                pinList.forEach {
+                    it.isPin = true
+
+                    oddsDetailListAdapter.oddsDetailDataList.add(
+                        epsSize,
+                        oddsDetailListAdapter.oddsDetailDataList.removeAt(
+                            oddsDetailListAdapter.oddsDetailDataList.indexOf(
+                                it
+                            )
+                        )
+                    )
+                }
+
+                oddsDetailListAdapter.notifyDataSetChanged()
+            }
         })
     }
 
