@@ -83,7 +83,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
         }
 
-
     private var parlayOdd: ParlayOdd? = null
         set(value) {
             field = value
@@ -118,6 +117,13 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         KeyBoardUtil(kv_keyboard, null)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        registerChannelHall(this)
+        registerChannelEvent(this)
+        registerChannelPublic(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

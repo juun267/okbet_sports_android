@@ -8,14 +8,6 @@ object TextUtil {
         return str.split(",").toMutableList()
     }
 
-    val emptyFilter = { item: String? ->
-        if (item.isNullOrEmpty()) null else item
-    }
-
-    val emptyToSlash = { item: String? ->
-        if (item.isNullOrEmpty()) "--" else item
-    }
-
     fun format(any: Any): String {
         val df = DecimalFormat("###,###,###,##0.000")
         return df.format(any)
