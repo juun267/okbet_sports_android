@@ -12,8 +12,6 @@ import org.cxct.sportlottery.databinding.ItemBetRecordDetailBinding
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TextUtil.emptyFilter
-import org.cxct.sportlottery.util.TextUtil.emptyToSlash
 import org.cxct.sportlottery.util.getOdds
 
 
