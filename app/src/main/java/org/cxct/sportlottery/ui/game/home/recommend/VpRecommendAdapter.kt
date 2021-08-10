@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.home_recommend_champion.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.tv_play_type
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
@@ -160,7 +159,7 @@ class VpRecommendAdapter(
 
                 rec_champ_btn_pre1.apply {
                     if (data.oddList.isEmpty()) {
-                        betStatus = BetStatus.DEACTIVATED.code
+                        visibility = View.GONE
                         return
                     }
 
@@ -188,7 +187,7 @@ class VpRecommendAdapter(
 
                 rec_champ_btn_pre2.apply {
                     if (data.oddList.size < 2) {
-                        betStatus = BetStatus.DEACTIVATED.code
+                        visibility = View.GONE
                         return
                     }
 
@@ -216,7 +215,7 @@ class VpRecommendAdapter(
 
                 rec_champ_btn_pre3.apply {
                     if (data.oddList.size < 3) {
-                        betStatus = BetStatus.DEACTIVATED.code
+                        visibility = View.GONE
                         return
                     }
 
@@ -244,7 +243,7 @@ class VpRecommendAdapter(
 
                 rec_champ_btn_pre4.apply {
                     if (data.oddList.size < 4) {
-                        betStatus = BetStatus.DEACTIVATED.code
+                        visibility = View.GONE
                         return
                     }
 
