@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
@@ -208,6 +209,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         odd = odd
                     )
                 }
+            }
+        }
+        mRecommendAdapter.onClickMoreListener = object : OnClickMoreListener {
+            override fun onClickMore(matchOdd: MatchOdd) {
+                scroll_view.smoothScrollTo(0, 0)
+
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(matchOdd)
+                findNavController().navigate(action)
             }
         }
         mRecommendAdapter.onClickMatchListener =

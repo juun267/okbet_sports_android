@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
@@ -66,6 +67,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
     var onClickOddListener: OnClickOddListener? = null
     var onClickOutrightOddListener: OnClickOddListener? = null
+    var onClickMoreListener: OnClickMoreListener? = null
 
     var onClickMatchListener: OnSelectItemListener<RecommendGameEntity>? = null
 
@@ -113,6 +115,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
                 data.vpRecommendAdapter?.onClickOutrightOddListener = onClickOutrightOddListener
+                data.vpRecommendAdapter?.onClickMoreListener = onClickMoreListener
 
                 view_pager.adapter = data.vpRecommendAdapter
 
