@@ -26,10 +26,6 @@ import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -39,8 +35,7 @@ import org.cxct.sportlottery.util.TimeUtil
 
 @Suppress("DEPRECATION")
 class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener, BaseSocketActivity.ReceiverChannelEvent,
-    BaseSocketActivity.ReceiverChannelPublic {
+    OnOddClickListener {
 
 
     private val args: OddsDetailFragmentArgs by navArgs()
@@ -58,9 +53,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onCreate(savedInstanceState)
         mSportCode = args.gameType.key
         matchId = args.matchId
-
-        registerChannelEvent(this)
-        registerChannelPublic(this)
     }
 
 
@@ -80,6 +72,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
+        initSocketObserver()
     }
     
     override fun onStart() {
@@ -243,6 +236,25 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
     }
 
+    private fun initSocketObserver() {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let {
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                unSubscribeChannelEventAll()
+                subscribeChannelEvent(matchId)
+            }
+        })
+    }
 
     private fun getData() {
         mSportCode?.let { mSportCode ->
@@ -284,19 +296,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.removeBetInfoItem(odd.id)
     }
 
-    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
-        viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
-    }
-
-    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
-        unSubscribeChannelEventAll()
-        subscribeChannelEvent(matchId)
-    }
-
+    
     override fun onStop() {
         super.onStop()
         unSubscribeChannelEvent(matchId)

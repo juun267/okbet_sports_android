@@ -44,9 +44,7 @@ import org.cxct.sportlottery.util.*
 
 @Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
-    BetInfoListMatchOddAdapter.OnItemClickListener,
-    BetInfoListParlayAdapter.OnTotalQuotaListener, BaseSocketActivity.ReceiverChannelEvent,
-    BaseSocketActivity.ReceiverChannelPublic {
+    BetInfoListMatchOddAdapter.OnItemClickListener, BetInfoListParlayAdapter.OnTotalQuotaListener {
 
 
     private var isSubScribe = false
@@ -69,12 +67,6 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         setStyle(R.style.Common)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        registerChannelEvent(this)
-        registerChannelPublic(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,6 +91,7 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
+        initSocketObserver()
         getParlayList()
         getMoney()
     }
@@ -268,6 +261,41 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         })
     }
 
+    private fun initSocketObserver() {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                viewModel.updateMatchOddForParlay(matchOddsChangeEvent)
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                val list = matchOddAdapter.matchOddList
+                list.forEach { listData ->
+                    if (globalStopEvent.producerId == null || listData.producerId == globalStopEvent.producerId) {
+                        listData.status = BetStatus.LOCKED.code
+                    }
+                }
+                matchOddAdapter.matchOddList = list
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                //0331 取消全部訂閱
+                unSubscribeChannelEventAll()
+
+                val list = matchOddAdapter.matchOddList
+                list.forEach { listData ->
+
+                    //0331 重新訂閱所以項目
+                    subscribeChannelEvent(listData.matchId)
+                }
+                matchOddAdapter.matchOddList = list
+            }
+        })
+    }
+
     private fun changeBetInfoContentByMessage(result: BetAddResult) {
         getBetAddError(result.code)?.let { betAddError ->
             if (!result.success) {
@@ -413,32 +441,5 @@ class BetInfoListParlayDialog : BaseSocketDialog<GameViewModel>(GameViewModel::c
         getSubscribingInOddsDetail()?.let {
             subscribeChannelEvent(it)
         }
-    }
-
-    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
-        viewModel.updateMatchOddForParlay(matchOddsChangeEvent)
-    }
-
-    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
-        val list = matchOddAdapter.matchOddList
-        list.forEach { listData ->
-            if (globalStopEvent.producerId == null || listData.producerId == globalStopEvent.producerId) {
-                listData.status = BetStatus.LOCKED.code
-            }
-        }
-        matchOddAdapter.matchOddList = list
-    }
-
-    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
-        //0331 取消全部訂閱
-        unSubscribeChannelEventAll()
-
-        val list = matchOddAdapter.matchOddList
-        list.forEach { listData ->
-
-            //0331 重新訂閱所以項目
-            subscribeChannelEvent(listData.matchId)
-        }
-        matchOddAdapter.matchOddList = list
     }
 }

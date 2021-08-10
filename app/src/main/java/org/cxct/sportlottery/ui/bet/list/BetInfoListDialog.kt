@@ -31,13 +31,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.repository.TestFlag
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketDialog
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -49,8 +43,7 @@ import org.cxct.sportlottery.util.*
 
 @SuppressLint("SetTextI18n")
 class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
-    BetInfoListAdapter.OnItemClickListener, BaseSocketActivity.ReceiverChannelEvent,
-    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic {
+    BetInfoListAdapter.OnItemClickListener {
 
 
     private lateinit var binding: DialogBetInfoListBinding
@@ -79,14 +72,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
     }
 
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        registerChannelEvent(this)
-        registerChannelHall(this)
-        registerChannelPublic(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -105,6 +90,7 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         super.onViewCreated(view, savedInstanceState)
         initUI()
         observeData()
+        initSocketObserver()
         getMoney()
     }
 
@@ -228,6 +214,38 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
             })
     }
 
+    private fun initSocketObserver() {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                viewModel.updateMatchOdd(matchOddsChangeEvent)
+            }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { oddsChangeEvent ->
+                viewModel.updateMatchOdd(oddsChangeEvent)
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                val list = betInfoListAdapter.betInfoList
+                list.forEach { listData ->
+                    if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
+                        listData.matchOdd.status = BetStatus.LOCKED.code
+                    }
+                }
+                betInfoListAdapter.betInfoList = list
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                unsubscribeChannel(betInfoListAdapter.betInfoList)
+                subscribeChannel(betInfoListAdapter.betInfoList)
+            }
+        })
+    }
 
     private fun changeBetInfoContentByMessage(result: BetAddResult) {
         getBetAddError(result.code)?.let { betAddError ->
@@ -363,31 +381,6 @@ class BetInfoListDialog : BaseSocketDialog<GameViewModel>(GameViewModel::class),
         viewModel.saveOddsHasChanged(matchOdd)
     }
 
-    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
-        viewModel.updateMatchOdd(matchOddsChangeEvent)
-    }
-
-    override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
-        viewModel.updateMatchOdd(oddsChangeEvent)
-    }
-
-    override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
-    }
-
-    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
-        val list = betInfoListAdapter.betInfoList
-        list.forEach { listData ->
-            if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
-                listData.matchOdd.status = BetStatus.LOCKED.code
-            }
-        }
-        betInfoListAdapter.betInfoList = list
-    }
-
-    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
-        unsubscribeChannel(betInfoListAdapter.betInfoList)
-        subscribeChannel(betInfoListAdapter.betInfoList)
-    }
 
     override fun onDestroy() {
         super.onDestroy()
