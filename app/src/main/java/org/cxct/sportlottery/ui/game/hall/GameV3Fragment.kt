@@ -503,18 +503,32 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             }
         })
         
-        viewModel.epsListResult.observe(this.viewLifecycleOwner,{
+        viewModel.epsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
+
+            val gameType =
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+
             it.getContentIfNotHandled()?.let { epsListResult ->
                 if (epsListResult.success) {
                     val oddsEpsListData = epsListResult.rows
-                    val epsLeagueOddsItemList =  mutableListOf<EpsLeagueOddsItem>()
+                    val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
                     oddsEpsListData.forEach { oddsEpdListData ->
                         val newLeagueOddsItem =
-                            EpsLeagueOddsItem(date = oddsEpdListData.date, league = null, matchOdds = null) //合併過後的資料結構
+                            EpsLeagueOddsItem(
+                                date = oddsEpdListData.date,
+                                league = null,
+                                matchOdds = null
+                            )
                         epsLeagueOddsItemList.add(newLeagueOddsItem)
                         oddsEpdListData.leagueOdd.forEach { leaguesOddsItems ->
-                            epsLeagueOddsItemList.add(EpsLeagueOddsItem(date = 0, league = leaguesOddsItems?.league, matchOdds = leaguesOddsItems?.matchOdds))
+                            epsLeagueOddsItemList.add(
+                                EpsLeagueOddsItem(
+                                    date = 0,
+                                    league = leaguesOddsItems?.league,
+                                    matchOdds = leaguesOddsItems?.matchOdds
+                                )
+                            )
                         }
                     }
                     game_list.apply {
@@ -522,6 +536,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                             dataList = epsLeagueOddsItemList
                         }
                     }
+
+                    epsLeagueOddsItemList.forEach { epsLeagueOddsItem ->
+                        if (epsLeagueOddsItem.date.toInt() == 0) {
+                            epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                                subscribeChannelHall(
+                                    gameType?.key,
+                                    PlayCate.EPS.value,
+                                    matchOddsItem.matchInfo?.id
+                                )
+                            }
+                        }
+                    }
+
                 }
             }
         })
@@ -991,6 +1018,26 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                     }
                 }
             }
+
+            val epsOdds = epsListAdapter.dataList
+            val newEpsOddList = oddsChangeEvent.odds[PlayCate.EPS.value]
+
+            epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
+                epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                    matchOddsItem.odds?.eps?.forEach {  odd ->
+                        newEpsOddList?.forEach { newOdd ->
+                            if(newOdd?.id == odd.id){
+                                odd.hkOdds = newOdd?.hkOdds
+                                odd.extInfo = newOdd?.extInfo
+                                odd.odds = newOdd?.odds
+                                epsListAdapter.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 
@@ -1052,6 +1099,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                     playCateMenuCode,
                     matchOdd.matchInfo?.id
                 )
+            }
+        }
+
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+
+        epsListAdapter.dataList.forEach { epsLeagueOddsItem ->
+            if(epsLeagueOddsItem.date.toInt() == 0){
+                epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                    subscribeChannelHall(
+                        gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOddsItem.matchInfo?.id
+                    )
+                }
             }
         }
     }

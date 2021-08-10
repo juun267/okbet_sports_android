@@ -35,11 +35,14 @@ class EpsListV2Adapter(private val clickListener: ItemClickListener,private val 
     class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(item: EpsOdds,oddsType: OddsType, clickListener: ItemClickListener) {
             itemView.tv_title.text = "${item.epsItem?.name}"
+            itemView.btn_odd.isActivated = item.epsItem?.isSelected ?: false
 
             itemView.btn_odd.apply {
                 setOnClickListener {
                     isActivated = !isActivated
-                    item.epsItem?.let { epsOdds -> clickListener.onClick(epsOdds) }
+                    item.epsItem?.isSelected = isActivated
+                    item.epsItem?.let { epsOdds ->
+                        clickListener.onClick(epsOdds) }
                 }
                 val odds = if(oddsType == OddsType.EU)  item.epsItem?.odds.toString() else  item.epsItem?.hkOdds.toString()
                 setOddsValue(item.epsItem?.extInfo ?: "", odds)
