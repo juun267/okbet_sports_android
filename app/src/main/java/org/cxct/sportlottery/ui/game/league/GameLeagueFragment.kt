@@ -18,15 +18,9 @@ import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
@@ -41,9 +35,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
-class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic,
-    BaseSocketActivity.ReceiverChannelMatch {
+class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameLeagueFragmentArgs by navArgs()
 
@@ -94,14 +86,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        registerChannelHall(this)
-        registerChannelMatch(this)
-        registerChannelPublic(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -145,6 +129,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onViewCreated(view, savedInstanceState)
         try {
             initObserve()
+            initSocketObserver()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -245,6 +230,229 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
     }
 
+    private fun initSocketObserver() {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchStatusChangeEvent ->
+                if (args.matchType == MatchType.IN_PLAY) {
+
+                    matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+                        matchStatusCO.matchId?.let { matchId ->
+
+                            val leagueOdds = leagueAdapter.data
+
+                            leagueOdds.forEach { leagueOdd ->
+                                if (leagueOdd.isExpand) {
+
+                                    val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                        matchOdd.matchInfo?.id == matchId
+                                    }
+
+                                    updateMatchOdd?.let {
+                                        updateMatchOdd.matchInfo?.homeScore =
+                                            matchStatusCO.homeScore
+                                        updateMatchOdd.matchInfo?.awayScore =
+                                            matchStatusCO.awayScore
+                                        updateMatchOdd.matchInfo?.statusName =
+                                            matchStatusCO.statusName
+
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.matchClock.observe(this.viewLifecycleOwner, {
+            it?.let { matchClockEvent ->
+                if (args.matchType == MatchType.IN_PLAY) {
+
+                    matchClockEvent.matchClockCO?.let { matchClockCO ->
+                        matchClockCO.matchId?.let { matchId ->
+
+                            val leagueOdds = leagueAdapter.data
+
+                            leagueOdds.forEach { leagueOdd ->
+                                if (leagueOdd.isExpand) {
+
+                                    val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                        matchOdd.matchInfo?.id == matchId
+                                    }
+
+                                    updateMatchOdd?.let {
+                                        updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
+                                            GameType.FT.key -> {
+                                                matchClockCO.matchTime
+                                            }
+                                            GameType.BK.key -> {
+                                                matchClockCO.remainingTimeInPeriod
+                                            }
+                                            else -> null
+                                        }
+
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { oddsChangeEvent ->
+                oddsChangeEvent.updateOddsSelectedState()
+                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+                    val leagueOdds = leagueAdapter.data
+                    val oddsType = leagueAdapter.oddsType
+
+                    leagueOdds.forEach { leagueOdd ->
+                        if (leagueOdd.isExpand) {
+
+                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == it.eventId
+                            }
+
+                            if (updateMatchOdd?.odds.isNullOrEmpty()) {
+                                updateMatchOdd?.odds = PlayCateUtils.filterOdds(
+                                    oddTypeSocketMap.toMutableMap(),
+                                    args.gameType.key
+                                )
+
+                            } else {
+                                updateMatchOdd?.odds?.forEach { oddTypeMap ->
+
+                                    val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
+                                    val odds = oddTypeMap.value
+
+                                    odds.forEach { odd ->
+                                        odd?.let { oddNonNull ->
+                                            val oddSocket = oddsSocket?.find { oddSocket ->
+                                                oddSocket?.id == odd.id
+                                            }
+
+                                            oddSocket?.let { oddSocketNonNull ->
+                                                when (oddsType) {
+                                                    OddsType.EU -> {
+                                                        oddNonNull.odds?.let { oddValue ->
+                                                            oddSocketNonNull.odds?.let { oddSocketValue ->
+                                                                when {
+                                                                    oddValue > oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SMALLER.state
+                                                                    }
+                                                                    oddValue < oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.LARGER.state
+                                                                    }
+                                                                    oddValue == oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SAME.state
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    OddsType.HK -> {
+                                                        oddNonNull.hkOdds?.let { oddValue ->
+                                                            oddSocketNonNull.hkOdds?.let { oddSocketValue ->
+                                                                when {
+                                                                    oddValue > oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SMALLER.state
+                                                                    }
+                                                                    oddValue < oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.LARGER.state
+                                                                    }
+                                                                    oddValue == oddSocketValue -> {
+                                                                        oddNonNull.oddState =
+                                                                            OddState.SAME.state
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                oddNonNull.odds = oddSocketNonNull.odds
+                                                oddNonNull.hkOdds = oddSocketNonNull.hkOdds
+
+                                                oddNonNull.status = oddSocketNonNull.status
+
+                                                leagueAdapter.notifyItemChanged(
+                                                    leagueOdds.indexOf(
+                                                        leagueOdd
+                                                    )
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { odds ->
+                            odds.forEach { odd ->
+                                when (globalStopEvent.producerId) {
+                                    null -> {
+                                        odd?.status = BetStatus.DEACTIVATED.code
+                                    }
+                                    else -> {
+                                        odd?.producerId?.let { producerId ->
+                                            if (producerId == globalStopEvent.producerId) {
+                                                odd.status = BetStatus.DEACTIVATED.code
+                                            }
+                                        }
+                                    }
+                                }
+
+                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                            }
+                        }
+
+                    }
+                }
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                unSubscribeChannelHallAll()
+                subscribeHallChannel()
+            }
+        })
+    }
+
+    private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.onEach { odd ->
+                    odd?.isSelected =
+                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
+        return this
+    }
+
     private fun updateSportBackground(sportCode: String?) {
         Glide.with(requireContext()).load(
             when (sportCode) {
@@ -267,7 +475,12 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
-                viewModel.switchPlayCategory(args.matchType, args.leagueId.toList(), args.matchId.toList(), data.code)
+                viewModel.switchPlayCategory(
+                    args.matchType,
+                    args.leagueId.toList(),
+                    args.matchId.toList(),
+                    data.code
+                )
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
@@ -310,205 +523,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 odd
             )
         }
-    }
-
-    override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
-        if (args.matchType == MatchType.IN_PLAY) {
-
-            matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-                matchStatusCO.matchId?.let { matchId ->
-
-                    val leagueOdds = leagueAdapter.data
-
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.isExpand) {
-
-                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == matchId
-                            }
-
-                            updateMatchOdd?.let {
-                                updateMatchOdd.matchInfo?.homeScore =
-                                    matchStatusCO.homeScore
-                                updateMatchOdd.matchInfo?.awayScore =
-                                    matchStatusCO.awayScore
-                                updateMatchOdd.matchInfo?.statusName =
-                                    matchStatusCO.statusName
-
-                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
-        if (args.matchType == MatchType.IN_PLAY) {
-
-            matchClockEvent.matchClockCO?.let { matchClockCO ->
-                matchClockCO.matchId?.let { matchId ->
-
-                    val leagueOdds = leagueAdapter.data
-
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.isExpand) {
-
-                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == matchId
-                            }
-
-                            updateMatchOdd?.let {
-                                updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
-                                    GameType.FT.key -> {
-                                        matchClockCO.matchTime
-                                    }
-                                    GameType.BK.key -> {
-                                        matchClockCO.remainingTimeInPeriod
-                                    }
-                                    else -> null
-                                }
-
-                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
-        oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-            val leagueOdds = leagueAdapter.data
-            val oddsType = leagueAdapter.oddsType
-
-            leagueOdds.forEach { leagueOdd ->
-                if (leagueOdd.isExpand) {
-
-                    val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                        matchOdd.matchInfo?.id == oddsChangeEvent.eventId
-                    }
-
-                    if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                        updateMatchOdd?.odds = PlayCateUtils.filterOdds(
-                            oddTypeSocketMap.toMutableMap(),
-                            args.gameType.key
-                        )
-
-                    } else {
-                        updateMatchOdd?.odds?.forEach { oddTypeMap ->
-
-                            val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                            val odds = oddTypeMap.value
-
-                            odds.forEach { odd ->
-                                odd?.let { oddNonNull ->
-                                    val oddSocket = oddsSocket?.find { oddSocket ->
-                                        oddSocket?.id == odd.id
-                                    }
-
-                                    oddSocket?.let { oddSocketNonNull ->
-                                        when (oddsType) {
-                                            OddsType.EU -> {
-                                                oddNonNull.odds?.let { oddValue ->
-                                                    oddSocketNonNull.odds?.let { oddSocketValue ->
-                                                        when {
-                                                            oddValue > oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.SMALLER.state
-                                                            }
-                                                            oddValue < oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.LARGER.state
-                                                            }
-                                                            oddValue == oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.SAME.state
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-
-                                            OddsType.HK -> {
-                                                oddNonNull.hkOdds?.let { oddValue ->
-                                                    oddSocketNonNull.hkOdds?.let { oddSocketValue ->
-                                                        when {
-                                                            oddValue > oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.SMALLER.state
-                                                            }
-                                                            oddValue < oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.LARGER.state
-                                                            }
-                                                            oddValue == oddSocketValue -> {
-                                                                oddNonNull.oddState =
-                                                                    OddState.SAME.state
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        oddNonNull.odds = oddSocketNonNull.odds
-                                        oddNonNull.hkOdds = oddSocketNonNull.hkOdds
-
-                                        oddNonNull.status = oddSocketNonNull.status
-
-                                        leagueAdapter.notifyItemChanged(
-                                            leagueOdds.indexOf(
-                                                leagueOdd
-                                            )
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
-        val leagueOdds = leagueAdapter.data
-
-        leagueOdds.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                matchOdd.odds.values.forEach { odds ->
-                    odds.forEach { odd ->
-                        when (globalStopEvent.producerId) {
-                            null -> {
-                                odd?.status = BetStatus.DEACTIVATED.code
-                            }
-                            else -> {
-                                odd?.producerId?.let { producerId ->
-                                    if (producerId == globalStopEvent.producerId) {
-                                        odd.status = BetStatus.DEACTIVATED.code
-                                    }
-                                }
-                            }
-                        }
-
-                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                    }
-                }
-
-            }
-        }
-    }
-
-    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
-        unSubscribeChannelHallAll()
-        subscribeHallChannel()
     }
 
     private fun subscribeHallChannel() {
