@@ -11,10 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.setMoneyFormat
-import org.cxct.sportlottery.util.setOddFormat
-import org.cxct.sportlottery.util.setStatus
+import org.cxct.sportlottery.util.*
 
 class BetInfoCarReceiptDialog(val result: BetAddResult) :
     BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
@@ -50,7 +47,8 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
                 tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                 tv_winnable_amount.setMoneyFormat(winnable)
-                tv_bet_status.setStatus(status)
+                tv_bet_status.setGameStatus(status)
+                tv_bet_status.setGameStatusColor(status)
             }
 
         }

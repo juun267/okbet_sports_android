@@ -68,6 +68,18 @@ fun TextView.setGameStatus(status: Int?) {
     }
 }
 
+@BindingAdapter("gameStatusColor") //状态 1-处理中;2-成功;3-失败
+fun TextView.setGameStatusColor(status: Int?) {
+    status?.let {
+        val color = when (it) {
+            0,1,2,3 -> R.color.colorBlue
+            else -> R.color.colorRed
+        }
+        this.setTextColor(ContextCompat.getColor(context, color))
+    }
+}
+
+
 @BindingAdapter("status")
 fun TextView.setStatus(status: Int?) {
     status?.let {
