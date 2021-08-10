@@ -307,7 +307,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     private fun showBottomSheetDialog(result: BetAddResult) {
         context?.let {
             dismiss()
-            BetInfoCarReceiptDialog(result, it).show(
+            BetInfoCarReceiptDialog(result).show(
                 parentFragmentManager,
                 BetInfoCarReceiptDialog::class.java.simpleName
             )

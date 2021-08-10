@@ -19,7 +19,7 @@ import org.cxct.sportlottery.util.setMoneyFormat
 import org.cxct.sportlottery.util.setOddFormat
 import org.cxct.sportlottery.util.setStatus
 
-class BetInfoCarReceiptDialog(val result: BetAddResult, context: Context) :
+class BetInfoCarReceiptDialog(val result: BetAddResult) :
     BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
 
     init {
