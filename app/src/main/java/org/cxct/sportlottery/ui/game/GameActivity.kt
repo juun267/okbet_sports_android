@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.Row
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -285,7 +286,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 R.anim.pop_bottom_to_top_exit
             )
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: List<Row>?) {
+            override fun onBetResult(betResultData: List<BetResult>?) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.push_right_to_left_enter,

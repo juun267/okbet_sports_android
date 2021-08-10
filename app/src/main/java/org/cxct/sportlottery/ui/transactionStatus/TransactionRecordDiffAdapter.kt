@@ -103,12 +103,14 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playName}"
                 spread_name.text = matchOdds.homeName
-                content_odds.text = TextUtil.formatForOdd(
-                    when (oddsType) {
-                        OddsType.HK -> matchOdds.hkOdds
-                        else -> matchOdds.odds
-                    }
-                )
+                content_odds.text = when (oddsType) {
+                    OddsType.HK -> matchOdds.hkOdds
+                    else -> matchOdds.odds
+                }?.let {
+                    TextUtil.formatForOdd(
+                        it
+                    )
+                }
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -138,12 +140,14 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.spread
-                content_odds.text = TextUtil.formatForOdd(
-                    when (oddsType) {
-                        OddsType.HK -> matchOdds.hkOdds
-                        else -> matchOdds.odds
-                    }
-                )
+                content_odds.text = when (oddsType) {
+                    OddsType.HK -> matchOdds.hkOdds
+                    else -> matchOdds.odds
+                }?.let {
+                    TextUtil.formatForOdd(
+                        it
+                    )
+                }
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo

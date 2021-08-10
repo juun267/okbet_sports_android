@@ -71,7 +71,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bank.add.BankAddResult
 import org.cxct.sportlottery.network.bank.delete.BankDeleteResult
 import org.cxct.sportlottery.network.bank.my.BankMyResult
-import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
 import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.bet.settledDetailList.BetSettledDetailListResult
@@ -186,7 +186,7 @@ object ErrorUtils {
                     }
                     (url.contains(MATCH_BET_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return BetAddResult(it.code, it.msg, null, it.success, null) as T
+                        return BetAddResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(MATCH_BET_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")
@@ -343,7 +343,7 @@ object ErrorUtils {
                     }
                     (url.contains(OUTRIGHT_BET_ADD)) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return BetAddResult(it.code, it.msg, null, it.success, null) as T
+                        return BetAddResult(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(OUTRIGHT_BET_INFO)) -> {
                         @Suppress("UNCHECKED_CAST")

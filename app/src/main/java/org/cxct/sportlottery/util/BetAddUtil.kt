@@ -3,7 +3,7 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.error.BetAddError
 
 

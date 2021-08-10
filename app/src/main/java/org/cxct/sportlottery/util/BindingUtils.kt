@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -190,7 +191,6 @@ fun TextView.setOddFormat(odd: Double?) {
         text = "@${TextUtil.formatForOdd(it)}"
     }
 }
-
 
 @BindingAdapter("moneyColor")
 fun TextView.setMoneyColor(profit: Double = 0.0) {

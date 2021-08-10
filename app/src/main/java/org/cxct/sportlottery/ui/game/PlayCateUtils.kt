@@ -8,13 +8,13 @@ import org.cxct.sportlottery.network.odds.Odd
 object PlayCateUtils {
 
     fun filterOdds(
-        odds: Map<String, List<Odd?>>,
+        odds: Map<String, List<Odd?>?>,
         sportCode: String
     ): MutableMap<String, MutableList<Odd?>> {
         return odds.mapValues {
-            it.value.filterIndexed { index, _ ->
+            it.value?.filterIndexed { index, _ ->
                 index < getPlayCateSpanCount(it.key, sportCode)
-            }.toMutableList()
+            }?.toMutableList() ?: mutableListOf()
 
         }.toMutableMap()
     }

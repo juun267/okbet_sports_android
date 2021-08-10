@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.network.bet.add
+package org.cxct.sportlottery.network.bet.add.betReceipt
 
 
 import com.squareup.moshi.Json
@@ -11,10 +11,8 @@ data class BetAddResult(
     override val code: Int,
     @Json(name = "msg")
     override val msg: String,
-    @Json(name = "rows")
-    val rows: List<Row>?,
     @Json(name = "success")
     override val success: Boolean,
-    @Json(name = "total")
-    val total: Int?
-) : BaseResult()
+    @Json(name = "t")
+    val receipt: Receipt?
+): BaseResult()
