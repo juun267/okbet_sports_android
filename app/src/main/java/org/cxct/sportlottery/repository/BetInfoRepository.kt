@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuota
 import org.cxct.sportlottery.network.index.playquotacom.t.PlayQuotaComData
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil
@@ -234,7 +235,9 @@ class BetInfoRepository(val androidContext: Context) {
         playCateName: String,
         playName: String,
         matchInfo: MatchInfo,
-        odd: Odd
+        odd: Odd,
+        subscribeChannelType: ChannelType,
+        playCateMenuCode: String? = null
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
@@ -259,6 +262,8 @@ class BetInfoRepository(val androidContext: Context) {
                 getParlayOdd(matchType, gameType, mutableListOf(it)).first()
             ).apply {
                 this.matchType = matchType
+                this.subscribeChannelType = subscribeChannelType
+                this.playCateMenuCode = playCateMenuCode
             }
 
             if (betList.size == 0) {
@@ -355,7 +360,7 @@ class BetInfoRepository(val androidContext: Context) {
     }
 
     //TODO review 待刪除
-    fun notifyBetInfoChanged() {
+    /*fun notifyBetInfoChanged() {
         val updateBetInfoList = _betInfoList.value?.peekContent()
 
         if (updateBetInfoList.isNullOrEmpty()) return
@@ -397,7 +402,43 @@ class BetInfoRepository(val androidContext: Context) {
                 _betInfoList.value = Event(newList)
             }
         }
+    }*/
+
+    fun notifyBetInfoChanged() {
+        val updateBetInfoList = _betInfoList.value?.peekContent()
+
+        if (updateBetInfoList.isNullOrEmpty()) return
+
+        when (_isParlayPage.value) {
+            true -> {
+                val gameType = GameType.getGameType(updateBetInfoList[0].matchOdd.gameType)
+                gameType?.let {
+                    matchOddList.value?.let {
+                        _parlayList.value =
+                            getParlayOdd(MatchType.PARLAY, gameType, it).toMutableList()
+                    }
+                }
+            }
+
+            false -> {
+                updateBetInfoList.forEach { betInfoListData ->
+                    betInfoListData.matchType?.let { matchType ->
+                        val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
+                        gameType?.let {
+                            betInfoListData.parlayOdds = getParlayOdd(
+                                matchType,
+                                gameType,
+                                mutableListOf(betInfoListData.matchOdd)
+                            ).first()
+                        }
+                    }
+                }
+                checkBetInfoContent(updateBetInfoList)
+                _betInfoList.value = Event(updateBetInfoList)
+            }
+        }
     }
+
 
     private fun updatePlayQuota() {
 

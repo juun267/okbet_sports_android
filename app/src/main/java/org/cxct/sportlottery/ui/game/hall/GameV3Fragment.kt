@@ -34,6 +34,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -154,12 +155,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private val epsListAdapter by lazy {
-        EpsListAdapter(EpsListAdapter.ItemClickListener{
-         //TODO 下注資料加入購物車
+        EpsListAdapter(EpsListAdapter.ItemClickListener {
+            //TODO 下注資料加入購物車
         },
-        EpsListAdapter.InfoClickListener{
-            setEpsBottomSheet(it)
-        })
+            EpsListAdapter.InfoClickListener {
+                setEpsBottomSheet(it)
+            })
     }
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
@@ -278,7 +279,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun setupSportBackground(view: View) {
         view.game_bg_layer2.visibility = when (args.matchType) {
-            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS  -> View.VISIBLE
+            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS -> View.VISIBLE
             else -> View.GONE
         }
 
@@ -291,11 +292,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun setupMatchCategoryPager(view: View) {
         view.match_category_pager.adapter = matchCategoryPagerAdapter
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
-        view.game_match_category_pager.visibility = if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        view.game_match_category_pager.visibility =
+            if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
 
     private fun setupPlayCategory(view: View) {
@@ -348,6 +350,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
@@ -409,11 +412,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner, {
 
             it.getContentIfNotHandled()?.rows?.let { resultList ->
-                game_match_category_pager.visibility = if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty()) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
+                game_match_category_pager.visibility =
+                    if ((args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) && resultList.isNotEmpty()) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
                 matchCategoryPagerAdapter.data = resultList
             }
         })
@@ -485,19 +489,25 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         })
-        
-        viewModel.epsListResult.observe(this.viewLifecycleOwner,{
+
+        viewModel.epsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
             it.getContentIfNotHandled()?.let { epsListResult ->
                 if (epsListResult.success) {
                     val oddsEpsListData = epsListResult.rows
-                    val epsLeagueOddsItemList =  mutableListOf<EpsLeagueOddsItem>()
+                    val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
                     oddsEpsListData.forEach { oddsEpdListData ->
                         val newLeagueOddsItem =
                             EpsLeagueOddsItem(date = oddsEpdListData.date, league = null, matchOdds = null) //合併過後的資料結構
                         epsLeagueOddsItemList.add(newLeagueOddsItem)
                         oddsEpdListData.leagueOdd.forEach { leaguesOddsItems ->
-                            epsLeagueOddsItemList.add(EpsLeagueOddsItem(date = 0, league = leaguesOddsItems?.league, matchOdds = leaguesOddsItems?.matchOdds))
+                            epsLeagueOddsItemList.add(
+                                EpsLeagueOddsItem(
+                                    date = 0,
+                                    league = leaguesOddsItems?.league,
+                                    matchOdds = leaguesOddsItems?.matchOdds
+                                )
+                            )
                         }
                     }
                     game_list.apply {
@@ -864,7 +874,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     this.dismiss()
                 }
                 tv_league_title.text = matchInfo.leagueName
-                rv_more_eps_info_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+                rv_more_eps_info_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 rv_more_eps_info_item.adapter = EpsMoreInfoAdapter().apply {
                     dataList = listOf(matchInfo)
                 }
@@ -1033,16 +1043,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     playCateName,
                     playName,
                     matchInfo,
-                    odd
+                    odd,
+                    ChannelType.HALL,
+                    getPlayCateMenuCode()
                 )
             }
         }
     }
 
-    private fun subscribeHallChannel() {
+    private fun getPlayCateMenuCode(): String? {
         val playSelected = playCategoryAdapter.data.find { it.isSelected }
 
-        val playCateMenuCode = when (playSelected?.selectionType) {
+        return when (playSelected?.selectionType) {
             SelectionType.SELECTABLE.code -> {
                 playSelected.playCateList?.find { it.isSelected }?.code
             }
@@ -1051,13 +1063,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
             else -> null
         }
+    }
 
+    private fun subscribeHallChannel() {
         leagueAdapter.data.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
 
                 subscribeChannelHall(
                     leagueOdd.gameType?.key,
-                    playCateMenuCode,
+                    getPlayCateMenuCode(),
                     matchOdd.matchInfo?.id
                 )
             }

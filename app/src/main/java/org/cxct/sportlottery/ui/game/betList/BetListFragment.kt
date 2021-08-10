@@ -22,19 +22,11 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.network.bet.add.Row
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
-import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -53,7 +45,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var keyboard: KeyBoardUtil? = null
 
-    private var betListDiffAdapter: BetListDiffAdapter? = null
+    //TODO replace with BetListAdapter
+//    private var betListDiffAdapter: BetListDiffAdapter? = null
+
+    private var betListAdapter: BetListAdapter? = null
 
     private var betAllAmount = 0.0
 
@@ -98,7 +93,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     override fun onDestroy() {
         super.onDestroy()
-        betListDiffAdapter?.let {
+        betListAdapter?.let {
             unsubscribeChannel(getCurrentBetList(it))
         }
     }
@@ -146,7 +141,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ).apply {
                     stackFromEnd = true
                 }
-            rvBetList.adapter = betListDiffAdapter
+            rvBetList.adapter = betListAdapter
             rvBetList.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
                 ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
                     setDrawable(it)
@@ -163,7 +158,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initDiffAdapter() {
-        betListDiffAdapter = BetListDiffAdapter(
+        //TODO replace with BetListAdapter
+        /*betListDiffAdapter = BetListDiffAdapter(
             object : BetListDiffAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                     viewModel.removeBetInfoItem(oddsId)
@@ -207,12 +203,58 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                 }
             })
+        }*/
+
+        betListAdapter = BetListAdapter(
+            object : BetListAdapter.OnItemClickListener {
+                override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
+                    viewModel.removeBetInfoItem(oddsId)
+                    //當前item為最後一個時
+                    if (currentItemCount == 1)
+                        activity?.supportFragmentManager?.popBackStack()
+                }
+
+                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
+                    keyboard?.showKeyboard(editText)
+                }
+
+                override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
+                    keyboard?.showKeyboard(editText)
+                }
+
+                override fun onHideKeyBoard() {
+                    keyboard?.hideKeyboard()
+                }
+
+                override fun saveOddsHasChanged(matchOdd: MatchOdd) {
+                    viewModel.saveOddsHasChanged(matchOdd)
+                }
+
+                override fun refreshAmount() {
+                    refreshAllAmount()
+                }
+
+                override fun showParlayRule(parlayType: String, parlayRule: String) {
+                    showParlayDescription(parlayType, parlayRule)
+                }
+            }
+        ).apply {
+            //展開查看所有多個選項時將滾動至底部
+            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeInserted(positionStart, itemCount)
+                    if (positionStart == 0 && betListAdapter?.moreOptionCollapse == true && needScrollToBottom) {
+                        rv_bet_list.smoothScrollToPosition(0)
+                        needScrollToBottom = false
+                    }
+                }
+            })
         }
     }
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
-        val list = newBetList ?: betListDiffAdapter?.let { getCurrentBetList(it) }
-        val parlayList = betListDiffAdapter?.let { getCurrentParlayList(it) }
+        val list = newBetList ?: betListAdapter?.let { getCurrentBetList(it) }
+        val parlayList = betListAdapter?.let { getCurrentParlayList(it) }
         val totalBetAmount =
             (list?.sumByDouble { it.betAmount } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * it.num } ?: 0.0)
         val betCount =
@@ -289,7 +331,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
-                betListDiffAdapter?.betList = list
+                betListAdapter?.setupDataList(newBetList = list)
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
@@ -305,7 +347,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner, {
-            betListDiffAdapter?.parlayList = it
+            betListAdapter?.setupDataList(newParlayList = it)
         })
 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner, {
@@ -353,19 +395,19 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
-                val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
+                val betList = betListAdapter?.let { list -> getCurrentBetList(list) }
                 betList?.forEach { listData ->
                     if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
                         listData.matchOdd.status = BetStatus.LOCKED.code
                     }
                 }
-                betListDiffAdapter?.betList = (betList ?: mutableListOf())
+                betListAdapter?.setupDataList(newBetList = betList)
             }
         })
 
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let {
-                betListDiffAdapter?.apply {
+                betListAdapter?.apply {
                     val betInfList = getCurrentBetList(this)
                     betListPageUnSubScribeEvent()
                     unsubscribeChannel(betInfList)
@@ -375,17 +417,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         })
     }
 
-    private fun getCurrentBetList(betListDiffAdapter: BetListDiffAdapter): MutableList<BetInfoListData> {
-        return betListDiffAdapter.betList
+    private fun getCurrentBetList(betListAdapter: BetListAdapter): MutableList<BetInfoListData> {
+        return betListAdapter.getBetList()
     }
 
-    private fun getCurrentParlayList(betListDiffAdapter: BetListDiffAdapter): MutableList<ParlayOdd> {
-        return betListDiffAdapter.parlayList
+    private fun getCurrentParlayList(betListAdapter: BetListAdapter): MutableList<ParlayOdd> {
+        return betListAdapter.getParlayList()
     }
 
     private fun addBet() {
         loading()
-        betListDiffAdapter?.let { betListAdapter ->
+        betListAdapter?.let { betListAdapter ->
             viewModel.addBetList(
                 getCurrentBetList(betListAdapter),
                 getCurrentParlayList(betListAdapter),
@@ -482,15 +524,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun showHideCantParlayWarn(show: Boolean) {
         ll_cant_parlay_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
-    
+
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
         betListPageSubscribeEvent()
         val subscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
-            if (listData.matchType == MatchType.OUTRIGHT) {
+            if (listData.subscribeChannelType == ChannelType.HALL) {
                 subscribeChannelHall(
                     listData.matchOdd.gameType,
-                    PlayCate.OUTRIGHT.value,
+                    listData.playCateMenuCode,
                     listData.matchOdd.matchId
                 )
             } else {
@@ -507,10 +549,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun unsubscribeChannel(list: MutableList<BetInfoListData>) {
         val unsubscribedList: MutableList<String> = mutableListOf()
         list.forEach { listData ->
-            if (listData.matchType == MatchType.OUTRIGHT) {
+            if (listData.subscribeChannelType == ChannelType.HALL) {
                 unSubscribeChannelHall(
                     listData.matchOdd.gameType,
-                    PlayCate.OUTRIGHT.value,
+                    listData.playCateMenuCode,
                     listData.matchOdd.matchId
                 )
             } else {

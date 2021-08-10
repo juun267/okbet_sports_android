@@ -7,10 +7,9 @@ import android.text.TextWatcher
 import android.view.*
 import android.widget.EditText
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.archit.calendardaterangepicker.customviews.isDateSame
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
@@ -33,8 +32,8 @@ import org.cxct.sportlottery.util.getOdds
 import timber.log.Timber
 
 @SuppressLint("ClickableViewAccessibility")
-class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
-    ListAdapter<DataItem, RecyclerView.ViewHolder>(BetListDiffCallBack()) {
+class BetListAdapter(private val onItemClickListener: OnItemClickListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var focusPosition = -1
 
     val changeHandler = Handler()
@@ -45,28 +44,35 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             notifyDataSetChanged()
         }
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+        when (holder) {
+            is ViewHolder -> {
+                holder.clearHandler()
+            }
+        }
+    }
+
     private enum class ViewType { Bet, Parlay, ParlayFirst, NoData }
 
     //TODO review : 利用Tag紀錄betList, parlayList更新狀態,皆處於非更新中時,才提交新的資料(submitList()),或是取得新的parlayList時才提交
-    var betList: MutableList<BetInfoListData> = mutableListOf()
-        set(value) {
-            field = value
-            submitData()
-        }
+    private var betList: MutableList<BetInfoListData> = mutableListOf()
 
-    var parlayList: MutableList<ParlayOdd> = mutableListOf()
-        set(value) {
-            field = value
-            submitData()
-        }
+    private var parlayList: MutableList<ParlayOdd> = mutableListOf()
 
+    fun getBetList() = betList
+
+    fun getParlayList() = parlayList
 
     var moreOptionCollapse = false
 
     var needScrollToBottom = false //用來紀錄是否為點擊更多選項需滾動至底部
-    private fun submitData(doFirst: () -> Unit = {}) {
+
+    private var multipleBetList = listOf<DataItem>()
+
+    private fun makeDataList(doFirst: () -> Unit = {}) {
         doFirst.invoke()
-        val itemList = when {
+        multipleBetList = when {
             betList.isEmpty() -> listOf(DataItem.NoData())
             betList.size == 1 -> betList.map { DataItem.BetInfoData(it) }
             else -> {
@@ -91,15 +97,48 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                     }
                 }
             }
+        }.reversed()
+    }
+
+    fun setupDataList(
+        newBetList: MutableList<BetInfoListData>? = null,
+        newParlayList: MutableList<ParlayOdd>? = null
+    ) {
+        if (newBetList != null)
+            betList = newBetList
+        if (newParlayList != null)
+            parlayList = newParlayList
+
+        if (betList.size > 0) {
+            makeDataList()
+            if (betList.all { it.matchOdd.refreshData }) {
+                Timber.e("Dean, notify all")
+                betList.forEach {
+                    it.matchOdd.refreshData = false
+                }
+                notifyDataSetChanged()
+            } else {
+                betList.forEachIndexed { index, betInfoListData ->
+                    if (betInfoListData.matchOdd.refreshData) {
+                        Timber.e("Dean, index = $index notify bet = ${betList[index]}, home name = ${betList[index].matchOdd.homeName}, new odds = ${betList[index].matchOdd.odds}, oddsState = ${betList[index].matchOdd.oddState}")
+                        betList[index].matchOdd.refreshData = false
+                        Timber.e("Dean, refresh position = ${itemCount - index - 1}")
+                        notifyItemChanged(itemCount - index - 1)
+                    }
+                }
+            }
+            multipleBetList.forEach {
+                if (it is DataItem.BetInfoData)
+                    Timber.e("Dean, data = ${it.betInfoListData.matchOdd.homeName}, betInfoListData = ${it.betInfoListData}")
+            }
         }
-        submitList(itemList.reversed())
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (getItem(position)) {
+        return when (val dataItem = multipleBetList[position]) {
             is DataItem.NoData -> ViewType.NoData.ordinal
             is DataItem.ParlayData -> {
-                if ((getItem(position) as DataItem.ParlayData).firstItem)
+                if (dataItem.firstItem)
                     ViewType.ParlayFirst.ordinal
                 else
                     ViewType.Parlay.ordinal
@@ -118,7 +157,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val itemData = getItem(holder.adapterPosition)
+        val itemData = multipleBetList[holder.adapterPosition]
+        Timber.e("Dean, bind view holder")
         when (holder) {
             is ViewHolder -> holder.bind((itemData as DataItem.BetInfoData).betInfoListData)
             is BatchSingleViewHolder -> holder.bind(
@@ -156,7 +196,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         return BatchParlayViewHolder(binding)
     }
 
-    inner class ViewHolder(val binding: ContentBetInfoItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: ContentBetInfoItemBinding) : BetInfoChangeViewHolder(binding.root) {
 
         fun bind(itemData: BetInfoListData) {
             binding.apply {
@@ -181,7 +221,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
             binding.apply {
                 //是否為無法串關注單
                 vPoint.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
-                OddSpannableString.setupOddsContent(itemData.matchOdd, oddsType, tvOddsContent)
+//                OddSpannableString.setupOddsContent(itemData.matchOdd, oddsType, tvOddsContent)
+                setupOddsContent(itemData.matchOdd, oddsType, tvOddsContent)
                 tvMatch.text =
                     "${itemData.matchOdd.homeName}${root.context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 tvName.text = if (itemData.matchOdd.inplay == INPLAY) {
@@ -393,7 +434,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
                             }
 
                             //單注填充所有單注選項, 刷新單注選項資料, 因資料做過反轉故投注單為最後一項開始
-                            this@BetListDiffAdapter.betList.forEachIndexed { index, data ->
+                            this@BetListAdapter.betList.forEachIndexed { index, data ->
                                 if (data.parlayOdds?.max == null || inputValue < (data.parlayOdds?.max ?: 0)) {
                                     data.betAmount = inputValue
                                 } else {
@@ -432,7 +473,7 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         private fun setupClickMoreItem(btnShowMore: View) {
             btnShowMore.setOnClickListener {
                 val collapse = !moreOptionCollapse
-                submitData {
+                makeDataList {
                     moreOptionCollapse = collapse
                     needScrollToBottom = true
                 }
@@ -591,67 +632,8 @@ class BetListDiffAdapter(private val onItemClickListener: OnItemClickListener) :
         fun refreshAmount()
         fun showParlayRule(parlayType: String, parlayRule: String)
     }
-}
 
-class BetListDiffCallBack : DiffUtil.ItemCallback<DataItem>() {
-    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return oldItem.oddsId == newItem.oddsId
-    }
-
-    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
-        return when (oldItem) {
-            is DataItem.BetInfoData -> {
-                if (newItem is DataItem.BetInfoData) {
-                    val old = oldItem.betInfoListData
-                    val new = newItem.betInfoListData
-                    newItem.betInfoListData.betAmount = oldItem.betInfoListData.betAmount
-                    //TODO review 是否還有需要更新的條件
-                    return old.matchOdd.odds == new.matchOdd.odds &&
-                            old.parlayOdds?.max == new.parlayOdds?.max &&
-                            old.matchOdd.spread == new.matchOdd.spread &&
-                            old.matchOdd.homeScore == new.matchOdd.homeScore &&
-                            old.matchOdd.awayScore == new.matchOdd.awayScore &&
-                            old.matchOdd.oddState == new.matchOdd.oddState &&
-                            old.matchOdd.spreadState == new.matchOdd.spreadState &&
-                            old.matchOdd.status == new.matchOdd.status &&
-                            old.pointMarked == new.pointMarked &&
-                            old.betAmount == new.betAmount
-
-                } else {
-                    oldItem == newItem
-                }
-            }
-            is DataItem.ParlayData -> {
-                oldItem == newItem
-            }
-            else -> {
-                oldItem == newItem
-            }
-        }
-    }
-
-}
-
-sealed class DataItem {
-    abstract var oddsId: String?
-    abstract var pointMarked: Boolean?
-
-    data class BetInfoData(
-        val betInfoListData: BetInfoListData,
-        override var oddsId: String? = betInfoListData.matchOdd.oddsId,
-        override var pointMarked: Boolean? = betInfoListData.pointMarked
-    ) :
-        DataItem()
-
-    data class ParlayData(
-        val parlayOdd: ParlayOdd?,
-        var firstItem: Boolean = false,
-        override var oddsId: String? = null,
-        override var pointMarked: Boolean? = null
-    ) : DataItem()
-
-    class NoData : DataItem() {
-        override var oddsId: String? = null
-        override var pointMarked: Boolean? = null
+    override fun getItemCount(): Int {
+        return multipleBetList.size
     }
 }
