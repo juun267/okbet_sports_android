@@ -138,7 +138,10 @@ class VpRecommendAdapter(
                 setOnClickListener {
                     val playCateName = itemView.tv_play_type.text.toString()
                     val playName = odd.name ?: ""
-                    onClickOddListener?.onClickBet(matchOdd, odd, playCateName, playName)
+
+                    onClickOddListener?.onClickBet(matchOdd.apply {
+                        this.matchInfo?.gameType = sportCode
+                    }, odd, playCateName, playName)
                 }
             }
         }
