@@ -4,8 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.home_recommend_champion.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
+import kotlinx.android.synthetic.main.home_recommend_vp.view.tv_play_type
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
@@ -21,13 +25,14 @@ class VpRecommendAdapter(
     private val isOutright: Int?,
     val oddsType: OddsType,
     val matchOdd: MatchOdd
-) : RecyclerView.Adapter<OddStateViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
         RECOMMEND_OUTRIGHT, RECOMMEND
     }
 
     var onClickOddListener: OnClickOddListener? = null
+    var onClickOutrightOddListener: OnClickOddListener? = null
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -51,7 +56,7 @@ class VpRecommendAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OddStateViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.RECOMMEND.ordinal -> {
                 val view = LayoutInflater.from(parent.context)
@@ -66,7 +71,7 @@ class VpRecommendAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: OddStateViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         try {
             when (holder) {
                 is ViewHolderHdpOu -> {
@@ -75,7 +80,7 @@ class VpRecommendAdapter(
                 }
 
                 is ViewHolderRecOutright -> {
-                    val data = dataList[position]
+                    val data = dataList[0]
                     holder.bind(data)
                 }
             }
@@ -147,7 +152,124 @@ class VpRecommendAdapter(
     ) : OddStateViewHolder(itemView) {
 
         fun bind(data: OddBean) {
+            itemView.apply {
+                tv_play_type.text =
+                    PlayCateUtils.getPlayCateTitleResId(data.playTypeCode, sportCode)?.let {
+                        itemView.context.getString(it)
+                    } ?: ""
 
+                rec_champ_btn_pre1.apply {
+                    if (data.oddList.isEmpty()) {
+                        betStatus = BetStatus.DEACTIVATED.code
+                        return
+                    }
+
+                    setupOdd(data.oddList.getOrNull(0), oddsType)
+
+                    tv_name.apply {
+                        text = data.oddList.getOrNull(0)?.spread
+                        visibility = View.VISIBLE
+                    }
+
+                    tv_spread.text = ""
+
+                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(0))
+
+                    isSelected = data.oddList.getOrNull(0)?.isSelected ?: false
+
+                    setOnClickListener {
+                        data.oddList.getOrNull(0)?.let { odd ->
+                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                this.matchInfo?.gameType = sportCode
+                            }, odd)
+                        }
+                    }
+                }
+
+                rec_champ_btn_pre2.apply {
+                    if (data.oddList.size < 2) {
+                        betStatus = BetStatus.DEACTIVATED.code
+                        return
+                    }
+
+                    setupOdd(data.oddList.getOrNull(1), oddsType)
+
+                    tv_name.apply {
+                        text = data.oddList.getOrNull(1)?.spread
+                        visibility = View.VISIBLE
+                    }
+
+                    tv_spread.text = ""
+
+                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(1))
+
+                    isSelected = data.oddList.getOrNull(1)?.isSelected ?: false
+
+                    setOnClickListener {
+                        data.oddList.getOrNull(1)?.let { odd ->
+                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                this.matchInfo?.gameType = sportCode
+                            }, odd)
+                        }
+                    }
+                }
+
+                rec_champ_btn_pre3.apply {
+                    if (data.oddList.size < 3) {
+                        betStatus = BetStatus.DEACTIVATED.code
+                        return
+                    }
+
+                    setupOdd(data.oddList.getOrNull(2), oddsType)
+
+                    tv_name.apply {
+                        text = data.oddList.getOrNull(2)?.spread
+                        visibility = View.VISIBLE
+                    }
+
+                    tv_spread.text = ""
+
+                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(2))
+
+                    isSelected = data.oddList.getOrNull(2)?.isSelected ?: false
+
+                    setOnClickListener {
+                        data.oddList.getOrNull(2)?.let { odd ->
+                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                this.matchInfo?.gameType = sportCode
+                            }, odd)
+                        }
+                    }
+                }
+
+                rec_champ_btn_pre4.apply {
+                    if (data.oddList.size < 4) {
+                        betStatus = BetStatus.DEACTIVATED.code
+                        return
+                    }
+
+                    setupOdd(data.oddList.getOrNull(3), oddsType)
+
+                    tv_name.apply {
+                        text = data.oddList.getOrNull(3)?.spread
+                        visibility = View.VISIBLE
+                    }
+
+                    tv_spread.text = ""
+
+                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(3))
+
+                    isSelected = data.oddList.getOrNull(3)?.isSelected ?: false
+
+                    setOnClickListener {
+                        data.oddList.getOrNull(3)?.let { odd ->
+                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                this.matchInfo?.gameType = sportCode
+                            }, odd)
+                        }
+                    }
+                }
+            }
         }
     }
 }

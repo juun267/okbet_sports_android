@@ -65,6 +65,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         }
 
     var onClickOddListener: OnClickOddListener? = null
+    var onClickOutrightOddListener: OnClickOddListener? = null
 
     var onClickMatchListener: OnSelectItemListener<RecommendGameEntity>? = null
 
@@ -111,9 +112,19 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     )
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
+                data.vpRecommendAdapter?.onClickOutrightOddListener = onClickOutrightOddListener
 
                 view_pager.adapter = data.vpRecommendAdapter
-                indicator_view.setupWithViewPager2(view_pager)
+
+                indicator_view.apply {
+                    visibility = if (data.isOutright == 1 || data.oddBeans.size <= 1) {
+                        View.GONE
+                    } else {
+                        View.VISIBLE
+                    }
+
+                    setupWithViewPager2(view_pager)
+                }
             }
         }
     }
