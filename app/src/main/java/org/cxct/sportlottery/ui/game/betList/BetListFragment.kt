@@ -23,6 +23,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.Row
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -45,9 +46,7 @@ import org.cxct.sportlottery.util.*
  * Use the [BetListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    BaseSocketActivity.ReceiverChannelHall, BaseSocketActivity.ReceiverChannelPublic,
-    BaseSocketActivity.ReceiverChannelEvent {
+class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var binding: FragmentBetListBinding
 
     private var oddsType: OddsType = OddsType.EU
@@ -75,14 +74,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        registerChannelHall(this)
-        registerChannelEvent(this)
-        registerChannelPublic(this)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -100,6 +91,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
 
         initView()
         initObserver()
+        initSocketObserver()
 
         queryData()
     }
@@ -325,7 +317,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (result.success) {
-                    betResultListener?.onBetResult(result.rows)
+                    betResultListener?.onBetResult(result.receipt?.parlayBets)
                     refreshAllAmount()
                     showHideOddsChangeWarn(false)
                 } else {
@@ -344,6 +336,43 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             showHideOddsCloseWarn(it)
         })
 
+    }
+
+    private fun initSocketObserver() {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                viewModel.updateMatchOdd(matchOddsChangeEvent)
+            }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { oddsChangeEvent ->
+                viewModel.updateMatchOdd(oddsChangeEvent)
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
+                betList?.forEach { listData ->
+                    if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
+                        listData.matchOdd.status = BetStatus.LOCKED.code
+                    }
+                }
+                betListDiffAdapter?.betList = (betList ?: mutableListOf())
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                betListDiffAdapter?.apply {
+                    val betInfList = getCurrentBetList(this)
+                    betListPageUnSubScribeEvent()
+                    unsubscribeChannel(betInfList)
+                    subscribeChannel(betInfList)
+                }
+            }
+        })
     }
 
     private fun getCurrentBetList(betListDiffAdapter: BetListDiffAdapter): MutableList<BetInfoListData> {
@@ -453,37 +482,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     private fun showHideCantParlayWarn(show: Boolean) {
         ll_cant_parlay_warn.visibility = if (show) View.VISIBLE else View.GONE
     }
-
-    override fun onOddsChanged(oddsChangeEvent: OddsChangeEvent) {
-        viewModel.updateMatchOdd(oddsChangeEvent)
-    }
-
-    override fun onLeagueChanged(leagueChangeEvent: LeagueChangeEvent) {
-    }
-
-    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
-        val betList = betListDiffAdapter?.let { list -> getCurrentBetList(list) }
-        betList?.forEach { listData ->
-            if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
-                listData.matchOdd.status = BetStatus.LOCKED.code
-            }
-        }
-        betListDiffAdapter?.betList = (betList ?: mutableListOf())
-    }
-
-    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
-        betListDiffAdapter?.apply {
-            val betInfList = getCurrentBetList(this)
-            betListPageUnSubScribeEvent()
-            unsubscribeChannel(betInfList)
-            subscribeChannel(betInfList)
-        }
-    }
-
-    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
-        viewModel.updateMatchOdd(matchOddsChangeEvent)
-    }
-
+    
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
         betListPageSubscribeEvent()
         val subscribedList: MutableList<String> = mutableListOf()
@@ -539,6 +538,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     interface BetResultListener {
-        fun onBetResult(betResultData: List<Row>?)
+        fun onBetResult(betResultData: List<BetResult>?)
     }
 }

@@ -44,15 +44,21 @@ class BetDetailAdapter : ListAdapter<MatchOdd, BetDetailAdapter.ItemViewHolder>(
             binding.data = data
 
             val odds = getOdds(data, oddsType)
-            val oddStr = if (odds > 0)
-                String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
-            else
-                ""
-            binding.tvPlayOdd.text = HtmlCompat.fromHtml(
-                "${data.playName} ${data.spread} <font color=#E44438>${oddStr}</font>",
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-
+            odds?.apply {
+                val oddStr = if (odds > 0)
+                    String.format(
+                        binding.root.context.getString(
+                            R.string.at_symbol,
+                            TextUtil.formatForOdd(odds)
+                        )
+                    )
+                else
+                    ""
+                binding.tvPlayOdd.text = HtmlCompat.fromHtml(
+                    "${data.playName} ${data.spread} <font color=#E44438>${oddStr}</font>",
+                    HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+            }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 
