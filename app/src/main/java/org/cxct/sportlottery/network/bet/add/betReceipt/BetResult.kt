@@ -26,4 +26,3 @@ data class BetResult(
     @Json(name = "winnable")
     val winnable: Double?
 )
-
