@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_game_outright_more.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.TimeUtil
 
 
 class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -22,9 +23,19 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     ): View? {
         return inflater.inflate(R.layout.fragment_game_outright_more, container, false).apply {
 
+            setupMatchInfo(this)
+
             this.outright_more_close.setOnClickListener {
                 findNavController().navigateUp()
             }
+        }
+    }
+
+    private fun setupMatchInfo(view: View) {
+        view.outright_more_league.text = args.matchOdd.matchInfo?.leagueName
+
+        args.matchOdd.matchInfo?.startTime?.let { startTime ->
+            view.outright_more_date.text = TimeUtil.stampToDateHM(startTime)
         }
     }
 }
