@@ -679,7 +679,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
             leagueAdapter.notifyDataSetChanged()
         })
     }
-    private fun setEpsBottomSheet(matchInfo: org.cxct.sportlottery.network.odds.eps.MatchInfo) {
+    private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)

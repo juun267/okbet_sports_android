@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_more_odds_info.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.eps.MatchInfo
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.util.TimeUtil
 
 class EpsMoreInfoAdapter: RecyclerView.Adapter<EpsMoreInfoAdapter.ItemViewHolder>()  {
