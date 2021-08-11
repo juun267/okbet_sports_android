@@ -112,6 +112,8 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
     enum class Page { ODDS_DETAIL, OUTRIGHT }
 
+    var canOpenBetInfoPage: Boolean = false //判斷是否能開啟投注單頁面
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -278,6 +280,8 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun showBetListPage() {
+        if (!canOpenBetInfoPage) return
+
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -568,6 +572,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
             sport_bottom_navigation.setBetCount(it.peekContent().size)
+            canOpenBetInfoPage = it.peekContent().size > 0
         })
 
 

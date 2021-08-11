@@ -46,7 +46,7 @@
 
 
         <View
-            android:id="@+id/vPoint"
+            android:id="@+id/v_point"
             android:layout_width="6dp"
             android:layout_height="6dp"
             android:layout_marginStart="6dp"

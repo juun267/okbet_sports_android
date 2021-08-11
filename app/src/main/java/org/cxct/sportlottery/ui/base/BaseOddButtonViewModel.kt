@@ -430,7 +430,6 @@ abstract class BaseOddButtonViewModel(
                 newItem.let {
                     if (it.id == oldItem.oddsId) {
                         oldItem.refreshData = true
-                        Timber.e("Dean, name = ${oldItem.homeName}")
                         oldItem.oddState = getOddState(
                             getOdds(
                                 oldItem,

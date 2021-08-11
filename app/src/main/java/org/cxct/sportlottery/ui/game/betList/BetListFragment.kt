@@ -13,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
@@ -45,10 +44,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var keyboard: KeyBoardUtil? = null
 
-    //TODO replace with BetListAdapter
-//    private var betListDiffAdapter: BetListDiffAdapter? = null
-
-    private var betListAdapter: BetListAdapter? = null
+    private var betListRefactorAdapter: BetListRefactorAdapter? = null
 
     private var betAllAmount = 0.0
 
@@ -93,8 +89,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     override fun onDestroy() {
         super.onDestroy()
-        betListAdapter?.let {
-            unsubscribeChannel(getCurrentBetList(it))
+        betListRefactorAdapter?.betList?.let {
+            unsubscribeChannel(it)
         }
     }
 
@@ -132,22 +128,16 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initRecyclerView() {
         initDiffAdapter()
 
-        binding.apply {
-            rvBetList.layoutManager =
-                LinearLayoutManager(
-                    this@BetListFragment.context,
-                    LinearLayoutManager.VERTICAL,
-                    true
-                ).apply {
-                    stackFromEnd = true
-                }
-            rvBetList.adapter = betListAdapter
-            rvBetList.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
-                ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
-                    setDrawable(it)
-                }
-            })
-        }
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_bet_list.layoutManager = layoutManager
+        betListRefactorAdapter?.setHasStableIds(true)
+        rv_bet_list.itemAnimator = null
+        rv_bet_list.adapter = betListRefactorAdapter
+        rv_bet_list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
+            ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
+                setDrawable(it)
+            }
+        })
     }
 
     private fun initToolBar() {
@@ -158,7 +148,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initDiffAdapter() {
-        //TODO replace with BetListAdapter
         /*betListDiffAdapter = BetListDiffAdapter(
             object : BetListDiffAdapter.OnItemClickListener {
                 override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
@@ -205,62 +194,58 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             })
         }*/
 
-        betListAdapter = BetListAdapter(
-            object : BetListAdapter.OnItemClickListener {
-                override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                    viewModel.removeBetInfoItem(oddsId)
-                    //當前item為最後一個時
-                    if (currentItemCount == 1)
-                        activity?.supportFragmentManager?.popBackStack()
-                }
-
-                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
-                    keyboard?.showKeyboard(editText)
-                }
-
-                override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
-                    keyboard?.showKeyboard(editText)
-                }
-
-                override fun onHideKeyBoard() {
-                    keyboard?.hideKeyboard()
-                }
-
-                override fun saveOddsHasChanged(matchOdd: MatchOdd) {
-                    viewModel.saveOddsHasChanged(matchOdd)
-                }
-
-                override fun refreshAmount() {
-                    refreshAllAmount()
-                }
-
-                override fun showParlayRule(parlayType: String, parlayRule: String) {
-                    showParlayDescription(parlayType, parlayRule)
-                }
+        betListRefactorAdapter = BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
+            override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
+                viewModel.removeBetInfoItem(oddsId)
+                //當前item為最後一個時
+                if (currentItemCount == 1)
+                    activity?.supportFragmentManager?.popBackStack()
             }
-        ).apply {
-            //展開查看所有多個選項時將滾動至底部
-            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    super.onItemRangeInserted(positionStart, itemCount)
-                    if (positionStart == 0 && betListAdapter?.moreOptionCollapse == true && needScrollToBottom) {
-                        rv_bet_list.smoothScrollToPosition(0)
-                        needScrollToBottom = false
-                    }
-                }
-            })
-        }
+
+            override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
+                keyboard?.showKeyboard(editText)
+            }
+
+            override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
+                keyboard?.showKeyboard(editText)
+            }
+
+            override fun onHideKeyBoard() {
+                keyboard?.hideKeyboard()
+            }
+
+            override fun saveOddsHasChanged(matchOdd: MatchOdd) {
+                viewModel.saveOddsHasChanged(matchOdd)
+            }
+
+            override fun refreshAmount() {
+                refreshAllAmount()
+            }
+
+            override fun showParlayRule(parlayType: String, parlayRule: String) {
+                showParlayDescription(parlayType, parlayRule)
+            }
+        })
     }
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
-        val list = newBetList ?: betListAdapter?.let { getCurrentBetList(it) }
-        val parlayList = betListAdapter?.let { getCurrentParlayList(it) }
+        val originalList = newBetList ?: getCurrentBetList()
+        val list =
+            (newBetList ?: getCurrentBetList()).filter { it.matchOdd.status == BetStatus.ACTIVATED.code }//過濾不能投注的
+
+        val parlayList =
+            if (originalList.size == list.size) getCurrentParlayList() else mutableListOf()//單注有不能投注的單則串關不做顯示也不能投注
+
         val totalBetAmount =
-            (list?.sumByDouble { it.betAmount } ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * it.num } ?: 0.0)
+            list.sumByDouble { it.betAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
         val betCount =
-            (list?.count { it.betAmount > 0 } ?: 0) + (parlayList?.filter { it.betAmount > 0 }?.sumBy { it.num } ?: 0)
-        val winnableAmount = (list?.sumByDouble { it.betAmount * getOdds(it.matchOdd, oddsType) }
-            ?: 0.0) + (parlayList?.sumByDouble { it.betAmount * getOdds(it, oddsType) } ?: 0.0)
+            list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
+        val winnableAmount = list.sumByDouble {
+            it.betAmount * getOdds(
+                it.matchOdd,
+                oddsType
+            )
+        } + parlayList.sumByDouble { it.betAmount * getOdds(it, oddsType) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -331,7 +316,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
-                betListAdapter?.setupDataList(newBetList = list)
+//                betListAdapter?.setupDataList(newBetList = list)
+                betListRefactorAdapter?.betList = list
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
@@ -347,7 +333,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //串關列表
         viewModel.parlayList.observe(this.viewLifecycleOwner, {
-            betListAdapter?.setupDataList(newParlayList = it)
+            betListRefactorAdapter?.parlayList = it
         })
 
         viewModel.betParlaySuccess.observe(viewLifecycleOwner, {
@@ -395,45 +381,49 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
-                val betList = betListAdapter?.let { list -> getCurrentBetList(list) }
-                betList?.forEach { listData ->
+                val betRefactorList = betListRefactorAdapter?.betList
+                betRefactorList?.forEach { listData ->
                     if (globalStopEvent.producerId == null || listData.matchOdd.producerId == globalStopEvent.producerId) {
                         listData.matchOdd.status = BetStatus.LOCKED.code
                     }
                 }
-                betListAdapter?.setupDataList(newBetList = betList)
+                betListRefactorAdapter?.betList = betRefactorList
             }
         })
 
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let {
-                betListAdapter?.apply {
-                    val betInfList = getCurrentBetList(this)
+                betListRefactorAdapter?.betList.let { list ->
                     betListPageUnSubScribeEvent()
-                    unsubscribeChannel(betInfList)
-                    subscribeChannel(betInfList)
+                    list?.let { listNotNull ->
+                        unsubscribeChannel(listNotNull)
+                        subscribeChannel(listNotNull)
+                    }
                 }
             }
         })
     }
 
-    private fun getCurrentBetList(betListAdapter: BetListAdapter): MutableList<BetInfoListData> {
-        return betListAdapter.getBetList()
+    private fun getCurrentBetList(): MutableList<BetInfoListData> {
+        return betListRefactorAdapter?.betList ?: mutableListOf()
     }
 
-    private fun getCurrentParlayList(betListAdapter: BetListAdapter): MutableList<ParlayOdd> {
-        return betListAdapter.getParlayList()
+    private fun getCurrentParlayList(): MutableList<ParlayOdd> {
+        return betListRefactorAdapter?.parlayList ?: mutableListOf()
     }
 
     private fun addBet() {
         loading()
-        betListAdapter?.let { betListAdapter ->
-            viewModel.addBetList(
-                getCurrentBetList(betListAdapter),
-                getCurrentParlayList(betListAdapter),
-                oddsType
-            )
-        }
+        val betList = getCurrentBetList()
+        val betListFilter = betList.filter { it.matchOdd.status == BetStatus.ACTIVATED.code }
+
+        val parlayList = if (betList.size == betListFilter.size) getCurrentParlayList() else mutableListOf()
+
+        viewModel.addBetList(
+            getCurrentBetList(),
+            parlayList,
+            oddsType
+        )
     }
 
     /**
