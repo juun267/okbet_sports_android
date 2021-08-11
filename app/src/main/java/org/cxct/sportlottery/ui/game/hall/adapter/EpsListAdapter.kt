@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOddsItem
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 
-class EpsListAdapter(private val clickListener: ItemClickListener,private val infoClickListener: InfoClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { DATE, ITEM }
 
@@ -68,18 +68,14 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
             }
         }
 
-        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,clickListener: ItemClickListener,infoClickListener: InfoClickListener) {
+        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,epsOddListener: EpsOddListener) {
             itemView.tv_league_title.text = "${item.league?.name}"
             itemView.rv_league_odd_list.layoutManager = LinearLayoutManager(
                 itemView.context,
                 LinearLayoutManager.VERTICAL, false
             )
 
-            val epsListV2Adapter = EpsListV2Adapter(EpsListV2Adapter.ItemClickListener{ odd->
-                clickListener.onClick(odd)
-            },EpsListV2Adapter.InfoClickListener{ matchInfo ->
-                infoClickListener.onClick(matchInfo)
-            })
+            val epsListV2Adapter = EpsListV2Adapter(epsOddListener)
 
             itemView.rv_league_odd_list.apply {
                 layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
@@ -121,7 +117,7 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                holder.bind(dataList[position], oddsType, clickListener, infoClickListener)
+                holder.bind(dataList[position], oddsType, epsOddListener)
             }
             is DateViewHolder -> {
                 holder.bind(dataList[position])
@@ -134,7 +130,12 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
     class ItemClickListener(private val clickListener: (odd: Odd) -> Unit) {
         fun onClick(odd: Odd) = clickListener(odd)
     }
-    class InfoClickListener(private val clickListener: (matchInfo: MatchInfo) -> Unit) {
-        fun onClick(matchInfo: MatchInfo) = clickListener(matchInfo)
+
+    class EpsOddListener(
+        val clickListenerBet: (odd: Odd,matchInfo: MatchInfo) -> Unit,
+        val clickBetListenerInfo: (matchInfo: MatchInfo) -> Unit
+    ){
+        fun onClickBet(odd: Odd,matchInfo: MatchInfo) = clickListenerBet(odd,matchInfo)
+        fun onClickInfo(matchInfo: MatchInfo) = clickBetListenerInfo(matchInfo)
     }
 }

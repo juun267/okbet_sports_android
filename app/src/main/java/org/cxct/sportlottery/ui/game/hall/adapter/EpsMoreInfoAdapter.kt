@@ -31,7 +31,7 @@ class EpsMoreInfoAdapter: RecyclerView.Adapter<EpsMoreInfoAdapter.ItemViewHolder
         @SuppressLint("SetTextI18n")
         fun bind(matchInfo: MatchInfo){
             itemView.txv_team.text = "${matchInfo.homeName} V ${matchInfo.awayName}"
-            itemView.txv_time.text = TimeUtil.stampToDateHM(matchInfo.startTime.toLong())
+            itemView.txv_time.text = TimeUtil.stampToDateHM(matchInfo.startTime ?: 0)
         }
     }
 

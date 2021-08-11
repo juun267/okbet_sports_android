@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.hall
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -163,12 +162,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
     }
 
     private val epsListAdapter by lazy {
-        EpsListAdapter(EpsListAdapter.ItemClickListener{
-         //TODO 下注資料加入購物車
-        },
-        EpsListAdapter.InfoClickListener{
-            setEpsBottomSheet(it)
-        })
+
+        EpsListAdapter(EpsListAdapter.EpsOddListener({ odd, betMatchInfo ->
+            addOddsDialog(betMatchInfo , odd, getString(R.string.game_tab_price_boosts_odd), odd.name ?: "")
+        },{ matchInfo ->
+            setEpsBottomSheet(matchInfo)
+        }))
+
     }
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
@@ -600,6 +600,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                 }
 
                 leagueAdapter.notifyDataSetChanged()
+
+
+                val epsOdds = epsListAdapter.dataList
+
+                epsOdds.forEach { epsLeagueOddsItem ->
+                    epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                        matchOddsItem.odds?.eps?.forEach { odd ->
+                            odd.isSelected = it.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd.id
+                            }
+                        }
+                    }
+                }
+                epsListAdapter.notifyDataSetChanged()
             }
         })
 
@@ -1036,8 +1050,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
                     }
                 }
             }
-
-
         }
     }
 
