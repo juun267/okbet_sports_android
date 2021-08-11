@@ -63,7 +63,7 @@
 
             <argument
                 android:name="matchOdd"
-                app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd" />
+                app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
         </action>
     </fragment>
 
@@ -253,7 +253,7 @@
 
             <argument
                 android:name="matchOdd"
-                app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd" />
+                app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
         </action>
     </fragment>
 
@@ -382,6 +382,6 @@
 
         <argument
             android:name="matchOdd"
-            app:argType="org.cxct.sportlottery.network.odds.list.MatchOdd" />
+            app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
     </fragment>
 </navigation>

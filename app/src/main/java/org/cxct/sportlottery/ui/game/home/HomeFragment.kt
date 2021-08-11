@@ -216,7 +216,16 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 scroll_view.smoothScrollTo(0, 0)
 
                 val action =
-                    HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(matchOdd)
+                    HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(
+                        org.cxct.sportlottery.network.outright.odds.MatchOdd(
+                            matchInfo = matchOdd.matchInfo,
+                            odds = matchOdd.odds,
+                            dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
+                            oddsList = listOf(),
+                            quickPlayCateList = matchOdd.quickPlayCateList
+
+                        )
+                    )
                 findNavController().navigate(action)
             }
         }
