@@ -51,6 +51,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var betResultListener: BetResultListener? = null
 
+    private var betParlayList: List<ParlayOdd>? = null //紀錄投注時的串關資料
+
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -346,7 +348,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (result.success) {
-                    betResultListener?.onBetResult(result.receipt)
+                    betResultListener?.onBetResult(result.receipt, betParlayList ?: listOf())
                     refreshAllAmount()
                     showHideOddsChangeWarn(false)
                 } else {
@@ -419,6 +421,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val betListFilter = betList.filter { it.matchOdd.status == BetStatus.ACTIVATED.code }
 
         val parlayList = if (betList.size == betListFilter.size) getCurrentParlayList() else mutableListOf()
+
+        val tempParlayList = mutableListOf<ParlayOdd>()
+        parlayList.forEach {
+            tempParlayList.add(it.copy())
+        }
+        betParlayList = tempParlayList
 
         viewModel.addBetList(
             getCurrentBetList(),
@@ -571,6 +579,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     interface BetResultListener {
-        fun onBetResult(betResultData: Receipt?)
+        fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>)
     }
 }

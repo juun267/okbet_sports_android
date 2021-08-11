@@ -498,7 +498,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 }
                             }
 
-                            //單注填充所有單注選項, 刷新單注選項資料, 因資料做過反轉故投注單為最後一項開始
                             betList.forEachIndexed { _, data ->
                                 if (data.parlayOdds?.max == null || inputValue < (data.parlayOdds?.max ?: 0)) {
                                     data.betAmount = inputValue

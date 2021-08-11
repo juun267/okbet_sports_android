@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -289,7 +290,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 R.anim.pop_bottom_to_top_exit
             )
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: Receipt?) {
+            override fun onBetResult(betResultData: Receipt?, betParlayList: MutableList<ParlayOdd>) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.push_right_to_left_enter,
@@ -297,7 +298,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                         R.anim.push_right_to_left_enter,
                         R.anim.pop_bottom_to_top_exit
                     )
-                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData))
+                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData, betParlayList))
                     .addToBackStack(BetReceiptFragment::class.java.simpleName)
                     .commit()
             }
