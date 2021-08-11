@@ -31,7 +31,7 @@ class OutrightLeagueOddAdapter :
     }
 
     override fun onBindViewHolder(holder: LeagueOddViewHolder, position: Int) {
-        holder.bind(data[position], outrightOddListener)
+        holder.bind(data[position], oddsType, outrightOddListener)
     }
 
     override fun getItemCount(): Int {
@@ -45,7 +45,11 @@ class OutrightLeagueOddAdapter :
             OutrightOddAdapter(true)
         }
 
-        fun bind(matchOdd: MatchOdd?, outrightOddListener: OutrightOddListener?) {
+        fun bind(
+            matchOdd: MatchOdd?,
+            oddsType: OddsType,
+            outrightOddListener: OutrightOddListener?
+        ) {
 
             itemView.outright_league_name.text = matchOdd?.matchInfo?.name
 
@@ -56,6 +60,7 @@ class OutrightLeagueOddAdapter :
             itemView.outright_league_odd_list.apply {
                 adapter = outrightOddAdapter.apply {
                     this.matchOdd = matchOdd
+                    this.oddsType = oddsType
                     this.outrightOddListener = outrightOddListener
                 }
             }
