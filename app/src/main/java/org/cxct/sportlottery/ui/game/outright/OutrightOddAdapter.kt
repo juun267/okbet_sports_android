@@ -42,7 +42,7 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
 
                     if (isNeedShowSubTitle) {
                         if (it.value.filterNotNull().size > 4) {
-                            list.add(matchOdd)
+                            list.add(it.key to matchOdd)
                         }
                     }
                 }
@@ -103,8 +103,8 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
                 holder.bind(matchOdd, item, outrightOddListener, oddsType)
             }
             is MoreViewHolder -> {
-                val item = data[position] as MatchOdd
-                holder.bind(item, outrightOddListener)
+                val item = data[position] as Pair<*, *>
+                holder.bind((item.first as String), (item.second as MatchOdd), outrightOddListener)
             }
         }
 
@@ -187,9 +187,9 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
 
     class MoreViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(matchOdd: MatchOdd, outrightOddListener: OutrightOddListener?) {
+        fun bind(oddsKey: String, matchOdd: MatchOdd, outrightOddListener: OutrightOddListener?) {
             itemView.setOnClickListener {
-                outrightOddListener?.onClickMore(matchOdd)
+                outrightOddListener?.onClickMore(oddsKey, matchOdd)
             }
         }
 
@@ -207,8 +207,8 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
 
 class OutrightOddListener(
     val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd) -> Unit,
-    val clickListenerMore: (matchOdd: MatchOdd) -> Unit
+    val clickListenerMore: (oddsKey: String, matchOdd: MatchOdd) -> Unit
 ) {
     fun onClickBet(matchOdd: MatchOdd?, odd: Odd) = clickListenerBet(matchOdd, odd)
-    fun onClickMore(matchOdd: MatchOdd) = clickListenerMore(matchOdd)
+    fun onClickMore(oddsKey: String, matchOdd: MatchOdd) = clickListenerMore(oddsKey, matchOdd)
 }

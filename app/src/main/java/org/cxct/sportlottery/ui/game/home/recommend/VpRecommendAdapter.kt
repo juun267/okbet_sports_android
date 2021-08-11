@@ -276,7 +276,7 @@ class VpRecommendAdapter(
 
                 rec_champ_more.apply {
                     setOnClickListener {
-                        onClickMoreListener?.onClickMore(matchOdd)
+                        onClickMoreListener?.onClickMore(data.playTypeCode, matchOdd)
                     }
                 }
             }
