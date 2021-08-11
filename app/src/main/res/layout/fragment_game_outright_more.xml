@@ -48,6 +48,7 @@
         tools:text="23 / 05 / 2022  11:00" />
 
     <ImageButton
+        android:id="@+id/outright_more_close"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
