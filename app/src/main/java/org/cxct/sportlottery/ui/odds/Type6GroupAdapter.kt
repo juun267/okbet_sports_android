@@ -69,18 +69,18 @@ class Type6GroupAdapter(
             val awayList: MutableList<Odd?> = mutableListOf()
 
             homeList.apply {
-                add(oddsList[0])
-                add(oddsList[1])
+                add(oddsList.firstOrNull())
+                add(oddsList.getOrNull(1))
             }
 
             drawList.apply {
-                add(oddsList[2])
-                add(oddsList[3])
+                add(oddsList.getOrNull(2))
+                add(oddsList.getOrNull(3))
             }
 
             awayList.apply {
-                add(oddsList[4])
-                add(oddsList[5])
+                add(oddsList.getOrNull(4))
+                add(oddsList.getOrNull(5))
             }
 
             setupRecyclerView(itemView.findViewById(R.id.rv_home), homeList)

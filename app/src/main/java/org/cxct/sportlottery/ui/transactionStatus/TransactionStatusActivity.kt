@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.Row
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -172,7 +173,7 @@ class TransactionStatusActivity :
 
     private fun showBetListPage() {
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: List<Row>?) {
+            override fun onBetResult(betResultData: List<BetResult>?) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit, R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit)
                     .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData))

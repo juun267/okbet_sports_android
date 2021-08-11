@@ -50,9 +50,7 @@ import java.util.*
 
 @Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener,
-    BaseSocketActivity.ReceiverChannelEvent, BaseSocketActivity.ReceiverChannelPublic,
-    BaseSocketActivity.ReceiverChannelMatch {
+    OnOddClickListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
@@ -71,10 +69,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         super.onCreate(savedInstanceState)
         mSportCode = args.gameType.key
         matchId = args.matchId
-
-        registerChannelEvent(this)
-        registerChannelMatch(this)
-        registerChannelPublic(this)
     }
 
     override fun onCreateView(
@@ -92,6 +86,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
+        initSocketObserver()
     }
 
     override fun onStart() {
@@ -262,6 +257,57 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
     }
 
+    private fun initSocketObserver() {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchStatusChangeEvent ->
+                matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
+                    ?.apply {
+                        tv_time_top?.let {
+                            it.text = this.statusName
+                        }
+
+                        curHomeScore = homeScore
+                        curAwayScore = awayScore
+                    }
+            }
+        })
+
+        receiver.matchClock.observe(this.viewLifecycleOwner, {
+            it?.let { matchClockEvent ->
+                val updateTime = when (args.gameType) {
+                    GameType.FT -> {
+                        matchClockEvent.matchClockCO?.matchTime
+                    }
+                    GameType.BK -> {
+                        matchClockEvent.matchClockCO?.remainingTimeInPeriod
+                    }
+                    else -> null
+                }
+
+                updateTime?.let {
+                    startMatchTimer(updateTime)
+                }
+            }
+        })
+
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let {}
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                unSubscribeChannelEventAll()
+                subscribeChannelEvent(matchId)
+            }
+        })
+    }
+
     private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
             tv_home_name.text = homeName
@@ -299,44 +345,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         viewModel.removeBetInfoItem(odd.id)
     }
 
-    override fun onMatchStatusChanged(matchStatusChangeEvent: MatchStatusChangeEvent) {
-        matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }?.apply {
-            tv_time_top?.let {
-                it.text = this.statusName
-            }
-
-            curHomeScore = homeScore
-            curAwayScore = awayScore
-        }
-    }
-
-    override fun onMatchClockChanged(matchClockEvent: MatchClockEvent) {
-        val updateTime = when (args.gameType) {
-            GameType.FT -> {
-                matchClockEvent.matchClockCO?.matchTime
-            }
-            GameType.BK -> {
-                matchClockEvent.matchClockCO?.remainingTimeInPeriod
-            }
-            else -> null
-        }
-
-        updateTime?.let {
-            startMatchTimer(updateTime)
-        }
-    }
-
-    override fun onMatchOddsChanged(matchOddsChangeEvent: MatchOddsChangeEvent) {
-        viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
-    }
-
-    override fun onGlobalStop(globalStopEvent: GlobalStopEvent) {
-    }
-
-    override fun onProducerUp(producerUpEvent: ProducerUpEvent) {
-        unSubscribeChannelEventAll()
-        subscribeChannelEvent(matchId)
-    }
 
     private fun startMatchTimer(startTime: Int) {
         timer?.cancel()

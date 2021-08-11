@@ -9,8 +9,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
+import kotlinx.android.synthetic.main.view_match_receipt_total.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.Row
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -22,13 +24,12 @@ import org.cxct.sportlottery.util.TextUtil
  * create an instance of this fragment.
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
-    private var betResultData: List<Row>? = null
+    private var betResultData: List<BetResult>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_bet_receipt, container, false)
     }
 
@@ -57,9 +58,9 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         var betTotalAmount = 0
         var winnableTotalAmount = 0.0
         betResultData?.forEach {
-            betCount += it.num
-            betTotalAmount += it.stake
-            winnableTotalAmount += it.winnable
+            betCount += (it.num ?: 0)
+            betTotalAmount += (it.stake ?: 0)
+            winnableTotalAmount += (it.winnable ?: 0.0)
         }
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
@@ -78,7 +79,10 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         rv_bet_receipt.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
-                ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
+                ContextCompat.getDrawable(
+                    context ?: requireContext(),
+                    R.drawable.divider_color_white8
+                )?.let {
                     setDrawable(it)
                 }
             })
@@ -91,7 +95,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     companion object {
         @JvmStatic
-        fun newInstance(betResultData: List<Row>?) = BetReceiptFragment().apply {
+        fun newInstance(betResultData: List<BetResult>?) = BetReceiptFragment().apply {
             this.betResultData = betResultData
         }
     }

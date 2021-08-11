@@ -86,9 +86,11 @@ class BetRecordAdapter(private val clickListener: ItemClickListener) : ListAdapt
             binding.tvParlayType.visibility = if (data.parlayType == "1C1" || data.parlayType == "OUTRIGHT") View.GONE else View.VISIBLE
 
             val odds = getOdds(data.matchOdds[0], oddsType)
-            binding.tvOdds.text = if (odds > 0) {
-                String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
-            } else null
+            if (odds != null) {
+                binding.tvOdds.text = if (odds > 0) {
+                    String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
+                } else null
+            }
 
             binding.executePendingBindings()
 
