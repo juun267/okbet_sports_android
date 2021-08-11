@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -273,6 +274,7 @@ abstract class BaseOddButtonViewModel(
     fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
             val result = getBetApi(matchType, betAddRequest)
+
             _betAddResult.postValue(Event(result))
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
@@ -286,7 +288,11 @@ abstract class BaseOddButtonViewModel(
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
      * @date 20210730
      */
-    fun addBetList(normalBetList: List<BetInfoListData>, parlayBetList: List<ParlayOdd>, oddsType: OddsType) {
+    fun addBetList(
+        normalBetList: List<BetInfoListData>,
+        parlayBetList: List<ParlayOdd>,
+        oddsType: OddsType
+    ) {
 
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
@@ -499,14 +505,19 @@ abstract class BaseOddButtonViewModel(
                                         ), newItem
                                     )
 
-                                    newMatchOdd.spreadState = getSpreadState(newMatchOdd.spread, it.spread ?: "")
+                                    newMatchOdd.spreadState =
+                                        getSpreadState(newMatchOdd.spread, it.spread ?: "")
 
                                     newItem.status.let { status -> newMatchOdd.status = status }
 
                                     if (newMatchOdd.status == BetStatus.ACTIVATED.code) {
                                         newItem.odds.let { odds -> newMatchOdd.odds = odds ?: 0.0 }
-                                        newItem.hkOdds.let { hkOdds -> newMatchOdd.hkOdds = hkOdds ?: 0.0 }
-                                        newItem.spread.let { spread -> newMatchOdd.spread = spread ?: "" }
+                                        newItem.hkOdds.let { hkOdds ->
+                                            newMatchOdd.hkOdds = hkOdds ?: 0.0
+                                        }
+                                        newItem.spread.let { spread ->
+                                            newMatchOdd.spread = spread ?: ""
+                                        }
                                     }
 
                                     //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息

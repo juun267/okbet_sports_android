@@ -21,8 +21,7 @@ import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.add.Row
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -31,7 +30,7 @@ import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.betList.BetReceiptFragment
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -290,7 +289,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 R.anim.pop_bottom_to_top_exit
             )
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: List<BetResult>?) {
+            override fun onBetResult(betResultData: Receipt?) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.push_right_to_left_enter,
