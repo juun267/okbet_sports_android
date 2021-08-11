@@ -43,7 +43,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private val outrightOddAdapter by lazy {
-        OutrightOddAdapter().apply {
+        OutrightOddAdapter(true).apply {
             outrightOddListener = OutrightOddListener { matchOdd, odd ->
                 matchOdd?.let {
                     addOddsDialog(matchOdd, odd)
