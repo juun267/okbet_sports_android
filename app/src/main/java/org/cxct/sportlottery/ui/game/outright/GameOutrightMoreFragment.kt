@@ -8,6 +8,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_game_outright_more.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
@@ -19,7 +23,15 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private val args: GameOutrightMoreFragmentArgs by navArgs()
 
     private val outrightOddAdapter by lazy {
-        OutrightOddMoreAdapter()
+        OutrightOddMoreAdapter().apply {
+            outrightOddListener = OutrightOddListener(
+                { matchOdd, odd ->
+                    matchOdd?.let {
+                        addOddsDialog(matchOdd, odd)
+                    }
+                }, { _, _ -> }
+            )
+        }
     }
 
     override fun onCreateView(
@@ -77,5 +89,35 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
                 data = args.matchOdd.odds[args.oddsKey] to args.matchOdd
             }
         }
+    }
+
+    private fun addOddsDialog(
+        matchOdd: MatchOdd,
+        odd: Odd,
+    ) {
+        GameType.getGameType(args.matchOdd.matchInfo?.gameType)?.let { gameType ->
+            viewModel.updateMatchBetListForOutRight(
+                matchType = MatchType.OUTRIGHT,
+                gameType = gameType,
+                matchOdd = matchOdd,
+                odd = odd
+            )
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { betInfoList ->
+                outrightOddAdapter.data?.first?.forEach { odd ->
+                    odd?.isSelected = betInfoList.any { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == odd?.id
+                    }
+                }
+
+                outrightOddAdapter.notifyDataSetChanged()
+            }
+        })
     }
 }
