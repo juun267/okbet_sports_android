@@ -111,7 +111,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         data.oddBeans,
                         data.isOutright,
                         oddsType,
-                        data.toMatchOdd()
+                        data.toMatchOdd(),
+                        data.dynamicMarkets
                     )
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
