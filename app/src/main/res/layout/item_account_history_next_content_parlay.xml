@@ -114,7 +114,8 @@
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
-                app:gameStatus="@{row.status}"
+                app:betReceiptStatus="@{matchOdd.status}"
+                app:recordStatusColor="@{matchOdd.status}"
                 tools:text="取消注單" />
 
             <TextView

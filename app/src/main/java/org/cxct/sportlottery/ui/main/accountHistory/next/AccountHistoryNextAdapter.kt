@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,9 +26,10 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.getOdds
 
-class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener,
-                                private val backClickListener: BackClickListener,
-                                private val sportDateSelectListener: SportDateSelectListener
+class AccountHistoryNextAdapter(
+    private val itemClickListener: ItemClickListener,
+    private val backClickListener: BackClickListener,
+    private val sportDateSelectListener: SportDateSelectListener
                                 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
@@ -126,7 +128,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
     class ParlayItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val parlayAdapter by lazy { ParlayItemAdapter() }
+//        private val parlayAdapter by lazy { ParlayItemAdapter(mContext) }
 
         fun bind(row: Row, oddsType: OddsType) {
             binding.matchOdd = row.matchOdds?.firstOrNull()
@@ -134,6 +136,7 @@ class AccountHistoryNextAdapter(private val itemClickListener: ItemClickListener
             binding.tvParlayType.text = row.parlayType?.replace("C", "串")
 
             binding.rvParlay.apply {
+                val parlayAdapter = ParlayItemAdapter()
                 adapter = parlayAdapter
                 layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                 parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁

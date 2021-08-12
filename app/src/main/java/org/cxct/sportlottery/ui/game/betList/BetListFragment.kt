@@ -24,6 +24,7 @@ import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.Row
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
@@ -317,7 +318,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (result.success) {
-                    betResultListener?.onBetResult(result.receipt?.parlayBets)
+                    betResultListener?.onBetResult(result.receipt)
                     refreshAllAmount()
                     showHideOddsChangeWarn(false)
                 } else {
@@ -538,6 +539,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     interface BetResultListener {
-        fun onBetResult(betResultData: List<BetResult>?)
+        fun onBetResult(betResultData: Receipt?)
     }
 }

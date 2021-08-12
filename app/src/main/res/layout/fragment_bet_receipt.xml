@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite8"
-    tools:context=".ui.game.betList.BetReceiptFragment">
+    tools:context=".ui.game.betList.receipt.BetReceiptFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,24 +13,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBlackLight"
-        android:paddingStart="16dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="4dp"
+        android:paddingStart="5dp"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/iv_receipt"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="10dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="14dp"
+            android:src="@drawable/ic_iconrecept"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tv_bet_list_receipt"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/bet_list_receipt"
             android:textColor="@color/colorWhite6"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toTopOf="@+id/tv_balance"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_receipt"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -41,7 +53,7 @@
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_currency"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_bet_list_receipt"
             app:layout_constraintTop_toBottomOf="@+id/tv_bet_list_receipt"
             tools:text="9,875,241.000" />
 
