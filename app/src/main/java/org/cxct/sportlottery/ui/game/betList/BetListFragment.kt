@@ -96,6 +96,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        rv_bet_list.adapter = null
+    }
+
     private fun initView() {
         initBtnView()
         initBtnEvent()

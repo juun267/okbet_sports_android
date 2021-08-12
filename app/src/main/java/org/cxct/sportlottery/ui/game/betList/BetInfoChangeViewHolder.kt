@@ -22,8 +22,9 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
 abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    private val HIGH_LIGHT_TIME: Long = 3000
-
+    companion object{
+       private const val HIGH_LIGHT_TIME: Long = 3000
+    }
 
     private val mHandler: Handler by lazy { Handler() }
 

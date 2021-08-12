@@ -45,6 +45,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             updateDataList()
         }
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+        when (holder is BetInfoChangeViewHolder) {
+            true -> holder.clearHandler()
+        }
+    }
+
     private fun updateDataList() {
 //        notifyDataSetChanged()
         //TODO review 看是否能用這種更新方式
