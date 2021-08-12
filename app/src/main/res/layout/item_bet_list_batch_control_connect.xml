@@ -94,6 +94,18 @@
             app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
             app:layout_constraintWidth_percent="0.442" />
 
+        <View
+            android:id="@+id/et_clickable"
+            android:layout_width="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
+            app:layout_constraintWidth_percent="0.442" />
+
 
         <TextView
             android:id="@+id/tv_symbol_count"

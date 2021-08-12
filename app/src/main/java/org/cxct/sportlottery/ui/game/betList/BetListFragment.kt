@@ -332,6 +332,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             event.getContentIfNotHandled()?.let {
                 unSubscribeChannelEvent(it)
             }
+            betListRefactorAdapter?.notifyDataSetChanged()
         })
 
         //串關列表

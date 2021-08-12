@@ -290,7 +290,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 R.anim.pop_bottom_to_top_exit
             )
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: Receipt?, betParlayList: MutableList<ParlayOdd>) {
+            override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.push_right_to_left_enter,

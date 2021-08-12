@@ -26,11 +26,11 @@ import org.cxct.sportlottery.util.TextUtil
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var betResultData: Receipt? = null
 
-    private var betParlayList: MutableList<ParlayOdd>? = null
+    private var betParlayList: List<ParlayOdd>? = null
 
     companion object {
         @JvmStatic
-        fun newInstance(betResultData: Receipt?, betParlayList: MutableList<ParlayOdd>) = BetReceiptFragment().apply {
+        fun newInstance(betResultData: Receipt?, betParlayList: List<ParlayOdd>) = BetReceiptFragment().apply {
             this.betResultData = betResultData
             this.betParlayList = betParlayList
         }

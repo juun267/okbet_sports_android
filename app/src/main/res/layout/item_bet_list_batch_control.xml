@@ -57,20 +57,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp">
 
-            <EditText
-                android:id="@+id/et_bet"
+            <FrameLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="10dp"
-                android:layout_weight="6"
-                android:background="@drawable/effect_select_bet_edit_text_fill_color_white"
-                android:hint="@string/bet_info_input_quota"
-                android:inputType="number"
-                android:maxLength="7"
-                android:paddingStart="10dp"
-                android:textColor="@color/colorBlackLight"
-                android:textColorHint="@color/colorSilverLight"
-                android:textSize="@dimen/textSize16sp" />
+                android:layout_weight="6">
+
+                <EditText
+                    android:id="@+id/et_bet"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/effect_select_bet_edit_text_fill_color_white"
+                    android:hint="@string/bet_info_input_quota"
+                    android:inputType="number"
+                    android:maxLength="7"
+                    android:paddingStart="10dp"
+                    android:textColor="@color/colorBlackLight"
+                    android:textColorHint="@color/colorSilverLight"
+                    android:textSize="@dimen/textSize16sp" />
+
+                <View
+                    android:id="@+id/et_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"

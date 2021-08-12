@@ -80,7 +80,7 @@ class AccountHistoryActivity :
 
     private fun showBetListPage() {
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: Receipt?, betParlayList: MutableList<ParlayOdd>) {
+            override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit, R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit)
                     .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData, betParlayList))

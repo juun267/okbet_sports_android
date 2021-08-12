@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -16,6 +15,7 @@ import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.view.*
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.*
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.et_clickable
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.ll_winnable
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.tv_winnable_amount
 import org.cxct.sportlottery.R
@@ -27,12 +27,10 @@ import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import timber.log.Timber
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    companion object {
-        var allSingleInput = ""
-    }
 
     private enum class ViewType { Bet, Parlay, ParlayFirst }
 
@@ -48,9 +46,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
 
     private fun updateDataList() {
-        notifyDataSetChanged()
-        //TODO review ui錯位
-        /*if ((betList?.size ?: 0) > 0) {
+//        notifyDataSetChanged()
+        //TODO review 看是否能用這種更新方式
+        if ((betList?.size ?: 0) > 0) {
             if ((betList ?: mutableListOf()).all { it.matchOdd.refreshData }) {
                 Timber.e("Dean, notify all")
                 betList?.forEach {
@@ -66,7 +64,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
                 }
             }
-        }*/
+        }
     }
 
     var parlayList: MutableList<ParlayOdd>? = mutableListOf()
@@ -102,23 +100,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         }
     }
 
-    private var focusPosition = -1 //紀錄當前鍵盤作用於哪個EditText
-
-    private fun setFocusPosition(focusPosition: Int) {
-        this.focusPosition = focusPosition
-    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is BetInfoItemViewHolder -> {
                 holder.bind(
                     betList?.getOrNull(position)!!,
                     oddsType,
-                    position,
-                    focusPosition,
                     itemCount,
                     onItemClickListener
-                ) { setFocusPosition(it) }
+                )
             }
             is BatchSingleViewHolder -> {
                 holder.bind(
@@ -126,11 +116,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
                     oddsType,
-                    position,
-                    focusPosition,
                     onItemClickListener,
                     { notifyDataSetChanged() },
-                    { setFocusPosition(it) },
                     {
                         moreOptionCollapse = !moreOptionCollapse
                         needScrollToBottom = true
@@ -142,10 +129,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 holder.bind(
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
                     oddsType,
-                    position,
-                    focusPosition,
                     onItemClickListener
-                ) { setFocusPosition(it) }
+                )
             }
         }
     }
@@ -175,14 +160,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun bind(
             itemData: BetInfoListData,
             oddsType: OddsType,
-            position: Int,
-            focusPosition: Int,
             itemCount: Int,
-            onItemClickListener: OnItemClickListener,
-            setValue: (focusPosition: Int) -> Unit
+            onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
-                setupBetAmountInput(itemData, oddsType, position, focusPosition, onItemClickListener, setValue)
+                setupBetAmountInput(
+                    itemData,
+                    oddsType,
+                    onItemClickListener
+                )
 
                 setupOddStatus(itemData)
 
@@ -196,10 +182,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupBetAmountInput(
             itemData: BetInfoListData,
             oddsType: OddsType,
-            position: Int,
-            focusPosition: Int,
-            onItemClickListener: OnItemClickListener,
-            setValueFun: (focusPosition: Int) -> Unit
+            onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
                 et_bet.apply {
@@ -209,7 +192,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(itemData, oddsType, position, focusPosition)
+                setupOddInfo(itemData, oddsType)
 
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
@@ -257,34 +240,33 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                 }
 
-                val fc = View.OnFocusChangeListener { _, hasFocus ->
-                    if (hasFocus && position != focusPosition)
-                        et_bet.clearFocus()
-                }
+                et_bet.keyListener = null
 
-                et_bet.onFocusChangeListener = fc
                 et_bet.addTextChangedListener(tw)
                 et_bet.tag = tw
-                et_bet.setOnTouchListener { _, event ->
-                    if (event.action == MotionEvent.ACTION_UP) {
-                        setValueFun.invoke(position)
-                        onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd)
-                    }
-                    false
+                //TODO check on touch listener
+                et_clickable.setOnClickListener {
+                    et_bet.isFocusable = true
+                    onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd)
                 }
-
             }
         }
 
         private fun setupOddInfo(
             itemData: BetInfoListData,
-            oddsType: OddsType,
-            position: Int,
-            focusPosition: Int,
+            oddsType: OddsType
         ) {
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
                 setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
+                /*tv_odds_content.text = "${itemData.matchOdd.playName}${itemData.matchOdd.spread}${
+                    TextUtil.formatForOdd(
+                        getOdds(
+                            itemData.matchOdd,
+                            oddsType
+                        )
+                    )
+                }"*/
                 tv_match.text =
                     "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 tv_name.text = if (itemData.matchOdd.inplay == INPLAY) {
@@ -296,16 +278,28 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     )
                 } else itemData.matchOdd.playCateName
 
+                if (itemData.betAmount > 0) {
+                    et_bet.setText(TextUtil.formatInputMoney(itemData.betAmount))
+                    et_bet.setSelection(et_bet.text.length)
+                    tv_check_maximum_limit.visibility = View.GONE
+                    ll_bet_quota_detail.visibility = View.GONE
+                    ll_win_quota_detail.visibility = View.VISIBLE
+                } else {
+                    et_bet.setText("")
+                    tv_check_maximum_limit.visibility = View.VISIBLE
+                    ll_bet_quota_detail.visibility = View.GONE
+                    ll_win_quota_detail.visibility = View.GONE
+                }
                 et_bet.setText(if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else "")
                 et_bet.setSelection(et_bet.text.length)
 
-                /* check input focus */
-                if (position == focusPosition) {
-                    et_bet.requestFocus()
-                    et_bet.setSelection(et_bet.text.length)
-                } else {
-                    et_bet.clearFocus()
+                val quota = itemData.betAmount
+                //比照以往計算
+                var win = quota * getOdds(itemData.matchOdd, oddsType)
+                if (oddsType == OddsType.EU) {
+                    win -= quota
                 }
+                tv_win_quota.text = TextUtil.format(win)
             }
         }
 
@@ -315,17 +309,21 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     cl_item_background.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
                     iv_bet_lock.visibility = View.GONE
                     et_bet.apply {
+                        isEnabled = true
                         isFocusable = true
                         isFocusableInTouchMode = true
                     }
+                    et_clickable.isEnabled = true //EditText的click事件
                     cl_quota_detail.visibility = View.VISIBLE
                 } else {
                     cl_item_background.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite2))
                     iv_bet_lock.visibility = View.VISIBLE
                     et_bet.apply {
+                        isEnabled = false
                         isFocusable = false
                         isFocusableInTouchMode = false
                     }
+                    et_clickable.isEnabled = false //EditText的click事件
                     cl_quota_detail.visibility = View.GONE
                 }
             }
@@ -365,10 +363,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     class BatchSingleViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         fun bind(
             itemData: ParlayOdd?, parlayListSize: Int, betList: MutableList<BetInfoListData>, oddsType: OddsType,
-            position: Int,
-            focusPosition: Int,
             onItemClickListener: OnItemClickListener, notifyAllBet: () -> Unit,
-            setFocusPosition: (position: Int) -> Unit,
             clickMoreOption: () -> Unit
         ) {
             itemView.apply {
@@ -383,11 +378,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             betList,
                             itemData,
                             oddsType,
-                            position,
-                            focusPosition,
                             onItemClickListener,
-                            notifyAllBet,
-                            setFocusPosition
+                            notifyAllBet
                         )
                     }
                     parlayListSize == 1 -> {
@@ -397,20 +389,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
-                            position,
-                            focusPosition,
-                            onItemClickListener,
-                            setFocusPosition
+                            onItemClickListener
                         )
                         setupSingleItem(
                             betList,
                             itemData,
                             oddsType,
-                            position,
-                            focusPosition,
                             onItemClickListener,
-                            notifyAllBet,
-                            setFocusPosition
+                            notifyAllBet
                         )
                     }
                     else -> {
@@ -420,20 +406,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
-                            position,
-                            focusPosition,
-                            onItemClickListener,
-                            setFocusPosition
+                            onItemClickListener
                         )
                         setupSingleItem(
                             betList,
                             itemData,
                             oddsType,
-                            position,
-                            focusPosition,
                             onItemClickListener,
-                            notifyAllBet,
-                            setFocusPosition
+                            notifyAllBet
                         )
 
                         setupClickMoreItem(itemView.ll_more_option, clickMoreOption)
@@ -447,11 +427,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betList: MutableList<BetInfoListData>,
             itemData: ParlayOdd?,
             oddsType: OddsType,
-            position: Int,
-            focusPosition: Int,
             onItemClickListener: OnItemClickListener,
-            notifyAllBet: () -> Unit,
-            setFocusPosition: (position: Int) -> Unit
+            notifyAllBet: () -> Unit
         ) {
             itemView.item_first_single.apply {
                 et_bet.apply {
@@ -464,17 +441,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 ll_winnable.visibility = View.INVISIBLE
                 tv_single_count.text = betList.size.toString()
 
+                val initValue =
+                    if (!(itemData?.allSingleInput.isNullOrEmpty())) itemData?.allSingleInput else ""
+                //init winnable amount
+                tv_winnable_amount.text = TextUtil.formatMoney(
+                    getAllSingleWinnableAmount(
+                        if (initValue.isNullOrEmpty()) 0.0 else initValue.toDouble(),
+                        oddsType,
+                        betList
+                    )
+                )
                 et_bet.apply {
-                    val initValue =
-                        if (!(itemData?.allSingleInput.isNullOrEmpty())) itemData?.allSingleInput else allSingleInput
+                    //init bet amount value
                     setText(initValue)
-                    /* check input focus */
-                    if (position == focusPosition) {
-                        requestFocus()
-                        setSelection(text.length)
-                    } else {
-                        clearFocus()
-                    }
+                    et_bet.setSelection(et_bet.text.length)
 
                     /* set listener */
                     val tw: TextWatcher?
@@ -482,7 +462,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         override fun afterTextChanged(it: Editable?) {
                             val inputValue = if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
                             itemData?.allSingleInput = if (it.isNullOrEmpty()) "" else it.toString()
-                            allSingleInput = if (it.isNullOrEmpty()) "" else it.toString()
                             val allWinnableAmount = getAllSingleWinnableAmount(inputValue, oddsType, betList)
                             when (allWinnableAmount > 0) {
                                 true -> {
@@ -513,24 +492,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     }
 
-                    val fc = View.OnFocusChangeListener { _, hasFocus ->
-                        if (hasFocus && adapterPosition != focusPosition)
-                            et_bet.clearFocus()
-                    }
-
-                    onFocusChangeListener = fc
+                    keyListener = null
                     removeTextChangedListener(tw)
                     addTextChangedListener(tw)
                     tag = tw
-
-                    setOnTouchListener { _, event ->
-                        //若回傳true則不會觸發onTouchEvent,onClick
-                        if (event.action == MotionEvent.ACTION_UP) {
-                            setFocusPosition(position)
-                            onItemClickListener.onShowParlayKeyboard(this, itemData)
-                        }
-                        false
-                    }
+                }
+                et_container.setOnClickListener {
+                    et_bet.isFocusable = true
+                    et_bet.setSelection(et_bet.text.length)
+                    onItemClickListener.onShowParlayKeyboard(et_bet, itemData)
                 }
             }
         }
@@ -562,18 +532,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun bind(
             itemData: ParlayOdd?,
             oddsType: OddsType,
-            position: Int,
-            focusPosition: Int,
-            onItemClickListener: OnItemClickListener,
-            setFocusPosition: (position: Int) -> Unit
+            onItemClickListener: OnItemClickListener
         ) {
             setupParlayItem(
                 itemData,
                 oddsType,
-                position,
-                focusPosition,
-                onItemClickListener,
-                setFocusPosition
+                onItemClickListener
             )
         }
     }
@@ -582,10 +546,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
             oddsType: OddsType,
-            position: Int,
-            focusPosition: Int,
-            onItemClickListener: OnItemClickListener,
-            setFocusPosition: (position: Int) -> Unit
+            onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
                 ll_winnable.visibility = View.GONE
@@ -598,7 +559,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     tv_parlay_odd.text = itemOdd
                     tv_com_count.text = data.num.toString()
 
-                    setupBetAmountInput(data, position, focusPosition, onItemClickListener, setFocusPosition)
+                    setupBetAmountInput(data, oddsType, onItemClickListener)
 
                     setupMaximumLimitView(data, onItemClickListener)
 
@@ -611,28 +572,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         @SuppressLint("ClickableViewAccessibility")
         private fun setupBetAmountInput(
             data: ParlayOdd,
-            position: Int,
-            focusPosition: Int,
-            onItemClickListener: OnItemClickListener,
-            setFocusPosition: (position: Int) -> Unit
+            oddsType: OddsType,
+            onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
                 et_bet.apply {
                     if (tag is TextWatcher) {
                         removeTextChangedListener(tag as TextWatcher)
                     }
-                    onFocusChangeListener = null
+
                     setText(data.betAmount.let {
                         if (it > 0) TextUtil.formatInputMoney(it) else ""
                     })
                     setSelection(text.length)
-                    /* check input focus */
-                    if (position == focusPosition) {
-                        requestFocus()
-                        setSelection(text.length)
-                    } else {
-                        clearFocus()
-                    }
+
                     /* set listener */
                     val tw: TextWatcher?
                     tw = object : TextWatcher {
@@ -645,6 +598,45 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 return
                             }
 
+                            //查看最高限額
+                            if (inputValue <= 0) {
+                                data.betAmount = 0.000
+
+                                itemView.apply {
+                                    tv_check_maximum_limit.visibility = View.VISIBLE
+                                    ll_bet_quota_detail.visibility = View.GONE
+                                    ll_win_quota_detail.visibility = View.GONE
+                                }
+                            } else {
+
+                                //輸入時 直接顯示可贏額
+                                itemView.apply {
+                                    tv_check_maximum_limit.visibility = View.GONE
+                                    ll_bet_quota_detail.visibility = View.GONE
+                                    ll_win_quota_detail.visibility = View.VISIBLE
+                                }
+
+                                val quota = it.toString().toDouble()
+                                data.betAmount = inputValue
+                                data.max.let { max ->
+                                    if (quota > max) {
+                                        et_bet.apply {
+                                            setText(TextUtil.formatInputMoney(max))
+                                            setSelection(text.length)
+                                        }
+                                        return@afterTextChanged
+                                    }
+                                }
+
+                                //比照以往計算
+                                var win = quota * getOdds(data, oddsType)
+                                if (oddsType == OddsType.EU) {
+                                    win -= quota
+                                }
+                                itemView.tv_win_quota.text = TextUtil.format(win)
+                            }
+
+
                             data.betAmount = TextUtil.formatInputMoney(inputValue).toDouble()
                             onItemClickListener.refreshAmount()
                         }
@@ -653,24 +645,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
                     }
 
-                    val fc = View.OnFocusChangeListener { _, hasFocus ->
-                        if (hasFocus && adapterPosition != focusPosition)
-                            et_bet.clearFocus()
-                    }
-
-                    onFocusChangeListener = fc
                     removeTextChangedListener(tw)
                     addTextChangedListener(tw)
                     tag = tw
-
-                    setOnTouchListener { _, event ->
-                        //若回傳true則不會觸發onTouchEvent,onClick
-                        if (event.action == MotionEvent.ACTION_UP) {
-                            setFocusPosition(position)
-                            onItemClickListener.onShowParlayKeyboard(this, data)
-                        }
-                        false
-                    }
+                }
+                et_clickable.setOnClickListener {
+                    et_bet.isFocusable = true
+                    onItemClickListener.onShowParlayKeyboard(et_bet, data)
                 }
             }
         }
