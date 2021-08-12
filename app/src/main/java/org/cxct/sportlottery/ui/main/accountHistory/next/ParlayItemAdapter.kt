@@ -22,7 +22,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
-class ParlayItemAdapter: ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(DiffCallback()) {
+class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
         ITEM, NO_DATA
@@ -82,7 +82,6 @@ class ParlayItemAdapter: ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(Di
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-
         fun bind(matchOdd: MatchOdd, oddsType: OddsType, gameType: String) {
 
             binding.gameType = gameType
@@ -91,40 +90,63 @@ class ParlayItemAdapter: ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(Di
             matchOdd.let {
                 val odds = getOdds(matchOdd, oddsType)
                 val oddStr = if (odds > 0)
-                    String.format(binding.root.context.getString(R.string.at_symbol, TextUtil.formatForOdd(odds)))
+                    String.format(
+                        binding.root.context.getString(
+                            R.string.at_symbol,
+                            TextUtil.formatForOdd(odds)
+                        )
+                    )
                 else
                     ""
                 binding.tvOdd.text = oddStr
 
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
-                    scoreList.add("${scoreData.statusNameI18n?.get(LanguageManager.getSelectLanguage(itemView.context).key)}: ${scoreData.score}")
+                    scoreList.add(
+                        "${
+                            scoreData.statusNameI18n?.get(
+                                LanguageManager.getSelectLanguage(
+                                    itemView.context
+                                ).key
+                            )
+                        }: ${scoreData.score}"
+                    )
                 }
 
-                val arrayAdapter by lazy { ArrayAdapter(itemView.context,R.layout.item_account_history_next_context_listview_score, R.id.tv_score, scoreList); }
-
+                val arrayAdapter by lazy {
+                    ArrayAdapter(
+                        itemView.context,
+                        R.layout.item_account_history_next_context_listview_score,
+                        R.id.tv_score,
+                        scoreList
+                    );
+                }
                 binding.listScore.adapter = arrayAdapter
-
             }
-
-
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 
         companion object {
             fun from(parent: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ItemAccountHistoryNextContentParlayItemBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemAccountHistoryNextContentParlayItemBinding.inflate(
+                    layoutInflater,
+                    parent,
+                    false
+                )
                 return ItemViewHolder(binding)
             }
         }
 
     }
-    
+
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+                NoDataViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.view_no_record, parent, false)
+                )
         }
     }
 

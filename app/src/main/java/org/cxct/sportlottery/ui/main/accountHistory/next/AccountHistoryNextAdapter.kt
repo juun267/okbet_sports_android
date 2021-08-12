@@ -128,7 +128,7 @@ class AccountHistoryNextAdapter(
     class ParlayItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-//        private val parlayAdapter by lazy { ParlayItemAdapter(mContext) }
+        private val parlayAdapter by lazy { ParlayItemAdapter() }
 
         fun bind(row: Row, oddsType: OddsType) {
             binding.matchOdd = row.matchOdds?.firstOrNull()
@@ -136,7 +136,6 @@ class AccountHistoryNextAdapter(
             binding.tvParlayType.text = row.parlayType?.replace("C", "串")
 
             binding.rvParlay.apply {
-                val parlayAdapter = ParlayItemAdapter()
                 adapter = parlayAdapter
                 layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
                 parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
