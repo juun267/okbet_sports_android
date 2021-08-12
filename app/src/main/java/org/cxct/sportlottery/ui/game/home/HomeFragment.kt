@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_game.*
@@ -81,8 +80,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         override fun onClickBet(
             matchOdd: MatchOdd,
             odd: Odd,
-            playCateName: String,
-            playName: String
+            playCateName: String?,
+            playName: String?
         ) {
             addOddsDialog(matchOdd, odd, playCateName, playName)
         }
@@ -141,8 +140,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             override fun onClickBet(
                 matchOdd: MatchOdd,
                 odd: Odd,
-                playCateName: String,
-                playName: String
+                playCateName: String?,
+                playName: String?
             ) {
                 addOddsDialog(matchOdd, odd, playCateName, playName)
             }
@@ -188,6 +187,30 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun initRecommend() {
         rv_recommend.adapter = mRecommendAdapter
         mRecommendAdapter.onClickOddListener = mOnClickOddListener
+        mRecommendAdapter.onClickOutrightOddListener = object : OnClickOddListener {
+            override fun onClickBet(
+                matchOdd: MatchOdd,
+                odd: Odd,
+                playCateName: String?,
+                playName: String?
+            ) {
+                GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
+
+                    viewModel.updateMatchBetListForOutRight(
+                        matchType = MatchType.OUTRIGHT,
+                        gameType = gameType,
+                        matchOdd = org.cxct.sportlottery.network.outright.odds.MatchOdd(
+                            matchInfo = matchOdd.matchInfo,
+                            odds = matchOdd.odds,
+                            dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
+                            oddsList = null,
+                            quickPlayCateList = matchOdd.quickPlayCateList
+                        ),
+                        odd = odd
+                    )
+                }
+            }
+        }
         mRecommendAdapter.onClickMatchListener =
             object : OnSelectItemListener<RecommendGameEntity> {
                 override fun onClick(select: RecommendGameEntity) {
@@ -287,16 +310,16 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun addOddsDialog(
         matchOdd: MatchOdd,
         odd: Odd,
-        playCateName: String,
-        playName: String
+        playCateName: String?,
+        playName: String?
     ) {
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
             matchOdd.matchInfo?.let { matchInfo ->
                 viewModel.updateMatchBetList(
                     mSelectMatchType,
                     gameType,
-                    playCateName,
-                    playName,
+                    playCateName ?: "",
+                    playName ?: "",
                     matchInfo,
                     odd,
                     ChannelType.HALL,

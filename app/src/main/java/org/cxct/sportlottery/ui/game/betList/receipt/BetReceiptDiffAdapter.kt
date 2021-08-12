@@ -35,10 +35,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     fun submit(singleList: List<BetResult>, parlayList: List<BetResult>, newBetParlayList: List<ParlayOdd>) {
         adapterScope.launch {
-            val items = singleList.map { DataItem.SingleData(it) } +
-                    listOf(DataItem.ParlayTitle) +
-                    parlayList.map { DataItem.ParlayData(it) }
-            betParlayList = newBetParlayList
+
+            val parlayItem =
+                if (parlayList.isNotEmpty())
+                    listOf(DataItem.ParlayTitle) + parlayList.map { DataItem.ParlayData(it) }
+                else listOf()
+
+            val items = singleList.map { DataItem.SingleData(it) } + parlayItem
 
             withContext(Dispatchers.Main) {
                 submitList(items)
@@ -106,11 +109,10 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         tv_match_type.text = playCateName
                     }
                     tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
-                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_winnable_amount.setMoneyFormat(winnable)
-                    tv_bet_status.setStatus(status)
-                    tv_bet_status.setGameStatusColor(status)
-
+                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+                    tv_bet_status.setBetReceiptStatus(status)
+                    tv_bet_status.setReceiptStatusColor(status)
                 }
             }
         }
@@ -133,17 +135,11 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     matchOdds?.firstOrNull()?.apply {
                         parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
                     }
-
-                    betParlayData?.let {
-                        tv_match_odd_parlay.text = TextUtil.formatForOdd(getOdds(betParlayData, oddsType))
-                        tv_bet_amount.text = "${stake}*${betParlayData.num}"
-                    }
-
-                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+                    tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
                     tv_winnable_amount.setMoneyFormat(winnable)
-                    tv_bet_status.setStatus(status)
-                    tv_bet_status.setGameStatusColor(status)
-
+                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
+                    tv_bet_status.setBetReceiptStatus(status)
+                    tv_bet_status.setReceiptStatusColor(status)
                 }
             }
         }

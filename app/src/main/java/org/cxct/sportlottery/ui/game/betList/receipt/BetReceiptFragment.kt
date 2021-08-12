@@ -69,27 +69,32 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         initRecyclerView()
     }
 
+    enum class BetStatus(val value: Int) {
+        CANCELED(7)
+    }
+
     private fun setupTotalValue() {
         var betCount = 0
         var betTotalAmount = 0
         var winnableTotalAmount = 0.0
         betCount += betResultData?.singleBets?.size ?: 0
         betResultData?.singleBets?.forEach {
+            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
             betTotalAmount += (it.stake ?: 0)
             winnableTotalAmount += (it.winnable ?: 0.0)
         }
 
         betCount += betResultData?.parlayBets?.size ?: 0
         betResultData?.parlayBets?.forEach {
-            val parlayNum = betParlayList?.firstOrNull { parlayOdd -> parlayOdd.parlayType == it.parlayType }?.num ?: 1
-            betTotalAmount += (it.stake ?: 0) * parlayNum
+            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+            betTotalAmount += (it.stake ?: 0)
             winnableTotalAmount += (it.winnable ?: 0.0)
         }
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "$betTotalAmount ${getString(R.string.currency)}"
-            tv_total_winnable_amount.text = "${TextUtil.formatMoney(winnableTotalAmount)} ${getString(R.string.currency)}"
+            tv_total_bet_amount.text = "${betResultData?.totalStake} ${getString(R.string.currency)}"
+            tv_total_winnable_amount.text = "${betResultData?.totalWinnable} ${getString(R.string.currency)}"
         }
     }
 
