@@ -131,11 +131,10 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
         fun bind(itemData: BetResult, oddsType: OddsType, betParlay: List<ParlayOdd>?) {
             itemView.apply {
                 itemData.apply {
-                    val betParlayData = betParlay?.firstOrNull { parlayType == it.parlayType }
                     matchOdds?.firstOrNull()?.apply {
                         parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
                     }
-                    tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
+                    tv_bet_amount.text = stake?.let { "${TextUtil.formatBetQuota(it)} * $num" }
                     tv_winnable_amount.setMoneyFormat(winnable)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)

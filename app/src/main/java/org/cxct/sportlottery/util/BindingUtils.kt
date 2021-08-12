@@ -70,7 +70,7 @@ fun TextView.setGameStatus(status: Int?) {
 @BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setBetReceiptStatus(status: Int?) {
     text = when (status) {
-        4 -> context.getString(R.string.bet_canceled)
+        7 -> context.getString(R.string.bet_canceled)
         else -> context.getString(R.string.confirmed)
     }
 }
@@ -79,7 +79,7 @@ fun TextView.setBetReceiptStatus(status: Int?) {
 fun TextView.setReceiptStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            4 -> R.color.colorRed
+            7 -> R.color.colorRed
             else -> R.color.colorBlue
         }
         this.setTextColor(ContextCompat.getColor(context, color))
