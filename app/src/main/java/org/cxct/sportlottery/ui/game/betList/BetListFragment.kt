@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
@@ -129,7 +128,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initRecyclerView() {
-        initDiffAdapter()
+        initAdapter()
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_bet_list.layoutManager = layoutManager
@@ -150,53 +149,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initDeleteAllOnClickEvent()
     }
 
-    private fun initDiffAdapter() {
-        /*betListDiffAdapter = BetListDiffAdapter(
-            object : BetListDiffAdapter.OnItemClickListener {
-                override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                    viewModel.removeBetInfoItem(oddsId)
-                    //當前item為最後一個時
-                    if (currentItemCount == 1)
-                        activity?.supportFragmentManager?.popBackStack()
-                }
-
-                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
-                    keyboard?.showKeyboard(editText)
-                }
-
-                override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
-                    keyboard?.showKeyboard(editText)
-                }
-
-                override fun onHideKeyBoard() {
-                    keyboard?.hideKeyboard()
-                }
-
-                override fun saveOddsHasChanged(matchOdd: MatchOdd) {
-                    viewModel.saveOddsHasChanged(matchOdd)
-                }
-
-                override fun refreshAmount() {
-                    refreshAllAmount()
-                }
-
-                override fun showParlayRule(parlayType: String, parlayRule: String) {
-                    showParlayDescription(parlayType, parlayRule)
-                }
-            }
-        ).apply {
-            //展開查看所有多個選項時將滾動至底部
-            registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                    super.onItemRangeInserted(positionStart, itemCount)
-                    if (positionStart == 0 && betListDiffAdapter?.moreOptionCollapse == true && needScrollToBottom) {
-                        rv_bet_list.smoothScrollToPosition(0)
-                        needScrollToBottom = false
-                    }
-                }
-            })
-        }*/
-
+    private fun initAdapter() {
         betListRefactorAdapter = BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
             override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                 viewModel.removeBetInfoItem(oddsId)
@@ -319,7 +272,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
-//                betListAdapter?.setupDataList(newBetList = list)
                 betListRefactorAdapter?.betList = list
 
                 subscribeChannel(list)
