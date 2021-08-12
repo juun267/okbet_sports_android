@@ -7,6 +7,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatus
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
@@ -18,6 +19,8 @@ data class MatchOdd(
         PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()
     ),
+    @Json(name = "dynamicMarkets")
+    val dynamicMarkets: Map<String, DynamicMarket>? = null,
     @Json(name = "quickPlayCateList")
     val quickPlayCateList: List<QuickPlayCate>? = null
 ) {
