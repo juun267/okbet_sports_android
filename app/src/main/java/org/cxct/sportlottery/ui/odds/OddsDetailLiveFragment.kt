@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_odds_detail.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.live_view_tool_bar
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.rv_detail
@@ -30,15 +29,8 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
-import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
-import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -91,10 +83,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onStart() {
         super.onStart()
-
         getData()
-
-        live_view_tool_bar.setWebViewUrl(matchId)
     }
 
     override fun onStop() {
@@ -176,7 +165,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                                 oddsDetailListAdapter?.awayName = away
                             }
                         }
-                        setupStartTime(matchOdd?.matchInfo)
+                        setupStartTime()
+                        setupLiveView()
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -308,12 +298,17 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
     }
 
-    private fun setupStartTime(matchInfo: MatchInfo?) {
-        matchInfo?.apply {
+    private fun setupStartTime() {
+        matchOdd?.matchInfo?.apply {
             tv_home_name.text = homeName
             tv_away_name.text = awayName
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
         }
+    }
+
+
+    private fun setupLiveView() {
+        matchOdd?.let { live_view_tool_bar.setWebViewUrl(it) }
     }
 
     private fun getData() {
@@ -324,6 +319,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
     }
+
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
@@ -340,6 +336,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             )
         }
     }
+
 
     override fun removeBetInfoItem(odd: Odd) {
         viewModel.removeBetInfoItem(odd.id)

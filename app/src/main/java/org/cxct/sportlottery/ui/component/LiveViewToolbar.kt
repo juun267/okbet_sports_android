@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.util.LanguageManager
 
 class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
@@ -185,14 +185,12 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     }
 
-    fun setWebViewUrl(matchId: String?) {
-        if (sConfigData?.sportAnimation.isNullOrBlank()) {
-            web_view_layout.visibility = View.GONE
+    fun setWebViewUrl(matchOdd: MatchOdd) {
+        if (matchOdd.matchInfo.liveVideo == 1) {
+            visibility = View.VISIBLE
+            web_view.loadUrl(sConfigData?.liveUrl?.replace("{eventId}", matchOdd.matchInfo.id))
         } else {
-            web_view_layout.visibility = View.VISIBLE
-            web_view.loadUrl("${sConfigData?.sportAnimation}?matchId=${
-                matchId?.replace("sr:match:", "")
-            }&lang=${LanguageManager.getSelectLanguage(context).key}")
+            visibility = View.GONE
         }
     }
 

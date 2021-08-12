@@ -862,19 +862,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     ) {
         val gameType = GameType.getGameType(gameTypeCode)
         if (gameType != null && matchId != null) {
-            val action = if (matchType == MatchType.IN_PLAY) {
-                HomeFragmentDirections
-                    .actionHomeFragmentToOddsDetailLiveFragment(gameType, matchId)
-            } else {
-                HomeFragmentDirections
-                    .actionHomeFragmentToOddsDetailFragment(
-                        matchType,
-                        gameType,
-                        matchId,
-                        arrayOf()
-                    )
-            }
-            findNavController().navigate(action)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(gameType, matchId))
         }
     }
 
