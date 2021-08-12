@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_game_outright_more.*
 import kotlinx.android.synthetic.main.fragment_game_outright_more.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -145,7 +145,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     }
 
     private fun initSocketObserver() {
-        receiver.oddsChange.observe(this.viewLifecycleOwner, Observer {
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
@@ -209,6 +209,28 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
 
                         }
                 }
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                outrightOddAdapter.data?.first?.filterNotNull()
+                    ?.forEachIndexed { index: Int, odd: Odd ->
+                        when (globalStopEvent.producerId) {
+                            null -> {
+                                odd.status = BetStatus.DEACTIVATED.code
+                            }
+                            else -> {
+                                odd.producerId?.let { producerId ->
+                                    if (producerId == globalStopEvent.producerId) {
+                                        odd.status = BetStatus.DEACTIVATED.code
+                                    }
+                                }
+                            }
+                        }
+
+                        outrightOddAdapter.notifyItemChanged(index)
+                    }
             }
         })
     }
