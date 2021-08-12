@@ -37,6 +37,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
+                    leagueName = row.leagueOdds.league?.name,
                     matchInfo = oddData.matchInfo,
                     isOutright = row.isOutright,
                     oddBeans = beans,
@@ -128,6 +129,16 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     }
 
                     text = data.name
+                }
+
+                rec_outright_league.apply {
+                    visibility = if (data.isOutright == 1) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.leagueName
                 }
 
                 tv_match_time.apply {
