@@ -438,6 +438,7 @@
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
+    <string name="bottom_sheet_title_play_type">变更玩法</string>
 
     <!--money-recharge-->
     <string name="message_recharge_maintain">充值相关系统升级中,请稍等</string>
