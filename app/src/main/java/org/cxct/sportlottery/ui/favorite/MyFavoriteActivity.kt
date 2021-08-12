@@ -3,28 +3,15 @@ package org.cxct.sportlottery.ui.favorite
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
-import org.cxct.sportlottery.ui.common.StatusSheetAdapter
-import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
-import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
-import org.cxct.sportlottery.util.SpaceItemDecoration
 
 class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
 
@@ -36,6 +23,8 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
         setupBottomNavigation()
 
         initObserver()
+
+        initNavigationView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -52,11 +41,11 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
-                    //TODO navigate sport home
-                    true
+                    finish()
+                    startActivity(Intent(this@MyFavoriteActivity, GameActivity::class.java))
+                    false
                 }
                 R.id.navigation_game -> {
-                    //TODO navigate sport game
                     true
                 }
                 R.id.item_bet_list -> {
@@ -99,5 +88,9 @@ class MyFavoriteActivity : BaseFavoriteActivity<MyFavoriteViewModel>(MyFavoriteV
         viewModel.betInfoRepository.betInfoList.observe(this, {
             sport_bottom_navigation.setBetCount(it.peekContent().size)
         })
+    }
+
+    private fun initNavigationView() {
+        sport_bottom_navigation.setSelected(R.id.navigation_game)
     }
 }

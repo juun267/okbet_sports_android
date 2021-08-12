@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.add.Row
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -30,6 +29,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
@@ -255,8 +255,8 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.navigation_game -> {
-                    //TODO navigate sport game
-                    true
+                    startActivity(Intent(this@GameActivity, MyFavoriteActivity::class.java))
+                    false
                 }
                 R.id.item_bet_list -> {
                     //TODO 邏輯移動 see: BetInfoListDialog
