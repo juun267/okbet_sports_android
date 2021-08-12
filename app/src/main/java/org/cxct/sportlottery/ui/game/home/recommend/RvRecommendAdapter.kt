@@ -120,6 +120,16 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     text = data.matchInfo?.awayName
                 }
 
+                rec_outright_game_type.apply {
+                    visibility = if (data.isOutright == 1) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.name
+                }
+
                 tv_match_time.apply {
                     visibility = if (data.isOutright == 0) {
                         View.VISIBLE
