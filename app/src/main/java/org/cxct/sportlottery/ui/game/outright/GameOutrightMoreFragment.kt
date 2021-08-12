@@ -53,7 +53,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     }
 
     private fun setupMatchInfo(view: View) {
-        view.outright_more_league.text = args.matchOdd.matchInfo?.leagueName
+        view.outright_more_league.text = args.matchOdd.matchInfo?.name
 
         args.matchOdd.matchInfo?.startTime?.let { startTime ->
             view.outright_more_date.text = TimeUtil.stampToDateHM(startTime)
