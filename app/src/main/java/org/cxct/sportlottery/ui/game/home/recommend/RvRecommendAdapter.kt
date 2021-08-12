@@ -37,6 +37,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     code = row.sport?.code,
                     name = row.sport?.name,
                     matchInfo = oddData.matchInfo,
+                    isOutright = row.isOutright,
                     oddBeans = beans
                 )
                 dataList.add(entity)
@@ -64,6 +65,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         }
 
     var onClickOddListener: OnClickOddListener? = null
+    var onClickOutrightOddListener: OnClickOddListener? = null
 
     var onClickMatchListener: OnSelectItemListener<RecommendGameEntity>? = null
 
@@ -101,12 +103,28 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
 
                 if (data.vpRecommendAdapter == null)
-                    data.vpRecommendAdapter = VpRecommendAdapter(data.code, data.oddBeans, oddsType, data.toMatchOdd())
+                    data.vpRecommendAdapter = VpRecommendAdapter(
+                        data.code,
+                        data.oddBeans,
+                        data.isOutright,
+                        oddsType,
+                        data.toMatchOdd()
+                    )
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
+                data.vpRecommendAdapter?.onClickOutrightOddListener = onClickOutrightOddListener
 
                 view_pager.adapter = data.vpRecommendAdapter
-                indicator_view.setupWithViewPager2(view_pager)
+
+                indicator_view.apply {
+                    visibility = if (data.isOutright == 1 || data.oddBeans.size <= 1) {
+                        View.GONE
+                    } else {
+                        View.VISIBLE
+                    }
+
+                    setupWithViewPager2(view_pager)
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ class RecommendGameEntity(
     val code: String?, //球種 code
     val name: String?, //球種名稱
     val matchInfo: MatchInfo?,
+    val isOutright: Int?,
     var oddBeans: List<OddBean>,
 ) {
     var vpRecommendAdapter: VpRecommendAdapter? = null
