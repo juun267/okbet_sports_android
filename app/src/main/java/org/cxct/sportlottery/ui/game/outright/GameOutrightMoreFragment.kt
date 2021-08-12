@@ -119,5 +119,11 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
                 outrightOddAdapter.notifyDataSetChanged()
             }
         })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            it?.let { oddsType ->
+                outrightOddAdapter.oddsType = oddsType
+            }
+        })
     }
 }
