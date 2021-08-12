@@ -11,7 +11,8 @@ import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.LoginEditText
 
-class SettingPasswordActivity : BaseSocketActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
+class SettingPasswordActivity :
+    BaseSocketActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
     companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }
@@ -61,8 +62,19 @@ class SettingPasswordActivity : BaseSocketActivity<SettingPasswordViewModel>(Set
     private fun setupEditText() {
         //當失去焦點才去檢查 inputData
         setupEditTextFocusChangeEvent(et_current_password) { viewModel.checkCurrentPwd(it) }
-        setupEditTextFocusChangeEvent(et_new_password) { viewModel.checkNewPwd(mPwdPage, et_current_password.getText(), it) }
-        setupEditTextFocusChangeEvent(et_confirm_password) { viewModel.checkConfirmPwd(et_new_password.getText(), it) }
+        setupEditTextFocusChangeEvent(et_new_password) {
+            viewModel.checkNewPwd(
+                mPwdPage,
+                et_current_password.getText(),
+                it
+            )
+        }
+        setupEditTextFocusChangeEvent(et_confirm_password) {
+            viewModel.checkConfirmPwd(
+                et_new_password.getText(),
+                it
+            )
+        }
     }
 
     private fun setupEditTextFocusChangeEvent(editText: LoginEditText, listener: (String) -> Unit) {
@@ -79,7 +91,12 @@ class SettingPasswordActivity : BaseSocketActivity<SettingPasswordViewModel>(Set
     }
 
     private fun checkInputData() {
-        viewModel.checkInputField(mPwdPage, et_current_password.getText(), et_new_password.getText(), et_confirm_password.getText())
+        viewModel.checkInputField(
+            mPwdPage,
+            et_current_password.getText(),
+            et_new_password.getText(),
+            et_confirm_password.getText()
+        )
     }
 
     private fun initObserve() {
@@ -113,7 +130,10 @@ class SettingPasswordActivity : BaseSocketActivity<SettingPasswordViewModel>(Set
     private fun updateUiWithResult(updatePwdResult: UpdatePwdResult?) {
         hideLoading()
         if (updatePwdResult?.success == true) {
-            showPromptDialog(getString(R.string.prompt), getString(R.string.update_login_pwd)) { finish() }
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.update_login_pwd)
+            ) { finish() }
         } else {
             val errorMsg = updatePwdResult?.msg ?: getString(R.string.unknown_error)
             showErrorPromptDialog(getString(R.string.prompt), errorMsg) {}
@@ -123,7 +143,10 @@ class SettingPasswordActivity : BaseSocketActivity<SettingPasswordViewModel>(Set
     private fun updateUiWithResult(updateFundPwdResult: UpdateFundPwdResult?) {
         hideLoading()
         if (updateFundPwdResult?.success == true) {
-            showPromptDialog(getString(R.string.prompt), getString(R.string.update_withdrawal_pwd)) { finish() }
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.update_withdrawal_pwd)
+            ) { finish() }
         } else {
             val errorMsg = updateFundPwdResult?.msg ?: getString(R.string.unknown_error)
             showErrorPromptDialog(getString(R.string.prompt), errorMsg) {}
