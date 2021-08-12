@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -21,6 +22,7 @@ import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -209,7 +211,32 @@ class AccountHistoryNextAdapter(
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }
+
+                val scoreList = mutableListOf<String>()
+                it.playCateMatchResultList?.map { scoreData ->
+                    scoreList.add(
+                        "${
+                            scoreData.statusNameI18n?.get(
+                                LanguageManager.getSelectLanguage(
+                                    itemView.context
+                                ).key
+                            )
+                        }: ${scoreData.score}"
+                    )
+                }
+
+                val arrayAdapter by lazy {
+                    ArrayAdapter(
+                        itemView.context,
+                        R.layout.item_account_history_next_context_listview_score,
+                        R.id.tv_score,
+                        scoreList
+                    );
+                }
+                binding.listScore.adapter = arrayAdapter
+
             }
+
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }

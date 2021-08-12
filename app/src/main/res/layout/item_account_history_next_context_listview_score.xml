@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    tools:ignore="SpUsage"
     android:gravity="end">
     <TextView
         android:id="@+id/tv_score"
@@ -11,6 +12,7 @@
         android:layout_gravity="end"
         android:gravity="end"
         android:maxWidth="80dp"
+        android:textSize="@dimen/textSize12sp"
         android:textColor="@color/colorGrayLight"
-        tools:text="完賽: 1-3" />
+        tools:text="完賽: 1-3"/>
 </LinearLayout>
