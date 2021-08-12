@@ -233,6 +233,15 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
                     }
             }
         })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            unSubscribeChannelHallAll()
+            subscribeChannelHall(
+                args.matchOdd.matchInfo?.gameType,
+                PlayCate.OUTRIGHT.value,
+                args.matchOdd.matchInfo?.id
+            )
+        })
     }
 
     private fun addOddsDialog(
