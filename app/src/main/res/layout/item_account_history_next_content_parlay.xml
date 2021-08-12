@@ -98,7 +98,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintEnd_toStartOf="@+id/tv_win_lose"
+                app:layout_constraintEnd_toStartOf="@+id/tv_status"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/tv_bet"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
@@ -106,27 +106,16 @@
                 tools:text="9,999,999.000" />
 
             <TextView
-                android:id="@+id/tv_win_lose"
+                android:id="@+id/tv_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/win_lose_mark"
-                android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintEnd_toStartOf="@id/tv_win_lose_money"
-                app:layout_constraintTop_toTopOf="@+id/tv_bet" />
-
-            <TextView
-                android:id="@+id/tv_win_lose_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/colorGreenLight"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
-                app:moneyFormat="@{row.win}"
-                tools:text="9,959,500.000" />
+                app:gameStatus="@{row.status}"
+                tools:text="取消注單" />
 
             <TextView
                 android:id="@+id/tv_number"
