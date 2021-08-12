@@ -173,7 +173,7 @@ class TransactionStatusActivity :
 
     private fun showBetListPage() {
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: Receipt?, betParlayList: MutableList<ParlayOdd>) {
+            override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.push_right_to_left_enter,
