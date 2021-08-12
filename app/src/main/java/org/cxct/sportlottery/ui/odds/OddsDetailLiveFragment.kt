@@ -40,6 +40,7 @@ import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChan
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -336,7 +337,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 playCateName = oddsDetail.name,
                 playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,
-                odd = odd
+                odd = odd,
+                subscribeChannelType = ChannelType.EVENT
             )
         }
     }

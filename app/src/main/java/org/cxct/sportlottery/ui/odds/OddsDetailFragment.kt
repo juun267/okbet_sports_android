@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -286,7 +287,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 playCateName = oddsDetail.name,
                 playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,
-                odd = odd
+                odd = odd,
+                subscribeChannelType = ChannelType.EVENT
             )
         }
     }
