@@ -75,6 +75,23 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     var parlayList: MutableList<ParlayOdd>? = mutableListOf()
+        set(value) {
+            //若無法組合串關時, 給予空物件用來紀錄”單注填充所有單注“的輸入金額
+            field = if (value?.size == 0) {
+                mutableListOf(
+                    ParlayOdd(
+                        max = -1,
+                        min = -1,
+                        num = -1,
+                        odds = 0.0,
+                        hkOdds = 0.0,
+                        parlayType = ""
+                    )
+                )
+            } else {
+                value
+            }
+        }
 
     var moreOptionCollapse = false
 
