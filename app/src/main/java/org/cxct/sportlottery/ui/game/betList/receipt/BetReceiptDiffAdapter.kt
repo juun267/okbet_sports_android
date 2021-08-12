@@ -32,9 +32,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     fun submit(singleList: List<BetResult>, parlayList: List<BetResult>) {
         adapterScope.launch {
-            val items = singleList.map { DataItem.SingleData(it) } +
-                    listOf(DataItem.ParlayTitle) +
-                    parlayList.map { DataItem.ParlayData(it) }
+
+            val parlayItem =
+                if (parlayList.isNotEmpty())
+                    listOf(DataItem.ParlayTitle) + parlayList.map { DataItem.ParlayData(it) }
+                else listOf()
+
+            val items = singleList.map { DataItem.SingleData(it) } + parlayItem
 
             withContext(Dispatchers.Main) {
                 submitList(items)
