@@ -106,11 +106,10 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         tv_match_type.text = playCateName
                     }
                     tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
-                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_winnable_amount.setMoneyFormat(winnable)
+                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setGameStatus(status)
                     tv_bet_status.setGameStatusColor(status)
-
                 }
             }
         }
@@ -133,11 +132,11 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
                         tv_match_odd_parlay.text = TextUtil.formatForOdd(getOdds(this, oddsType))
                     }
-
+                    tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
                     tv_winnable_amount.setMoneyFormat(winnable)
+                    tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setGameStatus(status)
                     tv_bet_status.setGameStatusColor(status)
-
                 }
             }
         }

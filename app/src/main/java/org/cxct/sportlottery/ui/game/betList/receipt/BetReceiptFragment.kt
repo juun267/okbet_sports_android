@@ -65,26 +65,30 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         initRecyclerView()
     }
 
+    enum class BetStatus(val value: Int) {
+        CANCELED(7)
+    }
+
     private fun setupTotalValue() {
         var betCount = 0
         var betTotalAmount = 0
         var winnableTotalAmount = 0.0
         betResultData?.singleBets?.forEach {
-            betCount += (it.num ?: 0)
+            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
             betTotalAmount += (it.stake ?: 0)
             winnableTotalAmount += (it.winnable ?: 0.0)
         }
 
         betResultData?.parlayBets?.forEach {
-            betCount += (it.num ?: 0)
+            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
             betTotalAmount += (it.stake ?: 0)
             winnableTotalAmount += (it.winnable ?: 0.0)
         }
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "$betTotalAmount ${getString(R.string.currency)}"
-            tv_total_winnable_amount.text = "$winnableTotalAmount ${getString(R.string.currency)}"
+            tv_total_bet_amount.text = "${betResultData?.totalStake} ${getString(R.string.currency)}"
+            tv_total_winnable_amount.text = "${betResultData?.totalWinnable} ${getString(R.string.currency)}"
         }
     }
 
