@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -65,6 +64,25 @@ fun TextView.setGameStatus(status: Int?) {
         3 -> context.getString(R.string.suspend)
         4 -> context.getString(R.string.canceled)
         else -> ""
+    }
+}
+
+@BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setBetReceiptStatus(status: Int?) {
+    text = when (status) {
+        4 -> context.getString(R.string.bet_canceled)
+        else -> context.getString(R.string.confirmed)
+    }
+}
+
+@BindingAdapter("receiptStatusColor") //状态 1-处理中;2-成功;3-失败
+fun TextView.setReceiptStatusColor(status: Int?) {
+    status?.let {
+        val color = when (it) {
+            4 -> R.color.colorRed
+            else -> R.color.colorBlue
+        }
+        this.setTextColor(ContextCompat.getColor(context, color))
     }
 }
 
