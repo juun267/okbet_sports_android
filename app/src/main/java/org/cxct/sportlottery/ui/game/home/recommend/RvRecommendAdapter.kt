@@ -100,10 +100,35 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
                 Glide.with(context).load(data.matchInfo?.img).apply(mRequestOptions).into(iv_match_image)
 
-                tv_game_name_home.text = data.matchInfo?.homeName
-                tv_game_name_away.text = data.matchInfo?.awayName
-                tv_match_time.text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
+                tv_game_name_home.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
 
+                    text = data.matchInfo?.homeName
+                }
+
+                tv_game_name_away.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.matchInfo?.awayName
+                }
+
+                tv_match_time.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
+                }
 
                 if (data.vpRecommendAdapter == null)
                     data.vpRecommendAdapter = VpRecommendAdapter(
