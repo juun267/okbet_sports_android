@@ -15,7 +15,7 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 
-class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
+class OutrightOddAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
         SUB_TITLE, ODD, MORE
@@ -27,23 +27,19 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
             field?.let { matchOdd ->
                 val list = mutableListOf<Any>()
                 matchOdd.odds.forEach {
-                    if (isNeedShowSubTitle) {
-                        list.add(it.key)
-                    }
+                    list.add(it.key)
 
                     list.addAll(
                         it.value.filterNotNull()
-                            .filterIndexed { index, _ -> (!isNeedShowSubTitle || index < 4) }
+                            .filterIndexed { index, _ -> index < 4 }
                             .map { odd ->
                                 odd.outrightCateKey = it.key
                                 odd
                             })
 
 
-                    if (isNeedShowSubTitle) {
-                        if (it.value.filterNotNull().size > 4) {
-                            list.add(it.key to matchOdd)
-                        }
+                    if (it.value.filterNotNull().size > 4) {
+                        list.add(it.key to matchOdd)
                     }
                 }
                 data = list

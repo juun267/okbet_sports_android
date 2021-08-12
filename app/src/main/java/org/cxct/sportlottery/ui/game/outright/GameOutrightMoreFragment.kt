@@ -19,9 +19,8 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private val args: GameOutrightMoreFragmentArgs by navArgs()
 
     private val outrightOddAdapter by lazy {
-        OutrightOddAdapter(false)
+        OutrightOddMoreAdapter()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +50,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
 
     private fun setupOutrightType(view: View) {
         view.outright_more_type.text =
-            args.matchOdd.dynamicMarkets[args.matchOdd.odds.keys.first()]?.let {
+            args.matchOdd.dynamicMarkets[args.oddsKey]?.let {
                 when (LanguageManager.getSelectLanguage(context)) {
                     LanguageManager.Language.ZH -> {
                         it.zh
@@ -75,7 +74,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private fun setupOutrightOddList(view: View) {
         view.outright_more_odd_list.apply {
             adapter = outrightOddAdapter.apply {
-                matchOdd = args.matchOdd
+                data = args.matchOdd.odds[args.oddsKey] to args.matchOdd
             }
         }
     }
