@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
@@ -43,7 +44,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private val outrightOddAdapter by lazy {
-        OutrightOddAdapter().apply {
+        OutrightOddAdapter(true).apply {
             outrightOddListener = OutrightOddListener { matchOdd, odd ->
                 matchOdd?.let {
                     addOddsDialog(matchOdd, odd)

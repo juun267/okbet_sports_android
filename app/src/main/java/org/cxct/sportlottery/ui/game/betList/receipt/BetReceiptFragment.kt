@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import kotlinx.android.synthetic.main.view_match_receipt_total.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -25,10 +26,13 @@ import org.cxct.sportlottery.util.TextUtil
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var betResultData: Receipt? = null
 
+    private var betParlayList: List<ParlayOdd>? = null
+
     companion object {
         @JvmStatic
-        fun newInstance(betResultData: Receipt?) = BetReceiptFragment().apply {
+        fun newInstance(betResultData: Receipt?, betParlayList: List<ParlayOdd>) = BetReceiptFragment().apply {
             this.betResultData = betResultData
+            this.betParlayList = betParlayList
         }
     }
 
@@ -71,24 +75,19 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun setupTotalValue() {
         var betCount = 0
-        var betTotalAmount = 0
-        var winnableTotalAmount = 0.0
         betResultData?.singleBets?.forEach {
             if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
-            betTotalAmount += (it.stake ?: 0)
-            winnableTotalAmount += (it.winnable ?: 0.0)
         }
 
         betResultData?.parlayBets?.forEach {
             if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
-            betTotalAmount += (it.stake ?: 0)
-            winnableTotalAmount += (it.winnable ?: 0.0)
         }
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
             tv_total_bet_amount.text = "${betResultData?.totalStake} ${getString(R.string.currency)}"
-            tv_total_winnable_amount.text = "${betResultData?.totalWinnable} ${getString(R.string.currency)}"
+            tv_total_winnable_amount.text =
+                "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${getString(R.string.currency)}"
         }
     }
 
@@ -112,7 +111,11 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             adapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {
-                    submit(betResultData?.singleBets ?: listOf(), betResultData?.parlayBets ?: listOf())
+                    submit(
+                        betResultData?.singleBets ?: listOf(),
+                        betResultData?.parlayBets ?: listOf(),
+                        this@BetReceiptFragment.betParlayList ?: listOf()
+                    )
                 }
             }
         }

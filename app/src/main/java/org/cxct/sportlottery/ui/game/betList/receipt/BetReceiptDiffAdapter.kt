@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
@@ -28,9 +29,11 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             notifyDataSetChanged()
         }
 
+    var betParlayList: List<ParlayOdd>? = null
+
     enum class ItemType { SINGLE, PARLAY_TITLE, PARLAY }
 
-    fun submit(singleList: List<BetResult>, parlayList: List<BetResult>) {
+    fun submit(singleList: List<BetResult>, parlayList: List<BetResult>, newBetParlayList: List<ParlayOdd>) {
         adapterScope.launch {
 
             val parlayItem =
@@ -74,7 +77,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
-                holder.bind(itemData.result, oddsType)
+                holder.bind(itemData.result, oddsType, betParlayList)
             }
 
             is ParlayTitleViewHolder -> {
@@ -125,14 +128,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             }
         }
 
-        fun bind(itemData: BetResult, oddsType: OddsType) {
+        fun bind(itemData: BetResult, oddsType: OddsType, betParlay: List<ParlayOdd>?) {
             itemView.apply {
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
                         parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
-                        tv_match_odd_parlay.text = TextUtil.formatForOdd(getOdds(this, oddsType))
                     }
-                    tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
+                    tv_bet_amount.text = stake?.let { "${TextUtil.formatBetQuota(it)} * $num" }
                     tv_winnable_amount.setMoneyFormat(winnable)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)

@@ -12,12 +12,12 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -28,8 +28,8 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
 
@@ -94,7 +94,9 @@ abstract class BaseOddButtonViewModel(
         playCateName: String,
         playName: String,
         matchInfo: MatchInfo,
-        odd: org.cxct.sportlottery.network.odds.Odd
+        odd: org.cxct.sportlottery.network.odds.Odd,
+        subscribeChannelType: ChannelType,
+        playCateMenuCode: String? = null
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
@@ -107,7 +109,9 @@ abstract class BaseOddButtonViewModel(
                     playCateName = playCateName,
                     playName = playName,
                     matchInfo = matchInfo,
-                    odd = odd
+                    odd = odd,
+                    subscribeChannelType = subscribeChannelType,
+                    playCateMenuCode = playCateMenuCode
                 )
             }
         } else {
@@ -144,7 +148,9 @@ abstract class BaseOddButtonViewModel(
                         ?: "",
                     playName = odd.spread ?: "",
                     matchInfo = matchOdd.matchInfo,
-                    odd = odd
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    playCateMenuCode = PlayCate.OUTRIGHT.value
                 )
             }
         } else {
@@ -229,7 +235,11 @@ abstract class BaseOddButtonViewModel(
                 }
             }
         }
-        updateNewItem(newList)
+//        updateNewItem(newList)
+        betInfoRepository.betInfoList.value?.peekContent()?.forEach {
+            updateItem(it.matchOdd, newList)
+        }
+        betInfoRepository.notifyBetInfoChanged()
 
     }
 
@@ -423,6 +433,7 @@ abstract class BaseOddButtonViewModel(
             try {
                 newItem.let {
                     if (it.id == oldItem.oddsId) {
+                        oldItem.refreshData = true
                         oldItem.oddState = getOddState(
                             getOdds(
                                 oldItem,
