@@ -138,7 +138,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        viewModel.removeBetInfoSingle()
         OddSpannableString.clearHandler()
     }
 
