@@ -12,5 +12,7 @@ data class CateDetailData(
     @Json(name = "odds")
     val odds: List<Odd?>,
     @Json(name = "typeCodes")
-    val typeCodes: String
+    val typeCodes: String,
+    @Json(name = "nameMap")
+    val nameMap: Map<String?, String?>? = null, //保存各语系name对应值的map
 )
