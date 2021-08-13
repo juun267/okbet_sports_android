@@ -46,34 +46,23 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
         }
     }
 
-    class OddViewHolder (itemView: View,private val refreshListener: OddStateChangeListener) : StateViewHolder(itemView) {
+    class OddViewHolder (itemView: View,private val refreshListener: OddStateChangeListener) : OddStateViewHolder(itemView) {
         fun bind(item: EpsOdds,oddsType: OddsType, clickListener: EpsListAdapter.EpsOddListener,matchInfo : MatchInfo) {
             itemView.tv_title.text = "${item.epsItem?.name}"
             itemView.btn_odd.isSelected = item.epsItem?.isSelected ?: false
 
             itemView.btn_odd.apply {
-                when(item.epsItem?.status){
-                    BetStatus.ACTIVATED.code -> betStatus = BetStatus.ACTIVATED.code
-                    BetStatus.LOCKED.code -> {
-                        betStatus = BetStatus.LOCKED.code
-                        return@apply
-                    }
-                    BetStatus.DEACTIVATED.code -> betStatus = BetStatus.DEACTIVATED.code
-                    null->{
-                        betStatus = BetStatus.DEACTIVATED.code
-                        return@apply
-                    }
-                }
+                betStatus = item.epsItem?.status ?: BetStatus.DEACTIVATED.code
 
                 setOnClickListener {
                     item.epsItem?.let { Odd ->
                         clickListener.onClickBet(Odd, matchInfo)
                     }
                 }
-                setupOddForEPS(item.epsItem,oddsType)
+                setupOddForEPS(item.epsItem, oddsType)
 
-                if(!itemView.btn_odd.isSelected)
-                setupOddState(this, item.epsItem)
+                if (!itemView.btn_odd.isSelected)
+                    setupOddState(this, item.epsItem)
 
             }
         }
@@ -90,8 +79,6 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
         override val oddStateChangeListener: OddStateChangeListener
             get() = refreshListener
     }
-
-    abstract class StateViewHolder(itemView: View) : OddStateViewHolder(itemView)
 
     class MatchInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")

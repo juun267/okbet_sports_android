@@ -71,14 +71,11 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,epsOddListener: EpsOddListener) {
 
             itemView.ll_league_title.setOnClickListener {
-                if (itemView.rv_league_odd_list.visibility == View.VISIBLE) {
-                    itemView.rv_league_odd_list.visibility = View.GONE
-                    item.isClose = true
-                } else {
-                    itemView.rv_league_odd_list.visibility = View.VISIBLE
-                    item.isClose = false
-                }
+                itemView.rv_league_odd_list.visibility = if(itemView.rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
+                item.isClose = itemView.rv_league_odd_list.visibility == View.VISIBLE
             }
+
+
 
             itemView.tv_league_title.text = "${item.league?.name}"
 
