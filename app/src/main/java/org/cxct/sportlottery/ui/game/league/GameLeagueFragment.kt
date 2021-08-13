@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -139,7 +140,12 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     override fun onStart() {
         super.onStart()
 
-        viewModel.getLeagueOddsList(args.matchType, args.leagueId.toList(), args.matchId.toList(), isReloadPlayCate = true)
+        viewModel.getLeagueOddsList(
+            args.matchType,
+            args.leagueId.toList(),
+            args.matchId.toList(),
+            isReloadPlayCate = true
+        )
         loading()
     }
 
@@ -520,15 +526,17 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 playCateName,
                 playName,
                 matchInfo,
-                odd
+                odd,
+                ChannelType.HALL,
+                getPlayCateMenuCode()
             )
         }
     }
 
-    private fun subscribeHallChannel() {
+    private fun getPlayCateMenuCode(): String? {
         val playSelected = playCategoryAdapter.data.find { it.isSelected }
 
-        val playCateMenuCode = when (playSelected?.selectionType) {
+        return when (playSelected?.selectionType) {
             SelectionType.SELECTABLE.code -> {
                 playSelected.playCateList?.find { it.isSelected }?.code
             }
@@ -537,13 +545,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
             else -> null
         }
+    }
 
+    private fun subscribeHallChannel() {
         leagueAdapter.data.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
 
                 subscribeChannelHall(
                     leagueOdd.gameType?.key,
-                    playCateMenuCode,
+                    getPlayCateMenuCode(),
                     matchOdd.matchInfo?.id
                 )
             }

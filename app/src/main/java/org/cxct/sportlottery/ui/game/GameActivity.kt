@@ -21,7 +21,8 @@ import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
@@ -31,7 +32,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
-import org.cxct.sportlottery.ui.game.betList.BetReceiptFragment
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
@@ -111,6 +112,8 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
     }
 
     enum class Page { ODDS_DETAIL, OUTRIGHT }
+
+    var canOpenBetInfoPage: Boolean = false //判斷是否能開啟投注單頁面
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -278,6 +281,8 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun showBetListPage() {
+        if (!canOpenBetInfoPage) return
+
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -286,7 +291,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 R.anim.pop_bottom_to_top_exit
             )
         val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: List<BetResult>?) {
+            override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
                 supportFragmentManager.beginTransaction()
                     .setCustomAnimations(
                         R.anim.push_right_to_left_enter,
@@ -294,7 +299,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                         R.anim.push_right_to_left_enter,
                         R.anim.pop_bottom_to_top_exit
                     )
-                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData))
+                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData, betParlayList))
                     .addToBackStack(BetReceiptFragment::class.java.simpleName)
                     .commit()
             }
@@ -464,7 +469,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
             return
         }
         when (mNavController.currentDestination?.id) {
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
                 mNavController.navigateUp()
             }
 
@@ -568,6 +573,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
             sport_bottom_navigation.setBetCount(it.peekContent().size)
+            canOpenBetInfoPage = it.peekContent().size > 0
         })
 
 

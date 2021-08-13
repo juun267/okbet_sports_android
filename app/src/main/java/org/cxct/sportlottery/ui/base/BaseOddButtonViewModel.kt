@@ -12,11 +12,12 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.BetAddErrorData
 import org.cxct.sportlottery.network.bet.add.BetAddRequest
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.add.Stake
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -27,8 +28,8 @@ import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
 
@@ -93,7 +94,9 @@ abstract class BaseOddButtonViewModel(
         playCateName: String,
         playName: String,
         matchInfo: MatchInfo,
-        odd: org.cxct.sportlottery.network.odds.Odd
+        odd: org.cxct.sportlottery.network.odds.Odd,
+        subscribeChannelType: ChannelType,
+        playCateMenuCode: String? = null
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
@@ -106,7 +109,9 @@ abstract class BaseOddButtonViewModel(
                     playCateName = playCateName,
                     playName = playName,
                     matchInfo = matchInfo,
-                    odd = odd
+                    odd = odd,
+                    subscribeChannelType = subscribeChannelType,
+                    playCateMenuCode = playCateMenuCode
                 )
             }
         } else {
@@ -137,8 +142,15 @@ abstract class BaseOddButtonViewModel(
         if (betItem == null) {
             matchOdd.matchInfo?.let {
                 betInfoRepository.addInBetInfo(
-                    matchType = matchType, gameType = gameType, playCateName = outrightCateName
-                        ?: "", playName = odd.spread ?: "", matchInfo = matchOdd.matchInfo, odd = odd
+                    matchType = matchType,
+                    gameType = gameType,
+                    playCateName = outrightCateName
+                        ?: "",
+                    playName = odd.spread ?: "",
+                    matchInfo = matchOdd.matchInfo,
+                    odd = odd,
+                    subscribeChannelType = ChannelType.HALL,
+                    playCateMenuCode = PlayCate.OUTRIGHT.value
                 )
             }
         } else {
@@ -223,7 +235,11 @@ abstract class BaseOddButtonViewModel(
                 }
             }
         }
-        updateNewItem(newList)
+//        updateNewItem(newList)
+        betInfoRepository.betInfoList.value?.peekContent()?.forEach {
+            updateItem(it.matchOdd, newList)
+        }
+        betInfoRepository.notifyBetInfoChanged()
 
     }
 
@@ -256,6 +272,7 @@ abstract class BaseOddButtonViewModel(
     fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
             val result = getBetApi(matchType, betAddRequest)
+
             _betAddResult.postValue(Event(result))
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
@@ -269,7 +286,11 @@ abstract class BaseOddButtonViewModel(
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
      * @date 20210730
      */
-    fun addBetList(normalBetList: List<BetInfoListData>, parlayBetList: List<ParlayOdd>, oddsType: OddsType) {
+    fun addBetList(
+        normalBetList: List<BetInfoListData>,
+        parlayBetList: List<ParlayOdd>,
+        oddsType: OddsType
+    ) {
 
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
@@ -412,6 +433,7 @@ abstract class BaseOddButtonViewModel(
             try {
                 newItem.let {
                     if (it.id == oldItem.oddsId) {
+                        oldItem.refreshData = true
                         oldItem.oddState = getOddState(
                             getOdds(
                                 oldItem,
@@ -481,14 +503,19 @@ abstract class BaseOddButtonViewModel(
                                         ), newItem
                                     )
 
-                                    newMatchOdd.spreadState = getSpreadState(newMatchOdd.spread, it.spread ?: "")
+                                    newMatchOdd.spreadState =
+                                        getSpreadState(newMatchOdd.spread, it.spread ?: "")
 
                                     newItem.status.let { status -> newMatchOdd.status = status }
 
                                     if (newMatchOdd.status == BetStatus.ACTIVATED.code) {
                                         newItem.odds.let { odds -> newMatchOdd.odds = odds ?: 0.0 }
-                                        newItem.hkOdds.let { hkOdds -> newMatchOdd.hkOdds = hkOdds ?: 0.0 }
-                                        newItem.spread.let { spread -> newMatchOdd.spread = spread ?: "" }
+                                        newItem.hkOdds.let { hkOdds ->
+                                            newMatchOdd.hkOdds = hkOdds ?: 0.0
+                                        }
+                                        newItem.spread.let { spread ->
+                                            newMatchOdd.spread = spread ?: ""
+                                        }
                                     }
 
                                     //從socket獲取後 賠率有變動並且投注狀態開啟時 需隱藏錯誤訊息

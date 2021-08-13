@@ -57,6 +57,18 @@
                 app:argType="org.cxct.sportlottery.network.odds.MatchInfo[]" />
         </action>
 
+        <action
+            android:id="@+id/action_homeFragment_to_gameOutrightMoreFragment"
+            app:destination="@id/gameOutrightMoreFragment">
+
+            <argument
+                android:name="oddsKey"
+                app:argType="string" />
+
+            <argument
+                android:name="matchOdd"
+                app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
+        </action>
     </fragment>
 
     <fragment
@@ -238,6 +250,19 @@
                 android:name="matchType"
                 app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
+
+        <action
+            android:id="@+id/action_gameOutrightFragment_to_gameOutrightMoreFragment"
+            app:destination="@id/gameOutrightMoreFragment">
+
+            <argument
+                android:name="oddsKey"
+                app:argType="string" />
+
+            <argument
+                android:name="matchOdd"
+                app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
+        </action>
     </fragment>
 
     <fragment
@@ -358,5 +383,17 @@
         </action>
     </fragment>
 
+    <fragment
+        android:id="@+id/gameOutrightMoreFragment"
+        android:name="org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragment"
+        tools:layout="@layout/fragment_game_outright_more">
 
+        <argument
+            android:name="oddsKey"
+            app:argType="string" />
+
+        <argument
+            android:name="matchOdd"
+            app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
+    </fragment>
 </navigation>

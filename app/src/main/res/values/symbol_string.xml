@@ -44,4 +44,7 @@
     <!--Time-->
     <string name="time_null">--:--</string>
 
+    <!--date time concat-->
+    <string name="concat_date_time">%s %s</string>
+
 </resources>

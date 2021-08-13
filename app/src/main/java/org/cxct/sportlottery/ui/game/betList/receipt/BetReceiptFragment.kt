@@ -1,4 +1,4 @@
-package org.cxct.sportlottery.ui.game.betList
+package org.cxct.sportlottery.ui.game.betList.receipt
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import kotlinx.android.synthetic.main.view_match_receipt_total.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.bet.add.Row
-import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -24,13 +24,29 @@ import org.cxct.sportlottery.util.TextUtil
  * create an instance of this fragment.
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
-    private var betResultData: List<BetResult>? = null
+    private var betResultData: Receipt? = null
+
+    private var betParlayList: List<ParlayOdd>? = null
+
+    companion object {
+        @JvmStatic
+        fun newInstance(betResultData: Receipt?, betParlayList: List<ParlayOdd>) = BetReceiptFragment().apply {
+            this.betResultData = betResultData
+            this.betParlayList = betParlayList
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bet_receipt, container, false)
+        return inflater.inflate(R.layout.fragment_bet_receipt, container, false).apply {
+            initData()
+        }
+    }
+
+    private fun initData() {
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,19 +69,25 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         initRecyclerView()
     }
 
+    enum class BetStatus(val value: Int) {
+        CANCELED(7)
+    }
+
     private fun setupTotalValue() {
         var betCount = 0
-        var betTotalAmount = 0
-        var winnableTotalAmount = 0.0
-        betResultData?.forEach {
-            betCount += (it.num ?: 0)
-            betTotalAmount += (it.stake ?: 0)
-            winnableTotalAmount += (it.winnable ?: 0.0)
+        betResultData?.singleBets?.forEach {
+            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
         }
+
+        betResultData?.parlayBets?.forEach {
+            if (it.status != BetStatus.CANCELED.value) betCount += (it.num ?: 0)
+        }
+
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "$betTotalAmount ${getString(R.string.currency)}"
-            tv_total_winnable_amount.text = "$winnableTotalAmount ${getString(R.string.currency)}"
+            tv_total_bet_amount.text = "${betResultData?.totalStake} ${getString(R.string.currency)}"
+            tv_total_winnable_amount.text =
+                "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${getString(R.string.currency)}"
         }
     }
 
@@ -88,15 +110,14 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             })
 
             adapter = BetReceiptDiffAdapter().apply {
-                submitList(betResultData)
+                betResultData?.apply {
+                    submit(
+                        betResultData?.singleBets ?: listOf(),
+                        betResultData?.parlayBets ?: listOf(),
+                        this@BetReceiptFragment.betParlayList ?: listOf()
+                    )
+                }
             }
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(betResultData: List<BetResult>?) = BetReceiptFragment().apply {
-            this.betResultData = betResultData
         }
     }
 }
