@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TabHost
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -27,8 +28,8 @@ import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
@@ -258,7 +259,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
                         }
                         getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率
-
+                            viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
                         }
                     }
                 }
@@ -274,6 +275,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         view.game_tab_odd_v4.visibility = when (args.matchType) {
             MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
             else -> View.GONE
+        }
+
+        val epsItem = (view.game_tab_odd_v4.game_tabs.getChildAt(0) as ViewGroup).getChildAt(2)
+        if (view.game_tab_odd_v4.visibility == View.VISIBLE && args.matchType == MatchType.PARLAY) {
+            epsItem.visibility = View.GONE
+        } else {
+            epsItem.visibility = View.VISIBLE
         }
     }
 
@@ -369,7 +377,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     override fun onStart() {
         super.onStart()
-        viewModel.getGameHallList(matchType = args.matchType, isReloadDate = true, isReloadPlayCate = true)
+        viewModel.getGameHallList(
+            matchType = args.matchType,
+            isReloadDate = true,
+            isReloadPlayCate = true
+        )
         viewModel.getMatchCategoryQuery(args.matchType)
         loading()
     }
@@ -498,7 +510,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
                     oddsEpsListData.forEach { oddsEpdListData ->
                         val newLeagueOddsItem =
-                            EpsLeagueOddsItem(date = oddsEpdListData.date, league = null, matchOdds = null) //合併過後的資料結構
+                            EpsLeagueOddsItem(
+                                date = oddsEpdListData.date,
+                                league = null,
+                                matchOdds = null
+                            ) //合併過後的資料結構
                         epsLeagueOddsItemList.add(newLeagueOddsItem)
                         oddsEpdListData.leagueOdd.forEach { leaguesOddsItems ->
                             epsLeagueOddsItemList.add(
@@ -645,6 +661,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueAdapter.notifyDataSetChanged()
         })
     }
+
 
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
@@ -874,7 +891,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     this.dismiss()
                 }
                 tv_league_title.text = matchInfo.leagueName
-                rv_more_eps_info_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                rv_more_eps_info_item.layoutManager =
+                    LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
                 rv_more_eps_info_item.adapter = EpsMoreInfoAdapter().apply {
                     dataList = listOf(matchInfo)
                 }
@@ -959,7 +977,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         startActivity(intent)
     }
 
-    private fun navGameLeague(leagueIdList: List<String> = listOf(), matchIdList: List<String> = listOf()) {
+    private fun navGameLeague(
+        leagueIdList: List<String> = listOf(),
+        matchIdList: List<String> = listOf()
+    ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
@@ -983,7 +1004,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun navGameOutright(matchId: String) {
-        val gameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
         gameType?.let {
             val action =
