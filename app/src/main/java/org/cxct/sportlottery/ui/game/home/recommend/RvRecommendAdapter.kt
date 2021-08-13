@@ -37,6 +37,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
+                    leagueName = row.leagueOdds.league?.name,
                     matchInfo = oddData.matchInfo,
                     isOutright = row.isOutright,
                     oddBeans = beans,
@@ -100,10 +101,55 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
                 Glide.with(context).load(data.matchInfo?.img).apply(mRequestOptions).into(iv_match_image)
 
-                tv_game_name_home.text = data.matchInfo?.homeName
-                tv_game_name_away.text = data.matchInfo?.awayName
-                tv_match_time.text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
+                tv_game_name_home.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
 
+                    text = data.matchInfo?.homeName
+                }
+
+                tv_game_name_away.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.matchInfo?.awayName
+                }
+
+                rec_outright_game_type.apply {
+                    visibility = if (data.isOutright == 1) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.name
+                }
+
+                rec_outright_league.apply {
+                    visibility = if (data.isOutright == 1) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.leagueName
+                }
+
+                tv_match_time.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
+                }
 
                 if (data.vpRecommendAdapter == null)
                     data.vpRecommendAdapter = VpRecommendAdapter(
@@ -111,7 +157,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         data.oddBeans,
                         data.isOutright,
                         oddsType,
-                        data.toMatchOdd()
+                        data.toMatchOdd(),
+                        data.dynamicMarkets
                     )
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
@@ -145,7 +192,8 @@ fun RecommendGameEntity.toMatchOdd(): MatchOdd {
         id = this.matchInfo?.id ?: "",
         playCateNum = this.matchInfo?.playCateNum ?: -1,
         startTime = this.matchInfo?.startTime,
-        status = this.matchInfo?.status ?: -1
+        status = this.matchInfo?.status ?: -1,
+        name = this.leagueName
     )
     val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
     this.oddBeans.forEach {
