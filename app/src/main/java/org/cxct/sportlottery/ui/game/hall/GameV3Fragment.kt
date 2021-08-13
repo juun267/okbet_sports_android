@@ -449,7 +449,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         adapter = leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = gameType
-                            }
+                            }.toMutableList()
                         }
                     }
 
@@ -662,11 +662,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 }
 
                                 updateMatchOdd?.let {
-                                    updateMatchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
-                                    updateMatchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
-                                    updateMatchOdd.matchInfo?.statusName = matchStatusCO.statusName
+                                    if (matchStatusCO.status == 100) {
+                                        leagueOdd.matchOdds.remove(updateMatchOdd)
+                                        leagueAdapter.notifyItemRangeChanged(
+                                            leagueOdds.indexOf(leagueOdd),
+                                            leagueAdapter.itemCount
+                                        )
+                                    } else {
+                                        updateMatchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
+                                        updateMatchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                                        updateMatchOdd.matchInfo?.statusName = matchStatusCO.statusName
 
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
                                 }
                             }
                         }
