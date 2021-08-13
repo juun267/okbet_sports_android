@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.odds.Odd
 
 
 data class EpsOdds(
-    val matchInfo: MatchInfo? = null,
-    val epsItem: Odd?
+    val matchInfo: MatchInfo?,
+    val epsItem: Odd?,
+    val isTitle:Boolean
 )

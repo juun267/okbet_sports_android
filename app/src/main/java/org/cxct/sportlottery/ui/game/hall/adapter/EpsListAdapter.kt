@@ -104,10 +104,10 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         private fun filterEpsOddsList(matchOddsItem: List<MatchOddsItem>?): MutableList<EpsOdds> {
             val epsOddsList = mutableListOf<EpsOdds>()
             matchOddsItem?.forEach {
-                epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = null))
+                epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = null, isTitle = true))
 
                 it.odds?.eps?.forEach { EPSItem ->
-                    epsOddsList.add(EpsOdds(matchInfo = null, epsItem = EPSItem))
+                    epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = EPSItem, isTitle = false))
                 }
             }
             return epsOddsList

@@ -47,7 +47,7 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
     }
 
     class OddViewHolder (itemView: View,private val refreshListener: OddStateChangeListener) : OddStateViewHolder(itemView) {
-        fun bind(item: EpsOdds,oddsType: OddsType, clickListener: EpsListAdapter.EpsOddListener,matchInfo : MatchInfo) {
+        fun bind(item: EpsOdds,oddsType: OddsType, clickListener: EpsListAdapter.EpsOddListener) {
             itemView.tv_title.text = "${item.epsItem?.name}"
             itemView.btn_odd.isSelected = item.epsItem?.isSelected ?: false
 
@@ -56,13 +56,12 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
 
                 setOnClickListener {
                     item.epsItem?.let { Odd ->
-                        clickListener.onClickBet(Odd, matchInfo)
+                        item.matchInfo?.let { matchInfo -> clickListener.onClickBet(Odd, matchInfo) }
                     }
                 }
                 setupOddForEPS(item.epsItem, oddsType)
 
-                if (!itemView.btn_odd.isSelected)
-                    setupOddState(this, item.epsItem)
+                setupOddState(this, item.epsItem)
 
             }
         }
@@ -114,9 +113,7 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
                 holder.bind(dataList[position].matchInfo, epsOddListener)
             }
             is OddViewHolder -> {
-                dataList[0].matchInfo?.let { matchInfo ->
-                    holder.bind(dataList[position], oddsType, epsOddListener, matchInfo)
-                }
+                holder.bind(dataList[position], oddsType, epsOddListener)
             }
         }
     }
@@ -124,7 +121,7 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
     override fun getItemCount() = dataList.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (dataList[position].matchInfo != null) {
+        return if (dataList[position].isTitle) {
             ViewType.MATCHINFO.ordinal
         } else {
             ViewType.ODD.ordinal
