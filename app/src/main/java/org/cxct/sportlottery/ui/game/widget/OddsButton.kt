@@ -99,10 +99,9 @@ class OddsButton @JvmOverloads constructor(
         betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
-
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            text = odd?.extInfoMap.toString() //TODO Cheryl: check when api has value return.
+            text = odd?.extInfo
             paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
         }
 
