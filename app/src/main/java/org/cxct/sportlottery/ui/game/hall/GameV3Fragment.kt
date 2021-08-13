@@ -750,16 +750,33 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                         oddSocket?.let {
                                             odd?.updateOddsState(oddSocket, oddsType)
+                                        }
+                                    }
+                                }
 
-                                            leagueAdapter.notifyItemChanged(
-                                                leagueOdds.indexOf(
-                                                    leagueOdd
-                                                )
-                                            )
+                                updateMatchOdd?.quickPlayCateList?.forEach { quickPlayCate ->
+                                    quickPlayCate.quickOdds?.forEach { oddTypeMap ->
+                                        val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
+                                        val odds = oddTypeMap.value
+
+                                        odds.forEach { odd ->
+                                            val oddSocket = oddsSocket?.find { oddSocket ->
+                                                oddSocket?.id == odd?.id
+                                            }
+
+                                            oddSocket?.let {
+                                                odd?.updateOddsState(oddSocket, oddsType)
+                                            }
                                         }
                                     }
                                 }
                             }
+
+                            leagueAdapter.notifyItemChanged(
+                                leagueOdds.indexOf(
+                                    leagueOdd
+                                )
+                            )
                         }
                     }
                 }
