@@ -198,6 +198,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 leagueAdapter.notifyDataSetChanged()
             }
         })
+
+        viewModel.favorMatchList.observe(this.viewLifecycleOwner, {
+            if (it.isNullOrEmpty()) {
+                fl_no_game.visibility = View.VISIBLE
+            } else {
+                fl_no_game.visibility = View.GONE
+            }
+        })
     }
 
     private fun updateGameTypeList(items: List<Item>?) {
