@@ -25,7 +25,6 @@ data class MatchInfo(
     val startTime: Long?,
     @Json(name = "status")
     var status: Int?,
-
     @Json(name = "leagueId")
     val leagueId: String ?= null,
     @Json(name = "leagueName")
@@ -36,6 +35,13 @@ data class MatchInfo(
     var img: String ?= null,
     @Json(name = "msg")
     var msg: String ?= null,
+    @Json(name = "liveVideo")
+    val liveVideo: Int ?= null,
+    @Json(name = "neutral")
+    val neutral: Int ?= null,
+    @Json(name = "eps")
+    val eps: Int ?= null,
+
 ) : Parcelable {
 
     //Live

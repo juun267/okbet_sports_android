@@ -86,10 +86,23 @@
             android:hint="@string/bet_info_input_quota"
             android:inputType="number"
             android:maxLength="7"
+            android:textStyle="bold"
             android:paddingStart="10dp"
             android:textColor="@color/colorBlackLight"
             android:textColorHint="@color/colorSilverLight"
             android:textSize="@dimen/textSize16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
+            app:layout_constraintWidth_percent="0.442" />
+
+        <View
+            android:id="@+id/et_clickable"
+            android:layout_width="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
             app:layout_constraintWidth_percent="0.442" />
@@ -126,6 +139,10 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
+        <include
+            layout="@layout/content_bet_info_item_quota_detail"
+            app:parlayOdd="@{parlayOdd}"/>
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -134,6 +151,7 @@
             android:paddingTop="3dp"
             android:paddingEnd="16dp"
             android:paddingBottom="3dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/et_bet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/gl_fifty_percent"

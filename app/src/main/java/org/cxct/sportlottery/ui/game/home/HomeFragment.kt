@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
@@ -36,6 +37,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
@@ -210,6 +212,24 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         }
+        mRecommendAdapter.onClickMoreListener = object : OnClickMoreListener {
+            override fun onClickMore(matchOdd: MatchOdd) {
+                scroll_view.smoothScrollTo(0, 0)
+
+                val action =
+                    HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(
+                        org.cxct.sportlottery.network.outright.odds.MatchOdd(
+                            matchInfo = matchOdd.matchInfo,
+                            odds = matchOdd.odds,
+                            dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
+                            oddsList = listOf(),
+                            quickPlayCateList = matchOdd.quickPlayCateList
+
+                        )
+                    )
+                findNavController().navigate(action)
+            }
+        }
         mRecommendAdapter.onClickMatchListener =
             object : OnSelectItemListener<RecommendGameEntity> {
                 override fun onClick(select: RecommendGameEntity) {
@@ -320,7 +340,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     playCateName ?: "",
                     playName ?: "",
                     matchInfo,
-                    odd
+                    odd,
+                    ChannelType.HALL,
+                    if (mSelectMatchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
                 )
             }
         }
@@ -885,19 +907,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     ) {
         val gameType = GameType.getGameType(gameTypeCode)
         if (gameType != null && matchId != null) {
-            val action = if (matchType == MatchType.IN_PLAY) {
-                HomeFragmentDirections
-                    .actionHomeFragmentToOddsDetailLiveFragment(gameType, matchId)
-            } else {
-                HomeFragmentDirections
-                    .actionHomeFragmentToOddsDetailFragment(
-                        matchType,
-                        gameType,
-                        matchId,
-                        arrayOf()
-                    )
-            }
-            findNavController().navigate(action)
+            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(gameType, matchId))
         }
     }
 

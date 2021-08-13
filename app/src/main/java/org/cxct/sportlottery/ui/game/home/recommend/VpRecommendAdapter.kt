@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -32,6 +33,7 @@ class VpRecommendAdapter(
 
     var onClickOddListener: OnClickOddListener? = null
     var onClickOutrightOddListener: OnClickOddListener? = null
+    var onClickMoreListener: OnClickMoreListener? = null
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -269,6 +271,12 @@ class VpRecommendAdapter(
                                 this.matchInfo?.gameType = sportCode
                             }, odd)
                         }
+                    }
+                }
+
+                rec_champ_more.apply {
+                    setOnClickListener {
+                        onClickMoreListener?.onClickMore(matchOdd)
                     }
                 }
             }

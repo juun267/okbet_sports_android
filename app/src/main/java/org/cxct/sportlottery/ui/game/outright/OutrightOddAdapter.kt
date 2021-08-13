@@ -15,22 +15,36 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 
-class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
-        SUB_TITLE, ODD
+        SUB_TITLE, ODD, MORE
     }
 
     var matchOdd: MatchOdd? = null
         set(value) {
             field = value
-            field?.let {
+            field?.let { matchOdd ->
                 val list = mutableListOf<Any>()
-                matchOdd?.odds?.forEach {
-                    list.add(it.key)
-                    list.addAll(it.value.filterNotNull().map { odd ->
-                        odd.outrightCateKey = it.key
-                        odd
-                    })
+                matchOdd.odds.forEach {
+                    if (isNeedShowSubTitle) {
+                        list.add(it.key)
+                    }
+
+                    list.addAll(
+                        it.value.filterNotNull()
+                            .filterIndexed { index, _ -> (!isNeedShowSubTitle || index < 4) }
+                            .map { odd ->
+                                odd.outrightCateKey = it.key
+                                odd
+                            })
+
+
+                    if (isNeedShowSubTitle) {
+                        if (it.value.filterNotNull().size > 4) {
+                            list.add(matchOdd)
+                        }
+                    }
                 }
                 data = list
             }
@@ -65,14 +79,16 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         return when (data.getOrNull(position)) {
             is Odd -> ItemType.ODD.ordinal
-            else -> ItemType.SUB_TITLE.ordinal
+            is String -> ItemType.SUB_TITLE.ordinal
+            else -> ItemType.MORE.ordinal
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ItemType.SUB_TITLE.ordinal -> SubTitleViewHolder.from(parent)
-            else -> OddViewHolder.from(parent, oddStateRefreshListener)
+            ItemType.ODD.ordinal -> OddViewHolder.from(parent, oddStateRefreshListener)
+            else -> MoreViewHolder.from(parent)
         }
     }
 
@@ -85,6 +101,10 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is OddViewHolder -> {
                 val item = data[position] as Odd
                 holder.bind(matchOdd, item, outrightOddListener, oddsType)
+            }
+            is MoreViewHolder -> {
+                val item = data[position] as MatchOdd
+                holder.bind(item, outrightOddListener)
             }
         }
 
@@ -164,8 +184,31 @@ class OutrightOddAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
+
+    class MoreViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        fun bind(matchOdd: MatchOdd, outrightOddListener: OutrightOddListener?) {
+            itemView.setOnClickListener {
+                outrightOddListener?.onClickMore(matchOdd)
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): MoreViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_outright_odd_more_v4, parent, false)
+
+                return MoreViewHolder(view)
+            }
+        }
+    }
 }
 
-class OutrightOddListener(val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd) -> Unit) {
+class OutrightOddListener(
+    val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd) -> Unit,
+    val clickListenerMore: (matchOdd: MatchOdd) -> Unit
+) {
     fun onClickBet(matchOdd: MatchOdd?, odd: Odd) = clickListenerBet(matchOdd, odd)
+    fun onClickMore(matchOdd: MatchOdd) = clickListenerMore(matchOdd)
 }

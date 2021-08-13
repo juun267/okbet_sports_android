@@ -3,12 +3,12 @@ package org.cxct.sportlottery.network.matchCategory.result
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.odds_change.DynamicMarkets
+import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 
 @JsonClass(generateAdapter = true)
 data class OddData(
     @Json(name = "dynamicMarkets")
-    val dynamicMarkets: DynamicMarkets?,
+    val dynamicMarkets: Map<String, DynamicMarket>?,
     @Json(name = "matchInfo")
     val matchInfo: MatchInfo?,
     @Json(name = "odds")
