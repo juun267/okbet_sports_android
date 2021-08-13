@@ -904,7 +904,7 @@ class GameViewModel(
         )
     }
 
-    private fun getLeagueList(
+    fun getLeagueList(
         gameType: String,
         matchType: String,
         timeRangeParams: TimeRangeParams?,
