@@ -1,9 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
