@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
@@ -113,7 +114,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     season.id?.let { navGameOutright(it) }
                 },
                 { leagueId ->
-                    viewModel.pinFavorite(FavoriteType.OUTRIGHT, leagueId)
+                    viewModel.pinFavorite(FavoriteType.LEAGUE, leagueId)
                 }
             )
         }
@@ -353,6 +354,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
@@ -605,21 +607,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.favorLeagueList.observe(this.viewLifecycleOwner, {
-            val leaguePinList = mutableListOf<League>()
-
-            countryAdapter.data.forEach { row ->
-                val pinLeague = row.list.filter { league ->
-                    it.contains(league.id)
-                }
-
-                row.list.forEach { league ->
-                    league.isPin = it.contains(league.id)
-                }
-
-                leaguePinList.addAll(pinLeague)
-            }
-
-            countryAdapter.datePin = leaguePinList
+            updateLeaguePin(it)
+            updateLeaguePinOutright(it)
         })
 
         viewModel.leagueSubmitList.observe(this.viewLifecycleOwner, {
@@ -639,6 +628,42 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             leagueAdapter.notifyDataSetChanged()
         })
+    }
+
+    private fun updateLeaguePin(leagueListPin: List<String>) {
+        val leaguePinList = mutableListOf<League>()
+
+        countryAdapter.data.forEach { row ->
+            val pinLeague = row.list.filter { league ->
+                leagueListPin.contains(league.id)
+            }
+
+            row.list.forEach { league ->
+                league.isPin = leagueListPin.contains(league.id)
+            }
+
+            leaguePinList.addAll(pinLeague)
+        }
+
+        countryAdapter.datePin = leaguePinList
+    }
+
+    private fun updateLeaguePinOutright(leagueListPin: List<String>) {
+        val leaguePinList = mutableListOf<Season>()
+
+        outrightCountryAdapter.data.forEach { row ->
+            val pinLeague = row.list.filter { league ->
+                leagueListPin.contains(league.id)
+            }
+
+            row.list.forEach { league ->
+                league.isPin = leagueListPin.contains(league.id)
+            }
+
+            leaguePinList.addAll(pinLeague)
+        }
+
+        outrightCountryAdapter.datePin = leaguePinList
     }
 
     private fun initSocketObserver() {

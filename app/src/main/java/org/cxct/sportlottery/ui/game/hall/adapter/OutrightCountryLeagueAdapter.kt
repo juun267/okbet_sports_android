@@ -38,8 +38,13 @@ class OutrightCountryLeagueAdapter :
                 country_league_choose.visibility = View.GONE
                 country_league_name.text = item.name
                 country_league_count.text = item.num.toString()
-                country_league_pin.setOnClickListener {
-                    outrightCountryLeagueListener?.onClickPin(item.id)
+
+                country_league_pin.apply {
+                    isActivated = item.isPin
+
+                    setOnClickListener {
+                        outrightCountryLeagueListener?.onClickPin(item.id)
+                    }
                 }
 
                 setOnClickListener {
