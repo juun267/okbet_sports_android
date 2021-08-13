@@ -584,6 +584,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it?.let { matchStatusChangeEvent ->
                 //滾球盤、即將開賽盤
                 val dataList = mRvGameTable4Adapter.getData()
+                val hideGameList = mutableListOf<GameEntity>()
+                var hideFirstPosition: Int? = null
                 dataList.forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                         if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
@@ -594,9 +596,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             updateMatchOdd.matchInfo?.statusName =
                                 matchStatusChangeEvent.matchStatusCO?.statusName
 
+                            //賽事status為100, 隱藏該賽事
+                            if (matchStatusChangeEvent.matchStatusCO?.status == 100) {
+                                hideGameList.add(gameEntity)
+                                if (hideFirstPosition == null) {
+                                    hideFirstPosition = index
+                                }
+                            }
+
                             mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
                         }
                     }
+                }
+
+                //當前資料迴圈結束後才做移除
+                hideGameList.forEach { removeGameEntity ->
+                    dataList.remove(removeGameEntity)
+                }
+                hideFirstPosition?.let { startPosition ->
+                    mRvGameTable4Adapter.apply { notifyItemRangeChanged(startPosition, itemCount) }
                 }
             }
         })
