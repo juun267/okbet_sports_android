@@ -49,11 +49,10 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
     class OddViewHolder (itemView: View,private val refreshListener: OddStateChangeListener) : OddStateViewHolder(itemView) {
         fun bind(item: EpsOdds,oddsType: OddsType, clickListener: EpsListAdapter.EpsOddListener) {
             itemView.tv_title.text = "${item.epsItem?.name}"
-            itemView.btn_odd.isSelected = item.epsItem?.isSelected ?: false
-
+            
             itemView.btn_odd.apply {
                 betStatus = item.epsItem?.status ?: BetStatus.DEACTIVATED.code
-
+                isSelected = item.epsItem?.isSelected ?: false
                 setOnClickListener {
                     item.epsItem?.let { Odd ->
                         item.matchInfo?.let { matchInfo -> clickListener.onClickBet(Odd, matchInfo) }
