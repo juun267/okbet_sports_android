@@ -158,6 +158,7 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
                     backClickListener.onClick()
                 }
 
+                sportSelectListener.onSelect("")
                 status_selector.setCloseBtnText(context?.getString(R.string.bottom_sheet_close))
                 status_selector.dataList = sportStatusList
                 status_selector.setOnItemSelectedListener {
