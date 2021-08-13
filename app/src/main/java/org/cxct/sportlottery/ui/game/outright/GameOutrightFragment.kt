@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_game_outright.*
 import kotlinx.android.synthetic.main.fragment_game_outright.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
@@ -43,13 +42,22 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         }
     }
 
-    private val outrightOddAdapter by lazy {
-        OutrightOddAdapter(true).apply {
-            outrightOddListener = OutrightOddListener { matchOdd, odd ->
-                matchOdd?.let {
-                    addOddsDialog(matchOdd, odd)
+    private val outrightLeagueOddAdapter by lazy {
+        OutrightLeagueOddAdapter().apply {
+            outrightOddListener = OutrightOddListener(
+                { matchOdd, odd ->
+                    matchOdd?.let {
+                        addOddsDialog(matchOdd, odd)
+                    }
+                },
+                { matchOdd ->
+                    val action =
+                        GameOutrightFragmentDirections.actionGameOutrightFragmentToGameOutrightMoreFragment(
+                            matchOdd
+                        )
+                    findNavController().navigate(action)
                 }
-            }
+            )
         }
     }
 
@@ -74,7 +82,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-            adapter = outrightOddAdapter
+            adapter = outrightLeagueOddAdapter
 
         }
     }
@@ -104,21 +112,21 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
 
-                    val matchOdd = outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
+                    game_toolbar_sport_type.text = GameType.values()
+                        .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
+                            getString(
+                                stringId
+                            )
+                        }
 
-                    game_toolbar_sport_type.text = GameType.values().find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId -> getString(stringId) }
+                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)
+                        ?.let { gameImg ->
+                            game_toolbar_bg.setBackgroundResource(gameImg)
+                        }
 
-                    GameConfigManager.getTitleBarBackground(outrightOddsListResult.outrightOddsListData?.sport?.code)?.let { gameImg ->
-                        game_toolbar_bg.setBackgroundResource(gameImg)
-                    }
-
-                    outright_league_name.text = outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.league?.name?: ""
-
-                    outright_league_date.text = matchOdd?.startDate ?: ""
-
-                    outright_league_time.text = matchOdd?.startTime ?: ""
-
-                    outrightOddAdapter.matchOdd = matchOdd
+                    outrightLeagueOddAdapter.data =
+                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds
+                            ?: listOf()
 
                     subscribeChannelHall(
                         args.gameType.key,
@@ -130,18 +138,21 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
 
         viewModel.curMatchType.observe(viewLifecycleOwner, {
-                game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
+            game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
         })
 
         viewModel.curChildMatchType.observe(viewLifecycleOwner, {
-                game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
+            game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
             it.peekContent().let {
                 val odds = mutableListOf<Odd>()
-                outrightOddAdapter.matchOdd?.odds?.values?.forEach { oddList ->
-                    odds.addAll(oddList.filterNotNull())
+
+                outrightLeagueOddAdapter.data.forEach { matchOdd ->
+                    matchOdd?.odds?.values?.forEach { oddList ->
+                        odds.addAll(oddList.filterNotNull())
+                    }
                 }
 
                 odds.forEach { odd ->
@@ -150,13 +161,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     }
                 }
 
-                outrightOddAdapter.notifyDataSetChanged()
+                outrightLeagueOddAdapter.notifyDataSetChanged()
             }
         })
 
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
-                outrightOddAdapter.oddsType = oddsType
+                outrightLeagueOddAdapter.oddsType = oddsType
             }
         })
     }
@@ -168,12 +179,15 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.odds?.let { oddTypeSocketMap ->
                     val odds = mutableListOf<Odd>()
-                    outrightOddAdapter.matchOdd?.odds?.values?.forEach { oddList ->
-                        odds.addAll(oddList.filterNotNull())
+
+                    outrightLeagueOddAdapter.data.forEach { matchOdd ->
+                        matchOdd?.odds?.values?.forEach { oddList ->
+                            odds.addAll(oddList.filterNotNull())
+                        }
                     }
 
                     odds.forEachIndexed { index: Int, odd: Odd ->
-                        val oddsType = outrightOddAdapter.oddsType
+                        val oddsType = outrightLeagueOddAdapter.oddsType
 
                         oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
                             val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
@@ -224,7 +238,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                                 odd.status = oddSocketNonNull.status
 
-                                outrightOddAdapter.notifyItemChanged(index)
+                                outrightLeagueOddAdapter.notifyItemChanged(index)
                             }
                         }
 
@@ -236,8 +250,11 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
                 val odds = mutableListOf<Odd>()
-                outrightOddAdapter.matchOdd?.odds?.values?.forEach { oddList ->
-                    odds.addAll(oddList.filterNotNull())
+
+                outrightLeagueOddAdapter.data.forEach { matchOdd ->
+                    matchOdd?.odds?.values?.forEach { oddList ->
+                        odds.addAll(oddList.filterNotNull())
+                    }
                 }
 
                 odds.forEach { odd ->
@@ -254,7 +271,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                         }
                     }
 
-                    outrightOddAdapter.notifyItemChanged(odds.indexOf(odd))
+                    outrightLeagueOddAdapter.notifyItemChanged(odds.indexOf(odd))
                 }
             }
         })
