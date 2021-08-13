@@ -380,11 +380,6 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.clear()
     }
 
-    fun removeBetInfoSingle() {
-        if (betInfoRepository.showBetInfoSingle.value?.peekContent() == true)
-            betInfoRepository.clear()
-    }
-
     fun getBetInfoListForParlay() {
         betInfoRepository.addInBetInfoParlay()
     }
