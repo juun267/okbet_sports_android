@@ -15,7 +15,7 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 
-class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
+class OutrightOddAdapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
         SUB_TITLE, ODD, MORE
@@ -27,23 +27,19 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
             field?.let { matchOdd ->
                 val list = mutableListOf<Any>()
                 matchOdd.odds.forEach {
-                    if (isNeedShowSubTitle) {
-                        list.add(it.key)
-                    }
+                    list.add(it.key)
 
                     list.addAll(
                         it.value.filterNotNull()
-                            .filterIndexed { index, _ -> (!isNeedShowSubTitle || index < 4) }
+                            .filterIndexed { index, _ -> index < 4 }
                             .map { odd ->
                                 odd.outrightCateKey = it.key
                                 odd
                             })
 
 
-                    if (isNeedShowSubTitle) {
-                        if (it.value.filterNotNull().size > 4) {
-                            list.add(matchOdd)
-                        }
+                    if (it.value.filterNotNull().size > 4) {
+                        list.add(it.key to matchOdd)
                     }
                 }
                 data = list
@@ -103,8 +99,8 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
                 holder.bind(matchOdd, item, outrightOddListener, oddsType)
             }
             is MoreViewHolder -> {
-                val item = data[position] as MatchOdd
-                holder.bind(item, outrightOddListener)
+                val item = data[position] as Pair<*, *>
+                holder.bind((item.first as String), (item.second as MatchOdd), outrightOddListener)
             }
         }
 
@@ -187,9 +183,9 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
 
     class MoreViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(matchOdd: MatchOdd, outrightOddListener: OutrightOddListener?) {
+        fun bind(oddsKey: String, matchOdd: MatchOdd, outrightOddListener: OutrightOddListener?) {
             itemView.setOnClickListener {
-                outrightOddListener?.onClickMore(matchOdd)
+                outrightOddListener?.onClickMore(oddsKey, matchOdd)
             }
         }
 
@@ -207,8 +203,8 @@ class OutrightOddAdapter(private val isNeedShowSubTitle: Boolean) :
 
 class OutrightOddListener(
     val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd) -> Unit,
-    val clickListenerMore: (matchOdd: MatchOdd) -> Unit
+    val clickListenerMore: (oddsKey: String, matchOdd: MatchOdd) -> Unit
 ) {
     fun onClickBet(matchOdd: MatchOdd?, odd: Odd) = clickListenerBet(matchOdd, odd)
-    fun onClickMore(matchOdd: MatchOdd) = clickListenerMore(matchOdd)
+    fun onClickMore(oddsKey: String, matchOdd: MatchOdd) = clickListenerMore(oddsKey, matchOdd)
 }

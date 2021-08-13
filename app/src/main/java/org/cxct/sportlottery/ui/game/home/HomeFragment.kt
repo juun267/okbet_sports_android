@@ -213,11 +213,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
         mRecommendAdapter.onClickMoreListener = object : OnClickMoreListener {
-            override fun onClickMore(matchOdd: MatchOdd) {
+            override fun onClickMore(oddsKey: String, matchOdd: MatchOdd) {
                 scroll_view.smoothScrollTo(0, 0)
 
                 val action =
                     HomeFragmentDirections.actionHomeFragmentToGameOutrightMoreFragment(
+                        oddsKey,
                         org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
                             odds = matchOdd.odds,

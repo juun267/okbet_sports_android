@@ -138,14 +138,14 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 //TODO simon test review MatchOdd 資料轉換
 fun RecommendGameEntity.toMatchOdd(): MatchOdd {
     val matchInfo = MatchInfo(
-        gameType = null,
+        gameType = this.code,
         awayName = this.matchInfo?.awayName.toString(),
         endTime = this.matchInfo?.endTime,
-        homeName = this.matchInfo?.homeName?: "",
-        id = this.matchInfo?.id?: "",
-        playCateNum = this.matchInfo?.playCateNum?: -1,
+        homeName = this.matchInfo?.homeName ?: "",
+        id = this.matchInfo?.id ?: "",
+        playCateNum = this.matchInfo?.playCateNum ?: -1,
         startTime = this.matchInfo?.startTime,
-        status = this.matchInfo?.status?: -1
+        status = this.matchInfo?.status ?: -1
     )
     val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
     this.oddBeans.forEach {

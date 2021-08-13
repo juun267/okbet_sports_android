@@ -50,10 +50,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                         addOddsDialog(matchOdd, odd)
                     }
                 },
-                { matchOdd ->
+                { oddsKey, matchOdd ->
                     val action =
                         GameOutrightFragmentDirections.actionGameOutrightFragmentToGameOutrightMoreFragment(
-                            matchOdd
+                            oddsKey,
+                            matchOdd.apply {
+                                this.matchInfo?.gameType = args.gameType.key
+                            }
                         )
                     findNavController().navigate(action)
                 }
