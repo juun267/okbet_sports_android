@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_league_filter.view.*
@@ -55,7 +56,9 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
         game_toolbar_sport_type.text = getString(args.gameType.string)
 
-        game_toolbar_back.setOnClickListener { }
+        game_toolbar_back.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     private fun initObserver() {
