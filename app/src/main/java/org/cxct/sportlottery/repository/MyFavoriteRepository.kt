@@ -37,7 +37,7 @@ class MyFavoriteRepository {
             result.body()?.t?.let {
                 _favorSportList.postValue(TextUtil.split(it.sport ?: ""))
                 _favorLeagueList.postValue(TextUtil.split(it.league ?: ""))
-                _favorMatchList.postValue(TextUtil.split(it.match ?: ""))
+                _favorMatchList.postValue(TextUtil.split(it.match))
                 _favorPlayCateList.postValue(it.playCate ?: listOf())
             }
         }
