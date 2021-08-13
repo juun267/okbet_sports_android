@@ -24,6 +24,14 @@ class LeagueFilterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupToolbar()
+    }
+
+    private fun setupToolbar() {
+        game_toolbar_match_type.text = getString(args.matchType.resId)
+
         game_toolbar_sport_type.text = getString(args.gameType.string)
+
+        game_toolbar_back.setOnClickListener { }
     }
 }
