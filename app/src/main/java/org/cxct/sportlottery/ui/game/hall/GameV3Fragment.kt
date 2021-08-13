@@ -791,23 +791,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.odds.values.forEach { odds ->
                             odds.forEach { odd ->
-                                when (globalStopEvent.producerId) {
-                                    null -> {
-                                        odd?.status = BetStatus.DEACTIVATED.code
-                                    }
-                                    else -> {
-                                        odd?.producerId?.let { producerId ->
-                                            if (producerId == globalStopEvent.producerId) {
-                                                odd.status = BetStatus.DEACTIVATED.code
-                                            }
-                                        }
-                                    }
-                                }
-
+                                odd?.updateOddStatus(globalStopEvent.producerId)
                                 leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                             }
                         }
-
                     }
                 }
             }
@@ -885,6 +872,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         this.hkOdds = oddSocket.hkOdds
         this.status = oddSocket.status
 
+        return this
+    }
+
+    private fun Odd.updateOddStatus(producerId: Int?): Odd {
+        when (producerId) {
+            null -> {
+                this.status = BetStatus.DEACTIVATED.code
+            }
+            else -> {
+                if (this.producerId == producerId) {
+                    this.status = BetStatus.DEACTIVATED.code
+                }
+            }
+        }
         return this
     }
 
