@@ -425,6 +425,8 @@
 
     <string name="total_bet_amount">总投注额：</string>
 
+    <string name="league_filter_all">显示所有赛事</string>
+
     <!--odds detail-->
     <string name="odds_detail_more">显示更多</string>
     <string name="odds_detail_less">显示更少</string>
