@@ -453,9 +453,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             val type = oddsDetail.gameType
 
+            val nameByLanguage = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+
             tvGameName?.text = if (type.contains(":"))
-                oddsDetail.name.plus("  ").plus(type.split(":")[1])
-            else oddsDetail.name
+                nameByLanguage.plus("  ").plus(type.split(":")[1])
+            else nameByLanguage
 
             oddsDetailPin?.apply {
                 isActivated = oddsDetail.isPin
@@ -617,7 +619,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     val list: MutableList<Odd?> = mutableListOf()
                     list.add(odd)
                     val od = OddsDetailListData(
-                        oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list
+                        oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list, oddsDetail.nameMap
                     )
 
                     rvBet?.apply {
@@ -751,7 +753,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 oddsDetail.gameType,
                 oddsDetail.typeCodes,
                 oddsDetail.name,
-                oddArrayList
+                oddArrayList,
+                oddsDetail.nameMap
             ).apply {
                 isExpand = oddsDetail.isExpand
                 isMoreExpand = oddsDetail.isMoreExpand
@@ -891,7 +894,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 oddsDetail.gameType,
                 oddsDetail.typeCodes,
                 oddsDetail.name,
-                oddsDetail.oddArrayList
+                oddsDetail.oddArrayList,
+                oddsDetail.nameMap
             ).apply {
                 isExpand = oddsDetail.isExpand
                 isMoreExpand = oddsDetail.isMoreExpand

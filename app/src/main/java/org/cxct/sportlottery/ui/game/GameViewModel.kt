@@ -1116,7 +1116,8 @@ class GameViewModel(
                     key,
                     TextUtil.split(value.typeCodes),
                     value.name,
-                    filteredOddList
+                    filteredOddList,
+                    value.nameMap,
                 )
             )
         }
@@ -1197,6 +1198,7 @@ class GameViewModel(
                             TextUtil.split(value.typeCodes),
                             value.name,
                             filteredOddList,
+                            value.nameMap
                         )
                     )
                 }
