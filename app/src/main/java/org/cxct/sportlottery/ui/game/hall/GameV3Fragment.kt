@@ -792,10 +792,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         matchOdd.odds.values.forEach { odds ->
                             odds.forEach { odd ->
                                 odd?.updateOddStatus(globalStopEvent.producerId)
-                                leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                            }
+                        }
+
+                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                            quickPlayCate.quickOdds?.values?.forEach { odds ->
+                                odds.forEach { odd ->
+                                    odd?.updateOddStatus(globalStopEvent.producerId)
+                                }
                             }
                         }
                     }
+
+                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                 }
             }
         })
