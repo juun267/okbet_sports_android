@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_list_item.view.*
 import kotlinx.android.synthetic.main.content_eps_match_info_v2.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
+import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 
@@ -33,32 +36,62 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
             }
         }
 
-    class OddViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val oddStateRefreshListener by lazy {
+        object : OddStateViewHolder.OddStateChangeListener {
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
+                    matchOdd.epsItem?.id == odd.id
+                }))
+            }
+        }
+    }
+
+    class OddViewHolder (itemView: View,private val refreshListener: OddStateChangeListener) : StateViewHolder(itemView) {
         fun bind(item: EpsOdds,oddsType: OddsType, clickListener: EpsListAdapter.EpsOddListener,matchInfo : MatchInfo) {
             itemView.tv_title.text = "${item.epsItem?.name}"
-            itemView.btn_odd.isActivated = item.epsItem?.isSelected ?: false
+            itemView.btn_odd.isSelected = item.epsItem?.isSelected ?: false
 
             itemView.btn_odd.apply {
+                when(item.epsItem?.status){
+                    BetStatus.ACTIVATED.code -> betStatus = BetStatus.ACTIVATED.code
+                    BetStatus.LOCKED.code -> {
+                        betStatus = BetStatus.LOCKED.code
+                        return@apply
+                    }
+                    BetStatus.DEACTIVATED.code -> betStatus = BetStatus.DEACTIVATED.code
+                    null->{
+                        betStatus = BetStatus.DEACTIVATED.code
+                        return@apply
+                    }
+                }
+
                 setOnClickListener {
                     item.epsItem?.let { Odd ->
                         clickListener.onClickBet(Odd, matchInfo)
                     }
                 }
-                val odds = if(oddsType == OddsType.EU)  item.epsItem?.odds.toString() else  item.epsItem?.hkOdds.toString()
-                setOddsValue(item.epsItem?.extInfo ?: "", odds)
-                setFlag()
+                setupOddForEPS(item.epsItem,oddsType)
+
+                if(!itemView.btn_odd.isSelected)
+                setupOddState(this, item.epsItem)
+
             }
         }
 
         companion object {
-            fun from(parent: ViewGroup): OddViewHolder {
+            fun from(parent: ViewGroup ,refreshListener: OddStateChangeListener): OddViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
                     .inflate(R.layout.content_eps_list_item, parent, false)
-                return OddViewHolder(view)
+                return OddViewHolder(view,refreshListener)
             }
         }
+
+        override val oddStateChangeListener: OddStateChangeListener
+            get() = refreshListener
     }
+
+    abstract class StateViewHolder(itemView: View) : OddStateViewHolder(itemView)
 
     class MatchInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         @SuppressLint("SetTextI18n")
@@ -83,7 +116,7 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ViewType.MATCHINFO.ordinal -> MatchInfoViewHolder.from(parent)
-            ViewType.ODD.ordinal -> OddViewHolder.from(parent)
+            ViewType.ODD.ordinal -> OddViewHolder.from(parent,oddStateRefreshListener)
             else -> MatchInfoViewHolder.from(parent)
         }
     }

@@ -837,21 +837,61 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
 
                     val epsOdds = epsListAdapter.dataList
+                    val epsOddsType = leagueAdapter.oddsType
                     val newEpsOddList = oddsChangeEvent.odds[PlayCate.EPS.value]
-
                     epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
                         epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
-                            matchOddsItem.odds?.eps?.forEach {  odd ->
-                                newEpsOddList?.forEach { newOdd ->
-                                    if(newOdd?.id == odd.id){
-                                        odd.hkOdds = newOdd?.hkOdds
-                                        odd.extInfo = newOdd?.extInfo
-                                        odd.odds = newOdd?.odds
-                                        epsListAdapter.notifyItemChanged(index)
+                            matchOddsItem.odds?.eps?.forEach { epsOdd ->
+                                newEpsOddList?.forEach { socketOdd ->
+                                    if (socketOdd?.id == epsOdd.id) {
+                                        //狀態顏色修改
+                                        when (epsOddsType) {
+                                            OddsType.EU -> {
+                                                when {
+                                                    epsOdd.odds?:0.0 > socketOdd?.odds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SMALLER.state
+                                                    }
+                                                    epsOdd.odds?:0.0 < socketOdd?.odds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.LARGER.state
+                                                    }
+                                                    epsOdd.odds == socketOdd?.odds -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SAME.state
+                                                    }
+                                                }
+                                            }
+                                            OddsType.HK -> {
+                                                when {
+                                                    epsOdd.hkOdds?:0.0 > socketOdd?.hkOdds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SMALLER.state
+                                                    }
+                                                    epsOdd.hkOdds?:0.0 < socketOdd?.hkOdds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.LARGER.state
+                                                    }
+                                                    epsOdd.hkOdds == socketOdd?.hkOdds -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SAME.state
+                                                    }
+                                                }
+                                            }
+                                        }
+
+
+                                        epsOdd.hkOdds = socketOdd?.hkOdds
+                                        epsOdd.extInfo = socketOdd?.extInfo
+                                        epsOdd.odds = socketOdd?.odds
+                                        epsOdd.status = socketOdd?.status ?: BetStatus.DEACTIVATED.code
+
                                     }
                                 }
+
                             }
                         }
+                        epsListAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -883,6 +923,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
 
                     }
+                }
+
+                val epsOdds = epsListAdapter.dataList
+                epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
+                    epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                        matchOddsItem.odds?.eps?.forEach { epsOdd ->
+                            when (globalStopEvent.producerId) {
+                                null -> {
+                                    epsOdd?.status = BetStatus.DEACTIVATED.code
+                                }
+                                else -> {
+                                    epsOdd?.producerId?.let { producerId ->
+                                        if (producerId == globalStopEvent.producerId) {
+                                            epsOdd.status = BetStatus.DEACTIVATED.code
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    epsListAdapter.notifyItemChanged(index)
                 }
             }
         })
