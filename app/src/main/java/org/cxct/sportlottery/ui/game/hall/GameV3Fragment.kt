@@ -224,7 +224,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
                     ?.let {
                         val action =
-                            GameV3FragmentDirections.actionGameV3FragmentToLeagueFilterFragment(it)
+                            GameV3FragmentDirections.actionGameV3FragmentToLeagueFilterFragment(
+                                it,
+                                args.matchType
+                            )
                         findNavController().navigate(action)
                     }
             }

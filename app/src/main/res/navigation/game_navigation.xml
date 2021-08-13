@@ -169,6 +169,9 @@
                 android:name="gameType"
                 app:argType="org.cxct.sportlottery.network.common.GameType" />
 
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
         </action>
     </fragment>
 
@@ -410,6 +413,10 @@
         android:id="@+id/leagueFilterFragment"
         android:name="org.cxct.sportlottery.ui.game.filter.LeagueFilterFragment"
         tools:layout="@layout/fragment_league_filter">
+
+        <argument
+            android:name="matchType"
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
 
         <argument
             android:name="gameType"
