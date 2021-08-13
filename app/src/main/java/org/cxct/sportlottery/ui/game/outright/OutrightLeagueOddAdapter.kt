@@ -42,7 +42,7 @@ class OutrightLeagueOddAdapter :
         RecyclerView.ViewHolder(itemView) {
 
         private val outrightOddAdapter by lazy {
-            OutrightOddAdapter(true)
+            OutrightOddAdapter()
         }
 
         fun bind(

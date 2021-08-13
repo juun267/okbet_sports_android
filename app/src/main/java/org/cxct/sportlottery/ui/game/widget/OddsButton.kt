@@ -14,6 +14,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -85,7 +86,7 @@ class OddsButton @JvmOverloads constructor(
 
     fun setupOdd(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            text = odd?.name
+            text = odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name
             visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
@@ -101,7 +102,7 @@ class OddsButton @JvmOverloads constructor(
 
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            text = odd?.extInfo
+            text = odd?.extInfo//特優賠率較低賠率會返回在extInfo
             paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
         }
 

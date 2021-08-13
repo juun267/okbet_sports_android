@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context=".ui.game.home.recommend.RvRecommendAdapter">
+    tools:context=".ui.game.home.recommend.RvRecommendAdapter"
+    tools:ignore="spUsage">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/block_match_info"
@@ -55,6 +56,42 @@
             app:layout_constraintStart_toEndOf="@id/iv_match_image"
             app:layout_constraintTop_toBottomOf="@id/tv_game_name_home"
             tools:text="利物浦" />
+
+        <TextView
+            android:id="@+id/rec_outright_game_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/rec_outright_league"
+            app:layout_constraintEnd_toStartOf="@id/tv_match_time"
+            app:layout_constraintStart_toEndOf="@id/iv_match_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="足球"
+            tools:visibility="gone" />
+
+        <TextView
+            android:id="@+id/rec_outright_league"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_match_time"
+            app:layout_constraintStart_toEndOf="@id/iv_match_image"
+            app:layout_constraintTop_toBottomOf="@id/rec_outright_game_type"
+            tools:text="欧洲足球锦标赛2020"
+            tools:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_match_time"
