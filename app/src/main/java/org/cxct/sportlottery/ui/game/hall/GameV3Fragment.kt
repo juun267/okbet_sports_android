@@ -221,7 +221,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             setOnClickListener {
-                Toast.makeText(context, "click toolbar champion", Toast.LENGTH_SHORT).show()
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+                    ?.let {
+                        val action =
+                            GameV3FragmentDirections.actionGameV3FragmentToLeagueFilterFragment(it)
+                        findNavController().navigate(action)
+                    }
             }
         }
 

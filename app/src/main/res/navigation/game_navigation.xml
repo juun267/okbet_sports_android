@@ -161,6 +161,15 @@
                 android:name="matchId"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_gameV3Fragment_to_leagueFilterFragment"
+            app:destination="@id/leagueFilterFragment">
+
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+        </action>
     </fragment>
 
     <fragment
@@ -395,5 +404,15 @@
         <argument
             android:name="matchOdd"
             app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/leagueFilterFragment"
+        android:name="org.cxct.sportlottery.ui.game.filter.LeagueFilterFragment"
+        tools:layout="@layout/fragment_league_filter">
+
+        <argument
+            android:name="gameType"
+            app:argType="org.cxct.sportlottery.network.common.GameType" />
     </fragment>
 </navigation>
