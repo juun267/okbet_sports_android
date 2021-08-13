@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     }, BackClickListener {
         findNavController().navigateUp()
     }, SportDateSelectListener { sport, date ->
+        Log.e(">>>", "sport = $sport")
         viewModel.setSelectedSportDate(sport, date)
     })
 

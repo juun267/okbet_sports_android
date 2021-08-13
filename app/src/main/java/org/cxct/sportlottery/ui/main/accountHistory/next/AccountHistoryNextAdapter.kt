@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -299,6 +300,7 @@ class AccountHistoryNextAdapter(
                            StatusSheetData(TimeUtil.getMinusDate(6, YMD_FORMAT), dateString(6)),
                            StatusSheetData(TimeUtil.getMinusDate(7, YMD_FORMAT), dateString(7)))
 
+                Log.e(">>>", "${mSelectedSportDate?.first}, ${mSelectedSportDate?.second}")
 
                 sport_selector.selectedText = sportStatusList.find { it.code == mSelectedSportDate?.first }?.showName
                 sport_selector.selectedTag = mSelectedSportDate?.first
@@ -310,6 +312,7 @@ class AccountHistoryNextAdapter(
                 sport_selector.dataList = sportStatusList
                 sport_selector.setOnItemSelectedListener {
                     selectListener.onSelect(it.code, date_selector.getNowSelectedItemCode())
+                    Log.e(">>>", "onSelect sport = ${it.code}")
                 }
 
                 date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
