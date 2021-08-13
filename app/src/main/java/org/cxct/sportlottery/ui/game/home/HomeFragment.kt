@@ -23,19 +23,12 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
-import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
-import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
-import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
-import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -425,7 +418,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun subscribeTableHallChannel(selectMatchType: MatchType) {
         if (selectMatchType == MatchType.IN_PLAY) {
             mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs.forEach { match ->
+                data.matchs?.forEach { match ->
                     subscribeChannelHall(
                         data.code,
                         MenuCode.HOME_INPLAY_MOBILE.code,
@@ -435,7 +428,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         } else if (selectMatchType == MatchType.AT_START) {
             mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs.forEach { match ->
+                data.matchs?.forEach { match ->
                     subscribeChannelHall(
                         data.code,
                         MenuCode.HOME_ATSTART_MOBILE.code,
@@ -448,7 +441,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun unsubscribeTableHallChannel() {
         mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-            data.matchs.forEach { match ->
+            data.matchs?.forEach { match ->
                 unSubscribeChannelHall(
                     data.code,
                     MenuCode.HOME_INPLAY_MOBILE.code,
@@ -458,7 +451,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-            data.matchs.forEach { match ->
+            data.matchs?.forEach { match ->
                 unSubscribeChannelHall(
                     data.code,
                     MenuCode.HOME_ATSTART_MOBILE.code,
