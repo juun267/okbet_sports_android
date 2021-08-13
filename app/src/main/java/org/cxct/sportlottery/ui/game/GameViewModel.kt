@@ -480,7 +480,7 @@ class GameViewModel(
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(MatchType.IN_PLAY.postValue)
+                    MatchPreloadRequest(MatchType.IN_PLAY.postValue, MenuCode.HOME_INPLAY_MOBILE.code)
                 )
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
@@ -511,6 +511,7 @@ class GameViewModel(
                 OneBoSportApi.matchService.getMatchPreload(
                     MatchPreloadRequest(
                         MatchType.AT_START.postValue,
+                        MenuCode.HOME_ATSTART_MOBILE.code,
                         startTime = startTime.toString(),
                         endTime = endTime.toString()
                     )
