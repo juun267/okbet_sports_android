@@ -421,5 +421,14 @@
         <argument
             android:name="gameType"
             app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+        <action
+            android:id="@+id/action_leagueFilterFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
     </fragment>
 </navigation>

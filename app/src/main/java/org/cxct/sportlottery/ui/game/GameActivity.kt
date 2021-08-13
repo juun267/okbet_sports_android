@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
@@ -431,6 +432,13 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 val action = GameV3FragmentDirections.actionGameFragmentToGameFragment(matchType)
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
+            }
+            R.id.leagueFilterFragment -> {
+                val action =
+                    LeagueFilterFragmentDirections.actionLeagueFilterFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
             }
             R.id.gameLeagueFragment -> {
                 val action =
