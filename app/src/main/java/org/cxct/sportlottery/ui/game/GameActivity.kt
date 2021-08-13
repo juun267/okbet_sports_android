@@ -468,7 +468,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
             return
         }
         when (mNavController.currentDestination?.id) {
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment, R.id.leagueFilterFragment -> {
                 mNavController.navigateUp()
             }
 
