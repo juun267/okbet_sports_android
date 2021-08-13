@@ -104,9 +104,9 @@ class TypeSCOAdapter(
 
             val oddsList = oddsDetail.scoItem[key]
 
-            val fOdds = oddsList?.find { it?.spread?.contains(OddSpreadForSCOCompare.SCORE_1ST.spread) == true }
-            val aOdds = oddsList?.find { it?.spread?.contains(OddSpreadForSCOCompare.SCORE_ANT.spread) == true }
-            val lOdds = oddsList?.find { it?.spread?.contains(OddSpreadForSCOCompare.SCORE_LAST.spread) == true }
+            val fOdds = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_1ST.playCode) == true }
+            val aOdds = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_ANT.playCode) == true }
+            val lOdds = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_LAST.playCode) == true }
 
             btnOdds1st?.apply {
                 setupOdd(fOdds, oddsType)
@@ -160,7 +160,7 @@ class TypeSCOAdapter(
             tvName.text = key
 
             val oddsList = oddsDetail.scoItem[key]
-            val odds = oddsList?.find { TextUtil.compareWithGameKey(OddSpreadForSCOCompare.SCORE_N.spread, "${it?.spread}") }
+            val odds = oddsList?.find { TextUtil.compareWithGameKey(OddSpreadForSCOCompare.SCORE_N.playCode, "${it?.playCode}") }
 
             btnOdds?.apply {
                 setupOdd(odds, oddsType)

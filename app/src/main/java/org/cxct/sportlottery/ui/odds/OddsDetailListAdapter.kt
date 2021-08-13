@@ -823,7 +823,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private fun setupSCOTeamName(oddsDetail: OddsDetailListData): MutableList<String> {
 
             val groupTeamName = oddsDetail.oddArrayList.groupBy {
-                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(tvHomeName?.context))
+                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(tvHomeName?.context).key)
             }
             return mutableListOf<String>().apply {
                 groupTeamName.forEach {
@@ -856,12 +856,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             //過濾掉 其他:(第一、任何、最後), 无進球
             //依隊名分開
             oddsDetail.oddArrayList.filterNot { odd ->
-                odd?.spread == OddSpreadForSCO.SCORE_1ST_O.spread ||
-                        odd?.spread == OddSpreadForSCO.SCORE_ANT_O.spread ||
-                        odd?.spread == OddSpreadForSCO.SCORE_LAST_O.spread ||
-                        odd?.spread == OddSpreadForSCO.SCORE_N.spread
+                odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
+                        odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
+                        odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
+                        odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
             }.groupBy {
-                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(context))
+                it?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key)
             }.forEach {
                 if (it.key == teamName) {
                     map = it.value.groupBy { odd -> odd?.name } as HashMap<String, List<Odd?>>
@@ -873,10 +873,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             //倒序排列 多的在前(無進球只有一種賠率 放最後面)
             //添加至球員列表內
             oddsDetail.oddArrayList.filter { odd ->
-                odd?.spread == OddSpreadForSCO.SCORE_1ST_O.spread ||
-                        odd?.spread == OddSpreadForSCO.SCORE_ANT_O.spread ||
-                        odd?.spread == OddSpreadForSCO.SCORE_LAST_O.spread ||
-                        odd?.spread == OddSpreadForSCO.SCORE_N.spread
+                odd?.playCode == OddSpreadForSCO.SCORE_1ST_O.playCode ||
+                        odd?.playCode == OddSpreadForSCO.SCORE_ANT_O.playCode ||
+                        odd?.playCode == OddSpreadForSCO.SCORE_LAST_O.playCode ||
+                        odd?.playCode == OddSpreadForSCO.SCORE_N.playCode
             }.groupBy {
                 it?.name
             }.entries.sortedByDescending {
