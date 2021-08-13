@@ -176,7 +176,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, {
             hideLoading()
-            leagueAdapter.data = it
+            leagueAdapter.data = it.toMutableList()
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
