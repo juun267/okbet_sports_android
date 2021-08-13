@@ -178,6 +178,7 @@
     <string name="menu">菜单</string>
     <string name="premium_odds">特优赔率</string>
     <string name="infomation_center">信息中心</string>
+    <string name="left_menu_odds_type_setting">盘口设定</string>
 
 
     <!-- MenuFragment -->

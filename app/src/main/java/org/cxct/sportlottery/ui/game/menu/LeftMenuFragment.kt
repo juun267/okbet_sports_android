@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 
 class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
     BaseFragment<GameViewModel>(GameViewModel::class) {
@@ -41,6 +42,19 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
         initRecyclerView()
         initData()
         initButton()
+        tv_odds_type.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.pop_left_to_right_enter_opaque,
+                    R.anim.push_right_to_left_exit_opaque,
+                    R.anim.pop_left_to_right_enter_opaque,
+                    R.anim.push_right_to_left_exit_opaque
+                )
+                .add(R.id.fl_left_menu, ChangeOddsTypeDialog())
+                .addToBackStack(null)
+                .commit()
+        }
+
     }
 
     //TODO
@@ -55,6 +69,19 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
         ct_premium_odds.setOnClickListener { }
         //遊戲規則
         ct_game_rule.setOnClickListener { }
+        //盤口設定
+        tv_odds_type.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.pop_left_to_right_enter_opaque,
+                    R.anim.push_right_to_left_exit_opaque,
+                    R.anim.pop_left_to_right_enter_opaque,
+                    R.anim.push_right_to_left_exit_opaque
+                )
+                .add(R.id.fl_left_menu, ChangeOddsTypeDialog())
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     private fun initData() {
