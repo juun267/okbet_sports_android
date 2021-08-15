@@ -78,4 +78,9 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <style name="LeftMenu">
+        <item name="android:windowEnterAnimation">@anim/pop_left_to_right_enter_opaque</item>
+        <item name="android:windowExitAnimation">@anim/push_right_to_left_exit_opaque</item>
+    </style>
+
 </resources>

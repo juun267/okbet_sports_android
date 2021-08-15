@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu
 
+
 import android.os.Bundle
 import android.view.*
 import kotlinx.android.synthetic.main.dialog_change_odd_type.*
@@ -7,6 +8,7 @@ import kotlinx.android.synthetic.main.dialog_change_odd_type.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.main.MainViewModel
+
 
 class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
@@ -18,6 +20,7 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.setWindowAnimations(R.style.LeftMenu)
         initEvent(view)
         initObserver()
         getOddsType()
