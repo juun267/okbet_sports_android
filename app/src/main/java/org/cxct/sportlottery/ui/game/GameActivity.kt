@@ -209,31 +209,12 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                    override fun onClick(menuStatus: Int) {
-                        when (menuStatus) {
-                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                        }
-                    }
-                })
-
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque,
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque
-                    )
-                    .add(R.id.fl_left_menu, leftMenuFragment)
-                    .addToBackStack(null)
-                    .commit()
+                LeftMenuFragment().show(supportFragmentManager, LeftMenuFragment::class.java.simpleName)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
-    enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)

@@ -3,10 +3,12 @@ package org.cxct.sportlottery.ui.menu
 
 import android.os.Bundle
 import android.view.*
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_change_odd_type.*
 import kotlinx.android.synthetic.main.dialog_change_odd_type.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
 
@@ -30,7 +32,10 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
     private fun initEvent(rootView: View?) {
         rootView?.apply {
             img_close?.setOnClickListener {
-                activity?.onBackPressed()
+                parentFragmentManager.findFragmentByTag(LeftMenuFragment::class.java.simpleName)?.let {
+                    (it as DialogFragment).dismiss()
+                }
+                dismiss()
             }
 
             img_back?.setOnClickListener {
