@@ -138,7 +138,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
-        rv_bet_list.itemAnimator = null
         rv_bet_list.adapter = betListRefactorAdapter
         rv_bet_list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
             ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
