@@ -28,9 +28,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
-import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
@@ -44,18 +43,16 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
-import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.MenuLeftFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
-import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
-class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
@@ -114,7 +111,6 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
     enum class Page { ODDS_DETAIL, OUTRIGHT }
 
-    var canOpenBetInfoPage: Boolean = false //判斷是否能開啟投注單頁面
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -247,11 +243,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun initBottomNavigation() {
-        initNavigationListener()
-    }
-
-    private fun initNavigationListener() {
+    override fun initBottomNavigation() {
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
@@ -259,21 +251,19 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.navigation_game -> {
-                    startActivity(Intent(this@GameActivity, MyFavoriteActivity::class.java))
+                    viewModel.navMyFavorite()
                     false
                 }
                 R.id.item_bet_list -> {
-                    //TODO 邏輯移動 see: BetInfoListDialog
-//                    showBetListDialog()
-                    showBetListPage()
+                    viewModel.navShoppingCart()
                     false
                 }
                 R.id.navigation_account_history -> {
-                    startActivity(Intent(this@GameActivity, AccountHistoryActivity::class.java))
+                    viewModel.navAccountHistory()
                     false
                 }
                 R.id.navigation_transaction_status -> {
-                    startActivity(Intent(this@GameActivity, TransactionStatusActivity::class.java))
+                    viewModel.navTranStatus()
                     false
                 }
                 else -> false
@@ -281,9 +271,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun showBetListPage() {
-        if (!canOpenBetInfoPage) return
-
+    override fun showBetListPage() {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -581,9 +569,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
             sport_bottom_navigation.setBetCount(it.peekContent().size)
-            canOpenBetInfoPage = it.peekContent().size > 0
         })
-
 
         viewModel.notifyLogin.observe(this, {
             snackBarLoginNotify.apply {
