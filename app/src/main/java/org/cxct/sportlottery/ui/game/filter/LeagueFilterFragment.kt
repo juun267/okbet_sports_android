@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_league_filter.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
+import org.cxct.sportlottery.ui.game.hall.adapter.CountryLeagueListener
 
 
 class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -21,7 +24,16 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     private val args: LeagueFilterFragmentArgs by navArgs()
 
     private val countryAdapter by lazy {
-        CountryAdapter()
+        CountryAdapter().apply {
+            countryLeagueListener = CountryLeagueListener(
+                {
+
+                }, { league ->
+                    viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
+                }, {
+
+                })
+        }
     }
 
     override fun onCreateView(
@@ -70,6 +82,24 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     countryAdapter.data = leagueListResult.rows ?: listOf()
                 }
             }
+        })
+
+        viewModel.favorLeagueList.observe(this.viewLifecycleOwner, {
+            val leaguePinList = mutableListOf<League>()
+
+            countryAdapter.data.forEach { row ->
+                val pinLeague = row.list.filter { league ->
+                    it.contains(league.id)
+                }
+
+                row.list.forEach { league ->
+                    league.isPin = it.contains(league.id)
+                }
+
+                leaguePinList.addAll(pinLeague)
+            }
+
+            countryAdapter.datePin = leaguePinList
         })
     }
 }
