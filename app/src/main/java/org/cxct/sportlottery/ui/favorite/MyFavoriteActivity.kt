@@ -21,8 +21,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         initBottomNavigation()
 
         initObserver()
-
-        initNavigationView()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -36,32 +34,36 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     override fun initBottomNavigation() {
-        sport_bottom_navigation.setNavigationItemClickListener {
-            when (it) {
-                R.id.navigation_sport -> {
-                    viewModel.navGame()
-                    finish()
-                    false
+        sport_bottom_navigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_game -> {
+                        true
+                    }
+                    R.id.item_bet_list -> {
+                        viewModel.navShoppingCart()
+                        false
+                    }
+                    R.id.navigation_account_history -> {
+                        viewModel.navAccountHistory()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_transaction_status -> {
+                        viewModel.navTranStatus()
+                        finish()
+                        false
+                    }
+                    else -> false
                 }
-                R.id.navigation_game -> {
-                    true
-                }
-                R.id.item_bet_list -> {
-                    viewModel.navShoppingCart()
-                    false
-                }
-                R.id.navigation_account_history -> {
-                    viewModel.navAccountHistory()
-                    finish()
-                    false
-                }
-                R.id.navigation_transaction_status -> {
-                    viewModel.navTranStatus()
-                    finish()
-                    false
-                }
-                else -> false
             }
+
+            setSelected(R.id.navigation_game)
         }
     }
 
@@ -85,6 +87,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                 }
 
             })
+
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -117,9 +120,5 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                 show()
             }
         })
-    }
-
-    private fun initNavigationView() {
-        sport_bottom_navigation.setSelected(R.id.navigation_game)
     }
 }
