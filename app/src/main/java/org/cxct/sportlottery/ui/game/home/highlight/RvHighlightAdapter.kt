@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.home.highlight
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -126,6 +127,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private var timer: Timer? = null
 
         fun bind(data: MatchOdd) {
+            setupOddList(data)
             setupMatchInfo(data)
             setupTime(data)
             setupOddButton(data)
@@ -141,10 +143,38 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
+        private fun setupOddList(data: MatchOdd) {
+            itemView.apply {
+                gameType = data.matchInfo?.gameType
+
+                oddListHDP = when (gameType) {
+                    GameType.TN.key -> {
+                        data.odds[PlayCate.SET_HDP.value]
+                    }
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.HDP_INCL_OT.value]
+                    }
+                    else -> {
+                        data.odds[PlayCate.HDP.value]
+                    }
+                }
+
+                oddList1x2 = when (gameType) {
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.SINGLE_OT.value]
+                    }
+                    else -> {
+                        data.odds[PlayCate.SINGLE.value]
+                    }
+                }
+            }
+        }
+
         private fun setupMatchInfo(data: MatchOdd) {
             itemView.apply {
                 tv_game_name_home.text = data.matchInfo?.homeName
                 tv_game_name_away.text = data.matchInfo?.awayName
+                showStrongTeam()
                 tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
 
                 btn_star.apply {
@@ -153,6 +183,27 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     setOnClickListener {
                         onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
                     }
+                }
+            }
+        }
+
+        private fun showStrongTeam() {
+            itemView.apply {
+                tv_game_name_home.apply {
+                    setTypeface(
+                        this.typeface, if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                            Typeface.BOLD
+                        else
+                            Typeface.NORMAL
+                    )
+                }
+                tv_game_name_away.apply {
+                    setTypeface(
+                        this.typeface, if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                            Typeface.BOLD
+                        else
+                            Typeface.NORMAL
+                    )
                 }
             }
         }
@@ -193,27 +244,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     GameType.TN.key, GameType.VB.key -> context.getText(R.string.ou_hdp_1x2_title)
                     else -> ""
                 }.toString()
-
-                oddListHDP = when (gameType) {
-                    GameType.TN.key -> {
-                        data.odds[PlayCate.SET_HDP.value]
-                    }
-                    GameType.BK.key -> {
-                        data.odds[PlayCate.HDP_INCL_OT.value]
-                    }
-                    else -> {
-                        data.odds[PlayCate.HDP.value]
-                    }
-                }
-
-                oddList1x2 = when (gameType) {
-                    GameType.BK.key -> {
-                        data.odds[PlayCate.SINGLE_OT.value]
-                    }
-                    else -> {
-                        data.odds[PlayCate.SINGLE.value]
-                    }
-                }
 
                 btn_match_odd1.apply {
                     isSelected = when (gameType) {
