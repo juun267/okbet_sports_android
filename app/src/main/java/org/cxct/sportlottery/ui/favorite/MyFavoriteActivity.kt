@@ -100,6 +100,10 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             .commit()
     }
 
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
+
     private fun initObserver() {
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
@@ -108,10 +112,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                     BetInfoCarDialog::class.java.simpleName
                 )
             }
-        })
-
-        viewModel.betInfoRepository.betInfoList.observe(this, {
-            sport_bottom_navigation.setBetCount(it.peekContent().size)
         })
 
         viewModel.notifyLogin.observe(this, {

@@ -300,6 +300,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             .commit()
     }
 
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
+
     //公告
     private fun initRvMarquee() {
         rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -565,10 +569,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             it?.getContentIfNotHandled()?.let {
                 BetInfoCarDialog().show(supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
             }
-        })
-
-        viewModel.betInfoRepository.betInfoList.observe(this, {
-            sport_bottom_navigation.setBetCount(it.peekContent().size)
         })
 
         viewModel.notifyLogin.observe(this, {

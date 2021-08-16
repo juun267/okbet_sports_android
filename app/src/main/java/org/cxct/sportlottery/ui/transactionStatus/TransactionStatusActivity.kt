@@ -189,6 +189,10 @@ class TransactionStatusActivity :
             .commit()
     }
 
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
+
     private fun initRvMarquee() {
         rv_marquee.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rv_marquee.adapter = mMarqueeAdapter

@@ -115,6 +115,10 @@ class AccountHistoryActivity :
             .commit()
     }
 
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
+
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
