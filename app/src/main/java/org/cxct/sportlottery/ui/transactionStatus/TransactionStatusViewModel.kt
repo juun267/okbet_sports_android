@@ -10,7 +10,7 @@ import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.Row
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 
@@ -21,7 +21,7 @@ class TransactionStatusViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
     favoriteRepository: MyFavoriteRepository
-) : BaseSocketViewModel(
+) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,

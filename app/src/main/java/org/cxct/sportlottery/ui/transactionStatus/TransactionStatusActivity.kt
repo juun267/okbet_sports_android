@@ -16,23 +16,19 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
-import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
-import org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
-import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
 class TransactionStatusActivity :
-    BaseSocketActivity<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
+    BaseBottomNavActivity<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
 
@@ -126,69 +122,61 @@ class TransactionStatusActivity :
         }
     }
 
-    private fun initBottomNavigation() {
-        initNavigationView()
-        initNavigationListener()
-
-        val transactionStatusFragment =
-            (supportFragmentManager.findFragmentById(R.id.fragment_transaction_status) as TransactionStatusFragment)
-        transactionStatusFragment.setBottomNavigationListener(object :
-            TransactionStatusFragment.BottomNavigationListener {
-            override fun onSportHomeNav() {
-                findViewById<BottomNavigationItem>(R.id.navigation_sport).performClick()
+    override fun initBottomNavigation() {
+        sport_bottom_navigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_game -> {
+                        viewModel.navMyFavorite()
+                        finish()
+                        false
+                    }
+                    R.id.item_bet_list -> {
+                        viewModel.navShoppingCart()
+                        false
+                    }
+                    R.id.navigation_account_history -> {
+                        viewModel.navAccountHistory()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_transaction_status -> {
+                        true
+                    }
+                    else -> false
+                }
             }
-        })
-    }
 
-    private fun initNavigationView() {
-        sport_bottom_navigation.setSelected(R.id.navigation_transaction_status)
-    }
-
-    private fun initNavigationListener() {
-        sport_bottom_navigation.setNavigationItemClickListener {
-            when (it) {
-                R.id.navigation_sport -> {
-                    finish()
-                    startActivity(Intent(this, GameActivity::class.java))
-                    false
-                }
-                R.id.navigation_game -> {
-                    startActivity(Intent(this@TransactionStatusActivity, MyFavoriteActivity::class.java))
-                    false
-                }
-                R.id.item_bet_list -> {
-                    showBetListPage()
-                    false
-                }
-                R.id.navigation_account_history -> {
-                    startActivity(Intent(this@TransactionStatusActivity, AccountHistoryActivity::class.java))
-                    false
-                }
-                R.id.navigation_transaction_status -> {
-                    startActivity(Intent(this, TransactionStatusActivity::class.java))
-                    true
-                }
-                else -> false
-            }
+            setSelected(R.id.navigation_transaction_status)
         }
     }
 
-    private fun showBetListPage() {
-        val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.push_right_to_left_enter,
-                        R.anim.pop_bottom_to_top_exit,
-                        R.anim.push_right_to_left_enter,
-                        R.anim.pop_bottom_to_top_exit
-                    )
-                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData, betParlayList))
-                    .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                    .commit()
-            }
+    override fun showBetListPage() {
+        val betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit,
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit
+                        )
+                        .replace(
+                            R.id.fl_bet_list,
+                            BetReceiptFragment.newInstance(betResultData, betParlayList)
+                        )
+                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                        .commit()
+                }
 
-        })
+            })
+
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -218,6 +206,13 @@ class TransactionStatusActivity :
 
         viewModel.oddsType.observe(this, {
             tv_odds_type.text = getString(it.res)
+        })
+
+        viewModel.notifyLogin.observe(this, {
+            snackBarLoginNotify.apply {
+                setAnchorView(R.id.sport_bottom_navigation)
+                show()
+            }
         })
     }
 
