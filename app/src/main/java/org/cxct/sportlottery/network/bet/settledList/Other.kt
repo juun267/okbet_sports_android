@@ -15,13 +15,13 @@ data class Other(
     @Json(name = "gameType")
     val gameType: String?,
     @Json(name = "grossWin")
-    val grossWin: Int?,
+    val grossWin: Double?,
     @Json(name = "matchOdds")
     val matchOdds: List<MatchOdd>?,
     @Json(name = "matchType")
     val matchType: String?,
     @Json(name = "netWin")
-    val netWin: Int?,
+    val netWin: Double?,
     @Json(name = "num")
     val num: Int?,
     @Json(name = "orderNo")
@@ -29,7 +29,7 @@ data class Other(
     @Json(name = "parlayType")
     val parlayType: String?,
     @Json(name = "rebate")
-    val rebate: Int?,
+    val rebate: Double?,
     @Json(name = "rebateAmount")
     val rebateAmount: Int?,
     @Json(name = "settleTime")
@@ -47,5 +47,5 @@ data class Other(
     @Json(name = "win")
     val win: Int?,
     @Json(name = "winnable")
-    val winnable: Int?
+    val winnable: Double?
 )

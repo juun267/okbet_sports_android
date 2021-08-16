@@ -354,6 +354,9 @@
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
+    <string name="bet_canceled">取消注单</string>
+    <string name="confirmed">已确认</string>
+
 
     <string name="bet_detail">注单详情</string>
     <string name="bet_time">投注时间：</string>
@@ -829,5 +832,6 @@
     <string name="odds_button_name_ant">任何</string>
     <string name="odds_button_name_last">最后</string>
     <string name="bet_succeeded">您已成功投注</string>
+    <string name="mix_bet_list">综合过关单</string>
 
 </resources>

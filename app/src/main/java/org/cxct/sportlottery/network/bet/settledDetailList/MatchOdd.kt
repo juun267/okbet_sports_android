@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.network.bet.settledList.PlayCateMatchResult
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -52,6 +53,5 @@ data class MatchOdd(
     @Json(name = "statusNameI18n")
     val statusNameI18n: String?,
     @Json(name = "playCateMatchResultList")
-    val playCateMatchResultList: List<String>?
-
-): Parcelable
+    val playCateMatchResultList: List<PlayCateMatchResult>?,
+    ): Parcelable

@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
