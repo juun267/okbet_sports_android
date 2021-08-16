@@ -27,7 +27,6 @@ import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import timber.log.Timber
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -53,11 +52,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     private fun updateDataList() {
-//        notifyDataSetChanged()
         //TODO review 看是否能用這種更新方式
         if ((betList?.size ?: 0) > 0) {
             if ((betList ?: mutableListOf()).all { it.matchOdd.refreshData }) {
-                Timber.e("Dean, notify all")
                 betList?.forEach {
                     it.matchOdd.refreshData = false
                 }
@@ -65,7 +62,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             } else {
                 betList?.forEachIndexed { index, betInfoListData ->
                     if (betInfoListData.matchOdd.refreshData) {
-                        Timber.e("Dean, index = $index notify")
                         betInfoListData.matchOdd.refreshData = false
                         notifyItemChanged(index)
                     }
@@ -283,14 +279,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
                 setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
-                /*tv_odds_content.text = "${itemData.matchOdd.playName}${itemData.matchOdd.spread}${
-                    TextUtil.formatForOdd(
-                        getOdds(
-                            itemData.matchOdd,
-                            oddsType
-                        )
-                    )
-                }"*/
                 tv_match.text =
                     "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 tv_name.text = if (itemData.matchOdd.inplay == INPLAY) {
