@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.network.odds
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.odds.list.OddStateParams
@@ -11,6 +13,7 @@ import org.cxct.sportlottery.network.odds.list.OddStateParams
  * @create 2021/7/23
  * @description 統一Odd格式
  */
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Odd(
 
@@ -48,7 +51,7 @@ data class Odd(
     val playCode: String? = null
 
 
-) : OddStateParams {
+) : OddStateParams, Parcelable {
 
     var isSelected: Boolean? = false
 

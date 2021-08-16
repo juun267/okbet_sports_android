@@ -39,6 +39,7 @@ import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
+import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -441,6 +442,13 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
             R.id.gameOutrightFragment -> {
                 val action =
                     GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
+            }
+            R.id.gameOutrightMoreFragment -> {
+                val action =
+                    GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToGameV3Fragment(
                         matchType
                     )
                 mNavController.navigate(action)
