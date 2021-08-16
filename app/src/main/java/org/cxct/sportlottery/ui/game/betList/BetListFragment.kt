@@ -325,6 +325,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             showHideOddsCloseWarn(it)
         })
 
+        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner, {
+            btn_bet.hasBetPlatClose = it
+        })
+
     }
 
     private fun initSocketObserver() {

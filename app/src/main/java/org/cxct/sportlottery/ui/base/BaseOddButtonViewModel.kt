@@ -48,6 +48,8 @@ abstract class BaseOddButtonViewModel(
 
     val showOddsCloseWarn get() = betInfoRepository.showOddsCloseWarn
 
+    val hasBetPlatClose get() = betInfoRepository.hasBetPlatClose
+
     val oddsType: LiveData<OddsType> = loginRepository.mOddsType
 
     val betAddResult: LiveData<Event<BetAddResult?>>

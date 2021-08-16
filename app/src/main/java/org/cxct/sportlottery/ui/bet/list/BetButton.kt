@@ -44,8 +44,14 @@ class BetButton @JvmOverloads constructor(
         set(value) {
             field = value
             field?.let {
-                setupSendOutClickable(it)
+                setupBetClickable()
             }
+        }
+
+    var hasBetPlatClose: Boolean? = null
+        set(value) {
+            field = value
+            setupBetClickable()
         }
 
 
@@ -83,7 +89,34 @@ class BetButton @JvmOverloads constructor(
             isClickable = isCanSendOut
         }
 
-        tv_accept_odds_change.isClickable = isCanSendOut
+        tv_accept_odds_change.apply {
+            isSelected = isCanSendOut
+            isClickable = isCanSendOut
+        }
+    }
+
+    private fun setupBetClickable() {
+        if (hasBetPlatClose == true || isCanSendOut == false) {
+            cl_bet.apply {
+                isSelected = false
+                isClickable = false
+            }
+
+            tv_accept_odds_change.apply {
+                isSelected = false
+                isClickable = false
+            }
+        } else {
+            cl_bet.apply {
+                isSelected = true
+                isClickable = true
+            }
+
+            tv_accept_odds_change.apply {
+                isSelected = true
+                isClickable = true
+            }
+        }
     }
 
 
