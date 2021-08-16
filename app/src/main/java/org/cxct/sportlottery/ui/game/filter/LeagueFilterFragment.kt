@@ -27,7 +27,8 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
                 {
-
+                    //TODO filter GameV3 page in play data
+                    findNavController().navigateUp()
                 }, { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
                 }, { league ->
