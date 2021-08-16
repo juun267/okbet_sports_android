@@ -162,12 +162,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private val epsListAdapter by lazy {
-        EpsListAdapter(EpsListAdapter.ItemClickListener {
-            //TODO 下注資料加入購物車
-        },
-            EpsListAdapter.InfoClickListener {
-                setEpsBottomSheet(it)
-            })
+        EpsListAdapter(EpsListAdapter.EpsOddListener({ odd, betMatchInfo ->
+            addOddsDialog(betMatchInfo , odd, getString(R.string.game_tab_price_boosts_odd), odd.name ?: "")
+        },{ matchInfo ->
+            setEpsBottomSheet(matchInfo)
+        }))
     }
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
@@ -510,6 +509,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.epsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
+
+            val gameType =
+                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+
             it.getContentIfNotHandled()?.let { epsListResult ->
                 if (epsListResult.success) {
                     val oddsEpsListData = epsListResult.rows
@@ -520,7 +523,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 date = oddsEpdListData.date,
                                 league = null,
                                 matchOdds = null
-                            ) //合併過後的資料結構
+                            )
                         epsLeagueOddsItemList.add(newLeagueOddsItem)
                         oddsEpdListData.leagueOdd.forEach { leaguesOddsItems ->
                             epsLeagueOddsItemList.add(
@@ -537,6 +540,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             dataList = epsLeagueOddsItemList
                         }
                     }
+
+                    epsLeagueOddsItemList.forEach { epsLeagueOddsItem ->
+                        if (epsLeagueOddsItem.date.toInt() == 0) {
+                            epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                                subscribeChannelHall(
+                                    gameType?.key,
+                                    PlayCate.EPS.value,
+                                    matchOddsItem.matchInfo?.id
+                                )
+                            }
+                        }
+                    }
+
                 }
             }
         })
@@ -598,6 +614,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
 
                 leagueAdapter.notifyDataSetChanged()
+
+
+                val epsOdds = epsListAdapter.dataList
+
+                epsOdds.forEach { epsLeagueOddsItem ->
+                    epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                        matchOddsItem.odds?.eps?.forEach { odd ->
+                            odd.isSelected = it.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd.id
+                            }
+                        }
+                    }
+                }
+                epsListAdapter.notifyDataSetChanged()
             }
         })
 
@@ -858,6 +888,64 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             }
                         }
                     }
+
+                    val epsOdds = epsListAdapter.dataList
+                    val epsOddsType = leagueAdapter.oddsType
+                    val newEpsOddList = oddsChangeEvent.odds[PlayCate.EPS.value]
+                    epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
+                        epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                            matchOddsItem.odds?.eps?.forEach { epsOdd ->
+                                newEpsOddList?.forEach { socketOdd ->
+                                    if (socketOdd?.id == epsOdd.id) {
+                                        //狀態顏色修改
+                                        when (epsOddsType) {
+                                            OddsType.EU -> {
+                                                when {
+                                                    epsOdd.odds?:0.0 > socketOdd?.odds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SMALLER.state
+                                                    }
+                                                    epsOdd.odds?:0.0 < socketOdd?.odds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.LARGER.state
+                                                    }
+                                                    epsOdd.odds == socketOdd?.odds -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SAME.state
+                                                    }
+                                                }
+                                            }
+                                            OddsType.HK -> {
+                                                when {
+                                                    epsOdd.hkOdds?:0.0 > socketOdd?.hkOdds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SMALLER.state
+                                                    }
+                                                    epsOdd.hkOdds?:0.0 < socketOdd?.hkOdds?:0.0 -> {
+                                                        epsOdd.oddState =
+                                                            OddState.LARGER.state
+                                                    }
+                                                    epsOdd.hkOdds == socketOdd?.hkOdds -> {
+                                                        epsOdd.oddState =
+                                                            OddState.SAME.state
+                                                    }
+                                                }
+                                            }
+                                        }
+
+
+                                        epsOdd.hkOdds = socketOdd?.hkOdds
+                                        epsOdd.extInfo = socketOdd?.extInfo
+                                        epsOdd.odds = socketOdd?.odds
+                                        epsOdd.status = socketOdd?.status ?: BetStatus.DEACTIVATED.code
+
+                                    }
+                                }
+
+                            }
+                        }
+                        epsListAdapter.notifyItemChanged(index)
+                    }
                 }
             }
         })
@@ -889,6 +977,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     }
                 }
+
+                val epsOdds = epsListAdapter.dataList
+                epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
+                    epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                        matchOddsItem.odds?.eps?.forEach { epsOdd ->
+                            when (globalStopEvent.producerId) {
+                                null -> {
+                                    epsOdd?.status = BetStatus.DEACTIVATED.code
+                                }
+                                else -> {
+                                    epsOdd?.producerId?.let { producerId ->
+                                        if (producerId == globalStopEvent.producerId) {
+                                            epsOdd.status = BetStatus.DEACTIVATED.code
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    epsListAdapter.notifyItemChanged(index)
+                }
             }
         })
 
@@ -915,7 +1024,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         return this
     }
 
-    private fun setEpsBottomSheet(matchInfo: org.cxct.sportlottery.network.odds.eps.MatchInfo) {
+    private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
             val contentView: ViewGroup? =
                 activity?.window?.decorView?.findViewById(android.R.id.content)
@@ -1134,6 +1243,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     getPlayCateMenuCode(),
                     matchOdd.matchInfo?.id
                 )
+            }
+        }
+
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+
+        epsListAdapter.dataList.forEach { epsLeagueOddsItem ->
+            if(epsLeagueOddsItem.date.toInt() == 0){
+                epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                    subscribeChannelHall(
+                        gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOddsItem.matchInfo?.id
+                    )
+                }
             }
         }
     }

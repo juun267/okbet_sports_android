@@ -100,7 +100,6 @@ class OddsButton @JvmOverloads constructor(
         betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
-
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
             text = odd?.extInfo//特優賠率較低賠率會返回在extInfo
