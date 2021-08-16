@@ -133,6 +133,8 @@ object Constants {
     //sport
     const val SPORT_MENU = "/api/front/sport/mobile/menu"
     const val SPORT_QUERY = "/api/front/sport/query"
+    const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"
+
 
     const val MYFAVORITE_QUERY = "/api/front/myFavorite/query"
     const val MYFAVORITE_MATCH_QUERY = "/api/front/myFavorite/match/query"
