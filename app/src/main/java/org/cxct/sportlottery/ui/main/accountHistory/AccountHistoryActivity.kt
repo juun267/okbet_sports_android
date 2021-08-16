@@ -61,8 +61,7 @@ class AccountHistoryActivity :
                     false
                 }
                 R.id.navigation_game -> {
-                    if(viewModel.checkIsLogin())
-                        startActivity(Intent(this@AccountHistoryActivity, MyFavoriteActivity::class.java))
+                    startActivity(Intent(this@AccountHistoryActivity, MyFavoriteActivity::class.java))
                     false
                 }
                 R.id.item_bet_list -> {

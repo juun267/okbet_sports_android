@@ -88,13 +88,6 @@ abstract class BaseFavoriteViewModel(
         }
     }
 
-    fun checkIsLogin():Boolean{
-        if (isLogin.value != true)
-            _notifyLogin.postValue(true)
-
-        return isLogin.value == true
-    }
-
     fun clearFavorite() {
         myFavoriteRepository.clearFavorite()
     }

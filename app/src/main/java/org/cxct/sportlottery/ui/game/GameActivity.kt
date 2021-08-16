@@ -258,8 +258,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.navigation_game -> {
-                    if(viewModel.checkIsLogin())
-                        startActivity(Intent(this@GameActivity, MyFavoriteActivity::class.java))
+                    startActivity(Intent(this@GameActivity, MyFavoriteActivity::class.java))
                     false
                 }
                 R.id.item_bet_list -> {
