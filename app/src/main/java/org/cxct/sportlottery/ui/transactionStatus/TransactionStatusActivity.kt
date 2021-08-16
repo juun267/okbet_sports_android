@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
@@ -151,7 +153,7 @@ class TransactionStatusActivity :
                     false
                 }
                 R.id.navigation_game -> {
-                    //TODO navigate sport game
+                    startActivity(Intent(this@TransactionStatusActivity, MyFavoriteActivity::class.java))
                     false
                 }
                 R.id.item_bet_list -> {
@@ -159,7 +161,7 @@ class TransactionStatusActivity :
                     false
                 }
                 R.id.navigation_account_history -> {
-                    //TODO navigate account_history
+                    startActivity(Intent(this@TransactionStatusActivity, AccountHistoryActivity::class.java))
                     false
                 }
                 R.id.navigation_transaction_status -> {

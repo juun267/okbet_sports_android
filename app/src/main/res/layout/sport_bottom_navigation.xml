@@ -12,15 +12,15 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:btiIcon="@drawable/ic_soccer"
-        app:btiTitle="@string/sport" />
+        app:btiTitle="@string/sport_game" />
 
     <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
         android:id="@+id/navigation_game"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:btiIcon="@drawable/ic_btn_game_time_v4"
-        app:btiTitle="@string/label_sport_game" />
+        app:btiIcon="@drawable/ic_navigation_star"
+        app:btiTitle="@string/my_favorite" />
 
     <LinearLayout
         android:id="@+id/item_bet_list"

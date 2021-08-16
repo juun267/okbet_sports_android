@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
@@ -257,8 +258,8 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.navigation_game -> {
-                    //TODO navigate sport game
-                    true
+                    startActivity(Intent(this@GameActivity, MyFavoriteActivity::class.java))
+                    false
                 }
                 R.id.item_bet_list -> {
                     //TODO 邏輯移動 see: BetInfoListDialog
