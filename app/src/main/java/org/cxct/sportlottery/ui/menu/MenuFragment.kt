@@ -79,11 +79,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
             updateUI(it?.iconUrl, it?.userName, it?.nickName, it?.fullName, StaticData.getTestFlag(it?.testFlag))
         })
-
-        viewModel.oddsType.observe(viewLifecycleOwner, {
-            setupOddsType(it)
-        })
-
     }
 
     private fun initEvent() {
@@ -141,11 +136,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(menu_game_rule)
         }
 
-        menu_odds_type.setOnClickListener {
-            ChangeOddsTypeDialog().show(parentFragmentManager, null)
-            mDownMenuListener?.onClick(menu_odds_type)
-        }
-
         //版本更新
         menu_version_update.setOnClickListener {
             startActivity(Intent(activity, VersionUpdateActivity::class.java))
@@ -168,10 +158,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             mDownMenuListener?.onClick(btn_change_language)
         }
 
-    }
-
-    private fun setupOddsType(oddsType: OddsType) {
-        menu_odds_type.text = getString(R.string.odds_type, getString(oddsType.res))
     }
 
     private fun setupSelectLanguage() {

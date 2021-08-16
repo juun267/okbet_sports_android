@@ -9,12 +9,11 @@ import kotlinx.android.synthetic.main.fragment_left_menu.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 
-class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
-    BaseFragment<GameViewModel>(GameViewModel::class) {
+class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
 
     //點擊置頂後
     private var unselectedAdapter =
@@ -37,6 +36,7 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.setWindowAnimations(R.style.LeftMenu)
         initObserve()
         initRecyclerView()
         initData()
@@ -47,7 +47,7 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
     private fun initButton() {
         // 返回
         btn_close.setOnClickListener {
-            clickListener.onClick(GameActivity.MenuStatusType.CLOSE.ordinal)
+            dismiss()
         }
         //滾球
         ct_inplay.setOnClickListener { }
@@ -55,6 +55,10 @@ class LeftMenuFragment(var clickListener: GameActivity.OnMenuClickListener) :
         ct_premium_odds.setOnClickListener { }
         //遊戲規則
         ct_game_rule.setOnClickListener { }
+        //盤口設定
+        tv_odds_type.setOnClickListener {
+            ChangeOddsTypeDialog().show(parentFragmentManager, null)
+        }
     }
 
     private fun initData() {
