@@ -153,6 +153,9 @@ class GameViewModel(
     val leagueSubmitList: LiveData<Event<List<League>>>
         get() = _leagueSubmitList
 
+    val leagueFilterList: LiveData<List<League>>
+        get() = _leagueFilterList
+
     val playList: LiveData<List<Play>>
         get() = _playList
 
@@ -182,6 +185,7 @@ class GameViewModel(
         MutableLiveData<List<org.cxct.sportlottery.network.outright.season.Row>>()
     private val _leagueSelectedList = MutableLiveData<List<League>>()
     private val _leagueSubmitList = MutableLiveData<Event<List<League>>>()
+    private val _leagueFilterList = MutableLiveData<List<League>>()
     private val _playList = MutableLiveData<List<Play>>()
     private val _playCate = MutableLiveData<String?>()
 
@@ -319,6 +323,7 @@ class GameViewModel(
 
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
+        filterLeague(listOf())
     }
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
@@ -619,6 +624,7 @@ class GameViewModel(
 
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
+        filterLeague(listOf())
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {
@@ -857,6 +863,14 @@ class GameViewModel(
             if (leagueIdList != null) {
                 _oddsListResult.postValue(Event(result))
             } else {
+                if (_leagueFilterList.value?.isNotEmpty() == true) {
+                    result?.oddsListData?.leagueOddsFilter =
+                        result?.oddsListData?.leagueOdds?.filter {
+                            leagueFilterList.value?.map { league -> league.id }
+                                ?.contains(it.league.id) ?: false
+                        }
+                }
+
                 _oddsListGameHallResult.postValue(Event(result))
             }
 
@@ -1095,6 +1109,12 @@ class GameViewModel(
         _leagueSelectedList.value?.let {
             _leagueSubmitList.postValue(Event(it))
         }
+
+        clearSelectedLeague()
+    }
+
+    fun filterLeague(leagueList: List<League>) {
+        _leagueFilterList.value = leagueList
 
         clearSelectedLeague()
     }

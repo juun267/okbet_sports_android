@@ -10,4 +10,6 @@ data class OddsListData(
     val leagueOdds: List<LeagueOdd>,
     @Json(name = "sport")
     val sport: Sport
-)
+) {
+    var leagueOddsFilter: List<LeagueOdd>? = null
+}

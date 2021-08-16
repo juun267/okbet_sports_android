@@ -27,7 +27,7 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         CountryAdapter().apply {
             countryLeagueListener = CountryLeagueListener(
                 {
-                    //TODO filter GameV3 page in play data
+                    viewModel.filterLeague(listOf(it))
                     findNavController().navigateUp()
                 }, { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
@@ -45,6 +45,10 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             this.league_filter_country_list.apply {
                 layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
                 adapter = countryAdapter
+            }
+            this.league_filter_all.setOnClickListener {
+                viewModel.filterLeague(listOf())
+                findNavController().navigateUp()
             }
         }
     }
@@ -116,8 +120,8 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         })
 
         viewModel.leagueSubmitList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let {
-                //TODO filter GameV3 page in play data
+            it.getContentIfNotHandled()?.let { leagueList ->
+                viewModel.filterLeague(leagueList)
                 findNavController().navigateUp()
             }
         })
