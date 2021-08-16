@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home.recommend
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,14 @@ import kotlinx.android.synthetic.main.home_recommend_vp.view.tv_play_type
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 
 
 class VpRecommendAdapter(
@@ -24,7 +27,8 @@ class VpRecommendAdapter(
     val dataList: List<OddBean>,
     private val isOutright: Int?,
     val oddsType: OddsType,
-    val matchOdd: MatchOdd
+    val matchOdd: MatchOdd,
+    val dynamicMarkets: Map<String, DynamicMarket>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -82,7 +86,7 @@ class VpRecommendAdapter(
 
                 is ViewHolderRecOutright -> {
                     val data = dataList[0]
-                    holder.bind(data)
+                    holder.bind(data, dynamicMarkets)
                 }
             }
         } catch (e: Exception) {
@@ -155,12 +159,10 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean) {
+        fun bind(data: OddBean, dynamicMarkets: Map<String, DynamicMarket>?) {
             itemView.apply {
                 tv_play_type.text =
-                    PlayCateUtils.getPlayCateTitleResId(data.playTypeCode, sportCode)?.let {
-                        itemView.context.getString(it)
-                    } ?: ""
+                    dynamicMarkets?.get(data.playTypeCode)?.getTranslate(itemView.context)
 
                 rec_champ_btn_pre1.apply {
                     if (data.oddList.isEmpty()) {
@@ -276,8 +278,19 @@ class VpRecommendAdapter(
 
                 rec_champ_more.apply {
                     setOnClickListener {
-                        onClickMoreListener?.onClickMore(matchOdd)
+                        onClickMoreListener?.onClickMore(data.playTypeCode, matchOdd)
                     }
+                }
+            }
+        }
+
+        private fun DynamicMarket.getTranslate(context: Context): String? {
+            return when (LanguageManager.getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> {
+                    this.zh
+                }
+                else -> {
+                    this.en
                 }
             }
         }

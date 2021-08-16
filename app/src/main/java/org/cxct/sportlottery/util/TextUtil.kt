@@ -4,7 +4,10 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 
 object TextUtil {
-    fun split(str: String): MutableList<String> {
+    fun split(str: String?): MutableList<String> {
+        if (str.isNullOrEmpty()) {
+            return mutableListOf()
+        }
         return str.split(",").toMutableList()
     }
 

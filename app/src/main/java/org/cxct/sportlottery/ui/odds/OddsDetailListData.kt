@@ -7,6 +7,7 @@ data class OddsDetailListData(
     var typeCodes: MutableList<String>, //POPULAR,ALL,HDP&OU,GOAL,QATest
     var name: String, //大/小
     var oddArrayList: List<Odd?>, //odds[]
+    val nameMap: Map<String?, String?>?, //保存各语系name对应值的map
 ) {
     var isExpand: Boolean = true
     var isMoreExpand: Boolean = false
@@ -22,6 +23,3 @@ enum class FGLGType {
     FG, LG
 }
 
-enum class SCOType {
-    HOME, AWAY
-}

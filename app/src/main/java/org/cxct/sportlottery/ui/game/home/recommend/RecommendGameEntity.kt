@@ -7,6 +7,7 @@ import org.cxct.sportlottery.network.outright.odds.DynamicMarket
 class RecommendGameEntity(
     val code: String?, //球種 code
     val name: String?, //球種名稱
+    val leagueName: String?,
     val matchInfo: MatchInfo?,
     val isOutright: Int?,
     var oddBeans: List<OddBean>,

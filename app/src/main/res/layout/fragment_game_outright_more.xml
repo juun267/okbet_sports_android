@@ -36,14 +36,19 @@
 
             <TextView
                 android:id="@+id/outright_more_league"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:singleLine="true"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@id/outright_more_date"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/outright_more_close"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/outright_more_border"
                 tools:text="英格兰超级联赛2021/2022" />

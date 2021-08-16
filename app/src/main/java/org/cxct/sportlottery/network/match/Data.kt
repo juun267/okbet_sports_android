@@ -12,7 +12,7 @@ data class Data(
     @Json(name = "code")
     val code: String,
     @Json(name = "matchs")
-    val matchs: List<Match>,
+    val matchs: List<Match>?,
     @Json(name = "matchOdds")
     val matchOdds: List<MatchOdd>,
     @Json(name = "num")

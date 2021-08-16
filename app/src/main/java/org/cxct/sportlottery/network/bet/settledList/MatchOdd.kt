@@ -35,7 +35,7 @@ data class MatchOdd(
     @Json(name = "playCateMatchResult")
     val playCateMatchResult: String?,
     @Json(name = "playCateMatchResultList")
-    val playCateMatchResultList: List<Any>?,
+    val playCateMatchResultList: List<PlayCateMatchResult>?,
     @Json(name = "playCateName")
     val playCateName: String?,
     @Json(name = "playId")

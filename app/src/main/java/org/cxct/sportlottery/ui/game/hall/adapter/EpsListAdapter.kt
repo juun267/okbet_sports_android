@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_date_line.view.*
 import kotlinx.android.synthetic.main.content_eps_league_rv.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.eps.MatchInfo
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
@@ -18,7 +18,7 @@ import org.cxct.sportlottery.network.odds.list.MatchOddsItem
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 
-class EpsListAdapter(private val clickListener: ItemClickListener,private val infoClickListener: InfoClickListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { DATE, ITEM }
 
@@ -59,6 +59,10 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val epsListV2Adapter by lazy {
+            EpsListV2Adapter()
+        }
+
         companion object {
             fun from(parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -68,21 +72,29 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
             }
         }
 
-        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,clickListener: ItemClickListener,infoClickListener: InfoClickListener) {
+        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,epsOddListener: EpsOddListener) {
+
+            itemView.ll_league_title.setOnClickListener {
+                itemView.rv_league_odd_list.visibility = if(itemView.rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
+                item.isClose = itemView.rv_league_odd_list.visibility == View.VISIBLE
+            }
+
             itemView.tv_league_title.text = "${item.league?.name}"
+
+            if (item.isClose)
+                itemView.rv_league_odd_list.visibility = View.GONE
+            else
+                itemView.rv_league_odd_list.visibility = View.VISIBLE
+
+
             itemView.rv_league_odd_list.layoutManager = LinearLayoutManager(
                 itemView.context,
                 LinearLayoutManager.VERTICAL, false
             )
 
-            val epsListV2Adapter = EpsListV2Adapter(EpsListV2Adapter.ItemClickListener{ odd->
-                clickListener.onClick(odd)
-            },EpsListV2Adapter.InfoClickListener{ matchInfo ->
-                infoClickListener.onClick(matchInfo)
-            })
+            epsListV2Adapter.epsOddListener = epsOddListener
 
             itemView.rv_league_odd_list.apply {
-                layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
                 adapter = epsListV2Adapter.apply {
                     dataList = filterEpsOddsList(item.matchOdds)
                     oddsType = mOddsType
@@ -90,13 +102,15 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
             }
         }
 
+
+
         private fun filterEpsOddsList(matchOddsItem: List<MatchOddsItem>?): MutableList<EpsOdds> {
             val epsOddsList = mutableListOf<EpsOdds>()
             matchOddsItem?.forEach {
-                epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = null))
+                epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = null, isTitle = true))
 
                 it.odds?.eps?.forEach { EPSItem ->
-                    epsOddsList.add(EpsOdds(matchInfo = null, epsItem = EPSItem))
+                    epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = EPSItem, isTitle = false))
                 }
             }
             return epsOddsList
@@ -121,7 +135,7 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
-                holder.bind(dataList[position], oddsType, clickListener, infoClickListener)
+                holder.bind(dataList[position], oddsType, epsOddListener)
             }
             is DateViewHolder -> {
                 holder.bind(dataList[position])
@@ -134,7 +148,12 @@ class EpsListAdapter(private val clickListener: ItemClickListener,private val in
     class ItemClickListener(private val clickListener: (odd: Odd) -> Unit) {
         fun onClick(odd: Odd) = clickListener(odd)
     }
-    class InfoClickListener(private val clickListener: (matchInfo: MatchInfo) -> Unit) {
-        fun onClick(matchInfo: MatchInfo) = clickListener(matchInfo)
+
+    class EpsOddListener(
+        val clickListenerBet: (odd: Odd,matchInfo: MatchInfo) -> Unit,
+        val clickBetListenerInfo: (matchInfo: MatchInfo) -> Unit
+    ){
+        fun onClickBet(odd: Odd,matchInfo: MatchInfo) = clickListenerBet(odd,matchInfo)
+        fun onClickInfo(matchInfo: MatchInfo) = clickBetListenerInfo(matchInfo)
     }
 }
