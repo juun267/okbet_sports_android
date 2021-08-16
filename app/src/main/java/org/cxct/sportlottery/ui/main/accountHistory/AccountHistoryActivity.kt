@@ -130,11 +130,14 @@ class AccountHistoryActivity :
     }
 
     override fun onBackPressed() {
-        if (navController.previousBackStackEntry != null) {
-            navController.popBackStack()
-            return
+        when (navController.currentDestination?.id) {
+            R.id.accountHistoryNextFragment -> {
+                navController.navigateUp()
+            }
+            else -> {
+                super.onBackPressed()
+            }
         }
-        finish()
     }
 
     private fun initObserve() {
