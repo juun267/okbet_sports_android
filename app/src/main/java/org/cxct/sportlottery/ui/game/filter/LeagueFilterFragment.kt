@@ -30,8 +30,8 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                 }, { league ->
                     viewModel.pinFavorite(FavoriteType.LEAGUE, league.id)
-                }, {
-
+                }, { league ->
+                    viewModel.selectLeague(league)
                 })
         }
     }
@@ -100,6 +100,25 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
 
             countryAdapter.datePin = leaguePinList
+        })
+
+        viewModel.leagueSelectedList.observe(this.viewLifecycleOwner, {
+            countryAdapter.apply {
+                data.forEach { row ->
+                    row.list.forEach { league ->
+                        league.isSelected = it.any { it.id == league.id }
+                    }
+                }
+
+                notifyDataSetChanged()
+            }
+        })
+
+        viewModel.leagueSubmitList.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let {
+                //TODO filter GameV3 page in play data
+                findNavController().navigateUp()
+            }
         })
     }
 }
