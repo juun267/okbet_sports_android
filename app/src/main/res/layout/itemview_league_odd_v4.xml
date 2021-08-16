@@ -143,7 +143,6 @@
         android:maxLines="2"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/league_odd_match_score_set_home"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border_row1"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_score_home"
