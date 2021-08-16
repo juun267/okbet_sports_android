@@ -212,6 +212,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 }
                             }
                         }
+
+                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                            quickPlayCate.quickOdds?.forEach { map ->
+                                map.value.forEach { odd ->
+                                    odd?.isSelected = it.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd?.id
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 

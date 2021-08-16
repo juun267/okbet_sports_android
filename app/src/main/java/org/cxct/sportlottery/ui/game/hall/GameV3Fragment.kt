@@ -584,6 +584,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 }
                             }
                         }
+
+                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                            quickPlayCate.quickOdds?.forEach { map ->
+                                map.value.forEach { odd ->
+                                    odd?.isSelected = it.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd?.id
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
