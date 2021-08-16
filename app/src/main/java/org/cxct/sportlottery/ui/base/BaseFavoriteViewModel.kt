@@ -30,7 +30,7 @@ abstract class BaseFavoriteViewModel(
     //TODO add notify login ui to activity/fragment
     val notifyLogin: LiveData<Boolean>
         get() = _notifyLogin
-    private val _notifyLogin = MutableLiveData<Boolean>()
+    protected val _notifyLogin = MutableLiveData<Boolean>()
 
     val favorMatchOddList: LiveData<List<LeagueOdd>>
         get() = mFavorMatchOddList
