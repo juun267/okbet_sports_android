@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.favorite
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.lifecycle.ViewModel
 import kotlinx.android.synthetic.main.activity_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -114,6 +115,13 @@ class MyFavoriteActivity : BaseSocketActivity<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.betInfoRepository.betInfoList.observe(this, {
             sport_bottom_navigation.setBetCount(it.peekContent().size)
+        })
+
+        viewModel.notifyLogin.observe(this, {
+            snackBarLoginNotify.apply {
+                setAnchorView(R.id.game_bottom_navigation)
+                show()
+            }
         })
     }
 

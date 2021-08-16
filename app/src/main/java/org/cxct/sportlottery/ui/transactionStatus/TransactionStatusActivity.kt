@@ -153,7 +153,8 @@ class TransactionStatusActivity :
                     false
                 }
                 R.id.navigation_game -> {
-                    startActivity(Intent(this@TransactionStatusActivity, MyFavoriteActivity::class.java))
+                    if(viewModel.checkIsLogin())
+                        startActivity(Intent(this@TransactionStatusActivity, MyFavoriteActivity::class.java))
                     false
                 }
                 R.id.item_bet_list -> {
