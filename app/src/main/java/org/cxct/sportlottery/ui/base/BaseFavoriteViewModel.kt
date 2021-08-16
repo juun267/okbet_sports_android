@@ -44,6 +44,8 @@ abstract class BaseFavoriteViewModel(
 
     val favorPlayCateList = myFavoriteRepository.favorPlayCateList
 
+    val favoriteOutrightList = myFavoriteRepository.favoriteOutrightList
+
     fun getFavorite() {
         if (isLogin.value != true) {
             _notifyLogin.postValue(true)

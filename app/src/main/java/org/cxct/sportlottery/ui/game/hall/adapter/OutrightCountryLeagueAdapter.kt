@@ -39,6 +39,14 @@ class OutrightCountryLeagueAdapter :
                 country_league_name.text = item.name
                 country_league_count.text = item.num.toString()
 
+                country_league_pin.apply {
+                    isActivated = item.isPin
+
+                    setOnClickListener {
+                        outrightCountryLeagueListener?.onClickPin(item.id)
+                    }
+                }
+
                 setOnClickListener {
                     outrightCountryLeagueListener?.onClick(item)
                 }
@@ -57,6 +65,10 @@ class OutrightCountryLeagueAdapter :
     }
 }
 
-class OutrightCountryLeagueListener(val clickListener: (item: Season) -> Unit) {
+class OutrightCountryLeagueListener(
+    val clickListener: (item: Season) -> Unit,
+    val clickListenerPin: (leagueId: String?) -> Unit
+) {
     fun onClick(item: Season) = clickListener(item)
+    fun onClickPin(leagueId: String?) = clickListenerPin(leagueId)
 }

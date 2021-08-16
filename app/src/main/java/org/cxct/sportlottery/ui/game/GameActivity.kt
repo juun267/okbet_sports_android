@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
@@ -38,6 +39,7 @@ import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
+import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -257,8 +259,8 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.navigation_game -> {
-                    //TODO navigate sport game
-                    true
+                    startActivity(Intent(this@GameActivity, MyFavoriteActivity::class.java))
+                    false
                 }
                 R.id.item_bet_list -> {
                     //TODO 邏輯移動 see: BetInfoListDialog
@@ -440,6 +442,13 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
             R.id.gameOutrightFragment -> {
                 val action =
                     GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
+            }
+            R.id.gameOutrightMoreFragment -> {
+                val action =
+                    GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToGameV3Fragment(
                         matchType
                     )
                 mNavController.navigate(action)

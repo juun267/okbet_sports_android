@@ -395,5 +395,14 @@
         <argument
             android:name="matchOdd"
             app:argType="org.cxct.sportlottery.network.outright.odds.MatchOdd" />
+
+        <action
+            android:id="@+id/action_gameOutrightMoreFragment_to_gameV3Fragment"
+            app:destination="@id/gameV3Fragment"
+            app:popUpTo="@id/gameV3Fragment">
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+        </action>
     </fragment>
 </navigation>
