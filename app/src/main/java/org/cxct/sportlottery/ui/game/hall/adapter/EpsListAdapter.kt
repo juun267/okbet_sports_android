@@ -95,13 +95,14 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
             epsListV2Adapter.epsOddListener = epsOddListener
 
             itemView.rv_league_odd_list.apply {
-                layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
                 adapter = epsListV2Adapter.apply {
                     dataList = filterEpsOddsList(item.matchOdds)
                     oddsType = mOddsType
                 }
             }
         }
+
+
 
         private fun filterEpsOddsList(matchOddsItem: List<MatchOddsItem>?): MutableList<EpsOdds> {
             val epsOddsList = mutableListOf<EpsOdds>()
