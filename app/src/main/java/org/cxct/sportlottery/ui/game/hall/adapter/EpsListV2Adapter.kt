@@ -17,7 +17,7 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 
-class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener) :
+class EpsListV2Adapter() :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { MATCHINFO, ODD }
@@ -35,6 +35,8 @@ class EpsListV2Adapter(private val epsOddListener: EpsListAdapter.EpsOddListener
                 notifyDataSetChanged()
             }
         }
+
+    lateinit var epsOddListener: EpsListAdapter.EpsOddListener
 
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {

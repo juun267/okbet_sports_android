@@ -59,6 +59,10 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val epsListV2Adapter by lazy {
+            EpsListV2Adapter()
+        }
+
         companion object {
             fun from(parent: ViewGroup): ItemViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -75,8 +79,6 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 item.isClose = itemView.rv_league_odd_list.visibility == View.VISIBLE
             }
 
-
-
             itemView.tv_league_title.text = "${item.league?.name}"
 
             if (item.isClose)
@@ -90,7 +92,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 LinearLayoutManager.VERTICAL, false
             )
 
-            val epsListV2Adapter = EpsListV2Adapter(epsOddListener)
+            epsListV2Adapter.epsOddListener = epsOddListener
 
             itemView.rv_league_odd_list.apply {
                 layoutManager = LinearLayoutManager(itemView.context, LinearLayoutManager.VERTICAL, false)
