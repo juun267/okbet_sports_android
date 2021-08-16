@@ -40,7 +40,7 @@ abstract class BaseBottomNavViewModel(
 
     fun navMyFavorite() {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
@@ -49,7 +49,7 @@ abstract class BaseBottomNavViewModel(
 
     fun navAccountHistory() {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
@@ -58,7 +58,7 @@ abstract class BaseBottomNavViewModel(
 
     fun navTranStatus() {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 

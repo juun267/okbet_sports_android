@@ -29,8 +29,8 @@ abstract class BaseFavoriteViewModel(
 ) {
     //TODO add notify login ui to activity/fragment
     val notifyLogin: LiveData<Boolean>
-        get() = _notifyLogin
-    protected val _notifyLogin = MutableLiveData<Boolean>()
+        get() = mNotifyLogin
+    protected val mNotifyLogin = MutableLiveData<Boolean>()
 
     val favorMatchOddList: LiveData<List<LeagueOdd>>
         get() = mFavorMatchOddList
@@ -48,7 +48,7 @@ abstract class BaseFavoriteViewModel(
 
     fun getFavorite() {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
@@ -61,7 +61,7 @@ abstract class BaseFavoriteViewModel(
 
     fun getFavoriteMatch(gameType: String?, playCateMenu: String?) {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
@@ -104,7 +104,7 @@ abstract class BaseFavoriteViewModel(
         gameType: String? = null
     ) {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
