@@ -186,7 +186,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         adapter = leagueAdapter.apply {
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = args.gameType
-                            }
+                            }.toMutableList()
                         }
                     }
 
@@ -196,7 +196,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, {
-            leagueAdapter.data = it
+            leagueAdapter.data = it.toMutableList()
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
@@ -264,14 +264,24 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                     }
 
                                     updateMatchOdd?.let {
-                                        updateMatchOdd.matchInfo?.homeScore =
-                                            matchStatusCO.homeScore
-                                        updateMatchOdd.matchInfo?.awayScore =
-                                            matchStatusCO.awayScore
-                                        updateMatchOdd.matchInfo?.statusName =
-                                            matchStatusCO.statusName
+                                        if (matchStatusCO.status == 100) {
+                                            leagueOdd.matchOdds.remove(updateMatchOdd)
+                                            leagueAdapter.apply {
+                                                notifyItemRangeChanged(
+                                                    leagueOdd.matchOdds.indexOf(updateMatchOdd),
+                                                    itemCount
+                                                )
+                                            }
+                                        } else {
+                                            updateMatchOdd.matchInfo?.homeScore =
+                                                matchStatusCO.homeScore
+                                            updateMatchOdd.matchInfo?.awayScore =
+                                                matchStatusCO.awayScore
+                                            updateMatchOdd.matchInfo?.statusName =
+                                                matchStatusCO.statusName
 
-                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                            leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                        }
                                     }
                                 }
                             }
