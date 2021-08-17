@@ -316,6 +316,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     betResultListener?.onBetResult(result.receipt, betParlayList ?: listOf())
                     refreshAllAmount()
                     showOddChangeWarn = false
+                    btn_bet.isOddsChanged = false
                     showHideWarn()
                 } else {
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -326,6 +327,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         //賠率變更提示
         viewModel.showOddsChangeWarn.observe(this.viewLifecycleOwner, {
             showOddChangeWarn = it
+            btn_bet.isOddsChanged = it
             showHideWarn()
         })
 
