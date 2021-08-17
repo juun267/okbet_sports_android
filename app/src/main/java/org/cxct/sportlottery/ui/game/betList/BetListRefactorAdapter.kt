@@ -41,7 +41,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
-            updateDataList()
+            notifyDataSetChanged()
         }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
