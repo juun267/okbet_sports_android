@@ -86,12 +86,6 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
             else
                 itemView.rv_league_odd_list.visibility = View.VISIBLE
 
-
-            itemView.rv_league_odd_list.layoutManager = LinearLayoutManager(
-                itemView.context,
-                LinearLayoutManager.VERTICAL, false
-            )
-
             epsListV2Adapter.epsOddListener = epsOddListener
 
             itemView.rv_league_odd_list.apply {

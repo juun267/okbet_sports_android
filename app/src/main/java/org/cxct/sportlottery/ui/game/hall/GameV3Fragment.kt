@@ -933,18 +933,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                             }
                                         }
 
-
                                         epsOdd.hkOdds = socketOdd?.hkOdds
                                         epsOdd.extInfo = socketOdd?.extInfo
                                         epsOdd.odds = socketOdd?.odds
                                         epsOdd.status = socketOdd?.status ?: BetStatus.DEACTIVATED.code
-
+                                        epsListAdapter.notifyItemChanged(index)
                                     }
                                 }
-
                             }
                         }
-                        epsListAdapter.notifyItemChanged(index)
                     }
                 }
             }
