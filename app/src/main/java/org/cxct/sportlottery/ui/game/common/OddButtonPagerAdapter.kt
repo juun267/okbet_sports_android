@@ -341,16 +341,16 @@ class OddButtonPagerViewHolder private constructor(
             }
 
             tv_odds.text = when (oddsType) {
-                OddsType.EU -> odds?.second?.getOrNull(2)?.odds.toString()
-                OddsType.HK -> odds?.second?.getOrNull(2)?.hkOdds.toString()
+                OddsType.EU -> odds.second?.getOrNull(2)?.odds.toString()
+                OddsType.HK -> odds.second?.getOrNull(2)?.hkOdds.toString()
             }
 
-            this@OddButtonPagerViewHolder.setupOddState(this, odds?.second?.getOrNull(2))
+            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
-            isSelected = odds?.second?.getOrNull(2)?.isSelected ?: false
+            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
 
             setOnClickListener { _ ->
-                odds?.second?.getOrNull(2)?.let { odd ->
+                odds.second?.getOrNull(2)?.let { odd ->
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
