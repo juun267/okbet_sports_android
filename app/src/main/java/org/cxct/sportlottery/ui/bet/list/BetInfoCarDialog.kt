@@ -250,6 +250,13 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list[0]
+
+                    val betAmount = betInfoListData?.betAmount ?: 0.0
+                    var win = betAmount * getOdds(matchOdd, oddsType)
+                    if (oddsType == OddsType.EU) {
+                        win -= betAmount
+                    }
+                    tv_win_quota.text = TextUtil.format(win)
                 }
             }
         })
