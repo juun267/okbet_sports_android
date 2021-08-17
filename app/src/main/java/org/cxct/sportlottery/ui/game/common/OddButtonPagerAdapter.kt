@@ -139,7 +139,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@homeButtonSettings
                 }
-                (odds.second?.size ?: 0 < 2) -> {
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds == null) -> {
                     betStatus = BetStatus.LOCKED.code
                     return@homeButtonSettings
                 }
@@ -221,7 +221,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@awayButtonSettings
                 }
-                (odds.second?.size ?: 0 < 2) -> {
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds == null) -> {
                     betStatus = BetStatus.LOCKED.code
                     return@awayButtonSettings
                 }
@@ -303,8 +303,12 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@drawButtonSettings
                 }
+                (odds?.second?.getOrNull(2)?.odds == null) -> {
+                    betStatus = BetStatus.LOCKED.code
+                    return@drawButtonSettings
+                }
                 else -> {
-                    betStatus = odds?.second?.getOrNull(2)?.status
+                    betStatus = odds.second?.getOrNull(2)?.status
                 }
             }
 
