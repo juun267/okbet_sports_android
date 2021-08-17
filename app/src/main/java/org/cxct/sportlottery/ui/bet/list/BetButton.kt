@@ -96,26 +96,15 @@ class BetButton @JvmOverloads constructor(
     }
 
     private fun setupBetClickable() {
-        if (hasBetPlatClose == true || isCanSendOut == false) {
-            cl_bet.apply {
-                isSelected = false
-                isClickable = false
-            }
+        val betClickable = !(hasBetPlatClose == true || isCanSendOut == false)
+        cl_bet.apply {
+            isSelected = betClickable
+            isClickable = betClickable
+        }
 
-            tv_accept_odds_change.apply {
-                isSelected = false
-                isClickable = false
-            }
-        } else {
-            cl_bet.apply {
-                isSelected = true
-                isClickable = true
-            }
-
-            tv_accept_odds_change.apply {
-                isSelected = true
-                isClickable = true
-            }
+        tv_accept_odds_change.apply {
+            isSelected = betClickable
+            isClickable = betClickable
         }
     }
 
