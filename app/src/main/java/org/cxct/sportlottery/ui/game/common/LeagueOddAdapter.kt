@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -14,9 +15,10 @@ import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
@@ -128,6 +130,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
 
+            showStrongTeam(item)
+
             itemView.league_odd_match_score_home.apply {
                 visibility = if (matchType == MatchType.IN_PLAY) {
                     View.VISIBLE
@@ -170,6 +174,37 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.league_odd_match_border_row2.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
+            }
+        }
+
+        private fun showStrongTeam(item: MatchOdd) {
+            itemView.apply {
+                val oddListHDP = when (item.matchInfo?.gameType) {
+                    GameType.TN.key -> {
+                        item.odds[PlayCate.SET_HDP.value]
+                    }
+                    GameType.BK.key -> {
+                        item.odds[PlayCate.HDP_INCL_OT.value]
+                    }
+                    else -> {
+                        item.odds[PlayCate.HDP.value]
+                    }
+                }
+                val homeStrongType = if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                    Typeface.BOLD
+                else
+                    Typeface.NORMAL
+
+                val awayStrongType = if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                    Typeface.BOLD
+                else
+                    Typeface.NORMAL
+
+                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
+
+                league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
+                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
         }
 
