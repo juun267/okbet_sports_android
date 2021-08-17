@@ -190,22 +190,21 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         item.odds[PlayCate.HDP.value]
                     }
                 }
-                league_odd_match_name_home.apply {
-                    setTypeface(
-                        this.typeface, if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
-                            Typeface.BOLD
-                        else
-                            Typeface.NORMAL
-                    )
-                }
-                league_odd_match_name_away.apply {
-                    setTypeface(
-                        this.typeface, if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
-                            Typeface.BOLD
-                        else
-                            Typeface.NORMAL
-                    )
-                }
+                val homeStrongType = if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                    Typeface.BOLD
+                else
+                    Typeface.NORMAL
+
+                val awayStrongType = if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                    Typeface.BOLD
+                else
+                    Typeface.NORMAL
+
+                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
+
+                league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
+                league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
         }
 
