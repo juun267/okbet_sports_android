@@ -175,6 +175,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         return betListSize + parlayListSize
     }
 
+    //使用HasStabledIds需複寫回傳的position, 若仍使用super.getItemId(position), 數據刷新會錯亂.
+    //https://blog.csdn.net/karsonNet/article/details/80598435
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     //單注
     class BetInfoItemViewHolder(itemView: View) : BetInfoChangeViewHolder(itemView) {
         fun bind(
