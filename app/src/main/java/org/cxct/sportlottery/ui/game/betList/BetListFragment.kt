@@ -52,6 +52,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var betParlayList: List<ParlayOdd>? = null //紀錄投注時的串關資料
 
+    private var showOddChangeWarn: Boolean = false //賠率是否有變更
+
+    private var showPlatCloseWarn: Boolean = false //盤口是否被關閉
+
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -138,7 +142,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
-        rv_bet_list.itemAnimator = null
         rv_bet_list.adapter = betListRefactorAdapter
         rv_bet_list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
             ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
@@ -308,7 +311,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 if (result.success) {
                     betResultListener?.onBetResult(result.receipt, betParlayList ?: listOf())
                     refreshAllAmount()
-                    showHideOddsChangeWarn(false)
+                    showOddChangeWarn = false
+                    showHideWarn()
                 } else {
                     showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
@@ -317,12 +321,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //賠率變更提示
         viewModel.showOddsChangeWarn.observe(this.viewLifecycleOwner, {
-            showHideOddsChangeWarn(it)
+            showOddChangeWarn = it
+            showHideWarn()
         })
 
         //盤口關閉提示
         viewModel.showOddsCloseWarn.observe(this.viewLifecycleOwner, {
-            showHideOddsCloseWarn(it)
+            showPlatCloseWarn = it
+            showHideWarn()
+        })
+
+        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner, {
+            btn_bet.hasBetPlatClose = it
         })
 
     }
@@ -448,29 +458,25 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     /**
-     * 賠率更改提示
-     * @param show true:顯示, false:隱藏
+     * 盤口關閉、賠率變更提示文字
      */
-    private fun showHideOddsChangeWarn(show: Boolean) {
-        val visibilityControl = if (show) View.VISIBLE else View.GONE
-
-        btn_bet.isOddsChanged = show
-        tv_warn_odds_change.visibility = visibilityControl
-        tv_odds_closed_changed.visibility = visibilityControl
-    }
-
-    /**
-     * 投注關閉提示
-     * @param show true:顯示, false:隱藏
-     */
-    private fun showHideOddsCloseWarn(show: Boolean) {
-        btn_bet.isEnabled = show
-        if (show) {
-            ll_odds_close_warn.visibility = View.VISIBLE
-            tv_warn_odds_change.visibility = View.GONE
-        } else {
-            ll_odds_close_warn.visibility = View.GONE
-            tv_warn_odds_change.visibility = if (btn_bet.isOddsChanged == true) View.VISIBLE else View.GONE
+    private fun showHideWarn() {
+        when {
+            showPlatCloseWarn && showOddChangeWarn -> {
+                //盤口關閉且賠率更動
+                ll_odds_close_warn.visibility = View.VISIBLE
+                tv_odds_closed_changed.visibility = View.VISIBLE
+                tv_warn_odds_change.visibility = View.GONE
+            }
+            showPlatCloseWarn -> {
+                ll_odds_close_warn.visibility = View.VISIBLE
+                tv_odds_closed_changed.visibility = View.GONE
+                tv_warn_odds_change.visibility = View.GONE
+            }
+            showOddChangeWarn -> {
+                ll_odds_close_warn.visibility = View.GONE
+                tv_warn_odds_change.visibility = View.VISIBLE
+            }
         }
     }
 

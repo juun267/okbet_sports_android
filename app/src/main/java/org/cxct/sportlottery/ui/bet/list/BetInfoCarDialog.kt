@@ -231,6 +231,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     }
                 }
 
+                betInfoListData?.betAmount = quota
+
                 //比照以往計算
                 var win = quota * getOdds(matchOdd, oddsType)
                 if (oddsType == OddsType.EU) {
@@ -285,6 +287,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             event?.peekContent()?.let {
                 if (!it) dismiss()
             }
+        })
+
+        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner, {
+            button_bet.hasBetPlatClose = it
         })
     }
 

@@ -398,7 +398,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, {
             hideLoading()
-            leagueAdapter.data = it
+            leagueAdapter.data = it.toMutableList()
             try {
                 it.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->

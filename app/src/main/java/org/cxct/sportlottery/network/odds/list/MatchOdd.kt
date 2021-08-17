@@ -22,7 +22,9 @@ data class MatchOdd(
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: Map<String, DynamicMarket>? = null,
     @Json(name = "quickPlayCateList")
-    val quickPlayCateList: List<QuickPlayCate>? = null
+    val quickPlayCateList: List<QuickPlayCate>? = null,
+    @Json(name = "oddsSort")
+    val oddsSortL: String? = null
 ) {
     var isExpand = false
     var leagueTime: Int? = null

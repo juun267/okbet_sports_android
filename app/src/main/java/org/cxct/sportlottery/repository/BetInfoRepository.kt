@@ -86,6 +86,12 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _showOddsCloseWarn
     private val _showOddsCloseWarn = MutableLiveData<Boolean>()
 
+    //有投注額的單注封盤
+    val hasBetPlatClose: LiveData<Boolean>
+        get() = _hasBetPlatClose
+    private val _hasBetPlatClose = MutableLiveData<Boolean>()
+
+
 
     @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
     fun addInBetInfoParlay() {
@@ -499,14 +505,20 @@ class BetInfoRepository(val androidContext: Context) {
 
     /**
      * 判斷是否有盤口關閉
+     * 20210816, 有投注額的單注被封盤需要禁止投注
      */
     private fun checkBetInfoPlatStatus(betInfoList: MutableList<BetInfoListData>) {
         var hasPlatClose = false
+        var hasBetPlatClose = false
         betInfoList.forEach {
             when (it.matchOdd.status) {
                 BetStatus.LOCKED.code, BetStatus.DEACTIVATED.code -> {
+                    if (it.betAmount > 0) {
+                        hasPlatClose = true
+                        hasBetPlatClose = true
+                        return@forEach
+                    }
                     hasPlatClose = true
-                    return@forEach
                 }
                 else -> { //BetStatus.ACTIVATED.code
                     it.matchOdd.betAddError != null
@@ -514,6 +526,7 @@ class BetInfoRepository(val androidContext: Context) {
             }
         }
         _showOddsCloseWarn.postValue(hasPlatClose)
+        _hasBetPlatClose.postValue(hasBetPlatClose)
     }
 
 }

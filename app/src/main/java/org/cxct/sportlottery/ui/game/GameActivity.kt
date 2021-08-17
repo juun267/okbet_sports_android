@@ -34,6 +34,7 @@ import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
@@ -211,31 +212,12 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                    override fun onClick(menuStatus: Int) {
-                        when (menuStatus) {
-                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                        }
-                    }
-                })
-
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque,
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque
-                    )
-                    .add(R.id.fl_left_menu, leftMenuFragment)
-                    .addToBackStack(null)
-                    .commit()
+                LeftMenuFragment().show(supportFragmentManager, LeftMenuFragment::class.java.simpleName)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
-    enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)
@@ -434,6 +416,13 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
+            R.id.leagueFilterFragment -> {
+                val action =
+                    LeagueFilterFragmentDirections.actionLeagueFilterFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
+            }
             R.id.gameLeagueFragment -> {
                 val action =
                     GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
@@ -477,7 +466,7 @@ class GameActivity : BaseSocketActivity<GameViewModel>(GameViewModel::class) {
             return
         }
         when (mNavController.currentDestination?.id) {
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment, R.id.leagueFilterFragment -> {
                 mNavController.navigateUp()
             }
 
