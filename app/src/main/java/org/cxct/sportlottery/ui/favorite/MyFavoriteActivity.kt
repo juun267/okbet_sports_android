@@ -104,6 +104,13 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         sport_bottom_navigation.setBetCount(num)
     }
 
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.my_favorite_bottom_navigation)
+            show()
+        }
+    }
+
     private fun initObserver() {
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
@@ -111,13 +118,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                     supportFragmentManager,
                     BetInfoCarDialog::class.java.simpleName
                 )
-            }
-        })
-
-        viewModel.notifyLogin.observe(this, {
-            snackBarLoginNotify.apply {
-                setAnchorView(R.id.my_favorite_bottom_navigation)
-                show()
             }
         })
     }

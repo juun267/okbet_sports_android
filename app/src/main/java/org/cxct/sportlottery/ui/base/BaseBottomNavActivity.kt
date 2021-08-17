@@ -14,6 +14,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun updateBetListCount(num: Int)
 
+    abstract fun showLoginNotify()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,6 +33,10 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
         viewModel.betInfoList.observe(this, {
             updateBetListCount(it.peekContent().size)
+        })
+
+        viewModel.notifyLogin.observe(this, {
+            showLoginNotify()
         })
     }
 }

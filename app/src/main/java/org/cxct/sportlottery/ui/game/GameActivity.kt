@@ -279,21 +279,25 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit
             )
-        val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.push_right_to_left_enter,
-                        R.anim.pop_bottom_to_top_exit,
-                        R.anim.push_right_to_left_enter,
-                        R.anim.pop_bottom_to_top_exit
-                    )
-                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData, betParlayList))
-                    .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                    .commit()
-            }
+        val betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit,
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit
+                        )
+                        .replace(
+                            R.id.fl_bet_list,
+                            BetReceiptFragment.newInstance(betResultData, betParlayList)
+                        )
+                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                        .commit()
+                }
 
-        })
+            })
         transaction
             .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
@@ -302,6 +306,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
+    }
+
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.game_bottom_navigation)
+            show()
+        }
     }
 
     //公告
@@ -567,14 +578,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
-                BetInfoCarDialog().show(supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
-            }
-        })
-
-        viewModel.notifyLogin.observe(this, {
-            snackBarLoginNotify.apply {
-                setAnchorView(R.id.game_bottom_navigation)
-                show()
+                BetInfoCarDialog().show(
+                    supportFragmentManager,
+                    BetInfoCarDialog::class.java.simpleName
+                )
             }
         })
     }

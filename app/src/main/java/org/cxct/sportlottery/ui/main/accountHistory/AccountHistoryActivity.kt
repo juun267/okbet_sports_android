@@ -119,6 +119,13 @@ class AccountHistoryActivity :
         sport_bottom_navigation.setBetCount(num)
     }
 
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.sport_bottom_navigation)
+            show()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()
@@ -158,13 +165,6 @@ class AccountHistoryActivity :
         viewModel.isLogin.observe(this, {
             updateUiWithLogin(it)
             getAnnouncement()
-        })
-
-        viewModel.notifyLogin.observe(this, {
-            snackBarLoginNotify.apply {
-                setAnchorView(R.id.sport_bottom_navigation)
-                show()
-            }
         })
     }
 
@@ -248,5 +248,4 @@ class AccountHistoryActivity :
             startActivity(Intent(this@AccountHistoryActivity, RegisterActivity::class.java))
         }
     }
-
 }

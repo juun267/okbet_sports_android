@@ -189,6 +189,13 @@ class TransactionStatusActivity :
             .commit()
     }
 
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.sport_bottom_navigation)
+            show()
+        }
+    }
+
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
     }
@@ -210,13 +217,6 @@ class TransactionStatusActivity :
 
         viewModel.oddsType.observe(this, {
             tv_odds_type.text = getString(it.res)
-        })
-
-        viewModel.notifyLogin.observe(this, {
-            snackBarLoginNotify.apply {
-                setAnchorView(R.id.sport_bottom_navigation)
-                show()
-            }
         })
     }
 
