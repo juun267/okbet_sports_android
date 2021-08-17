@@ -205,11 +205,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val betCount =
             list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
         val winnableAmount = list.sumByDouble {
-            it.betAmount * getOdds(
-                it.matchOdd,
-                oddsType
-            )
-        } + parlayList.sumByDouble { it.betAmount * getOdds(it, oddsType) }
+            getWinnable(it.betAmount, getOdds(it.matchOdd, oddsType))
+        } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType)) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -220,6 +217,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         setupBtnBetAmount(totalBetAmount)
+    }
+
+    private fun getWinnable(betAmount: Double, odds: Double): Double {
+        var winnable = betAmount * odds
+        if (oddsType == OddsType.EU) {
+            winnable -= betAmount
+        }
+        return winnable
     }
 
     private fun setupBtnBetAmount(totalBetAmount: Double?) {
