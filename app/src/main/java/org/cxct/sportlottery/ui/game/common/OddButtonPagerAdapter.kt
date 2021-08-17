@@ -74,8 +74,12 @@ class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
         holder.bind(
             matchInfo,
             listOf(
-                Pair(data[position].getOrNull(0)?.first, data[position].getOrNull(0)?.second),
-                Pair(data[position].getOrNull(1)?.first, data[position].getOrNull(1)?.second)
+                Pair(
+                    data[position].getOrNull(0)?.first,
+                    data[position].getOrNull(0)?.second?.sortedBy { it?.id?.toDouble() }),
+                Pair(
+                    data[position].getOrNull(1)?.first,
+                    data[position].getOrNull(1)?.second?.sortedBy { it?.id?.toDouble() })
             ),
             oddsType,
             listener
