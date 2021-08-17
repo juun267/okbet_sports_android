@@ -278,6 +278,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
         })
 
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            betListRefactorAdapter?.oddsType = it
+        })
+
         viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 tv_bet_list_count.text = list.size.toString()
