@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 
 
 class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
@@ -162,7 +163,11 @@ class OddButtonPagerViewHolder private constructor(
 
                 text = when {
                     PlayCateUtils.getOUSeries().map { it.value }.contains(odds.first) -> {
-                        itemView.context.getString(R.string.odd_button_ou_o)
+                        odds.second?.getOrNull(0)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds.second?.getOrNull(0)?.name
                     }
                     else -> ""
                 }
@@ -198,7 +203,11 @@ class OddButtonPagerViewHolder private constructor(
                     val playName = when {
                         PlayCateUtils.getOUSeries().map { it.value }
                             .contains(odds.first) -> {
-                            itemView.context.getString(R.string.odd_button_ou_o)
+                            odds.second?.getOrNull(0)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(
+                                    context
+                                ).key
+                            ) ?: odds.second?.getOrNull(0)?.name
                         }
                         else -> {
                             matchInfo?.homeName
@@ -244,7 +253,11 @@ class OddButtonPagerViewHolder private constructor(
 
                 text = when {
                     PlayCateUtils.getOUSeries().map { it.value }.contains(odds.first) -> {
-                        itemView.context.getString(R.string.odd_button_ou_u)
+                        odds.second?.getOrNull(1)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds.second?.getOrNull(1)?.name
                     }
                     else -> ""
                 }
@@ -280,7 +293,11 @@ class OddButtonPagerViewHolder private constructor(
                     val playName = when {
                         PlayCateUtils.getOUSeries().map { it.value }
                             .contains(odds.first) -> {
-                            itemView.context.getString(R.string.odd_button_ou_u)
+                            odds.second?.getOrNull(1)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(
+                                    context
+                                ).key
+                            ) ?: odds.second?.getOrNull(1)?.name
                         }
                         else -> {
                             matchInfo?.awayName
@@ -313,7 +330,9 @@ class OddButtonPagerViewHolder private constructor(
             }
 
             tv_name.apply {
-                text = itemView.context.getString(R.string.draw)
+                text = odds.second?.getOrNull(2)?.nameMap?.get(
+                    LanguageManager.getSelectLanguage(context).key
+                ) ?: odds.second?.getOrNull(2)?.name
                 visibility = View.VISIBLE
             }
 
@@ -336,7 +355,9 @@ class OddButtonPagerViewHolder private constructor(
                         matchInfo,
                         odd,
                         playCateName,
-                        itemView.context.getString(R.string.draw)
+                        odds.second?.getOrNull(2)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds.second?.getOrNull(2)?.name ?: ""
                     )
                 }
             }
