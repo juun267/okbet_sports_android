@@ -76,7 +76,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
             itemView.ll_league_title.setOnClickListener {
                 itemView.rv_league_odd_list.visibility = if(itemView.rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
-                item.isClose = itemView.rv_league_odd_list.visibility == View.VISIBLE
+                item.isClose = !item.isClose
             }
 
             itemView.tv_league_title.text = "${item.league?.name}"
