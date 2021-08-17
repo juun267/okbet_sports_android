@@ -34,11 +34,13 @@ class Type4GroupAdapter(
     var rightName: String? = null
 
 
-    private val keys = mutableListOf<String>().apply {
-        oddsDetail.groupItem.forEach {
-            add(it.key)
-        }
-    }
+    private val keys = oddsDetail.oddArrayList
+        .groupBy { it?.spread }
+        .filter { it.key != null }
+        .mapTo(mutableListOf(), { it.key })
+
+
+    private val groupList = oddsDetail.oddArrayList.chunked(4)
 
 
     var isShowSpreadWithName = false
@@ -49,11 +51,13 @@ class Type4GroupAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        oddsDetail.groupItem[keys[position]]?.let { holder.bindModel(it, keys[position]) }
+        if (groupList.isNotEmpty() && keys.isNotEmpty()) {
+            keys[position]?.let { holder.bindModel(groupList[position], it) }
+        }
     }
 
 
-    override fun getItemCount(): Int = oddsDetail.groupItem.size
+    override fun getItemCount(): Int = groupList.size
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -80,6 +84,6 @@ class Type4GroupAdapter(
         }
 
     }
-
-
 }
+
+

@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +31,10 @@ import kotlin.collections.ArrayList
  * @author Kevin
  * @create 2020/12/23
  * @description 表格型排版與後端回傳順序有關
+ * @edit:
+ * 2021/08/17 玩法六個一組和四個一組的排版改為依順序分組
  */
+@SuppressLint("NotifyDataSetChanged")
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
@@ -605,7 +609,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             for (odd in oddsDetail.oddArrayList) {
                 if (odd?.name?.contains(" - ") == true) {
-                    val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
+                    val stringArray: List<String> = odd.name.split(" - ")
                     if (stringArray[0].toInt() > stringArray[1].toInt()) {
                         homeList.add(odd)
                     }
@@ -947,37 +951,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun group6AdapterSetup(oddsDetail: OddsDetailListData): Type6GroupAdapter =
-            Type6GroupAdapter(
-                oddsDetail.apply {
-                    groupItem =
-                        oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>>
-                },
+        private fun group6AdapterSetup(oddsDetail: OddsDetailListData): Type6GroupAdapter {
+            return Type6GroupAdapter(
+                oddsDetail,
                 onOddClickListener,
                 betInfoList,
                 oddsType
             )
+        }
 
         private fun group4AdapterSetup(oddsDetail: OddsDetailListData): Type4GroupAdapter =
             Type4GroupAdapter(
-                oddsDetail.apply {
-
-                    //依key分組 有元件需要用key做顯示
-                    val keys = (oddsDetail.oddArrayList
-                        .groupBy { it?.spread }
-                        .filter { it.key != null } as HashMap<String, List<Odd?>>)
-                        .mapTo(mutableListOf(), { it.key })
-
-                    //依key數量等分
-                    val splitList = splitSameLength(oddsDetail.oddArrayList, keys.size)
-
-                    groupItem = HashMap<String, List<Odd?>>().apply {
-                        for (i in splitList.indices) {
-                            this[keys[i]] = splitList[i]
-                        }
-                    }
-
-                },
+                oddsDetail,
                 onOddClickListener,
                 betInfoList,
                 oddsType

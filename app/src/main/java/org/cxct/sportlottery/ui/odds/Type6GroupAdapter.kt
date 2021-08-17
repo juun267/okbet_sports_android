@@ -36,23 +36,17 @@ class Type6GroupAdapter(
     var rightName: String? = null
 
 
-    val key = mutableListOf<String>().apply {
-        oddsDetail.groupItem.forEach{
-            add(it.key)
-        }
-    }
+    private val groupList = oddsDetail.oddArrayList.chunked(6)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_6_group_item, parent, false))
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int){
-        oddsDetail.groupItem[key[position]]?.let { holder.bindModel(it) }
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(groupList[position])
 
 
-    override fun getItemCount(): Int = oddsDetail.groupItem.size
+    override fun getItemCount(): Int = groupList.size
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
