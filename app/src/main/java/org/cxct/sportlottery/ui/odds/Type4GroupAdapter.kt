@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GridItemDecoration
 
@@ -23,7 +22,6 @@ import org.cxct.sportlottery.util.GridItemDecoration
 class Type4GroupAdapter(
     private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
-    private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<Type4GroupAdapter.ViewHolder>() {
 
@@ -69,7 +67,7 @@ class Type4GroupAdapter(
 
             itemView.findViewById<RecyclerView>(R.id.rv_bet)?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-                adapter = TypeCSAdapter(oddsDetail, oddsList, onOddClickListener, betInfoList, oddsType)
+                adapter = TypeCSAdapter(oddsDetail, oddsList, onOddClickListener, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
                 addItemDecoration(
                     GridItemDecoration(

@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.OddSpreadForSCOCompare
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -28,7 +27,6 @@ const val OVER_COUNT = 5
 class TypeSCOAdapter(
     private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
-    private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType,
     private val onMoreClickListener: OnMoreClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -104,38 +102,35 @@ class TypeSCOAdapter(
 
             val oddsList = oddsDetail.scoItem[key]
 
-            val fOdds = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_1ST.playCode) == true }
-            val aOdds = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_ANT.playCode) == true }
-            val lOdds = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_LAST.playCode) == true }
+            val fOdd = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_1ST.playCode) == true }
+            val aOdd = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_ANT.playCode) == true }
+            val lOdd = oddsList?.find { it?.playCode?.contains(OddSpreadForSCOCompare.SCORE_LAST.playCode) == true }
 
             btnOdds1st?.apply {
-                setupOdd(fOdds, oddsType)
-                setupOddState(this, fOdds)
-                isSelected = betInfoList.any { it.matchOdd.oddsId == fOdds?.id }
+                setupOdd(fOdd, oddsType)
+                setupOddState(this, fOdd)
                 setOnClickListener {
-                    fOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    fOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_first)
                 tv_spread.text = ""
             }
 
             btnOddsAnt?.apply {
-                setupOdd(aOdds, oddsType)
-                setupOddState(this, aOdds)
-                isSelected = betInfoList.any { it.matchOdd.oddsId == aOdds?.id }
+                setupOdd(aOdd, oddsType)
+                setupOddState(this, aOdd)
                 setOnClickListener {
-                    aOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    aOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_ant)
                 tv_spread.text = ""
             }
 
             btnOddsLast?.apply {
-                setupOdd(lOdds, oddsType)
-                setupOddState(this, lOdds)
-                isSelected = betInfoList.any { it.matchOdd.oddsId == lOdds?.id }
+                setupOdd(lOdd, oddsType)
+                setupOddState(this, lOdd)
                 setOnClickListener {
-                    lOdds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    lOdd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
                 tv_name.text = context.getString(R.string.odds_button_name_last)
                 tv_spread.text = ""
@@ -160,14 +155,13 @@ class TypeSCOAdapter(
             tvName.text = key
 
             val oddsList = oddsDetail.scoItem[key]
-            val odds = oddsList?.find { TextUtil.compareWithGameKey(OddSpreadForSCOCompare.SCORE_N.playCode, "${it?.playCode}") }
+            val odd = oddsList?.find { TextUtil.compareWithGameKey(OddSpreadForSCOCompare.SCORE_N.playCode, "${it?.playCode}") }
 
             btnOdds?.apply {
-                setupOdd(odds, oddsType)
-                setupOddState(this, odds)
-                isSelected = betInfoList.any { it.matchOdd.oddsId == odds?.id }
+                setupOdd(odd, oddsType)
+                setupOddState(this, odd)
                 setOnClickListener {
-                    odds?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
                 }
                 tv_name.visibility = View.GONE
                 tv_spread.visibility = View.GONE

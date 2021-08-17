@@ -42,6 +42,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
+            oddsDetailDataList.forEach { data ->
+                data.oddArrayList.forEach { odd ->
+                    odd?.isSelected = betInfoList.any{it.matchOdd.oddsId == odd?.id}
+
+                }
+            }
             notifyDataSetChanged()
         }
 
@@ -575,7 +581,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeEPSAdapter(
                     oddsDetail,
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
             }
@@ -588,7 +593,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeOneListAdapter(
                     oddsDetail,
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
                 layoutManager = LinearLayoutManager(itemView.context)
@@ -630,7 +634,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         adapter = TypeOneListAdapter(
                             od,
                             onOddClickListener,
-                            betInfoList,
                             oddsType
                         )
                         layoutManager = LinearLayoutManager(itemView.context)
@@ -654,19 +657,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvHome?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
+                    TypeCSAdapter(oddsDetail, homeList, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvDraw?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
+                    TypeCSAdapter(oddsDetail, drawList, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvAway?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
+                    TypeCSAdapter(oddsDetail, awayList, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
@@ -678,7 +681,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
             rvBet?.apply {
-                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
+                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
             }
         }
@@ -688,7 +691,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeTwoSpanCountGridAdapter(
                     oddsDetail,
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
                 layoutManager = GridLayoutManager(itemView.context, 2)
@@ -702,7 +704,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeOneListAdapter(
                     selectFGLG(oddsDetail),
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
                 layoutManager = LinearLayoutManager(itemView.context)
@@ -782,7 +783,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         teamNameList
                     ),
                     onOddClickListener,
-                    betInfoList,
                     oddsType,
                     object : TypeSCOAdapter.OnMoreClickListener {
                         override fun click() {
@@ -955,7 +955,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             return Type6GroupAdapter(
                 oddsDetail,
                 onOddClickListener,
-                betInfoList,
                 oddsType
             )
         }
@@ -964,7 +963,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             Type4GroupAdapter(
                 oddsDetail,
                 onOddClickListener,
-                betInfoList,
                 oddsType
             )
 

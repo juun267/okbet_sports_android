@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.CustomForOddDetailVerticalDivider
 
@@ -22,7 +21,6 @@ import org.cxct.sportlottery.util.CustomForOddDetailVerticalDivider
 class Type6GroupAdapter(
     private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
-    private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<Type6GroupAdapter.ViewHolder>() {
 
@@ -85,7 +83,7 @@ class Type6GroupAdapter(
 
         private fun setupRecyclerView(rv: RecyclerView?, list: MutableList<Odd?>){
             rv?.apply {
-                adapter = TypeCSAdapter(oddsDetail, list, onOddClickListener, betInfoList, oddsType)
+                adapter = TypeCSAdapter(oddsDetail, list, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
                 addItemDecoration(
                     CustomForOddDetailVerticalDivider(
