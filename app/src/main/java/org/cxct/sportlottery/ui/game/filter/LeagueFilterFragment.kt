@@ -126,4 +126,10 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
         })
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        viewModel.clearSelectedLeague()
+    }
 }
