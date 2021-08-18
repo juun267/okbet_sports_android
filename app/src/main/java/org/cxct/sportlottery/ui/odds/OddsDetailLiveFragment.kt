@@ -88,6 +88,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         getData()
     }
 
+    override fun onStop() {
+        super.onStop()
+        unSubscribeChannelEventAll()
+        timer?.cancel()
+    }
+
+
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
             oddsDetailListener = OddsDetailListener {
