@@ -33,7 +33,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
@@ -153,7 +152,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 override fun onClick(select: GameEntity) {
                     scroll_view.smoothScrollTo(0, 0)
                     viewModel.navSpecialEntrance(
-                        SpecialEntranceSource.HOME,
                         mSelectMatchType,
                         GameType.getGameType(select.code)
                     )
@@ -268,7 +266,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         btn_display_all.setOnClickListener {
             mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.let { data ->
                 val gameType = GameType.getGameType(data.code)
-                viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.TODAY, gameType)
+
+                viewModel.navSpecialEntrance(MatchType.TODAY, gameType)
             }
         }
 
@@ -345,7 +344,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun initEvent() {
         card_football.setOnClickListener {
             viewModel.navSpecialEntrance(
-                SpecialEntranceSource.HOME,
                 MatchType.TODAY,
                 GameType.FT
             )
@@ -353,7 +351,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         card_basketball.setOnClickListener {
             viewModel.navSpecialEntrance(
-                SpecialEntranceSource.HOME,
                 MatchType.TODAY,
                 GameType.BK
             )
@@ -361,7 +358,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         card_tennis.setOnClickListener {
             viewModel.navSpecialEntrance(
-                SpecialEntranceSource.HOME,
                 MatchType.TODAY,
                 GameType.TN
             )
@@ -369,14 +365,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         card_volleyball.setOnClickListener {
             viewModel.navSpecialEntrance(
-                SpecialEntranceSource.HOME,
                 MatchType.TODAY,
                 GameType.VB
             )
         }
 
         card_game_soon.setOnClickListener {
-            viewModel.navSpecialEntrance(SpecialEntranceSource.HOME, MatchType.AT_START, null)
+            viewModel.navSpecialEntrance(MatchType.AT_START, null)
         }
 
         card_lottery.setOnClickListener {

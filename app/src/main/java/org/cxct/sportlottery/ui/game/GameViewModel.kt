@@ -47,11 +47,9 @@ import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
-import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
@@ -255,19 +253,8 @@ class GameViewModel(
     private var sportQueryData: SportQueryData? = null
 
 
-    fun navSpecialEntrance(
-        source: SpecialEntranceSource,
-        matchType: MatchType,
-        gameType: GameType?
-    ) = when (source) {
-        SpecialEntranceSource.HOME -> {
-            getSpecEntranceFromHome(matchType, gameType)
-        }
-        SpecialEntranceSource.LEFT_MENU -> {
-            getSpecEntranceFromLeftMenu(matchType, gameType)
-        }
-    }?.let {
-        _specialEntrance.postValue(it)
+    fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
+        _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
     }
 
     private fun getSpecEntranceFromHome(
@@ -284,27 +271,6 @@ class GameViewModel(
         }
         else -> {
             SpecialEntrance(matchType, gameType)
-        }
-    }
-
-    private fun getSpecEntranceFromLeftMenu(
-        matchType: MatchType,
-        gameType: GameType?
-    ): SpecialEntrance? = when {
-        getSportCount(matchType, gameType) != 0 -> {
-            SpecialEntrance(matchType, gameType)
-        }
-        getSportCount(MatchType.TODAY, gameType) != 0 -> {
-            SpecialEntrance(MatchType.TODAY, gameType)
-        }
-        getSportCount(MatchType.EARLY, gameType) != 0 -> {
-            SpecialEntrance(MatchType.EARLY, gameType)
-        }
-        gameType != null -> {
-            SpecialEntrance(MatchType.PARLAY, gameType)
-        }
-        else -> {
-            null
         }
     }
 
