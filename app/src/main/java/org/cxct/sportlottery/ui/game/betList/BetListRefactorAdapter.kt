@@ -87,6 +87,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             } else {
                 value
             }
+            notifyDataSetChanged()
         }
 
     var moreOptionCollapse = false
@@ -588,6 +589,36 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
+        private fun setupOddInfo(data: ParlayOdd, oddsType: OddsType) {
+            itemView.apply {
+                if (data.betAmount > 0) {
+                    et_bet.setText(TextUtil.formatInputMoney(data.betAmount))
+                    itemView.apply {
+                        tv_check_maximum_limit.visibility = View.GONE
+                        ll_bet_quota_detail.visibility = View.GONE
+                        ll_win_quota_detail.visibility = View.VISIBLE
+                    }
+                } else {
+                    et_bet.setText("")
+                    itemView.apply {
+                        tv_check_maximum_limit.visibility = View.VISIBLE
+                        ll_bet_quota_detail.visibility = View.GONE
+                        ll_win_quota_detail.visibility = View.GONE
+                    }
+                }
+
+                et_bet.setSelection(et_bet.text.length)
+
+                val quota = data.betAmount
+                //比照以往計算
+                var win = quota * getOdds(data, oddsType)
+                if (oddsType == OddsType.EU) {
+                    win -= quota
+                }
+                tv_win_quota.text = TextUtil.format(win)
+            }
+        }
+
         @SuppressLint("ClickableViewAccessibility")
         private fun setupBetAmountInput(
             data: ParlayOdd,
@@ -600,10 +631,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         removeTextChangedListener(tag as TextWatcher)
                     }
 
-                    setText(data.betAmount.let {
-                        if (it > 0) TextUtil.formatInputMoney(it) else ""
-                    })
-                    setSelection(text.length)
+                    setupOddInfo(data, oddsType)
 
                     /* set listener */
                     val tw: TextWatcher?
