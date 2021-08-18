@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 
 
 class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
@@ -73,8 +74,12 @@ class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
         holder.bind(
             matchInfo,
             listOf(
-                Pair(data[position].getOrNull(0)?.first, data[position].getOrNull(0)?.second),
-                Pair(data[position].getOrNull(1)?.first, data[position].getOrNull(1)?.second)
+                Pair(
+                    data[position].getOrNull(0)?.first,
+                    data[position].getOrNull(0)?.second?.sortedBy { it?.id?.toDouble() }),
+                Pair(
+                    data[position].getOrNull(1)?.first,
+                    data[position].getOrNull(1)?.second?.sortedBy { it?.id?.toDouble() })
             ),
             oddsType,
             listener
@@ -139,7 +144,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@homeButtonSettings
                 }
-                (odds.second?.size ?: 0 < 2) -> {
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds == null) -> {
                     betStatus = BetStatus.LOCKED.code
                     return@homeButtonSettings
                 }
@@ -162,7 +167,11 @@ class OddButtonPagerViewHolder private constructor(
 
                 text = when {
                     PlayCateUtils.getOUSeries().map { it.value }.contains(odds.first) -> {
-                        itemView.context.getString(R.string.odd_button_ou_o)
+                        odds.second?.getOrNull(0)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds.second?.getOrNull(0)?.name
                     }
                     else -> ""
                 }
@@ -198,7 +207,11 @@ class OddButtonPagerViewHolder private constructor(
                     val playName = when {
                         PlayCateUtils.getOUSeries().map { it.value }
                             .contains(odds.first) -> {
-                            itemView.context.getString(R.string.odd_button_ou_o)
+                            odds.second?.getOrNull(0)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(
+                                    context
+                                ).key
+                            ) ?: odds.second?.getOrNull(0)?.name
                         }
                         else -> {
                             matchInfo?.homeName
@@ -221,7 +234,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@awayButtonSettings
                 }
-                (odds.second?.size ?: 0 < 2) -> {
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds == null) -> {
                     betStatus = BetStatus.LOCKED.code
                     return@awayButtonSettings
                 }
@@ -244,7 +257,11 @@ class OddButtonPagerViewHolder private constructor(
 
                 text = when {
                     PlayCateUtils.getOUSeries().map { it.value }.contains(odds.first) -> {
-                        itemView.context.getString(R.string.odd_button_ou_u)
+                        odds.second?.getOrNull(1)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds.second?.getOrNull(1)?.name
                     }
                     else -> ""
                 }
@@ -280,7 +297,11 @@ class OddButtonPagerViewHolder private constructor(
                     val playName = when {
                         PlayCateUtils.getOUSeries().map { it.value }
                             .contains(odds.first) -> {
-                            itemView.context.getString(R.string.odd_button_ou_u)
+                            odds.second?.getOrNull(1)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(
+                                    context
+                                ).key
+                            ) ?: odds.second?.getOrNull(1)?.name
                         }
                         else -> {
                             matchInfo?.awayName
@@ -303,13 +324,19 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@drawButtonSettings
                 }
+                (odds?.second?.getOrNull(2)?.odds == null) -> {
+                    betStatus = BetStatus.LOCKED.code
+                    return@drawButtonSettings
+                }
                 else -> {
-                    betStatus = odds?.second?.getOrNull(2)?.status
+                    betStatus = odds.second?.getOrNull(2)?.status
                 }
             }
 
             tv_name.apply {
-                text = itemView.context.getString(R.string.draw)
+                text = odds.second?.getOrNull(2)?.nameMap?.get(
+                    LanguageManager.getSelectLanguage(context).key
+                ) ?: odds.second?.getOrNull(2)?.name
                 visibility = View.VISIBLE
             }
 
@@ -318,21 +345,23 @@ class OddButtonPagerViewHolder private constructor(
             }
 
             tv_odds.text = when (oddsType) {
-                OddsType.EU -> odds?.second?.getOrNull(2)?.odds.toString()
-                OddsType.HK -> odds?.second?.getOrNull(2)?.hkOdds.toString()
+                OddsType.EU -> odds.second?.getOrNull(2)?.odds.toString()
+                OddsType.HK -> odds.second?.getOrNull(2)?.hkOdds.toString()
             }
 
-            this@OddButtonPagerViewHolder.setupOddState(this, odds?.second?.getOrNull(2))
+            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
-            isSelected = odds?.second?.getOrNull(2)?.isSelected ?: false
+            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
 
             setOnClickListener { _ ->
-                odds?.second?.getOrNull(2)?.let { odd ->
+                odds.second?.getOrNull(2)?.let { odd ->
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
                         playCateName,
-                        itemView.context.getString(R.string.draw)
+                        odds.second?.getOrNull(2)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds.second?.getOrNull(2)?.name ?: ""
                     )
                 }
             }
