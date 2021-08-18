@@ -43,6 +43,8 @@ class MainViewModel(
 
     val userId = loginRepository.userId
 
+    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
+
     private val _promoteNoticeResult = MutableLiveData<Event<MessageListResult>>()
     val promoteNoticeResult: LiveData<Event<MessageListResult>>
         get() = _promoteNoticeResult
