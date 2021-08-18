@@ -88,6 +88,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         getData()
     }
 
+    override fun onStop() {
+        super.onStop()
+        unSubscribeChannelEventAll()
+        timer?.cancel()
+    }
+
+
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
             oddsDetailListener = OddsDetailListener {
@@ -321,8 +328,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         mSportCode?.let { mSportCode ->
             matchId?.let { matchId ->
                 viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
-                //從背景中喚醒app 直接訂閱會有mStompClient＝null的情況 導致沒有訂閱 這裡暫時延遲
-//                Handler().postDelayed({ subscribeChannelEvent(matchId) }, 200)
                 subscribeChannelEvent(matchId)
             }
         }
