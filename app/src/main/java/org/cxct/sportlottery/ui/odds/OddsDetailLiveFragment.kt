@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -85,14 +86,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onStart() {
         super.onStart()
         getData()
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        unSubscribeChannelEventAll()
-
-        timer?.cancel()
     }
 
     private fun initUI() {
@@ -288,7 +281,19 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
-            it?.let {}
+            it?.let { globalStopEvent ->
+                val adapterList = oddsDetailListAdapter?.oddsDetailDataList
+                adapterList?.forEach { listData ->
+                    listData.oddArrayList.forEach { odd ->
+                        if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
+                            odd?.status = BetStatus.LOCKED.code
+                        }
+                    }
+                }
+                if (adapterList?.isNotEmpty() == true) {
+                    oddsDetailListAdapter?.oddsDetailDataList = adapterList
+                }
+            }
         })
 
         receiver.producerUp.observe(this.viewLifecycleOwner, {
@@ -316,6 +321,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         mSportCode?.let { mSportCode ->
             matchId?.let { matchId ->
                 viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+                //從背景中喚醒app 直接訂閱會有mStompClient＝null的情況 導致沒有訂閱 這裡暫時延遲
+//                Handler().postDelayed({ subscribeChannelEvent(matchId) }, 200)
                 subscribeChannelEvent(matchId)
             }
         }
