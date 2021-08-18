@@ -9,6 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd1
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd2
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_star
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.iv_match_in_play
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_away
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_home
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_play_type_count
+import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_time
+import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -85,6 +94,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
         private var timer: Timer? = null
 
         fun bind(data: MatchOdd) {
+            setupOddList(data)
             setupMatchInfo(data)
             setupTime(data)
             setupOddButton(data)
@@ -99,10 +109,38 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             }
         }
 
+        private fun setupOddList(data: MatchOdd) {
+            itemView.apply {
+                gameType = data.matchInfo?.gameType
+
+                oddListHDP = when (gameType) {
+                    GameType.TN.key -> {
+                        data.odds[PlayCate.SET_HDP.value]
+                    }
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.HDP_INCL_OT.value]
+                    }
+                    else -> {
+                        data.odds[PlayCate.HDP.value]
+                    }
+                }
+
+                oddList1x2 = when (gameType) {
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.SINGLE_OT.value]
+                    }
+                    else -> {
+                        data.odds[PlayCate.SINGLE.value]
+                    }
+                }
+            }
+        }
+
         private fun setupMatchInfo(data: MatchOdd) {
             itemView.apply {
                 tv_game_name_home.text = data.matchInfo?.homeName
                 tv_game_name_away.text = data.matchInfo?.awayName
+                showStrongTeam()
                 tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
 
                 btn_star.apply {
@@ -196,6 +234,26 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             }
         }
 
+        private fun showStrongTeam() {
+            itemView.apply {
+                val homeStrongType = if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                    Typeface.BOLD
+                else
+                    Typeface.NORMAL
+
+                val awayStrongType = if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                    Typeface.BOLD
+                else
+                    Typeface.NORMAL
+
+                tv_game_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                tv_game_name_home.apply { setTypeface(this.typeface, homeStrongType) }
+
+                tv_game_score_away.apply { setTypeface(this.typeface, awayStrongType) }
+                tv_game_name_away.apply { setTypeface(this.typeface, awayStrongType) }
+            }
+        }
+
         @SuppressLint("SetTextI18n")
         private fun setupTime(data: MatchOdd) {
             itemView.apply {
@@ -270,27 +328,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     GameType.FT.key, GameType.BK.key -> context.getText(R.string.ou_hdp_hdp_title)
                     GameType.TN.key, GameType.VB.key -> context.getText(R.string.ou_hdp_1x2_title)
                     else -> ""
-                }
-
-                oddListHDP = when (gameType) {
-                    GameType.TN.key -> {
-                        data.odds[PlayCate.SET_HDP.value]
-                    }
-                    GameType.BK.key -> {
-                        data.odds[PlayCate.HDP_INCL_OT.value]
-                    }
-                    else -> {
-                        data.odds[PlayCate.HDP.value]
-                    }
-                }
-
-                oddList1x2 = when (gameType) {
-                    GameType.BK.key -> {
-                        data.odds[PlayCate.SINGLE_OT.value]
-                    }
-                    else -> {
-                        data.odds[PlayCate.SINGLE.value]
-                    }
                 }
 
                 btn_match_odd1.apply {

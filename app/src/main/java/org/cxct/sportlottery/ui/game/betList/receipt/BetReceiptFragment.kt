@@ -28,6 +28,8 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private var betParlayList: List<ParlayOdd>? = null
 
+    private var betReceiptDiffAdapter: BetReceiptDiffAdapter? = null
+
     companion object {
         @JvmStatic
         fun newInstance(betResultData: Receipt?, betParlayList: List<ParlayOdd>) = BetReceiptFragment().apply {
@@ -59,6 +61,10 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initObserver() {
         viewModel.userMoney.observe(viewLifecycleOwner, {
             it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
+        })
+
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            betReceiptDiffAdapter?.oddsType = it
         })
     }
 
@@ -109,7 +115,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 }
             })
 
-            adapter = BetReceiptDiffAdapter().apply {
+            betReceiptDiffAdapter = BetReceiptDiffAdapter().apply {
                 betResultData?.apply {
                     submit(
                         betResultData?.singleBets ?: listOf(),
@@ -118,6 +124,8 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     )
                 }
             }
+
+            adapter = betReceiptDiffAdapter
         }
     }
 }

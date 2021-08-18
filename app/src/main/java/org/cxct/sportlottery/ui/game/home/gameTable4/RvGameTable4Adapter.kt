@@ -18,7 +18,7 @@ import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHolder>() {
 
-    private var mDataList = listOf<GameEntity>()
+    private var mDataList = mutableListOf<GameEntity>()
     private var mMatchType: MatchType = MatchType.IN_PLAY
 
     fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
@@ -27,7 +27,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                 it.matchInfo?.gameType = data.code
             }
             GameEntity(data.code, data.name, data.num, data.matchOdds)
-        } ?: listOf()
+        }?.toMutableList() ?: mutableListOf()
         mMatchType = matchType
         stopAllTimer()
         notifyDataSetChanged()

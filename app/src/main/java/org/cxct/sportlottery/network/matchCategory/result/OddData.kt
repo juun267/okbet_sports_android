@@ -16,5 +16,7 @@ data class OddData(
     @Json(name = "oddsList")
     val oddsList: List<Odd>?,
     @Json(name = "quickPlayCateList")
-    val quickPlayCateList: List<QuickPlayCate>?
+    val quickPlayCateList: List<QuickPlayCate>?,
+    @Json(name = "oddsSort")
+    val oddsSortL: String? = null
 )

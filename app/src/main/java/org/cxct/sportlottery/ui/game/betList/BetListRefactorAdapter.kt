@@ -27,7 +27,6 @@ import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import timber.log.Timber
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -42,7 +41,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
-            updateDataList()
+            notifyDataSetChanged()
         }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
@@ -53,11 +52,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     private fun updateDataList() {
-//        notifyDataSetChanged()
         //TODO review 看是否能用這種更新方式
         if ((betList?.size ?: 0) > 0) {
             if ((betList ?: mutableListOf()).all { it.matchOdd.refreshData }) {
-                Timber.e("Dean, notify all")
                 betList?.forEach {
                     it.matchOdd.refreshData = false
                 }
@@ -65,7 +62,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             } else {
                 betList?.forEachIndexed { index, betInfoListData ->
                     if (betInfoListData.matchOdd.refreshData) {
-                        Timber.e("Dean, index = $index notify")
                         betInfoListData.matchOdd.refreshData = false
                         notifyItemChanged(index)
                     }
@@ -179,6 +175,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         return betListSize + parlayListSize
     }
 
+    //使用HasStabledIds需複寫回傳的position, 若仍使用super.getItemId(position), 數據刷新會錯亂.
+    //https://blog.csdn.net/karsonNet/article/details/80598435
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
     //單注
     class BetInfoItemViewHolder(itemView: View) : BetInfoChangeViewHolder(itemView) {
         fun bind(
@@ -283,14 +285,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
                 setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
-                /*tv_odds_content.text = "${itemData.matchOdd.playName}${itemData.matchOdd.spread}${
-                    TextUtil.formatForOdd(
-                        getOdds(
-                            itemData.matchOdd,
-                            oddsType
-                        )
-                    )
-                }"*/
                 tv_match.text =
                     "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 tv_name.text = if (itemData.matchOdd.inplay == INPLAY) {
@@ -341,6 +335,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     cl_quota_detail.visibility = View.VISIBLE
                 } else {
                     cl_item_background.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite2))
+                    tv_odds_content.text = itemData.matchOdd.playName
                     iv_bet_lock.visibility = View.VISIBLE
                     et_bet.apply {
                         isEnabled = false

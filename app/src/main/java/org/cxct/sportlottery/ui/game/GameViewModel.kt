@@ -698,7 +698,7 @@ class GameViewModel(
                 }
                 MatchType.EPS -> {
                     val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(), TimeUtil.YMD_FORMAT)
-                    getEpsList(item.code, time)
+                    getEpsList(item.code, startTime = time)
                 }
             }
         }
@@ -764,7 +764,7 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(leagueId: String) {
+    fun getOutrightOddsList(leagueId: String,  matchType: String = MatchType.OUTRIGHT.postValue) {
         getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
 
@@ -772,6 +772,7 @@ class GameViewModel(
                     OneBoSportApi.outrightService.getOutrightOddsList(
                         OutrightOddsListRequest(
                             item.code,
+                            matchType = matchType,
                             leagueIdList = listOf(leagueId)
                         )
                     )
@@ -904,7 +905,7 @@ class GameViewModel(
         )
     }
 
-    private fun getLeagueList(
+    fun getLeagueList(
         gameType: String,
         matchType: String,
         timeRangeParams: TimeRangeParams?,
@@ -943,11 +944,11 @@ class GameViewModel(
         }
     }
 
-    private fun getEpsList(gameType: String, startTime: String) {
+    private fun getEpsList(gameType: String, matchType: String = MatchType.EPS.postValue, startTime: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getEpsList(
-                    OddsEpsListRequest(gameType = gameType, startTime = startTime)
+                    OddsEpsListRequest(gameType = gameType, matchType = matchType, startTime = startTime)
                 )
             }
             _epsListResult.postValue(Event(result))
