@@ -39,5 +39,7 @@ data class LoginData(
     @Json(name = "hyType")
     val hyType: Int?, //会员类型
     @Json(name = "userRebateList")
-    val userRebateList: List<UserRebate>? //用户返点数据
+    val userRebateList: List<UserRebate>?, //用户返点数据
+    @Json(name = "creditAccount")
+    val creditAccount: Int?
 )
