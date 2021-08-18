@@ -100,7 +100,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             setupOddButton(data)
 
             //TODO simon test review 賠率 icon 顯示邏輯
-            itemView.iv_match_in_play.visibility = if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
+            itemView.iv_match_in_play.visibility = if (matchType == MatchType.AT_START) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
 //            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
 //            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
 
