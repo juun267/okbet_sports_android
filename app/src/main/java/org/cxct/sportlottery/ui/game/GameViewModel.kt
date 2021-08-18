@@ -266,9 +266,6 @@ class GameViewModel(
         SpecialEntranceSource.LEFT_MENU -> {
             getSpecEntranceFromLeftMenu(matchType, gameType)
         }
-        SpecialEntranceSource.SHOPPING_CART -> {
-            SpecialEntrance(matchType, gameType)
-        }
     }?.let {
         _specialEntrance.postValue(it)
     }

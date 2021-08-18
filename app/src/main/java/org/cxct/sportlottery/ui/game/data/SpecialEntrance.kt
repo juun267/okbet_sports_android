@@ -4,7 +4,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 
 
-enum class SpecialEntranceSource { HOME, LEFT_MENU, SHOPPING_CART }
+enum class SpecialEntranceSource { HOME, LEFT_MENU }
 
 data class SpecialEntrance(
     val matchType: MatchType,

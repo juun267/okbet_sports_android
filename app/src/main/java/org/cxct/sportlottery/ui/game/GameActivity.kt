@@ -632,33 +632,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         loading()
         viewModel.getSportMenu()
     }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-
-        val bundle = intent.extras
-        val matchType = bundle?.getString("matchType")
-        val gameType = GameType.getGameType(bundle?.getString("gameType"))
-
-        when (matchType) {
-            MatchType.PARLAY.postValue -> {
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.PARLAY,
-                    gameType
-                )
-            }
-
-            else -> {
-                viewModel.navSpecialEntrance(
-                    SpecialEntranceSource.SHOPPING_CART,
-                    MatchType.TODAY,
-                    gameType
-                )
-            }
-        }
-    }
-
+    
     private fun updateSelectTabState(matchType: MatchType?) {
         when (matchType) {
             MatchType.IN_PLAY -> updateSelectTabState(1)
