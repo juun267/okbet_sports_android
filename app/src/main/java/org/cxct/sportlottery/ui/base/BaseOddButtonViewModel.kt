@@ -437,6 +437,9 @@ abstract class BaseOddButtonViewModel(
                             ), newItem
                         )
 
+                        if (oldItem.oddState != OddState.SAME.state)
+                            oldItem.oddsHasChanged = true
+
                         oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
 
                         newItem.status.let { status -> oldItem.status = status }
