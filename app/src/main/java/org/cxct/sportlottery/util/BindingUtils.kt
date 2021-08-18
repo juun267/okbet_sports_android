@@ -2,6 +2,7 @@ package org.cxct.sportlottery.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.format.DateUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -26,6 +27,11 @@ fun TextView.setDate(timeStamp: Long?) {
 @BindingAdapter("dateNoYear")
 fun TextView.setDateNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_FORMAT)
+}
+
+@BindingAdapter("dateNoYear")
+fun TextView.setDateNoYear(date: String?) {
+    text = TimeUtil.dateToDateFormat(date, MD_FORMAT)
 }
 
 @BindingAdapter("dateTimeNoYear")
@@ -90,7 +96,7 @@ fun TextView.setReceiptStatusColor(status: Int?) {
 fun TextView.setGameStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            0,1,2,3 -> R.color.colorBlue
+            0, 1, 2, 3 -> R.color.colorBlue
             else -> R.color.colorRed
         }
         this.setTextColor(ContextCompat.getColor(context, color))

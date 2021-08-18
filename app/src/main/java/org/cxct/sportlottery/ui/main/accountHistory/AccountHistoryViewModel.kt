@@ -42,8 +42,11 @@ class AccountHistoryViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val selectedSportDate: LiveData<Pair<String?, String?>> //<sport, date>
-        get() = _selectedSportDate
+    val selectedSport: LiveData<String?>
+        get() = _selectedSport
+
+    val selectedDate: LiveData<String?>
+        get() = _selectedDate
 
     val betRecordResult: LiveData<BetSettledListResult>
         get() = _betSettledRecordResult
@@ -55,7 +58,8 @@ class AccountHistoryViewModel(
         get() = _betDetailResult
 
     private val _loading = MutableLiveData<Boolean>()
-    private val _selectedSportDate = MutableLiveData<Pair<String?, String?>>()
+    private val _selectedSport = MutableLiveData<String?>()
+    private val _selectedDate = MutableLiveData<String?>()
     private val _betSettledRecordResult = MutableLiveData<BetSettledListResult>()
     private var mBetSettledListRequest: BetSettledListRequest? = null
     private val _messageListResult = MutableLiveData<MessageListResult?>()
@@ -146,7 +150,7 @@ class AccountHistoryViewModel(
     private var nowDetailPage = 1
     val detailDataList = mutableListOf<org.cxct.sportlottery.network.bet.settledDetailList.Row>()
 
-    fun searchDetail(gameType: String? = null, date: String? = null) {
+    fun searchDetail(gameType: String? = selectedSport.value, date: String? = selectedDate.value) {
 
         val startTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.START_OF_DAY, TimeUtil.YMD_FORMAT).toString()
         val endTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.END_OF_DAY, TimeUtil.YMD_FORMAT).toString()
@@ -199,8 +203,12 @@ class AccountHistoryViewModel(
 
     }
 
-    fun setSelectedSportDate(sport: String? = _selectedSportDate.value?.first, date: String? = _selectedSportDate.value?.second) {
-        _selectedSportDate.value = Pair(sport, date)
+    fun setSelectedDate(date: String?) {
+        _selectedDate.value = date
+    }
+
+    fun setSelectedSport(sport: String?) {
+        _selectedSport.value = sport
     }
 
     private fun loading() {

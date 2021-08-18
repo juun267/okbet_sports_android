@@ -470,7 +470,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 hideLoading()
 
                 if (oddsListResult.success) {
-                    val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                    val leagueOdds = oddsListResult.oddsListData?.leagueOddsFilter
+                        ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
 
@@ -704,6 +705,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             leagueAdapter.notifyDataSetChanged()
+        })
+
+        viewModel.leagueFilterList.observe(this.viewLifecycleOwner, { leagueList ->
+            game_toolbar_champion.isSelected = leagueList.isNotEmpty()
         })
     }
 
