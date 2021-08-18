@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
+import kotlinx.android.synthetic.main.item_parlay_receipt.view.tv_match_at
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +39,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
             val parlayItem =
                 if (parlayList.isNotEmpty())
-                    listOf(DataItem.ParlayTitle) + parlayList.map { DataItem.ParlayData(it) }
+                    listOf(DataItem.ParlayTitle) + parlayList.map {
+                        if (it == parlayList.first()) DataItem.ParlayData(it, true) else DataItem.ParlayData(it)
+                    }
                 else listOf()
 
             val items = singleList.map { DataItem.SingleData(it) } + parlayItem
@@ -47,6 +50,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                 submitList(items)
             }
         }
+        betParlayList = newBetParlayList
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -77,7 +81,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
-                holder.bind(itemData.result, oddsType, betParlayList)
+                holder.bind(itemData, oddsType, betParlayList)
             }
 
             is ParlayTitleViewHolder -> {
@@ -128,17 +132,34 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             }
         }
 
-        fun bind(itemData: BetResult, oddsType: OddsType, betParlay: List<ParlayOdd>?) {
+        fun bind(itemData: DataItem, oddsType: OddsType, betParlay: List<ParlayOdd>?) {
             itemView.apply {
-                itemData.apply {
+                val parlayData = (itemData as DataItem.ParlayData)
+                parlayData.result.apply {
                     matchOdds?.firstOrNull()?.apply {
                         parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
                     }
+                    setupParlayOdd(itemData, betParlay, oddsType)
+
                     tv_bet_amount.text = stake?.let { "${TextUtil.formatBetQuota(it)} * $num" }
                     tv_winnable_amount.setMoneyFormat(winnable)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
                     tv_bet_status.setReceiptStatusColor(status)
+                }
+            }
+        }
+
+        private fun setupParlayOdd(parlayData: DataItem.ParlayData, betParlay: List<ParlayOdd>?, oddsType: OddsType) {
+            itemView.apply {
+                parlayData.apply {
+                    if (first) {
+                        tv_match_at.visibility = View.VISIBLE
+                        betParlay?.firstOrNull()?.let { tv_match_odd_parlay.text = TextUtil.formatForOdd(getOdds(it, oddsType)) }
+                    } else {
+                        tv_match_at.visibility = View.GONE
+                        tv_match_odd_parlay.visibility = View.GONE
+                    }
                 }
             }
         }
@@ -177,7 +198,7 @@ sealed class DataItem {
         override val orderNo = result.orderNo
     }
 
-    data class ParlayData(val result: BetResult) : DataItem() {
+    data class ParlayData(val result: BetResult, val first: Boolean = false) : DataItem() {
         override val orderNo = result.orderNo
     }
 
