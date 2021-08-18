@@ -42,6 +42,7 @@ import org.cxct.sportlottery.util.*
  * @create 2021/7/8
  * @description
  */
+const val INPLAY: Int = 1
 @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
 class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
 

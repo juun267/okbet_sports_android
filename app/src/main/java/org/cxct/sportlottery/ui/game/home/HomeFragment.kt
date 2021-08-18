@@ -98,9 +98,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         try {
-            //20210712 紀錄：沒設定 betInfoRepository._isParlayPage，BetListDialog 就不會初始化，下注不會有投注彈窗
-            //賽事首頁 - 滾球盤、即將開賽盤、精選賽事、推薦賽事，都不屬於串關類型 切換
-            viewModel.isParlayPage(false)
 
             initTable()
             initRecommend()

@@ -9,7 +9,7 @@ import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import kotlin.reflect.KClass
 
 abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
-    BaseOddButtonActivity<T>(clazz) {
+    BaseActivity<T>(clazz) {
 
     private var mNoticeButton: TextView? = null
     private var noticeCount: Int? = null
