@@ -570,6 +570,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             mRvGameTable4Adapter.notifyDataSetChanged()
             mRvHighlightAdapter.notifyDataSetChanged()
         })
+
+        viewModel.isCreditAccount.observe(viewLifecycleOwner, {
+            updateThirdGameCard(!it)
+        })
     }
 
     private fun initSocketObserver() {
@@ -910,6 +914,38 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         card_slot.visibility = if (isShowThirdGame && slotCount > 0) View.VISIBLE else View.GONE
         card_fishing.visibility =
             if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
+    }
+
+    private fun updateThirdGameCard(isVisible: Boolean) {
+        card_lottery.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        card_live.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        card_poker.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        card_slot.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        card_fishing.visibility = if (isVisible) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun navOddsDetailFragment(

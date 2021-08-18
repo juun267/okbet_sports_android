@@ -79,6 +79,7 @@ class GameViewModel(
     infoCenterRepository,
     myFavoriteRepository
 ) {
+    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
 
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = betInfoRepository.matchOddList
