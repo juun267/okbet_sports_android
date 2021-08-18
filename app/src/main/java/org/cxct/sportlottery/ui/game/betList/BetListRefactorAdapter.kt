@@ -36,7 +36,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     var betList: MutableList<BetInfoListData>? = mutableListOf()
         set(value) {
             field = value
-            updateDataList()
+            notifyDataSetChanged()
         }
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -48,25 +48,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         super.onViewRecycled(holder)
         when (holder is BetInfoChangeViewHolder) {
             true -> holder.clearHandler()
-        }
-    }
-
-    private fun updateDataList() {
-        //TODO review 看是否能用這種更新方式
-        if ((betList?.size ?: 0) > 0) {
-            if ((betList ?: mutableListOf()).all { it.matchOdd.refreshData }) {
-                betList?.forEach {
-                    it.matchOdd.refreshData = false
-                }
-                notifyDataSetChanged()
-            } else {
-                betList?.forEachIndexed { index, betInfoListData ->
-                    if (betInfoListData.matchOdd.refreshData) {
-                        betInfoListData.matchOdd.refreshData = false
-                        notifyItemChanged(index)
-                    }
-                }
-            }
         }
     }
 

@@ -430,7 +430,6 @@ abstract class BaseOddButtonViewModel(
             try {
                 newItem.let {
                     if (it.id == oldItem.oddsId) {
-                        oldItem.refreshData = true
                         oldItem.oddState = getOddState(
                             getOdds(
                                 oldItem,
