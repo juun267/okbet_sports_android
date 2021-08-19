@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
@@ -72,7 +71,10 @@ class ProfileCenterActivity :
                     throw FileNotFoundException()
             } catch (e: Exception) {
                 e.printStackTrace()
-                ToastUtil.showToastInCenter(this@ProfileCenterActivity, getString(R.string.error_reading_file))
+                ToastUtil.showToastInCenter(
+                    this@ProfileCenterActivity,
+                    getString(R.string.error_reading_file)
+                )
             }
         }
 
@@ -111,9 +113,13 @@ class ProfileCenterActivity :
 
     private fun setupEditNickname() {
         btn_edit_nickname.setOnClickListener {
-            startActivity(Intent(this@ProfileCenterActivity, ModifyProfileInfoActivity::class.java).apply {
-                putExtra(ModifyProfileInfoActivity.MODIFY_INFO, ModifyType.NickName)
-            })
+            startActivity(
+                Intent(
+                    this@ProfileCenterActivity,
+                    ModifyProfileInfoActivity::class.java
+                ).apply {
+                    putExtra(ModifyProfileInfoActivity.MODIFY_INFO, ModifyType.NickName)
+                })
         }
     }
 
@@ -199,7 +205,11 @@ class ProfileCenterActivity :
         btn_promotion.setOnClickListener {
             val testFlag = viewModel.userInfo.value?.testFlag
             if (testFlag == TestFlag.NORMAL.index)
-                JumpUtil.toInternalWeb(this, Constants.getPromotionUrl(viewModel.token), getString(R.string.promotion))
+                JumpUtil.toInternalWeb(
+                    this,
+                    Constants.getPromotionUrl(viewModel.token),
+                    getString(R.string.promotion)
+                )
             else
                 ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
         }
@@ -263,21 +273,24 @@ class ProfileCenterActivity :
     }
 
     private fun initObserve() {
-        viewModel.userMoney.observe(this, Observer {
+        viewModel.userMoney.observe(this, {
             it?.let {
                 refreshMoneyHideLoading()
                 tv_account_balance.text = TextUtil.format(it)
             }
         })
 
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this, {
             updateUI(it)
         })
 
         viewModel.withdrawSystemOperation.observe(this, {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
-                showPromptDialog(getString(R.string.prompt), getString(R.string.message_withdraw_maintain)) {}
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.message_withdraw_maintain)
+                ) {}
             }
         })
 
@@ -286,16 +299,33 @@ class ProfileCenterActivity :
                 if (b) {
                     startActivity(Intent(this, MoneyRechargeActivity::class.java))
                 } else {
-                    showPromptDialog(getString(R.string.prompt), getString(R.string.message_recharge_maintain)) {}
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
+                    ) {}
                 }
             }
         })
 
-        viewModel.needToUpdateWithdrawPassword.observe(this, Observer {
+        viewModel.needToUpdateWithdrawPassword.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(
+                            Intent(
+                                this,
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
                     }
                 } else {
                     viewModel.checkProfileInfoComplete()
@@ -303,10 +333,15 @@ class ProfileCenterActivity :
             }
         })
 
-        viewModel.needToCompleteProfileInfo.observe(this, Observer {
+        viewModel.needToCompleteProfileInfo.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
                         startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 } else {
@@ -315,10 +350,15 @@ class ProfileCenterActivity :
             }
         })
 
-        viewModel.needToBindBankCard.observe(this, Observer {
+        viewModel.needToBindBankCard.observe(this, {
             it.getContentIfNotHandled()?.let { messageId ->
                 if (messageId != -1) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(messageId),getString(R.string.go_to_setting),  true) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(messageId),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
                         startActivity(Intent(this, BankActivity::class.java))
                     }
                 } else {
@@ -327,11 +367,25 @@ class ProfileCenterActivity :
             }
         })
 
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(this, Observer {
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_setting_withdraw_password), getString(R.string.go_to_setting),true) {
-                        startActivity(Intent(this, SettingPasswordActivity::class.java).apply { putExtra(PWD_PAGE, SettingPasswordActivity.PwdPage.BANK_PWD) })
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(
+                            Intent(
+                                this,
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
                     }
                 } else if (!b) {
                     startActivity(Intent(this, BankActivity::class.java))
@@ -342,7 +396,12 @@ class ProfileCenterActivity :
         viewModel.settingNeedToCompleteProfileInfo.observe(this, {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
-                    showPromptDialog(getString(R.string.withdraw_setting), getString(R.string.please_complete_profile_info), getString(R.string.go_to_setting),true) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
                         startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 } else if (!b) {
@@ -354,7 +413,10 @@ class ProfileCenterActivity :
         viewModel.editIconUrlResult.observe(this, {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
-                showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.save_avatar_success)
+                ) {}
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         })
@@ -380,7 +442,8 @@ class ProfileCenterActivity :
 
     private fun uploadImg(file: File) {
         val userId = viewModel.userInfo.value?.userId.toString()
-        val uploadImgRequest = UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
+        val uploadImgRequest =
+            UploadImgRequest(userId, file, UploadImgRequest.PlatformCodeType.AVATAR)
         viewModel.uploadImage(uploadImgRequest)
     }
 
