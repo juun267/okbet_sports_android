@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MetricsUtil
 
 class TransactionStatusActivity :
@@ -209,10 +210,6 @@ class TransactionStatusActivity :
             getAnnouncement()
         })
 
-        viewModel.oddsType.observe(this, {
-            tv_odds_type.text = getString(it.res)
-        })
-
         viewModel.thirdGameCategory.observe(this, {
             it.getContentIfNotHandled().let { thirdGameCategory ->
                 if (thirdGameCategory != null) {
@@ -261,5 +258,9 @@ class TransactionStatusActivity :
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
         }
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+        tv_odds_type.text = getString(oddsType.res)
     }
 }
