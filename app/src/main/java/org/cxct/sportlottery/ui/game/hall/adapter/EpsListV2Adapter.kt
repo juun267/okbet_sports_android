@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,8 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
 
-class EpsListV2Adapter() :
+class EpsListV2Adapter :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { MATCHINFO, ODD }

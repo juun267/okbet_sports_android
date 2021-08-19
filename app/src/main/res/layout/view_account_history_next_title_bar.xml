@@ -34,6 +34,7 @@
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:text="@string/bet_num_and_bet_date"
+        android:textStyle="bold"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"

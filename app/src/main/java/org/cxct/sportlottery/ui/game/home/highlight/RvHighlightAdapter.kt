@@ -135,7 +135,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             //TODO simon test review 賠率 icon 顯示邏輯
             itemView.iv_match_in_play.visibility =
                 if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
-//            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
+            itemView.iv_match_price.visibility =
+                if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
 //            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
 
             itemView.setOnClickListener {
