@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_country.view.*
 import kotlinx.android.synthetic.main.itemview_country_v4.view.*
 import kotlinx.android.synthetic.main.itemview_country_v4.view.country_border
 import org.cxct.sportlottery.R
@@ -103,7 +102,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(leagueList: List<League>, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_border.visibility = View.GONE
             itemView.country_text.visibility = View.GONE
-            itemView.country_img.visibility = View.GONE
+            itemView.country_webview.visibility = View.GONE
             itemView.country_expand.setExpanded(true, false)
 
             setupLeagueList(leagueList, countryLeagueListener)
