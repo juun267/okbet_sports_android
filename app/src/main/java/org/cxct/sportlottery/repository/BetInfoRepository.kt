@@ -154,6 +154,7 @@ class BetInfoRepository(val androidContext: Context) {
                         newParlayList[index].apply {
                             betAmount = parlayOdd.betAmount
                             allSingleInput = parlayOdd.allSingleInput
+                            amountError = parlayOdd.amountError
                         }
                     }
                 }

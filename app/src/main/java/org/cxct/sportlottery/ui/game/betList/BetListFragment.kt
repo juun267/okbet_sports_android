@@ -183,7 +183,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 viewModel.saveOddsHasChanged(matchOdd)
             }
 
-            override fun refreshAmount() {
+            override fun refreshBetInfoTotal() {
+                checkAllAmountCanBet()
                 refreshAllAmount()
             }
 
@@ -191,6 +192,24 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 showParlayDescription(parlayType, parlayRule)
             }
         })
+    }
+
+    private fun checkAllAmountCanBet() {
+        val betList = getCurrentBetList()
+        val parlayList = getCurrentParlayList()
+        betList.forEach {
+            if (it.amountError) {
+                btn_bet.amountCanBet = false
+                return
+            }
+        }
+        parlayList.forEach {
+            if (it.amountError) {
+                btn_bet.amountCanBet = false
+                return
+            }
+        }
+        btn_bet.amountCanBet = true
     }
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
@@ -294,6 +313,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
+                checkAllAmountCanBet()
             }
         })
 
