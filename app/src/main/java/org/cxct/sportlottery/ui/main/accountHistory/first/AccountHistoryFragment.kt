@@ -19,14 +19,14 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
 
     private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
         it.let { data ->
-            viewModel.setSelectedSportDate(date = data.statDate)
+            viewModel.setSelectedDate(data.statDate)
             val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
             findNavController().navigate(action)
         }
     }, BackClickListener {
         activity?.finish()
     }, SportSelectListener {
-        viewModel.setSelectedSportDate(sport = it)
+        viewModel.setSelectedSport(it)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -73,8 +73,8 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
             rvAdapter.oddsType = it
         })
 
-        viewModel.selectedSportDate.observe(viewLifecycleOwner, {
-            viewModel.searchBetRecord(it.first)
+        viewModel.selectedSport.observe(viewLifecycleOwner, {
+            viewModel.searchBetRecord(it)
         })
 
     }

@@ -175,6 +175,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_match_border_row2.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
+            itemView.league_odd_match_price_boost.apply {
+                this.visibility = if(item.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+            }
         }
 
         private fun showStrongTeam(item: MatchOdd) {
