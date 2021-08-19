@@ -208,18 +208,6 @@
         tools:visibility="visible"
         tools:ignore="ContentDescription" />
 
-    <ImageView
-        android:id="@+id/league_odd_game_time"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/selector_btn_game_time_v4"
-        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_price_boost"
-        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
-        tools:ignore="ContentDescription" />
-
     <TextView
         android:id="@+id/league_odd_match_play_count"
         android:layout_width="wrap_content"
@@ -232,7 +220,7 @@
         android:textStyle="bold"
         app:drawableEndCompat="@drawable/ic_arrow_dark_right_v4"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
-        app:layout_constraintStart_toEndOf="@id/league_odd_game_time"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_price_boost"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="spUsage"
         tools:text="6" />

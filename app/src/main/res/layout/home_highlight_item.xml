@@ -114,15 +114,6 @@
             android:contentDescription="@null"
             android:src="@drawable/ic_price_v4" />
 
-        <ImageView
-            android:id="@+id/iv_match_live"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:scaleType="centerCrop"
-            android:layout_marginStart="10dp"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_home_game_schedule" />
-
         <TextView
             android:id="@+id/tv_match_play_type_count"
             android:layout_width="wrap_content"
