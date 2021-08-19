@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.profileCenter
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
@@ -63,6 +62,7 @@ class ProfileCenterViewModel(
             }
         }
     }
+
     //充值功能是否啟用
     fun checkRechargeSystem() {
         viewModelScope.launch {
