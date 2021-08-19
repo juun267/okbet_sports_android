@@ -420,6 +420,10 @@ class ProfileCenterActivity :
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         })
+
+        viewModel.isCreditAccount.observe(this, {
+            updateCreditAccountUI(it)
+        })
     }
 
     @SuppressLint("SetTextI18n")
@@ -447,4 +451,47 @@ class ProfileCenterActivity :
         viewModel.uploadImage(uploadImgRequest)
     }
 
+    private fun updateCreditAccountUI(isCreditAccount: Boolean) {
+        block_card.visibility = if (isCreditAccount) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        btn_account_transfer.visibility = if (isCreditAccount) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        btn_withdrawal_setting.visibility = if (isCreditAccount) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        btn_sport_bet_record.visibility = if (isCreditAccount) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        btn_other_bet_record.visibility = if (isCreditAccount) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        btn_fund_detail.visibility = if (isCreditAccount) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        bottom_nav_view.visibility = if (isCreditAccount) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+    }
 }

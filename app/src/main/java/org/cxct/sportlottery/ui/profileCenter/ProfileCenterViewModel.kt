@@ -47,6 +47,8 @@ class ProfileCenterViewModel(
 
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
+    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
+
 
     fun getUserInfo() {
         viewModelScope.launch {
