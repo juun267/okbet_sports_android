@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
@@ -29,6 +28,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -168,7 +168,7 @@ class ProfileCenterActivity :
 
     private fun setupMoreButtons() {
         btn_credit_bet_record.setOnClickListener {
-            Toast.makeText(this, "click credit bet record", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, CreditRecordActivity::class.java))
         }
 
         //個人資訊
