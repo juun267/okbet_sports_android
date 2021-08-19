@@ -481,7 +481,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 hideLoading()
             } else {
                 fl_no_game.visibility = View.GONE
-                viewModel.getSportQuery(favorMatchList)
             }
         })
     }
