@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.PlayCateUtils
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -46,23 +45,6 @@ class MyFavoriteViewModel(
         get() = _curPlay
     private val _curPlay = MutableLiveData<Play>()
 
-    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
-    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
-        get() = _thirdGameCategory
-
-    private val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
-    fun navMainPage(thirdGameCategory: ThirdGameCategory) {
-        _thirdGameCategory.postValue(
-            Event(
-                if (isCreditAccount.value == true) {
-                    null
-                } else {
-                    thirdGameCategory
-                }
-            )
-        )
-    }
 
     fun getSportQuery() {
         viewModelScope.launch {

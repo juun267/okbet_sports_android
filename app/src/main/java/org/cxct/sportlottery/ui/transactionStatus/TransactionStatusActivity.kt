@@ -209,20 +209,6 @@ class TransactionStatusActivity :
         viewModel.isLogin.observe(this, {
             getAnnouncement()
         })
-
-        viewModel.thirdGameCategory.observe(this, {
-            it.getContentIfNotHandled().let { thirdGameCategory ->
-                if (thirdGameCategory != null) {
-                    val intent = Intent(this, MainActivity::class.java)
-                        .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
-                    startActivity(intent)
-
-                    return@let
-                }
-
-                startActivity(Intent(this, GameActivity::class.java))
-            }
-        })
     }
 
     private fun getAnnouncement() {
@@ -262,5 +248,17 @@ class TransactionStatusActivity :
 
     override fun updateOddsType(oddsType: OddsType) {
         tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        startActivity(Intent(this, GameActivity::class.java))
     }
 }

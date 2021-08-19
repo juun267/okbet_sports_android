@@ -519,20 +519,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 )
             }
         })
-
-        viewModel.thirdGameCategory.observe(this, {
-            it.getContentIfNotHandled().let { thirdGameCategory ->
-                if (thirdGameCategory != null) {
-                    val intent = Intent(this, MainActivity::class.java)
-                        .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
-                    startActivity(intent)
-
-                    return@let
-                }
-
-                tabLayout.getTabAt(0)?.select()
-            }
-        })
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {
@@ -553,6 +539,18 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun updateOddsType(oddsType: OddsType) {
         tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        tabLayout.getTabAt(0)?.select()
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {

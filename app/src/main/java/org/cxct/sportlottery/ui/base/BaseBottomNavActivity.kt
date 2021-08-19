@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.base
 
 import android.content.Intent
 import android.os.Bundle
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import kotlin.reflect.KClass
 
@@ -25,6 +26,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun showLoginNotify()
 
+    abstract fun navOneSportPage(thirdGameCategory: ThirdGameCategory?)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,6 +37,12 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
         viewModel.oddsType.observe(this, {
             updateOddsType(it)
+        })
+
+        viewModel.thirdGameCategory.observe(this, {
+            it.getContentIfNotHandled().let { thirdGameCategory ->
+                navOneSportPage(thirdGameCategory)
+            }
         })
 
         viewModel.intentClass.observe(this, {

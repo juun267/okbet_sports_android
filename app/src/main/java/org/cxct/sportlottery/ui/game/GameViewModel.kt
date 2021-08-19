@@ -50,7 +50,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
@@ -78,8 +77,6 @@ class GameViewModel(
     infoCenterRepository,
     myFavoriteRepository
 ) {
-    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = betInfoRepository.matchOddList
 
@@ -246,10 +243,6 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
-    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
-    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
-        get() = _thirdGameCategory
-
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -277,18 +270,6 @@ class GameViewModel(
         else -> {
             SpecialEntrance(matchType, gameType)
         }
-    }
-
-    fun navMainPage(thirdGameCategory: ThirdGameCategory) {
-        _thirdGameCategory.postValue(
-            Event(
-                if (isCreditAccount.value == true) {
-                    null
-                } else {
-                    thirdGameCategory
-                }
-            )
-        )
     }
 
     fun isParlayPage(isParlayPage: Boolean) {
