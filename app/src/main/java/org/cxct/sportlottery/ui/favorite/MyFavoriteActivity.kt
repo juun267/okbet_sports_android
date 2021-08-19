@@ -15,10 +15,13 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
@@ -42,7 +45,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-//            viewModel.navMainPage(ThirdGameCategory.MAIN)
+            viewModel.navMainPage(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
@@ -185,6 +188,20 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                     supportFragmentManager,
                     BetInfoCarDialog::class.java.simpleName
                 )
+            }
+        })
+
+        viewModel.thirdGameCategory.observe(this, {
+            it.getContentIfNotHandled().let { thirdGameCategory ->
+                if (thirdGameCategory != null) {
+                    val intent = Intent(this, MainActivity::class.java)
+                        .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+                    startActivity(intent)
+
+                    return@let
+                }
+
+                startActivity(Intent(this, GameActivity::class.java))
             }
         })
     }
