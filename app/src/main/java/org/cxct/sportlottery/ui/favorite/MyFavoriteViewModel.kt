@@ -53,7 +53,8 @@ class MyFavoriteViewModel(
                     SportQueryRequest(
                         TimeUtil.getNowTimeStamp().toString(),
                         TimeUtil.getTodayStartTimeStamp().toString(),
-                        MatchType.MY_EVENT.postValue
+                        MatchType.MY_EVENT.postValue,
+                        matchIdList = favorMatchList.value
                     )
                 )
             }
