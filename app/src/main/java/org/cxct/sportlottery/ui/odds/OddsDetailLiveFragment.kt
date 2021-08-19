@@ -35,8 +35,11 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import java.util.*
 
@@ -125,6 +128,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 }
             }
         })
+
+        if(args.matchType == MatchType.IN_PLAY){
+            tv_home_score.visibility = View.VISIBLE
+            tv_away_score.visibility = View.VISIBLE
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -253,12 +261,19 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             it?.let { matchStatusChangeEvent ->
                 matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
                     ?.apply {
-                        tv_time_top?.let {
-                            it.text = this.statusName
+                        tv_time_top?.let { tv ->
+                            tv.text = when(getSelectLanguage(context)){
+                                LanguageManager.Language.ZH -> statusNameI18n?.zh
+                                LanguageManager.Language.EN -> statusNameI18n?.en
+                                else -> statusName
+                            }
                         }
 
                         curHomeScore = homeScore
                         curAwayScore = awayScore
+
+                        tv_home_score.text = homeTotalScore.toString()
+                        tv_away_score.text = awayTotalScore.toString()
                     }
             }
         })
@@ -303,7 +318,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         matchOdd?.matchInfo?.apply {
             tv_home_name.text = homeName
             tv_away_name.text = awayName
+
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
+
+            if(args.matchType != MatchType.IN_PLAY){
+                tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
+            }
         }
     }
 
