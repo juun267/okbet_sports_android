@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.luck.picture.lib.entity.LocalMedia
@@ -166,6 +167,10 @@ class ProfileCenterActivity :
     }
 
     private fun setupMoreButtons() {
+        btn_credit_bet_record.setOnClickListener {
+            Toast.makeText(this, "click credit bet record", Toast.LENGTH_SHORT).show()
+        }
+
         //個人資訊
         btn_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
@@ -456,6 +461,12 @@ class ProfileCenterActivity :
             View.GONE
         } else {
             View.VISIBLE
+        }
+
+        btn_credit_bet_record.visibility = if (isCreditAccount) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
 
         btn_account_transfer.visibility = if (isCreditAccount) {
