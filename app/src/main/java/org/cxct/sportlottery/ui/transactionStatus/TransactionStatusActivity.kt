@@ -57,7 +57,7 @@ class TransactionStatusActivity :
         rv_marquee.stopAuto()
     }
 
-    private fun initToolBar() {
+    override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
             viewModel.navMainPage(ThirdGameCategory.MAIN)

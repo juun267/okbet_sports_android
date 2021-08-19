@@ -8,6 +8,8 @@ import kotlin.reflect.KClass
 abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T>) :
     BaseSocketActivity<T>(clazz) {
 
+    abstract fun initToolBar()
+
     abstract fun initBottomNavigation()
 
     abstract fun showBetListPage()

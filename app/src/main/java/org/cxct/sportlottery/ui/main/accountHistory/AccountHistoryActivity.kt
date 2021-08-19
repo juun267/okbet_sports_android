@@ -238,7 +238,7 @@ class AccountHistoryActivity :
         }
     }
 
-    private fun initToolBar() {
+    override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
         //點擊 logo 回到首頁
