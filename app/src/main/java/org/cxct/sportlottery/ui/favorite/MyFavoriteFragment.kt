@@ -320,7 +320,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         })
     }
 
-    //TODO Bill 先放這裡
     private fun Odd.updateOddsState(oddSocket: Odd, oddsType: OddsType): Odd {
         when (oddsType) {
             OddsType.EU -> {
@@ -406,12 +405,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     override fun onStart() {
         super.onStart()
 
-        viewModel.getSportQuery()
+        viewModel.getFavorite()
         loading()
     }
 
     private fun initObserver() {
         viewModel.sportQueryData.observe(this.viewLifecycleOwner, {
+            hideLoading()
             it?.getContentIfNotHandled()?.let { sportQueryData ->
 
                 updateGameTypeList(sportQueryData.items?.map { item ->
@@ -475,11 +475,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }
         })
 
-        viewModel.favorMatchList.observe(this.viewLifecycleOwner, {
-            if (it.isNullOrEmpty()) {
+        viewModel.favorMatchList.observe(this.viewLifecycleOwner, { favorMatchList->
+            if (favorMatchList.isNullOrEmpty()) {
                 fl_no_game.visibility = View.VISIBLE
+                hideLoading()
             } else {
                 fl_no_game.visibility = View.GONE
+                viewModel.getSportQuery(favorMatchList)
             }
         })
     }

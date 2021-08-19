@@ -4,4 +4,6 @@ data class SportQueryRequest(
     val now: String,
     val todayStart: String,
     val matchType: String
-)
+){
+    var matchIdList = listOf<String>()
+}
