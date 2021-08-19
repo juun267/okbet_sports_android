@@ -43,7 +43,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
 
     var matchId: String? = null
-    private var mSportCode: String? = null
     private var matchOdd: MatchOdd? = null
 
 
@@ -52,7 +51,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSportCode = args.gameType.key
         matchId = args.matchId
     }
 
@@ -89,7 +87,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, args.gameType.key)
             }
 
-            sportCode = mSportCode
+            sportCode = args.gameType
         }
 
         rv_detail.apply {
@@ -258,9 +256,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun getData() {
-        mSportCode?.let { mSportCode ->
+        args.gameType?.let { gameType ->
             matchId?.let { matchId ->
-                viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+                viewModel.getPlayCateListAndOddsDetail(gameType.key, matchId)
             }
         }
     }
