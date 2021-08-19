@@ -30,6 +30,7 @@
         tools:text="欧洲" />
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/country_img"
         android:layout_width="20dp"
         android:layout_height="20dp"
@@ -40,6 +41,26 @@
         app:layout_constraintTop_toTopOf="@id/country_border"
         tools:ignore="ContentDescription" />
 
+    <FrameLayout
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/country_border"
+        app:layout_constraintEnd_toEndOf="@id/country_border"
+        app:layout_constraintTop_toTopOf="@id/country_border">
+
+
+    <WebView
+        android:id="@+id/country_webview"
+        android:layout_gravity="end"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:scrollbars="none"
+        android:touchscreenBlocksFocus="true"
+        tools:ignore="WebViewLayout" />
+
+    </FrameLayout>
     <net.cachapa.expandablelayout.ExpandableLayout
         android:id="@+id/country_expand"
         android:layout_width="match_parent"

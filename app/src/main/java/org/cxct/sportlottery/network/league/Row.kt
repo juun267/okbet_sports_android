@@ -10,6 +10,8 @@ data class Row(
     val list: List<League>,
     @Json(name = "name")
     val name: String,
+    @Json(name = "icon")
+    val icon: String,
     @Json(name = "num")
     val num: Int
 ) {

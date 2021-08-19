@@ -1,15 +1,26 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.graphics.Color
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
+import kotlinx.android.synthetic.main.itemview_country.view.*
 import kotlinx.android.synthetic.main.itemview_country_v4.view.*
+import kotlinx.android.synthetic.main.itemview_country_v4.view.country_border
+import kotlinx.android.synthetic.main.itemview_country_v4.view.country_img
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.component.VectorDrawableCreator
+import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.DisplayUtil.px
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -137,8 +148,38 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
-            itemView.country_text.text = item.name
+            itemView.apply {
+                country_text.text = item.name
 
+                val data = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\">" +
+                        "${item.icon}" +
+                        "</svg>"
+
+                Log.e(">>>", "data = $data")
+                country_webview.loadDataWithBaseURL(null, data,"text/html", "UTF-8",null)
+                country_webview.setBackgroundColor(Color.TRANSPARENT)
+//                val uri = Uri.parse("${Constants.getBaseUrl().substring(0, Constants.getBaseUrl().length - 1)}${item.icon}")
+                /*
+                val paths = mutableListOf<VectorDrawableCreator.PathData>()
+                if (item.icon.startsWith("<g")) {
+                    Log.e(">>>", "item.icon = ${item.icon}")
+                    val pathList = item.icon.split("<path d=\"")
+                    pathList.forEach {
+                        val path = it.substringBefore("\"></path>")
+                        Log.e(">>>", "it = $path")
+//                        paths.add(VectorDrawableCreator.PathData(it))
+                    }
+                }
+//                VectorDrawableCreator.getVectorDrawable(this.context, 24, 24, 24, 24, paths)
+                val uri = Uri.parse("${item.icon}")
+                GlideToVectorYou.init().with(this.context)
+                    .setPlaceHolder(R.drawable.ic_image_load, R.drawable.ic_earth)
+                    .load(uri, country_img)
+*/
+
+
+
+            }
             setupLeagueList(item, countryLeagueListener)
             setupCountryExpand(item)
         }
