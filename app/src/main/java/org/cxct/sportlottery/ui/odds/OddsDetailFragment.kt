@@ -256,9 +256,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun getData() {
-        args.gameType?.let { gameType ->
+        args.gameType.let { gameType ->
             matchId?.let { matchId ->
                 viewModel.getPlayCateListAndOddsDetail(gameType.key, matchId)
+                subscribeChannelEvent(matchId)
             }
         }
     }

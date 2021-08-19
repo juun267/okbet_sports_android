@@ -44,6 +44,7 @@
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@{row.statDate}"
+                app:dateNoYear="@{row.statDate}"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
                 tools:text="12-29" />

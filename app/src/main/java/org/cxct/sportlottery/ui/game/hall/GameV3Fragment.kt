@@ -891,12 +891,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                         socketOdd?.let {
                                             epsOdd.updateOddsState(socketOdd, epsOddsType)
                                         }
+                                        epsListAdapter.notifyItemChanged(index)
                                     }
                                 }
-
                             }
                         }
-                        epsListAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -1009,6 +1008,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         this.odds = oddSocket.odds
         this.hkOdds = oddSocket.hkOdds
         this.status = oddSocket.status
+        this.extInfo = oddSocket.extInfo
 
         return this
     }

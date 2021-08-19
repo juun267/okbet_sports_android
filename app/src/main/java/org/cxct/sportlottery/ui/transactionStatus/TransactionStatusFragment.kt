@@ -22,13 +22,6 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
             }
         }
 
-    interface BottomNavigationListener {
-        fun onSportHomeNav()
-    }
-
-    private var bottomNavigationListener: BottomNavigationListener? = null
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -81,13 +74,9 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         })
     }
 
-    fun setBottomNavigationListener(listener: BottomNavigationListener) {
-        bottomNavigationListener = listener
-    }
-
     private fun initButton() {
         btn_back.setOnClickListener {
-            bottomNavigationListener?.onSportHomeNav()
+            activity?.finish()
         }
     }
 

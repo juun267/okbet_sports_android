@@ -201,9 +201,11 @@
         android:layout_height="18dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_price_v4"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row3"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        tools:visibility="visible"
         tools:ignore="ContentDescription" />
 
     <ImageView
