@@ -53,7 +53,7 @@ enum class PlayCate(val value: String) {
 
     HWMG_SINGLE("HWMG&1X2"),
     HDP_ONE_LIST("HDP"),
-    NGOAL_1("NGOAL:1"),//第1个进球
+    NGOAL("NGOAL"),//第N个进球
     TWTN("TWTN"),//零失球獲勝
     DC_FLG("DC-FLG"),//双重机会&首次进球队伍
     DC_BTS("DC-BTS"),//双重机会&双方球队进球

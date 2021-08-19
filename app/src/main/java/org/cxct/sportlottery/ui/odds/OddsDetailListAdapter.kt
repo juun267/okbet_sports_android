@@ -218,7 +218,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 PlayCate.SINGLE_SEG_2.ordinal
             }
 
-            type == PlayCate.NGOAL_1.value -> return PlayCate.NGOAL_1.ordinal
+            TextUtil.compareWithGameKey(type, PlayCate.NGOAL.value) -> return PlayCate.NGOAL.ordinal
 
             type == PlayCate.TWTN.value -> return PlayCate.TWTN.ordinal
 
@@ -263,7 +263,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             PlayCate.HTFT.ordinal,
             PlayCate.W3.ordinal,
             PlayCate.HDP_ONE_LIST.ordinal,
-            PlayCate.NGOAL_1.ordinal,
             PlayCate.HWMG_SINGLE.ordinal -> LayoutType.ONE_LIST.layout
 
             PlayCate.TWTN.ordinal,
@@ -282,6 +281,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             PlayCate.OU_I_OT.ordinal,
             PlayCate.OU_SEG.ordinal -> LayoutType.TWO_SPAN_COUNT.layout
 
+            PlayCate.NGOAL.ordinal,
             PlayCate.SINGLE.ordinal,
             PlayCate.SINGLE_1ST.ordinal,
             PlayCate.SINGLE_2ST.ordinal,
@@ -510,6 +510,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 PlayCate.CS.ordinal -> forCS(oddsDetail)
 
+                PlayCate.NGOAL.ordinal,
                 PlayCate.SINGLE_OT.ordinal,
                 PlayCate.SINGLE_SEG.ordinal,
                 PlayCate.SINGLE_1ST.ordinal,
@@ -529,7 +530,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 PlayCate.WBH.ordinal,
                 PlayCate.WEH.ordinal,
                 PlayCate.SBH.ordinal,
-                PlayCate.NGOAL_1.ordinal,
                 PlayCate.HDP_ONE_LIST.ordinal,
                 PlayCate.W3.ordinal,
                 PlayCate.DC.ordinal,
