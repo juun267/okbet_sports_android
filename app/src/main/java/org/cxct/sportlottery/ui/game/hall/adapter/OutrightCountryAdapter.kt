@@ -83,7 +83,6 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(item: Row, outrightCountryLeagueListener: OutrightCountryLeagueListener?) {
             itemView.apply {
                 country_name.text = item.name
-                //TODO Cheryl: country_img
             }
 
             setupLeagueList(item, outrightCountryLeagueListener)
