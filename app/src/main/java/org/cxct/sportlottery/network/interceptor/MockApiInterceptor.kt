@@ -43,12 +43,13 @@ import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_ADD
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_BET_INFO
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.OUTRIGHT_RESULT_LIST
-import org.cxct.sportlottery.network.Constants.OUTRIGHT_SEASON_LIST
+import org.cxct.sportlottery.network.Constants.OUTRIGHT_LEAGUE_LIST
 import org.cxct.sportlottery.network.Constants.PLAYCATE_TYPE_LIST
 import org.cxct.sportlottery.network.Constants.PLAYQUOTACOM_LIST
 import org.cxct.sportlottery.network.Constants.QUERY_FIRST_ORDERS
 import org.cxct.sportlottery.network.Constants.QUERY_SECOND_ORDERS
 import org.cxct.sportlottery.network.Constants.RECHARGE_CONFIG_MAP
+import org.cxct.sportlottery.network.Constants.SPORT_COUPON_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_MENU
 import org.cxct.sportlottery.network.Constants.SPORT_QUERY
 import org.cxct.sportlottery.network.Constants.THIRD_ALL_TRANSFER_OUT
@@ -173,7 +174,7 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 path.contains(OUTRIGHT_ODDS_LIST) -> {
                     response = getMockJsonData(request, "outright_odds_list.mock")
                 }
-                path.contains(OUTRIGHT_SEASON_LIST) -> {
+                path.contains(OUTRIGHT_LEAGUE_LIST) -> {
                     response = getMockJsonData(request, "outright_season_list.mock")
                 }
                 path.contains(USER_INFO) -> {
@@ -271,6 +272,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(MYFAVORITE_SAVE) -> {
                     response = getMockJsonData(request, "my_favorite_save.mock")
+                }
+                path.contains(SPORT_COUPON_MENU) -> {
+                    response = getMockJsonData(request, "sport_coupon_menu.mock")
                 }
             }
         }

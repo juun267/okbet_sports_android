@@ -9,16 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.season.Row
+import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 
 class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     enum class ItemType {
-        ITEM, NO_DATA
+        ITEM_PIN, ITEM, NO_DATA
     }
 
     var data = listOf<Row>()
+        set(value) {
+            field = value
+
+            notifyDataSetChanged()
+        }
+
+    var datePin = listOf<Season>()
         set(value) {
             field = value
 
@@ -30,12 +37,31 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         return when {
             data.isEmpty() -> ItemType.NO_DATA.ordinal
+            (position == 0) -> ItemType.ITEM_PIN.ordinal
             else -> ItemType.ITEM.ordinal
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
+            ItemType.ITEM_PIN.ordinal -> {
+                ItemViewHolderPin.from(parent).apply {
+                    this.itemView.league_list.apply {
+                        this.layoutManager =
+                            SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+                        this.addItemDecoration(
+                            DividerItemDecorator(
+                                ContextCompat.getDrawable(
+                                    context,
+                                    R.drawable.divider_color_white8
+                                )
+                            )
+                        )
+                    }
+                }
+            }
+
             ItemType.ITEM.ordinal -> {
                 ItemViewHolder.from(parent).apply {
                     this.itemView.league_list.apply {
@@ -53,6 +79,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     }
                 }
             }
+
             else -> {
                 NoDataViewHolder.from(parent)
             }
@@ -61,8 +88,11 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
+            is ItemViewHolderPin -> {
+                holder.bind(datePin, outrightCountryLeagueListener)
+            }
             is ItemViewHolder -> {
-                val item = data[position]
+                val item = data[position - 1]
                 holder.bind(item, outrightCountryLeagueListener)
             }
         }
@@ -71,7 +101,50 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = if (data.isEmpty()) {
         1
     } else {
-        data.size
+        data.size + 1
+    }
+
+    class ItemViewHolderPin private constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+
+        private val countryLeagueAdapter by lazy {
+            OutrightCountryLeagueAdapter()
+        }
+
+        fun bind(
+            datePin: List<Season>,
+            outrightCountryLeagueListener: OutrightCountryLeagueListener?
+        ) {
+            itemView.country_border.visibility = View.GONE
+            itemView.country_name.visibility = View.GONE
+            itemView.country_img.visibility = View.GONE
+            itemView.country_league_expand.setExpanded(true, false)
+
+            setupLeagueList(datePin, outrightCountryLeagueListener)
+        }
+
+        private fun setupLeagueList(
+            datePin: List<Season>,
+            outrightCountryLeagueListener: OutrightCountryLeagueListener?
+        ) {
+            itemView.league_list.apply {
+                adapter = countryLeagueAdapter.apply {
+                    this.outrightCountryLeagueListener = outrightCountryLeagueListener
+
+                    data = datePin
+                }
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ItemViewHolderPin {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_country, parent, false)
+
+                return ItemViewHolderPin(view)
+            }
+        }
     }
 
     class ItemViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

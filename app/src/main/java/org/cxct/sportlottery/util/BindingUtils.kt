@@ -2,6 +2,7 @@ package org.cxct.sportlottery.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.format.DateUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -26,6 +27,11 @@ fun TextView.setDate(timeStamp: Long?) {
 @BindingAdapter("dateNoYear")
 fun TextView.setDateNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_FORMAT)
+}
+
+@BindingAdapter("dateNoYear")
+fun TextView.setDateNoYear(date: String?) {
+    text = TimeUtil.dateToDateFormat(date, MD_FORMAT)
 }
 
 @BindingAdapter("dateTimeNoYear")
@@ -66,6 +72,37 @@ fun TextView.setGameStatus(status: Int?) {
         else -> ""
     }
 }
+
+@BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setBetReceiptStatus(status: Int?) {
+    text = when (status) {
+        7 -> context.getString(R.string.bet_canceled)
+        else -> context.getString(R.string.confirmed)
+    }
+}
+
+@BindingAdapter("receiptStatusColor") //状态 1-处理中;2-成功;3-失败
+fun TextView.setReceiptStatusColor(status: Int?) {
+    status?.let {
+        val color = when (it) {
+            7 -> R.color.colorRed
+            else -> R.color.colorBlue
+        }
+        this.setTextColor(ContextCompat.getColor(context, color))
+    }
+}
+
+@BindingAdapter("gameStatusColor") //状态 1-处理中;2-成功;3-失败
+fun TextView.setGameStatusColor(status: Int?) {
+    status?.let {
+        val color = when (it) {
+            0, 1, 2, 3 -> R.color.colorBlue
+            else -> R.color.colorRed
+        }
+        this.setTextColor(ContextCompat.getColor(context, color))
+    }
+}
+
 
 @BindingAdapter("status")
 fun TextView.setStatus(status: Int?) {
@@ -190,7 +227,6 @@ fun TextView.setOddFormat(odd: Double?) {
         text = "@${TextUtil.formatForOdd(it)}"
     }
 }
-
 
 @BindingAdapter("moneyColor")
 fun TextView.setMoneyColor(profit: Double = 0.0) {

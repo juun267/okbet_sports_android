@@ -2,17 +2,14 @@ package org.cxct.sportlottery.ui.profileCenter
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseOddButtonViewModel
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.TextUtil
 
 class ProfileCenterViewModel(
     androidContext: Application,
@@ -21,15 +18,17 @@ class ProfileCenterViewModel(
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,
     infoCenterRepository: InfoCenterRepository,
-    private val withdrawRepository: WithdrawRepository
-) : BaseOddButtonViewModel(
+    private val withdrawRepository: WithdrawRepository,
+    favoriteRepository: MyFavoriteRepository
+) : BaseSocketViewModel(
     androidContext,
+    userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
-    val userInfo = userInfoRepository.userInfo.asLiveData()
     val token = loginRepository.token
 
     val withdrawSystemOperation =

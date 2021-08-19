@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,14 +19,18 @@ import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
+import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -70,10 +73,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
-        observeSocketData()
+        initSocketObserver()
     }
-
-
+    
     override fun onStart() {
         super.onStart()
 
@@ -81,24 +83,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         getData()
     }
 
-
-    private fun observeSocketData() {
-        receiver.matchOddsChange.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            viewModel.updateOddForOddsDetail(it)
-        })
-
-        receiver.producerUp.observe(viewLifecycleOwner, Observer {
-            if (it == null) return@Observer
-            service.unsubscribeAllEventChannel()
-            service.subscribeEventChannel(matchId)
-        })
-
-    }
-
-
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
+            oddsDetailListener = OddsDetailListener {
+                viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, args.gameType.key)
+            }
+
             sportCode = mSportCode
         }
 
@@ -202,13 +192,76 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             oddsDetailListAdapter?.oddsType = it
         })
 
+        viewModel.favorPlayCateList.observe(this.viewLifecycleOwner, {
+            oddsDetailListAdapter?.let { oddsDetailListAdapter ->
+                val playCate = it.find { playCate ->
+                    playCate.gameType == args.gameType.key
+                }
+
+                val playCateCodeList = playCate?.code?.let { it1 ->
+                    if (it1.isNotEmpty()) {
+                        TextUtil.split(it1)
+                    } else {
+                        mutableListOf()
+                    }
+                }
+
+                val pinList = oddsDetailListAdapter.oddsDetailDataList.filter {
+                    playCateCodeList?.contains(it.gameType) ?: false
+                }.sortedByDescending { it.originPosition }
+
+                val epsSize = oddsDetailListAdapter.oddsDetailDataList.groupBy {
+                    it.gameType == PlayCate.EPS.value
+                }[true]?.size ?: 0
+
+                oddsDetailListAdapter.oddsDetailDataList.sortBy { it.originPosition }
+                oddsDetailListAdapter.oddsDetailDataList.forEach {
+                    it.isPin = false
+                }
+
+                pinList.forEach {
+                    it.isPin = true
+
+                    oddsDetailListAdapter.oddsDetailDataList.add(
+                        epsSize,
+                        oddsDetailListAdapter.oddsDetailDataList.removeAt(
+                            oddsDetailListAdapter.oddsDetailDataList.indexOf(
+                                it
+                            )
+                        )
+                    )
+                }
+
+                oddsDetailListAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
+    private fun initSocketObserver() {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let {
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                unSubscribeChannelEventAll()
+                subscribeChannelEvent(matchId)
+            }
+        })
+    }
 
     private fun getData() {
         mSportCode?.let { mSportCode ->
             matchId?.let { matchId ->
                 viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+                subscribeChannelEvent(matchId)
             }
         }
     }
@@ -221,8 +274,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
-            tv_time_top.text = TimeUtil.timeFormat(startTime.toLong(), TimeUtil.DM_FORMAT)
-            tv_time_bottom.text = TimeUtil.timeFormat(startTime.toLong(), TimeUtil.HM_FORMAT)
+            tv_time_top.text = TimeUtil.timeFormat(startTime, TimeUtil.DM_FORMAT)
+            tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
         }
     }
 
@@ -235,7 +288,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 playCateName = oddsDetail.name,
                 playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,
-                odd = odd
+                odd = odd,
+                subscribeChannelType = ChannelType.EVENT
             )
         }
     }
@@ -245,11 +299,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.removeBetInfoItem(odd.id)
     }
 
-
+    
     override fun onStop() {
         super.onStop()
-        service.unsubscribeEventChannel(matchId)
+        unSubscribeChannelEvent(matchId)
     }
-
-
 }

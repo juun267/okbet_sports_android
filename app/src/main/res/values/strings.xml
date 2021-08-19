@@ -126,6 +126,8 @@
     <string name="home_tab_outright">冠军</string>
     <string name="home_tab_at_start">即将</string>
     <string name="home_tab_eps">特优</string>
+    <string name="home_title_eps">特优赔率</string>
+    <string name="title_eps_more">更高赔率</string>
     <string name="game_soon">即将开赛</string>
     <string name="label_in_play_games">滚球盘</string>
     <string name="label_all">所有</string>
@@ -176,6 +178,7 @@
     <string name="menu">菜单</string>
     <string name="premium_odds">特优赔率</string>
     <string name="infomation_center">信息中心</string>
+    <string name="left_menu_odds_type_setting">盘口设定</string>
 
 
     <!-- MenuFragment -->
@@ -352,6 +355,9 @@
     <string name="lose_half">输半</string>
     <string name="draw">和</string>
     <string name="canceled">已取消</string>
+    <string name="bet_canceled">取消注单</string>
+    <string name="confirmed">已确认</string>
+
 
     <string name="bet_detail">注单详情</string>
     <string name="bet_time">投注时间：</string>
@@ -420,6 +426,8 @@
 
     <string name="total_bet_amount">总投注额：</string>
 
+    <string name="league_filter_all">显示所有赛事</string>
+
     <!--odds detail-->
     <string name="odds_detail_more">显示更多</string>
     <string name="odds_detail_less">显示更少</string>
@@ -436,6 +444,7 @@
 
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
+    <string name="bottom_sheet_title_play_type">变更玩法</string>
 
     <!--money-recharge-->
     <string name="message_recharge_maintain">充值相关系统升级中,请稍等</string>
@@ -640,12 +649,18 @@
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
-    <string name="parlay_rule_nc1">%1$s串1是由%1$s个不同赛事组成的单一投注</string>
+    <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
     <string name="parlay_rule_at_least">至少2个选项获胜以确保派彩</string>
     <string name="parlay_rule_cant_warn">不同球种及冠军玩法不能进行串关投注</string>
-    <string name="parlay_rule_ncm">%1$s串%2$s是由%1$s个不同赛事组成的%2$s个不同投注</string>
+    <string name="parlay_rule_ncm">%1$s串%2$s是由%1$s个不同赛事组成的%2$s个不同的投注</string>
     <string name="parlay_rule_list_nc1">%1$s个%2$s串1</string>
     <string name="parlay_rule_and">以及</string>
+
+    <!--  bet list receipt  -->
+    <string name="bet_list_receipt">注单收据</string>
+    <string name="already_bet_complete">您已成功投注</string>
+    <string name="complete">完成</string>
+    <string name="winnable_amount_colon">可赢额：</string>
 
     <!-- finance -->
     <string name="finance">资金明细</string>
@@ -819,5 +834,7 @@
     <string name="odds_button_name_first">第一</string>
     <string name="odds_button_name_ant">任何</string>
     <string name="odds_button_name_last">最后</string>
+    <string name="bet_succeeded">您已成功投注</string>
+    <string name="mix_bet_list">综合过关单</string>
 
 </resources>

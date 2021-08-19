@@ -15,7 +15,7 @@ object MatchOddUtil {
         matchInfo: MatchInfo,
         odd: Odd
     ): org.cxct.sportlottery.network.bet.info.MatchOdd? {
-        matchInfo.id.let { matchId ->
+        matchInfo?.id.let { matchId ->
             odd.id?.let { oddsId ->
                 odd.odds?.let { odds ->
                     odd.hkOdds?.let { hkOdds ->
@@ -37,7 +37,7 @@ object MatchOddUtil {
                                 playName = playName ?: "",
                                 producerId = producerId,
                                 spread = odd.spread ?: "",
-                                startTime = matchInfo.startTime.toLong(),
+                                startTime = matchInfo.startTime,
                                 status = odd.status,
                                 gameType = gameType,
                                 homeScore = matchInfo.homeScore ?: 0,

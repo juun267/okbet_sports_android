@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.main.accountHistory
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,11 +12,9 @@ import org.cxct.sportlottery.network.bet.settledList.BetSettledListRequest
 import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.bet.settledList.Row
 import org.cxct.sportlottery.network.message.MessageListResult
-import org.cxct.sportlottery.network.service.order_settlement.OrderSettlementEvent
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
-import org.cxct.sportlottery.network.service.order_settlement.Status
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.base.BaseNoticeViewModel
+import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -28,12 +25,14 @@ class AccountHistoryViewModel(
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
-) : BaseNoticeViewModel(
+    favoriteRepository: MyFavoriteRepository,
+) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
     loginRepository,
     betInfoRepository,
-    infoCenterRepository
+    infoCenterRepository,
+    favoriteRepository
 ) {
 
     companion object {
@@ -43,8 +42,11 @@ class AccountHistoryViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val selectedSportDate: LiveData<Pair<String?, String?>> //<sport, date>
-        get() = _selectedSportDate
+    val selectedSport: LiveData<String?>
+        get() = _selectedSport
+
+    val selectedDate: LiveData<String?>
+        get() = _selectedDate
 
     val betRecordResult: LiveData<BetSettledListResult>
         get() = _betSettledRecordResult
@@ -52,14 +54,12 @@ class AccountHistoryViewModel(
     val messageListResult: LiveData<MessageListResult?>
         get() = _messageListResult
 
-    val settlementNotificationMsg: LiveData<Event<SportBet>>
-        get() = _settlementNotificationMsg
-
     val betDetailResult: LiveData<BetSettledDetailListResult>
         get() = _betDetailResult
 
     private val _loading = MutableLiveData<Boolean>()
-    private val _selectedSportDate = MutableLiveData<Pair<String?, String?>>()
+    private val _selectedSport = MutableLiveData<String?>()
+    private val _selectedDate = MutableLiveData<String?>()
     private val _betSettledRecordResult = MutableLiveData<BetSettledListResult>()
     private var mBetSettledListRequest: BetSettledListRequest? = null
     private val _messageListResult = MutableLiveData<MessageListResult?>()
@@ -146,23 +146,11 @@ class AccountHistoryViewModel(
         }
     }
 
-
-
-    fun getSettlementNotification(event: OrderSettlementEvent?) {
-        event?.sportBet?.let {
-            when (it.status) {
-                Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
-                    _settlementNotificationMsg.value = Event(it)
-                }
-            }
-        }
-    }
-
     var isDetailLastPage = false
     private var nowDetailPage = 1
     val detailDataList = mutableListOf<org.cxct.sportlottery.network.bet.settledDetailList.Row>()
 
-    fun searchDetail(gameType: String? = null, date: String? = null) {
+    fun searchDetail(gameType: String? = selectedSport.value, date: String? = selectedDate.value) {
 
         val startTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.START_OF_DAY, TimeUtil.YMD_FORMAT).toString()
         val endTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.END_OF_DAY, TimeUtil.YMD_FORMAT).toString()
@@ -215,8 +203,12 @@ class AccountHistoryViewModel(
 
     }
 
-    fun setSelectedSportDate(sport: String? = _selectedSportDate.value?.first, date: String? = _selectedSportDate.value?.second) {
-        _selectedSportDate.value = Pair(sport, date)
+    fun setSelectedDate(date: String?) {
+        _selectedDate.value = date
+    }
+
+    fun setSelectedSport(sport: String?) {
+        _selectedSport.value = sport
     }
 
     private fun loading() {

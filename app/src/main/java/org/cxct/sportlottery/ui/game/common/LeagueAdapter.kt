@@ -21,7 +21,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         ITEM, NO_DATA
     }
 
-    var data = listOf<LeagueOdd>()
+    var data = mutableListOf<LeagueOdd>()
         set(value) {
             field = value
             notifyDataSetChanged()

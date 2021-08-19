@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.sport.MyFavoriteMatchRequest
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.repository.*
 
 
@@ -29,12 +29,12 @@ abstract class BaseFavoriteViewModel(
 ) {
     //TODO add notify login ui to activity/fragment
     val notifyLogin: LiveData<Boolean>
-        get() = _notifyLogin
-    private val _notifyLogin = MutableLiveData<Boolean>()
+        get() = mNotifyLogin
+    protected val mNotifyLogin = MutableLiveData<Boolean>()
 
     val favorMatchOddList: LiveData<List<LeagueOdd>>
-        get() = _favorMatchOddList
-    private val _favorMatchOddList = MutableLiveData<List<LeagueOdd>>()
+        get() = mFavorMatchOddList
+    protected val mFavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
 
     val favorSportList = myFavoriteRepository.favorSportList
 
@@ -42,10 +42,13 @@ abstract class BaseFavoriteViewModel(
 
     val favorMatchList = myFavoriteRepository.favorMatchList
 
+    val favorPlayCateList = myFavoriteRepository.favorPlayCateList
+
+    val favoriteOutrightList = myFavoriteRepository.favoriteOutrightList
 
     fun getFavorite() {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
@@ -58,7 +61,7 @@ abstract class BaseFavoriteViewModel(
 
     fun getFavoriteMatch(gameType: String?, playCateMenu: String?) {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
@@ -82,7 +85,7 @@ abstract class BaseFavoriteViewModel(
                         }
                     }
                 }
-                _favorMatchOddList.postValue(it)
+                mFavorMatchOddList.postValue(it)
             }
         }
     }
@@ -98,15 +101,16 @@ abstract class BaseFavoriteViewModel(
     fun pinFavorite(
         type: FavoriteType,
         content: String?,
+        gameType: String? = null
     ) {
         if (isLogin.value != true) {
-            _notifyLogin.postValue(true)
+            mNotifyLogin.postValue(true)
             return
         }
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                myFavoriteRepository.pinFavorite(type, content)
+                myFavoriteRepository.pinFavorite(type, content, gameType)
             }
 
             result?.t?.let {
@@ -114,8 +118,8 @@ abstract class BaseFavoriteViewModel(
 
                 when (type) {
                     FavoriteType.MATCH -> {
-                        _favorMatchOddList.postValue(
-                            _favorMatchOddList.value?.removeFavorMatchOdd(
+                        mFavorMatchOddList.postValue(
+                            mFavorMatchOddList.value?.removeFavorMatchOdd(
                                 content
                             )?.removeFavorLeague()
                         )

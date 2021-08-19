@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.home.highlight
 
 import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
+import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
@@ -32,11 +34,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             val matchInfo = MatchInfo(
                 gameType = null,
                 awayName = it.matchInfo?.awayName ?: "",
-                endTime = it.matchInfo?.endTime?.toString(),
+                endTime = it.matchInfo?.endTime,
                 homeName = it.matchInfo?.homeName ?: "",
                 id = it.matchInfo?.id ?: "",
                 playCateNum = it.matchInfo?.playCateNum ?: 0,
-                startTime = it.matchInfo?.startTime?.toString() ?: "",
+                startTime = it.matchInfo?.startTime,
                 status = it.matchInfo?.status ?: -1
             ).apply {
                 gameType = sportCode
@@ -68,6 +70,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     var onClickOddListener: OnClickOddListener? = null
 
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉
+
+    var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -123,6 +127,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private var timer: Timer? = null
 
         fun bind(data: MatchOdd) {
+            setupOddList(data)
             setupMatchInfo(data)
             setupTime(data)
             setupOddButton(data)
@@ -130,7 +135,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             //TODO simon test review 賠率 icon 顯示邏輯
             itemView.iv_match_in_play.visibility =
                 if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
-//            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
+            itemView.iv_match_price.visibility =
+                if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
 //            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
 
             itemView.setOnClickListener {
@@ -138,11 +144,68 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
+        private fun setupOddList(data: MatchOdd) {
+            itemView.apply {
+                gameType = data.matchInfo?.gameType
+
+                oddListHDP = when (gameType) {
+                    GameType.TN.key -> {
+                        data.odds[PlayCate.SET_HDP.value]
+                    }
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.HDP_INCL_OT.value]
+                    }
+                    else -> {
+                        data.odds[PlayCate.HDP.value]
+                    }
+                }
+
+                oddList1x2 = when (gameType) {
+                    GameType.BK.key -> {
+                        data.odds[PlayCate.SINGLE_OT.value]
+                    }
+                    else -> {
+                        data.odds[PlayCate.SINGLE.value]
+                    }
+                }
+            }
+        }
+
         private fun setupMatchInfo(data: MatchOdd) {
             itemView.apply {
                 tv_game_name_home.text = data.matchInfo?.homeName
                 tv_game_name_away.text = data.matchInfo?.awayName
+                showStrongTeam()
                 tv_match_play_type_count.text = data.matchInfo?.playCateNum?.toString()
+
+                btn_star.apply {
+                    this.isSelected = data.matchInfo?.isFavorite ?: false
+
+                    setOnClickListener {
+                        onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
+                    }
+                }
+            }
+        }
+
+        private fun showStrongTeam() {
+            itemView.apply {
+                tv_game_name_home.apply {
+                    setTypeface(
+                        this.typeface, if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                            Typeface.BOLD
+                        else
+                            Typeface.NORMAL
+                    )
+                }
+                tv_game_name_away.apply {
+                    setTypeface(
+                        this.typeface, if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                            Typeface.BOLD
+                        else
+                            Typeface.NORMAL
+                    )
+                }
             }
         }
 
@@ -182,27 +245,6 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     GameType.TN.key, GameType.VB.key -> context.getText(R.string.ou_hdp_1x2_title)
                     else -> ""
                 }.toString()
-
-                oddListHDP = when (gameType) {
-                    GameType.TN.key -> {
-                        data.odds[PlayCate.SET_HDP.value]
-                    }
-                    GameType.BK.key -> {
-                        data.odds[PlayCate.HDP_INCL_OT.value]
-                    }
-                    else -> {
-                        data.odds[PlayCate.HDP.value]
-                    }
-                }
-
-                oddList1x2 = when (gameType) {
-                    GameType.BK.key -> {
-                        data.odds[PlayCate.SINGLE_OT.value]
-                    }
-                    else -> {
-                        data.odds[PlayCate.SINGLE.value]
-                    }
-                }
 
                 btn_match_odd1.apply {
                     isSelected = when (gameType) {

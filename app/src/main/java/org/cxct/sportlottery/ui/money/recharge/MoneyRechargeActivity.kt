@@ -13,11 +13,11 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyAddResult
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 
-class MoneyRechargeActivity : BaseOddButtonActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
+class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
     companion object {
         const val RechargeViewLog = "rechargeViewLog"

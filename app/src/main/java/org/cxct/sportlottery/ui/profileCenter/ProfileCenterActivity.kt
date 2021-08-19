@@ -18,7 +18,7 @@ import org.cxct.sportlottery.repository.FLAG_NICKNAME_IS_SET
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.feedback.FeedbackMainActivity
 import org.cxct.sportlottery.ui.finance.FinanceActivity
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -45,7 +45,8 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 
-class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class ProfileCenterActivity :
+    BaseSocketActivity<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private val mSelectMediaListener = object : OnResultCallbackListener<LocalMedia> {
         override fun onResult(result: MutableList<LocalMedia>?) {
@@ -95,7 +96,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
         initBottomNav()
         getUserInfo()
         initObserve()
-        initSocketObserver()
     }
 
     override fun onResume() {
@@ -357,16 +357,6 @@ class ProfileCenterActivity : BaseOddButtonActivity<ProfileCenterViewModel>(Prof
                 showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
-        })
-    }
-
-    private fun initSocketObserver() {
-        receiver.userMoney.observe(this, Observer {
-            val formatMoney = it?.let {
-                TextUtil.format(it)
-            }
-
-            tv_account_balance.text = formatMoney ?: ""
         })
     }
 

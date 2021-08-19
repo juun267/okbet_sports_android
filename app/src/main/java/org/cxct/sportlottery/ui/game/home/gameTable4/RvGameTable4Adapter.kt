@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
-import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
@@ -18,7 +18,7 @@ import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHolder>() {
 
-    private var mDataList = listOf<GameEntity>()
+    private var mDataList = mutableListOf<GameEntity>()
     private var mMatchType: MatchType = MatchType.IN_PLAY
 
     fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
@@ -27,7 +27,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                 it.matchInfo?.gameType = data.code
             }
             GameEntity(data.code, data.name, data.num, data.matchOdds)
-        } ?: listOf()
+        }?.toMutableList() ?: mutableListOf()
         mMatchType = matchType
         stopAllTimer()
         notifyDataSetChanged()
@@ -55,6 +55,8 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null
 
     var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
+
+    var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val layout = LayoutInflater.from(parent.context)
@@ -107,6 +109,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
                 data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener
+                data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
 
                 view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)

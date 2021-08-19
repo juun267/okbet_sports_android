@@ -14,13 +14,13 @@ import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
-    BaseActivity<T>(clazz) {
+    BaseFavoriteActivity<T>(clazz) {
 
     val receiver by lazy {
         ServiceBroadcastReceiver()
     }
 
-    lateinit var backService: BackService
+    private lateinit var backService: BackService
 
     private var isServiceBound = false
     private val serviceConnection = object : ServiceConnection {
@@ -46,6 +46,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         receiver.sysMaintenance.observe(this, Observer {
             startActivity(Intent(this, MaintenanceActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -69,6 +70,62 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 viewModel.updatePlayQuota(playQuotaComData)
             }
         })
+
+        receiver.userMoney.observe(this, {
+            viewModel.updateMoney(it)
+        })
+
+        receiver.orderSettlement.observe(this, {
+            viewModel.getSettlementNotification(it)
+        })
+
+        receiver.userNotice.observe(this, Observer {
+            it?.userNoticeList?.let { list ->
+                viewModel.setUserNoticeList(list)
+            }
+        })
+    }
+
+    fun subscribeChannelHall(
+        gameType: String?,
+        cateMenuCode: String?,
+        eventId: String?
+    ) {
+        backService.subscribeHallChannel(gameType, cateMenuCode, eventId)
+    }
+
+    fun subscribeChannelEvent(
+        eventId: String?
+    ) {
+        backService.subscribeEventChannel(eventId)
+    }
+
+    fun unSubscribeChannelHall(
+        gameType: String?,
+        cateMenuCode: String?,
+        eventId: String?
+    ) {
+        backService.unsubscribeHallChannel(gameType, cateMenuCode, eventId)
+    }
+
+    fun unSubscribeChannelEvent(eventId: String?) {
+        backService.unsubscribeEventChannel(eventId)
+    }
+
+    fun unSubscribeChannelHallAll() {
+        backService.unsubscribeAllHallChannel()
+    }
+
+    fun unSubscribeChannelEventAll() {
+        backService.unsubscribeAllEventChannel()
+    }
+
+    fun betListPageSubscribeEvent() {
+        backService.betListPageSubscribeEvent()
+    }
+
+    fun betListPageUnSubScribeEvent() {
+        backService.betListPageUnSubScribeEvent()
     }
 
     override fun onStart() {

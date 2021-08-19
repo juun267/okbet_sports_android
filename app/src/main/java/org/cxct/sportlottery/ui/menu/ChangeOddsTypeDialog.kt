@@ -1,17 +1,18 @@
 package org.cxct.sportlottery.ui.menu
 
+
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.view.*
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_change_odd_type.*
 import kotlinx.android.synthetic.main.dialog_change_odd_type.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
+import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
-class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
+
+class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -21,6 +22,7 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dialog?.window?.setWindowAnimations(R.style.LeftMenu)
         initEvent(view)
         initObserver()
         getOddsType()
@@ -29,14 +31,23 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
     private fun initEvent(rootView: View?) {
         rootView?.apply {
-            tv_close?.setOnClickListener {
+            img_close?.setOnClickListener {
+                parentFragmentManager.findFragmentByTag(LeftMenuFragment::class.java.simpleName)?.let {
+                    (it as DialogFragment).dismiss()
+                }
                 dismiss()
             }
-            tv_odd_type_hk?.setOnClickListener {
-                selectOddsType(OddsType.HK)
+
+            img_back?.setOnClickListener {
+               dismiss()
             }
-            tv_odd_type_eu?.setOnClickListener {
+
+            rb_eu?.setOnClickListener {
                 selectOddsType(OddsType.EU)
+            }
+
+            rb_hk?.setOnClickListener {
+                selectOddsType(OddsType.HK)
             }
         }
     }
@@ -55,15 +66,13 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
 
     private fun setOddsType(oddsType: OddsType) {
-        context?.let { context ->
+        context?.let {
             when (oddsType) {
                 OddsType.EU -> {
-                    tv_odd_type_hk.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                    tv_odd_type_eu.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
+                    rb_eu.isChecked = true
                 }
                 OddsType.HK -> {
-                    tv_odd_type_hk.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite6))
-                    tv_odd_type_eu.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                    rb_hk.isChecked = true
                 }
             }
         }
@@ -72,7 +81,6 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
     private fun selectOddsType(oddsType: OddsType) {
         viewModel.saveOddsType(oddsType)
-        dismiss()
     }
 
 

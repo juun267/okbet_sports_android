@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
@@ -36,8 +37,11 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
+                    leagueName = row.leagueOdds.league?.name,
                     matchInfo = oddData.matchInfo,
-                    oddBeans = beans
+                    isOutright = row.isOutright,
+                    oddBeans = beans,
+                    dynamicMarkets = oddData.dynamicMarkets
                 )
                 dataList.add(entity)
             }
@@ -64,6 +68,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         }
 
     var onClickOddListener: OnClickOddListener? = null
+    var onClickOutrightOddListener: OnClickOddListener? = null
+    var onClickMoreListener: OnClickMoreListener? = null
 
     var onClickMatchListener: OnSelectItemListener<RecommendGameEntity>? = null
 
@@ -95,18 +101,81 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
                 Glide.with(context).load(data.matchInfo?.img).apply(mRequestOptions).into(iv_match_image)
 
-                tv_game_name_home.text = data.matchInfo?.homeName
-                tv_game_name_away.text = data.matchInfo?.awayName
-                tv_match_time.text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
+                tv_game_name_home.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
 
+                    text = data.matchInfo?.homeName
+                }
+
+                tv_game_name_away.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.matchInfo?.awayName
+                }
+
+                rec_outright_game_type.apply {
+                    visibility = if (data.isOutright == 1) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.name
+                }
+
+                rec_outright_league.apply {
+                    visibility = if (data.isOutright == 1) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = data.leagueName
+                }
+
+                tv_match_time.apply {
+                    visibility = if (data.isOutright == 0) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+
+                    text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
+                }
 
                 if (data.vpRecommendAdapter == null)
-                    data.vpRecommendAdapter = VpRecommendAdapter(data.code, data.oddBeans, oddsType, data.toMatchOdd())
+                    data.vpRecommendAdapter = VpRecommendAdapter(
+                        data.code,
+                        data.oddBeans,
+                        data.isOutright,
+                        oddsType,
+                        data.toMatchOdd(),
+                        data.dynamicMarkets
+                    )
 
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
+                data.vpRecommendAdapter?.onClickOutrightOddListener = onClickOutrightOddListener
+                data.vpRecommendAdapter?.onClickMoreListener = onClickMoreListener
 
                 view_pager.adapter = data.vpRecommendAdapter
-                indicator_view.setupWithViewPager2(view_pager)
+
+                indicator_view.apply {
+                    visibility = if (data.isOutright == 1 || data.oddBeans.size <= 1) {
+                        View.GONE
+                    } else {
+                        View.VISIBLE
+                    }
+
+                    setupWithViewPager2(view_pager)
+                }
             }
         }
     }
@@ -116,18 +185,19 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 //TODO simon test review MatchOdd 資料轉換
 fun RecommendGameEntity.toMatchOdd(): MatchOdd {
     val matchInfo = MatchInfo(
-        gameType = null,
+        gameType = this.code,
         awayName = this.matchInfo?.awayName.toString(),
-        endTime = this.matchInfo?.endTime.toString(),
-        homeName = this.matchInfo?.homeName?: "",
-        id = this.matchInfo?.id?: "",
-        playCateNum = this.matchInfo?.playCateNum?: -1,
-        startTime = this.matchInfo?.startTime.toString(),
-        status = this.matchInfo?.status?: -1
+        endTime = this.matchInfo?.endTime,
+        homeName = this.matchInfo?.homeName ?: "",
+        id = this.matchInfo?.id ?: "",
+        playCateNum = this.matchInfo?.playCateNum ?: -1,
+        startTime = this.matchInfo?.startTime,
+        status = this.matchInfo?.status ?: -1,
+        name = this.leagueName
     )
     val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
     this.oddBeans.forEach {
         odds[it.playTypeCode] = it.oddList.toMutableList()
     }
-    return MatchOdd(matchInfo, odds)
+    return MatchOdd(matchInfo, odds, dynamicMarkets = this.dynamicMarkets)
 }

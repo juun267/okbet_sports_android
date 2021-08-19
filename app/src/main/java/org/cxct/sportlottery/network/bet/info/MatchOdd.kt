@@ -10,15 +10,15 @@ import org.cxct.sportlottery.network.error.BetAddError
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
     @Json(name = "awayName")
-    val awayName: String,
+    val awayName: String?,
     @Json(name = "homeName")
-    val homeName: String,
+    val homeName: String?,
     @Json(name = "inplay")
     val inplay: Int,
     @Json(name = "leagueId")
     val leagueId: String,
     @Json(name = "leagueName")
-    val leagueName: String,
+    val leagueName: String?,
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "odds")
@@ -42,7 +42,7 @@ data class MatchOdd(
     @Json(name = "spread")
     var spread: String,
     @Json(name = "startTime")
-    val startTime: Long,
+    val startTime: Long?,
     @Json(name = "status")
     var status: Int = BetStatus.ACTIVATED.code,
     @Json(name = "gameType")
@@ -58,5 +58,6 @@ data class MatchOdd(
     var betAddError: BetAddError? = null
     var oddsHasChanged = false
     var spreadState: Int = SpreadState.SAME.state
+    var refreshData: Boolean = true //紀錄是否需要刷新該項資料, 預設為true作為初次顯示
 }
 

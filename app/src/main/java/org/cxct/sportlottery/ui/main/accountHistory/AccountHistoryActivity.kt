@@ -18,17 +18,20 @@ import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseNoticeActivity
-import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
 
-class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
+class AccountHistoryActivity :
+    BaseBottomNavActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     private val navController by lazy { findNavController(R.id.account_history_container) }
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
@@ -37,8 +40,7 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_history)
 
-        initNavigationListener()
-        initNavigationView()
+        initBottomNavigation()
         initToolBar()
         initRvMarquee()
         initMenu()
@@ -46,36 +48,61 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
         initObserve()
     }
 
-    private fun initNavigationListener() {
-        sport_bottom_navigation.setNavigationItemClickListener {
-            when (it) {
-                R.id.navigation_sport -> {
-                    startActivity(Intent(this, GameActivity::class.java))
-                    finish()
-                    true
+    override fun initBottomNavigation() {
+        sport_bottom_navigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_game -> {
+                        viewModel.navMyFavorite()
+                        finish()
+                        false
+                    }
+                    R.id.item_bet_list -> {
+                        viewModel.navShoppingCart()
+                        false
+                    }
+                    R.id.navigation_account_history -> {
+                        true
+                    }
+                    R.id.navigation_transaction_status -> {
+                        viewModel.navTranStatus()
+                        finish()
+                        false
+                    }
+                    else -> false
                 }
-                R.id.navigation_game -> {
-                    //TODO navigate sport game
-                    false
-                }
-                R.id.item_bet_list -> {
-                    showBetListPage()
-                    false
-                }
-                R.id.navigation_account_history -> {
-                    true
-                }
-                R.id.navigation_transaction_status -> {
-                    //TODO navigate transaction_status
-                    false
-                }
-                else -> false
             }
+
+            setSelected(R.id.navigation_account_history)
         }
     }
 
-    private fun showBetListPage() {
-        val betListFragment = BetListFragment.newInstance()
+    override fun showBetListPage() {
+        val betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit,
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit
+                        )
+                        .replace(
+                            R.id.fl_bet_list,
+                            BetReceiptFragment.newInstance(betResultData, betParlayList)
+                        )
+                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                        .commit()
+                }
+
+            })
+
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -88,9 +115,15 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
             .commit()
     }
 
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
 
-    private fun initNavigationView() {
-        sport_bottom_navigation.setSelected(R.id.navigation_account_history)
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.sport_bottom_navigation)
+            show()
+        }
     }
 
     override fun onResume() {
@@ -104,21 +137,20 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
     }
 
     override fun onBackPressed() {
-        if (navController.previousBackStackEntry != null) {
-            navController.popBackStack()
-            return
+        when (navController.currentDestination?.id) {
+            R.id.accountHistoryNextFragment -> {
+                navController.navigateUp()
+            }
+            else -> {
+                super.onBackPressed()
+            }
         }
-        finish()
     }
 
     private fun initObserve() {
 
         viewModel.oddsType.observe(this, {
             tv_odds_type.text = getString(it.res)
-        })
-
-        receiver.orderSettlement.observe(this, {
-            viewModel.getSettlementNotification(it)
         })
 
         viewModel.messageListResult.observe(this, {
@@ -216,5 +248,4 @@ class AccountHistoryActivity : BaseNoticeActivity<AccountHistoryViewModel>(Accou
             startActivity(Intent(this@AccountHistoryActivity, RegisterActivity::class.java))
         }
     }
-
 }

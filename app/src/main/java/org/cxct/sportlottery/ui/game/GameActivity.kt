@@ -21,36 +21,39 @@ import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
+import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseFavoriteActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
 import org.cxct.sportlottery.ui.game.home.HomeFragmentDirections
 import org.cxct.sportlottery.ui.game.league.GameLeagueFragmentDirections
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.game.outright.GameOutrightFragmentDirections
+import org.cxct.sportlottery.ui.game.outright.GameOutrightMoreFragmentDirections
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
-import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.MenuLeftFragment
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
-import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.MetricsUtil
 
 
-class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
+class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
@@ -108,6 +111,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     }
 
     enum class Page { ODDS_DETAIL, OUTRIGHT }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -204,31 +208,12 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                val leftMenuFragment = LeftMenuFragment(object : OnMenuClickListener {
-                    override fun onClick(menuStatus: Int) {
-                        when (menuStatus) {
-                            MenuStatusType.CLOSE.ordinal -> onBackPressed()
-                        }
-                    }
-                })
-
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque,
-                        R.anim.pop_left_to_right_enter_opaque,
-                        R.anim.push_right_to_left_exit_opaque
-                    )
-                    .add(R.id.fl_left_menu, leftMenuFragment)
-                    .addToBackStack(null)
-                    .commit()
+                LeftMenuFragment().show(supportFragmentManager, LeftMenuFragment::class.java.simpleName)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
-    enum class MenuStatusType { CLOSE }
 
     interface OnMenuClickListener {
         fun onClick(menuStatus: Int)
@@ -240,11 +225,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun initBottomNavigation() {
-        initNavigationListener()
-    }
-
-    private fun initNavigationListener() {
+    override fun initBottomNavigation() {
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
@@ -252,21 +233,19 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                     true
                 }
                 R.id.navigation_game -> {
-                    //TODO navigate sport game
-                    true
+                    viewModel.navMyFavorite()
+                    false
                 }
                 R.id.item_bet_list -> {
-                    //TODO 邏輯移動 see: BetInfoListDialog
-//                    showBetListDialog()
-                    showBetListPage()
+                    viewModel.navShoppingCart()
                     false
                 }
                 R.id.navigation_account_history -> {
-                    startActivity(Intent(this@GameActivity, AccountHistoryActivity::class.java))
+                    viewModel.navAccountHistory()
                     false
                 }
                 R.id.navigation_transaction_status -> {
-                    startActivity(Intent(this@GameActivity, TransactionStatusActivity::class.java))
+                    viewModel.navTranStatus()
                     false
                 }
                 else -> false
@@ -274,18 +253,48 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun showBetListPage() {
-        val betListFragment = BetListFragment.newInstance()
-        supportFragmentManager.beginTransaction()
+    override fun showBetListPage() {
+        val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit,
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit
             )
+        val betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit,
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit
+                        )
+                        .replace(
+                            R.id.fl_bet_list,
+                            BetReceiptFragment.newInstance(betResultData, betParlayList)
+                        )
+                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                        .commit()
+                }
+
+            })
+        transaction
             .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
             .commit()
+    }
+
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
+
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.game_bottom_navigation)
+            show()
+        }
     }
 
     //公告
@@ -392,6 +401,10 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 viewModel.switchMatchType(MatchType.OUTRIGHT)
                 loading()
             }
+            7 -> {
+                viewModel.switchMatchType(MatchType.EPS)
+                loading()
+            }
         }
     }
 
@@ -406,6 +419,13 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                 val navOptions = NavOptions.Builder().setLaunchSingleTop(true).build()
                 mNavController.navigate(action, navOptions)
             }
+            R.id.leagueFilterFragment -> {
+                val action =
+                    LeagueFilterFragmentDirections.actionLeagueFilterFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
+            }
             R.id.gameLeagueFragment -> {
                 val action =
                     GameLeagueFragmentDirections.actionGameLeagueFragmentToGameV3Fragment(matchType)
@@ -414,6 +434,13 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             R.id.gameOutrightFragment -> {
                 val action =
                     GameOutrightFragmentDirections.actionGameOutrightFragmentToGameV3Fragment(
+                        matchType
+                    )
+                mNavController.navigate(action)
+            }
+            R.id.gameOutrightMoreFragment -> {
+                val action =
+                    GameOutrightMoreFragmentDirections.actionGameOutrightMoreFragmentToGameV3Fragment(
                         matchType
                     )
                 mNavController.navigate(action)
@@ -436,11 +463,13 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     override fun onBackPressed() {
         //返回鍵優先關閉投注單fragment
         if (supportFragmentManager.backStackEntryCount != 0) {
-            supportFragmentManager.popBackStack()
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
             return
         }
         when (mNavController.currentDestination?.id) {
-            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment -> {
+            R.id.gameLeagueFragment, R.id.gameOutrightFragment, R.id.gameOutrightMoreFragment, R.id.oddsDetailFragment, R.id.oddsDetailLiveFragment, R.id.leagueFilterFragment -> {
                 mNavController.navigateUp()
             }
 
@@ -455,10 +484,6 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
-        receiver.orderSettlement.observe(this, {
-            viewModel.getSettlementNotification(it)
-        })
-
         viewModel.settlementNotificationMsg.observe(this, {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
@@ -495,6 +520,9 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
                     }
                     MatchType.OUTRIGHT -> {
                         tabLayout.getTabAt(6)?.select()
+                    }
+                    MatchType.EPS -> {
+                        tabLayout.getTabAt(7)?.select()
                     }
                 }
             }
@@ -539,19 +567,10 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
 
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
-                BetInfoCarDialog().show(supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
-            }
-        })
-
-        viewModel.betInfoRepository.betInfoList.observe(this, {
-            sport_bottom_navigation.setBetCount(it.peekContent().size)
-        })
-
-
-        viewModel.notifyLogin.observe(this, {
-            snackBarLoginNotify.apply {
-                setAnchorView(R.id.game_bottom_navigation)
-                show()
+                BetInfoCarDialog().show(
+                    supportFragmentManager,
+                    BetInfoCarDialog::class.java.simpleName
+                )
             }
         })
     }
@@ -648,6 +667,7 @@ class GameActivity : BaseFavoriteActivity<GameViewModel>(GameViewModel::class) {
             MatchType.EARLY -> updateSelectTabState(4)
             MatchType.PARLAY -> updateSelectTabState(5)
             MatchType.OUTRIGHT -> updateSelectTabState(6)
+            MatchType.EPS -> updateSelectTabState(7)
         }
     }
 

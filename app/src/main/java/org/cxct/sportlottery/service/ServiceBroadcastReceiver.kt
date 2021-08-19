@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
+import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
@@ -69,6 +70,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val playQuotaChange: LiveData<PlayQuotaChangeEvent?>
         get() = _playQuotaChange
 
+    val leagueChange: LiveData<LeagueChangeEvent?>
+        get() = _leagueChange
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -83,6 +87,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
+    private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -166,6 +171,10 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     EventType.ODDS_CHANGE -> {
                         val data = ServiceMessage.getOddsChange(jObjStr)
                         _oddsChange.value = data
+                    }
+                    EventType.LEAGUE_CHANGE -> {
+                        val data = ServiceMessage.getLeagueChange(jObjStr)
+                        _leagueChange.value = data
                     }
 
                     //具体赛事/赛季频道

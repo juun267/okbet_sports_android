@@ -55,6 +55,7 @@ class BackService : Service() {
     private var mCompositeDisposable: CompositeDisposable? = null //訊息接收通道 數組
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
+    private val mOriginalSubscribedMap = mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
 
@@ -239,13 +240,33 @@ class BackService : Service() {
                     mCompositeDisposable?.add(newDisposable)
                     mSubscribedMap[url] = newDisposable
                 }
-        }
+        } ?: reconnect()//背景中喚醒APP會有mStompClient=null的情況 導致停止訂閱賽事
     }
 
     private fun unsubscribeChannel(url: String) {
-        Timber.i("<<< unsubscribe channel: $url")
-        mSubscribedMap[url]?.let { mCompositeDisposable?.remove(it) }
-        mSubscribedMap.remove(url)
+        mSubscribedMap[url]?.let {
+            if (mOriginalSubscribedMap.containsValue(it)) {
+                mOriginalSubscribedMap.remove(url)
+            } else {
+                Timber.i("<<< unsubscribe channel: $url")
+                mCompositeDisposable?.remove(it)
+                mSubscribedMap.remove(url)
+            }
+        }
+    }
+
+    /**
+     * 為了避免投注單關閉時解除訂閱到當前頁面的頻道, 所以先將當前的訂閱記錄起來
+     */
+    fun betListPageSubscribeEvent() {
+        mOriginalSubscribedMap.putAll(mSubscribedMap)
+    }
+
+    /**
+     * 投注單頁面解除訂閱完畢, 清除暫存的訂閱頻道
+     */
+    fun betListPageUnSubScribeEvent() {
+        mOriginalSubscribedMap.clear()
     }
 
     fun subscribeEventChannel(eventId: String?) {

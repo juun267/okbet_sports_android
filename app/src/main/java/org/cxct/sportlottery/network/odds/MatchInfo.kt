@@ -12,19 +12,36 @@ data class MatchInfo(
     @Json(name = "gameType")
     var gameType: String?,
     @Json(name = "awayName")
-    val awayName: String,
+    val awayName: String?,
     @Json(name = "endTime")
-    val endTime: String?,
+    val endTime: Long?,
     @Json(name = "homeName")
-    val homeName: String,
+    val homeName: String?,
     @Json(name = "id")
     val id: String, //赛事或赛季id
     @Json(name = "playCateNum")
-    val playCateNum: Int,
+    val playCateNum: Int?,
     @Json(name = "startTime")
-    val startTime: String,
+    val startTime: Long?,
     @Json(name = "status")
-    var status: Int
+    var status: Int?,
+    @Json(name = "leagueId")
+    val leagueId: String ?= null,
+    @Json(name = "leagueName")
+    val leagueName: String?= null,
+    @Json(name = "name")
+    var name: String ?= null,
+    @Json(name = "img")
+    var img: String ?= null,
+    @Json(name = "msg")
+    var msg: String ?= null,
+    @Json(name = "liveVideo")
+    val liveVideo: Int ?= null,
+    @Json(name = "neutral")
+    val neutral: Int ?= null,
+    @Json(name = "eps")
+    val eps: Int ?= null,
+
 ) : Parcelable {
 
     //Live

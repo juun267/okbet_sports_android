@@ -8,26 +8,34 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.FavoriteType
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -58,11 +66,11 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 { matchInfo, odd, playCateName, playName ->
                     addOddsDialog(matchInfo, odd, playCateName, playName)
                 },
-                {
-                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接點選PlayCategory行為
+                { matchId ->
+                    viewModel.getQuickList(matchId)
                 },
                 {
-                    //TODO 目前後端返回的favorMatchOddList的quickPlayCateList欄位都是null，暫時不接關閉PlayCategory行為
+                    viewModel.clearQuickPlayCateSelected()
                 },
                 { matchId ->
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
@@ -91,16 +99,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                activity?.finish()
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setupGameTypeList(view: View) {
@@ -147,6 +145,261 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         super.onViewCreated(view, savedInstanceState)
 
         initObserver()
+        initSocketObserver()
+    }
+
+    private fun initSocketObserver() {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchStatusChangeEvent ->
+                matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+                    matchStatusCO.matchId?.let { matchId ->
+
+                        val leagueOdds = leagueAdapter.data
+
+                        leagueOdds.forEach { leagueOdd ->
+                            if (leagueOdd.isExpand) {
+
+                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                    matchOdd.matchInfo?.id == matchId
+                                }
+                                //TODO Bill matchStatusCO.status == 100 如果沒有資料的UI顯示 待確認
+                                updateMatchOdd?.let {
+                                    if (matchStatusCO.status == 100) {
+                                        leagueOdd.matchOdds.remove(updateMatchOdd)
+                                        leagueAdapter.notifyItemRangeChanged(
+                                            leagueOdds.indexOf(leagueOdd),
+                                            leagueAdapter.itemCount
+                                        )
+                                    } else {
+                                        updateMatchOdd.matchInfo?.homeScore =
+                                            matchStatusCO.homeScore
+                                        updateMatchOdd.matchInfo?.awayScore =
+                                            matchStatusCO.awayScore
+                                        updateMatchOdd.matchInfo?.statusName =
+                                            matchStatusCO.statusName
+
+                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.matchClock.observe(this.viewLifecycleOwner, {
+            it?.let { matchClockEvent ->
+                matchClockEvent.matchClockCO?.let { matchClockCO ->
+                    matchClockCO.matchId?.let { matchId ->
+
+                        val leagueOdds = leagueAdapter.data
+
+                        leagueOdds.forEach { leagueOdd ->
+                            if (leagueOdd.isExpand) {
+
+                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                    matchOdd.matchInfo?.id == matchId
+                                }
+
+                                updateMatchOdd?.let {
+                                    updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
+                                        GameType.FT.key -> {
+                                            matchClockCO.matchTime
+                                        }
+                                        GameType.BK.key -> {
+                                            matchClockCO.remainingTimeInPeriod
+                                        }
+                                        else -> null
+                                    }
+
+                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { oddsChangeEvent ->
+                oddsChangeEvent.updateOddsSelectedState()
+                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
+                    val leagueOdds = leagueAdapter.data
+                    val oddsType = leagueAdapter.oddsType
+
+                    leagueOdds.forEach { leagueOdd ->
+                        if (leagueOdd.isExpand) {
+                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == it.eventId
+                            }
+
+                            if (updateMatchOdd?.odds.isNullOrEmpty()) {
+                                updateMatchOdd?.odds = PlayCateUtils.filterOdds(
+                                    oddTypeSocketMap.toMutableMap(),
+                                    updateMatchOdd?.matchInfo?.gameType ?: ""
+                                )
+
+                            } else {
+                                updateMatchOdd?.odds?.forEach { oddTypeMap ->
+                                    val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
+                                    val odds = oddTypeMap.value
+
+                                    odds.forEach { odd ->
+                                        val oddSocket = oddsSocket?.find { oddSocket ->
+                                            oddSocket?.id == odd?.id
+                                        }
+
+                                        oddSocket?.let {
+                                            odd?.updateOddsState(oddSocket, oddsType)
+                                        }
+                                    }
+                                }
+
+                                updateMatchOdd?.quickPlayCateList?.forEach { quickPlayCate ->
+                                    quickPlayCate.quickOdds?.forEach { oddTypeMap ->
+                                        val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
+                                        val odds = oddTypeMap.value
+
+                                        odds.forEach { odd ->
+                                            val oddSocket = oddsSocket?.find { oddSocket ->
+                                                oddSocket?.id == odd?.id
+                                            }
+
+                                            oddSocket?.let {
+                                                odd?.updateOddsState(oddSocket, oddsType)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            leagueAdapter.notifyItemChanged(
+                                leagueOdds.indexOf(
+                                    leagueOdd
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds.values.forEach { odds ->
+                            odds.forEach { odd ->
+                                odd?.updateOddStatus(globalStopEvent.producerId)
+                            }
+                        }
+
+                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                            quickPlayCate.quickOdds?.values?.forEach { odds ->
+                                odds.forEach { odd ->
+                                    odd?.updateOddStatus(globalStopEvent.producerId)
+                                }
+                            }
+                        }
+                    }
+
+                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                }
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                unSubscribeChannelHallAll()
+                subscribeHallChannel()
+            }
+        })
+    }
+
+    private fun Odd.updateOddsState(oddSocket: Odd, oddsType: OddsType): Odd {
+        when (oddsType) {
+            OddsType.EU -> {
+                this.odds?.let { oddValue ->
+                    oddSocket.odds?.let { oddSocketValue ->
+                        when {
+                            oddValue > oddSocketValue -> {
+                                this.oddState =
+                                    OddState.SMALLER.state
+                            }
+                            oddValue < oddSocketValue -> {
+                                this.oddState =
+                                    OddState.LARGER.state
+                            }
+                            oddValue == oddSocketValue -> {
+                                this.oddState =
+                                    OddState.SAME.state
+                            }
+                        }
+                    }
+                }
+            }
+
+            OddsType.HK -> {
+                this.hkOdds?.let { oddValue ->
+                    oddSocket.hkOdds?.let { oddSocketValue ->
+                        when {
+                            oddValue > oddSocketValue -> {
+                                this.oddState =
+                                    OddState.SMALLER.state
+                            }
+                            oddValue < oddSocketValue -> {
+                                this.oddState =
+                                    OddState.LARGER.state
+                            }
+                            oddValue == oddSocketValue -> {
+                                this.oddState =
+                                    OddState.SAME.state
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        this.odds = oddSocket.odds
+        this.hkOdds = oddSocket.hkOdds
+        this.status = oddSocket.status
+        this.extInfo = oddSocket.extInfo
+
+        return this
+    }
+
+    private fun Odd.updateOddStatus(producerId: Int?): Odd {
+        when (producerId) {
+            null -> {
+                this.status = BetStatus.DEACTIVATED.code
+            }
+            else -> {
+                if (this.producerId == producerId) {
+                    this.status = BetStatus.DEACTIVATED.code
+                }
+            }
+        }
+        return this
+    }
+
+    private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.onEach { odd ->
+                    odd?.isSelected =
+                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
+        return this
     }
 
     override fun onStart() {
@@ -158,6 +411,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun initObserver() {
         viewModel.sportQueryData.observe(this.viewLifecycleOwner, {
+            hideLoading()
             it?.getContentIfNotHandled()?.let { sportQueryData ->
 
                 updateGameTypeList(sportQueryData.items?.map { item ->
@@ -185,7 +439,20 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, {
             hideLoading()
-            leagueAdapter.data = it
+            leagueAdapter.data = it.toMutableList()
+            try {
+                it.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        subscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            MenuCode.MAIN.code,
+                            matchOdd.matchInfo?.id
+                        )
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
@@ -205,6 +472,14 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 }
 
                 leagueAdapter.notifyDataSetChanged()
+            }
+        })
+
+        viewModel.favorMatchList.observe(this.viewLifecycleOwner, { favorMatchList ->
+            if (favorMatchList.isNullOrEmpty()) {
+                fl_no_game.visibility = View.VISIBLE
+            } else {
+                fl_no_game.visibility = View.GONE
             }
         })
     }
@@ -273,7 +548,20 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             playCateName,
             playName,
             matchInfo,
-            odd
-        )
+            odd,
+            ChannelType.HALL
+        )//TODO 訂閱HALL需傳入CateMenuCode
+    }
+
+    private fun subscribeHallChannel() {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                subscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    MenuCode.MAIN.code,
+                    matchOdd.matchInfo?.id
+                )
+            }
+        }
     }
 }

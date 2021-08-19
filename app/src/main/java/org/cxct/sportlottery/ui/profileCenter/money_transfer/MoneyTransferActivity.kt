@@ -6,11 +6,12 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.activity_money_transfer.*
 import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseOddButtonActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragmentDirections
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.transfer.MoneyTransferFragmentDirections
 
-class MoneyTransferActivity : BaseOddButtonActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
+class MoneyTransferActivity :
+    BaseSocketActivity<MoneyTransferViewModel>(MoneyTransferViewModel::class) {
 
     private val navController by lazy { my_nav_host_fragment.findNavController() }
 

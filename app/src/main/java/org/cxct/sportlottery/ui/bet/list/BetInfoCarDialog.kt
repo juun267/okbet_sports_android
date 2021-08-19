@@ -24,11 +24,12 @@ import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
-import org.cxct.sportlottery.network.bet.add.BetAddResult
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
+import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -57,7 +58,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
         }
 
-
     private var oddsType: OddsType = OddsType.EU
         set(value) {
             field = value
@@ -71,14 +71,9 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         set(value) {
             field = value
             field?.let {
-                if (!subscribeFlag) {
-                    subscribeChannel(it)
-                    subscribeFlag = true
-                }
                 setupData(it)
             }
         }
-
 
     private var parlayOdd: ParlayOdd? = null
         set(value) {
@@ -105,10 +100,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
         }
 
-
-    private var subscribeFlag = false
-
-
     init {
         setStyle(STYLE_NORMAL, R.style.LightBackgroundBottomSheet)
     }
@@ -118,8 +109,11 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         KeyBoardUtil(kv_keyboard, null)
     }
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DialogBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
         binding.apply {
             lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
@@ -144,14 +138,13 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        viewModel.removeBetInfoSingle()
         OddSpannableString.clearHandler()
     }
 
 
     override fun onStop() {
         super.onStop()
-        service.unsubscribeEventChannel(matchOdd?.matchId)
+        unSubscribeChannelEvent(matchOdd?.matchId)
     }
 
 
@@ -238,6 +231,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     }
                 }
 
+                betInfoListData?.betAmount = quota
+
                 //比照以往計算
                 var win = quota * getOdds(matchOdd, oddsType)
                 if (oddsType == OddsType.EU) {
@@ -255,6 +250,13 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list[0]
+
+                    val betAmount = betInfoListData?.betAmount ?: 0.0
+                    var win = betAmount * getOdds(matchOdd, oddsType)
+                    if (oddsType == OddsType.EU) {
+                        win -= betAmount
+                    }
+                    tv_win_quota.text = TextUtil.format(win)
                 }
             }
         })
@@ -273,52 +275,75 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
-                showPromptDialog(
-                    title = getString(R.string.prompt),
-                    message = messageByResultCode(requireContext(), result),
-                    success = result.success
-                ) {
-                    changeBetInfoContentByMessage(result)
-                    dismiss()
+                if (!result.success) {
+                    showPromptDialog(
+                        title = getString(R.string.prompt),
+                        message = messageByResultCode(requireContext(), result),
+                        success = result.success
+                    ) {
+                        changeBetInfoContentByMessage(result)
+                        dismiss()
+                    }
+                } else {
+                    showBottomSheetDialog(result)
                 }
             }
         })
 
         viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner, { event ->
             event?.peekContent()?.let {
-                if(!it)dismiss()
+                if (!it) dismiss()
             }
+        })
+
+        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner, {
+            button_bet.hasBetPlatClose = it
         })
     }
 
-
     private fun initSocketObserver() {
-        receiver.userMoney.observe(this.viewLifecycleOwner, {
-            currentMoney = it
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                viewModel.updateMatchOdd(matchOddsChangeEvent)
+            }
         })
 
-        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
-            it?.let { event ->
-                viewModel.updateMatchOdd(event)
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                if (matchOdd?.producerId == null || matchOdd?.producerId == globalStopEvent.producerId) {
+                    matchOdd?.status = BetStatus.LOCKED.code
+                    matchOdd?.let { setupData(it) }
+                }
             }
         })
 
         receiver.producerUp.observe(this.viewLifecycleOwner, {
-            service.unsubscribeAllEventChannel()
-            service.subscribeEventChannel(matchOdd?.matchId)
+            it?.let {
+                unSubscribeChannelEventAll()
+                subscribeChannelEvent(matchOdd?.matchId)
+            }
         })
 
-        receiver.globalStop.observe(viewLifecycleOwner, { event ->
-            if (matchOdd?.producerId == null || matchOdd?.producerId == event?.producerId) {
-                matchOdd?.status = BetStatus.LOCKED.code
-                matchOdd?.let { setupData(it) }
+        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { oddsChangeEvent ->
+                viewModel.updateMatchOdd(oddsChangeEvent)
             }
         })
     }
 
+    private fun showBottomSheetDialog(result: BetAddResult) {
+        context?.let {
+            dismiss()
+            BetInfoCarReceiptDialog(result).show(
+                parentFragmentManager,
+                BetInfoCarReceiptDialog::class.java.simpleName
+            )
+        }
+    }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text = getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
+        tv_current_money.text =
+            getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
     }
 
 
@@ -345,14 +370,24 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         } else matchOdd.playCateName
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
-            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
+            cl_item_background.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorWhite
+                )
+            )
             iv_bet_lock.visibility = View.GONE
             et_bet.isFocusable = true
             et_bet.isFocusableInTouchMode = true
             cl_quota_detail.visibility = View.VISIBLE
             cl_close_waring.visibility = View.GONE
         } else {
-            cl_item_background.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorWhite2))
+            cl_item_background.setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorWhite2
+                )
+            )
             iv_bet_lock.visibility = View.VISIBLE
             et_bet.isFocusable = false
             et_bet.isFocusableInTouchMode = false
@@ -368,12 +403,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         OddSpannableString.setupOddsContent(matchOdd, oddsType, tv_odds_content)
     }
-
-
-    private fun subscribeChannel(matchOdd: MatchOdd) {
-        service.subscribeEventChannel(matchOdd.matchId)
-    }
-
 
     fun addToBetInfoList() {
         viewModel.addInBetInfo()
@@ -392,7 +421,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
         if (stake > currentMoney ?: 0.0) {
-            showErrorPromptDialog(getString(R.string.prompt), getString(R.string.bet_info_bet_balance_insufficient)) {}
+            showErrorPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.bet_info_bet_balance_insufficient)
+            ) {}
             return
         }
 
@@ -410,6 +442,4 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
         }
     }
-
-
 }

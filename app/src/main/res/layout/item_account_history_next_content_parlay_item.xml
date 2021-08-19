@@ -47,27 +47,35 @@
 
             <TextView
                 android:id="@+id/tv_league_name"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_game_type"
+                app:layout_constraintStart_toStartOf="@+id/tv_game_type"
                 tools:text="22-06 NBA季后赛" />
 
+            <ListView
+                android:id="@+id/list_score"
+                android:layout_width="100dp"
+                app:layout_constraintStart_toEndOf="@id/barrier"
+                app:layout_constrainedWidth="true"
+                tools:layout_width="100dp"
+                tools:layout_height="30dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="完賽: 1-3\n完賽: 1-3\n完賽: 1-3" />
 
-            <TextView
-                android:id="@+id/tv_count"
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/barrier"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/colorGrayLight"
-                android:textSize="@dimen/textSize12sp"
-                android:text="@{matchOdd.rtScore}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_game_type"
-                tools:text="113 - 116" />
+                app:barrierDirection="right"
+                app:constraint_referenced_ids="tv_game_type, tv_league_name, tv_team_homeway, tv_odd"/>
 
             <TextView
                 android:id="@+id/tv_play_name"
@@ -75,10 +83,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@{matchOdd.homeName}"
+                android:layout_marginVertical="5dp"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_team_home"
                 tools:text="菲尼克斯太阳" />
 
             <TextView
@@ -90,6 +99,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
                 app:layout_constraintStart_toEndOf="@id/tv_play_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name"
@@ -104,7 +114,6 @@
                 android:text="@{matchOdd.homeName}"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_play_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_league_name"
                 tools:text="菲尼克斯太阳" />
@@ -115,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"

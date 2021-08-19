@@ -31,7 +31,7 @@ class OddsDetailMoreAdapter(private val matchInfoList: List<MoreGameEntity>, pri
         fun bind(moreGameEntity: MoreGameEntity) {
             binding.item = moreGameEntity
             binding.executePendingBindings()
-            binding.root.setOnClickListener { onItemClickListener.onItemClick(moreGameEntity.id) }
+            binding.root.setOnClickListener { moreGameEntity.id?.let { it1 -> onItemClickListener.onItemClick(it1) } }
         }
     }
 
