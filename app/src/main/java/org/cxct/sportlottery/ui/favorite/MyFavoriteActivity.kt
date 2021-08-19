@@ -174,10 +174,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     private fun initObserver() {
-        viewModel.isLogin.observe(this, {
-            updateUiWithLogin(it)
-        })
-
         viewModel.oddsType.observe(this, {
             tv_odds_type.text = getString(it.res)
         })
@@ -206,7 +202,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         })
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE

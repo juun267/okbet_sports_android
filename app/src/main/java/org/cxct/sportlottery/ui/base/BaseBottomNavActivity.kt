@@ -16,12 +16,18 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
 
     abstract fun showBetListPage()
 
+    abstract fun updateUiWithLogin(isLogin: Boolean)
+
     abstract fun updateBetListCount(num: Int)
 
     abstract fun showLoginNotify()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.isLogin.observe(this, {
+            updateUiWithLogin(it)
+        })
 
         viewModel.intentClass.observe(this, {
             it.getContentIfNotHandled()?.let { clazz ->

@@ -206,7 +206,6 @@ class TransactionStatusActivity :
         })
 
         viewModel.isLogin.observe(this, {
-            updateUiWithLogin(it)
             getAnnouncement()
         })
 
@@ -248,7 +247,7 @@ class TransactionStatusActivity :
         }
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE
