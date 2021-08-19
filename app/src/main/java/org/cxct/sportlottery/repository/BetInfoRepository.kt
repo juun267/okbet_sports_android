@@ -155,9 +155,18 @@ class BetInfoRepository(val androidContext: Context) {
             _matchOddList.value = parlayMatchOddList
 
             if (!hasPointMark) {
-                _parlayList.value = updateParlayOddOrder(
+                val newParlayList = updateParlayOddOrder(
                     getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
                 )
+                if (!_parlayList.value.isNullOrEmpty() && _parlayList.value?.size == newParlayList.size) {
+                    _parlayList.value?.forEachIndexed { index, parlayOdd ->
+                        newParlayList[index].apply {
+                            betAmount = parlayOdd.betAmount
+                            allSingleInput = parlayOdd.allSingleInput
+                        }
+                    }
+                }
+                _parlayList.value = newParlayList
                 _betParlaySuccess.value = true
             } else {
                 _parlayList.value = mutableListOf()
@@ -440,6 +449,7 @@ class BetInfoRepository(val androidContext: Context) {
                     }
                 }
                 checkBetInfoContent(updateBetInfoList)
+                updateBetOrderParlay(updateBetInfoList)
                 _betInfoList.value = Event(updateBetInfoList)
             }
         }
