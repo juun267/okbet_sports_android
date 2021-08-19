@@ -405,7 +405,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     override fun onStart() {
         super.onStart()
 
-        viewModel.getFavorite()
+        viewModel.getSportQuery(viewModel.favorMatchList.value)
         loading()
     }
 

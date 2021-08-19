@@ -46,17 +46,16 @@ class MyFavoriteViewModel(
         get() = _curPlay
     private val _curPlay = MutableLiveData<Play>()
 
-    fun getSportQuery(favorMatchList :List<String>) {
+    fun getSportQuery(favorMatchList :List<String>?) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
                     SportQueryRequest(
                         TimeUtil.getNowTimeStamp().toString(),
                         TimeUtil.getTodayStartTimeStamp().toString(),
-                        MatchType.MY_EVENT.postValue
-                    ).apply {
+                        MatchType.MY_EVENT.postValue,
                         matchIdList = favorMatchList
-                    }
+                    )
                 )
             }
 
