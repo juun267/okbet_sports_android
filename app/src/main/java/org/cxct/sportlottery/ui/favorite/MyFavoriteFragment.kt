@@ -450,7 +450,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         )
                     }
                 }
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         })
@@ -475,10 +475,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }
         })
 
-        viewModel.favorMatchList.observe(this.viewLifecycleOwner, { favorMatchList->
+        viewModel.favorMatchList.observe(this.viewLifecycleOwner, { favorMatchList ->
             if (favorMatchList.isNullOrEmpty()) {
                 fl_no_game.visibility = View.VISIBLE
-                hideLoading()
             } else {
                 fl_no_game.visibility = View.GONE
             }
