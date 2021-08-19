@@ -118,16 +118,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
-    private fun goToMainActivity(thirdGameCategory: ThirdGameCategory) {
-        val intent = Intent(this, MainActivity::class.java)
-            .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
-        startActivity(intent)
-    }
-
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            goToMainActivity(ThirdGameCategory.MAIN)
+            viewModel.navMainPage(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
@@ -529,6 +523,20 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 )
             }
         })
+
+        viewModel.thirdGameCategory.observe(this, {
+            it.getContentIfNotHandled().let { thirdGameCategory ->
+                if (thirdGameCategory != null) {
+                    val intent = Intent(this, MainActivity::class.java)
+                        .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
+                    startActivity(intent)
+
+                    return@let
+                }
+
+                tabLayout.getTabAt(0)?.select()
+            }
+        })
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
@@ -588,7 +596,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         loading()
         viewModel.getSportMenu()
     }
-    
+
     private fun updateSelectTabState(matchType: MatchType?) {
         when (matchType) {
             MatchType.IN_PLAY -> updateSelectTabState(1)
