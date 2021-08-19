@@ -261,6 +261,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         mSportCode?.let { mSportCode ->
             matchId?.let { matchId ->
                 viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+                subscribeChannelEvent(matchId)
             }
         }
     }

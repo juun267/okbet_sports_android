@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.annotation.SuppressLint
+import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
@@ -73,6 +74,20 @@ object TimeUtil {
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
+    }
+
+    fun dateToDateFormat(
+        date: String?,
+        newDateFormatPattern: String = MD_FORMAT
+    ): String? {
+        try {
+            if (date.isNullOrEmpty()) return null
+            val newFormatter = SimpleDateFormat(newDateFormatPattern, Locale.getDefault())
+            return newFormatter.format(dateToTimeStamp(date))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     /**

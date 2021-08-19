@@ -44,6 +44,7 @@
             android:gravity="center"
             app:moneyFormat="@{other.totalAmount}"
             android:textColor="@color/colorWhite"
+            android:textStyle="bold"
             android:textSize="@dimen/textSize14sp"
             tools:text="9,999,587.000 RMB" />
 
@@ -55,6 +56,7 @@
             android:gravity="center"
             android:textColor="@color/colorRedLight"
             android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
             app:moneyFormat="@{other.win}"
             app:moneyColor="@{other.win}"
             tools:text="-9,999,587.000 RMB" />
