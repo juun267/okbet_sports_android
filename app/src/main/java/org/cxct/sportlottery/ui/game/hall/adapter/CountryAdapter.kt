@@ -140,12 +140,11 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.apply {
-                country_text.text = item.name
+                val data =
+                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.icon)
 
-                val data = "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\">" +
-                        "${item.icon}" +
-                        "</svg>"
-                country_webview.loadDataWithBaseURL(null, data,"text/html", "UTF-8",null)
+                country_text.text = item.name
+                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
                 country_webview.setBackgroundColor(Color.TRANSPARENT)
             }
             setupLeagueList(item, countryLeagueListener)
