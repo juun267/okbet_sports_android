@@ -60,5 +60,8 @@ data class UserInfo(
     val userRebateList: List<UserRebate>? = null,
 
     @ColumnInfo(name = "credit_account")
-    val creditAccount: Int? = null
+    val creditAccount: Int? = null,
+
+    @ColumnInfo(name = "credit_status")
+    val creditStatus: Int? = null
 )

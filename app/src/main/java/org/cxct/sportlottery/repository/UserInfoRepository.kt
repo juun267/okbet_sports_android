@@ -120,6 +120,7 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             updatePayPw = userInfoData.updatePayPw,
             setted = userInfoData.setted,
             userRebateList = userInfoData.userRebateList,
-            creditAccount = userInfoData.creditAccount
+            creditAccount = userInfoData.creditAccount,
+            creditStatus = userInfoData.creditStatus
         )
 }

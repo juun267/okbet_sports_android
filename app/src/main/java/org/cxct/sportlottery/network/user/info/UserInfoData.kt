@@ -76,5 +76,7 @@ data class UserInfoData(
     @Json(name = "growth")
     val growth: Long?,
     @Json(name = "creditAccount")
-    val creditAccount: Int?
+    val creditAccount: Int?,
+    @Json(name = "creditStatus")
+    val creditStatus: Int?
 )

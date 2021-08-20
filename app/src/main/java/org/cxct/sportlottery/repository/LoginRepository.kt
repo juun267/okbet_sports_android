@@ -283,6 +283,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             userName = loginData.userName,
             userType = loginData.userType,
             userRebateList = loginData.userRebateList,
-            creditAccount = loginData.creditAccount
+            creditAccount = loginData.creditAccount,
+            creditStatus = loginData.creditStatus
         )
 }
