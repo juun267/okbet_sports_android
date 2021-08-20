@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.itemview_credit_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.user.credit.Row
 
@@ -28,7 +29,15 @@ class CreditRecordAdapter : RecyclerView.Adapter<CreditRecordAdapter.ItemViewHol
     class ItemViewHolder private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Row) {}
+        fun bind(item: Row) {
+            itemView.apply {
+                credit_record_time.text = item.period
+                credit_record_amount_all.text = item.formatCreditBalance
+                credit_record_amount_remain.text = item.formatBalance
+                credit_record_amount_settle.text = item.formatReward
+                credit_record_remark.text = item.remark ?: ""
+            }
+        }
 
         companion object {
             fun from(parent: ViewGroup): ItemViewHolder {

@@ -10,6 +10,9 @@ import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryRequest
 import org.cxct.sportlottery.network.user.credit.Row
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
 
 const val DEFAULT_PAGE_SIZE = 10
 
@@ -40,7 +43,33 @@ class CreditRecordViewModel(
             )
 
             response.body()?.rows?.let {
+                it.mapRecordPeriod()
+                it.mapAllBalance()
+
                 _userCreditCircleHistory.postValue(it)
+            }
+        }
+    }
+
+    private fun List<Row>.mapRecordPeriod() {
+        this.forEach {
+            it.period =
+                TimeUtil.timeFormat(it.beginTime, "yyyy/MM/dd") +
+                        " ~ " +
+                        TimeUtil.timeFormat(it.endTime, "yyyy/MM/dd")
+        }
+    }
+
+    private fun List<Row>.mapAllBalance() {
+        this.forEach {
+            it.creditBalance?.let { creditBalance ->
+                it.formatCreditBalance = TextUtil.formatMoney(creditBalance)
+            }
+            it.balance?.let { balance ->
+                it.formatBalance = TextUtil.formatMoney(balance)
+            }
+            it.reward?.let { reward ->
+                it.formatReward = TextUtil.formatMoney(reward)
             }
         }
     }
