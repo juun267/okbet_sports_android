@@ -844,4 +844,6 @@
     <string name="credit_bet_amount_remain">剩余信用额度</string>
     <string name="credit_bet_settle">结算</string>
     <string name="credit_bet_remark">备注</string>
+    <string name="credit_record_remain">离结算倒数</string>
+    <string name="credit_record_quota">結算總額： </string>
 </resources>

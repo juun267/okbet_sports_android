@@ -44,12 +44,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:text="@string/credit_record_remain"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
         app:layout_constraintStart_toStartOf="@id/credit_record_remain_border"
-        app:layout_constraintTop_toTopOf="@id/credit_record_remain_border"
-        tools:text="离结算倒数" />
+        app:layout_constraintTop_toTopOf="@id/credit_record_remain_border" />
 
     <TextView
         android:id="@+id/credit_record_remain_day"
@@ -72,10 +72,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/credit_record_quota"
         app:layout_constraintBottom_toBottomOf="@id/credit_record_quota_border"
         app:layout_constraintEnd_toStartOf="@id/credit_record_quota_amount"
-        app:layout_constraintTop_toTopOf="@id/credit_record_quota_border"
-        tools:text="結算總額： " />
+        app:layout_constraintTop_toTopOf="@id/credit_record_quota_border" />
 
     <TextView
         android:id="@+id/credit_record_quota_amount"
