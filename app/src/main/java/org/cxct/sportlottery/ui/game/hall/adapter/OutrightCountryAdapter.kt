@@ -154,7 +154,9 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         fun bind(item: Row, outrightCountryLeagueListener: OutrightCountryLeagueListener?) {
-            itemView.country_name.text = item.name
+            itemView.apply {
+                country_name.text = item.name
+            }
 
             setupLeagueList(item, outrightCountryLeagueListener)
             setupCountryExpand(item)

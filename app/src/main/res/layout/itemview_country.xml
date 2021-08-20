@@ -38,6 +38,7 @@
         app:layout_constraintBottom_toBottomOf="@id/country_border"
         app:layout_constraintEnd_toEndOf="@id/country_border"
         app:layout_constraintTop_toTopOf="@id/country_border"
+        android:src="@drawable/ic_earth"
         tools:ignore="ContentDescription" />
 
     <net.cachapa.expandablelayout.ExpandableLayout
