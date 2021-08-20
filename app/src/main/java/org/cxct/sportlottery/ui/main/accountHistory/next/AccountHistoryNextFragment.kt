@@ -18,8 +18,10 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     private val rvAdapter = AccountHistoryNextAdapter(ItemClickListener {
     }, BackClickListener {
         findNavController().navigateUp()
-    }, SportDateSelectListener { sport, date ->
-        viewModel.setSelectedSportDate(sport, date)
+    }, SportSelectListener {
+        viewModel.setSelectedSport(it)
+    }, DateSelectListener {
+        viewModel.setSelectedDate(it)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -74,9 +76,14 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             rvAdapter.oddsType = it
         })
 
-        viewModel.selectedSportDate.observe(viewLifecycleOwner, {
-            rvAdapter.mSelectedSportDate = Pair(it.first, it.second)
-            viewModel.searchDetail(gameType = it.first, date = it.second)
+        viewModel.selectedDate.observe(viewLifecycleOwner, {
+            rvAdapter.nowSelectedDate = it
+            viewModel.searchDetail(date = it)
+        })
+
+        viewModel.selectedSport.observe(viewLifecycleOwner, {
+            rvAdapter.nowSelectedSport = it
+            viewModel.searchDetail(gameType = it)
         })
 
     }

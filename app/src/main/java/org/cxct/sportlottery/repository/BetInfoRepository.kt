@@ -52,14 +52,6 @@ class BetInfoRepository(val androidContext: Context) {
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
 
-
-    val _isParlayPage = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-    val isParlayPage: LiveData<Boolean>
-        get() = _isParlayPage
-
-
     private val _removeItem = MutableLiveData<Event<String?>>()
     val removeItem: LiveData<Event<String?>>
         get() = _removeItem
@@ -90,7 +82,6 @@ class BetInfoRepository(val androidContext: Context) {
     val hasBetPlatClose: LiveData<Boolean>
         get() = _hasBetPlatClose
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
-
 
 
     @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
@@ -163,6 +154,7 @@ class BetInfoRepository(val androidContext: Context) {
                         newParlayList[index].apply {
                             betAmount = parlayOdd.betAmount
                             allSingleInput = parlayOdd.allSingleInput
+                            amountError = parlayOdd.amountError
                         }
                     }
                 }
@@ -190,14 +182,6 @@ class BetInfoRepository(val androidContext: Context) {
 
         return parlayOddList
     }
-
-
-    fun getCurrentBetInfoList() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-        checkBetInfoContent(betList)
-        _betInfoList.postValue(Event(betList))
-    }
-
 
     fun removeItem(oddId: String?) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
@@ -424,35 +408,21 @@ class BetInfoRepository(val androidContext: Context) {
 
         if (updateBetInfoList.isNullOrEmpty()) return
 
-        when (_isParlayPage.value) {
-            true -> {
-                val gameType = GameType.getGameType(updateBetInfoList[0].matchOdd.gameType)
+        updateBetInfoList.forEach { betInfoListData ->
+            betInfoListData.matchType?.let { matchType ->
+                val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
                 gameType?.let {
-                    matchOddList.value?.let {
-                        _parlayList.value =
-                            getParlayOdd(MatchType.PARLAY, gameType, it).toMutableList()
-                    }
+                    betInfoListData.parlayOdds = getParlayOdd(
+                        matchType,
+                        gameType,
+                        mutableListOf(betInfoListData.matchOdd)
+                    ).first()
                 }
-            }
-
-            false -> {
-                updateBetInfoList.forEach { betInfoListData ->
-                    betInfoListData.matchType?.let { matchType ->
-                        val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
-                        gameType?.let {
-                            betInfoListData.parlayOdds = getParlayOdd(
-                                matchType,
-                                gameType,
-                                mutableListOf(betInfoListData.matchOdd)
-                            ).first()
-                        }
-                    }
-                }
-                checkBetInfoContent(updateBetInfoList)
-                updateBetOrderParlay(updateBetInfoList)
-                _betInfoList.value = Event(updateBetInfoList)
             }
         }
+        checkBetInfoContent(updateBetInfoList)
+        updateBetOrderParlay(updateBetInfoList)
+        _betInfoList.value = Event(updateBetInfoList)
     }
 
 
@@ -506,11 +476,14 @@ class BetInfoRepository(val androidContext: Context) {
      * 判斷是否有賠率變更
      */
     private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
+        var anyOddChanged = false
         betInfoList.forEach {
-            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
-                _showOddsChangeWarn.postValue(true)
+            if (it.matchOdd.oddsHasChanged) {
+                anyOddChanged = true
+                return@forEach
             }
         }
+        _showOddsChangeWarn.postValue(anyOddChanged)
     }
 
     /**

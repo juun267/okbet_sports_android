@@ -623,6 +623,7 @@
     <string name="bet_info_list_bigger_than_zero">投注额必须大于零</string>
     <string name="bet_info_list_bigger_than_max_limit">投注额大于下注限额</string>
     <string name="bet_info_list_less_than_minimum_limit">投注额小于下注限额</string>
+    <string name="bet_info_list_minimum_limit_amount">最小单笔投注金额为 %1$s %2$s</string>
     <string name="bet_info_list">注单</string>
     <string name="bet_info_parlay_list">复式连串过关投注</string>
     <string name="bet_info_parlay_win_quota">可赢金额：</string>
@@ -834,6 +835,13 @@
     <string name="odds_button_name_first">第一</string>
     <string name="odds_button_name_ant">任何</string>
     <string name="odds_button_name_last">最后</string>
+    <string name="odds_button_name_y">是</string>
+    <string name="odds_button_name_n">否</string>
+    <string name="odds_button_name_o">大</string>
+    <string name="odds_button_name_u">小</string>
+    <string name="odds_button_name_singular">单</string>
+    <string name="odds_button_name_dual">双</string>
+    <string name="odds_button_name_plus_flg">首次进球</string>
     <string name="bet_succeeded">您已成功投注</string>
     <string name="mix_bet_list">综合过关单</string>
 

@@ -272,18 +272,7 @@ class GameViewModel(
         }
     }
 
-    fun isParlayPage(isParlayPage: Boolean) {
-        betInfoRepository._isParlayPage.postValue(isParlayPage)
-        if (isParlayPage)
-            checkShoppingCart()
-    }
-
     fun switchMatchType(matchType: MatchType) {
-        betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
-        if (matchType == MatchType.PARLAY) {
-            checkShoppingCart()
-        }
-
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
@@ -293,19 +282,6 @@ class GameViewModel(
         _curChildMatchType.value = childMatchType
         curMatchType.value?.let {
             getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
-        }
-    }
-
-    private fun checkShoppingCart() {
-        val betList = betInfoList.value?.peekContent() ?: mutableListOf()
-        val parlayList = betList.cleanOutrightBetOrder().groupBetInfoByMatchId()
-
-        if (betList.size != parlayList.size) {
-            betList.minus(parlayList.toHashSet()).forEach {
-                removeBetInfoItem(it.matchOdd.oddsId)
-            }
-
-            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_system_close_incompatible_item)))
         }
     }
 
@@ -448,7 +424,10 @@ class GameViewModel(
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(MatchType.IN_PLAY.postValue, MenuCode.HOME_INPLAY_MOBILE.code)
+                    MatchPreloadRequest(
+                        MatchType.IN_PLAY.postValue,
+                        MenuCode.HOME_INPLAY_MOBILE.code
+                    )
                 )
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
@@ -675,7 +654,12 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, matchIdList: List<String>, play: Play) {
+    fun switchPlay(
+        matchType: MatchType,
+        leagueIdList: List<String>,
+        matchIdList: List<String>,
+        play: Play
+    ) {
         updatePlaySelectedState(play)
 
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
@@ -733,7 +717,7 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(leagueId: String,  matchType: String = MatchType.OUTRIGHT.postValue) {
+    fun getOutrightOddsList(leagueId: String, matchType: String = MatchType.OUTRIGHT.postValue) {
         getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
 
@@ -755,7 +739,8 @@ class GameViewModel(
                     }
                 }
 
-                val matchOdd = result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
+                val matchOdd =
+                    result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
                 matchOdd?.let {
                     matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
@@ -921,11 +906,19 @@ class GameViewModel(
         }
     }
 
-    private fun getEpsList(gameType: String, matchType: String = MatchType.EPS.postValue, startTime: String) {
+    private fun getEpsList(
+        gameType: String,
+        matchType: String = MatchType.EPS.postValue,
+        startTime: String
+    ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getEpsList(
-                    OddsEpsListRequest(gameType = gameType, matchType = matchType, startTime = startTime)
+                    OddsEpsListRequest(
+                        gameType = gameType,
+                        matchType = matchType,
+                        startTime = startTime
+                    )
                 )
             }
             _epsListResult.postValue(Event(result))

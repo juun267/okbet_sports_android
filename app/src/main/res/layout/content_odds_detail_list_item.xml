@@ -11,15 +11,17 @@
 
     <TextView
         android:id="@+id/tv_game_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
+        android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/odd_detail_pin"
         tools:text="进球 : 大小" />
 
 

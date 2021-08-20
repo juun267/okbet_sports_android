@@ -18,7 +18,8 @@
         android:id="@+id/cl_item_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
+        android:background="@color/colorWhite"
+        android:paddingBottom="20dp">
 
 
         <ImageView
@@ -107,36 +108,48 @@
             android:layout_height="40dp"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/effect_select_bet_edit_text"
             android:hint="@string/bet_info_input_quota"
             android:inputType="number"
             android:maxLength="7"
-            android:textStyle="bold"
             android:paddingStart="10dp"
             android:textColor="@color/colorBlackLight"
             android:textColorHint="@color/colorSilverLight"
             android:textSize="@dimen/textSize16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
             app:layout_constraintWidth_percent="0.442" />
+
         <View
             android:id="@+id/et_clickable"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/et_bet"
+            app:layout_constraintStart_toStartOf="@+id/et_bet"
+            app:layout_constraintTop_toTopOf="@+id/et_bet"
+            app:layout_constraintWidth_percent="0.442" />
+
+        <TextView
+            android:id="@+id/tv_error_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textSize="@dimen/textSize13sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/colorRed"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name"
-            app:layout_constraintWidth_percent="0.442"/>
+            app:layout_constraintStart_toStartOf="@+id/et_bet"
+            app:layout_constraintTop_toBottomOf="@+id/et_bet"
+            tools:text="@string/bet_info_list_minimum_limit_amount"
+            tools:visibility="visible" />
 
 
         <include
             layout="@layout/content_bet_info_item_quota_detail"
-            app:parlayOdd="@{parlayOdd}"/>
+            app:parlayOdd="@{parlayOdd}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

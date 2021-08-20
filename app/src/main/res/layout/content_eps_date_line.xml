@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    tools:context=".ui.game.hall.adapter.EpsListAdapter">
 
     <LinearLayout
         android:id="@+id/ll_content"
@@ -10,30 +11,32 @@
         android:layout_height="60dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/colorSilverLight"
             android:layout_marginEnd="31dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@color/colorSilverLight" />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="6-28 星期一"
             android:layout_weight="1.5"
-            android:textSize="@dimen/textSize20sp"
             android:gravity="center"
             android:singleLine="true"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"
-            android:textColor="@color/colorBlackLight"/>
+            tools:text="6-28 星期一" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/colorSilverLight"
             android:layout_marginStart="31dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@color/colorSilverLight" />
 
     </LinearLayout>
 

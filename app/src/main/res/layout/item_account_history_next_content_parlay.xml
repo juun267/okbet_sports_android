@@ -98,6 +98,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/tv_status"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/tv_bet"
