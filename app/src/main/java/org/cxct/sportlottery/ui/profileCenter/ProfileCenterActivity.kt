@@ -28,6 +28,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity.Companion.PWD_PAGE
+import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -166,6 +167,10 @@ class ProfileCenterActivity :
     }
 
     private fun setupMoreButtons() {
+        btn_credit_bet_record.setOnClickListener {
+            startActivity(Intent(this, CreditRecordActivity::class.java))
+        }
+
         //個人資訊
         btn_profile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
@@ -456,6 +461,12 @@ class ProfileCenterActivity :
             View.GONE
         } else {
             View.VISIBLE
+        }
+
+        btn_credit_bet_record.visibility = if (isCreditAccount) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
 
         btn_account_transfer.visibility = if (isCreditAccount) {
