@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.service.order_settlement.SportBet
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -58,9 +57,6 @@ class AccountHistoryViewModel(
     val betDetailResult: LiveData<BetSettledDetailListResult>
         get() = _betDetailResult
 
-    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
-        get() = _thirdGameCategory
-
     private val _loading = MutableLiveData<Boolean>()
     private val _selectedSport = MutableLiveData<String?>()
     private val _selectedDate = MutableLiveData<String?>()
@@ -69,9 +65,6 @@ class AccountHistoryViewModel(
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _settlementNotificationMsg = MutableLiveData<Event<SportBet>>()
     private val _betDetailResult = MutableLiveData<BetSettledDetailListResult>()
-    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
-    
-    private val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
 
     val emptyFilter = { item: String? ->
         if (item.isNullOrEmpty()) null else item
@@ -101,18 +94,6 @@ class AccountHistoryViewModel(
     val startTime = TimeUtil.getDefaultTimeStamp().startTime
     val endTime = TimeUtil.getDefaultTimeStamp().endTime
 
-
-    fun navMainPage(thirdGameCategory: ThirdGameCategory) {
-        _thirdGameCategory.postValue(
-            Event(
-                if (isCreditAccount.value == true) {
-                    null
-                } else {
-                    thirdGameCategory
-                }
-            )
-        )
-    }
 
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (_loading.value != true && !isLastPage) {

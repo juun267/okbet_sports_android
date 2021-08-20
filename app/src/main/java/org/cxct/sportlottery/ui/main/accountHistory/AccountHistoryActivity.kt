@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MetricsUtil
 
 
@@ -148,11 +149,6 @@ class AccountHistoryActivity :
     }
 
     private fun initObserve() {
-
-        viewModel.oddsType.observe(this, {
-            tv_odds_type.text = getString(it.res)
-        })
-
         viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
         })
@@ -163,22 +159,7 @@ class AccountHistoryActivity :
         })
 
         viewModel.isLogin.observe(this, {
-            updateUiWithLogin(it)
             getAnnouncement()
-        })
-
-        viewModel.thirdGameCategory.observe(this, {
-            it.getContentIfNotHandled().let { thirdGameCategory ->
-                if (thirdGameCategory != null) {
-                    val intent = Intent(this, MainActivity::class.java)
-                        .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
-                    startActivity(intent)
-
-                    return@let
-                }
-
-                startActivity(Intent(this, GameActivity::class.java))
-            }
         })
     }
 
@@ -206,7 +187,7 @@ class AccountHistoryActivity :
         viewModel.getAnnouncement()
     }
 
-    private fun initMenu() {
+    override fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -222,7 +203,7 @@ class AccountHistoryActivity :
         }
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE
@@ -238,7 +219,7 @@ class AccountHistoryActivity :
         }
     }
 
-    private fun initToolBar() {
+    override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
         //點擊 logo 回到首頁
@@ -265,5 +246,21 @@ class AccountHistoryActivity :
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+        tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        startActivity(Intent(this, GameActivity::class.java))
     }
 }

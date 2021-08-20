@@ -45,6 +45,7 @@ import org.cxct.sportlottery.ui.main.MainActivity.Companion.ARGS_THIRD_GAME_CATE
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailFragmentDirections
 import org.cxct.sportlottery.ui.odds.OddsDetailLiveFragmentDirections
 import org.cxct.sportlottery.util.MetricsUtil
@@ -118,7 +119,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         mNavController.removeOnDestinationChangedListener(navDestListener)
     }
 
-    private fun initToolBar() {
+    override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
             viewModel.navMainPage(ThirdGameCategory.MAIN)
@@ -145,7 +146,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun initMenu() {
+    override fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -440,7 +441,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         })
 
         viewModel.isLogin.observe(this, {
-            updateUiWithLogin(it)
             getAnnouncement()
         })
 
@@ -493,10 +493,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             updateAvatar(it?.iconUrl)
         })
 
-        viewModel.oddsType.observe(this, {
-            tv_odds_type.text = getString(it.res)
-        })
-
         viewModel.errorPromptMessage.observe(this, {
             it.getContentIfNotHandled()
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
@@ -523,23 +519,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 )
             }
         })
-
-        viewModel.thirdGameCategory.observe(this, {
-            it.getContentIfNotHandled().let { thirdGameCategory ->
-                if (thirdGameCategory != null) {
-                    val intent = Intent(this, MainActivity::class.java)
-                        .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
-                    startActivity(intent)
-
-                    return@let
-                }
-
-                tabLayout.getTabAt(0)?.select()
-            }
-        })
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE
@@ -553,6 +535,22 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
         }
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+        tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        tabLayout.getTabAt(0)?.select()
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {

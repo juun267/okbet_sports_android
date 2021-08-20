@@ -24,6 +24,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MetricsUtil
 
 class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
@@ -42,7 +43,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         initObserver()
     }
 
-    private fun initToolBar() {
+    override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
             viewModel.navMainPage(ThirdGameCategory.MAIN)
@@ -69,7 +70,7 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
     }
 
-    private fun initMenu() {
+    override fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -174,14 +175,6 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     private fun initObserver() {
-        viewModel.isLogin.observe(this, {
-            updateUiWithLogin(it)
-        })
-
-        viewModel.oddsType.observe(this, {
-            tv_odds_type.text = getString(it.res)
-        })
-
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
                 BetInfoCarDialog().show(
@@ -190,23 +183,9 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                 )
             }
         })
-
-        viewModel.thirdGameCategory.observe(this, {
-            it.getContentIfNotHandled().let { thirdGameCategory ->
-                if (thirdGameCategory != null) {
-                    val intent = Intent(this, MainActivity::class.java)
-                        .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
-                    startActivity(intent)
-
-                    return@let
-                }
-
-                startActivity(Intent(this, GameActivity::class.java))
-            }
-        })
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE
@@ -220,5 +199,21 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
         }
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+        tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        startActivity(Intent(this, GameActivity::class.java))
     }
 }

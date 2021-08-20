@@ -50,7 +50,6 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
@@ -78,8 +77,6 @@ class GameViewModel(
     infoCenterRepository,
     myFavoriteRepository
 ) {
-    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = betInfoRepository.matchOddList
 
@@ -246,10 +243,6 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
-    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
-    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
-        get() = _thirdGameCategory
-
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -277,18 +270,6 @@ class GameViewModel(
         else -> {
             SpecialEntrance(matchType, gameType)
         }
-    }
-
-    fun navMainPage(thirdGameCategory: ThirdGameCategory) {
-        _thirdGameCategory.postValue(
-            Event(
-                if (isCreditAccount.value == true) {
-                    null
-                } else {
-                    thirdGameCategory
-                }
-            )
-        )
     }
 
     fun switchMatchType(matchType: MatchType) {
@@ -443,7 +424,10 @@ class GameViewModel(
         viewModelScope.launch {
             doNetwork(androidContext) {
                 OneBoSportApi.matchService.getMatchPreload(
-                    MatchPreloadRequest(MatchType.IN_PLAY.postValue, MenuCode.HOME_INPLAY_MOBILE.code)
+                    MatchPreloadRequest(
+                        MatchType.IN_PLAY.postValue,
+                        MenuCode.HOME_INPLAY_MOBILE.code
+                    )
                 )
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
@@ -670,7 +654,12 @@ class GameViewModel(
         _isNoHistory.postValue(sportItem == null)
     }
 
-    fun switchPlay(matchType: MatchType, leagueIdList: List<String>, matchIdList: List<String>, play: Play) {
+    fun switchPlay(
+        matchType: MatchType,
+        leagueIdList: List<String>,
+        matchIdList: List<String>,
+        play: Play
+    ) {
         updatePlaySelectedState(play)
 
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
@@ -728,7 +717,7 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(leagueId: String,  matchType: String = MatchType.OUTRIGHT.postValue) {
+    fun getOutrightOddsList(leagueId: String, matchType: String = MatchType.OUTRIGHT.postValue) {
         getSportSelected(MatchType.OUTRIGHT)?.let { item ->
             viewModelScope.launch {
 
@@ -750,7 +739,8 @@ class GameViewModel(
                     }
                 }
 
-                val matchOdd = result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
+                val matchOdd =
+                    result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
                 matchOdd?.let {
                     matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
                     matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
@@ -916,11 +906,19 @@ class GameViewModel(
         }
     }
 
-    private fun getEpsList(gameType: String, matchType: String = MatchType.EPS.postValue, startTime: String) {
+    private fun getEpsList(
+        gameType: String,
+        matchType: String = MatchType.EPS.postValue,
+        startTime: String
+    ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.oddsService.getEpsList(
-                    OddsEpsListRequest(gameType = gameType, matchType = matchType, startTime = startTime)
+                    OddsEpsListRequest(
+                        gameType = gameType,
+                        matchType = matchType,
+                        startTime = startTime
+                    )
                 )
             }
             _epsListResult.postValue(Event(result))

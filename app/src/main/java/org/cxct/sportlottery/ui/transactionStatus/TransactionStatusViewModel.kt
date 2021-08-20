@@ -12,9 +12,8 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.BetRecordType
-import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.Event
+
 
 class TransactionStatusViewModel(
     androidContext: Application,
@@ -52,23 +51,6 @@ class TransactionStatusViewModel(
         get() = _betListData
     private val _betListData = MutableLiveData<BetListData>()
 
-    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
-    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
-        get() = _thirdGameCategory
-
-    private val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
-
-    fun navMainPage(thirdGameCategory: ThirdGameCategory) {
-        _thirdGameCategory.postValue(
-            Event(
-                if (isCreditAccount.value == true) {
-                    null
-                } else {
-                    thirdGameCategory
-                }
-            )
-        )
-    }
 
     //獲取系統公告
     fun getAnnouncement() {
