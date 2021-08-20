@@ -488,6 +488,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 ll_odds_close_warn.visibility = View.GONE
                 tv_warn_odds_change.visibility = View.VISIBLE
             }
+            else -> {
+                ll_odds_close_warn.visibility = View.GONE
+                tv_warn_odds_change.visibility = View.GONE
+            }
         }
     }
 

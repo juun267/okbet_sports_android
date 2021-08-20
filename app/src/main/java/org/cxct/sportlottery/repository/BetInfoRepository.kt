@@ -92,7 +92,6 @@ class BetInfoRepository(val androidContext: Context) {
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
 
 
-
     @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
     fun addInBetInfoParlay() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
@@ -506,11 +505,14 @@ class BetInfoRepository(val androidContext: Context) {
      * 判斷是否有賠率變更
      */
     private fun checkBetInfoOddChanged(betInfoList: MutableList<BetInfoListData>) {
+        var anyOddChanged = false
         betInfoList.forEach {
-            if (it.matchOdd.spreadState != SpreadState.SAME.state || it.matchOdd.oddState != OddState.SAME.state) {
-                _showOddsChangeWarn.postValue(true)
+            if (it.matchOdd.oddsHasChanged) {
+                anyOddChanged = true
+                return@forEach
             }
         }
+        _showOddsChangeWarn.postValue(anyOddChanged)
     }
 
     /**
