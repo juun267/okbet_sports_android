@@ -574,6 +574,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
             }
+
+            if(oddsDetail.isPin){
+                setVisibility(true)
+            }
         }
 
         private fun forEPS(oddsDetail: OddsDetailListData) {
