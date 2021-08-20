@@ -310,18 +310,7 @@ class GameViewModel(
         }
     }
 
-    fun isParlayPage(isParlayPage: Boolean) {
-        betInfoRepository._isParlayPage.postValue(isParlayPage)
-        if (isParlayPage)
-            checkShoppingCart()
-    }
-
     fun switchMatchType(matchType: MatchType) {
-        betInfoRepository._isParlayPage.postValue(matchType == MatchType.PARLAY)
-        if (matchType == MatchType.PARLAY) {
-            checkShoppingCart()
-        }
-
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
@@ -331,19 +320,6 @@ class GameViewModel(
         _curChildMatchType.value = childMatchType
         curMatchType.value?.let {
             getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
-        }
-    }
-
-    private fun checkShoppingCart() {
-        val betList = betInfoList.value?.peekContent() ?: mutableListOf()
-        val parlayList = betList.cleanOutrightBetOrder().groupBetInfoByMatchId()
-
-        if (betList.size != parlayList.size) {
-            betList.minus(parlayList.toHashSet()).forEach {
-                removeBetInfoItem(it.matchOdd.oddsId)
-            }
-
-            _errorPromptMessage.postValue(Event(androidContext.getString(R.string.bet_info_system_close_incompatible_item)))
         }
     }
 
