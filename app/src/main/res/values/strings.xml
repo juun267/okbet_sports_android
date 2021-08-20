@@ -838,4 +838,10 @@
     <string name="bet_succeeded">您已成功投注</string>
     <string name="mix_bet_list">综合过关单</string>
 
+    <!--credit bet record-->
+    <string name="credit_bet_record_time">周期起讫</string>
+    <string name="credit_bet_amount_all">总信用额度</string>
+    <string name="credit_bet_amount_remain">剩余信用额度</string>
+    <string name="credit_bet_settle">结算</string>
+    <string name="credit_bet_remark">备注</string>
 </resources>
