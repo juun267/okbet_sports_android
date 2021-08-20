@@ -42,7 +42,11 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
+    val isCreditAccount: LiveData<Boolean>
+        get() = _isCreditAccount
+
     private val _isLogin = MutableLiveData<Boolean>()
+    private val _isCreditAccount = MutableLiveData<Boolean>()
 
     var platformId
         get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
@@ -201,12 +205,16 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             checkTokenResponse.body()?.let {
                 isCheckToken = true
                 _isLogin.postValue(true)
+                _isCreditAccount.postValue(it.loginData?.creditAccount == 1)
+
                 updateLoginData(it.loginData)
                 updateUserInfo(it.loginData)
             }
         } else {
             isCheckToken = false
             _isLogin.postValue(false)
+            _isCreditAccount.postValue(false)
+
             clear()
         }
 
@@ -215,14 +223,16 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
     suspend fun logout(): Response<LogoutResult> {
         _isLogin.value = false
+        _isCreditAccount.value = false
+
         return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
             clear()
         }
     }
 
     private fun updateLoginData(loginData: LoginData?) {
-
         _isLogin.postValue(loginData != null)
+        _isCreditAccount.postValue(loginData?.creditAccount == 1)
 
         with(sharedPref.edit()) {
             /*putBoolean(KEY_IS_LOGIN, loginData != null)*/

@@ -7,11 +7,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_account_history.*
-import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.android.synthetic.main.activity_game.view_notification
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.drawer_layout
-import kotlinx.android.synthetic.main.activity_main.nav_right
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.view.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -23,12 +18,17 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.util.MetricsUtil
+
 
 class AccountHistoryActivity :
     BaseBottomNavActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
@@ -166,6 +166,20 @@ class AccountHistoryActivity :
             updateUiWithLogin(it)
             getAnnouncement()
         })
+
+        viewModel.thirdGameCategory.observe(this, {
+            it.getContentIfNotHandled().let { thirdGameCategory ->
+                if (thirdGameCategory != null) {
+                    val intent = Intent(this, MainActivity::class.java)
+                        .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+                    startActivity(intent)
+
+                    return@let
+                }
+
+                startActivity(Intent(this, GameActivity::class.java))
+            }
+        })
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
@@ -229,7 +243,7 @@ class AccountHistoryActivity :
 
         //點擊 logo 回到首頁
         iv_logo.setOnClickListener {
-            navController.popBackStack(R.id.mainFragment, false)
+            viewModel.navMainPage(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
@@ -246,6 +260,10 @@ class AccountHistoryActivity :
 
         btn_register.setOnClickListener {
             startActivity(Intent(this@AccountHistoryActivity, RegisterActivity::class.java))
+        }
+
+        tv_odds_type.setOnClickListener {
+            ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
     }
 }

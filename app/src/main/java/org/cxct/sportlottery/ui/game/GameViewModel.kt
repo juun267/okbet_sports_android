@@ -47,11 +47,10 @@ import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
-import org.cxct.sportlottery.ui.game.data.SpecialEntranceSource
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
@@ -79,6 +78,7 @@ class GameViewModel(
     infoCenterRepository,
     myFavoriteRepository
 ) {
+    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
 
     val matchOddList: LiveData<MutableList<org.cxct.sportlottery.network.bet.info.MatchOdd>>
         get() = betInfoRepository.matchOddList
@@ -246,6 +246,10 @@ class GameViewModel(
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
 
+    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
+    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
+        get() = _thirdGameCategory
+
     //Loading
     val isLoading: LiveData<Boolean>
         get() = _isLoading
@@ -254,22 +258,8 @@ class GameViewModel(
     private var sportQueryData: SportQueryData? = null
 
 
-    fun navSpecialEntrance(
-        source: SpecialEntranceSource,
-        matchType: MatchType,
-        gameType: GameType?
-    ) = when (source) {
-        SpecialEntranceSource.HOME -> {
-            getSpecEntranceFromHome(matchType, gameType)
-        }
-        SpecialEntranceSource.LEFT_MENU -> {
-            getSpecEntranceFromLeftMenu(matchType, gameType)
-        }
-        SpecialEntranceSource.SHOPPING_CART -> {
-            SpecialEntrance(matchType, gameType)
-        }
-    }?.let {
-        _specialEntrance.postValue(it)
+    fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
+        _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
     }
 
     private fun getSpecEntranceFromHome(
@@ -289,25 +279,16 @@ class GameViewModel(
         }
     }
 
-    private fun getSpecEntranceFromLeftMenu(
-        matchType: MatchType,
-        gameType: GameType?
-    ): SpecialEntrance? = when {
-        getSportCount(matchType, gameType) != 0 -> {
-            SpecialEntrance(matchType, gameType)
-        }
-        getSportCount(MatchType.TODAY, gameType) != 0 -> {
-            SpecialEntrance(MatchType.TODAY, gameType)
-        }
-        getSportCount(MatchType.EARLY, gameType) != 0 -> {
-            SpecialEntrance(MatchType.EARLY, gameType)
-        }
-        gameType != null -> {
-            SpecialEntrance(MatchType.PARLAY, gameType)
-        }
-        else -> {
-            null
-        }
+    fun navMainPage(thirdGameCategory: ThirdGameCategory) {
+        _thirdGameCategory.postValue(
+            Event(
+                if (isCreditAccount.value == true) {
+                    null
+                } else {
+                    thirdGameCategory
+                }
+            )
+        )
     }
 
     fun switchMatchType(matchType: MatchType) {

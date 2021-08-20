@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.android.synthetic.main.activity_transaction_status.*
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -59,7 +60,7 @@ class TransactionStatusActivity :
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            goToMainActivity()
+            viewModel.navMainPage(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
@@ -81,12 +82,6 @@ class TransactionStatusActivity :
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
-    }
-
-    private fun goToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-            .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, ThirdGameCategory.MAIN)
-        startActivity(intent)
     }
 
     private fun initMenu() {
@@ -217,6 +212,20 @@ class TransactionStatusActivity :
 
         viewModel.oddsType.observe(this, {
             tv_odds_type.text = getString(it.res)
+        })
+
+        viewModel.thirdGameCategory.observe(this, {
+            it.getContentIfNotHandled().let { thirdGameCategory ->
+                if (thirdGameCategory != null) {
+                    val intent = Intent(this, MainActivity::class.java)
+                        .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+                    startActivity(intent)
+
+                    return@let
+                }
+
+                startActivity(Intent(this, GameActivity::class.java))
+            }
         })
     }
 
