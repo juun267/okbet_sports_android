@@ -65,6 +65,20 @@
             app:layout_constraintTop_toBottomOf="@+id/iv_title_bar" />
 
         <TextView
+            android:id="@+id/tv_home_score"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_home_name"
+            app:layout_constraintEnd_toStartOf="@+id/tv_home_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_home_name" />
+
+        <TextView
             android:id="@+id/tv_home_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -77,11 +91,24 @@
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_away_name"
-            app:layout_constraintEnd_toStartOf="@+id/tv_time_top"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ll_time"
+            app:layout_constraintStart_toEndOf="@+id/tv_home_score"
             app:layout_constraintTop_toTopOf="@id/img_game_detail"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="義大利" />
+
+        <TextView
+            android:id="@+id/tv_away_score"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
+            app:layout_constraintEnd_toStartOf="@+id/tv_away_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_away_name" />
 
         <TextView
             android:id="@+id/tv_away_name"
@@ -96,35 +123,39 @@
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/img_game_detail"
-            app:layout_constraintEnd_toStartOf="@+id/tv_time_top"
+            app:layout_constraintEnd_toStartOf="@+id/ll_time"
             app:layout_constraintStart_toStartOf="@id/tv_home_name"
             app:layout_constraintTop_toBottomOf="@id/tv_home_name"
             tools:text="瑞士" />
 
-        <TextView
-            android:id="@+id/tv_time_top"
+        <LinearLayout
+            android:id="@+id/ll_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_vertical_margin"
-            android:textColor="@color/colorSilver"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_time_bottom"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/img_game_detail"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="17 / 16" />
-
-        <TextView
-            android:id="@+id/tv_time_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorSilver"
-            android:textSize="@dimen/textSize12sp"
+            app:layout_constraintTop_toTopOf="@+id/img_game_detail"
             app:layout_constraintBottom_toBottomOf="@+id/img_game_detail"
-            app:layout_constraintEnd_toEndOf="@id/tv_time_top"
-            app:layout_constraintStart_toStartOf="@id/tv_time_top"
-            app:layout_constraintTop_toBottomOf="@id/tv_time_top"
-            tools:text="03:00" />
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_time_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSilver"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="17 / 16" />
+
+            <TextView
+                android:id="@+id/tv_time_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSilver"
+                android:textSize="@dimen/textSize12sp"
+                tools:text="03:00" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

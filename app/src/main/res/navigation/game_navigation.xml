@@ -25,6 +25,11 @@
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
             <argument
                 android:name="gameType"
                 app:argType="org.cxct.sportlottery.network.common.GameType" />
@@ -153,6 +158,11 @@
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
             <argument
                 android:name="gameType"
                 app:argType="org.cxct.sportlottery.network.common.GameType" />
@@ -223,6 +233,11 @@
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
             <argument
                 android:name="gameType"
                 app:argType="org.cxct.sportlottery.network.common.GameType" />
@@ -317,6 +332,11 @@
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
             <argument
                 android:name="gameType"
                 app:argType="org.cxct.sportlottery.network.common.GameType" />
@@ -340,6 +360,11 @@
         android:id="@+id/oddsDetailLiveFragment"
         android:name="org.cxct.sportlottery.ui.odds.OddsDetailLiveFragment"
         tools:layout="@layout/fragment_odds_detail_live">
+
+        <argument
+            android:name="matchType"
+            app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
         <argument
             android:name="gameType"
             app:argType="org.cxct.sportlottery.network.common.GameType" />
@@ -353,6 +378,11 @@
             app:destination="@id/oddsDetailLiveFragment"
             app:enterAnim="@anim/enter_from_right"
             app:popExitAnim="@anim/exit_to_right">
+
+            <argument
+                android:name="matchType"
+                app:argType="org.cxct.sportlottery.network.common.MatchType" />
+
             <argument
                 android:name="gameType"
                 app:argType="org.cxct.sportlottery.network.common.GameType" />

@@ -44,7 +44,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             field = value
             oddsDetailDataList.forEach { data ->
                 data.oddArrayList.forEach { odd ->
-                    odd?.isSelected = betInfoList.any{it.matchOdd.oddsId == odd?.id}
+                    odd?.isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
 
                 }
             }
@@ -65,7 +65,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     var awayName: String? = null
 
 
-    var sportCode: String? = null
+    var sportCode: GameType? = null
 
 
     private lateinit var code: String
@@ -179,7 +179,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             ) -> return PlayCate.SINGLE_FLG.ordinal
 
 
-            type == PlayCate.SINGLE.value -> return if (sportCode == GameType.FT.key) {
+            type == PlayCate.SINGLE.value -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE.ordinal
             } else {
                 PlayCate.SINGLE_2.ordinal
@@ -188,7 +188,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_1ST.value
-            ) -> return if (sportCode == GameType.FT.key) {
+            ) -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_1ST.ordinal
             } else {
                 PlayCate.SINGLE_1ST_2.ordinal
@@ -197,13 +197,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_2ST.value
-            ) -> return if (sportCode == GameType.FT.key) {
+            ) -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_2ST.ordinal
             } else {
                 PlayCate.SINGLE_2ST_2.ordinal
             }
 
-            type == PlayCate.SINGLE_OT.value -> return if (sportCode == GameType.FT.key) {
+            type == PlayCate.SINGLE_OT.value -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_OT.ordinal
             } else {
                 PlayCate.SINGLE_OT_2.ordinal
@@ -212,13 +212,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_SEG.value
-            ) -> return if (sportCode == GameType.FT.key) {
+            ) -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_SEG.ordinal
             } else {
                 PlayCate.SINGLE_SEG_2.ordinal
             }
 
-            type == PlayCate.NGOAL_1.value -> return PlayCate.NGOAL_1.ordinal
+            TextUtil.compareWithGameKey(type, PlayCate.NGOAL.value) -> return PlayCate.NGOAL.ordinal
 
             type == PlayCate.TWTN.value -> return PlayCate.TWTN.ordinal
 
@@ -263,7 +263,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             PlayCate.HTFT.ordinal,
             PlayCate.W3.ordinal,
             PlayCate.HDP_ONE_LIST.ordinal,
-            PlayCate.NGOAL_1.ordinal,
             PlayCate.HWMG_SINGLE.ordinal -> LayoutType.ONE_LIST.layout
 
             PlayCate.TWTN.ordinal,
@@ -282,6 +281,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             PlayCate.OU_I_OT.ordinal,
             PlayCate.OU_SEG.ordinal -> LayoutType.TWO_SPAN_COUNT.layout
 
+            PlayCate.NGOAL.ordinal,
             PlayCate.SINGLE.ordinal,
             PlayCate.SINGLE_1ST.ordinal,
             PlayCate.SINGLE_2ST.ordinal,
@@ -510,6 +510,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 PlayCate.CS.ordinal -> forCS(oddsDetail)
 
+                PlayCate.NGOAL.ordinal,
                 PlayCate.SINGLE_OT.ordinal,
                 PlayCate.SINGLE_SEG.ordinal,
                 PlayCate.SINGLE_1ST.ordinal,
@@ -529,7 +530,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 PlayCate.WBH.ordinal,
                 PlayCate.WEH.ordinal,
                 PlayCate.SBH.ordinal,
-                PlayCate.NGOAL_1.ordinal,
                 PlayCate.HDP_ONE_LIST.ordinal,
                 PlayCate.W3.ordinal,
                 PlayCate.DC.ordinal,
