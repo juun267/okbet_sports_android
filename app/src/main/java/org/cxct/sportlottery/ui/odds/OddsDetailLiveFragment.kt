@@ -404,95 +404,111 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
 
+    private fun setupFrontScore(event: MatchStatusChangeEvent) {
+        tv_home_score.apply {
+            visibility = View.VISIBLE
+            text = event.matchStatusCO?.homeTotalScore.toString()
+        }
+
+        tv_away_score.apply {
+            visibility = View.VISIBLE
+            text = event.matchStatusCO?.awayTotalScore.toString()
+        }
+    }
+
+
+    private fun setupBackScore(event: MatchStatusChangeEvent) {
+        tv_home_score_total.apply {
+            visibility = View.VISIBLE
+            text = event.matchStatusCO?.homeTotalScore.toString()
+        }
+
+        tv_away_score_total.apply {
+            visibility = View.VISIBLE
+            text = event.matchStatusCO?.awayTotalScore.toString()
+        }
+
+        tv_home_score_live.apply {
+            visibility = View.VISIBLE
+            text = event.matchStatusList?.lastOrNull()?.homeScore.toString()
+        }
+
+        tv_away_score_live.apply {
+            visibility = View.VISIBLE
+            text = event.matchStatusList?.lastOrNull()?.awayScore.toString()
+        }
+
+        ll_time.visibility = View.GONE
+    }
+
+
     private fun setupStatusList(event: MatchStatusChangeEvent) {
         if (args.matchType != MatchType.IN_PLAY) return
 
         when (args.gameType) {
-            GameType.FT,
+            GameType.FT -> {
+                setupFrontScore(event)
+            }
             GameType.BK -> {
-                tv_home_score.apply {
-                    visibility = View.VISIBLE
-                    text = event.matchStatusCO?.homeTotalScore.toString()
-                }
-
-                tv_away_score.apply {
-                    visibility = View.VISIBLE
-                    text = event.matchStatusCO?.awayTotalScore.toString()
-                }
+                setupFrontScore(event)
+                setupStatusBK(event)
             }
             else -> {
-                tv_home_score_total.apply {
-                    visibility = View.VISIBLE
-                    text = event.matchStatusCO?.homeTotalScore.toString()
-                }
+                setupBackScore(event)
+                setupStatusTN_VB(event)
+            }
+        }
+    }
 
-                tv_away_score_total.apply {
-                    visibility = View.VISIBLE
-                    text = event.matchStatusCO?.awayTotalScore.toString()
-                }
 
-                tv_home_score_live.apply {
-                    visibility = View.VISIBLE
-                    text = event.matchStatusList?.lastOrNull()?.homeScore.toString()
-                }
+    private fun setupStatusBK(event: MatchStatusChangeEvent) {
+        if (event.matchStatusList?.isEmpty() == true) return
 
-                tv_away_score_live.apply {
-                    visibility = View.VISIBLE
-                    text = event.matchStatusList?.lastOrNull()?.awayScore.toString()
-                }
+        val statusBuilder = SpannableStringBuilder()
 
-                ll_time.visibility = View.GONE
+        tv_status_left.visibility = View.VISIBLE
+
+        event.matchStatusList?.forEachIndexed { index, it ->
+            val spanStatusName = SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
+            val spanScore = SpannableString("${it.homeScore}-${it.awayScore}  ")
+
+            if (index == event.matchStatusList.lastIndex) {
+                spanStatusName.setSpan(StyleSpan(Typeface.BOLD), 0, spanStatusName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spanScore.setSpan(StyleSpan(Typeface.BOLD), 0, spanScore.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+
+            statusBuilder.append(spanStatusName).append(spanScore)
+        }
+
+        tv_status_left.text = statusBuilder
+    }
+
+
+    private fun setupStatusTN_VB(event: MatchStatusChangeEvent) {
+        if (event.matchStatusList?.isEmpty() == true) return
+
+        val statusBuilder = SpannableStringBuilder()
+
+        tv_status_left.visibility = View.VISIBLE
+        tv_status_right.visibility = View.VISIBLE
+
+        event.matchStatusList?.forEachIndexed { index, it ->
+            if (index != event.matchStatusList.lastIndex) {
+                val spanScore = SpannableString("${it.homeScore}-${it.awayScore}")
+                statusBuilder.append(spanScore)
+            }
+
+            if (index < event.matchStatusList.lastIndex - 1) {
+                statusBuilder.append("  ")
             }
         }
 
-        if (event.matchStatusList?.isNotEmpty() == true) {
-            val statusBuilder = SpannableStringBuilder()
+        tv_status_right.text = statusBuilder
 
-            when (args.gameType) {
-
-                GameType.BK -> {
-                    tv_status_left.visibility = View.VISIBLE
-
-                    event.matchStatusList.forEachIndexed { index, it ->
-                        val spanStatusName = SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
-                        val spanScore = SpannableString("${it.homeScore}-${it.awayScore}  ")
-
-                        if (index == event.matchStatusList.lastIndex) {
-                            spanStatusName.setSpan(StyleSpan(Typeface.BOLD), 0, spanStatusName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                            spanScore.setSpan(StyleSpan(Typeface.BOLD), 0, spanScore.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                        }
-
-                        statusBuilder.append(spanStatusName).append(spanScore)
-                    }
-
-                    tv_status_left.text = statusBuilder
-                }
-
-                GameType.TN,
-                GameType.VB -> {
-                    tv_status_left.visibility = View.VISIBLE
-                    tv_status_right.visibility = View.VISIBLE
-
-                    event.matchStatusList.forEachIndexed { index, it ->
-                        if (index != event.matchStatusList.lastIndex) {
-                            val spanScore = SpannableString("${it.homeScore}-${it.awayScore}")
-                            statusBuilder.append(spanScore)
-                        }
-
-                        if (index < event.matchStatusList.lastIndex - 1) {
-                            statusBuilder.append("  ")
-                        }
-                    }
-
-                    tv_status_right.text = statusBuilder
-
-                    tv_status_left.text = when (getSelectLanguage(context)) {
-                        LanguageManager.Language.ZH -> event.matchStatusCO?.statusNameI18n?.zh
-                        LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
-                        else -> event.matchStatusCO?.statusName
-                    }
-                }
-            }
+        tv_status_left.text = when (getSelectLanguage(context)) {
+            LanguageManager.Language.ZH -> event.matchStatusCO?.statusNameI18n?.zh
+            LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
+            else -> event.matchStatusCO?.statusName
         }
     }
 
