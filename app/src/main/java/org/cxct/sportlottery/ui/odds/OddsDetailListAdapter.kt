@@ -229,6 +229,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == PlayCate.ADVANCE.value -> return PlayCate.ADVANCE.ordinal
 
+            type == PlayCate.CORNER_1ST_OU.value -> return PlayCate.CORNER_1ST_OU.ordinal
+            type == PlayCate.CORNER_2ST_OU.value -> return PlayCate.CORNER_2ST_OU.ordinal
+
             else -> {
                 return PlayCate.UNCHECK.ordinal
             }
@@ -294,6 +297,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             PlayCate.SINGLE_OT.ordinal,
             PlayCate.SINGLE_SEG.ordinal -> LayoutType.SINGLE.layout
 
+            PlayCate.CORNER_1ST_OU.ordinal,
+            PlayCate.CORNER_2ST_OU.ordinal,
             PlayCate.ADVANCE.ordinal,
             PlayCate.HWMG.ordinal,
             PlayCate.SINGLE_2.ordinal,
@@ -520,6 +525,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 PlayCate.SINGLE_2ST.ordinal,
                 PlayCate.SINGLE.ordinal -> forSingle(oddsDetail, 3)
 
+                PlayCate.CORNER_1ST_OU.ordinal,
+                PlayCate.CORNER_2ST_OU.ordinal,
                 PlayCate.ADVANCE.ordinal,
                 PlayCate.HWMG.ordinal,
                 PlayCate.SINGLE_OT_2.ordinal,
