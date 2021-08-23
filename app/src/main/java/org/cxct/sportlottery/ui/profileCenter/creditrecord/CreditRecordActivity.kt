@@ -2,10 +2,13 @@ package org.cxct.sportlottery.ui.profileCenter.creditrecord
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_credit_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.SpaceItemDecoration
+
 
 class CreditRecordActivity :
     BaseSocketActivity<CreditRecordViewModel>(CreditRecordViewModel::class) {
@@ -13,6 +16,25 @@ class CreditRecordActivity :
     private val creditRecordAdapter by lazy {
         CreditRecordAdapter()
     }
+
+    private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener =
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                recyclerView.layoutManager?.let {
+                    val visibleItemCount: Int = it.childCount
+                    val totalItemCount: Int = it.itemCount
+                    val firstVisibleItemPosition: Int =
+                        (it as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    viewModel.getCreditRecordNext(
+                        visibleItemCount,
+                        firstVisibleItemPosition,
+                        totalItemCount
+                    )
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +56,8 @@ class CreditRecordActivity :
             )
 
             adapter = creditRecordAdapter
+
+            addOnScrollListener(recyclerViewOnScrollListener)
         }
     }
 

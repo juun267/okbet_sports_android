@@ -10,6 +10,7 @@ import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryRequest
 import org.cxct.sportlottery.network.user.credit.Row
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
+import org.cxct.sportlottery.ui.common.Paging
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -29,7 +30,8 @@ class CreditRecordViewModel(
     betInfoRepository,
     infoCenterRepository,
     favoriteRepository
-) {
+), Paging {
+
     val loading: LiveData<Boolean>
         get() = _loading
 
@@ -43,22 +45,46 @@ class CreditRecordViewModel(
     private val _userCreditCircleHistory = MutableLiveData<List<Row>>()
     private val _remainDay = MutableLiveData<String>()
 
+    override var pageSize: Int = DEFAULT_PAGE_SIZE
+    override var pageSizeLoad: Int = 0
+    override var pageSizeTotal: Int = 0
+
+
+    fun getCreditRecordNext(
+        visibleItemCount: Int,
+        firstVisibleItemPosition: Int,
+        totalItemCount: Int
+    ) {
+        if (_loading.value != true && !isLastPage()) {
+            if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= pageSize) {
+                getCreditRecord(pageIndex = getPageIndex() + 1)
+            }
+        }
+    }
 
     fun getCreditRecord(pageIndex: Int = 1) {
         _loading.postValue(true)
 
+        if (pageIndex == 1) {
+            initPage()
+        }
+
         viewModelScope.launch {
             val response = OneBoSportApi.userService.getUserCreditCircleHistory(
-                CreditCircleHistoryRequest(pageIndex, DEFAULT_PAGE_SIZE)
+                CreditCircleHistoryRequest(pageIndex, pageSize)
             )
 
             response.body()?.rows?.let {
+                pageSizeLoad += it.size
+
                 it.postRemainDay()
                 it.mapRecordPeriod()
                 it.mapAllBalance()
 
                 _userCreditCircleHistory.postValue(it)
             }
+
+            pageSizeTotal = response.body()?.total ?: 0
 
             _loading.postValue(false)
         }
