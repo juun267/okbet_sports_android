@@ -88,18 +88,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                         setTitle(context.getString(R.string.bottom_sheet_statistics))
                         loadBottomSheetUrl(matchOdd)
                     }
-
-                    2 -> {
-                        setTitle(context.getString(R.string.bottom_sheet_time_line))
-                    }
-
-                    3 -> {
-                        setTitle(context.getString(R.string.bottom_sheet_vs))
-                    }
-
-                    4 -> {
-                        setTitle(context.getString(R.string.bottom_sheet_rank))
-                    }
                 }
 
 
