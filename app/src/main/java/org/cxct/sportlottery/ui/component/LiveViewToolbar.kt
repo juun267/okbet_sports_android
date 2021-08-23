@@ -8,8 +8,11 @@ import android.net.http.SslError
 import android.os.Message
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.*
 import android.widget.LinearLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
@@ -19,13 +22,17 @@ import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.LanguageManager
 
+@SuppressLint("SetJavaScriptEnabled")
 class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
 
     private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
     private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_webview) }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
-    private val calendarBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
+    private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
+
+    lateinit var matchOdd: MatchOdd
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
@@ -70,9 +77,16 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
+                if (tab?.position != 0) {
+                    if (!webBottomSheet.isShowing) {
+                        webBottomSheet.show()
+                    } else webBottomSheet.dismiss()
+                }
+
                 when (tab?.position) {
                     1 -> {
                         setTitle(context.getString(R.string.bottom_sheet_statistics))
+                        loadBottomSheetUrl(matchOdd)
                     }
 
                     2 -> {
@@ -88,10 +102,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                     }
                 }
 
-                if (tab?.position != 0) {
-                    if (!calendarBottomSheet.isShowing) calendarBottomSheet.show()
-                    else calendarBottomSheet.dismiss()
-                }
 
             }
 
@@ -108,16 +118,22 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
 
     private fun setupBottomSheet() {
-        calendarBottomSheet.setContentView(bottomSheetView)
-        calendarBottomSheet.iv_close.setOnClickListener {
-            calendarBottomSheet.dismiss()
+        webBottomSheet.setContentView(bottomSheetView)
+        webBottomSheet.iv_close.setOnClickListener {
+            webBottomSheet.dismiss()
         }
-        calendarBottomSheet.setOnDismissListener {
+        webBottomSheet.setOnDismissListener {
             tab_layout.getTabAt(0)?.select()
+        }
+        val settings: WebSettings = bottomSheetView.bottom_sheet_web_view.settings
+        settings.javaScriptEnabled = true
+        bottomSheetView.bottom_sheet_web_view.webViewClient = WebViewClient()
+
+        bottomSheetView.post {
+            setupBottomSheetBehaviour()
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView(webView: WebView) {
         //是否需要載入滾球動畫
         if (sConfigData?.sportAnimation.isNullOrBlank()) return
@@ -216,12 +232,20 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun loadBottomSheetUrl(url: String) {
-        bottomSheetView.bottom_sheet_web_view.loadUrl(url)
+    fun loadBottomSheetUrl(matchOdd: MatchOdd) {
+        bottomSheetView.bottom_sheet_web_view.loadUrl(
+            sConfigData?.analysisUrl?.replace("{lang}", LanguageManager.getSelectLanguage(context).key)?.replace("{eventId}", matchOdd.matchInfo.id)
+        )
     }
 
     fun setTitle(title: String) {
         bottomSheetView.sheet_tv_title.text = title
+    }
+
+    private fun setupBottomSheetBehaviour() {
+        val root: View? = webBottomSheet.delegate.findViewById(R.id.design_bottom_sheet)
+        root?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
+        BottomSheetBehavior.from(root as View).isDraggable = false
     }
 
 }
