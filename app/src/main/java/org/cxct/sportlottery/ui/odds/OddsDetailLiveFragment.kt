@@ -451,17 +451,17 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
             GameType.BK -> {
                 setupFrontScore(event)
-                setupStatusBK(event)
+                setupStatusBk(event)
             }
             else -> {
                 setupBackScore(event)
-                setupStatusTN_VB(event)
+                setupStatusTnVB(event)
             }
         }
     }
 
 
-    private fun setupStatusBK(event: MatchStatusChangeEvent) {
+    private fun setupStatusBk(event: MatchStatusChangeEvent) {
         if (event.matchStatusList?.isEmpty() == true) return
 
         val statusBuilder = SpannableStringBuilder()
@@ -484,7 +484,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
 
-    private fun setupStatusTN_VB(event: MatchStatusChangeEvent) {
+    private fun setupStatusTnVB(event: MatchStatusChangeEvent) {
         if (event.matchStatusList?.isEmpty() == true) return
 
         val statusBuilder = SpannableStringBuilder()
