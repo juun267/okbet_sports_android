@@ -8,7 +8,6 @@ import android.net.http.SslError
 import android.os.Message
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.webkit.*
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -55,6 +54,15 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 expand_layout.expand()
             }
         }
+
+        expand_layout.setOnExpansionUpdateListener { _, state ->
+            tab_layout.getTabAt(0)?.setIcon(
+                when (state) {
+                    0 -> R.drawable.ic_icon_game_schedule
+                    else -> R.drawable.ic_icon_game_schedule_ec
+                }
+            )
+        }
     }
 
 
@@ -63,14 +71,28 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             override fun onTabSelected(tab: TabLayout.Tab?) {
 
                 when (tab?.position) {
-                    0 -> {
-
+                    1 -> {
+                        setTitle(context.getString(R.string.bottom_sheet_statistics))
                     }
-                    else -> {
-                        if (!calendarBottomSheet.isShowing) calendarBottomSheet.show()
-                        else calendarBottomSheet.dismiss()
+
+                    2 -> {
+                        setTitle(context.getString(R.string.bottom_sheet_time_line))
+                    }
+
+                    3 -> {
+                        setTitle(context.getString(R.string.bottom_sheet_vs))
+                    }
+
+                    4 -> {
+                        setTitle(context.getString(R.string.bottom_sheet_rank))
                     }
                 }
+
+                if (tab?.position != 0) {
+                    if (!calendarBottomSheet.isShowing) calendarBottomSheet.show()
+                    else calendarBottomSheet.dismiss()
+                }
+
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -87,7 +109,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private fun setupBottomSheet() {
         calendarBottomSheet.setContentView(bottomSheetView)
-        calendarBottomSheet.sheet_tv_close.setOnClickListener {
+        calendarBottomSheet.iv_close.setOnClickListener {
             calendarBottomSheet.dismiss()
         }
         calendarBottomSheet.setOnDismissListener {
@@ -187,15 +209,19 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun setWebViewUrl(matchOdd: MatchOdd) {
         if (matchOdd.matchInfo.liveVideo == 1) {
-            visibility = View.VISIBLE
+            expand_layout.expand(false)
             web_view.loadUrl(sConfigData?.liveUrl?.replace("{eventId}", matchOdd.matchInfo.id))
         } else {
-            visibility = View.GONE
+            expand_layout.collapse(false)
         }
     }
 
     fun loadBottomSheetUrl(url: String) {
         bottomSheetView.bottom_sheet_web_view.loadUrl(url)
+    }
+
+    fun setTitle(title: String) {
+        bottomSheetView.sheet_tv_title.text = title
     }
 
 }
