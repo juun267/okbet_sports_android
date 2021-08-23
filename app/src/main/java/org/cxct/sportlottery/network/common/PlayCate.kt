@@ -75,5 +75,6 @@ enum class PlayCate(val value: String) {
 
     CS_SEG("CS-SEG"),
     HWMG("HWMG"),
-    CORNER_SINGLE("CORNER-1X2")
+    CORNER_SINGLE("CORNER-1X2"),
+    ADVANCE("ADVANCE")//會晉級
 }
