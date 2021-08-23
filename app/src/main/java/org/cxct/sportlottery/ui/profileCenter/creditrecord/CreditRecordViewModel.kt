@@ -30,16 +30,23 @@ class CreditRecordViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
+    val loading: LiveData<Boolean>
+        get() = _loading
+
     val remainDay: LiveData<String>
         get() = _remainDay
 
     val userCreditCircleHistory: LiveData<List<Row>>
         get() = _userCreditCircleHistory
 
+    private val _loading = MutableLiveData<Boolean>()
     private val _userCreditCircleHistory = MutableLiveData<List<Row>>()
     private val _remainDay = MutableLiveData<String>()
 
+
     fun getCreditRecord(pageIndex: Int = 1) {
+        _loading.postValue(true)
+
         viewModelScope.launch {
             val response = OneBoSportApi.userService.getUserCreditCircleHistory(
                 CreditCircleHistoryRequest(pageIndex, DEFAULT_PAGE_SIZE)
@@ -52,6 +59,8 @@ class CreditRecordViewModel(
 
                 _userCreditCircleHistory.postValue(it)
             }
+
+            _loading.postValue(false)
         }
     }
 

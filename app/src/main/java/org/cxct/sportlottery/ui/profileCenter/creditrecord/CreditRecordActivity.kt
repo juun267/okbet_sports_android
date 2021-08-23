@@ -16,6 +16,7 @@ class CreditRecordActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_credit_record)
 
         setupCreditRecordList()
@@ -37,6 +38,14 @@ class CreditRecordActivity :
     }
 
     private fun initObserver() {
+        viewModel.loading.observe(this, {
+            if (it) {
+                loading()
+            } else {
+                hideLoading()
+            }
+        })
+
         viewModel.userInfo.observe(this, {
             credit_record_remain_border.visibility = when (it?.creditStatus) {
                 1 -> View.VISIBLE
