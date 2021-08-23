@@ -72,6 +72,15 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             if (it)
                 getMoney()
         })
+
+        viewModel.isCreditAccount.observe(viewLifecycleOwner, {
+            menu_other_bet_record.visibility = if (it) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+        })
+
         viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
             tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
         })
