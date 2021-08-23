@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.creditrecord
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_credit_record.view.*
 import org.cxct.sportlottery.R
@@ -34,7 +35,32 @@ class CreditRecordAdapter : RecyclerView.Adapter<CreditRecordAdapter.ItemViewHol
                 credit_record_time.text = item.period
                 credit_record_amount_all.text = item.formatCreditBalance
                 credit_record_amount_remain.text = item.formatBalance
-                credit_record_amount_settle.text = item.formatReward
+                credit_record_amount_settle.apply {
+                    text = when (item.status) {
+                        SettleStatus.UN_SETTLE.status, SettleStatus.SETTLE.status -> {
+                            item.formatReward
+                        }
+                        else -> {
+                            context.getString(R.string.credit_record_status_unsettle)
+                        }
+                    }
+
+                    setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context, when (item.status) {
+                                SettleStatus.UN_SETTLE.status, SettleStatus.SETTLE.status -> {
+                                    when (item.reward ?: 0.0 >= 0.0) {
+                                        true -> R.color.colorGreen
+                                        false -> R.color.colorRed
+                                    }
+                                }
+                                else -> {
+                                    R.color.colorBlueLight
+                                }
+                            }
+                        )
+                    )
+                }
                 credit_record_remark.text = item.remark ?: ""
             }
         }

@@ -847,4 +847,5 @@
     <string name="credit_record_remain">离结算倒数</string>
     <string name="credit_record_quota">結算總額： </string>
     <string name="credit_record_day">%s 日</string>
+    <string name="credit_record_status_unsettle">尚未到結算日期</string>
 </resources>
