@@ -74,5 +74,6 @@ enum class PlayCate(val value: String) {
     EPS("EPS"), //更优赔率
 
     CS_SEG("CS-SEG"),
-    HWMG("HWMG")
+    HWMG("HWMG"),
+    CORNER_SINGLE("CORNER-1X2")
 }
