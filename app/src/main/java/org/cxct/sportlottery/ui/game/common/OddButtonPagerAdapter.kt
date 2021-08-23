@@ -71,19 +71,24 @@ class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
     }
 
     override fun onBindViewHolder(holder: OddButtonPagerViewHolder, position: Int) {
-        holder.bind(
-            matchInfo,
-            listOf(
-                Pair(
-                    data[position].getOrNull(0)?.first,
-                    data[position].getOrNull(0)?.second?.sortedBy { it?.id?.toDouble() }),
-                Pair(
-                    data[position].getOrNull(1)?.first,
-                    data[position].getOrNull(1)?.second?.sortedBy { it?.id?.toDouble() })
-            ),
-            oddsType,
-            listener
-        )
+        try {
+            holder.bind(
+                matchInfo,
+                listOf(
+                    Pair(
+                        data[position].getOrNull(0)?.first,
+                        data[position].getOrNull(0)?.second?.sortedBy { it?.id?.toDouble() }),
+                    Pair(
+                        data[position].getOrNull(1)?.first,
+                        data[position].getOrNull(1)?.second?.sortedBy { it?.id?.toDouble() })
+                ),
+                oddsType,
+                listener
+            )
+        } catch (e: Exception) {
+
+        }
+
     }
 
     override fun getItemCount(): Int {
