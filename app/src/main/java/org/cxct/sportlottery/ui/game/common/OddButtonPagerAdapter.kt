@@ -5,9 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -16,6 +22,7 @@ import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LocalJsonUtil
 
 
 class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
@@ -120,6 +127,19 @@ class OddButtonPagerViewHolder private constructor(
         )
     }
 
+    private val list by lazy {
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+        val type = Types.newParameterizedType(List::class.java, List::class.java)
+        val adapter: JsonAdapter<List<List<String>>> = moshi.adapter(type)
+        val json = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/gameCodeMapping.json")
+        adapter.fromJson(json) ?: listOf()
+    }
+
+    private val playTypeIndex = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
+        LanguageManager.Language.ZH -> 3
+        else -> 4
+    }
+
     private fun setupOddsButton(
         oddBtnType: TextView,
         oddBtnHome: OddsButton,
@@ -131,10 +151,9 @@ class OddButtonPagerViewHolder private constructor(
         oddButtonListener: OddButtonListener?,
     ) {
 
-        val playCateName = PlayCateUtils
-            .getPlayCateTitleResId(odds?.first ?: "", matchInfo?.gameType)?.let {
-                itemView.context.getString(it)
-            } ?: ""
+        val playCateName = list.find {
+            it.getOrNull(0) == matchInfo?.gameType && it.getOrNull(2) == odds?.first
+        }?.getOrNull(playTypeIndex) ?: ""
 
         oddBtnType.text = playCateName
 
