@@ -4,61 +4,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.game.GameActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.drawerlayout.widget.DrawerLayout
-            android:id="@+id/drawer_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- toolBar -->
+            <include
+                android:id="@+id/tans_status_toolbar"
+                layout="@layout/view_toolbar_main"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/tans_status_message"
+                layout="@layout/view_message"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="20dp"
+                app:layout_constraintTop_toBottomOf="@id/tans_status_toolbar" />
 
-                <!-- toolBar -->
-                <include
-                    android:id="@+id/tans_status_toolbar"
-                    layout="@layout/view_toolbar_main"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <org.cxct.sportlottery.ui.common.NotificationView
+                android:id="@+id/view_notification"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="@id/tans_status_message"
+                app:layout_constraintTop_toTopOf="@id/tans_status_message" />
 
-                <include
-                    android:id="@+id/tans_status_message"
-                    layout="@layout/view_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/tans_status_toolbar" />
+            <fragment
+                android:id="@+id/fragment_transaction_status"
+                class="org.cxct.sportlottery.ui.transactionStatus.TransactionStatusFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@id/tans_status_bottom_navigation"
+                app:layout_constraintTop_toBottomOf="@id/view_notification"
+                tools:layout="@layout/fragment_transaction_status" />
 
-                <org.cxct.sportlottery.ui.common.NotificationView
-                    android:id="@+id/view_notification"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/tans_status_message"
-                    app:layout_constraintTop_toTopOf="@id/tans_status_message" />
+            <include
+                android:id="@+id/tans_status_bottom_navigation"
+                layout="@layout/view_bottom_navigation_sport"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-                <fragment
-                    android:id="@+id/fragment_transaction_status"
-                    class="org.cxct.sportlottery.ui.transactionStatus.TransactionStatusFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/tans_status_bottom_navigation"
-                    app:layout_constraintTop_toBottomOf="@id/view_notification"
-                    tools:layout="@layout/fragment_transaction_status" />
+            <!-- 投注單 -->
+            <FrameLayout
+                android:id="@+id/fl_bet_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-                <include
-                    android:id="@+id/tans_status_bottom_navigation"
-                    layout="@layout/view_bottom_navigation_sport" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.drawerlayout.widget.DrawerLayout>
-
-        <!-- 投注單 -->
-        <FrameLayout
-            android:id="@+id/fl_bet_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
