@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.creditrecord
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,9 +42,29 @@ class CreditRecordActivity :
 
         setContentView(R.layout.activity_credit_record)
 
+        setupToolbar()
+
         setupCreditRecordList()
 
         initObserver()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(credit_record_toolbar)
+
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_left_white)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupCreditRecordList() {
