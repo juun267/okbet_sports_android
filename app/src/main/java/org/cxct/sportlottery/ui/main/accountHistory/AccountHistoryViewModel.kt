@@ -94,6 +94,7 @@ class AccountHistoryViewModel(
     val startTime = TimeUtil.getDefaultTimeStamp().startTime
     val endTime = TimeUtil.getDefaultTimeStamp().endTime
 
+
     fun getNextPage(visibleItemCount: Int, firstVisibleItemPosition: Int, totalItemCount: Int) {
         if (_loading.value != true && !isLastPage) {
             if (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0 && totalItemCount >= PAGE_SIZE) {

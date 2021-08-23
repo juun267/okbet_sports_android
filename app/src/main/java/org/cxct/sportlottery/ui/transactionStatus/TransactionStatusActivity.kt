@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.android.synthetic.main.activity_transaction_status.*
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MetricsUtil
 
 class TransactionStatusActivity :
@@ -56,10 +58,10 @@ class TransactionStatusActivity :
         rv_marquee.stopAuto()
     }
 
-    private fun initToolBar() {
+    override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
-            goToMainActivity()
+            viewModel.navMainPage(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
@@ -83,13 +85,7 @@ class TransactionStatusActivity :
         }
     }
 
-    private fun goToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-            .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, ThirdGameCategory.MAIN)
-        startActivity(intent)
-    }
-
-    private fun initMenu() {
+    override fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -211,12 +207,7 @@ class TransactionStatusActivity :
         })
 
         viewModel.isLogin.observe(this, {
-            updateUiWithLogin(it)
             getAnnouncement()
-        })
-
-        viewModel.oddsType.observe(this, {
-            tv_odds_type.text = getString(it.res)
         })
     }
 
@@ -239,7 +230,7 @@ class TransactionStatusActivity :
         }
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE
@@ -253,5 +244,21 @@ class TransactionStatusActivity :
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
         }
+    }
+
+    override fun updateOddsType(oddsType: OddsType) {
+        tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        startActivity(Intent(this, GameActivity::class.java))
     }
 }

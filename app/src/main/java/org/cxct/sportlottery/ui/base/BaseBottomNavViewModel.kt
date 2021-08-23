@@ -7,6 +7,7 @@ import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
 import org.cxct.sportlottery.util.Event
 
@@ -25,14 +26,33 @@ abstract class BaseBottomNavViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
+    val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
+
+    val thirdGameCategory: LiveData<Event<ThirdGameCategory?>>
+        get() = _thirdGameCategory
 
     val intentClass: LiveData<Event<Class<*>>>
         get() = _intentClass
-    private val _intentClass = MutableLiveData<Event<Class<*>>>()
 
     val showShoppingCart: LiveData<Boolean>
         get() = _showShoppingCart
+
+    private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
+    private val _intentClass = MutableLiveData<Event<Class<*>>>()
     private val _showShoppingCart = MutableLiveData<Boolean>()
+
+
+    fun navMainPage(thirdGameCategory: ThirdGameCategory) {
+        _thirdGameCategory.postValue(
+            Event(
+                if (isCreditAccount.value == true) {
+                    null
+                } else {
+                    thirdGameCategory
+                }
+            )
+        )
+    }
 
     fun navGame() {
         _intentClass.postValue(Event(GameActivity::class.java))

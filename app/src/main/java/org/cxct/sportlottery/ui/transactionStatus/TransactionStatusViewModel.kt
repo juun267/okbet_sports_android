@@ -14,6 +14,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 
+
 class TransactionStatusViewModel(
     androidContext: Application,
     userInfoRepository: UserInfoRepository,

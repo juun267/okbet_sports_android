@@ -48,6 +48,14 @@ class BetButton @JvmOverloads constructor(
             }
         }
 
+    //投注金額是否為限額範圍內
+    var amountCanBet: Boolean? = null
+        set(value) {
+            field = value
+            setupBetClickable()
+        }
+
+    //盤口是否有被關閉
     var hasBetPlatClose: Boolean? = null
         set(value) {
             field = value
@@ -96,7 +104,7 @@ class BetButton @JvmOverloads constructor(
     }
 
     private fun setupBetClickable() {
-        val betClickable = !(hasBetPlatClose == true || isCanSendOut == false)
+        val betClickable = !(hasBetPlatClose == true || isCanSendOut == false || amountCanBet == false)
         cl_bet.apply {
             isSelected = betClickable
             isClickable = betClickable

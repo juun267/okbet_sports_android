@@ -59,6 +59,7 @@ import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
+import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
@@ -275,6 +276,9 @@ class MockApiInterceptor(private val context: Context) : Interceptor {
                 }
                 path.contains(SPORT_COUPON_MENU) -> {
                     response = getMockJsonData(request, "sport_coupon_menu.mock")
+                }
+                path.contains(USER_CREDIT_CIRCLE_HISTORY) -> {
+                    response = getMockJsonData(request, "user_credit_circle_history.mock")
                 }
             }
         }

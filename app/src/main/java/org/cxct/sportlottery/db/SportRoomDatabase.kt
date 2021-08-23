@@ -9,7 +9,7 @@ import org.cxct.sportlottery.db.converter.UserRebateConverter
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 
-@Database(entities = [UserInfo::class], version = 1, exportSchema = false)
+@Database(entities = [UserInfo::class], version = 2, exportSchema = false)
 @TypeConverters(UserRebateConverter::class)
 abstract class SportRoomDatabase : RoomDatabase() {
 
@@ -25,7 +25,7 @@ abstract class SportRoomDatabase : RoomDatabase() {
                     context.applicationContext,
                     SportRoomDatabase::class.java,
                     "sport_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

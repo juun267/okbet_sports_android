@@ -225,12 +225,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="3dp"
-            android:textColor="@color/colorRedDark"
+            android:layout_marginTop="4dp"
+            android:textSize="@dimen/textSize13sp"
+            android:textColor="@color/colorRed"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_bet"
-            tools:text="投注额大于下注限额"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="@string/bet_info_list_minimum_limit_amount"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -111,13 +111,13 @@
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="90:31" />
+        tools:text="90:31"/>
 
     <ImageView
         android:id="@+id/iv_match_in_play"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="10dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_inplay_v4"
@@ -127,8 +127,8 @@
 
     <ImageView
         android:id="@+id/iv_match_price"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:layout_marginStart="108dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
@@ -153,18 +153,22 @@
 
     <ImageView
         android:id="@+id/btn_chart"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null"
+        android:layout_marginEnd="22dp"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_home_chart"
+        android:src="@drawable/ic_chart_v4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_star" />
 
     <ImageView
         android:id="@+id/btn_star"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null"
         android:layout_marginBottom="8dp"
         android:src="@drawable/selector_star_v4"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -84,7 +84,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
     private fun setupSpreadSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
-        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorRed else R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
         val spreadEnd = matchOdd.spread.length + 1
         spreadSpan = SpannableString(" ${matchOdd.spread}")
@@ -96,7 +96,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
     private fun setupOddsSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean, oddsType: OddsType) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
-        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorRed else R.color.transparent)
+        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
         val odds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
         val oddsEnd = odds.length

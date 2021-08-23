@@ -430,13 +430,15 @@ abstract class BaseOddButtonViewModel(
             try {
                 newItem.let {
                     if (it.id == oldItem.oddsId) {
-                        oldItem.refreshData = true
                         oldItem.oddState = getOddState(
                             getOdds(
                                 oldItem,
                                 loginRepository.mOddsType.value ?: OddsType.EU
                             ), newItem
                         )
+
+                        if (oldItem.oddState != OddState.SAME.state)
+                            oldItem.oddsHasChanged = true
 
                         oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
 

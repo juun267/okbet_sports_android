@@ -47,6 +47,8 @@
     <color name="blueLight">#a9bedf</color>
     <color name="blueDeep">#35485C</color>
 
+    <color name="colorBronze">#CB7C2E</color>
+
     <color name="transparent">#00000000</color>
     <color name="transparent_black_50">#80000000</color>
     <!-- ======================================= -->

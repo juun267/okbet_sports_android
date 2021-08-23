@@ -17,7 +17,6 @@ import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
@@ -46,6 +45,7 @@ class MyFavoriteViewModel(
         get() = _curPlay
     private val _curPlay = MutableLiveData<Play>()
 
+
     fun getSportQuery() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -53,7 +53,8 @@ class MyFavoriteViewModel(
                     SportQueryRequest(
                         TimeUtil.getNowTimeStamp().toString(),
                         TimeUtil.getTodayStartTimeStamp().toString(),
-                        MatchType.MY_EVENT.postValue
+                        MatchType.MY_EVENT.postValue,
+                        matchIdList = favorMatchList.value
                     )
                 )
             }

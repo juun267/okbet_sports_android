@@ -58,6 +58,5 @@ data class MatchOdd(
     var betAddError: BetAddError? = null
     var oddsHasChanged = false
     var spreadState: Int = SpreadState.SAME.state
-    var refreshData: Boolean = true //紀錄是否需要刷新該項資料, 預設為true作為初次顯示
 }
 

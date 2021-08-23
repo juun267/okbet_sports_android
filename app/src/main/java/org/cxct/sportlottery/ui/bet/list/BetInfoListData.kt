@@ -13,6 +13,7 @@ class BetInfoListData(
     var input: String? = null
     var oddsHasChanged = false
     var betAmount: Double = 0.0
+    var amountError: Boolean = false
     var pointMarked: Boolean = false //紅色標記, 紀錄是否能串關
     var subscribeChannelType: ChannelType = ChannelType.EVENT //給投注單訂閱頻道使用
     var playCateMenuCode: String? = null //HallChannel訂閱需要
