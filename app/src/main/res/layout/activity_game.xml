@@ -14,8 +14,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            app:layout_scrollFlags="scroll">
+            android:background="@color/colorWhite">
 
             <!-- toolBar -->
             <include
