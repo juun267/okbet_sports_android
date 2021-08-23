@@ -45,6 +45,7 @@ data class MatchInfo(
 ) : Parcelable {
 
     //Live
+    var isInPlay: Boolean? = false
     var awayScore: Int? = null //客队分数
     var homeScore: Int? = null //主队分数
     var statusName: String? = null //状态名称

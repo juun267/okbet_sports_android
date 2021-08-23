@@ -133,20 +133,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             showStrongTeam(item)
 
             itemView.league_odd_match_score_home.apply {
-                visibility = if (matchType == MatchType.IN_PLAY) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+                visibility = when {
+                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                    else -> View.GONE
                 }
-
                 text = (item.matchInfo?.homeScore ?: 0).toString()
             }
 
             itemView.league_odd_match_score_away.apply {
-                visibility = if (matchType == MatchType.IN_PLAY) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+                visibility = when {
+                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                    else -> View.GONE
                 }
 
                 text = (item.matchInfo?.awayScore ?: 0).toString()
@@ -253,6 +250,30 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
+                MatchType.MY_EVENT -> {
+                    when(item.matchInfo?.isInPlay){
+                        true -> {
+                            listener = object : TimerListener {
+                                override fun onTimerUpdate(timeMillis: Long) {
+                                    itemView.league_odd_match_time.text =
+                                        TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                    item.leagueTime = (timeMillis / 1000).toInt()
+                                }
+                            }
+
+                            updateTimer(
+                                isTimerEnable,
+                                item.leagueTime ?: 0,
+                                item.matchInfo.gameType == GameType.BK.key
+                            )
+                        }
+                        //TODO Bill 即將開賽
+
+                        false -> itemView.league_odd_match_time.text = item.matchInfo.startTimeDisplay
+                    }
+
+                }
+
                 else -> {
                     itemView.league_odd_match_time.text = item.matchInfo?.startTimeDisplay
                 }
@@ -261,6 +282,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_match_status.text = when (matchType) {
                 MatchType.IN_PLAY -> {
                     item.matchInfo?.statusName
+                }
+                MatchType.MY_EVENT -> {
+                    when(item.matchInfo?.isInPlay) {
+                        true -> item.matchInfo.statusName
+                        else -> item.matchInfo?.startDateDisplay
+                    }
                 }
                 else -> {
                     item.matchInfo?.startDateDisplay
