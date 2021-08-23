@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.profileCenter.creditrecord
 
 import android.os.Bundle
+import android.view.View
 import kotlinx.android.synthetic.main.activity_credit_record.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
@@ -36,6 +37,27 @@ class CreditRecordActivity :
     }
 
     private fun initObserver() {
+        viewModel.userInfo.observe(this, {
+            credit_record_remain_border.visibility = when (it?.creditStatus) {
+                1 -> View.VISIBLE
+                else -> View.GONE
+            }
+
+            credit_record_remain.visibility = when (it?.creditStatus) {
+                1 -> View.VISIBLE
+                else -> View.GONE
+            }
+
+            credit_record_remain_day.visibility = when (it?.creditStatus) {
+                1 -> View.VISIBLE
+                else -> View.GONE
+            }
+        })
+
+        viewModel.remainDay.observe(this, {
+            credit_record_remain_day.text = String.format(getString(R.string.credit_record_day), it)
+        })
+
         viewModel.userCreditCircleHistory.observe(this, {
             creditRecordAdapter.data = it
         })

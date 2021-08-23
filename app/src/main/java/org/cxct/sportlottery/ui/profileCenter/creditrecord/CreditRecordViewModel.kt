@@ -10,7 +10,6 @@ import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryRequest
 import org.cxct.sportlottery.network.user.credit.Row
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -31,10 +30,14 @@ class CreditRecordViewModel(
     infoCenterRepository,
     favoriteRepository
 ) {
+    val remainDay: LiveData<String>
+        get() = _remainDay
+
     val userCreditCircleHistory: LiveData<List<Row>>
         get() = _userCreditCircleHistory
 
     private val _userCreditCircleHistory = MutableLiveData<List<Row>>()
+    private val _remainDay = MutableLiveData<String>()
 
     fun getCreditRecord(pageIndex: Int = 1) {
         viewModelScope.launch {
@@ -43,11 +46,18 @@ class CreditRecordViewModel(
             )
 
             response.body()?.rows?.let {
+                it.postRemainDay()
                 it.mapRecordPeriod()
                 it.mapAllBalance()
 
                 _userCreditCircleHistory.postValue(it)
             }
+        }
+    }
+
+    private fun List<Row>.postRemainDay() {
+        this.firstOrNull()?.endTime?.let { endTime ->
+            _remainDay.postValue(TimeUtil.timeFormat(System.currentTimeMillis() - endTime, "dd"))
         }
     }
 

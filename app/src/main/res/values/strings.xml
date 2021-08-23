@@ -846,4 +846,5 @@
     <string name="credit_bet_remark">备注</string>
     <string name="credit_record_remain">离结算倒数</string>
     <string name="credit_record_quota">結算總額： </string>
+    <string name="credit_record_day">%s 日</string>
 </resources>
