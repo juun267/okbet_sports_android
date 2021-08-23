@@ -445,6 +445,11 @@
     <!--bottom sheet-->
     <string name="bottom_sheet_close">关闭</string>
     <string name="bottom_sheet_title_play_type">变更玩法</string>
+    <string name="bottom_sheet_statistics">数据统计</string>
+    <string name="bottom_sheet_time_line">时间线</string>
+    <string name="bottom_sheet_vs">单对单</string>
+    <string name="bottom_sheet_rank">排名</string>
+
 
     <!--money-recharge-->
     <string name="message_recharge_maintain">充值相关系统升级中,请稍等</string>
