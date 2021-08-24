@@ -450,8 +450,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.specialEntrance.observe(this, {
             it?.let {
-                app_bar_layout.setExpanded(true, false)
-
                 when (it.matchType) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()

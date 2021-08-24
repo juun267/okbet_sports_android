@@ -48,8 +48,7 @@
             app:tabIndicatorFullWidth="false"
             app:tabRippleColor="@color/transparent"
             app:tabSelectedTextColor="@color/colorWhite"
-            app:tabTextColor="@color/colorGray"
-            >
+            app:tabTextColor="@color/colorGray">
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_schedule"
@@ -58,31 +57,12 @@
                 android:icon="@drawable/ic_icon_game_schedule"/>
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_mic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/selector_icon_mic"/>
-
-            <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_statistics"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:icon="@drawable/selector_icon_statistics"/>
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_vs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/selector_icon_vs"/>
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/selector_icon_detail"/>
-
         </com.google.android.material.tabs.TabLayout>
-
 
         <ImageView
             android:id="@+id/iv_arrow"

@@ -339,7 +339,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
     private fun setupLiveView() {
-        matchOdd?.let { live_view_tool_bar.setWebViewUrl(it) }
+        matchOdd?.let {
+            live_view_tool_bar.setWebViewUrl(it)
+            live_view_tool_bar.matchOdd = it
+        }
     }
 
     private fun getData() {
