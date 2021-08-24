@@ -51,6 +51,7 @@ data class MatchInfo(
     var statusName: String? = null //状态名称
 
     //At Start
+    var isAtStart: Boolean? = false
     var remainTime: Long? = null
 
     //Other
