@@ -36,6 +36,8 @@
         android:id="@+id/tv_game_score_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="32dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize18sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_home"
@@ -45,15 +47,15 @@
 
     <TextView
         android:id="@+id/tv_game_name_home"
-        android:layout_width="84dp"
+        android:layout_width="0dp"
         android:layout_height="32dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize14sp"
+        app:layout_constraintEnd_toEndOf="@id/table_match_info_border"
         app:layout_constraintStart_toEndOf="@id/tv_game_score_home"
         app:layout_constraintTop_toBottomOf="@id/tv_game_type"
         tools:text="皇家馬德里" />
@@ -62,6 +64,8 @@
         android:id="@+id/tv_game_score_away"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="32dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize18sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
@@ -71,15 +75,15 @@
 
     <TextView
         android:id="@+id/tv_game_name_away"
-        android:layout_width="84dp"
+        android:layout_width="0dp"
         android:layout_height="32dp"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize14sp"
+        app:layout_constraintEnd_toEndOf="@id/table_match_info_border"
         app:layout_constraintStart_toEndOf="@id/tv_game_score_away"
         app:layout_constraintTop_toBottomOf="@id/tv_game_name_home"
         tools:text="利物浦" />
@@ -121,7 +125,7 @@
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="90:31"/>
+        tools:text="90:31" />
 
     <ImageView
         android:id="@+id/iv_match_in_play"
@@ -165,10 +169,10 @@
         android:id="@+id/btn_chart"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="@null"
         android:layout_marginEnd="22dp"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_chart_v4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_star" />
@@ -177,9 +181,9 @@
         android:id="@+id/btn_star"
         android:layout_width="18dp"
         android:layout_height="18dp"
-        android:scaleType="centerCrop"
-        android:contentDescription="@null"
         android:layout_marginBottom="8dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
         android:src="@drawable/selector_star_v4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
