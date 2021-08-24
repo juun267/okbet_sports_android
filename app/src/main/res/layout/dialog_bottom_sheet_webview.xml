@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="248dp"
-    tools:ignore="spUsage"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="WebViewLayout,spUsage,RtlSymmetry"
     tools:layout_gravity="bottom">
 
-    <TextView
-        android:id="@+id/sheet_tv_title"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorBlackLight"
-        android:gravity="start|center_vertical"
-        android:paddingStart="@dimen/activity_vertical_margin"
-        android:textColor="@color/colorWhite6"
-        android:textSize="@dimen/textSize16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/iv_close"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:layout_constraintVertical_weight="1"
-        tools:ignore="RtlSymmetry"
-        tools:text="@string/title" />
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/iv_close"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="@dimen/activity_vertical_margin"
-        android:src="@drawable/ic_close_menu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/sheet_tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/colorBlackLight"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/activity_vertical_margin"
+            android:textColor="@color/colorWhite6"
+            android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/title" />
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_close_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <WebView
         android:id="@+id/bottom_sheet_web_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sheet_tv_title"
-        app:layout_constraintVertical_weight="1" />
+        android:layout_height="match_parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+</LinearLayout>
