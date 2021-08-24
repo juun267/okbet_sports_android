@@ -69,16 +69,18 @@
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
-        <include layout="@layout/view_bottom_navigation_sport"/>
 
-        <!-- 右側導覽列 -->
-        <include layout="@layout/view_nav_right" />
+
+        <include layout="@layout/view_bottom_navigation_sport"/>
 
         <!-- 投注單 -->
         <FrameLayout
             android:id="@+id/fl_bet_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <!-- 右側導覽列 -->
+        <include layout="@layout/view_nav_right" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
