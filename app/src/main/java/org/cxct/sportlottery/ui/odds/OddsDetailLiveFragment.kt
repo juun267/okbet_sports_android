@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -41,6 +40,7 @@ import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChan
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -53,7 +53,7 @@ import java.util.*
 
 @Suppress("DEPRECATION", "SetTextI18n")
 class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener {
+    OnOddClickListener, TimerManager {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
@@ -65,7 +65,33 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
 
-    private var timer: Timer? = null
+    override var startTime: Long = 0
+    override var timer: Timer = Timer()
+    override var timerHandler: Handler = Handler {
+        var timeMillis = startTime * 1000L
+
+        when (args.gameType) {
+            GameType.FT -> {
+                timeMillis += 1000
+            }
+            GameType.BK -> {
+                timeMillis -= 1000
+            }
+            else -> {
+            }
+        }
+
+        if (timeMillis >= 0) {
+            tv_time_bottom?.apply {
+                text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+            }
+
+            startTime = timeMillis / 1000L
+        }
+
+        return@Handler false
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,12 +121,23 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         getData()
     }
 
-    override fun onStop() {
-        super.onStop()
-        unSubscribeChannelEventAll()
-        timer?.cancel()
+    override fun onResume() {
+        super.onResume()
+
+        startTimer()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        cancelTimer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        unSubscribeChannelEventAll()
+    }
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
@@ -289,7 +326,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 }
 
                 updateTime?.let {
-                    startMatchTimer(updateTime)
+                    startTime = updateTime.toLong()
                 }
             }
         })
@@ -337,7 +374,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
-
     private fun setupLiveView() {
         matchOdd?.let { live_view_tool_bar.setWebViewUrl(it) }
     }
@@ -350,7 +386,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
     }
-
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
         matchOdd?.let { matchOdd ->
@@ -369,40 +404,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
-
     override fun removeBetInfoItem(odd: Odd) {
         viewModel.removeBetInfoItem(odd.id)
     }
-
-
-    private fun startMatchTimer(startTime: Int) {
-        timer?.cancel()
-        timer = Timer()
-        timer?.schedule(object : TimerTask() {
-            override fun run() {
-                var timeMillis = startTime * 1000L
-
-                when (args.gameType) {
-                    GameType.FT -> {
-                        timeMillis += 1000
-                    }
-                    GameType.BK -> {
-                        timeMillis -= 1000
-                    }
-                }
-
-                if (timeMillis >= 0) {
-                    Handler(Looper.getMainLooper()).post {
-
-                        tv_time_bottom?.apply {
-                            text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-                        }
-                    }
-                }
-            }
-        }, 1000L, 1000L)
-    }
-
 
     private fun setupFrontScore(event: MatchStatusChangeEvent) {
         tv_home_score.apply {
@@ -415,7 +419,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             text = event.matchStatusCO?.awayTotalScore.toString()
         }
     }
-
 
     private fun setupBackScore(event: MatchStatusChangeEvent) {
         tv_home_score_total.apply {
@@ -441,7 +444,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         ll_time.visibility = View.GONE
     }
 
-
     private fun setupStatusList(event: MatchStatusChangeEvent) {
         if (args.matchType != MatchType.IN_PLAY) return
 
@@ -459,7 +461,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
     }
-
 
     private fun setupStatusBk(event: MatchStatusChangeEvent) {
         if (event.matchStatusList?.isEmpty() == true) return
@@ -482,7 +483,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         tv_status_left.text = statusBuilder
     }
-
 
     private fun setupStatusTnVB(event: MatchStatusChangeEvent) {
         if (event.matchStatusList?.isEmpty() == true) return
@@ -511,6 +511,4 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             else -> event.matchStatusCO?.statusName
         }
     }
-
-
 }
