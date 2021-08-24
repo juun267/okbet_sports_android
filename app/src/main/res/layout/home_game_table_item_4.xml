@@ -139,12 +139,12 @@
         android:id="@+id/iv_match_price"
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:layout_marginStart="108dp"
+        android:layout_marginStart="10dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_price_v4"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_match_in_play"
         app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count" />
 
     <TextView
