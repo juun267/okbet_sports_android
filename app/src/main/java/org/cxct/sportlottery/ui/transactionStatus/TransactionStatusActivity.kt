@@ -27,7 +27,6 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.menu.OnDismissListener
 import org.cxct.sportlottery.util.MetricsUtil
 
 class TransactionStatusActivity :
@@ -82,9 +81,7 @@ class TransactionStatusActivity :
         }
 
         tv_odds_type.setOnClickListener {
-            ChangeOddsTypeDialog(OnDismissListener {
-                viewModel.getBetList(true)
-            }).show(supportFragmentManager, null)
+            ChangeOddsTypeDialog().show(supportFragmentManager, null)
         }
     }
 
