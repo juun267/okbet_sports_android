@@ -30,6 +30,10 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
     var oddsType: OddsType = OddsType.EU
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
 

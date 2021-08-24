@@ -12,7 +12,7 @@ import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
 
-class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
+class ChangeOddsTypeDialog(private val dismissListener: OnDismissListener ?= null) : BaseDialog<MainViewModel>(MainViewModel::class) {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,6 +52,10 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
         }
     }
 
+    override fun dismiss() {
+        dismissListener?.dismiss()
+        super.dismiss()
+    }
 
     private fun initObserver(){
         viewModel.oddsType.observe(viewLifecycleOwner, {
@@ -84,4 +88,8 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
     }
 
 
+}
+
+class OnDismissListener (val dismissListener: () -> Unit) {
+    fun dismiss () = dismissListener()
 }
