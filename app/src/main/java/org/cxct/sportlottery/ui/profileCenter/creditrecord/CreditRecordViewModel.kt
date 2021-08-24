@@ -98,7 +98,7 @@ class CreditRecordViewModel(
 
     private fun List<Row>.postRemainDay() {
         this.firstOrNull()?.endTime?.let { endTime ->
-            _remainDay.postValue(TimeUtil.timeFormat(endTime - System.currentTimeMillis(), "dd"))
+            _remainDay.postValue(TimeUtil.timeFormat(endTime - System.currentTimeMillis(), "d"))
         }
     }
 
