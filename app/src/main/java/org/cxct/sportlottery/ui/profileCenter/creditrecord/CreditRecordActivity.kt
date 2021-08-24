@@ -72,7 +72,7 @@ class CreditRecordActivity :
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
-                    resources.getDimensionPixelSize(R.dimen.item_spacing_credit_record)
+                    R.dimen.item_spacing_credit_record
                 )
             )
 
