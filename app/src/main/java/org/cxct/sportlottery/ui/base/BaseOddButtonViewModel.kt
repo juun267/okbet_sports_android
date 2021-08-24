@@ -272,7 +272,7 @@ abstract class BaseOddButtonViewModel(
 
     fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
         viewModelScope.launch {
-            val result = getBetApi(matchType, betAddRequest)
+            val result = getBetApi(betAddRequest)
 
             _betAddResult.postValue(Event(result))
             Event(result).getContentIfNotHandled()?.success?.let {
@@ -348,7 +348,7 @@ abstract class BaseOddButtonViewModel(
         )
 
         viewModelScope.launch {
-            val result = getBetApi(betInfoListData.matchType, request)
+            val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
@@ -579,18 +579,12 @@ abstract class BaseOddButtonViewModel(
     }
 
     private suspend fun getBetApi(
-        matchType: MatchType?,
         betAddRequest: BetAddRequest
     ): BetAddResult? {
         //冠軍的投注要使用不同的api
-        return if (matchType == MatchType.OUTRIGHT) {
-            doNetwork(androidContext) {
-                OneBoSportApi.outrightService.addOutrightBet(betAddRequest)
-            }
-        } else {
-            doNetwork(androidContext) {
-                OneBoSportApi.betService.addBet(betAddRequest)
-            }
+        //20210824確認 都使用相同api
+        return doNetwork(androidContext) {
+            OneBoSportApi.betService.addBet(betAddRequest)
         }
     }
 
