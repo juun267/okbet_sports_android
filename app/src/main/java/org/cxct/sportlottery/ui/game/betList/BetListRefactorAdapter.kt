@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item.view.tv_error_message
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -270,9 +272,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
+                if (itemData.matchType == MatchType.OUTRIGHT) itemData.matchOdd.spread = ""
                 setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
-                tv_match.text =
-                    "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+                tv_match.text = if (itemData.matchType == MatchType.OUTRIGHT) itemData.outrightMatchInfo?.name
+                else "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+
                 tv_name.text = if (itemData.matchOdd.inplay == INPLAY) {
                     context.getString(
                         R.string.bet_info_in_play_score,

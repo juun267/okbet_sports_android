@@ -203,26 +203,10 @@ class OddButtonPagerViewHolder private constructor(
 
             setOnClickListener { _ ->
                 odds.second?.getOrNull(0)?.let { odd ->
-
-                    val playName = when {
-                        PlayCateUtils.getOUSeries().map { it.value }
-                            .contains(odds.first) -> {
-                            odds.second?.getOrNull(0)?.nameMap?.get(
-                                LanguageManager.getSelectLanguage(
-                                    context
-                                ).key
-                            ) ?: odds.second?.getOrNull(0)?.name
-                        }
-                        else -> {
-                            matchInfo?.homeName
-                        }
-                    } ?: ""
-
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
-                        playCateName,
-                        playName
+                        playCateName
                     )
                 }
             }
@@ -291,28 +275,12 @@ class OddButtonPagerViewHolder private constructor(
 
             isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
 
-            setOnClickListener { _ ->
+            setOnClickListener {
                 odds.second?.getOrNull(1)?.let { odd ->
-
-                    val playName = when {
-                        PlayCateUtils.getOUSeries().map { it.value }
-                            .contains(odds.first) -> {
-                            odds.second?.getOrNull(1)?.nameMap?.get(
-                                LanguageManager.getSelectLanguage(
-                                    context
-                                ).key
-                            ) ?: odds.second?.getOrNull(1)?.name
-                        }
-                        else -> {
-                            matchInfo?.awayName
-                        }
-                    } ?: ""
-
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
-                        playCateName,
-                        playName
+                        playCateName
                     )
                 }
             }
@@ -359,9 +327,6 @@ class OddButtonPagerViewHolder private constructor(
                         matchInfo,
                         odd,
                         playCateName,
-                        odds.second?.getOrNull(2)?.nameMap?.get(
-                            LanguageManager.getSelectLanguage(context).key
-                        ) ?: odds.second?.getOrNull(2)?.name ?: ""
                     )
                 }
             }
@@ -386,13 +351,12 @@ class OddButtonPagerViewHolder private constructor(
 }
 
 class OddButtonListener(
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String, playName: String) -> Unit
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit
 ) {
 
     fun onClickBet(
         matchInfo: MatchInfo?,
         odd: Odd,
-        playCateName: String = "",
-        playName: String = ""
-    ) = clickListenerBet(matchInfo, odd, playCateName, playName)
+        playCateName: String = ""
+    ) = clickListenerBet(matchInfo, odd, playCateName)
 }

@@ -399,7 +399,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                             data,
                                             odd,
                                             itemView.tv_play_type.text.toString(),
-                                            data.matchInfo?.homeName ?: ""
                                         )
                                     }
                                 }
@@ -412,7 +411,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                             data,
                                             odd,
                                             itemView.tv_play_type.text.toString(),
-                                            data.matchInfo?.homeName ?: ""
                                         )
                                     }
                                 }
@@ -485,7 +483,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                             data,
                                             odd,
                                             itemView.tv_play_type.text.toString(),
-                                            data.matchInfo?.awayName ?: ""
                                         )
                                     }
                                 }
@@ -498,7 +495,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                             data,
                                             odd,
                                             itemView.tv_play_type.text.toString(),
-                                            data.matchInfo?.awayName ?: ""
                                         )
                                     }
                                 }

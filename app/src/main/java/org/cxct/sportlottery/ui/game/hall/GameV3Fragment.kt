@@ -140,8 +140,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchInfo, odd, playCateName, playName ->
-                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                { matchInfo, odd, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateName)
                 },
                 { matchId ->
                     matchId?.let {
@@ -165,8 +165,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             addOddsDialog(
                 betMatchInfo,
                 odd,
-                getString(R.string.game_tab_price_boosts_odd),
-                odd.name ?: ""
+                getString(R.string.game_tab_price_boosts_odd)
             )
         }, { matchInfo ->
             setEpsBottomSheet(matchInfo)
@@ -1202,8 +1201,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun addOddsDialog(
         matchInfo: MatchInfo?,
         odd: Odd,
-        playCateName: String,
-        playName: String
+        playCateName: String
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -1214,7 +1212,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     args.matchType,
                     gameType,
                     playCateName,
-                    playName,
                     matchInfo,
                     odd,
                     ChannelType.HALL,

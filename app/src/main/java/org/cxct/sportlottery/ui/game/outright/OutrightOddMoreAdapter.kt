@@ -65,18 +65,8 @@ class OutrightOddMoreAdapter :
         ) {
             itemView.outright_odd_btn.apply {
                 setupOdd(item, oddsType)
-
-                //特殊處理 : 該回傳沒有name
-                tv_name.apply {
-                    text = item?.spread
-                    visibility = View.VISIBLE
-                }
                 tv_spread.text = ""
-
                 this@OddViewHolder.setupOddState(this, item)
-
-                isSelected = item?.isSelected ?: false
-
                 setOnClickListener {
                     item?.let { it1 -> outrightOddListener?.onClickBet(matchOdd, it1) }
                 }
