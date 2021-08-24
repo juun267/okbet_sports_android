@@ -270,19 +270,6 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.notifyBetInfoChanged()
     }
 
-    fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
-        viewModelScope.launch {
-            val result = getBetApi(betAddRequest)
-
-            _betAddResult.postValue(Event(result))
-            Event(result).getContentIfNotHandled()?.success?.let {
-                if (it) {
-                    afterBet(matchType, result)
-                }
-            }
-        }
-    }
-
     /**
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
      * @date 20210730
@@ -319,6 +306,15 @@ abstract class BaseOddButtonViewModel(
                     )
                 )
             }
+
+            result?.receipt?.singleBets?.forEach { s ->
+                s.matchOdds?.forEach { m ->
+                    s.matchType = normalBetList.find { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == m.oddsId
+                    }?.matchType
+                }
+            }
+
             Event(result).getContentIfNotHandled()?.success?.let {
                 _betAddResult.postValue(Event(result))
                 if (it) {
@@ -350,6 +346,7 @@ abstract class BaseOddButtonViewModel(
         viewModelScope.launch {
             val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
+            result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(betInfoListData.matchType, result)
