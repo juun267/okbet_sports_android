@@ -11,7 +11,7 @@ interface Paging {
     }
 
     fun getPageIndex(): Int {
-        return (pageSizeLoad / pageSize) + 1
+        return (pageSizeLoad / pageSize)
     }
 
     fun isLastPage(): Boolean {
