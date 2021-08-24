@@ -115,6 +115,10 @@ class CreditRecordActivity :
         viewModel.userCreditCircleHistory.observe(this, {
             creditRecordAdapter.data = it
         })
+
+        viewModel.quotaAmount.observe(this, {
+            credit_record_quota_amount.text = it
+        })
     }
 
     override fun onStart() {
