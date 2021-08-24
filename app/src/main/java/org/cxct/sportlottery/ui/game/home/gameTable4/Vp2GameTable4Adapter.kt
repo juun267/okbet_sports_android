@@ -108,7 +108,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 //            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
 //            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
 
-            itemView.setOnClickListener {
+            itemView.table_match_info_border.setOnClickListener {
+                onClickMatchListener?.onClick(data)
+            }
+
+            itemView.tv_match_play_type_count.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
         }
