@@ -39,4 +39,5 @@
     <dimen name="recyclerview_item_dec_spec_odds_detail_odds">16dp</dimen>
     <dimen name="recyclerview_item_dec_spec_odds_detail_odds_list_bottom">8dp</dimen>
 
+    <dimen name="item_spacing_credit_record">8dp</dimen>
 </resources>
