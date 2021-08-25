@@ -40,7 +40,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 notifyDataSetChanged()
             }
         }
-
     var isTimerEnable = false
         set(value) {
             if (value != field) {
@@ -133,20 +132,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             showStrongTeam(item)
 
             itemView.league_odd_match_score_home.apply {
-                visibility = if (matchType == MatchType.IN_PLAY) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+                visibility = when {
+                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                    else -> View.GONE
                 }
-
                 text = (item.matchInfo?.homeScore ?: 0).toString()
             }
 
             itemView.league_odd_match_score_away.apply {
-                visibility = if (matchType == MatchType.IN_PLAY) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+                visibility = when {
+                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                    else -> View.GONE
                 }
 
                 text = (item.matchInfo?.awayScore ?: 0).toString()
@@ -253,6 +249,58 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
+                MatchType.MY_EVENT -> {
+                    when {
+                        item.matchInfo?.isInPlay ?: false -> {
+                            item.matchInfo?.isAtStart = false
+                            if (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name) {
+                                listener = object : TimerListener {
+                                    override fun onTimerUpdate(timeMillis: Long) {
+                                        itemView.league_odd_match_time.text =
+                                            TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        item.leagueTime = (timeMillis / 1000).toInt()
+                                    }
+                                }
+
+                                updateTimer(
+                                    isTimerEnable,
+                                    item.leagueTime ?: 0,
+                                    item.matchInfo?.gameType == GameType.BK.key
+                                )
+                            }
+                        }
+                        else -> {
+                            //即將開賽
+                            val timeMillis = TimeUtil.getRemainTime(item.matchInfo?.startTime)
+                            if (timeMillis < 60 * 60 * 1000L) {
+                                item.matchInfo.apply {
+                                    this?.isAtStart = true
+                                    this?.remainTime = TimeUtil.getRemainTime(this?.startTime)
+                                }
+                                listener = object : TimerListener {
+                                    override fun onTimerUpdate(timeMillis: Long) {
+                                        itemView.league_odd_match_time.text = String.format(
+                                            itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                            TimeUtil.timeFormat(timeMillis, "mm")
+                                        )
+                                        item.matchInfo?.remainTime = timeMillis
+                                    }
+                                }
+
+                                item.matchInfo?.remainTime?.let { remainTime ->
+                                    updateTimer(
+                                        isTimerEnable,
+                                        (remainTime / 1000).toInt(),
+                                        true
+                                    )
+                                }
+                            } else
+                                itemView.league_odd_match_time.text =
+                                    TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
+                        }
+                    }
+                }
+
                 else -> {
                     itemView.league_odd_match_time.text = item.matchInfo?.startTimeDisplay
                 }
@@ -262,17 +310,24 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 MatchType.IN_PLAY -> {
                     item.matchInfo?.statusName
                 }
+                MatchType.MY_EVENT -> {
+                    when(item.matchInfo?.isInPlay) {
+                        true -> item.matchInfo.statusName
+                        else -> TimeUtil.timeFormat(item.matchInfo?.startTime, "MM/dd")
+                    }
+                }
                 else -> {
                     item.matchInfo?.startDateDisplay
                 }
             }
 
-            itemView.league_odd_match_remain_time_icon.visibility =
-                if (matchType == MatchType.AT_START) {
-                    View.VISIBLE
-                } else {
-                    View.INVISIBLE
+            itemView.league_odd_match_remain_time_icon.apply {
+                visibility = when {
+                    matchType == MatchType.AT_START -> View.VISIBLE
+                    matchType == MatchType.MY_EVENT && item.matchInfo?.isAtStart == true -> View.VISIBLE
+                    else -> View.INVISIBLE
                 }
+            }
         }
 
         private fun setupQuickCategory(
