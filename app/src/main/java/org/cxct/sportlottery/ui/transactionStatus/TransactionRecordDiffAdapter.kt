@@ -106,7 +106,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                 title_away_name.text = matchOdds.awayName
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playName}"
-                spread_name.text = matchOdds.homeName
+                spread_name.text = matchOdds.playName
                 content_odds.text = when (oddsType) {
                     OddsType.HK -> matchOdds.hkOdds
                     else -> matchOdds.odds
