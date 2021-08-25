@@ -3,6 +3,7 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +12,8 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.bet.list.BetListResult
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -18,6 +21,7 @@ import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
 import retrofit2.Response
@@ -42,10 +46,14 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
+    val transNum: LiveData<Int?> //交易狀況數量
+        get() = _transNum
+
     val isCreditAccount: LiveData<Boolean>
         get() = _isCreditAccount
 
     private val _isLogin = MutableLiveData<Boolean>()
+    private val _transNum = MutableLiveData<Int?>()
     private val _isCreditAccount = MutableLiveData<Boolean>()
 
     var platformId
@@ -174,6 +182,27 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         }
 
         return loginForGuestResponse
+    }
+
+    suspend fun getTransNum(): Response<BetListResult> {
+
+        val betListRequest = BetListRequest(
+            championOnly = 0,
+            BetRecordType.UNSETTLEMENT.code,
+            page = 1,
+            pageSize = 20
+        )
+
+        val response = OneBoSportApi.betService.getBetList(betListRequest)
+
+        if (response.isSuccessful) {
+            response.body()?.total?.let {
+                Log.e(">>>", "num = $it")
+                _transNum.value = it
+            }
+        }
+
+        return response
     }
 
     private fun getDeviceName(): String {

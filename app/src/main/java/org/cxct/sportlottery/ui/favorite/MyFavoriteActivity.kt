@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import kotlinx.android.synthetic.main.activity_my_favorite.*
 import kotlinx.android.synthetic.main.activity_my_favorite.drawer_layout
+import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
+import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
@@ -182,6 +185,12 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                     BetInfoCarDialog::class.java.simpleName
                 )
             }
+        })
+
+        viewModel.nowTransNum.observe(this, {
+            navigation_transaction_status.trans_number.text = it.toString()
+//            trans_num.text = it.toString()
+//            trans_num.setTextColor(ContextCompat.getColor(trans_num.context, R.color.colorGray))
         })
     }
 

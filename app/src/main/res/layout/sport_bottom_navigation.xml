@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="horizontal">
 
@@ -57,12 +58,29 @@
         app:btiIcon="@drawable/ic_btm_account"
         app:btiTitle="@string/label_account_history" />
 
-    <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
-        android:id="@+id/navigation_transaction_status"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:btiIcon="@drawable/ic_btm_deal"
-        app:btiTitle="@string/label_transaction_status" />
+        android:layout_weight="1">
+
+        <org.cxct.sportlottery.ui.game.bottomNavigation.BottomNavigationItem
+            android:id="@+id/navigation_transaction_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:btiIcon="@drawable/ic_btm_deal"
+            app:btiTitle="@string/label_transaction_status" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/trans_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="3dp"
+            android:textColor="@color/selector_blue_gray_light"
+            android:textSize="@dimen/textSize12sp"
+            android:text="123"/>
+
+    </FrameLayout>
 
 </LinearLayout>
