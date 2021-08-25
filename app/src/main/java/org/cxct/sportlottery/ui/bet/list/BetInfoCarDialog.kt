@@ -27,6 +27,7 @@ import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
@@ -43,6 +44,7 @@ import org.cxct.sportlottery.util.*
  * @description
  */
 const val INPLAY: Int = 1
+
 @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
 class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
 
@@ -359,7 +361,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun setupData(matchOdd: MatchOdd) {
-        tv_match.text = "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
+        tv_match.text = if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
+        else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
 
         tv_name.text = if (matchOdd.inplay == INPLAY) {
             getString(
@@ -402,6 +405,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             button_bet.isOddsChanged = true
         }
 
+        if (betInfoListData?.matchType == MatchType.OUTRIGHT) matchOdd.spread = ""
         OddSpannableString.setupOddsContent(matchOdd, oddsType, tv_odds_content)
     }
 

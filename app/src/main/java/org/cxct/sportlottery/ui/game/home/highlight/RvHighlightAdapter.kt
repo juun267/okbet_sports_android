@@ -310,8 +310,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.homeName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }
@@ -323,8 +322,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.homeName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }
@@ -397,8 +395,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.awayName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }
@@ -410,8 +407,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.awayName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }

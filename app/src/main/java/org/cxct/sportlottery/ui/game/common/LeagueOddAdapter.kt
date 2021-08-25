@@ -176,7 +176,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
             itemView.league_odd_match_price_boost.apply {
-                this.visibility = if(item.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+                this.visibility = if (item.matchInfo?.eps == 1) View.VISIBLE else View.GONE
             }
         }
 
@@ -418,8 +418,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                     this.oddsType = oddsType
 
-                    this.listener = OddButtonListener { matchInfo, odd, playCateName, playName ->
-                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName, playName)
+                    this.listener = OddButtonListener { matchInfo, odd, playCateName ->
+                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
                     }
                 }
 
@@ -457,8 +457,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                     this.oddsType = oddsType
 
-                    this.listener = OddButtonListener { matchInfo, odd, playCateName, playName ->
-                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName, playName)
+                    this.listener = OddButtonListener { matchInfo, odd, playCateName ->
+                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
                     }
                 }
 
@@ -562,7 +562,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
 class LeagueOddListener(
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String, playName: String) -> Unit,
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit,
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit
@@ -574,8 +574,7 @@ class LeagueOddListener(
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateName: String = "",
-        playName: String = ""
-    ) = clickListenerBet(matchInfo, odd, playCateName, playName)
+    ) = clickListenerBet(matchInfo, odd, playCateName)
 
     fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCateTab(matchId)
 

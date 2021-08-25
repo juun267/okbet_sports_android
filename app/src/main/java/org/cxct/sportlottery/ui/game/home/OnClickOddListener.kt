@@ -7,7 +7,6 @@ interface OnClickOddListener {
     fun onClickBet(
         matchOdd: MatchOdd,
         odd: Odd,
-        playCateName: String? = null,
-        playName: String? = null
+        playCateName: String? = null
     )
 }

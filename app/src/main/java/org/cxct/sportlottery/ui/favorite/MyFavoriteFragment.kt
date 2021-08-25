@@ -63,8 +63,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 { _, _ ->
                     //TODO 目前後端回傳資料無法分辨MatchType類型，等可以分辨時會在區分要連到OddsDetail/OddsDetailLive
                 },
-                { matchInfo, odd, playCateName, playName ->
-                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                { matchInfo, odd, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateName)
                 },
                 { matchId ->
                     viewModel.getQuickList(matchId)
@@ -533,7 +533,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateName: String,
-        playName: String
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -546,7 +545,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             MatchType.MY_EVENT,
             gameType,
             playCateName,
-            playName,
             matchInfo,
             odd,
             ChannelType.HALL

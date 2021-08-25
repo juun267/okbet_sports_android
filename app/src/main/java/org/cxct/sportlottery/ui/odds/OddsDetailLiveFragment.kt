@@ -364,7 +364,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 matchType = MatchType.IN_PLAY,
                 gameType = args.gameType,
                 playCateName = oddsDetail.name,
-                playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,
                 odd = odd,
                 subscribeChannelType = ChannelType.EVENT
