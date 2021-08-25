@@ -455,8 +455,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.nowTransNum.observe(this, {
             navigation_transaction_status.trans_number.text = it.toString()
-//            sport_bottom_navigation.trans_num.text = it.toString()
-//            trans_num.setTextColor(ContextCompat.getColor(trans_num.context, R.color.colorGray))
         })
 
         viewModel.specialEntrance.observe(this, {

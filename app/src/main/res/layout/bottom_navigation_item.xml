@@ -43,6 +43,8 @@
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="123"/>
+        tools:text="123"
+        tools:visibility="visible"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,17 +70,6 @@
             app:btiIcon="@drawable/ic_btm_deal"
             app:btiTitle="@string/label_transaction_status" />
 
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/trans_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_margin="3dp"
-            android:textColor="@color/selector_blue_gray_light"
-            android:textSize="@dimen/textSize12sp"
-            android:text="123"/>
-
     </FrameLayout>
 
 </LinearLayout>

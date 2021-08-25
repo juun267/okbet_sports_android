@@ -215,8 +215,6 @@ class TransactionStatusActivity :
 
         viewModel.nowTransNum.observe(this, {
             navigation_transaction_status.trans_number.text = it.toString()
-//            trans_num.text = it.toString()
-//            trans_num.setTextColor(ContextCompat.getColor(trans_num.context, R.color.colorBlue))
         })
 
     }

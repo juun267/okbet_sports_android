@@ -197,7 +197,6 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
         if (response.isSuccessful) {
             response.body()?.total?.let {
-                Log.e(">>>", "num = $it")
                 _transNum.value = it
             }
         }
