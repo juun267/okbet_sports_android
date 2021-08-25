@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.*
@@ -49,6 +50,13 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 tv_winnable_amount.setMoneyFormat(winnable)
                 tv_bet_status.setBetReceiptStatus(status)
                 tv_bet_status.setReceiptStatusColor(status)
+
+                if (matchType == MatchType.OUTRIGHT) {
+                    tv_spread.visibility = View.GONE
+                    tv_team_home.visibility = View.GONE
+                    tv_verse.visibility = View.GONE
+                    tv_team_away.visibility = View.GONE
+                }
             }
 
         }

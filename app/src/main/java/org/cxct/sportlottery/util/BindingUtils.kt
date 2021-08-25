@@ -224,7 +224,7 @@ fun TextView.setPlatName(platCode: String?) {
 @BindingAdapter("oddFormat")
 fun TextView.setOddFormat(odd: Double?) {
     odd?.let {
-        text = "@${TextUtil.formatForOdd(it)}"
+        text = "${TextUtil.formatForOdd(it)}"
     }
 }
 
