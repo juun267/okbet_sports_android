@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.outright
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
@@ -64,6 +65,10 @@ class OutrightOddMoreAdapter :
             oddsType: OddsType
         ) {
             itemView.outright_odd_btn.apply {
+                //特殊狀況 後續盤查原因
+                val param = tv_name.layoutParams as LinearLayout.LayoutParams
+                param.width = LinearLayout.LayoutParams.MATCH_PARENT
+                tv_name.layoutParams = param
                 setupOdd(item, oddsType)
                 tv_spread.text = ""
                 this@OddViewHolder.setupOddState(this, item)
