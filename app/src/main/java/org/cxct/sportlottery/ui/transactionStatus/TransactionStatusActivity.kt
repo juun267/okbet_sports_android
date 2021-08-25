@@ -44,7 +44,6 @@ class TransactionStatusActivity :
         setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
-        initButtonToTop()
         initBottomNavigation()
         initRvMarquee()
         initObserver()
@@ -101,23 +100,6 @@ class TransactionStatusActivity :
 
         } catch (e: Exception) {
             e.printStackTrace()
-        }
-    }
-
-    //TODO fix bug: 滾動時跳至頂部滾動仍持續，造成偏移
-    private fun initButtonToTop() {
-        btn_return_to_top.apply {
-            visibility = View.VISIBLE
-            setOnClickListener {
-                val transactionStatusFragment =
-                    (supportFragmentManager.findFragmentById(R.id.fragment_transaction_status) as TransactionStatusFragment)
-                transactionStatusFragment.scroll_view.apply {
-                    stopNestedScroll()
-                    fullScroll(View.FOCUS_UP)
-//                    scrollTo(0,top)
-//                    smoothScrollTo(0,0,1000)
-                }
-            }
         }
     }
 

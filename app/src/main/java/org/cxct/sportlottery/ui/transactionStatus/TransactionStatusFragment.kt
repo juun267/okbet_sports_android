@@ -1,12 +1,13 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
+import kotlinx.android.synthetic.main.fragment_transaction_status.scroll_view
+import kotlinx.android.synthetic.main.view_back_to_top.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.network.common.GameType
@@ -83,6 +84,10 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     private fun initButton() {
         btn_back.setOnClickListener {
             activity?.finish()
+        }
+
+        btn_back_to_top.setOnClickListener {
+            scroll_view.smoothScrollTo(0, 0)
         }
     }
 
