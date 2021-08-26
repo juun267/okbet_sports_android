@@ -90,6 +90,43 @@ abstract class BaseFavoriteViewModel(
         }
     }
 
+    fun getFilterFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String?) {
+        if (isLogin.value != true) {
+            mNotifyLogin.postValue(true)
+            return
+        }
+
+        if (gameType == null || playCateMenu == null) {
+            return
+        }
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.favoriteService.getMyFavoriteMatch(
+                    MyFavoriteMatchRequest(gameType, playCateMenu)
+                )
+            }
+
+            result?.rows?.let {
+                it.forEach { leagueOdd ->
+                    leagueOdd.apply {
+                        this.gameType = GameType.getGameType(gameType)
+                        this.matchOdds.forEach { matchOdd ->
+                            matchOdd.matchInfo?.isFavorite = true
+                        }
+                    }
+                }
+                it.forEach { leagueOdd ->
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.odds =
+                            matchOdd.odds.filter { odds -> odds.key == playCateCode }.toMutableMap()
+                    }
+                }
+                mFavorMatchOddList.postValue(it)
+            }
+        }
+    }
+
     fun clearFavorite() {
         myFavoriteRepository.clearFavorite()
     }

@@ -2,17 +2,12 @@ package org.cxct.sportlottery.ui.favorite
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
@@ -21,14 +16,12 @@ import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.PlayCateUtils
@@ -249,11 +242,21 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             }
 
                             if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                updateMatchOdd?.odds = PlayCateUtils.filterOdds(
-                                    oddTypeSocketMap.toMutableMap(),
-                                    updateMatchOdd?.matchInfo?.gameType ?: ""
-                                )
-
+                                if (viewModel.curCatePlay.value?.selectionType != SelectionType.SELECTABLE.code) {
+                                    when (viewModel.curCatePlay.value?.code) {
+                                        MenuCode.MAIN.code, null -> updateMatchOdd?.odds =
+                                            PlayCateUtils.filterOdds(
+                                                oddTypeSocketMap.toMutableMap(),
+                                                updateMatchOdd?.matchInfo?.gameType ?: ""
+                                            )
+                                        else -> updateMatchOdd?.odds = PlayCateUtils.filterOdds(
+                                            oddTypeSocketMap.toMutableMap(),
+                                            updateMatchOdd?.matchInfo?.gameType ?: ""
+                                        )
+                                            .filter { odds -> odds.key == viewModel.curCatePlay.value?.playCateList?.firstOrNull()?.code }
+                                            .toMutableMap()
+                                    }
+                                }
                             } else {
                                 updateMatchOdd?.odds?.forEach { oddTypeMap ->
                                     val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
@@ -442,7 +445,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 updatePlayCategory(sportQueryData.items?.find { item ->
                     item.isSelected
                 }?.play)
-
             }
         })
 
@@ -454,6 +456,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             hideLoading()
             leagueAdapter.data = it.toMutableList()
             try {
+                unSubscribeChannelHallAll()
                 it.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         subscribeChannelHall(
@@ -528,6 +531,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun showPlayCateBottomSheet(play: Play) {
+        viewModel.switchPlayCategory(play.playCateList?.firstOrNull()?.code)
         showBottomSheetDialog(
             play.name,
             play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
