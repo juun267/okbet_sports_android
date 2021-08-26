@@ -774,30 +774,16 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         receiver.matchClock.observe(this.viewLifecycleOwner, {
             it?.let { matchClockEvent ->
-                matchClockEvent.matchClockCO?.let { matchClockCO ->
-                    matchClockCO.matchId?.let { matchId ->
-
+                when (game_list.adapter) {
+                    is LeagueAdapter -> {
                         val leagueOdds = leagueAdapter.data
 
-                        leagueOdds.forEach { leagueOdd ->
-                            if (leagueOdd.isExpand) {
-
-                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                    matchOdd.matchInfo?.id == matchId
-                                }
-
-                                updateMatchOdd?.let {
-                                    updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
-                                        GameType.FT.key -> {
-                                            matchClockCO.matchTime
-                                        }
-                                        GameType.BK.key -> {
-                                            matchClockCO.remainingTimeInPeriod
-                                        }
-                                        else -> null
+                        leagueOdds.forEachIndexed { index, leagueOdd ->
+                            leagueOdd.matchOdds.forEach { matchOdd ->
+                                if (SocketUpdateUtil.updateMatchClock(matchOdd, matchClockEvent)) {
+                                    if (leagueOdd.isExpand) {
+                                        leagueAdapter.notifyItemChanged(index)
                                     }
-
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                                 }
                             }
                         }

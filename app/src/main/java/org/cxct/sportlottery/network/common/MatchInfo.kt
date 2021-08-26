@@ -5,5 +5,5 @@ interface MatchInfo {
     var awayScore: Int?
     var homeScore: Int?
     var statusName: String?
-    val leagueTime: Int?
+    var leagueTime: Int?
 }

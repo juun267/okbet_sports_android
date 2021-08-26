@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.util
 
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 
@@ -43,6 +45,36 @@ object SocketUpdateUtil {
 
                         else -> false
                     }
+                }
+            }
+        }
+
+        return isNeedRefresh
+    }
+
+    fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
+        var isNeedRefresh = false
+
+        matchClockEvent.matchClockCO?.let { matchClockCO ->
+
+            if (matchClockCO.matchId != null && matchClockCO.matchId == matchOdd.matchInfo?.id) {
+
+                val leagueTime = when (matchClockCO.gameType) {
+                    GameType.FT.key -> {
+                        matchClockCO.matchTime
+                    }
+                    GameType.BK.key -> {
+                        matchClockCO.remainingTimeInPeriod
+                    }
+                    else -> null
+                }
+
+                isNeedRefresh = when {
+                    (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) -> {
+                        matchOdd.matchInfo?.leagueTime = leagueTime
+                        true
+                    }
+                    else -> false
                 }
             }
         }

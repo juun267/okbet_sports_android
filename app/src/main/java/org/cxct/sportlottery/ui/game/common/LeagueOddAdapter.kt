@@ -218,13 +218,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         override fun onTimerUpdate(timeMillis: Long) {
                             itemView.league_odd_match_time.text =
                                 TimeUtil.timeFormat(timeMillis, "mm:ss")
-                            item.leagueTime = (timeMillis / 1000).toInt()
+                            item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
                         }
                     }
 
                     updateTimer(
                         isTimerEnable,
-                        item.leagueTime ?: 0,
+                        item.matchInfo?.leagueTime ?: 0,
                         item.matchInfo?.gameType == GameType.BK.key
                     )
                 }
