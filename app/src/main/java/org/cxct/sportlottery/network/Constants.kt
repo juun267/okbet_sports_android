@@ -52,8 +52,8 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/"
-                else -> "https://sportsrule.cxct.org/us"
+                LanguageManager.Language.ZH -> "https://sportsapi.cxsport.net/sports-rule/"
+                else -> "https://sportsapi.cxsport.net/sports-rule/us"
             }
 
         } catch (e: UnsupportedEncodingException) {
