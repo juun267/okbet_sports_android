@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -633,8 +632,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 epsOdds.forEach { epsLeagueOddsItem ->
                     epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.odds?.eps?.forEach { odd ->
-                            odd.isSelected = it.any { betInfoListData ->
-                                betInfoListData.matchOdd.oddsId == odd.id
+                            odd?.isSelected = it.any { betInfoListData ->
+                                betInfoListData.matchOdd.oddsId == odd?.id
                             }
                         }
                     }
@@ -886,9 +885,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
                             matchOddsItem.odds?.eps?.forEach { epsOdd ->
                                 newEpsOddList?.forEach { socketOdd ->
-                                    if (socketOdd?.id == epsOdd.id) {
+                                    if (socketOdd?.id == epsOdd?.id) {
                                         socketOdd?.let {
-                                            epsOdd.updateOddsState(socketOdd, epsOddsType)
+                                            epsOdd?.updateOddsState(socketOdd, epsOddsType)
                                         }
                                         epsListAdapter.notifyItemChanged(index)
                                     }
@@ -928,7 +927,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
                     epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.odds?.eps?.forEach { epsOdd ->
-                            epsOdd.updateOddStatus(globalStopEvent.producerId)
+                            epsOdd?.updateOddStatus(globalStopEvent.producerId)
                         }
                     }
                     epsListAdapter.notifyItemChanged(index)
