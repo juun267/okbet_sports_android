@@ -842,36 +842,41 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
-                val leagueOdds = leagueAdapter.data
 
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { odds ->
-                            odds.forEach { odd ->
-                                odd?.updateOddStatus(globalStopEvent.producerId)
-                            }
-                        }
+                when (game_list.adapter) {
+                    is LeagueAdapter -> {
+                        val leagueOdds = leagueAdapter.data
 
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds?.values?.forEach { odds ->
-                                odds.forEach { odd ->
-                                    odd?.updateOddStatus(globalStopEvent.producerId)
-                                }
+                        leagueOdds.forEachIndexed { index, leagueOdd ->
+                            if (leagueOdd.matchOdds.any { matchOdd ->
+                                    SocketUpdateUtil.updateOddStatus(
+                                        matchOdd,
+                                        globalStopEvent
+                                    )
+                                } &&
+                                leagueOdd.isExpand
+                            ) {
+                                leagueAdapter.notifyItemChanged(index)
                             }
                         }
                     }
 
-                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                }
+                    is EpsListAdapter -> {
+                        val epsOdds = epsListAdapter.dataList
 
-                val epsOdds = epsListAdapter.dataList
-                epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
-                    epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
-                        matchOddsItem.odds?.eps?.forEach { epsOdd ->
-                            epsOdd?.updateOddStatus(globalStopEvent.producerId)
+                        epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
+                            if (epsLeagueOddsItem.matchOdds?.any { matchOdd ->
+                                    SocketUpdateUtil.updateOddStatus(
+                                        matchOdd,
+                                        globalStopEvent
+                                    )
+                                } == true &&
+                                !epsLeagueOddsItem.isClose) {
+
+                                epsListAdapter.notifyItemChanged(index)
+                            }
                         }
                     }
-                    epsListAdapter.notifyItemChanged(index)
                 }
             }
         })
@@ -896,20 +901,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        return this
-    }
-
-    private fun Odd.updateOddStatus(producerId: Int?): Odd {
-        when (producerId) {
-            null -> {
-                this.status = BetStatus.DEACTIVATED.code
-            }
-            else -> {
-                if (this.producerId == producerId) {
-                    this.status = BetStatus.DEACTIVATED.code
-                }
-            }
-        }
         return this
     }
 

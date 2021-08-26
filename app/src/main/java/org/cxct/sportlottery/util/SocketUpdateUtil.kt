@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.util
 
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -97,6 +99,23 @@ object SocketUpdateUtil {
                             matchOdd.quickPlayCateList?.any {
                                 refreshMatchOdds(it.quickOdds ?: mutableMapOf(), oddsChangeEvent)
                             } ?: false
+                }
+            }
+        }
+
+        return isNeedRefresh
+    }
+
+    fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
+        var isNeedRefresh = false
+
+        matchOdd.oddsMap.values.forEach { odds ->
+            odds.filter { odd ->
+                globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+            }.forEach { odd ->
+                if (odd?.status != BetStatus.DEACTIVATED.code) {
+                    odd?.status = BetStatus.DEACTIVATED.code
+                    isNeedRefresh = true
                 }
             }
         }
