@@ -353,7 +353,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     cl_quota_detail.visibility = View.VISIBLE
                 } else {
                     cl_item_background.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite2))
-                    tv_odds_content.text = itemData.matchOdd.playName
                     iv_bet_lock.visibility = View.VISIBLE
                     et_bet.apply {
                         isEnabled = false
