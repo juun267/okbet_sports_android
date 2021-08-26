@@ -756,15 +756,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             if (SocketUpdateUtil.updateMatchStatus(
                                     leagueOdd.matchOdds.toMutableList(),
                                     matchStatusChangeEvent
-                                )
+                                ) &&
+                                leagueOdd.isExpand
                             ) {
-                                if (leagueOdd.isExpand) {
-                                    if (leagueOdd.matchOdds.isNullOrEmpty()) {
-                                        leagueAdapter.data.remove(leagueOdd)
-                                    }
-
-                                    leagueAdapter.notifyItemChanged(index)
+                                if (leagueOdd.matchOdds.isNullOrEmpty()) {
+                                    leagueAdapter.data.remove(leagueOdd)
                                 }
+
+                                leagueAdapter.notifyItemChanged(index)
                             }
                         }
                     }
@@ -779,12 +778,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val leagueOdds = leagueAdapter.data
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->
-                            leagueOdd.matchOdds.forEach { matchOdd ->
-                                if (SocketUpdateUtil.updateMatchClock(matchOdd, matchClockEvent)) {
-                                    if (leagueOdd.isExpand) {
-                                        leagueAdapter.notifyItemChanged(index)
-                                    }
-                                }
+                            if (leagueOdd.matchOdds.any { matchOdd ->
+                                    SocketUpdateUtil.updateMatchClock(
+                                        matchOdd,
+                                        matchClockEvent
+                                    )
+                                } &&
+                                leagueOdd.isExpand) {
+
+                                leagueAdapter.notifyItemChanged(index)
                             }
                         }
                     }
@@ -801,21 +803,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val leagueOdds = leagueAdapter.data
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->
-                            leagueOdd.matchOdds.forEach { matchOdd ->
-                                if (SocketUpdateUtil.updateMatchOdds(
+                            if (leagueOdd.matchOdds.any { matchOdd ->
+                                    SocketUpdateUtil.updateMatchOdds(
                                         matchOdd.apply {
                                             PlayCateUtils.filterOdds(
                                                 this.oddsMap,
                                                 this.matchInfo?.gameType ?: ""
                                             )
-                                        },
-                                        oddsChangeEvent
+                                        }, oddsChangeEvent
                                     )
-                                ) {
-                                    if (leagueOdd.isExpand) {
-                                        leagueAdapter.notifyItemChanged(index)
-                                    }
-                                }
+                                } &&
+                                leagueOdd.isExpand
+                            ) {
+                                leagueAdapter.notifyItemChanged(index)
                             }
                         }
                     }
@@ -824,16 +824,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val epsOdds = epsListAdapter.dataList
 
                         epsOdds.forEachIndexed { index, leagueOdd ->
-                            leagueOdd.matchOdds?.forEach { matchOdd ->
-                                if (SocketUpdateUtil.updateMatchOdds(
+                            if (leagueOdd.matchOdds?.any { matchOdd ->
+                                    SocketUpdateUtil.updateMatchOdds(
                                         matchOdd,
                                         oddsChangeEvent
                                     )
-                                ) {
-                                    if (!leagueOdd.isClose) {
-                                        epsListAdapter.notifyItemChanged(index)
-                                    }
-                                }
+                                } == true &&
+                                !leagueOdd.isClose) {
+
+                                epsListAdapter.notifyItemChanged(index)
                             }
                         }
                     }
