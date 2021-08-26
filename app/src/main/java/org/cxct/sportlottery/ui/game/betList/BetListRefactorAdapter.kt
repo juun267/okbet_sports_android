@@ -431,6 +431,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            true,
                             onItemClickListener
                         )
                         setupSingleItem(
@@ -448,6 +449,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            true,
                             onItemClickListener
                         )
                         setupSingleItem(
@@ -580,6 +582,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             setupParlayItem(
                 itemData,
                 oddsType,
+                false,
                 onItemClickListener
             )
         }
@@ -589,6 +592,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
             oddsType: OddsType,
+            firstItem: Boolean = false,
             onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
@@ -598,8 +602,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 itemData?.let { data ->
                     tv_parlay_type.text = TextUtil.replaceParlayByC(data.parlayType)
 
-                    val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
-                    tv_parlay_odd.text = itemOdd
+                    tv_parlay_odd.apply {
+                        if (firstItem) {
+                            visibility = View.VISIBLE
+
+                            val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
+                            text = itemOdd
+                        } else
+                            visibility = View.GONE
+                    }
+
+                    tv_symbol_odd.visibility = if (firstItem) View.VISIBLE else View.GONE
+
                     tv_com_count.text = data.num.toString()
 
                     setupBetAmountInput(data, oddsType, onItemClickListener)
