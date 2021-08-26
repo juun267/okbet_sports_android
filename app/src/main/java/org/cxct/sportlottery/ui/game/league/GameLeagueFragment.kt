@@ -271,36 +271,18 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         receiver.matchClock.observe(this.viewLifecycleOwner, {
             it?.let { matchClockEvent ->
-                if (args.matchType == MatchType.IN_PLAY) {
+                val leagueOdds = leagueAdapter.data
 
-                    matchClockEvent.matchClockCO?.let { matchClockCO ->
-                        matchClockCO.matchId?.let { matchId ->
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateMatchClock(
+                                matchOdd,
+                                matchClockEvent
+                            )
+                        } &&
+                        leagueOdd.isExpand) {
 
-                            val leagueOdds = leagueAdapter.data
-
-                            leagueOdds.forEach { leagueOdd ->
-                                if (leagueOdd.isExpand) {
-
-                                    val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                        matchOdd.matchInfo?.id == matchId
-                                    }
-
-                                    updateMatchOdd?.let {
-                                        updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
-                                            GameType.FT.key -> {
-                                                matchClockCO.matchTime
-                                            }
-                                            GameType.BK.key -> {
-                                                matchClockCO.remainingTimeInPeriod
-                                            }
-                                            else -> null
-                                        }
-
-                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                                    }
-                                }
-                            }
-                        }
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
