@@ -378,7 +378,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMaximumLimitView(itemData: BetInfoListData, onItemClickListener: OnItemClickListener) {
             itemView.apply {
-                tv_bet_maximum_limit.text = (itemData.parlayOdds?.max ?: 0).toString()
+                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.parlayOdds?.max ?: 0)
                 tv_check_maximum_limit.setOnClickListener {
                     it.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.VISIBLE
@@ -774,7 +774,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
-                tv_bet_maximum_limit.text = itemData.max.toString()
+                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
                 tv_check_maximum_limit.setOnClickListener {
                     it.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.VISIBLE
