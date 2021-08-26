@@ -89,18 +89,27 @@
         app:layout_constraintTop_toTopOf="@id/credit_record_quota_border"
         tools:text="+34,752.000" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/credit_record_list"
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/credit_record_quota_border"
         app:layout_constraintTop_toBottomOf="@id/credit_record_remain_border"
-        tools:itemCount="1"
-        tools:listitem="@layout/itemview_credit_record" />
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/credit_record_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="1"
+            tools:listitem="@layout/itemview_credit_record" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
