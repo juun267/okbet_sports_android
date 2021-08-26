@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalJsonUtil
+import org.cxct.sportlottery.util.fromJson
 
 
 class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
@@ -133,11 +134,8 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private val list by lazy {
-        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-        val type = Types.newParameterizedType(List::class.java, List::class.java)
-        val adapter: JsonAdapter<List<List<String>>> = moshi.adapter(type)
         val json = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/gameCodeMapping.json")
-        adapter.fromJson(json) ?: listOf()
+        json.fromJson<List<List<String>>>() ?: listOf()
     }
 
     private val playTypeIndex = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
