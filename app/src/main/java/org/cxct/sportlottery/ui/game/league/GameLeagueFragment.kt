@@ -291,62 +291,23 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-                    val leagueOdds = leagueAdapter.data
-                    val oddsType = leagueAdapter.oddsType
 
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.isExpand) {
-                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == it.eventId
-                            }
+                val leagueOdds = leagueAdapter.data
 
-                            if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                updateMatchOdd?.odds = PlayCateUtils.filterOdds(
-                                    oddTypeSocketMap.toMutableMap(),
-                                    args.gameType.key
-                                )
-
-                            } else {
-                                updateMatchOdd?.odds?.forEach { oddTypeMap ->
-                                    val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                                    val odds = oddTypeMap.value
-
-                                    odds.forEach { odd ->
-                                        val oddSocket = oddsSocket?.find { oddSocket ->
-                                            oddSocket?.id == odd?.id
-                                        }
-
-                                        oddSocket?.let {
-                                            odd?.updateOddsState(oddSocket, oddsType)
-                                        }
-                                    }
-                                }
-
-                                updateMatchOdd?.quickPlayCateList?.forEach { quickPlayCate ->
-                                    quickPlayCate.quickOdds?.forEach { oddTypeMap ->
-                                        val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                                        val odds = oddTypeMap.value
-
-                                        odds.forEach { odd ->
-                                            val oddSocket = oddsSocket?.find { oddSocket ->
-                                                oddSocket?.id == odd?.id
-                                            }
-
-                                            oddSocket?.let {
-                                                odd?.updateOddsState(oddSocket, oddsType)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            leagueAdapter.notifyItemChanged(
-                                leagueOdds.indexOf(
-                                    leagueOdd
-                                )
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateMatchOdds(
+                                matchOdd.apply {
+                                    PlayCateUtils.filterOdds(
+                                        this.oddsMap,
+                                        this.matchInfo?.gameType ?: ""
+                                    )
+                                }, oddsChangeEvent
                             )
-                        }
+                        } &&
+                        leagueOdd.isExpand
+                    ) {
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
