@@ -13,6 +13,7 @@ import android.text.style.StyleSpan
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -112,7 +113,8 @@ object OddSpannableString {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
-        val odds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+        val odds =
+            if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
         val oddsEnd = odds.length
         oddsSpan = SpannableString(odds)
         oddsSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
