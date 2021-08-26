@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -45,7 +44,6 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -750,32 +748,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
             it?.let { matchStatusChangeEvent ->
-                matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-                    matchStatusCO.matchId?.let { matchId ->
-
+                when (game_list.adapter) {
+                    is LeagueAdapter -> {
                         val leagueOdds = leagueAdapter.data
 
-                        leagueOdds.forEach { leagueOdd ->
-                            if (leagueOdd.isExpand) {
-
-                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                    matchOdd.matchInfo?.id == matchId
-                                }
-
-                                updateMatchOdd?.let {
-                                    if (matchStatusCO.status == 100) {
-                                        leagueOdd.matchOdds.remove(updateMatchOdd)
-                                        leagueAdapter.notifyItemRangeChanged(
-                                            leagueOdds.indexOf(leagueOdd),
-                                            leagueAdapter.itemCount
-                                        )
-                                    } else {
-                                        updateMatchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
-                                        updateMatchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
-                                        updateMatchOdd.matchInfo?.statusName = matchStatusCO.statusName
-
-                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
+                        leagueOdds.forEachIndexed { index, leagueOdd ->
+                            if (SocketUpdateUtil.updateMatchStatus(
+                                    leagueOdd.matchOdds.toMutableList(),
+                                    matchStatusChangeEvent
+                                )
+                            ) {
+                                if (leagueOdd.isExpand) {
+                                    if (leagueOdd.matchOdds.isNullOrEmpty()) {
+                                        leagueAdapter.data.remove(leagueOdd)
                                     }
+
+                                    leagueAdapter.notifyItemChanged(index)
                                 }
                             }
                         }

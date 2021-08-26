@@ -3,13 +3,57 @@ package org.cxct.sportlottery.util
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 
 object SocketUpdateUtil {
+
+    fun updateMatchStatus(
+        matchOddList: MutableList<MatchOdd>,
+        matchStatusChangeEvent: MatchStatusChangeEvent
+    ): Boolean {
+        var isNeedRefresh = false
+
+        matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+
+            matchOddList.forEach { matchOdd ->
+
+                if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
+
+                    isNeedRefresh = when {
+                        (matchStatusCO.status == 100) -> {
+                            matchOddList.remove(matchOdd)
+                            true
+                        }
+
+                        (matchStatusCO.homeScore != null && matchStatusCO.homeScore != matchOdd.matchInfo?.homeScore) -> {
+                            matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
+                            true
+                        }
+
+                        (matchStatusCO.awayScore != null && matchStatusCO.awayScore != matchOdd.matchInfo?.awayScore) -> {
+                            matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                            true
+                        }
+
+                        (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName) -> {
+                            matchOdd.matchInfo?.statusName = matchStatusCO.statusName
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+            }
+        }
+
+        return isNeedRefresh
+    }
+
     fun updateMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         var isNeedRefresh = false
 
-        if (oddsChangeEvent.eventId == matchOdd.matchInfo?.id) {
+        if (oddsChangeEvent.eventId != null && oddsChangeEvent.eventId == matchOdd.matchInfo?.id) {
 
             isNeedRefresh = when (matchOdd.oddsMap.isNullOrEmpty()) {
                 true -> {
