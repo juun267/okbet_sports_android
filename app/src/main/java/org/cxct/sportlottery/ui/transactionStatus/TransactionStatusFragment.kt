@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,11 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         viewModel.betListData.observe(this, {
             recordDiffAdapter.setupBetList(it)
         })
+
+        viewModel.oddsType.observe(this, {
+            recordDiffAdapter.oddsType = it
+        })
+
     }
 
     private fun initButton() {
