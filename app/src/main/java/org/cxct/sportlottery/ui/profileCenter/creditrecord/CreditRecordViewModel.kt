@@ -74,11 +74,13 @@ class CreditRecordViewModel(
         }
 
         viewModelScope.launch {
-            val response = OneBoSportApi.userService.getUserCreditCircleHistory(
-                CreditCircleHistoryRequest(pageIndex, pageSize)
-            )
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.userService.getUserCreditCircleHistory(
+                    CreditCircleHistoryRequest(pageIndex, pageSize)
+                )
+            }
 
-            response.body()?.rows?.let {
+            result?.rows?.let {
                 pageSizeLoad += it.size
 
                 it.postRemainDay()
@@ -88,9 +90,9 @@ class CreditRecordViewModel(
                 _userCreditCircleHistory.postValue(it)
             }
 
-            response.body()?.other?.postQuotaAmount()
+            result?.other?.postQuotaAmount()
 
-            pageSizeTotal = response.body()?.total ?: 0
+            pageSizeTotal = result?.total ?: 0
 
             _loading.postValue(false)
         }
