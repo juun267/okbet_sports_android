@@ -387,7 +387,6 @@ class AccountHistoryNextAdapter(
     class BackToTopViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(scrollToTopListener: ScrollToTopListener) {
             itemView.btn_back_to_top.setOnClickListener {
-                Log.e(">>>", "clickedddd")
                 scrollToTopListener.onClick()
             }
         }
