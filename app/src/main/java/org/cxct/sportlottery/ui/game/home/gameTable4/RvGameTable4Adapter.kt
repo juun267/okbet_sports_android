@@ -113,6 +113,13 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
                 view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)
+                indicator_view.apply {
+                    visibility = if (data.matchOdds.size <= 1) {
+                        View.INVISIBLE
+                    } else {
+                        View.VISIBLE
+                    }
+                }
             }
         }
     }

@@ -138,16 +138,12 @@ class VpRecommendAdapter(
         private fun setupOddsButton(oddsButton: OddsButton, odd: Odd) {
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
-
-                isSelected = odd.isSelected ?: false
-
                 setOnClickListener {
                     val playCateName = itemView.tv_play_type.text.toString()
-                    val playName = odd.name ?: ""
 
                     onClickOddListener?.onClickBet(matchOdd.apply {
                         this.matchInfo?.gameType = sportCode
-                    }, odd, playCateName, playName)
+                    }, odd, playCateName)
                 }
             }
         }

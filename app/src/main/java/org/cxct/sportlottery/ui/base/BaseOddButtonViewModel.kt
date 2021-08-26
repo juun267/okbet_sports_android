@@ -94,7 +94,6 @@ abstract class BaseOddButtonViewModel(
         matchType: MatchType,
         gameType: GameType,
         playCateName: String,
-        playName: String,
         matchInfo: MatchInfo,
         odd: org.cxct.sportlottery.network.odds.Odd,
         subscribeChannelType: ChannelType,
@@ -109,7 +108,7 @@ abstract class BaseOddButtonViewModel(
                     matchType = matchType,
                     gameType = gameType,
                     playCateName = playCateName,
-                    playName = playName,
+                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
                     matchInfo = matchInfo,
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
@@ -148,7 +147,7 @@ abstract class BaseOddButtonViewModel(
                     gameType = gameType,
                     playCateName = outrightCateName
                         ?: "",
-                    playName = odd.spread ?: "",
+                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
                     matchInfo = matchOdd.matchInfo,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
@@ -271,19 +270,6 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.notifyBetInfoChanged()
     }
 
-    fun addBet(betAddRequest: BetAddRequest, matchType: MatchType?) {
-        viewModelScope.launch {
-            val result = getBetApi(matchType, betAddRequest)
-
-            _betAddResult.postValue(Event(result))
-            Event(result).getContentIfNotHandled()?.success?.let {
-                if (it) {
-                    afterBet(matchType, result)
-                }
-            }
-        }
-    }
-
     /**
      * 新的投注單沒有單一下注, 一次下注一整單, 下注完後不管成功失敗皆清除所有投注單內容
      * @date 20210730
@@ -320,6 +306,15 @@ abstract class BaseOddButtonViewModel(
                     )
                 )
             }
+
+            result?.receipt?.singleBets?.forEach { s ->
+                s.matchOdds?.forEach { m ->
+                    s.matchType = normalBetList.find { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == m.oddsId
+                    }?.matchType
+                }
+            }
+
             Event(result).getContentIfNotHandled()?.success?.let {
                 _betAddResult.postValue(Event(result))
                 if (it) {
@@ -349,8 +344,9 @@ abstract class BaseOddButtonViewModel(
         )
 
         viewModelScope.launch {
-            val result = getBetApi(betInfoListData.matchType, request)
+            val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
+            result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(betInfoListData.matchType, result)
@@ -580,18 +576,12 @@ abstract class BaseOddButtonViewModel(
     }
 
     private suspend fun getBetApi(
-        matchType: MatchType?,
         betAddRequest: BetAddRequest
     ): BetAddResult? {
         //冠軍的投注要使用不同的api
-        return if (matchType == MatchType.OUTRIGHT) {
-            doNetwork(androidContext) {
-                OneBoSportApi.outrightService.addOutrightBet(betAddRequest)
-            }
-        } else {
-            doNetwork(androidContext) {
-                OneBoSportApi.betService.addBet(betAddRequest)
-            }
+        //20210824確認 都使用相同api
+        return doNetwork(androidContext) {
+            OneBoSportApi.betService.addBet(betAddRequest)
         }
     }
 

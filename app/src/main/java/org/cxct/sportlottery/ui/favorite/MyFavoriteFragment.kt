@@ -67,8 +67,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         }
                     }
                 },
-                { matchInfo, odd, playCateName, playName ->
-                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                { matchInfo, odd, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateName)
                 },
                 { matchId ->
                     viewModel.getQuickList(matchId)
@@ -550,7 +550,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateName: String,
-        playName: String
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -563,7 +562,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             MatchType.MY_EVENT,
             gameType,
             playCateName,
-            playName,
             matchInfo,
             odd,
             ChannelType.HALL
