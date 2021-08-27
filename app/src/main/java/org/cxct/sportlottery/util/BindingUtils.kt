@@ -69,6 +69,11 @@ fun TextView.setGameStatus(status: Int?) {
     }
 }
 
+@BindingAdapter("betMaximumLimit")
+fun TextView.setBetMaximumLimit(max: Int) {
+    text = TextUtil.formatBetQuota(max)
+}
+
 fun View.setBetReceiptBackground(status: Int?) {
     background = when (status) {
         7 -> ContextCompat.getDrawable(context, R.color.colorWhite2)
