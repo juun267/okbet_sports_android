@@ -186,11 +186,6 @@ class ProfileCenterActivity :
             viewModel.settingCheckPermissions()
         }
 
-        //體育投注記錄
-        btn_sport_bet_record.setOnClickListener {
-            startActivity(Intent(this, BetRecordActivity::class.java))
-        }
-
         //其他投注記錄
         btn_other_bet_record.setOnClickListener {
             startActivity(Intent(this, OtherBetRecordActivity::class.java))
@@ -476,12 +471,6 @@ class ProfileCenterActivity :
         }
 
         btn_withdrawal_setting.visibility = if (isCreditAccount) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-
-        btn_sport_bet_record.visibility = if (isCreditAccount) {
             View.GONE
         } else {
             View.VISIBLE

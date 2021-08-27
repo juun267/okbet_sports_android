@@ -82,8 +82,18 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_record"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/content_parlay_record"
+                tools:itemCount="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            <include
+                android:id="@+id/view_back_to_top"
+                layout="@layout/view_back_to_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </com.scwang.smart.refresh.layout.SmartRefreshLayout>

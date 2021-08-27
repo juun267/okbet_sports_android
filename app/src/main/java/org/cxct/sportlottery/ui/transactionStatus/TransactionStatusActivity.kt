@@ -3,10 +3,13 @@ package org.cxct.sportlottery.ui.transactionStatus
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_transaction_status.*
+import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
+import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
 import kotlinx.android.synthetic.main.view_nav_right.*
@@ -41,7 +44,6 @@ class TransactionStatusActivity :
         setupNoticeButton(btn_notice)
         initToolBar()
         initMenu()
-        initButtonToTop()
         initBottomNavigation()
         initRvMarquee()
         initObserver()
@@ -98,23 +100,6 @@ class TransactionStatusActivity :
 
         } catch (e: Exception) {
             e.printStackTrace()
-        }
-    }
-
-    //TODO fix bug: 滾動時跳至頂部滾動仍持續，造成偏移
-    private fun initButtonToTop() {
-        btn_return_to_top.apply {
-            visibility = View.VISIBLE
-            setOnClickListener {
-                val transactionStatusFragment =
-                    (supportFragmentManager.findFragmentById(R.id.fragment_transaction_status) as TransactionStatusFragment)
-                transactionStatusFragment.scroll_view.apply {
-                    stopNestedScroll()
-                    fullScroll(View.FOCUS_UP)
-//                    scrollTo(0,top)
-//                    smoothScrollTo(0,0,1000)
-                }
-            }
         }
     }
 
@@ -209,6 +194,11 @@ class TransactionStatusActivity :
         viewModel.isLogin.observe(this, {
             getAnnouncement()
         })
+
+        viewModel.nowTransNum.observe(this, {
+            navigation_transaction_status.trans_number.text = it.toString()
+        })
+
     }
 
     private fun getAnnouncement() {

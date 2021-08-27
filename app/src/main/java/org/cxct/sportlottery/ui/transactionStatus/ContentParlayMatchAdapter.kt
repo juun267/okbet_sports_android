@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.setDateNoYear
 
 class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
@@ -59,6 +60,7 @@ class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>
                 content_league.text = data.leagueName
                 content_home_name.text = data.homeName
                 content_away_name.text = data.awayName
+                content_date.setDateNoYear(data.startTime)
                 content_spread.text = data.spread
                 content_spread_team.text = data.playName
                 content_odds.text = when (oddsType) {
