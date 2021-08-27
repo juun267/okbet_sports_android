@@ -23,6 +23,9 @@ import org.cxct.sportlottery.util.TextUtil
  * create an instance of this fragment.
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+
+    val betStatusCancelledCode = 7
+
     private var betResultData: Receipt? = null
 
     private var betParlayList: List<ParlayOdd>? = null
@@ -72,6 +75,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         initButton()
         initRecyclerView()
+        setupReceiptStatusTips()
     }
 
     enum class BetStatus(val value: Int) {
@@ -125,6 +129,24 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
 
             adapter = betReceiptDiffAdapter
+        }
+    }
+
+    private fun setupReceiptStatusTips() {
+        //全部都失敗才會顯示投注失敗
+        val hasBetSuccess = betResultData?.singleBets?.find { it.status != betStatusCancelledCode } != null
+        val hasParlaySuccess = betResultData?.parlayBets?.find { it.status != betStatusCancelledCode } != null
+        tv_already_bet_complete.apply {
+            when (hasBetSuccess && hasParlaySuccess) {
+                true -> {
+                    text = getString(R.string.bet_succeeded)
+                    setTextColor(ContextCompat.getColor(context, R.color.colorBlue))
+                }
+                false -> {
+                    text = getString(R.string.bet_fail)
+                    setTextColor(ContextCompat.getColor(context, R.color.colorRed))
+                }
+            }
         }
     }
 }
