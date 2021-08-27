@@ -2,11 +2,13 @@ package org.cxct.sportlottery.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
@@ -67,6 +69,20 @@ fun TextView.setGameStatus(status: Int?) {
     }
 }
 
+fun View.setBetReceiptBackground(status: Int?) {
+    background = when (status) {
+        7 -> ContextCompat.getDrawable(context, R.color.colorWhite2)
+        else -> ContextCompat.getDrawable(context, R.color.colorWhite)
+    }
+}
+
+fun TextView.setBetReceiptAmount(itemData: BetResult) {
+    text = when (itemData.status) {
+        7 -> "0"
+        else -> itemData.stake?.let { TextUtil.formatBetQuota(it) }
+    }
+}
+
 @BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setBetReceiptStatus(status: Int?) {
     text = when (status) {
@@ -90,7 +106,7 @@ fun TextView.setReceiptStatusColor(status: Int?) {
 fun TextView.setGameStatusColor(status: Int?) {
     status?.let {
         val color = when (it) {
-            0,1,2,3 -> R.color.colorBlue
+            0, 1, 2, 3 -> R.color.colorBlue
             else -> R.color.colorRed
         }
         this.setTextColor(ContextCompat.getColor(context, color))

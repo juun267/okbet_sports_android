@@ -108,7 +108,9 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         tv_team_away.text = awayName
                         tv_match_type.text = playCateName
                     }
-                    tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
+
+                    itemView.setBetReceiptBackground(status)
+                    tv_bet_amount.setBetReceiptAmount(itemData)
                     tv_winnable_amount.setMoneyFormat(winnable)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
