@@ -83,6 +83,14 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
     }
 }
 
+@BindingAdapter("betParlayReceiptAmount")
+fun TextView.setBetParlayReceiptAmount(itemData: BetResult) {
+    text = when (itemData.status) {
+        7 -> "0"
+        else -> itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * ${itemData.num}" }
+    }
+}
+
 @BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setBetReceiptStatus(status: Int?) {
     text = when (status) {

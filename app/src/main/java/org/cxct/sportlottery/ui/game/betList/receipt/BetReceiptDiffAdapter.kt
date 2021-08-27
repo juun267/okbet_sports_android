@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
+import kotlinx.android.synthetic.main.item_match_receipt.view.tv_match_at
 import kotlinx.android.synthetic.main.item_parlay_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -137,6 +138,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
                     }
                     tv_bet_amount.text = stake?.let { "${TextUtil.formatBetQuota(it)} * $num" }
+                    itemView.setBetReceiptBackground(status)
+                    tv_bet_amount.setBetParlayReceiptAmount(itemData)
                     tv_winnable_amount.setMoneyFormat(winnable)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
