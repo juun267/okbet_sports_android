@@ -105,7 +105,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                 title_spread.text = matchOdds.spread
                 title_away_name.text = matchOdds.awayName
 
-                content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playName}"
+                content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.playName
                 content_odds.text = when (oddsType) {
                     OddsType.HK -> matchOdds.hkOdds
@@ -221,7 +221,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_no_record, parent, false))
+                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_game_no_record, parent, false))
         }
     }
 

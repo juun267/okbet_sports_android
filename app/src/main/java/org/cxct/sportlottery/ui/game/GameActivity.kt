@@ -2,7 +2,9 @@ package org.cxct.sportlottery.ui.game
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -12,7 +14,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
+import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
@@ -177,6 +181,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     override fun initBottomNavigation() {
+        viewModel.getTransNum()
         sport_bottom_navigation.setNavigationItemClickListener {
             when (it) {
                 R.id.navigation_sport -> {
@@ -446,6 +451,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
+        })
+
+        viewModel.nowTransNum.observe(this, {
+            navigation_transaction_status.trans_number.text = it.toString()
         })
 
         viewModel.specialEntrance.observe(this, {
