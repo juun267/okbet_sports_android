@@ -75,6 +75,11 @@ fun TextView.setGameStatus(status: Int?) {
     }
 }
 
+@BindingAdapter("betMaximumLimit")
+fun TextView.setBetMaximumLimit(max: Int) {
+    text = TextUtil.formatBetQuota(max)
+}
+
 fun View.setBetReceiptBackground(status: Int?) {
     background = when (status) {
         7 -> ContextCompat.getDrawable(context, R.color.colorWhite2)
@@ -113,6 +118,23 @@ fun TextView.setReceiptStatusColor(status: Int?) {
             else -> R.color.colorBlue
         }
         this.setTextColor(ContextCompat.getColor(context, color))
+    }
+}
+
+fun TextView.setSingleReceiptStatusTips(status: Int?) {
+
+    status?.let { statusNotNull ->
+        text = when (statusNotNull) {
+            7 -> context.getString(R.string.bet_fail)
+            else -> context.getString(R.string.bet_succeeded)
+        }
+
+        setTextColor(
+            when (statusNotNull) {
+                7 -> ContextCompat.getColor(context, R.color.colorRed)
+                else -> ContextCompat.getColor(context, R.color.colorBlue)
+            }
+        )
     }
 }
 
@@ -248,7 +270,7 @@ fun TextView.setPlatName(platCode: String?) {
 @BindingAdapter("oddFormat")
 fun TextView.setOddFormat(odd: Double?) {
     odd?.let {
-        text = "${TextUtil.formatForOdd(it)}"
+        text = TextUtil.formatForOdd(it)
     }
 }
 
