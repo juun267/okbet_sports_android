@@ -479,7 +479,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setCancelable(false)
             setCanceledOnTouchOutside(false)
             view.apply {
-                tv_parlay_type.text = parlayType
+                tv_parlay_type.text = TextUtil.replaceParlayByC(parlayType)
                 tv_parlay_rule.text = parlayRule
             }
             btn_close.setOnClickListener {
