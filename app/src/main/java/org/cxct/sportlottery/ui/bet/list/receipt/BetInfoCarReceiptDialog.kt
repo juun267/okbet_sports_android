@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
+import kotlinx.android.synthetic.main.item_match_receipt.*
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
