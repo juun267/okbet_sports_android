@@ -171,7 +171,7 @@ fun TextView.setRecordStatusColor(status: Int?) {
 
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Double?) {
-    text = TextUtil.formatMoney(money ?: 0.0)
+    text = if (money == null) "-" else TextUtil.formatMoney(money)
 }
 
 

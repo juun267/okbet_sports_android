@@ -108,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 android:text="@{matchOdd.rtScore}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -121,11 +121,26 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@{matchOdd.homeName}"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:text="菲尼克斯太阳" />
+
+            <TextView
+                android:id="@+id/tv_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginVertical="4dp"
+                android:gravity="center"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
+                android:text="@string/at"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
+                app:layout_constraintStart_toEndOf="@id/tv_play_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_play_name"/>
+
 
             <TextView
                 android:id="@+id/tv_odd"
@@ -138,10 +153,9 @@
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
-                app:layout_constraintStart_toEndOf="@id/tv_play_name"
+                app:layout_constraintStart_toEndOf="@id/tv_at"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name"
-                app:oddFormat="@{matchOdd.odds}"
-                tools:text="\@1.860" />
+                tools:text="1.860" />
 
             <TextView
                 android:id="@+id/tv_team_home"
@@ -150,7 +164,7 @@
                 android:layout_marginVertical="5dp"
                 android:gravity="center"
                 android:text="@{matchOdd.homeName}"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_play_name"
                 app:layout_constraintStart_toStartOf="parent"
@@ -178,7 +192,7 @@
                 android:layout_marginHorizontal="6dp"
                 android:gravity="center"
                 android:text="@string/verse"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
                 app:layout_constraintStart_toEndOf="@id/tv_score"
@@ -191,7 +205,7 @@
                 android:layout_marginHorizontal="6dp"
                 android:gravity="center"
                 android:text="@{matchOdd.awayName}"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
                 app:layout_constraintStart_toEndOf="@id/text_view_v"
@@ -269,7 +283,7 @@
                 android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="@{row.orderNo}"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_time"
@@ -284,7 +298,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:gravity="center"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:dateTimeNoYear="@{matchOdd.startTime}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -299,7 +313,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:gravity="center"
-                android:textColor="@color/colorGrayLight"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

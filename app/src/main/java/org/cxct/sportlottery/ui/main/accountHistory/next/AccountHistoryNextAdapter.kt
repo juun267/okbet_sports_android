@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,11 +22,8 @@ import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
-import org.cxct.sportlottery.util.getOdds
 
 class AccountHistoryNextAdapter(
     private val itemClickListener: ItemClickListener,
@@ -193,6 +189,8 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let {
+                val odds = getOdds(first, oddsType)
+                binding.tvOdd.setOddFormat(odds)
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }
@@ -225,6 +223,8 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let {
+                val odds = getOdds(first, oddsType)
+                binding.tvOdd.setOddFormat(odds)
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }

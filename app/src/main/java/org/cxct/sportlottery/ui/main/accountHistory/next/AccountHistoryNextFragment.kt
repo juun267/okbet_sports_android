@@ -25,7 +25,6 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
     }, DateSelectListener {
         viewModel.setSelectedDate(it)
     }, ScrollToTopListener {
-        Log.e(">>>", "clicked")
         rv_account_history.smoothScrollToPosition(0)
     })
 
