@@ -193,17 +193,6 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let {
-                val odds = getOdds(first, oddsType)
-                val oddStr = if (odds > 0)
-                    String.format(
-                        binding.root.context.getString(
-                            R.string.at_symbol,
-                            TextUtil.formatForOdd(odds)
-                        )
-                    )
-                else
-                    ""
-                binding.tvOdd.text = oddStr
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }
@@ -236,17 +225,6 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let {
-                val odds = getOdds(first, oddsType)
-                val oddStr = if (odds > 0)
-                    String.format(
-                        binding.root.context.getString(
-                            R.string.at_symbol,
-                            TextUtil.formatForOdd(odds)
-                        )
-                    )
-                else
-                    ""
-                binding.tvOdd.text = oddStr
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }

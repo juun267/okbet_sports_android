@@ -40,7 +40,7 @@
                 tools:text="06-22" />
 
             <Space
-                android:layout_width="2dp"
+                android:layout_width="4dp"
                 android:layout_height="wrap_content" />
 
             <TextView
@@ -106,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
                 android:textColor="@color/colorRedDark"
+                android:textStyle="bold"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="6.5" />
 
@@ -122,6 +123,7 @@
                 android:id="@+id/content_odds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:textColor="@color/colorRedDark"
                 android:textSize="13sp"
                 tools:text="1.860" />

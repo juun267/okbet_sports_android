@@ -136,9 +136,11 @@
                 android:gravity="center"
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
                 app:layout_constraintStart_toEndOf="@id/tv_play_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name"
+                app:oddNoAtFormat="@{matchOdd.odds}"
                 tools:text="\@1.860" />
 
             <TextView
@@ -163,6 +165,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
                 app:layout_constraintStart_toEndOf="@id/tv_team_home"
                 app:layout_constraintTop_toTopOf="@+id/tv_team_home"
@@ -227,6 +230,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/tv_win_lose"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toEndOf="@id/tv_bet"
@@ -250,6 +254,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:textColor="@color/colorGreenLight"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="@+id/tv_odd_type"

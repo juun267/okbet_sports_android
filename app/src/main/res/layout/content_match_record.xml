@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:textColor="@color/colorOrangeLight"
+                android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize14sp"
                 tools:text="6.5" />
             <TextView
@@ -111,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorRedDark"
                 android:textSize="13sp"
+                android:textStyle="bold"
                 tools:text="1.860" />
 
         </LinearLayout>
@@ -138,6 +139,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
+                    android:textStyle="bold"
                     tools:text="50.000" />
             </LinearLayout>
 
@@ -158,6 +160,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorSeaGreen"
                     android:textSize="@dimen/textSize13sp"
+                    android:textStyle="bold"
                     tools:text="9,999,999.000" />
             </LinearLayout>
         </LinearLayout>
