@@ -26,6 +26,7 @@
         tools:text="9,875,241.000 RMB" />
 
     <include
+        android:id="@+id/view_match_receipt"
         layout="@layout/item_match_receipt"/>
 
     <TextView
