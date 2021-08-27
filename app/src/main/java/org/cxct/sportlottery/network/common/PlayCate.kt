@@ -53,7 +53,7 @@ enum class PlayCate(val value: String) {
 
     HWMG_SINGLE("HWMG&1X2"),
     HDP_ONE_LIST("HDP"),
-    NGOAL_1("NGOAL:1"),//第1个进球
+    NGOAL("NGOAL"),//第N个进球
     TWTN("TWTN"),//零失球獲勝
     DC_FLG("DC-FLG"),//双重机会&首次进球队伍
     DC_BTS("DC-BTS"),//双重机会&双方球队进球
@@ -71,5 +71,12 @@ enum class PlayCate(val value: String) {
     TG_OU_H_1ST("TG&O/U-H-1ST"),
     TG_OU_C_1ST("TG&O/U-C-1ST"),
 
-    EPS("EPS") //更优赔率
+    EPS("EPS"), //更优赔率
+
+    CS_SEG("CS-SEG"),
+    HWMG("HWMG"),
+    CORNER_SINGLE("CORNER-1X2"),
+    ADVANCE("ADVANCE"),//會晉級
+    CORNER_1ST_OU("CORNER-1ST-O/U"),
+    CORNER_2ST_OU("CORNER-2ST-O/U"),
 }

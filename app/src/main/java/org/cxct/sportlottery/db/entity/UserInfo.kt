@@ -57,5 +57,11 @@ data class UserInfo(
     val setted: Int? = null, //是否设置过昵称 0单标未设置过 1代表设置过
 
     @ColumnInfo(name = "user_rebate_list")
-    val userRebateList: List<UserRebate>? = null
+    val userRebateList: List<UserRebate>? = null,
+
+    @ColumnInfo(name = "credit_account")
+    val creditAccount: Int? = null,
+
+    @ColumnInfo(name = "credit_status")
+    val creditStatus: Int? = null
 )

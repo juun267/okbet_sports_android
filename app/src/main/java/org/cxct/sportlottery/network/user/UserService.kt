@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.network.user
 
+import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
@@ -8,6 +9,8 @@ import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_FUND_PWD
 import org.cxct.sportlottery.network.Constants.USER_UPDATE_PWD
 import org.cxct.sportlottery.network.Constants.USER_WITHDRAW_INFO
+import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryRequest
+import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlRequest
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
@@ -50,4 +53,7 @@ interface UserService {
 
     @POST(USER_WITHDRAW_INFO)
     suspend fun setWithdrawUserInfo(@Body withdrawInfoRequest: WithdrawInfoRequest): Response<WithdrawInfoResult>
+
+    @POST(USER_CREDIT_CIRCLE_HISTORY)
+    suspend fun getUserCreditCircleHistory(@Body creditCircleHistoryRequest: CreditCircleHistoryRequest): Response<CreditCircleHistoryResult>
 }

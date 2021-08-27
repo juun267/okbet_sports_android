@@ -164,8 +164,20 @@ object ParlayLimitUtil {
             nParlayM.num = all.size
             nParlayM.setComList(all)
             nParlayM.parlayType = matchIdArray.size.toString() + "C" + all.size
-            nParlayM.rule = "${String.format(context.getString(R.string.parlay_rule_ncm), matchIdArray.size.toString(), all.size)}\n" +
-                    nC1RuleList.joinToString(context.getString(R.string.parlay_rule_and)) +
+            nParlayM.rule = "${
+                String.format(
+                    context.getString(R.string.parlay_rule_ncm),
+                    matchIdArray.size.toString(),
+                    all.size
+                )
+            }\n" +
+                    nC1RuleList.joinToString (""){
+                        when (it) {
+                            nC1RuleList.first() -> it
+                            nC1RuleList.last() -> "${context.getString(R.string.parlay_rule_and)}$it"
+                            else -> "，$it"
+                        }
+                    } +
                     "\n$atLeastRuleString\n$cantParlayWarn"
             parlayComSOList.add(nParlayM)
         }

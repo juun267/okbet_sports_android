@@ -52,7 +52,6 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
         }
     }
 
-
     private fun initObserver(){
         viewModel.oddsType.observe(viewLifecycleOwner, {
             setOddsType(it)

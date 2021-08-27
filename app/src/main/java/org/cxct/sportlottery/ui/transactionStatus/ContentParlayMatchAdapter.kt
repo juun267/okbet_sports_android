@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.TextUtil
 
 class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>(ContentDiffCallBack()) {
     var gameType: String = ""
@@ -63,7 +64,11 @@ class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>
                 content_odds.text = when (oddsType) {
                     OddsType.HK -> data.hkOdds
                     else -> data.odds
-                }.toString()
+                }.let {
+                    TextUtil.formatForOdd(
+                        it
+                    )
+                }
             }
         }
     }

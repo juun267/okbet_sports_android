@@ -240,7 +240,7 @@ class BackService : Service() {
                     mCompositeDisposable?.add(newDisposable)
                     mSubscribedMap[url] = newDisposable
                 }
-        }
+        } ?: reconnect()//背景中喚醒APP會有mStompClient=null的情況 導致停止訂閱賽事
     }
 
     private fun unsubscribeChannel(url: String) {

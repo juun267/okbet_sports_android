@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +31,10 @@ import kotlin.collections.ArrayList
  * @author Kevin
  * @create 2020/12/23
  * @description 表格型排版與後端回傳順序有關
+ * @edit:
+ * 2021/08/17 玩法六個一組和四個一組的排版改為依順序分組
  */
+@SuppressLint("NotifyDataSetChanged")
 class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) :
     RecyclerView.Adapter<OddsDetailListAdapter.ViewHolder>() {
 
@@ -38,6 +42,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     var betInfoList: MutableList<BetInfoListData> = mutableListOf()
         set(value) {
             field = value
+            oddsDetailDataList.forEach { data ->
+                data.oddArrayList.forEach { odd ->
+                    odd?.isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
+
+                }
+            }
             notifyDataSetChanged()
         }
 
@@ -55,7 +65,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
     var awayName: String? = null
 
 
-    var sportCode: String? = null
+    var sportCode: GameType? = null
 
 
     private lateinit var code: String
@@ -99,6 +109,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             type == PlayCate.OU_TTS1ST.value -> return PlayCate.OU_TTS1ST.ordinal
 
+            TextUtil.compareWithGameKey(type, PlayCate.CS_SEG.value) -> return PlayCate.CS_SEG.ordinal
             TextUtil.compareWithGameKey(type, PlayCate.CS.value) -> return PlayCate.CS.ordinal
 
             type == PlayCate.FGLG.value -> return PlayCate.FGLG.ordinal
@@ -135,6 +146,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             /**/
             type == PlayCate.HWMG_SINGLE.value -> return PlayCate.HWMG_SINGLE.ordinal
+            type == PlayCate.HWMG.value -> return PlayCate.HWMG.ordinal
             TextUtil.compareWithGameKey(type, PlayCate.WM.value) -> return PlayCate.WM.ordinal
 
             type == PlayCate.CLSH.value -> return PlayCate.CLSH.ordinal
@@ -168,7 +180,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             ) -> return PlayCate.SINGLE_FLG.ordinal
 
 
-            type == PlayCate.SINGLE.value -> return if (sportCode == GameType.FT.key) {
+            type == PlayCate.SINGLE.value -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE.ordinal
             } else {
                 PlayCate.SINGLE_2.ordinal
@@ -177,7 +189,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_1ST.value
-            ) -> return if (sportCode == GameType.FT.key) {
+            ) -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_1ST.ordinal
             } else {
                 PlayCate.SINGLE_1ST_2.ordinal
@@ -186,13 +198,13 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_2ST.value
-            ) -> return if (sportCode == GameType.FT.key) {
+            ) -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_2ST.ordinal
             } else {
                 PlayCate.SINGLE_2ST_2.ordinal
             }
 
-            type == PlayCate.SINGLE_OT.value -> return if (sportCode == GameType.FT.key) {
+            type == PlayCate.SINGLE_OT.value -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_OT.ordinal
             } else {
                 PlayCate.SINGLE_OT_2.ordinal
@@ -201,17 +213,24 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             TextUtil.compareWithGameKey(
                 type,
                 PlayCate.SINGLE_SEG.value
-            ) -> return if (sportCode == GameType.FT.key) {
+            ) -> return if (sportCode == GameType.FT) {
                 PlayCate.SINGLE_SEG.ordinal
             } else {
                 PlayCate.SINGLE_SEG_2.ordinal
             }
 
-            type == PlayCate.NGOAL_1.value -> return PlayCate.NGOAL_1.ordinal
+            TextUtil.compareWithGameKey(type, PlayCate.NGOAL.value) -> return PlayCate.NGOAL.ordinal
 
             type == PlayCate.TWTN.value -> return PlayCate.TWTN.ordinal
 
             type == PlayCate.EPS.value -> return PlayCate.EPS.ordinal
+
+            type == PlayCate.CORNER_SINGLE.value -> return PlayCate.CORNER_SINGLE.ordinal
+
+            type == PlayCate.ADVANCE.value -> return PlayCate.ADVANCE.ordinal
+
+            type == PlayCate.CORNER_1ST_OU.value -> return PlayCate.CORNER_1ST_OU.ordinal
+            type == PlayCate.CORNER_2ST_OU.value -> return PlayCate.CORNER_2ST_OU.ordinal
 
             else -> {
                 return PlayCate.UNCHECK.ordinal
@@ -252,7 +271,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             PlayCate.HTFT.ordinal,
             PlayCate.W3.ordinal,
             PlayCate.HDP_ONE_LIST.ordinal,
-            PlayCate.NGOAL_1.ordinal,
             PlayCate.HWMG_SINGLE.ordinal -> LayoutType.ONE_LIST.layout
 
             PlayCate.TWTN.ordinal,
@@ -271,12 +289,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             PlayCate.OU_I_OT.ordinal,
             PlayCate.OU_SEG.ordinal -> LayoutType.TWO_SPAN_COUNT.layout
 
+            PlayCate.CORNER_SINGLE.ordinal,
+            PlayCate.NGOAL.ordinal,
             PlayCate.SINGLE.ordinal,
             PlayCate.SINGLE_1ST.ordinal,
             PlayCate.SINGLE_2ST.ordinal,
             PlayCate.SINGLE_OT.ordinal,
             PlayCate.SINGLE_SEG.ordinal -> LayoutType.SINGLE.layout
 
+            PlayCate.CORNER_1ST_OU.ordinal,
+            PlayCate.CORNER_2ST_OU.ordinal,
+            PlayCate.ADVANCE.ordinal,
+            PlayCate.HWMG.ordinal,
             PlayCate.SINGLE_2.ordinal,
             PlayCate.SINGLE_1ST_2.ordinal,
             PlayCate.SINGLE_2ST_2.ordinal,
@@ -451,13 +475,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         fun bindModel(oddsDetail: OddsDetailListData) {
 
-            val type = oddsDetail.gameType
-
-            val nameByLanguage = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
-
-            tvGameName?.text = if (type.contains(":"))
-                nameByLanguage.plus("  ").plus(type.split(":")[1])
-            else nameByLanguage
+            tvGameName?.text = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
 
             oddsDetailPin?.apply {
                 isActivated = oddsDetail.isPin
@@ -499,12 +517,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 PlayCate.CS.ordinal -> forCS(oddsDetail)
 
+                PlayCate.CORNER_SINGLE.ordinal,
+                PlayCate.NGOAL.ordinal,
                 PlayCate.SINGLE_OT.ordinal,
                 PlayCate.SINGLE_SEG.ordinal,
                 PlayCate.SINGLE_1ST.ordinal,
                 PlayCate.SINGLE_2ST.ordinal,
                 PlayCate.SINGLE.ordinal -> forSingle(oddsDetail, 3)
 
+                PlayCate.CORNER_1ST_OU.ordinal,
+                PlayCate.CORNER_2ST_OU.ordinal,
+                PlayCate.ADVANCE.ordinal,
+                PlayCate.HWMG.ordinal,
                 PlayCate.SINGLE_OT_2.ordinal,
                 PlayCate.SINGLE_SEG_2.ordinal,
                 PlayCate.SINGLE_1ST_2.ordinal,
@@ -513,11 +537,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 PlayCate.FGLG.ordinal -> forFGLG(oddsDetail)
 
+                PlayCate.CS_SEG.ordinal,
                 PlayCate.HWMG_SINGLE.ordinal,
                 PlayCate.WBH.ordinal,
                 PlayCate.WEH.ordinal,
                 PlayCate.SBH.ordinal,
-                PlayCate.NGOAL_1.ordinal,
                 PlayCate.HDP_ONE_LIST.ordinal,
                 PlayCate.W3.ordinal,
                 PlayCate.DC.ordinal,
@@ -562,6 +586,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     }
                 }
             }
+
+            if(oddsDetail.isPin){
+                setVisibility(true)
+            }
         }
 
         private fun forEPS(oddsDetail: OddsDetailListData) {
@@ -571,7 +599,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeEPSAdapter(
                     oddsDetail,
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
             }
@@ -584,7 +611,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeOneListAdapter(
                     oddsDetail,
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
                 layoutManager = LinearLayoutManager(itemView.context)
@@ -605,7 +631,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             for (odd in oddsDetail.oddArrayList) {
                 if (odd?.name?.contains(" - ") == true) {
-                    val stringArray: List<String> = odd.name?.split(" - ") ?: listOf()
+                    val stringArray: List<String> = odd.name.split(" - ")
                     if (stringArray[0].toInt() > stringArray[1].toInt()) {
                         homeList.add(odd)
                     }
@@ -626,7 +652,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         adapter = TypeOneListAdapter(
                             od,
                             onOddClickListener,
-                            betInfoList,
                             oddsType
                         )
                         layoutManager = LinearLayoutManager(itemView.context)
@@ -650,19 +675,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             rvHome?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, homeList, onOddClickListener, betInfoList, oddsType)
+                    TypeCSAdapter(oddsDetail, homeList, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvDraw?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, drawList, onOddClickListener, betInfoList, oddsType)
+                    TypeCSAdapter(oddsDetail, drawList, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
             rvAway?.apply {
                 adapter =
-                    TypeCSAdapter(oddsDetail, awayList, onOddClickListener, betInfoList, oddsType)
+                    TypeCSAdapter(oddsDetail, awayList, onOddClickListener, oddsType)
                 layoutManager = LinearLayoutManager(itemView.context)
             }
 
@@ -674,7 +699,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
             rvBet?.apply {
-                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, betInfoList, oddsType)
+                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
             }
         }
@@ -684,7 +709,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeTwoSpanCountGridAdapter(
                     oddsDetail,
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
                 layoutManager = GridLayoutManager(itemView.context, 2)
@@ -698,7 +722,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 adapter = TypeOneListAdapter(
                     selectFGLG(oddsDetail),
                     onOddClickListener,
-                    betInfoList,
                     oddsType
                 )
                 layoutManager = LinearLayoutManager(itemView.context)
@@ -778,7 +801,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         teamNameList
                     ),
                     onOddClickListener,
-                    betInfoList,
                     oddsType,
                     object : TypeSCOAdapter.OnMoreClickListener {
                         override fun click() {
@@ -947,39 +969,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun group6AdapterSetup(oddsDetail: OddsDetailListData): Type6GroupAdapter =
-            Type6GroupAdapter(
-                oddsDetail.apply {
-                    groupItem =
-                        oddsDetail.oddArrayList.groupBy { it?.spread } as HashMap<String, List<Odd?>>
-                },
+        private fun group6AdapterSetup(oddsDetail: OddsDetailListData): Type6GroupAdapter {
+            return Type6GroupAdapter(
+                oddsDetail,
                 onOddClickListener,
-                betInfoList,
                 oddsType
             )
+        }
 
         private fun group4AdapterSetup(oddsDetail: OddsDetailListData): Type4GroupAdapter =
             Type4GroupAdapter(
-                oddsDetail.apply {
-
-                    //依key分組 有元件需要用key做顯示
-                    val keys = (oddsDetail.oddArrayList
-                        .groupBy { it?.spread }
-                        .filter { it.key != null } as HashMap<String, List<Odd?>>)
-                        .mapTo(mutableListOf(), { it.key })
-
-                    //依key數量等分
-                    val splitList = splitSameLength(oddsDetail.oddArrayList, keys.size)
-
-                    groupItem = HashMap<String, List<Odd?>>().apply {
-                        for (i in splitList.indices) {
-                            this[keys[i]] = splitList[i]
-                        }
-                    }
-
-                },
+                oddsDetail,
                 onOddClickListener,
-                betInfoList,
                 oddsType
             )
 

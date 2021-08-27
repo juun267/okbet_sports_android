@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -139,7 +140,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initRecyclerView() {
         initAdapter()
 
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
@@ -182,7 +183,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 viewModel.saveOddsHasChanged(matchOdd)
             }
 
-            override fun refreshAmount() {
+            override fun refreshBetInfoTotal() {
+                checkAllAmountCanBet()
                 refreshAllAmount()
             }
 
@@ -190,6 +192,24 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 showParlayDescription(parlayType, parlayRule)
             }
         })
+    }
+
+    private fun checkAllAmountCanBet() {
+        val betList = getCurrentBetList()
+        val parlayList = getCurrentParlayList()
+        betList.forEach {
+            if (it.amountError) {
+                btn_bet.amountCanBet = false
+                return
+            }
+        }
+        parlayList.forEach {
+            if (it.amountError) {
+                btn_bet.amountCanBet = false
+                return
+            }
+        }
+        btn_bet.amountCanBet = true
     }
 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
@@ -205,11 +225,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val betCount =
             list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
         val winnableAmount = list.sumByDouble {
-            it.betAmount * getOdds(
-                it.matchOdd,
-                oddsType
-            )
-        } + parlayList.sumByDouble { it.betAmount * getOdds(it, oddsType) }
+            getWinnable(it.betAmount, getOdds(it.matchOdd, oddsType))
+        } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType)) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -220,6 +237,14 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
         setupBtnBetAmount(totalBetAmount)
+    }
+
+    private fun getWinnable(betAmount: Double, odds: Double): Double {
+        var winnable = betAmount * odds
+        if (oddsType == OddsType.EU) {
+            winnable -= betAmount
+        }
+        return winnable
     }
 
     private fun setupBtnBetAmount(totalBetAmount: Double?) {
@@ -288,6 +313,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
                 subscribeChannel(list)
                 refreshAllAmount(list)
+                checkAllAmountCanBet()
             }
         })
 
@@ -453,7 +479,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setCancelable(false)
             setCanceledOnTouchOutside(false)
             view.apply {
-                tv_parlay_type.text = parlayType
+                tv_parlay_type.text = TextUtil.replaceParlayByC(parlayType)
                 tv_parlay_rule.text = parlayRule
             }
             btn_close.setOnClickListener {

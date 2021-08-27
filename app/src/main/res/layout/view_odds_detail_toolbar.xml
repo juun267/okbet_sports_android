@@ -56,75 +56,206 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="欧洲足球锦标赛2020" />
 
-        <ImageView
-            android:id="@+id/img_game_detail"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/img_odd_detail_title_bg"
-            app:layout_constraintTop_toBottomOf="@+id/iv_title_bar" />
-
-        <TextView
-            android:id="@+id/tv_home_name"
-            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/activity_vertical_margin"
-            android:layout_marginTop="10dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.matchOdd.matchInfo.homeName}"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tv_away_name"
-            app:layout_constraintEnd_toStartOf="@+id/tv_time_top"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/img_game_detail"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="義大利" />
+            android:minHeight="68dp"
+            app:layout_constraintTop_toBottomOf="@+id/iv_title_bar">
 
-        <TextView
-            android:id="@+id/tv_away_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="10dp"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.matchOdd.matchInfo.awayName}"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/textSize16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/img_game_detail"
-            app:layout_constraintEnd_toStartOf="@+id/tv_time_top"
-            app:layout_constraintStart_toStartOf="@id/tv_home_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_home_name"
-            tools:text="瑞士" />
+            <ImageView
+                android:id="@+id/img_game_detail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/img_odd_detail_title_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_time_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/activity_vertical_margin"
-            android:textColor="@color/colorSilver"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_time_bottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/img_game_detail"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="17 / 16" />
+            <TextView
+                android:id="@+id/tv_home_score"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="@dimen/activity_vertical_margin"
+                android:textColor="@color/colorOrangeLight"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_home_name"
+                app:layout_constraintEnd_toStartOf="@+id/tv_home_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_home_name"
+                tools:text="5" />
 
-        <TextView
-            android:id="@+id/tv_time_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorSilver"
-            android:textSize="@dimen/textSize12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_game_detail"
-            app:layout_constraintEnd_toEndOf="@id/tv_time_top"
-            app:layout_constraintStart_toStartOf="@id/tv_time_top"
-            app:layout_constraintTop_toBottomOf="@id/tv_time_top"
-            tools:text="03:00" />
+            <TextView
+                android:id="@+id/tv_home_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_vertical_margin"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.matchOdd.matchInfo.homeName}"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tv_away_name"
+                app:layout_constraintEnd_toStartOf="@+id/tv_home_score_total"
+                app:layout_constraintStart_toEndOf="@+id/tv_home_score"
+                app:layout_constraintTop_toTopOf="@id/img_game_detail"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="義大利" />
+
+            <TextView
+                android:id="@+id/tv_home_score_total"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:textColor="@color/colorOrangeLight"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                android:gravity="center|end"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_home_name"
+                app:layout_constraintEnd_toStartOf="@+id/tv_home_score_live"
+                app:layout_constraintStart_toEndOf="@+id/tv_home_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_home_name"
+                tools:text="5" />
+
+            <TextView
+                android:id="@+id/tv_home_score_live"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                android:gravity="center|end"
+                android:visibility="gone"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_home_score_total"
+                app:layout_constraintEnd_toStartOf="@+id/ll_time"
+                app:layout_constraintStart_toEndOf="@+id/tv_home_score_total"
+                app:layout_constraintTop_toTopOf="@+id/tv_home_score_total"
+                tools:text="5" />
+
+            <TextView
+                android:id="@+id/tv_away_score"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:textColor="@color/colorOrangeLight"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
+                app:layout_constraintEnd_toStartOf="@+id/tv_away_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_away_name"
+                tools:text="5" />
+
+            <TextView
+                android:id="@+id/tv_away_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="10dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{gameViewModel.oddsDetailResult.peekContent().oddsDetailData.matchOdd.matchInfo.awayName}"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tv_status_left"
+                app:layout_constraintEnd_toStartOf="@+id/tv_away_score_total"
+                app:layout_constraintStart_toStartOf="@id/tv_home_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_home_name"
+                tools:text="瑞士" />
+
+            <TextView
+                android:id="@+id/tv_away_score_total"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:textColor="@color/colorOrangeLight"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                android:gravity="center|end"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
+                app:layout_constraintEnd_toStartOf="@+id/tv_away_score_live"
+                app:layout_constraintStart_toEndOf="@+id/tv_away_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_away_name"
+                tools:text="5" />
+
+            <TextView
+                android:id="@+id/tv_away_score_live"
+                android:layout_width="32dp"
+                android:layout_height="0dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize16sp"
+                android:textStyle="bold"
+                android:gravity="center|end"
+                android:visibility="gone"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_away_score_total"
+                app:layout_constraintEnd_toStartOf="@+id/ll_time"
+                app:layout_constraintStart_toEndOf="@+id/tv_away_score_total"
+                app:layout_constraintTop_toTopOf="@+id/tv_away_score_total"
+                tools:text="5" />
+
+            <LinearLayout
+                android:id="@+id/ll_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_home_name">
+
+                <TextView
+                    android:id="@+id/tv_time_top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSilver"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="17 / 16" />
+
+                <TextView
+                    android:id="@+id/tv_time_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSilver"
+                    android:textSize="@dimen/textSize12sp"
+                    tools:text="03:00" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_status_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/colorWhite8"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_away_name"
+                tools:text="第一節14-15  第二節15-14" />
+
+            <TextView
+                android:id="@+id/tv_status_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:textColor="@color/colorWhite8"
+                android:textSize="@dimen/textSize12sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_status_left"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_status_left"
+                tools:text="14-15  15-14" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

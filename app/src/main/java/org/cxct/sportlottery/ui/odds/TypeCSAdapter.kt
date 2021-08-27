@@ -5,19 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
 
 
 class TypeCSAdapter(
     private val oddsDetail: OddsDetailListData,
     private val oddsList: List<Odd?>,
     private val onOddClickListener: OnOddClickListener,
-    private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<TypeCSAdapter.ViewHolder>() {
 
@@ -45,15 +47,50 @@ class TypeCSAdapter(
 
         private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
 
+        private fun checkKey(key: String): Boolean {
+            return TextUtil.compareWithGameKey(oddsDetail.gameType, key)
+        }
+
         fun bindModel(odd: Odd?) {
             btnOdds?.apply {
                 setupOdd(odd, oddsType)
                 setupOddState(this, odd)
-                isSelected = betInfoList.any { it.matchOdd.oddsId == odd?.id }
-            }
+                setOnClickListener {
+                    odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                }
 
-            itemView.setOnClickListener {
-                odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                when {
+                    checkKey(PlayCate.SINGLE_OU.value) || checkKey(PlayCate.DC_OU.value) || checkKey(PlayCate.OU_BTS.value) -> {
+                        tv_name.text = when (adapterPosition) {
+                            0 -> itemView.context.getString(R.string.odds_button_name_o)
+                            else -> itemView.context.getString(R.string.odds_button_name_u)
+                        }
+                    }
+
+                    checkKey(PlayCate.SINGLE_BTS.value) || checkKey(PlayCate.DC_BTS.value) -> {
+                        tv_name.text = when (adapterPosition) {
+                            0 -> itemView.context.getString(R.string.odds_button_name_y)
+                            else -> itemView.context.getString(R.string.odds_button_name_n)
+                        }
+                    }
+
+                    checkKey(PlayCate.OU_OE.value) -> {
+                        tv_name.text = when (adapterPosition) {
+                            0 -> itemView.context.getString(R.string.odds_button_name_singular)
+                            else -> itemView.context.getString(R.string.odds_button_name_dual)
+                        }
+                    }
+
+                    checkKey(PlayCate.OU_TTS1ST.value) -> {
+                        val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("&")
+                        tv_name.text = oddsName
+                    }
+
+                    checkKey(PlayCate.SINGLE_FLG.value) -> {
+                        val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("-")
+                        tv_name.text = oddsName?.plus(context.getString(R.string.odds_button_name_plus_flg))
+                    }
+                }
             }
         }
 

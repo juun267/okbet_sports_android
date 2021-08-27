@@ -27,6 +27,7 @@ import org.cxct.sportlottery.util.getOdds
  * 2021/07/05 擴展配適直角
  * 2021/07/27 合併其他odd button
  * 2021/07/29 新增特優賠率樣式
+ * 2021/08/16 新增isSelect判斷
  */
 class OddsButton @JvmOverloads constructor(
     context: Context,
@@ -97,6 +98,8 @@ class OddsButton @JvmOverloads constructor(
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
+        isSelected = odd?.isSelected ?: false
+
         betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
@@ -112,6 +115,8 @@ class OddsButton @JvmOverloads constructor(
             setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_bottom_text_eps))
             text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         }
+
+        isSelected = odd?.isSelected ?: false
 
         betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }

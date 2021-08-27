@@ -33,6 +33,7 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:text="@string/account_history_overview"
+        android:textStyle="bold"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/iv_bg"

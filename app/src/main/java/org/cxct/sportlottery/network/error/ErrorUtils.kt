@@ -54,6 +54,7 @@ import org.cxct.sportlottery.network.Constants.THIRD_QUERY_TRANSFERS
 import org.cxct.sportlottery.network.Constants.THIRD_REBATES
 import org.cxct.sportlottery.network.Constants.THIRD_TRANSFER
 import org.cxct.sportlottery.network.Constants.UPLOAD_IMG
+import org.cxct.sportlottery.network.Constants.USER_CREDIT_CIRCLE_HISTORY
 import org.cxct.sportlottery.network.Constants.USER_EDIT_ICON_URL
 import org.cxct.sportlottery.network.Constants.USER_EDIT_NICKNAME
 import org.cxct.sportlottery.network.Constants.USER_INFO
@@ -113,6 +114,7 @@ import org.cxct.sportlottery.network.third_game.third_games.ThirdGamesResult
 import org.cxct.sportlottery.network.third_game.third_games.other_bet_history.OtherBetHistoryResult
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.network.uploadImg.UploadImgResult
+import org.cxct.sportlottery.network.user.credit.CreditCircleHistoryResult
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.network.user.info.UserInfoResult
 import org.cxct.sportlottery.network.user.money.UserMoneyResult
@@ -445,6 +447,17 @@ object ErrorUtils {
                         return MatchCategoryQueryResult(
                             it.code,
                             it.msg,
+                            it.success,
+                            null,
+                            null
+                        ) as T
+                    }
+                    (url.contains(USER_CREDIT_CIRCLE_HISTORY)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return CreditCircleHistoryResult(
+                            it.code,
+                            it.msg,
+                            null,
                             it.success,
                             null,
                             null

@@ -166,15 +166,13 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 data.vpRecommendAdapter?.onClickMoreListener = onClickMoreListener
 
                 view_pager.adapter = data.vpRecommendAdapter
-
+                indicator_view.setupWithViewPager2(view_pager)
                 indicator_view.apply {
                     visibility = if (data.isOutright == 1 || data.oddBeans.size <= 1) {
                         View.GONE
                     } else {
                         View.VISIBLE
                     }
-
-                    setupWithViewPager2(view_pager)
                 }
             }
         }

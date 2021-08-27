@@ -52,8 +52,8 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sportsrule.cxct.org/"
-                else -> "https://sportsrule.cxct.org/us"
+                LanguageManager.Language.ZH -> "https://sportsapi.cxsport.net/sports-rule/"
+                else -> "https://sportsapi.cxsport.net/sports-rule/us"
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -173,6 +173,7 @@ object Constants {
     const val USER_UPDATE_PWD = "/api/front/user/updatepwd" //更新密码
     const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
     const val USER_WITHDRAW_INFO = "/api/front/user/setWdUserInfo" //設置提款資料
+    const val USER_CREDIT_CIRCLE_HISTORY = "/api/front/user/credit/circle/history"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片

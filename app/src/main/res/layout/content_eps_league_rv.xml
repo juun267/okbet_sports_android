@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_marginBottom="10dp"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical"
+    tools:context=".ui.game.hall.adapter.EpsListAdapter">
 
     <LinearLayout
         android:id="@+id/ll_league_title"
@@ -19,12 +20,12 @@
             android:id="@+id/tv_league_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="欧洲足球锦标赛2020"
-            android:layout_weight="1"
-            android:textSize="@dimen/textSize16sp"
             android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
-            android:textColor="@color/colorBlackLight"/>
+            tools:text="欧洲足球锦标赛2020" />
 
     </LinearLayout>
 
@@ -32,6 +33,7 @@
         android:id="@+id/rv_league_odd_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
         android:orientation="vertical"
         android:paddingBottom="14dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
