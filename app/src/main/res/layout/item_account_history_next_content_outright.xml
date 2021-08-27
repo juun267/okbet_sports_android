@@ -140,7 +140,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
                 app:layout_constraintStart_toEndOf="@id/tv_play_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name"
-                app:oddNoAtFormat="@{matchOdd.odds}"
+                app:oddFormat="@{matchOdd.odds}"
                 tools:text="\@1.860" />
 
             <TextView

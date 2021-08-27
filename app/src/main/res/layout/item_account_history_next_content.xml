@@ -195,7 +195,7 @@
                 android:gravity="center"
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
-                app:oddNoAtFormat="@{matchOdd.odds}"
+                app:oddFormat="@{matchOdd.odds}"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
                 app:layout_constraintStart_toEndOf="@+id/tv_at"
                 app:layout_constraintTop_toTopOf="@+id/tv_team_name"

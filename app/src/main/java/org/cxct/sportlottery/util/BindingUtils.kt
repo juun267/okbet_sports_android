@@ -228,13 +228,6 @@ fun TextView.setOddFormat(odd: Double?) {
     }
 }
 
-@BindingAdapter("oddNoAtFormat")
-fun TextView.setOddFormatNoSymbol(odd: Double?) {
-    odd?.let {
-        text = "${TextUtil.formatForOdd(it)}"
-    }
-}
-
 @BindingAdapter("moneyColor")
 fun TextView.setMoneyColor(profit: Double = 0.0) {
 
