@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.SimpleAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +16,6 @@ import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import org.cxct.sportlottery.util.setOddFormat
 
