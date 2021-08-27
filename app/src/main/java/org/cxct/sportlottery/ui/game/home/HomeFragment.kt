@@ -75,10 +75,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         override fun onClickBet(
             matchOdd: MatchOdd,
             odd: Odd,
-            playCateName: String?,
-            playName: String?
+            playCateName: String?
         ) {
-            addOddsDialog(matchOdd, odd, playCateName, playName)
+            addOddsDialog(matchOdd, odd, playCateName)
         }
     }
 
@@ -127,16 +126,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initTable() {
-        rv_game_table.layoutManager = SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_game_table.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         rv_game_table.adapter = mRvGameTable4Adapter
         mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
             override fun onClickBet(
                 matchOdd: MatchOdd,
                 odd: Odd,
-                playCateName: String?,
-                playName: String?
+                playCateName: String?
             ) {
-                addOddsDialog(matchOdd, odd, playCateName, playName)
+                addOddsDialog(matchOdd, odd, playCateName)
             }
         }
         mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
@@ -183,8 +181,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             override fun onClickBet(
                 matchOdd: MatchOdd,
                 odd: Odd,
-                playCateName: String?,
-                playName: String?
+                playCateName: String?
             ) {
                 GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
 
@@ -322,8 +319,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun addOddsDialog(
         matchOdd: MatchOdd,
         odd: Odd,
-        playCateName: String?,
-        playName: String?
+        playCateName: String?
     ) {
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
             matchOdd.matchInfo?.let { matchInfo ->
@@ -331,7 +327,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     mSelectMatchType,
                     gameType,
                     playCateName ?: "",
-                    playName ?: "",
                     matchInfo,
                     odd,
                     ChannelType.HALL,

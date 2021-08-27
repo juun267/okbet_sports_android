@@ -6,11 +6,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.android.synthetic.main.fragment_game_v3.view.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
@@ -26,6 +28,7 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.PlayCateUtils
@@ -60,11 +63,19 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private val leagueAdapter by lazy {
         LeagueAdapter(MatchType.MY_EVENT).apply {
             leagueOddListener = LeagueOddListener(
-                { _, _ ->
-                    //TODO 目前後端回傳資料無法分辨MatchType類型，等可以分辨時會在區分要連到OddsDetail/OddsDetailLive
+                { matchId, matchInfoList ->
+                    if (matchInfoList.firstOrNull()?.isInPlay == true) {
+                        matchId?.let {
+                            navOddsDetailLive(matchId)
+                        }
+                    } else {
+                        matchId?.let {
+                            navOddsDetail(matchId, matchInfoList)
+                        }
+                    }
                 },
-                { matchInfo, odd, playCateName, playName ->
-                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                { matchInfo, odd, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateName)
                 },
                 { matchId ->
                     viewModel.getQuickList(matchId)
@@ -162,7 +173,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                 val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
                                     matchOdd.matchInfo?.id == matchId
                                 }
-                                //TODO Bill matchStatusCO.status == 100 如果沒有資料的UI顯示 待確認
                                 updateMatchOdd?.let {
                                     if (matchStatusCO.status == 100) {
                                         leagueOdd.matchOdds.remove(updateMatchOdd)
@@ -177,6 +187,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                             matchStatusCO.awayScore
                                         updateMatchOdd.matchInfo?.statusName =
                                             matchStatusCO.statusName
+
+                                        updateMatchOdd.matchInfo?.isInPlay = true
 
                                         leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                                     }
@@ -212,6 +224,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                         }
                                         else -> null
                                     }
+                                    updateMatchOdd.matchInfo?.isInPlay = true
 
                                     leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                                 }
@@ -533,7 +546,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateName: String,
-        playName: String
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -546,7 +558,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             MatchType.MY_EVENT,
             gameType,
             playCateName,
-            playName,
             matchInfo,
             odd,
             ChannelType.HALL
@@ -562,6 +573,39 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     matchOdd.matchInfo?.id
                 )
             }
+        }
+    }
+
+    private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+
+        gameType?.let {
+            val action =
+                MyFavoriteFragmentDirections.actionMyFavoriteFragmentToOddsDetailFragment(
+                    MatchType.MY_EVENT,
+                    gameType,
+                    matchId,
+                    matchInfoList.toTypedArray()
+                )
+
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun navOddsDetailLive(matchId: String) {
+        val gameType =
+            GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
+
+        gameType?.let {
+            val action =
+                MyFavoriteFragmentDirections.actionMyFavoriteFragmentToOddsDetailLiveFragment(
+                    MatchType.MY_EVENT,
+                    gameType,
+                    matchId
+                )
+
+            findNavController().navigate(action)
         }
     }
 }

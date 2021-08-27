@@ -41,9 +41,13 @@ class CreditRecordViewModel(
     val userCreditCircleHistory: LiveData<List<Row>>
         get() = _userCreditCircleHistory
 
+    val quotaAmount: LiveData<String>
+        get() = _quotaAmount
+
     private val _loading = MutableLiveData<Boolean>()
     private val _userCreditCircleHistory = MutableLiveData<List<Row>>()
     private val _remainDay = MutableLiveData<String>()
+    private val _quotaAmount = MutableLiveData<String>()
 
     override var pageSize: Int = DEFAULT_PAGE_SIZE
     override var pageSizeLoad: Int = 0
@@ -70,11 +74,13 @@ class CreditRecordViewModel(
         }
 
         viewModelScope.launch {
-            val response = OneBoSportApi.userService.getUserCreditCircleHistory(
-                CreditCircleHistoryRequest(pageIndex, pageSize)
-            )
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.userService.getUserCreditCircleHistory(
+                    CreditCircleHistoryRequest(pageIndex, pageSize)
+                )
+            }
 
-            response.body()?.rows?.let {
+            result?.rows?.let {
                 pageSizeLoad += it.size
 
                 it.postRemainDay()
@@ -84,7 +90,9 @@ class CreditRecordViewModel(
                 _userCreditCircleHistory.postValue(it)
             }
 
-            pageSizeTotal = response.body()?.total ?: 0
+            result?.other?.postQuotaAmount()
+
+            pageSizeTotal = result?.total ?: 0
 
             _loading.postValue(false)
         }
@@ -92,7 +100,7 @@ class CreditRecordViewModel(
 
     private fun List<Row>.postRemainDay() {
         this.firstOrNull()?.endTime?.let { endTime ->
-            _remainDay.postValue(TimeUtil.timeFormat(endTime - System.currentTimeMillis(), "dd"))
+            _remainDay.postValue(TimeUtil.timeFormat(endTime - System.currentTimeMillis(), "d"))
         }
     }
 
@@ -116,6 +124,12 @@ class CreditRecordViewModel(
             it.reward?.let { reward ->
                 it.formatReward = TextUtil.formatMoney(reward)
             }
+        }
+    }
+
+    private fun Row.postQuotaAmount() {
+        this.reward?.let { reward ->
+            _quotaAmount.postValue(TextUtil.formatMoney(reward))
         }
     }
 }

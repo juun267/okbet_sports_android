@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -263,6 +262,7 @@ class BetInfoRepository(val androidContext: Context) {
                 this.matchType = matchType
                 this.subscribeChannelType = subscribeChannelType
                 this.playCateMenuCode = playCateMenuCode
+                this.outrightMatchInfo = matchInfo
             }
 
             if (betList.size == 0) {
