@@ -140,8 +140,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchInfo, odd, playCateName, playName ->
-                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                { matchInfo, odd, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateName)
                 },
                 { matchId ->
                     matchId?.let {
@@ -165,8 +165,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             addOddsDialog(
                 betMatchInfo,
                 odd,
-                getString(R.string.game_tab_price_boosts_odd),
-                odd.name ?: ""
+                getString(R.string.game_tab_price_boosts_odd)
             )
         }, { matchInfo ->
             setEpsBottomSheet(matchInfo)
@@ -470,7 +469,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 hideLoading()
 
                 if (oddsListResult.success) {
-                    val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
+                    val leagueOdds = oddsListResult.oddsListData?.leagueOddsFilter
+                        ?: oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
                     val gameType = GameType.getGameType(oddsListResult.oddsListData?.sport?.code)
 
@@ -705,6 +705,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             leagueAdapter.notifyDataSetChanged()
         })
+
+        viewModel.leagueFilterList.observe(this.viewLifecycleOwner, { leagueList ->
+            game_toolbar_champion.isSelected = leagueList.isNotEmpty()
+        })
     }
 
     private fun updateLeaguePin(leagueListPin: List<String>) {
@@ -886,12 +890,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                         socketOdd?.let {
                                             epsOdd.updateOddsState(socketOdd, epsOddsType)
                                         }
+                                        epsListAdapter.notifyItemChanged(index)
                                     }
                                 }
-
                             }
                         }
-                        epsListAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -1004,6 +1007,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         this.odds = oddSocket.odds
         this.hkOdds = oddSocket.hkOdds
         this.status = oddSocket.status
+        this.extInfo = oddSocket.extInfo
 
         return this
     }
@@ -1169,6 +1173,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         gameType?.let {
             val action = GameV3FragmentDirections.actionGameV3FragmentToOddsDetailLiveFragment(
+                args.matchType,
                 gameType,
                 matchId,
             )
@@ -1196,8 +1201,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun addOddsDialog(
         matchInfo: MatchInfo?,
         odd: Odd,
-        playCateName: String,
-        playName: String
+        playCateName: String
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -1208,7 +1212,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     args.matchType,
                     gameType,
                     playCateName,
-                    playName,
                     matchInfo,
                     odd,
                     ChannelType.HALL,

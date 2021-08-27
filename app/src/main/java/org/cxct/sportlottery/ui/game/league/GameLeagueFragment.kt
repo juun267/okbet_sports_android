@@ -66,8 +66,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
                 },
-                { matchInfo, odd, playCateName, playName ->
-                    addOddsDialog(matchInfo, odd, playCateName, playName)
+                { matchInfo, odd, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateName)
                     hideKeyboard()
                 },
                 { matchId ->
@@ -554,6 +554,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun navOddsDetailLive(matchId: String) {
         val action = GameLeagueFragmentDirections.actionGameLeagueFragmentToOddsDetailLiveFragment(
+            args.matchType,
             args.gameType,
             matchId
         )
@@ -564,15 +565,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun addOddsDialog(
         matchInfo: MatchInfo?,
         odd: Odd,
-        playCateName: String,
-        playName: String
+        playCateName: String
     ) {
         matchInfo?.let {
             viewModel.updateMatchBetList(
                 args.matchType,
                 args.gameType,
                 playCateName,
-                playName,
                 matchInfo,
                 odd,
                 ChannelType.HALL,

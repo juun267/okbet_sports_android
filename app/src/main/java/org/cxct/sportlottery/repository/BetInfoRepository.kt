@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
@@ -51,14 +50,6 @@ class BetInfoRepository(val androidContext: Context) {
     private val _parlayList = MutableLiveData<MutableList<ParlayOdd>>()
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = _parlayList
-
-
-    val _isParlayPage = MutableLiveData<Boolean>().apply {
-        value = false
-    }
-    val isParlayPage: LiveData<Boolean>
-        get() = _isParlayPage
-
 
     private val _removeItem = MutableLiveData<Event<String?>>()
     val removeItem: LiveData<Event<String?>>
@@ -162,6 +153,7 @@ class BetInfoRepository(val androidContext: Context) {
                         newParlayList[index].apply {
                             betAmount = parlayOdd.betAmount
                             allSingleInput = parlayOdd.allSingleInput
+                            amountError = parlayOdd.amountError
                         }
                     }
                 }
@@ -189,14 +181,6 @@ class BetInfoRepository(val androidContext: Context) {
 
         return parlayOddList
     }
-
-
-    fun getCurrentBetInfoList() {
-        val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-        checkBetInfoContent(betList)
-        _betInfoList.postValue(Event(betList))
-    }
-
 
     fun removeItem(oddId: String?) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
@@ -278,6 +262,7 @@ class BetInfoRepository(val androidContext: Context) {
                 this.matchType = matchType
                 this.subscribeChannelType = subscribeChannelType
                 this.playCateMenuCode = playCateMenuCode
+                this.outrightMatchInfo = matchInfo
             }
 
             if (betList.size == 0) {
@@ -423,35 +408,21 @@ class BetInfoRepository(val androidContext: Context) {
 
         if (updateBetInfoList.isNullOrEmpty()) return
 
-        when (_isParlayPage.value) {
-            true -> {
-                val gameType = GameType.getGameType(updateBetInfoList[0].matchOdd.gameType)
+        updateBetInfoList.forEach { betInfoListData ->
+            betInfoListData.matchType?.let { matchType ->
+                val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
                 gameType?.let {
-                    matchOddList.value?.let {
-                        _parlayList.value =
-                            getParlayOdd(MatchType.PARLAY, gameType, it).toMutableList()
-                    }
+                    betInfoListData.parlayOdds = getParlayOdd(
+                        matchType,
+                        gameType,
+                        mutableListOf(betInfoListData.matchOdd)
+                    ).first()
                 }
-            }
-
-            false -> {
-                updateBetInfoList.forEach { betInfoListData ->
-                    betInfoListData.matchType?.let { matchType ->
-                        val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
-                        gameType?.let {
-                            betInfoListData.parlayOdds = getParlayOdd(
-                                matchType,
-                                gameType,
-                                mutableListOf(betInfoListData.matchOdd)
-                            ).first()
-                        }
-                    }
-                }
-                checkBetInfoContent(updateBetInfoList)
-                updateBetOrderParlay(updateBetInfoList)
-                _betInfoList.value = Event(updateBetInfoList)
             }
         }
+        checkBetInfoContent(updateBetInfoList)
+        updateBetOrderParlay(updateBetInfoList)
+        _betInfoList.value = Event(updateBetInfoList)
     }
 
 

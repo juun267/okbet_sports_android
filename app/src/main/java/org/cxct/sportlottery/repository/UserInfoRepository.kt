@@ -119,6 +119,8 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             wechat = userInfoData.wechat,
             updatePayPw = userInfoData.updatePayPw,
             setted = userInfoData.setted,
-            userRebateList = userInfoData.userRebateList
+            userRebateList = userInfoData.userRebateList,
+            creditAccount = userInfoData.creditAccount,
+            creditStatus = userInfoData.creditStatus
         )
 }

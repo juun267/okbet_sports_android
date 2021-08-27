@@ -17,6 +17,7 @@ import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
@@ -127,6 +128,13 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
                     tv_bet_status.setReceiptStatusColor(status)
+
+                    if (matchType == MatchType.OUTRIGHT) {
+                        tv_spread.visibility = View.GONE
+                        tv_team_home.visibility = View.GONE
+                        tv_verse.visibility = View.GONE
+                        tv_team_away.visibility = View.GONE
+                    }
                 }
             }
         }

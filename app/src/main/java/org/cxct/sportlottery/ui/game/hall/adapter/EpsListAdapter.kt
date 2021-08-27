@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_date_line.view.*
 import kotlinx.android.synthetic.main.content_eps_league_rv.view.*
@@ -76,7 +75,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
             itemView.ll_league_title.setOnClickListener {
                 itemView.rv_league_odd_list.visibility = if(itemView.rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
-                item.isClose = itemView.rv_league_odd_list.visibility == View.VISIBLE
+                item.isClose = !item.isClose
             }
 
             itemView.tv_league_title.text = "${item.league?.name}"
@@ -85,12 +84,6 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 itemView.rv_league_odd_list.visibility = View.GONE
             else
                 itemView.rv_league_odd_list.visibility = View.VISIBLE
-
-
-            itemView.rv_league_odd_list.layoutManager = LinearLayoutManager(
-                itemView.context,
-                LinearLayoutManager.VERTICAL, false
-            )
 
             epsListV2Adapter.epsOddListener = epsOddListener
 

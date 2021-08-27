@@ -132,13 +132,17 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             setupTime(data)
             setupOddButton(data)
 
-            //TODO simon test review 賠率 icon 顯示邏輯
             itemView.iv_match_in_play.visibility =
                 if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
-//            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
-//            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
 
-            itemView.setOnClickListener {
+            itemView.iv_match_price.visibility =
+                if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+
+            itemView.highlight_match_info.setOnClickListener {
+                onClickMatchListener?.onClick(data)
+            }
+
+            itemView.tv_match_play_type_count.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
         }
@@ -309,8 +313,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.homeName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }
@@ -322,8 +325,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.homeName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }
@@ -396,8 +398,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.awayName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }
@@ -409,8 +410,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateStr,
-                                            data.matchInfo?.awayName ?: ""
+                                            playCateStr
                                         )
                                     }
                                 }

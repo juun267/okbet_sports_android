@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GridItemDecoration
 
@@ -23,7 +22,6 @@ import org.cxct.sportlottery.util.GridItemDecoration
 class Type4GroupAdapter(
     private var oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,
-    private val betInfoList: MutableList<BetInfoListData>,
     private val oddsType: OddsType
 ) : RecyclerView.Adapter<Type4GroupAdapter.ViewHolder>() {
 
@@ -34,11 +32,13 @@ class Type4GroupAdapter(
     var rightName: String? = null
 
 
-    private val keys = mutableListOf<String>().apply {
-        oddsDetail.groupItem.forEach {
-            add(it.key)
-        }
-    }
+    private val keys = oddsDetail.oddArrayList
+        .groupBy { it?.spread }
+        .filter { it.key != null }
+        .mapTo(mutableListOf(), { it.key })
+
+
+    private val groupList = oddsDetail.oddArrayList.chunked(4)
 
 
     var isShowSpreadWithName = false
@@ -49,11 +49,13 @@ class Type4GroupAdapter(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        oddsDetail.groupItem[keys[position]]?.let { holder.bindModel(it, keys[position]) }
+        if (groupList.isNotEmpty() && keys.isNotEmpty()) {
+            keys[position]?.let { holder.bindModel(groupList[position], it) }
+        }
     }
 
 
-    override fun getItemCount(): Int = oddsDetail.groupItem.size
+    override fun getItemCount(): Int = groupList.size
 
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -65,7 +67,7 @@ class Type4GroupAdapter(
 
             itemView.findViewById<RecyclerView>(R.id.rv_bet)?.apply {
                 visibility = if (oddsDetail.isExpand) View.VISIBLE else View.GONE
-                adapter = TypeCSAdapter(oddsDetail, oddsList, onOddClickListener, betInfoList, oddsType)
+                adapter = TypeCSAdapter(oddsDetail, oddsList, onOddClickListener, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, 2)
                 addItemDecoration(
                     GridItemDecoration(
@@ -80,6 +82,6 @@ class Type4GroupAdapter(
         }
 
     }
-
-
 }
+
+

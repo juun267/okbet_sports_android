@@ -7,11 +7,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_account_history.*
-import kotlinx.android.synthetic.main.activity_game.*
-import kotlinx.android.synthetic.main.activity_game.view_notification
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.drawer_layout
-import kotlinx.android.synthetic.main.activity_main.nav_right
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.view.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -22,19 +17,22 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
-import org.cxct.sportlottery.ui.base.BaseSocketActivity
-import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
+import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
-import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusActivity
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MetricsUtil
 
+
 class AccountHistoryActivity :
-    BaseSocketActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
+    BaseBottomNavActivity<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
     private val navController by lazy { findNavController(R.id.account_history_container) }
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
@@ -43,8 +41,7 @@ class AccountHistoryActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_history)
 
-        initNavigationListener()
-        initNavigationView()
+        initBottomNavigation()
         initToolBar()
         initRvMarquee()
         initMenu()
@@ -52,45 +49,61 @@ class AccountHistoryActivity :
         initObserve()
     }
 
-    private fun initNavigationListener() {
-        sport_bottom_navigation.setNavigationItemClickListener {
-            when (it) {
-                R.id.navigation_sport -> {
-                    finish()
-                    startActivity(Intent(this, GameActivity::class.java))
-                    false
+    override fun initBottomNavigation() {
+        sport_bottom_navigation.apply {
+            setNavigationItemClickListener {
+                when (it) {
+                    R.id.navigation_sport -> {
+                        viewModel.navGame()
+                        finish()
+                        false
+                    }
+                    R.id.navigation_game -> {
+                        viewModel.navMyFavorite()
+                        finish()
+                        false
+                    }
+                    R.id.item_bet_list -> {
+                        viewModel.navShoppingCart()
+                        false
+                    }
+                    R.id.navigation_account_history -> {
+                        true
+                    }
+                    R.id.navigation_transaction_status -> {
+                        viewModel.navTranStatus()
+                        finish()
+                        false
+                    }
+                    else -> false
                 }
-                R.id.navigation_game -> {
-                    startActivity(Intent(this@AccountHistoryActivity, MyFavoriteActivity::class.java))
-                    false
-                }
-                R.id.item_bet_list -> {
-                    showBetListPage()
-                    false
-                }
-                R.id.navigation_account_history -> {
-                    true
-                }
-                R.id.navigation_transaction_status -> {
-                    startActivity(Intent(this, TransactionStatusActivity::class.java))
-                    false
-                }
-                else -> false
             }
+
+            setSelected(R.id.navigation_account_history)
         }
     }
 
-    private fun showBetListPage() {
-        val betListFragment = BetListFragment.newInstance(object : BetListFragment.BetResultListener {
-            override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
-                supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit, R.anim.push_right_to_left_enter, R.anim.pop_bottom_to_top_exit)
-                    .replace(R.id.fl_bet_list, BetReceiptFragment.newInstance(betResultData, betParlayList))
-                    .addToBackStack(BetReceiptFragment::class.java.simpleName)
-                    .commit()
-            }
+    override fun showBetListPage() {
+        val betListFragment =
+            BetListFragment.newInstance(object : BetListFragment.BetResultListener {
+                override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
+                    supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit,
+                            R.anim.push_right_to_left_enter,
+                            R.anim.pop_bottom_to_top_exit
+                        )
+                        .replace(
+                            R.id.fl_bet_list,
+                            BetReceiptFragment.newInstance(betResultData, betParlayList)
+                        )
+                        .addToBackStack(BetReceiptFragment::class.java.simpleName)
+                        .commit()
+                }
 
-        })
+            })
+
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
                 R.anim.push_bottom_to_top_enter,
@@ -103,9 +116,15 @@ class AccountHistoryActivity :
             .commit()
     }
 
+    override fun updateBetListCount(num: Int) {
+        sport_bottom_navigation.setBetCount(num)
+    }
 
-    private fun initNavigationView() {
-        sport_bottom_navigation.setSelected(R.id.navigation_account_history)
+    override fun showLoginNotify() {
+        snackBarLoginNotify.apply {
+            setAnchorView(R.id.sport_bottom_navigation)
+            show()
+        }
     }
 
     override fun onResume() {
@@ -119,19 +138,17 @@ class AccountHistoryActivity :
     }
 
     override fun onBackPressed() {
-        if (navController.previousBackStackEntry != null) {
-            navController.popBackStack()
-            return
+        when (navController.currentDestination?.id) {
+            R.id.accountHistoryNextFragment -> {
+                navController.navigateUp()
+            }
+            else -> {
+                super.onBackPressed()
+            }
         }
-        finish()
     }
 
     private fun initObserve() {
-
-        viewModel.oddsType.observe(this, {
-            tv_odds_type.text = getString(it.res)
-        })
-
         viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
         })
@@ -142,7 +159,6 @@ class AccountHistoryActivity :
         })
 
         viewModel.isLogin.observe(this, {
-            updateUiWithLogin(it)
             getAnnouncement()
         })
     }
@@ -171,7 +187,7 @@ class AccountHistoryActivity :
         viewModel.getAnnouncement()
     }
 
-    private fun initMenu() {
+    override fun initMenu() {
         try {
             //關閉側邊欄滑動行為
             drawer_layout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
@@ -187,7 +203,7 @@ class AccountHistoryActivity :
         }
     }
 
-    private fun updateUiWithLogin(isLogin: Boolean) {
+    override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
             btn_register.visibility = View.GONE
@@ -203,12 +219,12 @@ class AccountHistoryActivity :
         }
     }
 
-    private fun initToolBar() {
+    override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
         //點擊 logo 回到首頁
         iv_logo.setOnClickListener {
-            navController.popBackStack(R.id.mainFragment, false)
+            viewModel.navMainPage(ThirdGameCategory.MAIN)
         }
 
         //頭像 當 側邊欄 開/關
@@ -226,6 +242,25 @@ class AccountHistoryActivity :
         btn_register.setOnClickListener {
             startActivity(Intent(this@AccountHistoryActivity, RegisterActivity::class.java))
         }
+
+        tv_odds_type.setOnClickListener {
+            ChangeOddsTypeDialog().show(supportFragmentManager, null)
+        }
     }
 
+    override fun updateOddsType(oddsType: OddsType) {
+        tv_odds_type.text = getString(oddsType.res)
+    }
+
+    override fun navOneSportPage(thirdGameCategory: ThirdGameCategory?) {
+        if (thirdGameCategory != null) {
+            val intent = Intent(this, MainActivity::class.java)
+                .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
+            startActivity(intent)
+
+            return
+        }
+
+        startActivity(Intent(this, GameActivity::class.java))
+    }
 }

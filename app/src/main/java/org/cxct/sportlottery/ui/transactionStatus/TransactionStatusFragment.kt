@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,13 +22,6 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
                 viewModel.getBetList()
             }
         }
-
-    interface BottomNavigationListener {
-        fun onSportHomeNav()
-    }
-
-    private var bottomNavigationListener: BottomNavigationListener? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,15 +73,16 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
         viewModel.betListData.observe(this, {
             recordDiffAdapter.setupBetList(it)
         })
-    }
 
-    fun setBottomNavigationListener(listener: BottomNavigationListener) {
-        bottomNavigationListener = listener
+        viewModel.oddsType.observe(this, {
+            recordDiffAdapter.oddsType = it
+        })
+
     }
 
     private fun initButton() {
         btn_back.setOnClickListener {
-            bottomNavigationListener?.onSportHomeNav()
+            activity?.finish()
         }
     }
 

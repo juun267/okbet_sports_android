@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.text.format.DateUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -28,6 +29,11 @@ fun TextView.setDate(timeStamp: Long?) {
 @BindingAdapter("dateNoYear")
 fun TextView.setDateNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_FORMAT)
+}
+
+@BindingAdapter("dateNoYear")
+fun TextView.setDateNoYear(date: String?) {
+    text = TimeUtil.dateToDateFormat(date, MD_FORMAT)
 }
 
 @BindingAdapter("dateTimeNoYear")
@@ -242,7 +248,7 @@ fun TextView.setPlatName(platCode: String?) {
 @BindingAdapter("oddFormat")
 fun TextView.setOddFormat(odd: Double?) {
     odd?.let {
-        text = "@${TextUtil.formatForOdd(it)}"
+        text = "${TextUtil.formatForOdd(it)}"
     }
 }
 

@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.moshi.*
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_recommend_champion.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.tv_play_type
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -20,6 +23,8 @@ import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.LocalJsonUtil
+import org.cxct.sportlottery.util.fromJson
 
 
 class VpRecommendAdapter(
@@ -48,6 +53,16 @@ class VpRecommendAdapter(
                 }
             }
         }
+    }
+
+    private val list by lazy {
+        val json = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/gameCodeMapping.json")
+        json.fromJson<List<List<String>>>() ?: listOf()
+    }
+
+    private val playTypeIndex = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
+        LanguageManager.Language.ZH -> 3
+        else -> 4
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -104,10 +119,11 @@ class VpRecommendAdapter(
         fun bind(data: OddBean) {
             itemView.apply {
                 //TODO simon test review playTypeCode = "EPS",更優賠率 盤口 顯示處理
-                tv_play_type.text =
-                    PlayCateUtils.getPlayCateTitleResId(data.playTypeCode, sportCode)?.let {
-                        itemView.context.getString(it)
-                    } ?: ""
+                val playTypeStr = list.find {
+                    it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
+                }?.getOrNull(playTypeIndex)
+
+                tv_play_type.text = playTypeStr
 
                 sportCode?.let {
                     val spanCount = PlayCateUtils.getPlayCateSpanCount(data.playTypeCode, sportCode)
@@ -138,16 +154,12 @@ class VpRecommendAdapter(
         private fun setupOddsButton(oddsButton: OddsButton, odd: Odd) {
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
-
-                isSelected = odd.isSelected ?: false
-
                 setOnClickListener {
                     val playCateName = itemView.tv_play_type.text.toString()
-                    val playName = odd.name ?: ""
 
                     onClickOddListener?.onClickBet(matchOdd.apply {
                         this.matchInfo?.gameType = sportCode
-                    }, odd, playCateName, playName)
+                    }, odd, playCateName)
                 }
             }
         }

@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="48dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.game.hall.adapter.EpsListV2Adapter">
 
     <View
         android:id="@+id/line"
@@ -28,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_weight="5"
-            android:textSize="@dimen/textSize14sp"
             android:textColor="@color/colorOrangeLight"
+            android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             tools:text="克罗地亚 V 西班牙" />
 

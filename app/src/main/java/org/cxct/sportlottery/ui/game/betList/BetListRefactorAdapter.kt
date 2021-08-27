@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.et_bet
+import kotlinx.android.synthetic.main.content_bet_info_item.view.tv_error_message
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.view.*
 import kotlinx.android.synthetic.main.content_bet_list_batch_control.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control.view.*
@@ -22,6 +24,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -118,6 +121,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
                     oddsType,
+                    moreOptionCollapse,
                     onItemClickListener,
                     { notifyDataSetChanged() },
                     {
@@ -201,6 +205,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 onFocusChangeListener = null
 
                 setupOddInfo(itemData, oddsType)
+                setupMinimumLimitMessage(itemData)
 
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
@@ -212,6 +217,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             tv_check_maximum_limit.visibility = View.VISIBLE
                             ll_bet_quota_detail.visibility = View.GONE
                             ll_win_quota_detail.visibility = View.GONE
+                            checkMinimumLimit(itemData)
                         } else {
 
                             //輸入時 直接顯示可贏額
@@ -233,6 +239,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 }
                             }
 
+                            checkMinimumLimit(itemData, quota)
                             //比照以往計算
                             var win = quota * getOdds(itemData.matchOdd, oddsType)
                             if (oddsType == OddsType.EU) {
@@ -241,7 +248,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             tv_win_quota.text = TextUtil.format(win)
 
                         }
-                        onItemClickListener.refreshAmount()
+                        onItemClickListener.refreshBetInfoTotal()
                     }
 
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -266,9 +273,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
+                if (itemData.matchType == MatchType.OUTRIGHT) itemData.matchOdd.spread = ""
                 setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
-                tv_match.text =
-                    "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+                tv_match.text = if (itemData.matchType == MatchType.OUTRIGHT) itemData.outrightMatchInfo?.name
+                else "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+
                 tv_name.text = if (itemData.matchOdd.inplay == INPLAY) {
                     context.getString(
                         R.string.bet_info_in_play_score,
@@ -284,11 +293,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     tv_check_maximum_limit.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.GONE
                     ll_win_quota_detail.visibility = View.VISIBLE
+                    checkMinimumLimit(itemData)
                 } else {
                     et_bet.setText("")
                     tv_check_maximum_limit.visibility = View.VISIBLE
                     ll_bet_quota_detail.visibility = View.GONE
                     ll_win_quota_detail.visibility = View.GONE
+                    checkMinimumLimit(itemData)
                 }
                 et_bet.setText(if (itemData.betAmount > 0) TextUtil.formatInputMoney(itemData.betAmount) else "")
                 et_bet.setSelection(et_bet.text.length)
@@ -300,6 +311,32 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     win -= quota
                 }
                 tv_win_quota.text = TextUtil.format(win)
+            }
+        }
+
+        private fun setupMinimumLimitMessage(itemData: BetInfoListData) {
+            itemView.apply {
+                itemData.parlayOdds?.min?.let { min ->
+                    tv_error_message.text = String.format(
+                        context.getString(R.string.bet_info_list_minimum_limit_amount),
+                        min,
+                        context.getString(R.string.currency)
+                    )
+                }
+            }
+        }
+
+        private fun checkMinimumLimit(itemData: BetInfoListData, betAmount: Double = itemData.betAmount) {
+            itemView.apply {
+                itemData.parlayOdds?.min?.let { min ->
+                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                        itemData.amountError = true
+                        View.VISIBLE
+                    } else {
+                        itemData.amountError = false
+                        View.GONE
+                    }
+                }
             }
         }
 
@@ -317,7 +354,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     cl_quota_detail.visibility = View.VISIBLE
                 } else {
                     cl_item_background.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite2))
-                    tv_odds_content.text = itemData.matchOdd.playName
                     iv_bet_lock.visibility = View.VISIBLE
                     et_bet.apply {
                         isEnabled = false
@@ -342,7 +378,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMaximumLimitView(itemData: BetInfoListData, onItemClickListener: OnItemClickListener) {
             itemView.apply {
-                tv_bet_maximum_limit.text = (itemData.parlayOdds?.max ?: 0).toString()
+                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.parlayOdds?.max ?: 0)
                 tv_check_maximum_limit.setOnClickListener {
                     it.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.VISIBLE
@@ -363,8 +399,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     //填充所有單注、串關第一項、展開更多
     class BatchSingleViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         fun bind(
-            itemData: ParlayOdd?, parlayListSize: Int, betList: MutableList<BetInfoListData>, oddsType: OddsType,
-            onItemClickListener: OnItemClickListener, notifyAllBet: () -> Unit,
+            itemData: ParlayOdd?,
+            parlayListSize: Int,
+            betList: MutableList<BetInfoListData>,
+            oddsType: OddsType,
+            moreOptionCollapse: Boolean,
+            onItemClickListener: OnItemClickListener,
+            notifyAllBet: () -> Unit,
             clickMoreOption: () -> Unit
         ) {
             itemView.apply {
@@ -390,6 +431,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            true,
                             onItemClickListener
                         )
                         setupSingleItem(
@@ -407,6 +449,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            true,
                             onItemClickListener
                         )
                         setupSingleItem(
@@ -417,7 +460,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             notifyAllBet
                         )
 
-                        setupClickMoreItem(itemView.ll_more_option, clickMoreOption)
+                        setupClickMoreItem(itemView.ll_more_option, moreOptionCollapse, clickMoreOption)
                     }
                 }
             }
@@ -486,7 +529,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 }
                             }
                             notifyAllBet()
-                            onItemClickListener.refreshAmount()
+                            onItemClickListener.refreshBetInfoTotal()
                         }
 
                         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -521,7 +564,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             return allWinnableAmount
         }
 
-        private fun setupClickMoreItem(btnShowMore: View, clickEvent: () -> Unit) {
+        private fun setupClickMoreItem(btnShowMore: View, moreOptionCollapse: Boolean, clickEvent: () -> Unit) {
+            itemView.iv_arrow.setImageResource(if (moreOptionCollapse) R.drawable.ic_arrow_gray_top else R.drawable.ic_arrow_gray_down)
             btnShowMore.setOnClickListener {
                 clickEvent()
             }
@@ -538,6 +582,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             setupParlayItem(
                 itemData,
                 oddsType,
+                false,
                 onItemClickListener
             )
         }
@@ -547,6 +592,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
             oddsType: OddsType,
+            firstItem: Boolean = false,
             onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
@@ -556,8 +602,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 itemData?.let { data ->
                     tv_parlay_type.text = TextUtil.replaceParlayByC(data.parlayType)
 
-                    val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
-                    tv_parlay_odd.text = itemOdd
+                    tv_parlay_odd.apply {
+                        if (firstItem) {
+                            visibility = View.VISIBLE
+
+                            val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
+                            text = itemOdd
+                        } else
+                            visibility = View.GONE
+                    }
+
+                    tv_symbol_odd.visibility = if (firstItem) View.VISIBLE else View.GONE
+
                     tv_com_count.text = data.num.toString()
 
                     setupBetAmountInput(data, oddsType, onItemClickListener)
@@ -578,6 +634,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tv_check_maximum_limit.visibility = View.GONE
                         ll_bet_quota_detail.visibility = View.GONE
                         ll_win_quota_detail.visibility = View.VISIBLE
+                        checkMinimumLimit(data)
                     }
                 } else {
                     et_bet.setText("")
@@ -585,6 +642,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         tv_check_maximum_limit.visibility = View.VISIBLE
                         ll_bet_quota_detail.visibility = View.GONE
                         ll_win_quota_detail.visibility = View.GONE
+                        checkMinimumLimit(data)
                     }
                 }
 
@@ -613,6 +671,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     setupOddInfo(data, oddsType)
+                    setupMinimumLimitMessage(data)
 
                     /* set listener */
                     val tw: TextWatcher?
@@ -634,6 +693,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     tv_check_maximum_limit.visibility = View.VISIBLE
                                     ll_bet_quota_detail.visibility = View.GONE
                                     ll_win_quota_detail.visibility = View.GONE
+                                    checkMinimumLimit(data)
                                 }
                             } else {
 
@@ -656,6 +716,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     }
                                 }
 
+                                checkMinimumLimit(data, quota)
                                 //比照以往計算
                                 var win = quota * getOdds(data, oddsType)
                                 if (oddsType == OddsType.EU) {
@@ -666,7 +727,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
 
                             data.betAmount = TextUtil.formatInputMoney(inputValue).toDouble()
-                            onItemClickListener.refreshAmount()
+                            onItemClickListener.refreshBetInfoTotal()
                         }
 
                         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -684,12 +745,36 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
+        private fun setupMinimumLimitMessage(itemData: ParlayOdd) {
+            itemView.apply {
+                tv_error_message.text = String.format(
+                    context.getString(R.string.bet_info_list_minimum_limit_amount),
+                    itemData.min,
+                    context.getString(R.string.currency)
+                )
+            }
+        }
+
+        private fun checkMinimumLimit(itemData: ParlayOdd, betAmount: Double = itemData.betAmount) {
+            itemView.apply {
+                itemData.min.let { min ->
+                    tv_error_message.visibility = if (betAmount != 0.0 && betAmount < min) {
+                        itemData.amountError = true
+                        View.VISIBLE
+                    } else {
+                        itemData.amountError = false
+                        View.GONE
+                    }
+                }
+            }
+        }
+
         private fun setupMaximumLimitView(
             itemData: ParlayOdd,
             onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
-                tv_bet_maximum_limit.text = itemData.max.toString()
+                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
                 tv_check_maximum_limit.setOnClickListener {
                     it.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.VISIBLE
@@ -719,7 +804,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?)
         fun onHideKeyBoard()
         fun saveOddsHasChanged(matchOdd: MatchOdd)
-        fun refreshAmount()
+        fun refreshBetInfoTotal()
         fun showParlayRule(parlayType: String, parlayRule: String)
     }
 }

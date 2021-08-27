@@ -30,6 +30,10 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
     var oddsType: OddsType = OddsType.EU
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     private enum class ViewType { Match, Parlay, Outright, LastTotal, NoData }
 
@@ -102,7 +106,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                 title_away_name.text = matchOdds.awayName
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playName}"
-                spread_name.text = matchOdds.homeName
+                spread_name.text = matchOdds.playName
                 content_odds.text = when (oddsType) {
                     OddsType.HK -> matchOdds.hkOdds
                     else -> matchOdds.odds

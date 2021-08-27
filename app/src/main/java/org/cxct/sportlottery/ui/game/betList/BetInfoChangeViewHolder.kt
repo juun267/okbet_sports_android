@@ -36,7 +36,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
 
     fun setupOddsContent(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?) {
-        if (textView == null || matchOdd.status != BetStatus.ACTIVATED.code) return
+        if (textView == null) return
 
         when{
             matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState == OddState.SAME.state -> {
@@ -98,7 +98,8 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorBlackLight)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
-        val odds = TextUtil.formatForOdd(getOdds(matchOdd, oddsType))
+        val odds =
+            if (matchOdd.status == BetStatus.ACTIVATED.code) TextUtil.formatForOdd(getOdds(matchOdd, oddsType)) else "–"
         val oddsEnd = odds.length
         oddsSpan = SpannableString(odds)
         oddsSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

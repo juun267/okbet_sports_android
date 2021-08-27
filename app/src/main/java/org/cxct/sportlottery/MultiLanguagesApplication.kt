@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.repository.HostRepository
 import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
@@ -79,6 +80,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { CreditRecordViewModel(get(), get(), get(), get(), get(), get()) }
     }
 
     private val repoModule = module {

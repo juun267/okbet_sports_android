@@ -30,6 +30,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -43,7 +44,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
 
     var matchId: String? = null
-    private var mSportCode: String? = null
     private var matchOdd: MatchOdd? = null
 
 
@@ -52,7 +52,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mSportCode = args.gameType.key
         matchId = args.matchId
     }
 
@@ -89,7 +88,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, args.gameType.key)
             }
 
-            sportCode = mSportCode
+            sportCode = args.gameType
         }
 
         rv_detail.apply {
@@ -258,9 +257,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun getData() {
-        mSportCode?.let { mSportCode ->
+        args.gameType.let { gameType ->
             matchId?.let { matchId ->
-                viewModel.getPlayCateListAndOddsDetail(mSportCode, matchId)
+                viewModel.getPlayCateListAndOddsDetail(gameType.key, matchId)
+                subscribeChannelEvent(matchId)
             }
         }
     }
@@ -285,7 +285,6 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 matchType = args.matchType,
                 gameType = args.gameType,
                 playCateName = oddsDetail.name,
-                playName = odd.name ?: "",
                 matchInfo = matchOdd.matchInfo,
                 odd = odd,
                 subscribeChannelType = ChannelType.EVENT
