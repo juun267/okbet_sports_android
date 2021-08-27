@@ -115,6 +115,23 @@ fun TextView.setReceiptStatusColor(status: Int?) {
     }
 }
 
+fun TextView.setSingleReceiptStatusTips(status: Int?) {
+
+    status?.let { statusNotNull ->
+        text = when (statusNotNull) {
+            7 -> context.getString(R.string.bet_fail)
+            else -> context.getString(R.string.bet_succeeded)
+        }
+
+        setTextColor(
+            when (statusNotNull) {
+                7 -> ContextCompat.getColor(context, R.color.colorRed)
+                else -> ContextCompat.getColor(context, R.color.colorBlue)
+            }
+        )
+    }
+}
+
 @BindingAdapter("gameStatusColor") //状态 1-处理中;2-成功;3-失败
 fun TextView.setGameStatusColor(status: Int?) {
     status?.let {

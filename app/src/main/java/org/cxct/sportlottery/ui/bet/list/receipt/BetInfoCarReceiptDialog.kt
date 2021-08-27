@@ -51,6 +51,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 tv_winnable_amount.setMoneyFormat(winnable)
                 tv_bet_status.setBetReceiptStatus(status)
                 tv_bet_status.setReceiptStatusColor(status)
+                tv_receipt_status.setSingleReceiptStatusTips(status)
             }
 
         }
