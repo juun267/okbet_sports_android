@@ -437,19 +437,23 @@ abstract class BaseOddButtonViewModel(
             try {
                 newItem.let {
                     if (it.id == oldItem.oddsId) {
-                        oldItem.oddState = getOddState(
-                            getOdds(
-                                oldItem,
-                                loginRepository.mOddsType.value ?: OddsType.EU
-                            ), newItem
-                        )
+                        //若賠率關閉則賠率不做高亮變化
+                        newItem.status.let { status -> oldItem.status = status }
 
-                        if (oldItem.oddState != OddState.SAME.state)
-                            oldItem.oddsHasChanged = true
+                        //賠率為啟用狀態時才去判斷是否有賠率變化
+                        if (oldItem.status == BetStatus.ACTIVATED.code) {
+                            oldItem.oddState = getOddState(
+                                getOdds(
+                                    oldItem,
+                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                ), newItem
+                            )
+
+                            if (oldItem.oddState != OddState.SAME.state)
+                                oldItem.oddsHasChanged = true
+                        }
 
                         oldItem.spreadState = getSpreadState(oldItem.spread, it.spread ?: "")
-
-                        newItem.status.let { status -> oldItem.status = status }
 
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
