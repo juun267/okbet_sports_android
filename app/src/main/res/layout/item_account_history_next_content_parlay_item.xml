@@ -99,7 +99,6 @@
                 android:gravity="center"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
                 app:layout_constraintStart_toEndOf="@id/tv_play_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name"
