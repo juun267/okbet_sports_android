@@ -89,6 +89,8 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             binding.matchOdd = matchOdd
 
             matchOdd.let {
+                val odds = getOdds(matchOdd, oddsType)
+                binding.tvOdd.setOddFormat(odds)
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
