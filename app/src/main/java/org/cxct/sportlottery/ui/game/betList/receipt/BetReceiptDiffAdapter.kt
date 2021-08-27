@@ -34,12 +34,23 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
     enum class ItemType { SINGLE, PARLAY_TITLE, PARLAY }
 
-    fun submit(singleList: List<BetResult>, parlayList: List<BetResult>, newBetParlayList: List<ParlayOdd>) {
+    /**
+     * @param betParlayList 投注單的串關清單, 用來表示第一項投注單的賠率
+     */
+    fun submit(singleList: List<BetResult>, parlayList: List<BetResult>, betParlayList: List<ParlayOdd>) {
         adapterScope.launch {
+
+            this@BetReceiptDiffAdapter.betParlayList = betParlayList
 
             val parlayItem =
                 if (parlayList.isNotEmpty())
-                    listOf(DataItem.ParlayTitle) + parlayList.map { DataItem.ParlayData(it) }
+                    listOf(DataItem.ParlayTitle) + parlayList.map {
+                        //標記串關第一項(NC1), 第一項需顯示賠率, 以parlayType做比對, 有投注的第一項不一定是NC1
+                        if (betParlayList.first().parlayType == it.parlayType) DataItem.ParlayData(
+                            it,
+                            true
+                        ) else DataItem.ParlayData(it)
+                    }
                 else listOf()
 
             val items = singleList.map { DataItem.SingleData(it) } + parlayItem
@@ -78,7 +89,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
-                holder.bind(itemData.result, oddsType, betParlayList)
+                holder.bind(itemData.result, itemData.firstItem, oddsType, betParlayList)
             }
 
             is ParlayTitleViewHolder -> {
@@ -131,13 +142,20 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             }
         }
 
-        fun bind(itemData: BetResult, oddsType: OddsType, betParlay: List<ParlayOdd>?) {
+        fun bind(itemData: BetResult, firstItem: Boolean, oddsType: OddsType, betParlay: List<ParlayOdd>?) {
             itemView.apply {
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
                         parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
                     }
-                    tv_bet_amount.text = stake?.let { "${TextUtil.formatBetQuota(it)} * $num" }
+
+                    tv_match_at.visibility = if (firstItem) View.VISIBLE else View.GONE
+                    tv_match_odd_parlay.apply {
+                        visibility = if (firstItem) View.VISIBLE else View.GONE
+                        text = (betParlay?.getOrNull(0)
+                            ?.let { parlayOdd -> TextUtil.formatForOdd(getOdds(parlayOdd, oddsType)) }) ?: "0.0"
+                    }
+
                     itemView.setBetReceiptBackground(status)
                     tv_bet_amount.setBetParlayReceiptAmount(itemData)
                     tv_winnable_amount.setMoneyFormat(winnable)
@@ -182,7 +200,7 @@ sealed class DataItem {
         override val orderNo = result.orderNo
     }
 
-    data class ParlayData(val result: BetResult) : DataItem() {
+    data class ParlayData(val result: BetResult, val firstItem: Boolean = false) : DataItem() {
         override val orderNo = result.orderNo
     }
 
