@@ -76,7 +76,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         observeData()
         initSocketObserver()
     }
-    
+
     override fun onStart() {
         super.onStart()
 
@@ -257,7 +257,16 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         })
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
-            it?.let {
+            it?.let { globalStopEvent ->
+                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                    if (SocketUpdateUtil.updateOddStatus(
+                            oddsDetailListData,
+                            globalStopEvent
+                        ) && oddsDetailListData.isExpand
+                    ) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
+                    }
+                }
             }
         })
 
@@ -325,7 +334,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         viewModel.removeBetInfoItem(odd.id)
     }
 
-    
+
     override fun onStop() {
         super.onStop()
         unSubscribeChannelEvent(matchId)

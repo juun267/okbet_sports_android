@@ -352,16 +352,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
-                val adapterList = oddsDetailListAdapter?.oddsDetailDataList
-                adapterList?.forEach { listData ->
-                    listData.oddArrayList.forEach { odd ->
-                        if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                            odd?.status = BetStatus.LOCKED.code
-                        }
+                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                    if (SocketUpdateUtil.updateOddStatus(
+                            oddsDetailListData,
+                            globalStopEvent
+                        ) && oddsDetailListData.isExpand
+                    ) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
                     }
-                }
-                if (adapterList?.isNotEmpty() == true) {
-                    oddsDetailListAdapter?.oddsDetailDataList = adapterList
                 }
             }
         })

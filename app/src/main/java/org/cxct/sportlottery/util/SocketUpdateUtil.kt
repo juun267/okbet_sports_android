@@ -139,6 +139,24 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
+    fun updateOddStatus(
+        oddsDetailListData: OddsDetailListData,
+        globalStopEvent: GlobalStopEvent
+    ): Boolean {
+        var isNeedRefresh = false
+
+        oddsDetailListData.oddArrayList.filter { odd ->
+            globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+        }.forEach { odd ->
+            if (odd?.status != BetStatus.DEACTIVATED.code) {
+                odd?.status = BetStatus.DEACTIVATED.code
+                isNeedRefresh = true
+            }
+        }
+
+        return isNeedRefresh
+    }
+
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         matchOdd.oddsMap = oddsChangeEvent.odds?.mapValues {
             it.value.toMutableList()
