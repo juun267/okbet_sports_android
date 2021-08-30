@@ -12,6 +12,30 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_indicator_main
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_indicator_other
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_pager_main
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_pager_other
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_border_row1
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_border_row2
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_favorite
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_name_away
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_name_home
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_play_count
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_price_boost
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_remain_time_icon
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_status
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_time
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_total_score_away
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_total_score_home
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_away
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_button_border
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_button_bottom_margin
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_border
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_close
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_divider
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_tabs
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_home
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
@@ -40,6 +64,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 notifyDataSetChanged()
             }
         }
+
     var isTimerEnable = false
         set(value) {
             if (value != field) {
@@ -63,7 +88,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
+        return ViewHolderHdpOu.from(parent, oddStateRefreshListener, data.firstOrNull()?.matchInfo?.gameType)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -125,28 +150,21 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             matchInfoList: List<MatchInfo>,
             leagueOddListener: LeagueOddListener?
         ) {
+            val isVbTn = (item.matchInfo?.gameType == GameType.VB.key || item.matchInfo?.gameType == GameType.TN.key)
+
             itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
 
             itemView.league_odd_match_name_away.text = item.matchInfo?.awayName
 
             showStrongTeam(item)
 
-            itemView.league_odd_match_score_home.apply {
-                visibility = when {
-                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
-                    else -> View.GONE
-                }
-                text = (item.matchInfo?.homeScore ?: 0).toString()
+            item.matchInfo?.eps?.let {
+                if (it > 0) itemView.league_odd_eps.visibility = View.VISIBLE else
+                    itemView.league_odd_eps.text = " /${it}"
             }
 
-            itemView.league_odd_match_score_away.apply {
-                visibility = when {
-                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
-                    else -> View.GONE
-                }
+            if (isVbTn) setVbTnScoreText(matchType, item) else setScoreText(matchType, item)
 
-                text = (item.matchInfo?.awayScore ?: 0).toString()
-            }
 
             itemView.league_odd_match_play_count.apply {
                 text = item.matchInfo?.playCateNum.toString()
@@ -176,6 +194,88 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
+        private fun setScoreText(matchType: MatchType, item: MatchOdd) {
+            itemView.league_odd_match_total_score_home.apply {
+                visibility = when {
+                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                    else -> View.GONE
+                }
+        //                text = (item.matchInfo?.totalHomeScore ?: 0).toString()
+            }
+
+            itemView.league_odd_match_total_score_away.apply {
+                visibility = when {
+                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                    else -> View.GONE
+                }
+
+        //                text = (item.matchInfo?.totalAwayScore ?: 0).toString()
+            }
+        }
+
+        private fun setVbTnScoreText(matchType: MatchType, item: MatchOdd) {
+
+            itemView.apply {
+
+                //hide
+                league_odd_match_total_score_home.visibility = View.GONE
+                league_odd_match_total_score_away.visibility = View.GONE
+
+                //home
+                league_odd_match_total_score_home_vb_tn.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeScore ?: 0).toString()
+                }
+
+                league_odd_match_score_home.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeScore ?: 0).toString()
+                }
+
+                league_odd_match_point_home.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeScore ?: 0).toString()
+                }
+
+                //away
+                league_odd_match_total_score_away_vb_tn.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeScore ?: 0).toString()
+                }
+
+                league_odd_match_score_away.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+
+                    text = (item.matchInfo?.awayScore ?: 0).toString()
+                }
+
+                league_odd_match_point_away.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+
+                    text = (item.matchInfo?.awayScore ?: 0).toString()
+                }
+
+            }
+        }
+
         private fun showStrongTeam(item: MatchOdd) {
             itemView.apply {
                 val oddListHDP = when (item.matchInfo?.gameType) {
@@ -199,10 +299,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 else
                     Typeface.NORMAL
 
-                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                league_odd_match_total_score_home.apply { setTypeface(this.typeface, homeStrongType) }
                 league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
 
-                league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
+                league_odd_match_total_score_away.apply { setTypeface(this.typeface, awayStrongType) }
                 league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
         }
@@ -549,10 +649,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         companion object {
-            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): ViewHolderHdpOu {
+            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener, gameType: String?): ViewHolderHdpOu {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.itemview_league_odd_v4, parent, false)
+                val view =
+                    layoutInflater.inflate(R.layout.itemview_league_odd_v4, parent, false)
 
                 return ViewHolderHdpOu(view, refreshListener)
             }
