@@ -25,16 +25,19 @@
     <TextView
         android:id="@+id/odd_btn_row1_type"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="28dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:singleLine="true"
+        android:maxLines="2"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
+        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMinTextSize="@dimen/textSize8sp"
+        app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row1"
         app:layout_constraintStart_toStartOf="@id/odd_btn_row1"
         app:layout_constraintTop_toTopOf="@id/odd_btn_row1"
-        tools:text="独赢" />
+        tools:text="独赢\n123" />
 
     <TextView
         android:id="@+id/odd_btn_row1_half"
@@ -52,7 +55,7 @@
         android:id="@+id/odd_btn_row1_home"
         android:layout_width="64dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row1"
         app:layout_constraintStart_toStartOf="@id/odd_btn_row1"
         app:layout_constraintTop_toBottomOf="@id/odd_btn_row1_type"
@@ -81,16 +84,19 @@
     <TextView
         android:id="@+id/odd_btn_row2_type"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="28dp"
         android:ellipsize="end"
         android:gravity="center"
-        android:singleLine="true"
+        android:maxLines="2"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
+        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMinTextSize="@dimen/textSize8sp"
+        app:autoSizeTextType="uniform"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row2"
         app:layout_constraintStart_toStartOf="@id/odd_btn_row2"
         app:layout_constraintTop_toTopOf="@id/odd_btn_row2"
-        tools:text="独赢" />
+        tools:text="独赢1234567890" />
 
     <TextView
         android:id="@+id/odd_btn_row2_half"
@@ -108,7 +114,7 @@
         android:id="@+id/odd_btn_row2_home"
         android:layout_width="64dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row2"
         app:layout_constraintStart_toStartOf="@id/odd_btn_row2"
         app:layout_constraintTop_toBottomOf="@id/odd_btn_row2_type"

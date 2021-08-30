@@ -5,6 +5,7 @@ import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
+import org.cxct.sportlottery.network.common.MatchInfo
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -18,7 +19,7 @@ data class MatchInfo(
     @Json(name = "homeName")
     val homeName: String?,
     @Json(name = "id")
-    val id: String, //赛事或赛季id
+    override val id: String, //赛事或赛季id
     @Json(name = "playCateNum")
     val playCateNum: Int?,
     @Json(name = "startTime")
@@ -26,29 +27,28 @@ data class MatchInfo(
     @Json(name = "status")
     var status: Int?,
     @Json(name = "leagueId")
-    val leagueId: String ?= null,
+    val leagueId: String? = null,
     @Json(name = "leagueName")
-    val leagueName: String?= null,
+    val leagueName: String? = null,
     @Json(name = "name")
-    var name: String ?= null,
+    var name: String? = null,
     @Json(name = "img")
-    var img: String ?= null,
+    var img: String? = null,
     @Json(name = "msg")
-    var msg: String ?= null,
+    var msg: String? = null,
     @Json(name = "liveVideo")
-    val liveVideo: Int ?= null,
+    val liveVideo: Int? = null,
     @Json(name = "neutral")
-    val neutral: Int ?= null,
+    val neutral: Int? = null,
     @Json(name = "eps")
-    val eps: Int ?= null,
-
-) : Parcelable {
-
+    val eps: Int? = null,
+) : Parcelable, MatchInfo {
     //Live
     var isInPlay: Boolean? = false
-    var awayScore: Int? = null //客队分数
-    var homeScore: Int? = null //主队分数
-    var statusName: String? = null //状态名称
+    override var awayScore: Int? = null //客队分数
+    override var homeScore: Int? = null //主队分数
+    override var statusName: String? = null //状态名称
+    override var leagueTime: Int? = null
 
     //At Start
     var isAtStart: Boolean? = false

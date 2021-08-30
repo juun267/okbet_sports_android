@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
+import kotlinx.android.synthetic.main.item_match_receipt.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.view.*
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
@@ -37,7 +39,6 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
                     tv_play_name.text = playName
-                    tv_match_odd.setOddFormat(odds)
                     tv_league.text = leagueName
                     tv_team_home.text = homeName
                     tv_spread.text = spread
@@ -45,11 +46,13 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     tv_match_type.text = playCateName
                 }
 
-                tv_bet_amount.text = stake?.let { TextUtil.formatBetQuota(it) }
+                view.view_match_receipt.setBetReceiptBackground(status)
+                tv_bet_amount.setBetReceiptAmount(this)
                 tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                 tv_winnable_amount.setMoneyFormat(winnable)
                 tv_bet_status.setBetReceiptStatus(status)
                 tv_bet_status.setReceiptStatusColor(status)
+                tv_receipt_status.setSingleReceiptStatusTips(status)
 
                 if (matchType == MatchType.OUTRIGHT) {
                     tv_spread.visibility = View.GONE
@@ -72,7 +75,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     private fun initOnclick() {
         btn_done.setOnClickListener {
-                this@BetInfoCarReceiptDialog.dismiss()
+            this@BetInfoCarReceiptDialog.dismiss()
         }
     }
 
@@ -85,6 +88,12 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         viewModel.userMoney.observe(this.viewLifecycleOwner, {
             it?.let { money -> setupCurrentMoney(money) }
         })
+
+        viewModel.oddsType.observe(viewLifecycleOwner, {
+            val matchOdd = result.receipt?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()
+            tv_match_odd.setOddFormat(getOdds(matchOdd, it))
+        })
+
     }
 
 

@@ -22,6 +22,8 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         viewModel.setSelectedSport(it)
     }, DateSelectListener {
         viewModel.setSelectedDate(it)
+    }, ScrollToTopListener {
+        rv_account_history.smoothScrollToPosition(0)
     })
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
@@ -45,16 +47,7 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         super.onViewCreated(view, savedInstanceState)
 
         initRv()
-        initOnclick()
         initObserver()
-    }
-
-    private fun initOnclick() {
-
-        btn_back_to_top.setOnClickListener {
-            rv_account_history.smoothScrollToPosition(0)
-        }
-
     }
 
     private fun initObserver() {

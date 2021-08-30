@@ -57,5 +57,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- 右側導覽列 -->
+        <include layout="@layout/view_nav_right" />
+
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

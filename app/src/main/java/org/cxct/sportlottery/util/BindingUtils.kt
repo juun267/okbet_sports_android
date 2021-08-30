@@ -2,12 +2,14 @@ package org.cxct.sportlottery.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.text.format.DateUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
@@ -73,6 +75,37 @@ fun TextView.setGameStatus(status: Int?) {
     }
 }
 
+@BindingAdapter("betMaximumLimit")
+fun TextView.setBetMaximumLimit(max: Int) {
+    text = TextUtil.formatBetQuota(max)
+}
+
+fun View.setBetReceiptBackground(status: Int?) {
+    background = when (status) {
+        7 -> ContextCompat.getDrawable(context, R.color.colorWhite2)
+        else -> ContextCompat.getDrawable(context, R.color.colorWhite)
+    }
+}
+
+fun TextView.setBetReceiptAmount(itemData: BetResult) {
+    text = when (itemData.status) {
+        7 -> "0"
+        else -> itemData.stake?.let { TextUtil.formatBetQuota(it) }
+    }
+}
+
+@BindingAdapter("betParlayReceiptAmount")
+fun TextView.setBetParlayReceiptAmount(itemData: BetResult) {
+    text = when (itemData.status) {
+        7 -> "0"
+        else -> if(itemData.num == 1){
+            itemData.stake?.let { TextUtil.formatBetQuota(it) }
+        }else{
+            itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * ${itemData.num}" }
+        }
+    }
+}
+
 @BindingAdapter("betReceiptStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
 fun TextView.setBetReceiptStatus(status: Int?) {
     text = when (status) {
@@ -89,6 +122,23 @@ fun TextView.setReceiptStatusColor(status: Int?) {
             else -> R.color.colorBlue
         }
         this.setTextColor(ContextCompat.getColor(context, color))
+    }
+}
+
+fun TextView.setSingleReceiptStatusTips(status: Int?) {
+
+    status?.let { statusNotNull ->
+        text = when (statusNotNull) {
+            7 -> context.getString(R.string.bet_fail)
+            else -> context.getString(R.string.bet_succeeded)
+        }
+
+        setTextColor(
+            when (statusNotNull) {
+                7 -> ContextCompat.getColor(context, R.color.colorRed)
+                else -> ContextCompat.getColor(context, R.color.colorBlue)
+            }
+        )
     }
 }
 
@@ -171,7 +221,7 @@ fun TextView.setRecordStatusColor(status: Int?) {
 
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Double?) {
-    text = TextUtil.formatMoney(money ?: 0.0)
+    text = if (money == null) "-" else TextUtil.formatMoney(money)
 }
 
 
@@ -224,7 +274,7 @@ fun TextView.setPlatName(platCode: String?) {
 @BindingAdapter("oddFormat")
 fun TextView.setOddFormat(odd: Double?) {
     odd?.let {
-        text = "${TextUtil.formatForOdd(it)}"
+        text = TextUtil.formatForOdd(it)
     }
 }
 

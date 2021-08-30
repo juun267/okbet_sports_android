@@ -13,7 +13,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
-import org.cxct.sportlottery.network.odds.list.MatchOddsItem
+import org.cxct.sportlottery.network.odds.eps.MatchOddsItem
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white">
+    android:background="@color/colorWhite">
 
     <View
         android:id="@+id/league_odd_match_border"
@@ -27,7 +27,7 @@
         android:id="@+id/league_odd_match_border_row1"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_time" />
@@ -36,7 +36,6 @@
         android:id="@+id/league_odd_match_border_row2"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row1" />
@@ -253,9 +252,10 @@
         android:id="@+id/league_odd_btn_pager_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="15dp"
         android:orientation="horizontal"
+        tools:layout="@layout/itemview_odd_btn_2x2_v4"
         app:layout_constraintBottom_toTopOf="@id/league_odd_btn_indicator_main"
         app:layout_constraintEnd_toEndOf="@id/league_odd_button_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_button_border"
