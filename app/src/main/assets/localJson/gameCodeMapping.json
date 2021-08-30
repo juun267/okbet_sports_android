@@ -129,42 +129,49 @@
     "FT",
     "RECOMMEND,EPS",
     "EPS",
-    "\u66f4\u4f18\u8d54\u7387",
+    "\u7279\u4f18\u8d54\u7387",
     "Price Boosts"
   ],
   [
     "FT",
-    "MAIN,HOME_INPLAY,HOME_INPLAY_MOBILE",
+    "MAIN_OT,HOME_INPLAY,HOME_INPLAY_MOBILE",
     "HDP-OT",
-    "\u8ba9\u7403\n\u52a0\u65f6\u8d5b",
+    "\u8ba9\u7403-\u52a0\u65f6\u8d5b",
     "Handicap (extra time)"
   ],
   [
     "FT",
-    "MAIN,HOME_INPLAY",
+    "MAIN_OT,HOME_INPLAY",
     "O/U-OT",
-    "\u8fdb\u7403 \u5927/\u5c0f\n\u52a0\u65f6\u8d5b",
+    "\u8fdb\u7403 \u5927/\u5c0f-\u52a0\u65f6\u8d5b",
     "Goals O/U (extra time)"
   ],
   [
     "FT",
-    "MAIN",
+    "MAIN_OT",
     "1X2-OT",
-    "\u72ec\u8d62\n\u52a0\u65f6\u8d5b",
+    "\u72ec\u8d62-\u52a0\u65f6\u8d5b",
     "1 X 2 (extra time)"
   ],
   [
     "FT",
-    "MAIN",
+    "MAIN_OT",
     "BTS-OT",
-    "\u53cc\u65b9\u7403\u961f\u8fdb\u7403\n\u52a0\u65f6\u8d5b",
+    "\u53cc\u65b9\u7403\u961f\u8fdb\u7403-\u52a0\u65f6\u8d5b",
     "Both Teams to Score (extra time)"
   ],
   [
     "FT",
-    "MAIN",
+    "MAIN_OT",
+    "O/E-OT",
+    "\u8fdb\u7403 \u5355/\u53cc-\u52a0\u65f6\u8d5b",
+    "Goals O/E (extra time)"
+  ],
+  [
+    "FT",
+    "MAIN_OT",
     "NGOAL-OT",
-    "\u4e0b\u4e2a\u5f97\u5206\n\u52a0\u65f6\u8d5b",
+    "\u4e0b\u4e2a\u5f97\u5206-\u52a0\u65f6\u8d5b",
     "Next score (extra time)"
   ],
   [
@@ -208,6 +215,13 @@
     "O/U-INCL-OT",
     "\u7403\u961f\u79ef\u5206",
     "Total Points"
+  ],
+  [
+    "BK",
+    "MAIN",
+    "O/E-INCL-OT",
+    "\u5f97\u5206 \u5355/\u53cc",
+    "Points O/E"
   ],
   [
     "BK",
@@ -297,7 +311,7 @@
     "BK",
     "RECOMMEND,EPS",
     "EPS",
-    "\u66f4\u4f18\u8d54\u7387",
+    "\u7279\u4f18\u8d54\u7387",
     "Price Boosts"
   ],
   [
@@ -353,7 +367,7 @@
     "TN",
     "RECOMMEND,EPS",
     "EPS",
-    "\u66f4\u4f18\u8d54\u7387",
+    "\u7279\u4f18\u8d54\u7387",
     "Price Boosts"
   ],
   [
@@ -402,7 +416,7 @@
     "VB",
     "RECOMMEND,EPS",
     "EPS",
-    "\u66f4\u4f18\u8d54\u7387",
+    "\u7279\u4f18\u8d54\u7387",
     "Price Boosts"
   ]
 ]
