@@ -113,13 +113,8 @@ abstract class BaseFavoriteViewModel(
                         this.gameType = GameType.getGameType(gameType)
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
+                            matchOdd.odds = matchOdd.odds.filter { odds -> odds.key == playCateCode }.toMutableMap()
                         }
-                    }
-                }
-                it.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds =
-                            matchOdd.odds.filter { odds -> odds.key == playCateCode }.toMutableMap()
                     }
                 }
                 mFavorMatchOddList.postValue(it)
