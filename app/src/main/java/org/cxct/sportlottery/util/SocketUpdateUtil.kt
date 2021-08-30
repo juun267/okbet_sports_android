@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 object SocketUpdateUtil {
 
     fun updateMatchStatus(
+        gameType: String?,
         matchOddList: MutableList<MatchOdd>,
         matchStatusChangeEvent: MatchStatusChangeEvent
     ): Boolean {
@@ -45,8 +46,68 @@ object SocketUpdateUtil {
                             true
                         }
 
+                        (matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) -> {
+                            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+                            true
+                        }
+
+                        (matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) -> {
+                            matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
+                            true
+                        }
+
+                        (gameType == GameType.VB.key || gameType == GameType.TN.key) -> {
+                            when {
+                                (matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
+                                    matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
+                                    true
+                                }
+                                (matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
+                                    matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
+                                    true
+                                }
+
+                                else -> false
+                            }
+                        }
+
+                        (gameType == GameType.FT.key) -> {
+                            when {
+                                //home
+                                (matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) -> {
+                                    matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
+                                    true
+                                }
+                                (matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) -> {
+                                    matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
+                                    true
+                                }
+                                (matchStatusCO.homeYellowCards != null && matchStatusCO.homeYellowCards != matchOdd.matchInfo?.homeYellowCards) -> {
+                                    matchOdd.matchInfo?.homeYellowCards = matchStatusCO.homeYellowCards
+                                    true
+                                }
+
+                                //away
+                                (matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) -> {
+                                    matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
+                                    true
+                                }
+                                (matchStatusCO.awayCards != null && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) -> {
+                                    matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
+                                    true
+                                }
+                                (matchStatusCO.awayYellowCards != null && matchStatusCO.awayYellowCards != matchOdd.matchInfo?.awayYellowCards) -> {
+                                    matchOdd.matchInfo?.awayYellowCards = matchStatusCO.awayYellowCards
+                                    true
+                                }
+                                else -> false
+                            }
+                        }
+
+
                         else -> false
                     }
+
                 }
             }
         }

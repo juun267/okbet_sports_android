@@ -42,7 +42,8 @@ data class MatchInfo(
     val neutral: Int? = null,
     @Json(name = "eps")
     val eps: Int? = null,
-) : Parcelable, MatchInfo {
+
+    ) : Parcelable, MatchInfo {
     //Live
     var isInPlay: Boolean? = false
     override var awayScore: Int? = null //客队分数
@@ -59,4 +60,21 @@ data class MatchInfo(
     var startTimeDisplay: String? = null
 
     var isFavorite = false
+
+    override var homeTotalScore: Int? = null
+    override var awayTotalScore: Int? = null
+
+    //VB & TN
+    override var homePoints: Int? = null
+    override var awayPoints: Int? = null
+
+    //FT
+    override var homeCornerKicks: Int? = null
+    override var awayCornerKicks: Int? = null
+    override var homeCards: Int? = null
+    override var awayCards: Int? = null
+    override var homeYellowCards: Int? = null
+    override var awayYellowCards: Int? = null
+
+
 }

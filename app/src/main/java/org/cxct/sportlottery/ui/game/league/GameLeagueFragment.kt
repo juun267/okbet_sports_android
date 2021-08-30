@@ -254,6 +254,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (SocketUpdateUtil.updateMatchStatus(
+                            args.gameType.key,
                             leagueOdd.matchOdds.toMutableList(),
                             matchStatusChangeEvent
                         ) &&

@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.common
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -150,7 +151,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             matchInfoList: List<MatchInfo>,
             leagueOddListener: LeagueOddListener?
         ) {
-            val isVbTn = (item.matchInfo?.gameType == GameType.VB.key || item.matchInfo?.gameType == GameType.TN.key)
 
             itemView.league_odd_match_name_home.text = item.matchInfo?.homeName
 
@@ -158,13 +158,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             showStrongTeam(item)
 
-            item.matchInfo?.eps?.let {
-                if (it > 0) itemView.league_odd_eps.visibility = View.VISIBLE else
-                    itemView.league_odd_eps.text = " /${it}"
+            when (item.matchInfo?.gameType) {
+                GameType.VB.key, GameType.TN.key -> setVbTnScoreText(matchType, item)
+                GameType.FT.key -> setFtScoreText(matchType, item)
+                else -> setScoreText(matchType, item)
             }
-
-            if (isVbTn) setVbTnScoreText(matchType, item) else setScoreText(matchType, item)
-
 
             itemView.league_odd_match_play_count.apply {
                 text = item.matchInfo?.playCateNum.toString()
@@ -194,32 +192,100 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setScoreText(matchType: MatchType, item: MatchOdd) {
-            itemView.league_odd_match_total_score_home.apply {
-                visibility = when {
-                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
-                    else -> View.GONE
+        private fun setFtScoreText(matchType: MatchType, item: MatchOdd) {
+            setScoreText(matchType, item)
+            itemView.apply {
+                //home
+                league_odd_match_corner_kicks_home.apply {
+                    visibility = when {
+                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                                && (item.matchInfo?.homeCornerKicks?:0 > 0)-> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeCornerKicks ?: 0).toString()
                 }
-        //                text = (item.matchInfo?.totalHomeScore ?: 0).toString()
+
+                league_odd_match_yellow_cards_home.apply {
+                    visibility = when {
+                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                                && (item.matchInfo?.homeYellowCards?:0 > 0) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeYellowCards ?: 0).toString()
+                }
+
+                league_odd_match_cards_home.apply {
+                    visibility = when {
+                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                                && (item.matchInfo?.homeCards?:0 > 0) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeCards ?: 0).toString()
+                }
+
+                //away
+                league_odd_match_corner_kicks_away.apply {
+                    visibility = when {
+                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                                && (item.matchInfo?.awayCornerKicks?:0 > 0) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.awayCornerKicks ?: 0).toString()
+                }
+
+                league_odd_match_yellow_cards_away.apply {
+                    visibility = when {
+                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                                && (item.matchInfo?.awayYellowCards?:0 > 0) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.awayYellowCards ?: 0).toString()
+                }
+
+                league_odd_match_cards_away.apply {
+                    visibility = when {
+                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
+                            && (item.matchInfo?.awayCards?:0 > 0) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.awayCards ?: 0).toString()
+                }
+
             }
+        }
 
-            itemView.league_odd_match_total_score_away.apply {
-                visibility = when {
-                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
-                    else -> View.GONE
+        private fun setScoreText(matchType: MatchType, item: MatchOdd) {
+            itemView.apply {
+                league_odd_match_total_score_home.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.homeTotalScore ?: 0).toString()
                 }
 
-        //                text = (item.matchInfo?.totalAwayScore ?: 0).toString()
+                league_odd_match_total_score_away.apply {
+                    visibility = when {
+                        matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
+                        else -> View.GONE
+                    }
+                    text = (item.matchInfo?.awayTotalScore ?: 0).toString()
+                }
             }
         }
 
         private fun setVbTnScoreText(matchType: MatchType, item: MatchOdd) {
-
             itemView.apply {
 
                 //hide
                 league_odd_match_total_score_home.visibility = View.GONE
                 league_odd_match_total_score_away.visibility = View.GONE
+
+                //eps
+                item.matchInfo?.eps?.let {
+                    if (it > 0) itemView.league_odd_eps.visibility = View.VISIBLE else
+                        itemView.league_odd_eps.text = " / $it"
+                }
 
                 //home
                 league_odd_match_total_score_home_vb_tn.apply {
@@ -227,7 +293,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
                         else -> View.GONE
                     }
-                    text = (item.matchInfo?.homeScore ?: 0).toString()
+                    text = (item.matchInfo?.homeTotalScore ?: 0).toString()
                 }
 
                 league_odd_match_score_home.apply {
@@ -243,7 +309,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
                         else -> View.GONE
                     }
-                    text = (item.matchInfo?.homeScore ?: 0).toString()
+                    text = (item.matchInfo?.homePoints ?: 0).toString()
                 }
 
                 //away
@@ -252,7 +318,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
                         else -> View.GONE
                     }
-                    text = (item.matchInfo?.homeScore ?: 0).toString()
+                    text = (item.matchInfo?.awayTotalScore ?: 0).toString()
                 }
 
                 league_odd_match_score_away.apply {
@@ -270,7 +336,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         else -> View.GONE
                     }
 
-                    text = (item.matchInfo?.awayScore ?: 0).toString()
+                    text = (item.matchInfo?.awayPoints ?: 0).toString()
                 }
 
             }
@@ -405,6 +471,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     itemView.league_odd_match_time.text = item.matchInfo?.startTimeDisplay
                 }
             }
+
+            Log.e(">>>>>>", "item.matchInfo?.statusName = ${item.matchInfo?.statusName}")
 
             itemView.league_odd_match_status.text = when (matchType) {
                 MatchType.IN_PLAY -> {
