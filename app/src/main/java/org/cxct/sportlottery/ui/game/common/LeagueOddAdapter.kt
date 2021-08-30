@@ -312,12 +312,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
-            itemView.league_odd_match_status.text = when (matchType) {
-                MatchType.IN_PLAY -> {
+            itemView.league_odd_match_status.text = when {
+                matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
                     item.matchInfo?.statusName
                 }
-                MatchType.MY_EVENT -> {
-                    when(item.matchInfo?.isInPlay) {
+                matchType == MatchType.MY_EVENT -> {
+                    when (item.matchInfo?.isInPlay) {
                         true -> item.matchInfo.statusName
                         else -> TimeUtil.timeFormat(item.matchInfo?.startTime, "MM/dd")
                     }
