@@ -46,10 +46,6 @@ class MyFavoriteViewModel(
         get() = _curPlay
     private val _curPlay = MutableLiveData<Play>()
 
-    val curCatePlay: LiveData<Play>
-        get() = _curCatePlay
-    private val _curCatePlay = MutableLiveData<Play>()
-
     fun getSportQuery() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -120,7 +116,6 @@ class MyFavoriteViewModel(
     }
 
     fun switchPlay(play: Play) {
-        _curCatePlay.postValue(play)
         _sportQueryData.postValue(
             Event(
                 _sportQueryData.value?.peekContent()?.updatePlaySelected(play).apply {

@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 
 
 class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
@@ -240,11 +241,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
                                 matchOdd.matchInfo?.id == it.eventId
                             }
-
                             if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                if (viewModel.curCatePlay.value?.selectionType != SelectionType.SELECTABLE.code) {
-                                    when (viewModel.curCatePlay.value?.code) {
-                                        MenuCode.MAIN.code, null -> updateMatchOdd?.odds =
+                                val playSelected =
+                                    playCategoryAdapter.data.find { play -> play.isSelected }
+                                if (playSelected?.selectionType != SelectionType.SELECTABLE.code) {
+                                    when (playSelected?.code) {
+                                        MenuCode.MAIN.code -> updateMatchOdd?.odds =
                                             PlayCateUtils.filterOdds(
                                                 oddTypeSocketMap.toMutableMap(),
                                                 updateMatchOdd?.matchInfo?.gameType ?: ""
@@ -253,7 +255,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                             oddTypeSocketMap.toMutableMap(),
                                             updateMatchOdd?.matchInfo?.gameType ?: ""
                                         )
-                                            .filter { odds -> odds.key == viewModel.curCatePlay.value?.playCateList?.firstOrNull()?.code }
+                                            .filter { odds -> odds.key == playSelected?.playCateList?.firstOrNull()?.code }
                                             .toMutableMap()
                                     }
                                 }
