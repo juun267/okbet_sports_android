@@ -130,6 +130,14 @@ class AccountHistoryActivity :
         }
     }
 
+    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
+            setAnchorView(R.id.game_bottom_navigation)
+            show()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         rv_marquee.startAuto()

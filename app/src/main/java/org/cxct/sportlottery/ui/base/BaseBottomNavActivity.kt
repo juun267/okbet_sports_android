@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.base
 
 import android.content.Intent
 import android.os.Bundle
+import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import kotlin.reflect.KClass
@@ -25,6 +27,8 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
     abstract fun updateBetListCount(num: Int)
 
     abstract fun showLoginNotify()
+
+    abstract fun showMyFavoriteNotify(myFavoriteNotifyType: Int)
 
     abstract fun navOneSportPage(thirdGameCategory: ThirdGameCategory?)
 
@@ -64,5 +68,29 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
         viewModel.notifyLogin.observe(this, {
             showLoginNotify()
         })
+
+        viewModel.notifyMyFavorite.observe(this,{
+            when(it.type){
+                FavoriteType.LEAGUE ->{
+                    when(it.isFavorite){
+                        true -> showMyFavoriteNotify(MyFavoriteNotifyType.LEAGUE_ADD.ordinal)
+                        false -> showMyFavoriteNotify(MyFavoriteNotifyType.LEAGUE_REMOVE.ordinal)
+                    }
+                }
+                FavoriteType.MATCH ->{
+                    when(it.isFavorite){
+                        true -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_ADD.ordinal)
+                        false -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
+                    }
+                }
+                FavoriteType.PLAY_CATE ->{
+                    when(it.isFavorite){
+                        true -> showMyFavoriteNotify(MyFavoriteNotifyType.DETAIL_ADD.ordinal)
+                        false -> showMyFavoriteNotify(MyFavoriteNotifyType.DETAIL_REMOVE.ordinal)
+                    }
+                }
+            }
+        })
+
     }
 }

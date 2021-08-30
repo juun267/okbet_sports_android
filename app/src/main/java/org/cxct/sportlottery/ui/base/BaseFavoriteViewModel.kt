@@ -32,6 +32,8 @@ abstract class BaseFavoriteViewModel(
         get() = mNotifyLogin
     protected val mNotifyLogin = MutableLiveData<Boolean>()
 
+    val notifyMyFavorite = myFavoriteRepository.favorNotify
+
     val favorMatchOddList: LiveData<List<LeagueOdd>>
         get() = mFavorMatchOddList
     protected val mFavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
