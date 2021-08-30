@@ -39,15 +39,19 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_league_play_category"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:nestedScrollingEnabled="false"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/game_league_toolbar_v4"
                 tools:itemCount="1"
+                android:orientation="horizontal"
                 tools:listitem="@layout/itemview_play_category_v4" />
 
             <androidx.recyclerview.widget.RecyclerView
