@@ -26,11 +26,13 @@ import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -239,7 +241,18 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initSocketObserver() {
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
             it?.let { matchOddsChangeEvent ->
-                viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
+                matchOddsChangeEvent.updateOddsSelectedState()
+
+                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                    if (SocketUpdateUtil.updateMatchOdds(
+                            oddsDetailListData,
+                            matchOddsChangeEvent
+                        )
+                        && oddsDetailListData.isExpand
+                    ) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
+                    }
+                }
             }
         })
 
@@ -254,6 +267,21 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 subscribeChannelEvent(matchId)
             }
         })
+    }
+
+    private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.odds?.onEach { odd ->
+                    odd?.isSelected =
+                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
+        return this
     }
 
     private fun getData() {
