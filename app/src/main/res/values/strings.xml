@@ -158,6 +158,14 @@
     <string name="saturday">星期六</string>
     <string name="sunday">星期日</string>
 
+    <string name="monday2">周一</string>
+    <string name="tuesday2">周二</string>
+    <string name="wednesday2">周三</string>
+    <string name="thursday2">周四</string>
+    <string name="friday2"> 周五</string>
+    <string name="saturday2">周六</string>
+    <string name="sunday2">周日</string>
+
     <!-- NewsDialog -->
     <string name="game_announcement">游戏公告</string>
     <string name="member_benefits">会员福利</string>
@@ -392,6 +400,7 @@
     <string name="no_history_search">您搜寻或筛选项目查无对应资料</string>
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
+    <string name="ept_number">%d盘3胜</string>
 
     <string name="game_play_type_1x2">独赢</string>
     <string name="game_play_type_1x2_1st">独赢-上半场</string>

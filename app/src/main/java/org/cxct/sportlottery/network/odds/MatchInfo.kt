@@ -42,6 +42,8 @@ data class MatchInfo(
     val neutral: Int? = null,
     @Json(name = "eps")
     val eps: Int? = null,
+    @Json(name = "spt")
+    val spt: Int? = null,
 
     ) : Parcelable, MatchInfo {
     //Live
