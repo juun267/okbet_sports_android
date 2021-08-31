@@ -137,7 +137,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         val hasBetSuccess = betResultData?.singleBets?.find { it.status != betStatusCancelledCode } != null
         val hasParlaySuccess = betResultData?.parlayBets?.find { it.status != betStatusCancelledCode } != null
         tv_already_bet_complete.apply {
-            when (hasBetSuccess && hasParlaySuccess) {
+            when (hasBetSuccess || hasParlaySuccess) {
                 true -> {
                     text = getString(R.string.bet_succeeded)
                     setTextColor(ContextCompat.getColor(context, R.color.colorBlue))
