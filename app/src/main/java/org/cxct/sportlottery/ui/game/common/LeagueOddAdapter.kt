@@ -277,8 +277,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                         else -> {
                             when {
-                                //滾球 socket還沒推時間回來的判斷
-                                System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> ""
+                                //滾球
+                                System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> item.matchInfo?.isInPlay = true
                                 //即將開賽
                                 TimeUtil.getRemainTime(item.matchInfo?.startTime) < 60 * 60 * 1000L -> {
                                     item.matchInfo.apply {
