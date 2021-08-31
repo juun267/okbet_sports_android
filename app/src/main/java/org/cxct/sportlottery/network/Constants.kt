@@ -119,6 +119,7 @@ object Constants {
 
     //match
     const val MATCH_PRELOAD = "/api/front/match/preload"
+    const val MATCH_LIVE_INFO = "/api/front/match/live/info"
 
     //match result
     const val MATCH_RESULT_LIST = "/api/front/match/result/list"

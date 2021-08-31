@@ -42,6 +42,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
+import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -94,6 +95,16 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         return@Handler false
     }
 
+    private val liveToolBarListener by lazy {
+        object : LiveViewToolbar.LiveToolBarListener {
+            override fun onExpand(expanded: Boolean) {
+                matchId?.let {
+                    viewModel.getLiveInfo(it)
+                }
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +136,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onResume() {
         super.onResume()
-
+        live_view_tool_bar.startNodeMediaPlayer()
         startTimer()
     }
 
@@ -136,9 +147,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     override fun onStop() {
+        live_view_tool_bar.stopNodeMediaPlayer()
         super.onStop()
 
         unSubscribeChannelEventAll()
+    }
+
+    override fun onDestroyView() {
+        live_view_tool_bar.releaseNodeMediaPlayer()
+        super.onDestroyView()
     }
 
     private fun initUI() {
@@ -292,6 +309,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 oddsDetailListAdapter.notifyDataSetChanged()
             }
         })
+
+        viewModel.matchLiveInfo.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { url ->
+                live_view_tool_bar.setupLiveUrl(url)
+            }
+        })
     }
 
     private fun initSocketObserver() {
@@ -401,8 +424,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setupLiveView() {
+        live_view_tool_bar.setupToolBarListener(liveToolBarListener)
+
         matchOdd?.let {
-            live_view_tool_bar.setWebViewUrl(it)
             live_view_tool_bar.matchOdd = it
         }
     }
@@ -502,7 +526,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             val spanScore = SpannableString("${it.homeScore}-${it.awayScore}  ")
 
             if (index == event.matchStatusList.lastIndex) {
-                spanStatusName.setSpan(StyleSpan(Typeface.BOLD), 0, spanStatusName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spanStatusName.setSpan(StyleSpan(Typeface.BOLD),
+                    0,
+                    spanStatusName.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 spanScore.setSpan(StyleSpan(Typeface.BOLD), 0, spanScore.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
 

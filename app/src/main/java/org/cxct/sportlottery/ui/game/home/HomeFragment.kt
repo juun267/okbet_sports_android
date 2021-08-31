@@ -48,6 +48,8 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
+import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
+import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
 
 
@@ -162,6 +164,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
                 }
             }
+
+        mRvGameTable4Adapter.onClickStatisticsListener = object : OnClickStatisticsListener {
+            override fun onClickStatistics(matchId: String?) {
+                navStatisticsPage(matchId)
+            }
+        }
 
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
@@ -283,6 +291,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRvHighlightAdapter.onClickFavoriteListener = object : OnClickFavoriteListener {
             override fun onClickFavorite(matchId: String?) {
                 viewModel.pinFavorite(FavoriteType.MATCH, matchId)
+            }
+        }
+
+        mRvHighlightAdapter.onClickStatisticsListener = object : OnClickStatisticsListener {
+            override fun onClickStatistics(matchId: String?) {
+                navStatisticsPage(matchId)
             }
         }
     }
@@ -711,22 +725,22 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 if (key == oddBean.playTypeCode) {
                                     val oldOddList = oddBean.oddList
                                     oldOddList.forEach { oldOdd ->
-                                        newOddList.find { newOdd -> oldOdd.id == newOdd?.id }
+                                        newOddList.find { newOdd -> oldOdd?.id == newOdd?.id }
                                             ?.let { newOdd ->
                                                 val newOddState = when (recommendOddsType) {
                                                     OddsType.EU -> judgeOddState(
-                                                        oldOdd.odds,
+                                                        oldOdd?.odds,
                                                         newOdd.odds
                                                     ).state
                                                     OddsType.HK -> judgeOddState(
-                                                        oldOdd.hkOdds,
+                                                        oldOdd?.hkOdds,
                                                         newOdd.hkOdds
                                                     ).state
                                                 }
 
-                                                oldOdd.odds = newOdd.odds
-                                                oldOdd.hkOdds = newOdd.hkOdds
-                                                oldOdd.status = newOddState
+                                                oldOdd?.odds = newOdd.odds
+                                                oldOdd?.hkOdds = newOdd.hkOdds
+                                                oldOdd?.status = newOddState
 
                                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                                 mRecommendAdapter.notifySubItemChanged(
@@ -813,8 +827,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 mRecommendAdapter.getData().forEachIndexed { index, entity ->
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                         oddBean.oddList.forEach { odd ->
-                            if (globalStopEvent.producerId == null || odd.producerId == globalStopEvent.producerId) {
-                                odd.status = BetStatus.DEACTIVATED.code
+                            if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
+                                odd?.status = BetStatus.DEACTIVATED.code
                                 mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
                             }
 
@@ -945,7 +959,26 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     ) {
         val gameType = GameType.getGameType(gameTypeCode)
         if (gameType != null && matchId != null) {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(matchType, gameType, matchId))
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    matchType,
+                    gameType,
+                    matchId
+                )
+            )
+        }
+    }
+
+    private fun navStatisticsPage(matchId: String?) {
+        activity?.apply {
+            startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
+                putExtra(KEY_MATCH_ID, matchId)
+            })
+
+            overridePendingTransition(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.push_bottom_to_top_exit
+            )
         }
     }
 
@@ -985,8 +1018,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRecommendAdapter.getData().forEachIndexed { index, entity ->
             entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                 oddBean.oddList.forEach { odd ->
-                    odd.isSelected = result.any { betInfoListData ->
-                        betInfoListData.matchOdd.oddsId == odd.id
+                    odd?.isSelected = result.any { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == odd?.id
                     }
                 }
 

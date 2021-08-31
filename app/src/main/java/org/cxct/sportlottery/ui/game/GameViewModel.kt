@@ -20,6 +20,8 @@ import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
 import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchLiveInfo.LiveInfo
+import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveInfoRequest
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -235,6 +237,11 @@ class GameViewModel(
     private val _oddsDetailList = MutableLiveData<Event<ArrayList<OddsDetailListData>>>()
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
         get() = _oddsDetailList
+
+    //賽事直播網址
+    private val _matchLiveInfo = MutableLiveData<Event<String>>()
+    val matchLiveInfo: LiveData<Event<String>>
+        get() = _matchLiveInfo
 
     //Loading
     val isLoading: LiveData<Boolean>
@@ -499,9 +506,9 @@ class GameViewModel(
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
                         oddData.odds?.forEach { map ->
                             map.value.forEach { odd ->
-                                odd.isSelected =
+                                odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd.id
+                                        it.matchOdd.oddsId == odd?.id
                                     }
                             }
                         }
@@ -529,9 +536,9 @@ class GameViewModel(
                 result.t?.odds?.forEach { oddData ->
                     oddData.odds?.forEach { map ->
                         map.value.forEach { odd ->
-                            odd.isSelected =
+                            odd?.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd.id
+                                    it.matchOdd.oddsId == odd?.id
                                 }
                         }
                     }
@@ -1396,5 +1403,44 @@ class GameViewModel(
         }
 
         return this
+    }
+
+    fun getLiveInfo(matchId: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.matchService.getMatchLiveInfo(MatchLiveInfoRequest(1, matchId))
+            }
+            result?.let {
+                if (it.success) {
+                    _matchLiveInfo.postValue(Event(getStreamUrl(it.liveInfo)))
+                }
+            }
+        }
+    }
+
+    /**
+     * resource type
+     * p2: 需要将返回的accessToken作为请求头，请求streamURL
+     * i: 直接请求streamURL, 它的请求url不包含协议部分，需要加上https
+     * s: 以xml形式请求streamURL
+     * 其他: 直接使用streamURL
+     *
+     * 20210831 s型態還未有相關賽事，等相关比赛出现后，再解析
+     */
+    private suspend fun getStreamUrl(liveInfo: LiveInfo): String {
+        return when (liveInfo.videoProvider) {
+            "p2" -> {
+                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(liveInfo.accessToken, liveInfo.streamURL)
+                liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
+                    ?: ""
+            }
+            "i", "s" -> {
+                val liveUrlResponse = OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
+                liveUrlResponse.body()?.hlsUrl ?: ""
+            }
+            else -> {
+                liveInfo.streamURL
+            }
+        }
     }
 }

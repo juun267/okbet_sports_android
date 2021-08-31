@@ -86,7 +86,7 @@ android {
 
     sourceSets {
         fastlane.res.srcDirs  = ["${fastlane_res_src_dir}"]        
-        forqa.res.srcDirs = ['src/platform/test/res']
+        forqa.res.srcDirs = ['src/platform/spplat1/res']
     }
 
     compileOptions {
@@ -240,6 +240,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$version_room"
     implementation "androidx.room:room-ktx:$version_room"
     kapt "androidx.room:room-compiler:$version_room"
+
+    //NodeMediaClient
+    implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.9.16'
 
     //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'
