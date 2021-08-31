@@ -177,6 +177,14 @@ class TransactionStatusActivity :
         }
     }
 
+    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
+            setAnchorView(R.id.game_bottom_navigation)
+            show()
+        }
+    }
+
     override fun updateBetListCount(num: Int) {
         sport_bottom_navigation.setBetCount(num)
     }

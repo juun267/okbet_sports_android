@@ -177,6 +177,14 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
     }
 
+    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
+            setAnchorView(R.id.my_favorite_bottom_navigation)
+            show()
+        }
+    }
+
     private fun initObserver() {
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
