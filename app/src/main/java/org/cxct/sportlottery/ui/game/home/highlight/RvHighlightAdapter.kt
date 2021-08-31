@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
+import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
@@ -72,6 +73,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null //賽事畫面跳轉
 
     var onClickFavoriteListener: OnClickFavoriteListener? = null
+
+    var onClickStatisticsListener: OnClickStatisticsListener? = null
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -144,6 +147,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
             itemView.tv_match_play_type_count.setOnClickListener {
                 onClickMatchListener?.onClick(data)
+            }
+
+            itemView.btn_chart.setOnClickListener {
+                onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
             }
         }
 
