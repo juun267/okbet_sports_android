@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.*
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.et_clickable
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.ll_winnable
 import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.tv_winnable_amount
+import kotlinx.android.synthetic.main.item_bet_list_batch_control_connect.view.iv_bet_lock
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -39,6 +40,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     var betList: MutableList<BetInfoListData>? = mutableListOf()
         set(value) {
             field = value
+            //判斷是否有注單封盤
+            hasBetClosed = value?.find { it.matchOdd.status != BetStatus.ACTIVATED.code || it.pointMarked } != null
             notifyDataSetChanged()
         }
     var oddsType: OddsType = OddsType.EU
@@ -53,6 +56,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             true -> holder.clearHandler()
         }
     }
+
+    var hasBetClosed: Boolean = false
 
     var parlayList: MutableList<ParlayOdd>? = mutableListOf()
         set(value) {
@@ -121,6 +126,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
                     oddsType,
+                    hasBetClosed,
                     moreOptionCollapse,
                     onItemClickListener,
                     { notifyDataSetChanged() },
@@ -135,6 +141,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 holder.bind(
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
                     oddsType,
+                    hasBetClosed,
                     onItemClickListener
                 )
             }
@@ -152,10 +159,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     override fun getItemCount(): Int {
         val betListSize = betList?.size ?: 0
-        val cannotParlay = betList?.find { it.matchOdd.status != BetStatus.ACTIVATED.code || it.pointMarked } != null
         val parlayListSize = when {
             betListSize < 2 -> 0
-            cannotParlay || betListSize == 2 || !moreOptionCollapse -> 1
+            betListSize == 2 || !moreOptionCollapse -> 1
             else -> (parlayList?.size ?: 0)
         }
         return betListSize + parlayListSize
@@ -403,16 +409,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             parlayListSize: Int,
             betList: MutableList<BetInfoListData>,
             oddsType: OddsType,
+            hasBetClosed: Boolean,
             moreOptionCollapse: Boolean,
             onItemClickListener: OnItemClickListener,
             notifyAllBet: () -> Unit,
             clickMoreOption: () -> Unit
         ) {
             itemView.apply {
-                val hasOddStateClose =
-                    betList.find { it.matchOdd.status != BetStatus.ACTIVATED.code || it.pointMarked } != null
-                when {
-                    hasOddStateClose || parlayListSize == 0 -> {
+                when (parlayListSize) {
+                    0 -> {
                         item_first_connect.visibility = View.GONE
                         ll_more_option.visibility = View.GONE
 
@@ -424,13 +429,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             notifyAllBet
                         )
                     }
-                    parlayListSize == 1 -> {
+                    1 -> {
                         item_first_connect.visibility = View.VISIBLE
                         ll_more_option.visibility = View.GONE
 
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            hasBetClosed,
                             true,
                             onItemClickListener
                         )
@@ -449,6 +455,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            hasBetClosed,
                             true,
                             onItemClickListener
                         )
@@ -577,11 +584,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun bind(
             itemData: ParlayOdd?,
             oddsType: OddsType,
+            hasBetClosed: Boolean,
             onItemClickListener: OnItemClickListener
         ) {
             setupParlayItem(
                 itemData,
                 oddsType,
+                hasBetClosed,
                 false,
                 onItemClickListener
             )
@@ -592,6 +601,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
             oddsType: OddsType,
+            hasBetClosed: Boolean,
             firstItem: Boolean = false,
             onItemClickListener: OnItemClickListener
         ) {
@@ -599,11 +609,14 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 ll_winnable.visibility = View.GONE
                 ll_max_bet_amount.visibility = View.GONE
 
+                setupItemEnable(hasBetClosed)
+
+
                 itemData?.let { data ->
                     tv_parlay_type.text = TextUtil.replaceParlayByC(data.parlayType)
 
                     tv_parlay_odd.apply {
-                        if (firstItem) {
+                        if (firstItem && !hasBetClosed) {
                             visibility = View.VISIBLE
 
                             val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
@@ -612,7 +625,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             visibility = View.GONE
                     }
 
-                    tv_symbol_odd.visibility = if (firstItem) View.VISIBLE else View.GONE
+                    tv_symbol_odd.visibility = if (firstItem && !hasBetClosed) View.VISIBLE else View.GONE
 
                     tv_com_count.text = data.num.toString()
 
@@ -623,6 +636,24 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     setupParlayRuleButton(data, onItemClickListener)
 
                 }
+            }
+        }
+
+        private fun setupItemEnable(hasBetClosed: Boolean) {
+            itemView.apply {
+                iv_bet_lock.visibility = if (hasBetClosed) View.VISIBLE else View.GONE
+
+                item_parlay_quota_detail.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+
+                btn_rule.visibility = if (hasBetClosed) View.GONE else View.VISIBLE
+
+                et_bet.apply {
+                    isEnabled = !hasBetClosed
+                    isFocusable = !hasBetClosed
+                    isFocusableInTouchMode = !hasBetClosed
+                }
+
+                et_clickable.isEnabled = !hasBetClosed //EditText的click事件
             }
         }
 
