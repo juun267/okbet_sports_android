@@ -154,8 +154,8 @@ object TimeUtil {
         }
     }
 
-    fun getDefaultTimeStamp(): TimeRangeParams {
-        val cPair = getCalendarForDates(6)
+    fun getDefaultTimeStamp(minusDays: Int? = 6): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
         val minusDayTimeStamp = cPair.first.timeInMillis
         val todayTimeStamp = cPair.second.timeInMillis
         return object : TimeRangeParams {
