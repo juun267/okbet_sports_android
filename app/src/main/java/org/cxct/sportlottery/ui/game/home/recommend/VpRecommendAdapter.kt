@@ -48,7 +48,7 @@ class VpRecommendAdapter(
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 dataList.forEachIndexed { index, oddBean ->
-                    if (oddBean.oddList.find { it.id == odd.id } != null)
+                    if (oddBean.oddList.find { it?.id == odd.id } != null)
                         notifyItemChanged(index)
                 }
             }
@@ -151,15 +151,17 @@ class VpRecommendAdapter(
             }
         }
 
-        private fun setupOddsButton(oddsButton: OddsButton, odd: Odd) {
+        private fun setupOddsButton(oddsButton: OddsButton, odd: Odd?) {
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
                 setOnClickListener {
                     val playCateName = itemView.tv_play_type.text.toString()
 
-                    onClickOddListener?.onClickBet(matchOdd.apply {
-                        this.matchInfo?.gameType = sportCode
-                    }, odd, playCateName)
+                    odd?.let {
+                        onClickOddListener?.onClickBet(matchOdd.apply {
+                            this.matchInfo?.gameType = sportCode
+                        }, odd, playCateName)
+                    }
                 }
             }
         }
