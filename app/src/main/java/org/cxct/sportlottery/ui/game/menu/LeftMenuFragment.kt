@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_left_menu.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
+import org.cxct.sportlottery.util.JumpUtil
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
 
@@ -54,7 +56,10 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         //特優賠率
         ct_premium_odds.setOnClickListener { }
         //遊戲規則
-        ct_game_rule.setOnClickListener { }
+        ct_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
+            dismiss()
+        }
         //盤口設定
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(parentFragmentManager, null)

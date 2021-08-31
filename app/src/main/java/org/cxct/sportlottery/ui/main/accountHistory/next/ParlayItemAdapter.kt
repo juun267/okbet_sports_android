@@ -1,12 +1,9 @@
 package org.cxct.sportlottery.ui.main.accountHistory.next
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.SimpleAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +16,8 @@ import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.setOddFormat
 
 class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -89,17 +86,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
 
             matchOdd.let {
                 val odds = getOdds(matchOdd, oddsType)
-                val oddStr = if (odds > 0)
-                    String.format(
-                        binding.root.context.getString(
-                            R.string.at_symbol,
-                            TextUtil.formatForOdd(odds)
-                        )
-                    )
-                else
-                    ""
-                binding.tvOdd.text = oddStr
-
+                binding.tvOdd.setOddFormat(odds)
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(

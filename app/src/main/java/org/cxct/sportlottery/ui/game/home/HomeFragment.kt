@@ -126,7 +126,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initTable() {
-        rv_game_table.layoutManager = SocketLinearManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_game_table.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         rv_game_table.adapter = mRvGameTable4Adapter
         mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
             override fun onClickBet(
@@ -408,21 +408,21 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun subscribeTableHallChannel(selectMatchType: MatchType) {
         if (selectMatchType == MatchType.IN_PLAY) {
             mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs?.forEach { match ->
+                data.matchOdds.forEach { match ->
                     subscribeChannelHall(
                         data.code,
                         MenuCode.HOME_INPLAY_MOBILE.code,
-                        match.id
+                        match.matchInfo?.id
                     )
                 }
             }
         } else if (selectMatchType == MatchType.AT_START) {
             mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchs?.forEach { match ->
+                data.matchOdds.forEach { match ->
                     subscribeChannelHall(
                         data.code,
                         MenuCode.HOME_ATSTART_MOBILE.code,
-                        match.id
+                        match.matchInfo?.id
                     )
                 }
             }

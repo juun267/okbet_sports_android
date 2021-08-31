@@ -72,7 +72,7 @@ class CreditRecordActivity :
             addItemDecoration(
                 SpaceItemDecoration(
                     context,
-                    resources.getDimensionPixelSize(R.dimen.item_spacing_credit_record)
+                    R.dimen.item_spacing_credit_record
                 )
             )
 
@@ -114,6 +114,10 @@ class CreditRecordActivity :
 
         viewModel.userCreditCircleHistory.observe(this, {
             creditRecordAdapter.data = it
+        })
+
+        viewModel.quotaAmount.observe(this, {
+            credit_record_quota_amount.text = it
         })
     }
 

@@ -3,6 +3,8 @@ package org.cxct.sportlottery.ui.base
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
 import org.cxct.sportlottery.ui.game.GameActivity
@@ -37,10 +39,21 @@ abstract class BaseBottomNavViewModel(
     val showShoppingCart: LiveData<Boolean>
         get() = _showShoppingCart
 
+    val nowTransNum by lazy { loginRepository.transNum}
+
     private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
     private val _intentClass = MutableLiveData<Event<Class<*>>>()
     private val _showShoppingCart = MutableLiveData<Boolean>()
 
+    fun getTransNum() {
+        if (isLogin.value == true) {
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    loginRepository.getTransNum()
+                }
+            }
+        }
+    }
 
     fun navMainPage(thirdGameCategory: ThirdGameCategory) {
         _thirdGameCategory.postValue(

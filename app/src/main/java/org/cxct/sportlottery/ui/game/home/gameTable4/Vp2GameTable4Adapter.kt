@@ -17,7 +17,6 @@ import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_a
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_home
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_play_type_count
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_time
-import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -105,10 +104,14 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             } else {
                 View.GONE
             }
-//            itemView.iv_match_price.visibility = if () View.VISIBLE else View.GONE
-//            itemView.iv_match_live.visibility = if () View.VISIBLE else View.GONE
+            itemView.iv_match_price.visibility =
+                if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
 
-            itemView.setOnClickListener {
+            itemView.table_match_info_border.setOnClickListener {
+                onClickMatchListener?.onClick(data)
+            }
+
+            itemView.tv_match_play_type_count.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
         }

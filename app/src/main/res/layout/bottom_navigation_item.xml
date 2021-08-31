@@ -32,4 +32,19 @@
         app:layout_constraintTop_toBottomOf="@+id/item_icon"
         tools:text="@string/sport" />
 
+    <TextView
+        android:id="@+id/trans_number"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="3dp"
+        android:textColor="@color/selector_blue_gray_light"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="123"
+        tools:visibility="visible"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

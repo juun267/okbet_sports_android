@@ -121,6 +121,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
                     oddsType,
+                    moreOptionCollapse,
                     onItemClickListener,
                     { notifyDataSetChanged() },
                     {
@@ -353,7 +354,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     cl_quota_detail.visibility = View.VISIBLE
                 } else {
                     cl_item_background.setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite2))
-                    tv_odds_content.text = itemData.matchOdd.playName
                     iv_bet_lock.visibility = View.VISIBLE
                     et_bet.apply {
                         isEnabled = false
@@ -378,7 +378,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMaximumLimitView(itemData: BetInfoListData, onItemClickListener: OnItemClickListener) {
             itemView.apply {
-                tv_bet_maximum_limit.text = (itemData.parlayOdds?.max ?: 0).toString()
+                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.parlayOdds?.max ?: 0)
                 tv_check_maximum_limit.setOnClickListener {
                     it.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.VISIBLE
@@ -399,8 +399,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     //填充所有單注、串關第一項、展開更多
     class BatchSingleViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         fun bind(
-            itemData: ParlayOdd?, parlayListSize: Int, betList: MutableList<BetInfoListData>, oddsType: OddsType,
-            onItemClickListener: OnItemClickListener, notifyAllBet: () -> Unit,
+            itemData: ParlayOdd?,
+            parlayListSize: Int,
+            betList: MutableList<BetInfoListData>,
+            oddsType: OddsType,
+            moreOptionCollapse: Boolean,
+            onItemClickListener: OnItemClickListener,
+            notifyAllBet: () -> Unit,
             clickMoreOption: () -> Unit
         ) {
             itemView.apply {
@@ -426,6 +431,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            true,
                             onItemClickListener
                         )
                         setupSingleItem(
@@ -443,6 +449,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupParlayItem(
                             itemData,
                             oddsType,
+                            true,
                             onItemClickListener
                         )
                         setupSingleItem(
@@ -453,7 +460,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             notifyAllBet
                         )
 
-                        setupClickMoreItem(itemView.ll_more_option, clickMoreOption)
+                        setupClickMoreItem(itemView.ll_more_option, moreOptionCollapse, clickMoreOption)
                     }
                 }
             }
@@ -557,7 +564,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             return allWinnableAmount
         }
 
-        private fun setupClickMoreItem(btnShowMore: View, clickEvent: () -> Unit) {
+        private fun setupClickMoreItem(btnShowMore: View, moreOptionCollapse: Boolean, clickEvent: () -> Unit) {
+            itemView.iv_arrow.setImageResource(if (moreOptionCollapse) R.drawable.ic_arrow_gray_top else R.drawable.ic_arrow_gray_down)
             btnShowMore.setOnClickListener {
                 clickEvent()
             }
@@ -574,6 +582,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             setupParlayItem(
                 itemData,
                 oddsType,
+                false,
                 onItemClickListener
             )
         }
@@ -583,6 +592,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
             oddsType: OddsType,
+            firstItem: Boolean = false,
             onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
@@ -592,8 +602,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 itemData?.let { data ->
                     tv_parlay_type.text = TextUtil.replaceParlayByC(data.parlayType)
 
-                    val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
-                    tv_parlay_odd.text = itemOdd
+                    tv_parlay_odd.apply {
+                        if (firstItem) {
+                            visibility = View.VISIBLE
+
+                            val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
+                            text = itemOdd
+                        } else
+                            visibility = View.GONE
+                    }
+
+                    tv_symbol_odd.visibility = if (firstItem) View.VISIBLE else View.GONE
+
                     tv_com_count.text = data.num.toString()
 
                     setupBetAmountInput(data, oddsType, onItemClickListener)
@@ -754,7 +774,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             onItemClickListener: OnItemClickListener
         ) {
             itemView.apply {
-                tv_bet_maximum_limit.text = itemData.max.toString()
+                tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
                 tv_check_maximum_limit.setOnClickListener {
                     it.visibility = View.GONE
                     ll_bet_quota_detail.visibility = View.VISIBLE

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
+import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,21 +22,19 @@ import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
-import org.cxct.sportlottery.util.getOdds
 
 class AccountHistoryNextAdapter(
     private val itemClickListener: ItemClickListener,
     private val backClickListener: BackClickListener,
     private val sportSelectListener: SportSelectListener,
-    private val dateSelectListener: DateSelectListener
+    private val dateSelectListener: DateSelectListener,
+    private val scrollToTopListener: ScrollToTopListener
 ) : ListAdapter<DataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     enum class ItemType {
-        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, NO_DATA
+        TITLE_BAR, ITEM, PARLAY, OUTRIGHT, FOOTER, BACK_TO_TOP, NO_DATA
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -65,7 +64,7 @@ class AccountHistoryNextAdapter(
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer)
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
                 else -> list.map { DataItem.Item(it) }
             }
 
@@ -82,6 +81,7 @@ class AccountHistoryNextAdapter(
             ItemType.OUTRIGHT.ordinal -> OutrightItemViewHolder.from(parent)
             ItemType.PARLAY.ordinal -> ParlayItemViewHolder.from(parent)
             ItemType.FOOTER.ordinal -> FooterViewHolder.from(parent)
+            ItemType.BACK_TO_TOP.ordinal -> BackToTopViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
     }
@@ -120,6 +120,10 @@ class AccountHistoryNextAdapter(
 
             is NoDataViewHolder -> {
             }
+
+            is BackToTopViewHolder -> {
+                holder.bind(scrollToTopListener)
+            }
         }
     }
 
@@ -134,6 +138,7 @@ class AccountHistoryNextAdapter(
                 }
             }
             is DataItem.Footer -> ItemType.FOOTER.ordinal
+            is DataItem.BackToTop -> ItemType.BACK_TO_TOP.ordinal
             else -> ItemType.NO_DATA.ordinal
         }
     }
@@ -185,16 +190,7 @@ class AccountHistoryNextAdapter(
 
             first?.let {
                 val odds = getOdds(first, oddsType)
-                val oddStr = if (odds > 0)
-                    String.format(
-                        binding.root.context.getString(
-                            R.string.at_symbol,
-                            TextUtil.formatForOdd(odds)
-                        )
-                    )
-                else
-                    ""
-                binding.tvOdd.text = oddStr
+                binding.tvOdd.setOddFormat(odds)
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }
@@ -228,16 +224,7 @@ class AccountHistoryNextAdapter(
 
             first?.let {
                 val odds = getOdds(first, oddsType)
-                val oddStr = if (odds > 0)
-                    String.format(
-                        binding.root.context.getString(
-                            R.string.at_symbol,
-                            TextUtil.formatForOdd(odds)
-                        )
-                    )
-                else
-                    ""
-                binding.tvOdd.text = oddStr
+                binding.tvOdd.setOddFormat(odds)
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }
@@ -374,6 +361,23 @@ class AccountHistoryNextAdapter(
         }
     }
 
+
+    class BackToTopViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        fun bind(scrollToTopListener: ScrollToTopListener) {
+            itemView.btn_back_to_top.setOnClickListener {
+                scrollToTopListener.onClick()
+            }
+        }
+        companion object {
+            fun from(parent: ViewGroup) =
+                BackToTopViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.view_back_to_top, parent, false)
+                )
+        }
+    }
+
+
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
@@ -413,6 +417,10 @@ class SportSelectListener(val selectedListener: (sport: String?) -> Unit) {
     fun onSelect(sport: String?) = selectedListener(sport)
 }
 
+class ScrollToTopListener(val clickListener: () -> Unit) {
+    fun onClick() = clickListener()
+}
+
 sealed class DataItem {
 
     abstract val orderNum: String?
@@ -434,6 +442,11 @@ sealed class DataItem {
     }
 
     object NoData : DataItem() {
+        override val orderNum: String? = null
+        override val parlayType = ""
+    }
+
+    object BackToTop : DataItem() {
         override val orderNum: String? = null
         override val parlayType = ""
     }

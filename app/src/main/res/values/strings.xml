@@ -423,6 +423,13 @@
 
     <string name="button_league_submit">提交 (%d)</string>
     <string name="login_notify">请登录以便使用此功能</string>
+    <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
+    <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>
+    <string name="myfavorite_notify_match_add">已添加至我的赛事</string>
+    <string name="myfavorite_notify_match_remove">从我的赛事中移除</string>
+    <string name="myfavorite_notify_detail_add">已添加至我的盘口</string>
+    <string name="myfavorite_notify_detail_remove">从我的盘口中移除</string>
+
 
     <string name="total_bet_amount">总投注额：</string>
 
@@ -648,11 +655,12 @@
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_current_rmb">%s&#160;RMB</string>
     <string name="bet_info_all_bet">所有投注</string>
+    <string name="bet_receipt_all_bet">下注总额</string>
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
     <string name="bet_list_single">单注</string>
     <string name="bet_list_view_more_options">查看所有多个选项</string>
-    <string name="bet_list_cant_parlay_warn">提醒若同一赛事投注项目不可进行串关</string>
+    <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
     <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
@@ -828,7 +836,6 @@
     <string name="win_lose">赢 / 输</string>
     <string name="win_lose_mark">赢 / 输：</string>
     <string name="all_sport">所有体育</string>
-    <string name="back_to_top">回到顶部</string>
     <string name="total">总共</string>
     <string name="verse">v</string>
     <string name="sum_pass">综合过关</string>
@@ -849,6 +856,7 @@
     <string name="odds_button_name_dual">双</string>
     <string name="odds_button_name_plus_flg">首次进球</string>
     <string name="bet_succeeded">您已成功投注</string>
+    <string name="bet_fail">投注失敗</string>
     <string name="mix_bet_list">综合过关单</string>
 
     <!--credit bet record-->
