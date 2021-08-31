@@ -13,6 +13,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.Paging
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 const val DEFAULT_PAGE_SIZE = 10
 
@@ -100,7 +101,14 @@ class CreditRecordViewModel(
 
     private fun List<Row>.postRemainDay() {
         this.firstOrNull()?.endTime?.let { endTime ->
-            _remainDay.postValue(TimeUtil.timeFormat(endTime - System.currentTimeMillis(), "d"))
+            val currentTimeMillis = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 23)
+                set(Calendar.MINUTE, 59)
+                set(Calendar.SECOND, 59)
+                set(Calendar.MILLISECOND, 59)
+            }.timeInMillis
+
+            _remainDay.postValue(TimeUtil.timeFormat(endTime - currentTimeMillis, "d"))
         }
     }
 
