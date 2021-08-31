@@ -87,7 +87,8 @@ class BetButton @JvmOverloads constructor(
 
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
-        tv_accept_odds_change.visibility = if (isOddsChanged) View.VISIBLE else View.GONE
+        tv_accept_odds_change.visibility =
+            if (isOddsChanged && tv_quota.text.toString().replace(",", "").toInt() != 0) View.VISIBLE else View.GONE
     }
 
 
