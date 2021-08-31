@@ -84,11 +84,15 @@ class CreditRecordViewModel(
             result?.rows?.let {
                 pageSizeLoad += it.size
 
-                it.postRemainDay()
                 it.mapRecordPeriod()
                 it.mapAllBalance()
 
-                _userCreditCircleHistory.postValue(it)
+                if (_userCreditCircleHistory.value.isNullOrEmpty()) {
+                    it.postRemainDay()
+                    _userCreditCircleHistory.postValue(it)
+                } else {
+                    _userCreditCircleHistory.value?.toMutableList()?.addAll(it)
+                }
             }
 
             result?.other?.postQuotaAmount()
