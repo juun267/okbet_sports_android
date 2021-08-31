@@ -432,6 +432,13 @@
 
     <string name="button_league_submit">提交 (%d)</string>
     <string name="login_notify">请登录以便使用此功能</string>
+    <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
+    <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>
+    <string name="myfavorite_notify_match_add">已添加至我的赛事</string>
+    <string name="myfavorite_notify_match_remove">从我的赛事中移除</string>
+    <string name="myfavorite_notify_detail_add">已添加至我的盘口</string>
+    <string name="myfavorite_notify_detail_remove">从我的盘口中移除</string>
+
 
     <string name="total_bet_amount">总投注额：</string>
 
@@ -868,7 +875,11 @@
     <string name="credit_bet_settle">结算</string>
     <string name="credit_bet_remark">备注</string>
     <string name="credit_record_remain">离结算倒数</string>
+    <string name="credit_record_deactivate">信用功能停用中</string>
     <string name="credit_record_quota">結算總額： </string>
     <string name="credit_record_day">%s 日</string>
     <string name="credit_record_status_unsettle">尚未到結算日期</string>
+
+    <!--statistics-->
+    <string name="statistics_title">数据统计</string>
 </resources>

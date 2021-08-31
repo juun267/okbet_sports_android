@@ -170,10 +170,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    interface OnMenuClickListener {
-        fun onClick(menuStatus: Int)
-    }
-
     private fun initSubmitBtn() {
         game_submit.setOnClickListener {
             viewModel.submitLeague()
@@ -248,6 +244,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
+            setAnchorView(R.id.game_bottom_navigation)
+            show()
+        }
+    }
+
+    override fun showMyFavoriteNotify(myFavoriteNotifyType: Int) {
+        setSnackBarMyFavoriteNotify(myFavoriteNotifyType)
+        snackBarMyFavoriteNotify?.apply {
             setAnchorView(R.id.game_bottom_navigation)
             show()
         }

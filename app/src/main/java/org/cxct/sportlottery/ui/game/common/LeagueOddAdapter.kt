@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.common
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +88,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolderHdpOu.from(parent, oddStateRefreshListener, data.firstOrNull()?.matchInfo?.gameType)
+        return ViewHolderHdpOu.from(parent, oddStateRefreshListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -181,6 +180,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 setOnClickListener {
                     leagueOddListener?.onClickFavorite(item.matchInfo?.id)
+                }
+            }
+
+            itemView.league_odd_match_chart.apply {
+                setOnClickListener {
+                    leagueOddListener?.onClickStatistics(item.matchInfo?.id)
                 }
             }
 
@@ -446,38 +451,44 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 updateTimer(
                                     isTimerEnable,
                                     item.leagueTime ?: 0,
-                                    item.matchInfo?.gameType == GameType.BK.key
+                                    item.matchInfo.gameType == GameType.BK.key
                                 )
                             }
                         }
                         else -> {
-                            //即將開賽
-                            val timeMillis = TimeUtil.getRemainTime(item.matchInfo?.startTime)
-                            if (timeMillis < 60 * 60 * 1000L) {
-                                item.matchInfo.apply {
-                                    this?.isAtStart = true
-                                    this?.remainTime = TimeUtil.getRemainTime(this?.startTime)
-                                }
-                                listener = object : TimerListener {
-                                    override fun onTimerUpdate(timeMillis: Long) {
-                                        itemView.league_odd_match_time.text = String.format(
-                                            itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                            TimeUtil.timeFormat(timeMillis, "mm")
+                            when {
+                                //滾球 socket還沒推時間回來的判斷
+                                System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> ""
+                                //即將開賽
+                                TimeUtil.getRemainTime(item.matchInfo?.startTime) < 60 * 60 * 1000L -> {
+                                    item.matchInfo.apply {
+                                        this?.isAtStart = true
+                                        this?.remainTime = TimeUtil.getRemainTime(this?.startTime)
+                                    }
+                                    listener = object : TimerListener {
+                                        override fun onTimerUpdate(timeMillis: Long) {
+                                            itemView.league_odd_match_time.text = String.format(
+                                                itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                                TimeUtil.timeFormat(timeMillis, "mm")
+                                            )
+                                            item.matchInfo?.remainTime = timeMillis
+                                        }
+                                    }
+
+                                    item.matchInfo?.remainTime?.let { remainTime ->
+                                        updateTimer(
+                                            isTimerEnable,
+                                            (remainTime / 1000).toInt(),
+                                            true
                                         )
-                                        item.matchInfo?.remainTime = timeMillis
                                     }
                                 }
-
-                                item.matchInfo?.remainTime?.let { remainTime ->
-                                    updateTimer(
-                                        isTimerEnable,
-                                        (remainTime / 1000).toInt(),
-                                        true
-                                    )
+                                //今日、早盤、串關
+                                else -> {
+                                    itemView.league_odd_match_time.text =
+                                        TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
                                 }
-                            } else
-                                itemView.league_odd_match_time.text =
-                                    TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
+                            }
                         }
                     }
                 }
@@ -490,20 +501,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.space.visibility = if (matchType == MatchType.AT_START) View.GONE else View.VISIBLE
 
-            itemView.league_odd_match_status.text = when (matchType) {
-                MatchType.IN_PLAY -> {
+            itemView.league_odd_match_status.text = when {
+                matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
                     item.matchInfo?.statusName
                 }
-                MatchType.MY_EVENT -> {
+                matchType == MatchType.MY_EVENT -> {
                     when (item.matchInfo?.isInPlay) {
                         true -> item.matchInfo.statusName
                         else -> TimeUtil.timeFormat(item.matchInfo?.startTime, "MM/dd")
                     }
                 }
-                MatchType.AT_START -> {
+                matchType == MatchType.AT_START -> {
                     ""
                 }
-                MatchType.TODAY -> {
+                matchType == MatchType.TODAY -> {
                     itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
                 }
 
@@ -743,7 +754,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         companion object {
-            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener, gameType: String?): ViewHolderHdpOu {
+            fun from(parent: ViewGroup, refreshListener: OddStateChangeListener): ViewHolderHdpOu {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view =
                     layoutInflater.inflate(R.layout.itemview_league_odd_v4, parent, false)
@@ -814,7 +825,8 @@ class LeagueOddListener(
     val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit,
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
-    val clickListenerFavorite: (matchId: String?) -> Unit
+    val clickListenerFavorite: (matchId: String?) -> Unit,
+    val clickListenerStatistics: (matchId: String?) -> Unit
 ) {
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
         clickListenerPlayType(matchId, matchInfoList)
@@ -830,4 +842,6 @@ class LeagueOddListener(
     fun onClickQuickCateClose() = clickListenerQuickCateClose()
 
     fun onClickFavorite(matchId: String?) = clickListenerFavorite(matchId)
+
+    fun onClickStatistics(matchId: String?) = clickListenerStatistics(matchId)
 }

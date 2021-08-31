@@ -4,10 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.myfavorite.MyFavoriteNotify
 import org.cxct.sportlottery.network.myfavorite.PlayCate
 import org.cxct.sportlottery.network.myfavorite.save.MyFavoriteBaseResult
 import org.cxct.sportlottery.network.myfavorite.save.SaveMyFavoriteRequest
 import org.cxct.sportlottery.network.myfavorite.query.SportMenuFavoriteResult
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TextUtil
 import retrofit2.Response
 
@@ -33,6 +35,9 @@ class MyFavoriteRepository {
         get() = _favorPlayCateList
     private val _favorPlayCateList = MutableLiveData<List<PlayCate>>()
 
+    val favorNotify: LiveData<Event<MyFavoriteNotify>>
+        get() = _favorNotify
+    private val _favorNotify = MutableLiveData<Event<MyFavoriteNotify>>()
 
     suspend fun getFavorite(): Response<SportMenuFavoriteResult> {
         val result = OneBoSportApi.favoriteService.getMyFavorite()
@@ -69,8 +74,14 @@ class MyFavoriteRepository {
 
         content?.let {
             when (saveList.contains(content)) {
-                true -> saveList.remove(content)
-                false -> saveList.add(content)
+                true ->{
+                    saveList.remove(content)
+                    _favorNotify.postValue(Event(MyFavoriteNotify(type,false)))
+                }
+                false -> {
+                    saveList.add(content)
+                    _favorNotify.postValue(Event(MyFavoriteNotify(type,true)))
+                }
             }
         }
 
