@@ -68,13 +68,20 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initTab()
-        initScrollView()
-        initObserve()
+        super.onViewCreated(view, savedInstanceState)
 
-        setupSport()
-        setMoreButtons()
-        setupUpdate()
+        try {
+            initTab()
+            initScrollView()
+            initObserve()
+
+            setupSport()
+            setMoreButtons()
+            setupUpdate()
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onResume() {
