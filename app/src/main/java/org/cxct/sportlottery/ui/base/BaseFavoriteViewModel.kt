@@ -32,6 +32,8 @@ abstract class BaseFavoriteViewModel(
         get() = mNotifyLogin
     protected val mNotifyLogin = MutableLiveData<Boolean>()
 
+    val notifyMyFavorite = myFavoriteRepository.favorNotify
+
     val favorMatchOddList: LiveData<List<LeagueOdd>>
         get() = mFavorMatchOddList
     protected val mFavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
@@ -82,6 +84,38 @@ abstract class BaseFavoriteViewModel(
                         this.gameType = GameType.getGameType(gameType)
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
+                        }
+                    }
+                }
+                mFavorMatchOddList.postValue(it)
+            }
+        }
+    }
+
+    fun getFilterFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String?) {
+        if (isLogin.value != true) {
+            mNotifyLogin.postValue(true)
+            return
+        }
+
+        if (gameType == null || playCateMenu == null) {
+            return
+        }
+
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.favoriteService.getMyFavoriteMatch(
+                    MyFavoriteMatchRequest(gameType, playCateMenu)
+                )
+            }
+
+            result?.rows?.let {
+                it.forEach { leagueOdd ->
+                    leagueOdd.apply {
+                        this.gameType = GameType.getGameType(gameType)
+                        this.matchOdds.forEach { matchOdd ->
+                            matchOdd.matchInfo?.isFavorite = true
+                            matchOdd.odds = matchOdd.odds.filter { odds -> odds.key == playCateCode }.toMutableMap()
                         }
                     }
                 }

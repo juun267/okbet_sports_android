@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.quick.QuickListData
@@ -44,7 +45,6 @@ class MyFavoriteViewModel(
     val curPlay: LiveData<Play>
         get() = _curPlay
     private val _curPlay = MutableLiveData<Play>()
-
 
     fun getSportQuery() {
         viewModelScope.launch {
@@ -142,15 +142,15 @@ class MyFavoriteViewModel(
     }
 
     fun switchPlayCategory(playCateCode: String?) {
+        getFilterFavoriteMatch(
+            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
+            MenuCode.MAIN.code,
+            playCateCode
+        )
         _sportQueryData.postValue(
             Event(
                 _sportQueryData.value?.peekContent()?.updatePlayCateSelected(playCateCode)
             )
-        )
-
-        getFavoriteMatch(
-            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
-            playCateCode
         )
     }
 
