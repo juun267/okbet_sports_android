@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.league
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +34,8 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
+import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -83,6 +86,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     matchId?.let {
                         viewModel.pinFavorite(FavoriteType.MATCH, it)
                     }
+                },
+                { matchId ->
+                    navStatistics(matchId)
                 }
             )
         }
@@ -475,6 +481,21 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         )
 
         findNavController().navigate(action)
+    }
+
+    private fun navStatistics(matchId: String?) {
+        matchId?.let {
+            activity?.apply {
+                startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
+                    putExtra(KEY_MATCH_ID, matchId)
+                })
+
+                overridePendingTransition(
+                    R.anim.push_bottom_to_top_enter,
+                    R.anim.push_bottom_to_top_exit
+                )
+            }
+        }
     }
 
     private fun addOddsDialog(

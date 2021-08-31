@@ -164,6 +164,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
+            itemView.league_odd_match_chart.apply {
+                setOnClickListener {
+                    leagueOddListener?.onClickStatistics(item.matchInfo?.id)
+                }
+            }
+
             itemView.league_odd_match_border_row1.setOnClickListener {
                 leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
@@ -265,7 +271,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 updateTimer(
                                     isTimerEnable,
                                     item.leagueTime ?: 0,
-                                    item.matchInfo?.gameType == GameType.BK.key
+                                    item.matchInfo.gameType == GameType.BK.key
                                 )
                             }
                         }
@@ -311,7 +317,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     item.matchInfo?.statusName
                 }
                 MatchType.MY_EVENT -> {
-                    when(item.matchInfo?.isInPlay) {
+                    when (item.matchInfo?.isInPlay) {
                         true -> item.matchInfo.statusName
                         else -> TimeUtil.timeFormat(item.matchInfo?.startTime, "MM/dd")
                     }
@@ -620,7 +626,8 @@ class LeagueOddListener(
     val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit,
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
-    val clickListenerFavorite: (matchId: String?) -> Unit
+    val clickListenerFavorite: (matchId: String?) -> Unit,
+    val clickListenerStatistics: (matchId: String?) -> Unit
 ) {
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
         clickListenerPlayType(matchId, matchInfoList)
@@ -636,4 +643,6 @@ class LeagueOddListener(
     fun onClickQuickCateClose() = clickListenerQuickCateClose()
 
     fun onClickFavorite(matchId: String?) = clickListenerFavorite(matchId)
+
+    fun onClickStatistics(matchId: String?) = clickListenerStatistics(matchId)
 }

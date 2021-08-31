@@ -44,6 +44,8 @@ import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
+import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
@@ -153,6 +155,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     matchId?.let {
                         viewModel.pinFavorite(FavoriteType.MATCH, it)
                     }
+                },
+                { matchId ->
+                    navStatistics(matchId)
                 }
             )
         }
@@ -1073,6 +1078,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             )
 
             findNavController().navigate(action)
+        }
+    }
+
+    private fun navStatistics(matchId: String?) {
+        matchId?.let {
+            activity?.apply {
+                startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
+                    putExtra(KEY_MATCH_ID, matchId)
+                })
+
+                overridePendingTransition(
+                    R.anim.push_bottom_to_top_enter,
+                    R.anim.push_bottom_to_top_exit
+                )
+            }
         }
     }
 

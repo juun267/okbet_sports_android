@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.favorite
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -39,6 +40,8 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
+import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SpaceItemDecoration
 
 
@@ -86,6 +89,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 { matchId ->
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
                     loading()
+                },
+                { matchId ->
+                    navStatistics(matchId)
                 }
             )
         }
@@ -606,6 +612,21 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 )
 
             findNavController().navigate(action)
+        }
+    }
+
+    private fun navStatistics(matchId: String?) {
+        matchId?.let {
+            activity?.apply {
+                startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
+                    putExtra(KEY_MATCH_ID, matchId)
+                })
+
+                overridePendingTransition(
+                    R.anim.push_bottom_to_top_enter,
+                    R.anim.push_bottom_to_top_exit
+                )
+            }
         }
     }
 }
