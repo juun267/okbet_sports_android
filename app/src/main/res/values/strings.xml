@@ -862,4 +862,7 @@
     <string name="credit_record_quota">結算總額： </string>
     <string name="credit_record_day">%s 日</string>
     <string name="credit_record_status_unsettle">尚未到結算日期</string>
+
+    <!--statistics-->
+    <string name="statistics_title">数据统计</string>
 </resources>
