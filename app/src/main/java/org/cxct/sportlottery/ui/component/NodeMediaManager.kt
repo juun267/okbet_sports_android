@@ -9,11 +9,9 @@ import cn.nodemedia.NodePlayerDelegate
 import cn.nodemedia.NodePlayerView
 import timber.log.Timber
 
-class NodeMediaManager() {
+class NodeMediaManager {
 
     private var nodePlayer: NodePlayer? = null
-
-    private var isStarting = false
 
     private val handler: Handler = @SuppressLint("HandlerLeak")
     object : Handler() {
@@ -27,7 +25,6 @@ class NodeMediaManager() {
                 1001 ->  {
                     // 视频连接成功
                     Timber.i("NodeMediaPlayer 1001 連接成功")
-                    isStarting = true
                 }
                 1002 -> {
                 }
@@ -35,34 +32,32 @@ class NodeMediaManager() {
                 }
                 1004 ->  {
                     // 视频播放结束
-                    isStarting = false
-                    Timber.e("NodeMediaPlayer 1004 视频播放结束")
+                    Timber.i("NodeMediaPlayer 1004 视频播放结束")
                 }
                 1005 -> {
                 }
                 1103 -> {
-                    Timber.e("NodeMediaPlayer 1103 收到RTMP协议Stream EOF,或 NetStream.Play.UnpublishNotify, 会进行自动重连.")
+                    Timber.i("NodeMediaPlayer 1103 收到RTMP协议Stream EOF,或 NetStream.Play.UnpublishNotify, 会进行自动重连.")
                 }
             }
         }
     }
 
-    private val nodePlayerDelegate: NodePlayerDelegate by lazy { object : NodePlayerDelegate{
-        override fun onEventCallback(player: NodePlayer?, event: Int, msg: String?) {
+    private val nodePlayerDelegate: NodePlayerDelegate by lazy {
+        NodePlayerDelegate { _, event, msg ->
             Timber.e("onEventCallback:$event msg:$msg")
             handler.sendEmptyMessage(event)
         }
-
-    } }
+    }
 
     fun initNodeMediaPlayer(context: Context, playSurface: NodePlayerView, streamURL: String) {
 
-        val bufferTime: Int = 500
-        val maxBufferTime: Int = 3000
-        val videoScaleMode: Int = 1
-        val autoHA: Boolean = true
-        val rtspTransport: String = "udp"
-        val playCryptoKey: String = ""
+        val bufferTime = 500
+        val maxBufferTime = 3000
+        val videoScaleMode = 1
+        val autoHA = true
+        val rtspTransport = "udp"
+        val playCryptoKey = ""
 
         //val playSurface: NodePlayerView = mView.getNodePlayerView()
         //设置播放视图的渲染器模式,可以使用SurfaceView或TextureView. 默认SurfaceView
