@@ -69,24 +69,26 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
             showLoginNotify()
         })
 
-        viewModel.notifyMyFavorite.observe(this,{
-            when(it.type){
-                FavoriteType.LEAGUE ->{
-                    when(it.isFavorite){
-                        true -> showMyFavoriteNotify(MyFavoriteNotifyType.LEAGUE_ADD.ordinal)
-                        false -> showMyFavoriteNotify(MyFavoriteNotifyType.LEAGUE_REMOVE.ordinal)
+        viewModel.notifyMyFavorite.observe(this, {
+            it.getContentIfNotHandled()?.let { result ->
+                when (result.type) {
+                    FavoriteType.LEAGUE -> {
+                        when (result.isFavorite) {
+                            true -> showMyFavoriteNotify(MyFavoriteNotifyType.LEAGUE_ADD.ordinal)
+                            false -> showMyFavoriteNotify(MyFavoriteNotifyType.LEAGUE_REMOVE.ordinal)
+                        }
                     }
-                }
-                FavoriteType.MATCH ->{
-                    when(it.isFavorite){
-                        true -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_ADD.ordinal)
-                        false -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
+                    FavoriteType.MATCH -> {
+                        when (result.isFavorite) {
+                            true -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_ADD.ordinal)
+                            false -> showMyFavoriteNotify(MyFavoriteNotifyType.MATCH_REMOVE.ordinal)
+                        }
                     }
-                }
-                FavoriteType.PLAY_CATE ->{
-                    when(it.isFavorite){
-                        true -> showMyFavoriteNotify(MyFavoriteNotifyType.DETAIL_ADD.ordinal)
-                        false -> showMyFavoriteNotify(MyFavoriteNotifyType.DETAIL_REMOVE.ordinal)
+                    FavoriteType.PLAY_CATE -> {
+                        when (result.isFavorite) {
+                            true -> showMyFavoriteNotify(MyFavoriteNotifyType.DETAIL_ADD.ordinal)
+                            false -> showMyFavoriteNotify(MyFavoriteNotifyType.DETAIL_REMOVE.ordinal)
+                        }
                     }
                 }
             }
