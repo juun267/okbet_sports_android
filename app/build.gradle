@@ -86,7 +86,7 @@ android {
 
     sourceSets {
         fastlane.res.srcDirs  = ["${fastlane_res_src_dir}"]        
-        forqa.res.srcDirs = ['src/platform/test/res']
+        forqa.res.srcDirs = ['src/platform/spplat1/res']
     }
 
     compileOptions {
