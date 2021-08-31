@@ -499,9 +499,9 @@ class GameViewModel(
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
                         oddData.odds?.forEach { map ->
                             map.value.forEach { odd ->
-                                odd.isSelected =
+                                odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                        it.matchOdd.oddsId == odd.id
+                                        it.matchOdd.oddsId == odd?.id
                                     }
                             }
                         }
@@ -529,9 +529,9 @@ class GameViewModel(
                 result.t?.odds?.forEach { oddData ->
                     oddData.odds?.forEach { map ->
                         map.value.forEach { odd ->
-                            odd.isSelected =
+                            odd?.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {
-                                    it.matchOdd.oddsId == odd.id
+                                    it.matchOdd.oddsId == odd?.id
                                 }
                         }
                     }
