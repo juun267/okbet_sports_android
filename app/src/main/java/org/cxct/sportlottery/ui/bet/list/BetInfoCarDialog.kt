@@ -153,6 +153,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun initClose() {
         iv_close.setOnClickListener {
+            viewModel.removeBetInfoSingle()
             dismiss()
         }
     }
