@@ -63,6 +63,19 @@
         app:layout_constraintTop_toTopOf="@id/credit_record_remain_border"
         tools:text="15 日" />
 
+    <TextView
+        android:id="@+id/credit_record_deactivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/credit_record_deactivate"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
+        app:layout_constraintStart_toStartOf="@id/credit_record_remain_border"
+        app:layout_constraintTop_toTopOf="@id/credit_record_remain_border"
+        tools:visibility="gone" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -92,11 +92,6 @@ class CreditRecordActivity :
         })
 
         viewModel.userInfo.observe(this, {
-            credit_record_remain_border.visibility = when (it?.creditStatus) {
-                1 -> View.VISIBLE
-                else -> View.GONE
-            }
-
             credit_record_remain.visibility = when (it?.creditStatus) {
                 1 -> View.VISIBLE
                 else -> View.GONE
@@ -105,6 +100,11 @@ class CreditRecordActivity :
             credit_record_remain_day.visibility = when (it?.creditStatus) {
                 1 -> View.VISIBLE
                 else -> View.GONE
+            }
+
+            credit_record_deactivate.visibility = when (it?.creditStatus) {
+                1 -> View.GONE
+                else -> View.VISIBLE
             }
         })
 
