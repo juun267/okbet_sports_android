@@ -32,7 +32,7 @@ data class Row(
     val userName: String?
 ) {
     var period = ""
-    var formatCreditBalance = ""
-    var formatBalance = ""
-    var formatReward = ""
+    var formatCreditBalance = "–"
+    var formatBalance = "–"
+    var formatReward = "–"
 }
