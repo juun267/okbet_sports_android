@@ -7,8 +7,10 @@ import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
 object SocketUpdateUtil {
 
@@ -106,6 +108,20 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
+    fun updateMatchOdds(
+        oddsDetailListData: OddsDetailListData,
+        matchOddsChangeEvent: MatchOddsChangeEvent
+    ): Boolean {
+        return when (oddsDetailListData.oddArrayList.isNullOrEmpty()) {
+            true -> {
+                insertMatchOdds(oddsDetailListData, matchOddsChangeEvent)
+            }
+            false -> {
+                refreshMatchOdds(oddsDetailListData, matchOddsChangeEvent)
+            }
+        }
+    }
+
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
@@ -123,12 +139,43 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
+    fun updateOddStatus(
+        oddsDetailListData: OddsDetailListData,
+        globalStopEvent: GlobalStopEvent
+    ): Boolean {
+        var isNeedRefresh = false
+
+        oddsDetailListData.oddArrayList.filter { odd ->
+            globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+        }.forEach { odd ->
+            if (odd?.status != BetStatus.DEACTIVATED.code) {
+                odd?.status = BetStatus.DEACTIVATED.code
+                isNeedRefresh = true
+            }
+        }
+
+        return isNeedRefresh
+    }
+
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         matchOdd.oddsMap = oddsChangeEvent.odds?.mapValues {
             it.value.toMutableList()
         }?.toMutableMap() ?: mutableMapOf()
 
         return oddsChangeEvent.odds?.isNotEmpty() ?: false
+    }
+
+    private fun insertMatchOdds(
+        oddsDetailListData: OddsDetailListData,
+        matchOddsChangeEvent: MatchOddsChangeEvent
+    ): Boolean {
+        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds.keys.find {
+            it == oddsDetailListData.gameType
+        })
+
+        oddsDetailListData.oddArrayList = odds?.odds ?: listOf()
+
+        return odds?.odds?.isNotEmpty() ?: false
     }
 
     private fun refreshMatchOdds(
@@ -184,6 +231,65 @@ object SocketUpdateUtil {
 
                         isNeedRefresh = true
                     }
+                }
+            }
+        }
+
+        return isNeedRefresh
+    }
+
+    private fun refreshMatchOdds(
+        oddsDetailListData: OddsDetailListData,
+        matchOddsChangeEvent: MatchOddsChangeEvent
+    ): Boolean {
+        var isNeedRefresh = false
+
+        val odds = matchOddsChangeEvent.odds?.get(matchOddsChangeEvent.odds.keys.find {
+            it == oddsDetailListData.gameType
+        })
+
+        oddsDetailListData.oddArrayList.forEach { odd ->
+            val oddSocket = odds?.odds?.find { oddSocket ->
+                oddSocket?.id == odd?.id
+            }
+
+            oddSocket?.let {
+                odd?.odds?.let { oddValue ->
+                    oddSocket.odds?.let { oddSocketValue ->
+                        when {
+                            oddValue > oddSocketValue -> {
+                                odd.oddState =
+                                    OddState.SMALLER.state
+
+                                isNeedRefresh = true
+                            }
+                            oddValue < oddSocketValue -> {
+                                odd.oddState =
+                                    OddState.LARGER.state
+
+                                isNeedRefresh = true
+                            }
+                            oddValue == oddSocketValue -> {
+                                odd.oddState =
+                                    OddState.SAME.state
+                            }
+                        }
+                    }
+                }
+
+                odd?.odds = oddSocket.odds
+                odd?.hkOdds = oddSocket.hkOdds
+
+                if (odd?.status != oddSocket.status) {
+                    odd?.status = oddSocket.status
+
+                    isNeedRefresh = true
+                }
+
+                if (odd?.extInfo != oddSocket.extInfo) {
+                    odd?.extInfo = oddSocket.extInfo
+
+                    isNeedRefresh = true
                 }
             }
         }

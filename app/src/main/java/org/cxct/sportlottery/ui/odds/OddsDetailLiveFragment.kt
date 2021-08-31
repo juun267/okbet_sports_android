@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -44,6 +45,7 @@ import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
@@ -333,22 +335,31 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
             it?.let { matchOddsChangeEvent ->
-                viewModel.updateOddForOddsDetail(matchOddsChangeEvent)
+                matchOddsChangeEvent.updateOddsSelectedState()
+
+                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                    if (SocketUpdateUtil.updateMatchOdds(
+                            oddsDetailListData,
+                            matchOddsChangeEvent
+                        )
+                        && oddsDetailListData.isExpand
+                    ) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
+                    }
+                }
             }
         })
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
-                val adapterList = oddsDetailListAdapter?.oddsDetailDataList
-                adapterList?.forEach { listData ->
-                    listData.oddArrayList.forEach { odd ->
-                        if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                            odd?.status = BetStatus.LOCKED.code
-                        }
+                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                    if (SocketUpdateUtil.updateOddStatus(
+                            oddsDetailListData,
+                            globalStopEvent
+                        ) && oddsDetailListData.isExpand
+                    ) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
                     }
-                }
-                if (adapterList?.isNotEmpty() == true) {
-                    oddsDetailListAdapter?.oddsDetailDataList = adapterList
                 }
             }
         })
@@ -359,6 +370,21 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 subscribeChannelEvent(matchId)
             }
         })
+    }
+
+    private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.odds?.onEach { odd ->
+                    odd?.isSelected =
+                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
+        return this
     }
 
     private fun setupStartTime() {
