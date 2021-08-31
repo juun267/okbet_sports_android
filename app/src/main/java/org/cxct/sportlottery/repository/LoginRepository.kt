@@ -33,6 +33,7 @@ const val KEY_PWD = "pwd"
 const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 const val KEY_ODDS_TYPE = "oddsType"
+const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
 
 const val KEY_USER_ID = "user_id"
 
@@ -54,7 +55,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
     private val _isLogin = MutableLiveData<Boolean>()
     private val _transNum = MutableLiveData<Int?>()
-    private val _isCreditAccount = MutableLiveData<Boolean>()
+    private val _isCreditAccount = MutableLiveData<Boolean>().apply {
+        value = sharedPref.getBoolean(KEY_IS_CREDIT_ACCOUNT, false)
+    }
 
     var platformId
         get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
@@ -267,6 +270,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             putString(KEY_TOKEN, loginData?.token)
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
+            putBoolean(KEY_IS_CREDIT_ACCOUNT, loginData?.creditAccount == 1)
             apply()
         }
     }
