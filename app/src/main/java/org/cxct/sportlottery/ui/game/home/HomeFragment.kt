@@ -725,22 +725,22 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 if (key == oddBean.playTypeCode) {
                                     val oldOddList = oddBean.oddList
                                     oldOddList.forEach { oldOdd ->
-                                        newOddList.find { newOdd -> oldOdd.id == newOdd?.id }
+                                        newOddList.find { newOdd -> oldOdd?.id == newOdd?.id }
                                             ?.let { newOdd ->
                                                 val newOddState = when (recommendOddsType) {
                                                     OddsType.EU -> judgeOddState(
-                                                        oldOdd.odds,
+                                                        oldOdd?.odds,
                                                         newOdd.odds
                                                     ).state
                                                     OddsType.HK -> judgeOddState(
-                                                        oldOdd.hkOdds,
+                                                        oldOdd?.hkOdds,
                                                         newOdd.hkOdds
                                                     ).state
                                                 }
 
-                                                oldOdd.odds = newOdd.odds
-                                                oldOdd.hkOdds = newOdd.hkOdds
-                                                oldOdd.status = newOddState
+                                                oldOdd?.odds = newOdd.odds
+                                                oldOdd?.hkOdds = newOdd.hkOdds
+                                                oldOdd?.status = newOddState
 
                                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                                 mRecommendAdapter.notifySubItemChanged(
@@ -827,8 +827,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 mRecommendAdapter.getData().forEachIndexed { index, entity ->
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                         oddBean.oddList.forEach { odd ->
-                            if (globalStopEvent.producerId == null || odd.producerId == globalStopEvent.producerId) {
-                                odd.status = BetStatus.DEACTIVATED.code
+                            if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
+                                odd?.status = BetStatus.DEACTIVATED.code
                                 mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
                             }
 
@@ -1018,8 +1018,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRecommendAdapter.getData().forEachIndexed { index, entity ->
             entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                 oddBean.oddList.forEach { odd ->
-                    odd.isSelected = result.any { betInfoListData ->
-                        betInfoListData.matchOdd.oddsId == odd.id
+                    odd?.isSelected = result.any { betInfoListData ->
+                        betInfoListData.matchOdd.oddsId == odd?.id
                     }
                 }
 
