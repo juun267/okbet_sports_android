@@ -114,35 +114,6 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_match_time"
         tools:ignore="ContentDescription" />
 
-
-    <TextView
-        android:id="@+id/league_odd_match_corner_kicks_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorSeaGreen"
-        android:paddingHorizontal="1dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize14sp"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_home"
-        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
-        tools:text="1"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/league_odd_match_yellow_cards_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light"
-        android:paddingHorizontal="1dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize14sp"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_home"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_corner_kicks_home"
-        tools:text="1"
-        tools:visibility="visible" />
-
     <TextView
         android:id="@+id/league_odd_match_cards_home"
         android:layout_width="wrap_content"
@@ -153,7 +124,7 @@
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_home"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_yellow_cards_home"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
         tools:text="1"
         tools:visibility="visible" />
 
@@ -239,34 +210,6 @@
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/league_odd_match_corner_kicks_away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorSeaGreen"
-        android:paddingHorizontal="1dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize14sp"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_away"
-        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
-        tools:text="1"
-        tools:visibility="visible" />
-
-    <TextView
-        android:id="@+id/league_odd_match_yellow_cards_away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light"
-        android:paddingHorizontal="1dp"
-        android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize14sp"
-        android:visibility="gone"
-        app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_away"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_corner_kicks_away"
-        tools:text="1"
-        tools:visibility="visible" />
-
-    <TextView
         android:id="@+id/league_odd_match_cards_away"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -276,7 +219,7 @@
         android:textSize="@dimen/textSize14sp"
         android:visibility="gone"
         app:layout_constraintBaseline_toBaselineOf="@id/league_odd_match_name_away"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_yellow_cards_away"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
         tools:text="1"
         tools:visibility="visible" />
 

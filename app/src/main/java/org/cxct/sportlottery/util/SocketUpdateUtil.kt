@@ -74,30 +74,14 @@ object SocketUpdateUtil {
                         (gameType == GameType.FT.key) -> {
                             when {
                                 //home
-                                (matchStatusCO.homeCornerKicks != null && matchStatusCO.homeCornerKicks != matchOdd.matchInfo?.homeCornerKicks) -> {
-                                    matchOdd.matchInfo?.homeCornerKicks = matchStatusCO.homeCornerKicks
-                                    true
-                                }
                                 (matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) -> {
                                     matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
                                     true
                                 }
-                                (matchStatusCO.homeYellowCards != null && matchStatusCO.homeYellowCards != matchOdd.matchInfo?.homeYellowCards) -> {
-                                    matchOdd.matchInfo?.homeYellowCards = matchStatusCO.homeYellowCards
-                                    true
-                                }
 
                                 //away
-                                (matchStatusCO.awayCornerKicks != null && matchStatusCO.awayCornerKicks != matchOdd.matchInfo?.awayCornerKicks) -> {
-                                    matchOdd.matchInfo?.awayCornerKicks = matchStatusCO.awayCornerKicks
-                                    true
-                                }
                                 (matchStatusCO.awayCards != null && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) -> {
                                     matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
-                                    true
-                                }
-                                (matchStatusCO.awayYellowCards != null && matchStatusCO.awayYellowCards != matchOdd.matchInfo?.awayYellowCards) -> {
-                                    matchOdd.matchInfo?.awayYellowCards = matchStatusCO.awayYellowCards
                                     true
                                 }
                                 else -> false

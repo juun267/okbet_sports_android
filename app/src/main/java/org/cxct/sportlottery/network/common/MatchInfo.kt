@@ -13,10 +13,6 @@ interface MatchInfo {
     var awayPoints: Int?
 
     //FT
-    var homeCornerKicks: Int?
-    var awayCornerKicks: Int?
     var homeCards: Int?
     var awayCards: Int?
-    var homeYellowCards: Int?
-    var awayYellowCards: Int?
 }

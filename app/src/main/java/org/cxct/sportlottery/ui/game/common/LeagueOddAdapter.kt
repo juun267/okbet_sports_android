@@ -196,24 +196,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             setScoreText(matchType, item)
             itemView.apply {
                 //home
-                league_odd_match_corner_kicks_home.apply {
-                    visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
-                                && (item.matchInfo?.homeCornerKicks?:0 > 0)-> View.VISIBLE
-                        else -> View.GONE
-                    }
-                    text = (item.matchInfo?.homeCornerKicks ?: 0).toString()
-                }
-
-                league_odd_match_yellow_cards_home.apply {
-                    visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
-                                && (item.matchInfo?.homeYellowCards?:0 > 0) -> View.VISIBLE
-                        else -> View.GONE
-                    }
-                    text = (item.matchInfo?.homeYellowCards ?: 0).toString()
-                }
-
                 league_odd_match_cards_home.apply {
                     visibility = when {
                         (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
@@ -224,24 +206,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 //away
-                league_odd_match_corner_kicks_away.apply {
-                    visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
-                                && (item.matchInfo?.awayCornerKicks?:0 > 0) -> View.VISIBLE
-                        else -> View.GONE
-                    }
-                    text = (item.matchInfo?.awayCornerKicks ?: 0).toString()
-                }
-
-                league_odd_match_yellow_cards_away.apply {
-                    visibility = when {
-                        (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
-                                && (item.matchInfo?.awayYellowCards?:0 > 0) -> View.VISIBLE
-                        else -> View.GONE
-                    }
-                    text = (item.matchInfo?.awayYellowCards ?: 0).toString()
-                }
-
                 league_odd_match_cards_away.apply {
                     visibility = when {
                         (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
