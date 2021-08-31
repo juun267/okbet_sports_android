@@ -20,7 +20,6 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
@@ -29,18 +28,6 @@ import org.cxct.sportlottery.util.GameConfigManager
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameOutrightFragmentArgs by navArgs()
-
-    private val gameToolbarMatchTypeText = { matchType: MatchType? ->
-        when (matchType) {
-            MatchType.IN_PLAY -> getString(R.string.home_tab_in_play)
-            MatchType.TODAY -> getString(R.string.home_tab_today)
-            MatchType.EARLY -> getString(R.string.home_tab_early)
-            MatchType.PARLAY -> getString(R.string.home_tab_parlay)
-            MatchType.AT_START -> getString(R.string.home_tab_at_start)
-            MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
-            else -> ""
-        }
-    }
 
     private val outrightLeagueOddAdapter by lazy {
         OutrightLeagueOddAdapter().apply {
@@ -95,6 +82,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         try {
             initObserve()
             initSocketObserver()
+            initView()
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -115,7 +103,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             it.getContentIfNotHandled()?.let { outrightOddsListResult ->
                 if (outrightOddsListResult.success) {
 
-                    game_toolbar_sport_type.text = GameType.values()
+                    game_toolbar_match_type.text = GameType.values()
                         .find { gameType -> gameType.key == args.gameType.key }?.string?.let { stringId ->
                             getString(
                                 stringId
@@ -138,14 +126,6 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     )
                 }
             }
-        })
-
-        viewModel.curMatchType.observe(viewLifecycleOwner, {
-            game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
-        })
-
-        viewModel.curChildMatchType.observe(viewLifecycleOwner, {
-            game_toolbar_match_type.text = gameToolbarMatchTypeText(it)
         })
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
@@ -287,6 +267,10 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 args.eventId
             )
         })
+    }
+
+    private fun initView() {
+        game_toolbar_sport_type.text = getString(R.string.outright_row_entrance)
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
