@@ -529,6 +529,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             }
 
                             betList.forEachIndexed { _, data ->
+                                if (data.matchOdd.status != BetStatus.ACTIVATED.code)
+                                    return@forEachIndexed
+
                                 if (data.parlayOdds?.max == null || inputValue < (data.parlayOdds?.max ?: 0)) {
                                     data.betAmount = inputValue
                                 } else {
