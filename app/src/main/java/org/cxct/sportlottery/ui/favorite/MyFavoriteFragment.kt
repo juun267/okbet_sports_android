@@ -182,8 +182,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                         updateMatchOdd.matchInfo?.statusName =
                                             matchStatusCO.statusName
 
-                                        updateMatchOdd.matchInfo?.isInPlay = true
-
                                         leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                                     }
                                 }
@@ -218,7 +216,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                         }
                                         else -> null
                                     }
-                                    updateMatchOdd.matchInfo?.isInPlay = true
 
                                     leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                                 }
