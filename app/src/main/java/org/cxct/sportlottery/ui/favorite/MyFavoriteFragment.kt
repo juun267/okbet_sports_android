@@ -241,20 +241,18 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             if (updateMatchOdd?.odds.isNullOrEmpty()) {
                                 val playSelected =
                                     playCategoryAdapter.data.find { play -> play.isSelected }
-                                if (playSelected?.selectionType != SelectionType.SELECTABLE.code) {
-                                    when (playSelected?.code) {
-                                        MenuCode.MAIN.code -> updateMatchOdd?.odds =
-                                            PlayCateUtils.filterOdds(
-                                                oddTypeSocketMap.toMutableMap(),
-                                                updateMatchOdd?.matchInfo?.gameType ?: ""
-                                            )
-                                        else -> updateMatchOdd?.odds = PlayCateUtils.filterOdds(
+                                when (playSelected?.code) {
+                                    MenuCode.MAIN.code -> updateMatchOdd?.odds =
+                                        PlayCateUtils.filterOdds(
                                             oddTypeSocketMap.toMutableMap(),
                                             updateMatchOdd?.matchInfo?.gameType ?: ""
                                         )
-                                            .filter { odds -> odds.key == playSelected?.playCateList?.firstOrNull()?.code }
-                                            .toMutableMap()
-                                    }
+                                    else -> updateMatchOdd?.odds = PlayCateUtils.filterOdds(
+                                        oddTypeSocketMap.toMutableMap(),
+                                        updateMatchOdd?.matchInfo?.gameType ?: ""
+                                    )
+                                        .filter { odds -> odds.key == playSelected?.playCateList?.firstOrNull()?.code }
+                                        .toMutableMap()
                                 }
                             } else {
                                 updateMatchOdd?.odds?.forEach { oddTypeMap ->
