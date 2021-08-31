@@ -243,6 +243,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 }
                 tv_win_quota.text = TextUtil.format(win)
 
+                button_bet.isOddsChanged = false //輸入金額行為, 視為接受當前賠率
             }
         }
     }
