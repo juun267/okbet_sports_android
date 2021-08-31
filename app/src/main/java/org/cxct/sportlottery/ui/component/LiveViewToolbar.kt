@@ -32,6 +32,12 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     lateinit var matchOdd: MatchOdd
 
+    interface LiveToolBarListener{
+        fun onExpand(expanded: Boolean)
+    }
+
+    private var liveToolBarListener: LiveToolBarListener? = null
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
         addView(view)
@@ -54,10 +60,12 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             if (expand_layout.isExpanded) {
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
                 expand_layout.collapse()
+                liveToolBarListener?.onExpand(false)
                 nodeMediaManager.nodeMediaStop()
             } else {
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 expand_layout.expand()
+                liveToolBarListener?.onExpand(true)
                 nodeMediaManager.nodeMediaStart()
             }
         }
@@ -133,6 +141,10 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun setTitle(title: String) {
         bottomSheetView.sheet_tv_title.text = title
+    }
+
+    fun setupToolBarListener(listener: LiveToolBarListener) {
+        liveToolBarListener = listener
     }
 
     private fun setupBottomSheetBehaviour() {
