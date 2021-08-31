@@ -167,16 +167,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         mRvGameTable4Adapter.onClickStatisticsListener = object : OnClickStatisticsListener {
             override fun onClickStatistics(matchId: String?) {
-                activity?.apply {
-                    startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
-                        putExtra(KEY_MATCH_ID, matchId)
-                    })
-
-                    overridePendingTransition(
-                        R.anim.push_bottom_to_top_enter,
-                        R.anim.push_bottom_to_top_exit
-                    )
-                }
+                navStatisticsPage(matchId)
             }
         }
 
@@ -300,6 +291,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRvHighlightAdapter.onClickFavoriteListener = object : OnClickFavoriteListener {
             override fun onClickFavorite(matchId: String?) {
                 viewModel.pinFavorite(FavoriteType.MATCH, matchId)
+            }
+        }
+
+        mRvHighlightAdapter.onClickStatisticsListener = object : OnClickStatisticsListener {
+            override fun onClickStatistics(matchId: String?) {
+                navStatisticsPage(matchId)
             }
         }
     }
@@ -962,7 +959,26 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     ) {
         val gameType = GameType.getGameType(gameTypeCode)
         if (gameType != null && matchId != null) {
-            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(matchType, gameType, matchId))
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToOddsDetailLiveFragment(
+                    matchType,
+                    gameType,
+                    matchId
+                )
+            )
+        }
+    }
+
+    private fun navStatisticsPage(matchId: String?) {
+        activity?.apply {
+            startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
+                putExtra(KEY_MATCH_ID, matchId)
+            })
+
+            overridePendingTransition(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.push_bottom_to_top_exit
+            )
         }
     }
 
