@@ -48,6 +48,8 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
+import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
+import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
 
 
@@ -162,6 +164,21 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.pinFavorite(FavoriteType.MATCH, matchId)
                 }
             }
+
+        mRvGameTable4Adapter.onClickStatisticsListener = object : OnClickStatisticsListener {
+            override fun onClickStatistics(matchId: String?) {
+                activity?.apply {
+                    startActivity(Intent(requireContext(), StatisticsActivity::class.java).apply {
+                        putExtra(KEY_MATCH_ID, matchId)
+                    })
+
+                    overridePendingTransition(
+                        R.anim.push_bottom_to_top_enter,
+                        R.anim.push_bottom_to_top_exit
+                    )
+                }
+            }
+        }
 
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY

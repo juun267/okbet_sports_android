@@ -36,7 +36,6 @@ class StatisticsActivity : BaseActivity<StatisticsViewModel>(StatisticsViewModel
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView(matchId: String?) {
-
         statistics_web.apply {
             settings.javaScriptEnabled = true
 
@@ -58,5 +57,11 @@ class StatisticsActivity : BaseActivity<StatisticsViewModel>(StatisticsViewModel
                 loading()
             }
         }
+    }
+
+    override fun finish() {
+        super.finish()
+
+        overridePendingTransition(R.anim.pop_top_to_bottom_enter, R.anim.pop_bottom_to_top_exit)
     }
 }
