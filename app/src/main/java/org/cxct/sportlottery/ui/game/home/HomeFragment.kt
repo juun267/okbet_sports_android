@@ -418,7 +418,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         } else if (selectMatchType == MatchType.AT_START) {
             mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchOdds?.forEach { match ->
+                data.matchOdds.forEach { match ->
                     subscribeChannelHall(
                         data.code,
                         MenuCode.HOME_ATSTART_MOBILE.code,
