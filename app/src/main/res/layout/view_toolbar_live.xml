@@ -22,10 +22,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <WebView
-                android:id="@+id/web_view"
+            <!-- Media Layout -->
+            <cn.nodemedia.NodePlayerView
+                android:id="@+id/node_player"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"/>
 
         </LinearLayout>
 
