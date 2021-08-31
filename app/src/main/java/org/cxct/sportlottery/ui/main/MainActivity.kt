@@ -108,6 +108,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
             else {
                 drawer_layout.openDrawer(nav_right)
+                viewModel.getMoney()
             }
         }
 
