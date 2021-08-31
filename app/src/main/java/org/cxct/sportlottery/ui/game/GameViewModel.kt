@@ -972,13 +972,13 @@ class GameViewModel(
                 androidContext.getString(R.string.date_row_all),
                 TimeUtil.getEarlyAllTimeRangeParams()
             ), Date(
-                androidContext.getString(R.string.date_row_other),
+                androidContext.getString(R.string.other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams()
             )
         )
 
         dateRow.addAll(1, TimeUtil.getFutureDate(
-            6,
+            7,
             when (LanguageManager.getSelectLanguage(androidContext)) {
                 LanguageManager.Language.ZH -> {
                     Locale.CHINA
