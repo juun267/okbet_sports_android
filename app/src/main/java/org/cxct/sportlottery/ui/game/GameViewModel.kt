@@ -708,37 +708,34 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(leagueId: String, matchType: String = MatchType.OUTRIGHT.postValue) {
-        getSportSelected(MatchType.OUTRIGHT)?.let { item ->
-            viewModelScope.launch {
-
-                val result = doNetwork(androidContext) {
-                    OneBoSportApi.outrightService.getOutrightOddsList(
-                        OutrightOddsListRequest(
-                            item.code,
-                            matchType = matchType,
-                            leagueIdList = listOf(leagueId)
-                        )
+    fun getOutrightOddsList(gameType: GameType, leagueId: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.outrightService.getOutrightOddsList(
+                    OutrightOddsListRequest(
+                        gameType.key,
+                        matchType = MatchType.OUTRIGHT.postValue,
+                        leagueIdList = listOf(leagueId)
                     )
-                }
+                )
+            }
 
-                result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                    leagueOdd.matchOdds?.forEach { matchOdd ->
-                        matchOdd?.odds?.values?.forEach { oddList ->
-                            oddList.updateOddSelectState()
-                        }
+            result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.matchOdds?.forEach { matchOdd ->
+                    matchOdd?.odds?.values?.forEach { oddList ->
+                        oddList.updateOddSelectState()
                     }
                 }
-
-                val matchOdd =
-                    result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
-                matchOdd?.let {
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
-                }
-
-                _outrightOddsListResult.postValue(Event(result))
             }
+
+            val matchOdd =
+                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
+            matchOdd?.let {
+                matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
+                matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
+            }
+
+            _outrightOddsListResult.postValue(Event(result))
         }
     }
 
