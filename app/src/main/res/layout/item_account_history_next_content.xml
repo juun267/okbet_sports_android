@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="row"
             type="org.cxct.sportlottery.network.bet.settledDetailList.Row" />
@@ -48,11 +49,11 @@
                 android:id="@+id/tv_team_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:text="@{matchOdd.homeName}"
                 android:textColor="@color/blueLight"
                 android:textSize="@dimen/textSize12sp"
-                android:layout_marginTop="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_playName"
@@ -65,12 +66,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
                 android:gravity="center"
+                android:text="@string/verse"
                 android:textColor="@color/blueLight"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
                 app:layout_constraintStart_toEndOf="@id/tv_team_home"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_home"
-                android:text="@string/verse" />
+                app:layout_constraintTop_toTopOf="@+id/tv_team_home" />
 
             <TextView
                 android:id="@+id/tv_team_homeway"
@@ -103,12 +104,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                app:gameType="@{row.gameType}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:gameType="@{row.gameType}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="篮球" />
@@ -117,8 +118,8 @@
                 android:id="@+id/tv_play_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginStart="4dp"
+                android:gravity="center"
                 android:text="@{matchOdd.playCateName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
@@ -133,10 +134,10 @@
                 android:id="@+id/tv_team_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="@{matchOdd.playName}"
                 android:textColor="@color/colorGray"
-                android:layout_marginTop="4dp"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -149,15 +150,15 @@
                 android:id="@+id/list_score"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
                 android:overScrollMode="never"
+                android:scrollbars="none"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_account_history_next_context_listview_score"/>
+                tools:listitem="@layout/item_account_history_next_context_listview_score" />
 
             <TextView
                 android:id="@+id/tv_spread"
@@ -165,12 +166,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
                 android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="@dimen/textSize12sp"
                 android:text="@{matchOdd.spread}"
                 android:textColor="@color/colorRedDark"
-                app:layout_constraintStart_toEndOf="@id/tv_team_name"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_team_name"
+                app:layout_constraintStart_toEndOf="@id/tv_team_name"
                 tools:text="5.5" />
 
             <TextView
@@ -180,12 +181,12 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginVertical="4dp"
                 android:gravity="center"
-                android:textSize="@dimen/textSize12sp"
+                android:text="@string/at"
                 android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
                 app:layout_constraintStart_toEndOf="@+id/tv_spread"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_name"
-                android:text="@string/at" />
+                app:layout_constraintTop_toTopOf="@+id/tv_team_name" />
 
             <TextView
                 android:id="@+id/tv_odd"
@@ -193,10 +194,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginVertical="4dp"
-                android:textStyle="bold"
                 android:gravity="center"
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
                 app:layout_constraintStart_toEndOf="@+id/tv_at"
                 app:layout_constraintTop_toTopOf="@+id/tv_team_name"
@@ -213,8 +214,8 @@
             android:minHeight="48dp"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:paddingBottom="10dp"
             android:paddingTop="4dp"
+            android:paddingBottom="10dp"
             tools:ignore="SpUsage">
 
             <TextView
@@ -222,13 +223,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="@string/bet_info_list_bet_quota"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/bet_info_list_bet_quota" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_money"
@@ -262,11 +263,11 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintEnd_toEndOf="@+id/tv_odd_type"
-                app:layout_constraintTop_toTopOf="@+id/tv_bet"
-                app:moneyFormat="@{row.win}"
-                app:moneyColor="@{row.win}"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_bet"
+                app:moneyColor="@{row.win}"
+                app:moneyFormat="@{row.win}"
                 tools:text="9,959,500.000" />
 
             <TextView
@@ -278,9 +279,9 @@
                 android:text="@{row.orderNo}"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tv_time"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_bet"
                 tools:text="b000003612091822030128" />
@@ -289,39 +290,25 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
                 android:gravity="center"
                 android:textColor="@color/colorGrayLight"
                 android:textSize="@dimen/textSize12sp"
                 app:dateTimeNoYear="@{matchOdd.startTime}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_odd_type"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintTop_toTopOf="@+id/tv_number"
-                android:layout_marginEnd="4dp"
-                tools:text="06-23 23:04:01" />
-
-            <TextView
-                android:id="@+id/tv_odd_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/colorGrayLight"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintTop_toTopOf="@+id/tv_number"
-                android:layout_marginEnd="4dp"
-                tools:text="(欧洲盘)" />
+                tools:text="06-23 23:04:01" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/divider2"
-            app:layout_constraintTop_toBottomOf="@id/tv_team_home"
-            android:background="@color/colorWhite6"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="1dp"
+            android:background="@color/colorWhite6"
+            app:layout_constraintTop_toBottomOf="@id/tv_team_home" />
 
     </LinearLayout>
 

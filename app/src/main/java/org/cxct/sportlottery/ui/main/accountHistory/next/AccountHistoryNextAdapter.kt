@@ -191,9 +191,6 @@ class AccountHistoryNextAdapter(
             first?.let {
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
-                binding.tvOddType.apply {
-                    text = this.context.getString(oddsType.res)
-                }
             }
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
@@ -228,9 +225,6 @@ class AccountHistoryNextAdapter(
             first?.let {
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
-                binding.tvOddType.apply {
-                    text = this.context.getString(oddsType.res)
-                }
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
