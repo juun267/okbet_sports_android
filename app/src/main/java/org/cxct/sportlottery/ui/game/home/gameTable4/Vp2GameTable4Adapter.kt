@@ -172,6 +172,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                         when (data.matchInfo?.gameType) {
                             GameType.TN.key -> {
+                                tv_match_status.visibility = View.GONE
+
                                 //盤比分
                                 tv_game_score_home.visibility = View.VISIBLE
                                 tv_game_score_away.visibility = View.VISIBLE
@@ -193,6 +195,9 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 tv_point.text = "$homePoint–$awayPoint"
                             }
                             GameType.VB.key -> {
+                                tv_match_status.visibility = View.VISIBLE
+                                tv_match_status.text = "${data.matchInfo.statusName} / ${data.matchInfo.spt}" ?: ""
+
                                 tv_game_score_home.visibility = View.GONE
                                 tv_game_score_away.visibility = View.GONE
 
@@ -212,6 +217,9 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 tv_point.visibility = View.GONE
                             }
                             else -> {
+                                tv_match_status.visibility = View.VISIBLE
+                                tv_match_status.text = data.matchInfo?.statusName ?: ""
+
                                 tv_game_score_home.visibility = View.VISIBLE
                                 tv_game_score_away.visibility = View.VISIBLE
                                 val homeScore = data.matchInfo?.homeScore ?: 0
@@ -264,17 +272,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        val statusName = if (data.matchInfo?.statusName.isNullOrEmpty())
-                            ""
-                        else
-                            data.matchInfo?.statusName + " "
-
                         when (data.matchInfo?.gameType) {
                             GameType.FT.key -> { //足球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, false) { timeMillis ->
-                                        val timeStr =
-                                            statusName + TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr = TimeUtil.timeFormat(timeMillis, "mm:ss")
                                         tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }
@@ -283,8 +285,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             GameType.BK.key -> { //籃球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, true) { timeMillis ->
-                                        val timeStr =
-                                            statusName + TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr = TimeUtil.timeFormat(timeMillis, "mm:ss")
                                         tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }
