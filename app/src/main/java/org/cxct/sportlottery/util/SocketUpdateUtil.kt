@@ -58,36 +58,22 @@ object SocketUpdateUtil {
                             true
                         }
 
-                        (gameType == GameType.TN.key) -> {
-                            when {
-                                (matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
-                                    matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
-                                    true
-                                }
-                                (matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
-                                    matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
-                                    true
-                                }
-
-                                else -> false
-                            }
+                        (gameType == GameType.TN.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
+                            matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
+                            true
+                        }
+                        (gameType == GameType.TN.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
+                            matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
+                            true
                         }
 
-                        (gameType == GameType.FT.key) -> {
-                            when {
-                                //home
-                                (matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) -> {
-                                    matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
-                                    true
-                                }
-
-                                //away
-                                (matchStatusCO.awayCards != null && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) -> {
-                                    matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
-                                    true
-                                }
-                                else -> false
-                            }
+                        (gameType == GameType.TN.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
+                            matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
+                            true
+                        }
+                        (gameType == GameType.TN.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
+                            matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
+                            true
                         }
 
 
