@@ -94,8 +94,8 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/unknown_data"
-            app:moneyColor="@{row.vipRewardMoney}"
-            app:moneyFormat="@{row.vipRewardMoney}"
+            app:moneyColor="@{row.vipRewardMoneyWithRebate}"
+            app:moneyFormat="@{row.vipRewardMoneyWithRebate}"
             tools:text="-9,959,500.000"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp" />
