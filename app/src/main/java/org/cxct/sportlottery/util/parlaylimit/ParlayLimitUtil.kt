@@ -137,7 +137,9 @@ object ParlayLimitUtil {
         }
 
         //N串1场景
-        val keyList: Set<Int> = map.keys
+        //Fix bug no.13421 目前OPPO R9s發現此問題,其餘手機正常
+        val keyList: List<Int> = map.keys.sorted()
+
         val nC1RuleList: MutableList<String> = mutableListOf()
         for (key in keyList) {
             val list: List<IntArray> = map[key]!!
