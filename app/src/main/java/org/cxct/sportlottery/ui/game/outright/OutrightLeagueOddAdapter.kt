@@ -62,6 +62,9 @@ class OutrightLeagueOddAdapter :
                     this.matchOdd = matchOdd
                     this.oddsType = oddsType
                     this.outrightOddListener = outrightOddListener
+                    this.outrightOddExpandListener = OutrightOddExpandListener {
+                        this.expandData(matchOdd, it)
+                    }
                 }
             }
 

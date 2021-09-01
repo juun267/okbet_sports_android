@@ -3,8 +3,10 @@ package org.cxct.sportlottery.ui.game.outright
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
+import kotlinx.android.synthetic.main.itemview_outright_odd_more_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_subtitle_v4.view.*
 import kotlinx.android.synthetic.main.itemview_outright_odd_v4.view.*
 import org.cxct.sportlottery.R
@@ -26,6 +28,7 @@ class OutrightOddAdapter :
             field = value
             field?.let { matchOdd ->
                 val list = mutableListOf<Any>()
+                val firstKey = matchOdd.odds.entries.iterator().next().key
                 matchOdd.odds.forEach {
                     list.add(it.key)
 
@@ -34,6 +37,7 @@ class OutrightOddAdapter :
                             .filterIndexed { index, _ -> index < 4 }
                             .map { odd ->
                                 odd.outrightCateKey = it.key
+                                odd.isExpand = it.key == firstKey
                                 odd
                             })
 
@@ -53,6 +57,29 @@ class OutrightOddAdapter :
         }
 
     var outrightOddListener: OutrightOddListener? = null
+    var outrightOddExpandListener: OutrightOddExpandListener? = null
+
+    fun expandData(matchOdd: MatchOdd?,cateKey:String){
+        matchOdd?.let { matchOdd ->
+            val list = mutableListOf<Any>()
+            matchOdd.odds.forEach {
+                list.add(it.key)
+
+                list.addAll(
+                    it.value.filterNotNull()
+                        .filterIndexed { index, _ -> index < 4 }
+                        .map { odd ->
+                            odd.outrightCateKey = it.key
+                            odd.isExpand = if(cateKey == it.key) !odd.isExpand  else odd.isExpand
+                            odd
+                        })
+                if (it.value.filterNotNull().size > 4) {
+                    list.add(it.key to matchOdd)
+                }
+            }
+            data = list
+        }
+    }
 
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -92,7 +119,7 @@ class OutrightOddAdapter :
         when (holder) {
             is SubTitleViewHolder -> {
                 val item = data[position] as String
-                holder.bind(item, matchOdd?.dynamicMarkets)
+                holder.bind(item, matchOdd?.dynamicMarkets, outrightOddExpandListener)
             }
             is OddViewHolder -> {
                 val item = data[position] as Odd
@@ -100,10 +127,16 @@ class OutrightOddAdapter :
             }
             is MoreViewHolder -> {
                 val item = data[position] as Pair<*, *>
-                holder.bind((item.first as String), (item.second as MatchOdd), outrightOddListener)
+                val isExpand = data.filterIsInstance<Odd>()
+                    .first { it.outrightCateKey == item.first as String }.isExpand
+                holder.bind(
+                    (item.first as String),
+                    (item.second as MatchOdd),
+                    isExpand,
+                    outrightOddListener
+                )
             }
         }
-
     }
 
     override fun getItemCount(): Int = data.size
@@ -119,14 +152,22 @@ class OutrightOddAdapter :
             outrightOddListener: OutrightOddListener?,
             oddsType: OddsType
         ) {
-            itemView.outright_odd_btn.apply {
-                setupOdd(item, oddsType)
-                tv_spread.text = ""
-                this@OddViewHolder.setupOddState(this, item)
-                setOnClickListener {
-                    outrightOddListener?.onClickBet(matchOdd, item)
+            if(item.isExpand){
+                itemView.outright_odd_btn.apply {
+                    setupOdd(item, oddsType)
+                    tv_spread.text = ""
+                    this@OddViewHolder.setupOddState(this, item)
+                    setOnClickListener {
+                        outrightOddListener?.onClickBet(matchOdd, item)
+                    }
                 }
             }
+            itemView.ll_odd_content.visibility =
+                if (item.isExpand) View.VISIBLE else View.GONE
+            itemView.layoutParams = if (item.isExpand) LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ) else LinearLayout.LayoutParams(0, 0)
         }
 
         companion object {
@@ -146,7 +187,7 @@ class OutrightOddAdapter :
     class SubTitleViewHolder private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: String, dynamicMarkets: Map<String, DynamicMarket>?) {
+        fun bind(item: String, dynamicMarkets: Map<String, DynamicMarket>?, outrightOddExpandListener: OutrightOddExpandListener?) {
             itemView.outright_odd_subtitle.text = dynamicMarkets?.get(item)?.let {
                 when (LanguageManager.getSelectLanguage(itemView.context)) {
                     LanguageManager.Language.ZH -> {
@@ -158,6 +199,9 @@ class OutrightOddAdapter :
                 }
             }
             itemView.outright_odd_instruction.text = "1/3, 顶级 2" //TODO Cheryl: 等後端api的新數值再做更改
+            itemView.ll_subtitle_content.setOnClickListener {
+                outrightOddExpandListener?.onClickExpand(item)
+            }
         }
 
         companion object {
@@ -173,10 +217,15 @@ class OutrightOddAdapter :
 
     class MoreViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(oddsKey: String, matchOdd: MatchOdd, outrightOddListener: OutrightOddListener?) {
+        fun bind(oddsKey: String, matchOdd: MatchOdd,isExpand:Boolean, outrightOddListener: OutrightOddListener?) {
             itemView.setOnClickListener {
                 outrightOddListener?.onClickMore(oddsKey, matchOdd)
             }
+            itemView.ll_more_content.visibility = if (isExpand) View.VISIBLE else View.GONE
+            itemView.layoutParams = if (isExpand) LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (itemView.context.resources.displayMetrics.density * 64).toInt()
+            ) else LinearLayout.LayoutParams(0, 0)
         }
 
         companion object {
@@ -197,4 +246,8 @@ class OutrightOddListener(
 ) {
     fun onClickBet(matchOdd: MatchOdd?, odd: Odd) = clickListenerBet(matchOdd, odd)
     fun onClickMore(oddsKey: String, matchOdd: MatchOdd) = clickListenerMore(oddsKey, matchOdd)
+}
+
+class OutrightOddExpandListener(val clickExpand: (oddsKey: String) -> Unit){
+    fun onClickExpand(oddsKey: String) = clickExpand(oddsKey)
 }
