@@ -92,7 +92,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onStart() {
         super.onStart()
 
-        viewModel.getOutrightOddsList(args.eventId)
+        viewModel.getOutrightOddsList(args.gameType, args.eventId)
         loading()
     }
 
