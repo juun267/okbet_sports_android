@@ -454,40 +454,35 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 )
                             }
                         }
-                        else -> {
-                            when {
-                                //滾球
-                                System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> item.matchInfo?.isInPlay = true
-                                //即將開賽
-                                TimeUtil.getRemainTime(item.matchInfo?.startTime) < 60 * 60 * 1000L -> {
-                                    item.matchInfo.apply {
-                                        this?.isAtStart = true
-                                        this?.remainTime = TimeUtil.getRemainTime(this?.startTime)
-                                    }
-                                    listener = object : TimerListener {
-                                        override fun onTimerUpdate(timeMillis: Long) {
-                                            itemView.league_odd_match_time.text = String.format(
-                                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                                TimeUtil.timeFormat(timeMillis, "mm")
-                                            )
-                                            item.matchInfo?.remainTime = timeMillis
-                                        }
-                                    }
 
-                                    item.matchInfo?.remainTime?.let { remainTime ->
-                                        updateTimer(
-                                            isTimerEnable,
-                                            (remainTime / 1000).toInt(),
-                                            true
-                                        )
-                                    }
-                                }
-                                //今日、早盤、串關
-                                else -> {
-                                    itemView.league_odd_match_time.text =
-                                        TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
+                        item.matchInfo?.isAtStart ?: false -> {
+                            item.matchInfo.apply {
+                                this?.isAtStart = true
+                                this?.remainTime = TimeUtil.getRemainTime(this?.startTime)
+                            }
+                            listener = object : TimerListener {
+                                override fun onTimerUpdate(timeMillis: Long) {
+                                    itemView.league_odd_match_time.text = String.format(
+                                        itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                        TimeUtil.timeFormat(timeMillis, "mm")
+                                    )
+                                    item.matchInfo?.remainTime = timeMillis
                                 }
                             }
+
+                            item.matchInfo?.remainTime?.let { remainTime ->
+                                updateTimer(
+                                    isTimerEnable,
+                                    (remainTime / 1000).toInt(),
+                                    true
+                                )
+                            }
+                        }
+
+                        else -> {
+                            //今日、早盤、串關
+                            itemView.league_odd_match_time.text =
+                                TimeUtil.timeFormat(item.matchInfo?.startTime, "HH:mm")
                         }
                     }
                 }
