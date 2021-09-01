@@ -274,6 +274,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/tv_odd_type"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
                 app:moneyFormat="@{row.win}"
+                app:moneyColor="@{row.win}"
                 tools:text="9,959,500.000" />
 
             <TextView
