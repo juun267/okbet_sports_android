@@ -33,7 +33,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
+class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) :
+    RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -169,7 +170,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     MatchType.IN_PLAY -> {
                         tv_game_type.text = context.getString(R.string.home_tab_in_play)
 
-                        when (data.matchInfo?.gameType){
+                        when (data.matchInfo?.gameType) {
                             GameType.TN.key -> {
                                 //盤比分
                                 tv_game_score_home.visibility = View.VISIBLE
@@ -190,6 +191,25 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 val homePoint = data.matchInfo.homePoints ?: 0
                                 val awayPoint = data.matchInfo.awayPoints ?: 0
                                 tv_point.text = "$homePoint–$awayPoint"
+                            }
+                            GameType.VB.key -> {
+                                tv_game_score_home.visibility = View.GONE
+                                tv_game_score_away.visibility = View.GONE
+
+                                //局比分
+                                val homeTotalScore = data.matchInfo.homeTotalScore ?: 0
+                                val awayTotalScore = data.matchInfo.awayTotalScore ?: 0
+                                tv_game_total_score_home_center.text = "$homeTotalScore"
+                                tv_game_total_score_away_center.text = "$awayTotalScore"
+
+                                //點比分
+                                val homeScore = data.matchInfo.homeScore ?: 0
+                                val awayScore = data.matchInfo.awayScore ?: 0
+                                tv_game_score_home_center.text = "$homeScore"
+                                tv_game_score_away_center.text = "$awayScore"
+
+                                tv_score.visibility = View.GONE
+                                tv_point.visibility = View.GONE
                             }
                             else -> {
                                 tv_game_score_home.visibility = View.VISIBLE
