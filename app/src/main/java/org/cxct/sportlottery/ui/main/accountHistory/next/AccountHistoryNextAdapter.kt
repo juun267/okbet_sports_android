@@ -216,6 +216,9 @@ class AccountHistoryNextAdapter(
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        private val roundAdapter by lazy { RoundAdapter() }
+
         fun bind(row: Row, oddsType: OddsType) {
             val first = row.matchOdds?.firstOrNull()
 
@@ -228,7 +231,6 @@ class AccountHistoryNextAdapter(
                 binding.tvOddType.apply {
                     text = this.context.getString(oddsType.res)
                 }
-
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
@@ -242,15 +244,11 @@ class AccountHistoryNextAdapter(
                     )
                 }
 
-                val arrayAdapter by lazy {
-                    ArrayAdapter(
-                        itemView.context,
-                        R.layout.item_account_history_next_context_listview_score,
-                        R.id.tv_score,
-                        scoreList
-                    );
+                binding.listScore.apply {
+                    layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+                    adapter = roundAdapter
                 }
-                binding.listScore.adapter = arrayAdapter
+                roundAdapter.submitList(scoreList)
 
             }
 
