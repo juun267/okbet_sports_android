@@ -184,33 +184,18 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         receiver.matchClock.observe(this.viewLifecycleOwner, {
             it?.let { matchClockEvent ->
-                matchClockEvent.matchClockCO?.let { matchClockCO ->
-                    matchClockCO.matchId?.let { matchId ->
+                val leagueOdds = leagueAdapter.data
 
-                        val leagueOdds = leagueAdapter.data
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateMatchClock(
+                                matchOdd,
+                                matchClockEvent
+                            )
+                        } &&
+                        leagueOdd.isExpand) {
 
-                        leagueOdds.forEach { leagueOdd ->
-                            if (leagueOdd.isExpand) {
-
-                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                    matchOdd.matchInfo?.id == matchId
-                                }
-
-                                updateMatchOdd?.let {
-                                    updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
-                                        GameType.FT.key -> {
-                                            matchClockCO.matchTime
-                                        }
-                                        GameType.BK.key -> {
-                                            matchClockCO.remainingTimeInPeriod
-                                        }
-                                        else -> null
-                                    }
-
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                                }
-                            }
-                        }
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
