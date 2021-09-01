@@ -232,24 +232,17 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             it?.let { globalStopEvent ->
                 val leagueOdds = leagueAdapter.data
 
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { odds ->
-                            odds.forEach { odd ->
-                                odd?.updateOddStatus(globalStopEvent.producerId)
-                            }
-                        }
-
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds?.values?.forEach { odds ->
-                                odds.forEach { odd ->
-                                    odd?.updateOddStatus(globalStopEvent.producerId)
-                                }
-                            }
-                        }
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateOddStatus(
+                                matchOdd,
+                                globalStopEvent
+                            )
+                        } &&
+                        leagueOdd.isExpand
+                    ) {
+                        leagueAdapter.notifyItemChanged(index)
                     }
-
-                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                 }
             }
         })
