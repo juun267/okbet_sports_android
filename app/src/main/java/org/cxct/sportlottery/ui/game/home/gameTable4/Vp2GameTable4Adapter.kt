@@ -175,63 +175,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                         val awayScore = data.matchInfo?.awayScore ?: 0
                         tv_game_score_home.text = "$homeScore"
                         tv_game_score_away.text = "$awayScore"
-
-                        when {
-                            homeScore > awayScore -> {
-                                tv_game_score_home.setTypeface(
-                                    tv_game_score_home.typeface,
-                                    Typeface.BOLD
-                                )
-                                tv_game_score_away.setTypeface(
-                                    tv_game_score_away.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_home.setTypeface(
-                                    tv_game_name_home.typeface,
-                                    Typeface.BOLD
-                                )
-                                tv_game_name_away.setTypeface(
-                                    tv_game_name_away.typeface,
-                                    Typeface.NORMAL
-                                )
-                            }
-                            homeScore < awayScore -> {
-                                tv_game_score_home.setTypeface(
-                                    tv_game_score_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_score_away.setTypeface(
-                                    tv_game_score_away.typeface,
-                                    Typeface.BOLD
-                                )
-                                tv_game_name_home.setTypeface(
-                                    tv_game_name_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_away.setTypeface(
-                                    tv_game_name_away.typeface,
-                                    Typeface.BOLD
-                                )
-                            }
-                            else -> {
-                                tv_game_score_home.setTypeface(
-                                    tv_game_score_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_score_away.setTypeface(
-                                    tv_game_score_away.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_home.setTypeface(
-                                    tv_game_name_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_away.setTypeface(
-                                    tv_game_name_away.typeface,
-                                    Typeface.NORMAL
-                                )
-                            }
-                        }
                     }
                     MatchType.AT_START -> {
                         tv_game_type.text = context.getString(R.string.home_tab_today)
