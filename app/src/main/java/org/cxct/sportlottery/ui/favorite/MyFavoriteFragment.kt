@@ -204,71 +204,25 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-                    val leagueOdds = leagueAdapter.data
-                    val oddsType = leagueAdapter.oddsType
 
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.isExpand) {
-                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == it.eventId
-                            }
-                            if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                val playSelected =
-                                    playCategoryAdapter.data.find { play -> play.isSelected }
-                                when (playSelected?.code) {
-                                    MenuCode.MAIN.code -> updateMatchOdd?.odds =
-                                        PlayCateUtils.filterOdds(
-                                            oddTypeSocketMap.toMutableMap(),
-                                            updateMatchOdd?.matchInfo?.gameType ?: ""
-                                        )
-                                    else -> updateMatchOdd?.odds = PlayCateUtils.filterOdds(
-                                        oddTypeSocketMap.toMutableMap(),
-                                        updateMatchOdd?.matchInfo?.gameType ?: ""
+                val playSelected = playCategoryAdapter.data.find { play -> play.isSelected }
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateMatchOdds(
+                                matchOdd.apply {
+                                    PlayCateUtils.filterOdds(
+                                        this.oddsMap,
+                                        this.matchInfo?.gameType ?: ""
                                     )
-                                        .filter { odds -> odds.key == playSelected?.playCateList?.firstOrNull()?.code }
-                                        .toMutableMap()
-                                }
-                            } else {
-                                updateMatchOdd?.odds?.forEach { oddTypeMap ->
-                                    val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                                    val odds = oddTypeMap.value
-
-                                    odds.forEach { odd ->
-                                        val oddSocket = oddsSocket?.find { oddSocket ->
-                                            oddSocket?.id == odd?.id
-                                        }
-
-                                        oddSocket?.let {
-                                            odd?.updateOddsState(oddSocket, oddsType)
-                                        }
-                                    }
-                                }
-
-                                updateMatchOdd?.quickPlayCateList?.forEach { quickPlayCate ->
-                                    quickPlayCate.quickOdds?.forEach { oddTypeMap ->
-                                        val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                                        val odds = oddTypeMap.value
-
-                                        odds.forEach { odd ->
-                                            val oddSocket = oddsSocket?.find { oddSocket ->
-                                                oddSocket?.id == odd?.id
-                                            }
-
-                                            oddSocket?.let {
-                                                odd?.updateOddsState(oddSocket, oddsType)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            leagueAdapter.notifyItemChanged(
-                                leagueOdds.indexOf(
-                                    leagueOdd
-                                )
+                                        .filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
+                                }, oddsChangeEvent
                             )
-                        }
+                        } &&
+                        leagueOdd.isExpand
+                    ) {
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
