@@ -12,8 +12,6 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -32,7 +30,6 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -253,73 +250,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 subscribeHallChannel()
             }
         })
-    }
-
-    private fun Odd.updateOddsState(oddSocket: Odd, oddsType: OddsType): Odd {
-        when (oddsType) {
-            OddsType.EU -> {
-                this.odds?.let { oddValue ->
-                    oddSocket.odds?.let { oddSocketValue ->
-                        when {
-                            oddValue > oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SMALLER.state
-                            }
-                            oddValue < oddSocketValue -> {
-                                this.oddState =
-                                    OddState.LARGER.state
-                            }
-                            oddValue == oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SAME.state
-                            }
-                        }
-                    }
-                }
-            }
-
-            OddsType.HK -> {
-                this.hkOdds?.let { oddValue ->
-                    oddSocket.hkOdds?.let { oddSocketValue ->
-                        when {
-                            oddValue > oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SMALLER.state
-                            }
-                            oddValue < oddSocketValue -> {
-                                this.oddState =
-                                    OddState.LARGER.state
-                            }
-                            oddValue == oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SAME.state
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        this.odds = oddSocket.odds
-        this.hkOdds = oddSocket.hkOdds
-        this.status = oddSocket.status
-        this.extInfo = oddSocket.extInfo
-
-        return this
-    }
-
-    private fun Odd.updateOddStatus(producerId: Int?): Odd {
-        when (producerId) {
-            null -> {
-                this.status = BetStatus.DEACTIVATED.code
-            }
-            else -> {
-                if (this.producerId == producerId) {
-                    this.status = BetStatus.DEACTIVATED.code
-                }
-            }
-        }
-        return this
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
