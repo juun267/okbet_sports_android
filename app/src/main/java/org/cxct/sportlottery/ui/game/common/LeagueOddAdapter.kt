@@ -278,7 +278,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     visibility = when {
                         (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
                                 && (item.matchInfo?.homeCards ?: 0 > 0) -> View.VISIBLE
-                        else -> View.GONE
+                        else -> View.INVISIBLE
                     }
                     text = (item.matchInfo?.homeCards ?: 0).toString()
                 }
@@ -288,7 +288,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     visibility = when {
                         (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
                                 && (item.matchInfo?.awayCards ?: 0 > 0) -> View.VISIBLE
-                        else -> View.GONE
+                        else -> View.INVISIBLE
                     }
                     text = (item.matchInfo?.awayCards ?: 0).toString()
                 }
