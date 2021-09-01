@@ -6,4 +6,13 @@ interface MatchInfo {
     var homeScore: Int?
     var statusName: String?
     var leagueTime: Int?
+
+    var homeTotalScore: Int?
+    var awayTotalScore: Int?
+    var homePoints: Int?
+    var awayPoints: Int?
+
+    //FT
+    var homeCards: Int?
+    var awayCards: Int?
 }
