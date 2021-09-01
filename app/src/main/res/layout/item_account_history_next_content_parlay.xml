@@ -107,17 +107,29 @@
                 tools:text="9,999,999.000" />
 
             <TextView
-                android:id="@+id/tv_status"
+                android:id="@+id/tv_win_lose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/colorRed"
+                android:text="@string/win_lose_mark"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize12sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_win_lose_money"
+                app:layout_constraintTop_toTopOf="@+id/tv_bet" />
+
+            <TextView
+                android:id="@+id/tv_win_lose_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/colorGreenLight"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
-                app:betReceiptStatus="@{matchOdd.status}"
-                app:recordStatusColor="@{matchOdd.status}"
-                tools:text="取消注單" />
+                app:moneyFormat="@{row.win}"
+                app:moneyColor="@{row.win}"
+                tools:text="9,959,500.000" />
 
             <TextView
                 android:id="@+id/tv_number"

@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginStart="4dp"
-                app:gameType="@{matchOdd.playCateName}"
+                android:text="@{matchOdd.playCateName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
@@ -134,7 +134,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@{matchOdd.homeName}"
+                android:text="@{matchOdd.playName}"
                 android:textColor="@color/colorGray"
                 android:layout_marginTop="4dp"
                 android:textSize="@dimen/textSize12sp"
@@ -145,17 +145,19 @@
                 tools:text="菲尼克斯太阳" />
 
 
-            <ListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_score"
-                android:layout_width="100dp"
-                app:layout_constrainedWidth="true"
-                tools:layout_width="100dp"
-                tools:layout_height="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintHorizontal_bias="1"
+                android:scrollbars="none"
+                android:overScrollMode="never"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="完賽: 1-3\n完賽: 1-3\n完賽: 1-3" />
+                app:layout_constraintVertical_bias="0"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_account_history_next_context_listview_score"/>
 
             <TextView
                 android:id="@+id/tv_spread"
