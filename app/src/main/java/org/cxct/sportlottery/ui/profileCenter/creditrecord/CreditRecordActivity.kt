@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.creditrecord
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_credit_record.*
@@ -117,7 +118,19 @@ class CreditRecordActivity :
         })
 
         viewModel.quotaAmount.observe(this, {
-            credit_record_quota_amount.text = it
+            credit_record_quota_amount.apply {
+                text = it.formatReward
+
+                setTextColor(
+                    ContextCompat.getColor(
+                        this@CreditRecordActivity, when {
+                            (it.reward != null && it.reward > 0) -> R.color.colorGreen
+                            (it.reward != null && it.reward < 0) -> R.color.colorRed
+                            else -> R.color.colorGray
+                        }
+                    )
+                )
+            }
         })
     }
 

@@ -43,13 +43,13 @@ class CreditRecordViewModel(
     val userCreditCircleHistory: LiveData<List<Row>>
         get() = _userCreditCircleHistory
 
-    val quotaAmount: LiveData<String>
+    val quotaAmount: LiveData<Row>
         get() = _quotaAmount
 
     private val _loading = MutableLiveData<Boolean>()
     private val _userCreditCircleHistory = MutableLiveData<List<Row>>()
     private val _remainDay = MutableLiveData<String>()
-    private val _quotaAmount = MutableLiveData<String>()
+    private val _quotaAmount = MutableLiveData<Row>()
 
     override var pageSize: Int = DEFAULT_PAGE_SIZE
     override var pageSizeLoad: Int = 0
@@ -144,14 +144,30 @@ class CreditRecordViewModel(
                 it.formatBalance = TextUtil.formatMoney(balance)
             }
             it.reward?.let { reward ->
-                it.formatReward = TextUtil.formatMoney(reward)
+                it.formatReward = when {
+                    (reward > 0) -> {
+                        "+" + TextUtil.formatMoney(reward)
+                    }
+                    else -> {
+                        TextUtil.formatMoney(reward)
+                    }
+                }
             }
         }
     }
 
     private fun Row.postQuotaAmount() {
         this.reward?.let { reward ->
-            _quotaAmount.postValue(TextUtil.formatMoney(reward))
+            this.formatReward = when {
+                (reward > 0) -> {
+                    "+" + TextUtil.formatMoney(reward)
+                }
+                else -> {
+                    TextUtil.formatMoney(reward)
+                }
+            }
         }
+
+        _quotaAmount.postValue(this)
     }
 }
