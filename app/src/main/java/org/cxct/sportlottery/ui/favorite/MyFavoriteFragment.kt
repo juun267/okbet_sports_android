@@ -35,8 +35,8 @@ import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import timber.log.Timber
 
 
 class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
@@ -162,37 +162,21 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
             it?.let { matchStatusChangeEvent ->
-                matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-                    matchStatusCO.matchId?.let { matchId ->
+                val leagueOdds = leagueAdapter.data
 
-                        val leagueOdds = leagueAdapter.data
-
-                        leagueOdds.forEach { leagueOdd ->
-                            if (leagueOdd.isExpand) {
-
-                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                    matchOdd.matchInfo?.id == matchId
-                                }
-                                updateMatchOdd?.let {
-                                    if (matchStatusCO.status == 100) {
-                                        leagueOdd.matchOdds.remove(updateMatchOdd)
-                                        leagueAdapter.notifyItemRangeChanged(
-                                            leagueOdds.indexOf(leagueOdd),
-                                            leagueAdapter.itemCount
-                                        )
-                                    } else {
-                                        updateMatchOdd.matchInfo?.homeScore =
-                                            matchStatusCO.homeScore
-                                        updateMatchOdd.matchInfo?.awayScore =
-                                            matchStatusCO.awayScore
-                                        updateMatchOdd.matchInfo?.statusName =
-                                            matchStatusCO.statusName
-
-                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                                    }
-                                }
-                            }
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (SocketUpdateUtil.updateMatchStatus(
+                            gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code,
+                            leagueOdd.matchOdds.toMutableList(),
+                            matchStatusChangeEvent
+                        ) &&
+                        leagueOdd.isExpand
+                    ) {
+                        if (leagueOdd.matchOdds.isNullOrEmpty()) {
+                            leagueAdapter.data.remove(leagueOdd)
                         }
+
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
