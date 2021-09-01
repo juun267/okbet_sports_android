@@ -291,6 +291,19 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
     this.setTextColor(ContextCompat.getColor(context, color))
 }
 
+
+@BindingAdapter("moneyColorWhite")
+fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
+
+    val color = when {
+        profit >= 0.0 -> R.color.colorWhite
+        profit < 0.0 -> R.color.colorRedLight
+        else -> R.color.colorWhite
+    }
+
+    this.setTextColor(ContextCompat.getColor(context, color))
+}
+
 fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
     this.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(editable: Editable?) {

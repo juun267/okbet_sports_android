@@ -5,13 +5,14 @@
     tools:ignore="SpUsage">
 
     <data>
+
         <variable
             name="other"
             type="org.cxct.sportlottery.network.bet.settledDetailList.Other" />
 
-<!--        <variable-->
-<!--            name="matchOdd"-->
-<!--            type="org.cxct.sportlottery.network.bet.MatchOdd" />-->
+        <!--        <variable-->
+        <!--            name="matchOdd"-->
+        <!--            type="org.cxct.sportlottery.network.bet.MatchOdd" />-->
 
 
     </data>
@@ -38,25 +39,26 @@
         <TextView
             android:id="@+id/tv_status_money"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="end"
-            android:textColor="@color/colorRedLight"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
+            app:moneyColorWhite="@{other.win}"
             app:moneyFormat="@{other.win}"
-            app:moneyColor="@{other.win}"
-            tools:text="-9,999,587.000" />
+            tools:text="9,999,587.000"
+            tools:textColor="@color/colorWhite" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="end"
             android:layout_marginStart="4dp"
-            android:textColor="@color/colorRedLight"
+            android:gravity="end"
+            android:text="@string/bet_info_list_rmb"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
-            android:text="@string/bet_info_list_rmb"/>
+            app:moneyColorWhite="@{other.win}"
+            tools:textColor="@color/colorWhite" />
 
     </LinearLayout>
 </layout>

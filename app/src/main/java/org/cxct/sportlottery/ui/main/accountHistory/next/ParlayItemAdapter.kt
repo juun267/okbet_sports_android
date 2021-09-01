@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -79,6 +80,8 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentParlayItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val roundAdapter by lazy { RoundAdapter() }
+
         fun bind(matchOdd: MatchOdd, oddsType: OddsType, gameType: String) {
 
             binding.gameType = gameType
@@ -100,15 +103,12 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
                     )
                 }
 
-                val arrayAdapter by lazy {
-                    ArrayAdapter(
-                        itemView.context,
-                        R.layout.item_account_history_next_context_listview_score,
-                        R.id.tv_score,
-                        scoreList
-                    );
+                binding.listScore.apply {
+                    layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+                    adapter = roundAdapter
                 }
-                binding.listScore.adapter = arrayAdapter
+                roundAdapter.submitList(scoreList)
+
             }
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
