@@ -12,16 +12,28 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp">
+        android:layout_marginTop="18dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <ImageView
+            android:id="@+id/profile_center_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_arrow_blue_left"
+            app:layout_constraintBottom_toBottomOf="@id/iv_head"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_head" />
 
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/iv_head"
             android:layout_width="53dp"
             android:layout_height="53dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/img_avatar_default"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/profile_center_back"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_border_color="@color/colorBlue"
             app:riv_border_width="2dp"
@@ -153,7 +165,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="20dp"
         android:background="@color/colorWhite"
         android:paddingHorizontal="16dp"
         app:cardCornerRadius="8dp"
@@ -233,6 +244,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
         android:text="@string/more_service"
         android:textColor="@color/colorGrayDark"

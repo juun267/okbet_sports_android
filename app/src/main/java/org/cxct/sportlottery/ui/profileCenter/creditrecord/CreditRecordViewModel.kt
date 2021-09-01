@@ -13,6 +13,8 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.common.Paging
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 const val DEFAULT_PAGE_SIZE = 10
 
@@ -83,11 +85,19 @@ class CreditRecordViewModel(
             result?.rows?.let {
                 pageSizeLoad += it.size
 
-                it.postRemainDay()
                 it.mapRecordPeriod()
                 it.mapAllBalance()
 
-                _userCreditCircleHistory.postValue(it)
+                if (_userCreditCircleHistory.value.isNullOrEmpty()) {
+                    it.postRemainDay()
+                    _userCreditCircleHistory.postValue(it)
+                } else {
+                    val currentList =
+                        _userCreditCircleHistory.value?.toMutableList() ?: mutableListOf()
+                    currentList.addAll(it)
+
+                    _userCreditCircleHistory.postValue(currentList)
+                }
             }
 
             result?.other?.postQuotaAmount()
@@ -100,7 +110,19 @@ class CreditRecordViewModel(
 
     private fun List<Row>.postRemainDay() {
         this.firstOrNull()?.endTime?.let { endTime ->
-            _remainDay.postValue(TimeUtil.timeFormat(endTime - System.currentTimeMillis(), "d"))
+            val endTimeMillis = Calendar.getInstance().apply {
+                timeInMillis = endTime
+                set(Calendar.HOUR_OF_DAY, 23)
+                set(Calendar.MINUTE, 59)
+                set(Calendar.SECOND, 59)
+                set(Calendar.MILLISECOND, 59)
+            }.timeInMillis
+
+            val currentTimeMillis = Calendar.getInstance().timeInMillis
+
+            _remainDay.postValue(
+                TimeUnit.MILLISECONDS.toDays(endTimeMillis - currentTimeMillis).toString()
+            )
         }
     }
 
