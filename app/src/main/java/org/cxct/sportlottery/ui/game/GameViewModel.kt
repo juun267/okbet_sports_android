@@ -1412,7 +1412,9 @@ class GameViewModel(
             }
             result?.let {
                 if (it.success) {
-                    _matchLiveInfo.postValue(Event(getStreamUrl(it.liveInfo)))
+                    getStreamUrl(it.liveInfo)?.let { streamUrl ->
+                        _matchLiveInfo.postValue(Event(streamUrl))
+                    }
                 }
             }
         }
@@ -1427,16 +1429,15 @@ class GameViewModel(
      *
      * 20210831 s型態還未有相關賽事，等相关比赛出现后，再解析
      */
-    private suspend fun getStreamUrl(liveInfo: LiveInfo): String {
+    private suspend fun getStreamUrl(liveInfo: LiveInfo): String? {
         return when (liveInfo.videoProvider) {
             "p2" -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(liveInfo.accessToken, liveInfo.streamURL)
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
-                    ?: ""
             }
             "i", "s" -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
-                liveUrlResponse.body()?.hlsUrl ?: ""
+                liveUrlResponse.body()?.hlsUrl
             }
             else -> {
                 liveInfo.streamURL

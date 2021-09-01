@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class IUrlResponse(
     @Json(name = "hlsUrl")
-    val hlsUrl: String,
+    val hlsUrl: String?,
     @Json(name = "statusCode")
     val statusCode: Int
 )
