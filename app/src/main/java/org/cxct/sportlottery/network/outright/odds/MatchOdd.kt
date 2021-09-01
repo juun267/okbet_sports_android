@@ -13,7 +13,8 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
     @Json(name = "matchInfo")
-    val matchInfo: MatchInfo?,
+    val
+    matchInfo: MatchInfo?,
     @Json(name = "odds")
     val odds: @RawValue Map<String, List<Odd?>> = mapOf(),
     @Json(name = "dynamicMarkets")

@@ -66,7 +66,7 @@ data class MatchInfo(
     override var homeTotalScore: Int? = null
     override var awayTotalScore: Int? = null
 
-    //VB & TN
+    //TN
     override var homePoints: Int? = null
     override var awayPoints: Int? = null
 

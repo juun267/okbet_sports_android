@@ -58,7 +58,7 @@ object SocketUpdateUtil {
                             true
                         }
 
-                        (gameType == GameType.VB.key || gameType == GameType.TN.key) -> {
+                        (gameType == GameType.TN.key) -> {
                             when {
                                 (matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
                                     matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
