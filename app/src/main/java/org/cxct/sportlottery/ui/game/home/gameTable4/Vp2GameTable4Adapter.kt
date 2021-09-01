@@ -169,12 +169,37 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     MatchType.IN_PLAY -> {
                         tv_game_type.text = context.getString(R.string.home_tab_in_play)
 
-                        tv_game_score_home.visibility = View.VISIBLE
-                        tv_game_score_away.visibility = View.VISIBLE
-                        val homeScore = data.matchInfo?.homeScore ?: 0
-                        val awayScore = data.matchInfo?.awayScore ?: 0
-                        tv_game_score_home.text = "$homeScore"
-                        tv_game_score_away.text = "$awayScore"
+                        when (data.matchInfo?.gameType){
+                            GameType.TN.key -> {
+                                //盤比分
+                                tv_game_score_home.visibility = View.VISIBLE
+                                tv_game_score_away.visibility = View.VISIBLE
+                                val homeTotalScore = data.matchInfo.homeTotalScore ?: 0
+                                val awayTotalScore = data.matchInfo.awayTotalScore ?: 0
+                                tv_game_score_home.text = "$homeTotalScore"
+                                tv_game_score_away.text = "$awayTotalScore"
+
+                                //局比分
+                                tv_score.visibility = View.VISIBLE
+                                val homeScore = data.matchInfo.homeScore ?: 0
+                                val awayScore = data.matchInfo.awayScore ?: 0
+                                tv_score.text = "$homeScore–$awayScore"
+
+                                //點比分
+                                tv_point.visibility = View.VISIBLE
+                                val homePoint = data.matchInfo.homePoints ?: 0
+                                val awayPoint = data.matchInfo.awayPoints ?: 0
+                                tv_point.text = "$homePoint–$awayPoint"
+                            }
+                            else -> {
+                                tv_game_score_home.visibility = View.VISIBLE
+                                tv_game_score_away.visibility = View.VISIBLE
+                                val homeScore = data.matchInfo?.homeScore ?: 0
+                                val awayScore = data.matchInfo?.awayScore ?: 0
+                                tv_game_score_home.text = "$homeScore"
+                                tv_game_score_away.text = "$awayScore"
+                            }
+                        }
                     }
                     MatchType.AT_START -> {
                         tv_game_type.text = context.getString(R.string.home_tab_today)
@@ -184,6 +209,9 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                         tv_game_name_home.setTypeface(tv_game_name_home.typeface, Typeface.NORMAL)
                         tv_game_name_away.setTypeface(tv_game_name_away.typeface, Typeface.NORMAL)
+
+                        tv_score.visibility = View.GONE
+                        tv_point.visibility = View.GONE
                     }
                     else -> {
                     }

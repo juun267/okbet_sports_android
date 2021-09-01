@@ -117,14 +117,42 @@
         app:layout_constraintTop_toTopOf="@id/tv_game_name_home" />
 
     <TextView
-        android:id="@+id/tv_match_time"
+        android:id="@+id/tv_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize12sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        tools:text="5–3"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize12sp"
+        android:layout_marginStart="8dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/tv_score"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="15–30"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_match_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_point"
         tools:text="90:31" />
 
     <ImageView
