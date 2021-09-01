@@ -146,6 +146,23 @@ fun TextView.setBetReceiptStatus(status: Int?) {
     }
 }
 
+@BindingAdapter("statusVisibility") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setStatusVisibility(status: Int?) {
+    visibility = when (status) {
+        7 -> View.VISIBLE
+        else -> View.GONE
+    }
+}
+
+
+@BindingAdapter("hideByStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setHideByStatus(status: Int?) {
+    visibility = when (status) {
+        7 -> View.GONE
+        else -> View.VISIBLE
+    }
+}
+
 @BindingAdapter("receiptStatusColor") //状态 1-处理中;2-成功;3-失败
 fun TextView.setReceiptStatusColor(status: Int?) {
     status?.let {

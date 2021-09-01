@@ -35,39 +35,39 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize14sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@{matchOdd.leagueName}"
                 tools:text="聯賽名稱" />
 
             <TextView
                 android:id="@+id/tv_slash"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:gravity="center"
+                android:text="@string/unknown_data"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_league_name"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="4dp"
-                android:text="@string/unknown_data" />
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/tv_play_cate_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:gravity="center"
+                android:text="@{matchOdd.playCateName}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize14sp"
-                android:layout_marginStart="4dp"
-                android:text="@{matchOdd.playCateName}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/tv_slash"
                 app:layout_constraintTop_toTopOf="parent"
@@ -108,9 +108,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:text="@{matchOdd.rtScore}"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                android:text="@{matchOdd.rtScore}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/text_view"
                 tools:text="113 - 116" />
@@ -134,12 +134,12 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginVertical="4dp"
                 android:gravity="center"
+                android:text="@string/at"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                android:text="@string/at"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
                 app:layout_constraintStart_toEndOf="@id/tv_play_name"
-                app:layout_constraintTop_toTopOf="@+id/tv_play_name"/>
+                app:layout_constraintTop_toTopOf="@+id/tv_play_name" />
 
 
             <TextView
@@ -260,6 +260,7 @@
                 android:text="@string/win_lose_mark"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
+                app:hideByStatus="@{row.status}"
                 app:layout_constraintEnd_toStartOf="@id/tv_win_lose_money"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet" />
 
@@ -268,14 +269,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textStyle="bold"
                 android:textColor="@color/colorGreenLight"
                 android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                app:hideByStatus="@{row.status}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_bet"
-                app:moneyFormat="@{row.win}"
                 app:moneyColor="@{row.win}"
+                app:moneyFormat="@{row.win}"
                 tools:text="9,959,500.000" />
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/textSize12sp"
+                app:betReceiptStatus="@{row.status}"
+                app:statusVisibility="@{row.status}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_bet"
+                tools:text="取消注單"
+                tools:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_number"
