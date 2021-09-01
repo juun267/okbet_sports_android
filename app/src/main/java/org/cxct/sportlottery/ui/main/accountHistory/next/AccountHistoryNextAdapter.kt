@@ -375,7 +375,7 @@ class AccountHistoryNextAdapter(
             fun from(parent: ViewGroup) =
                 NoDataViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_no_record, parent, false)
+                        .inflate(R.layout.itemview_game_no_record, parent, false)
                 )
         }
     }
