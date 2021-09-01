@@ -3,11 +3,11 @@ package org.cxct.sportlottery.util
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.text.format.DateUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
@@ -50,6 +50,38 @@ fun TextView.setGameType(gameType: String?) {
         GameType.TN.key -> context.getString(GameType.TN.string)
         GameType.VB.key -> context.getString(GameType.VB.string)
         else -> ""
+    }
+}
+
+@BindingAdapter(value = ["playCateName_gameType", "playCateName_gameCode"], requireAll = true)
+fun TextView.setPlayCateName(gameType: String?, gameCode: String?) {
+
+    val list by lazy {
+        val json = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/gameCodeMapping.json")
+        json.fromJson<List<List<String>>>() ?: listOf()
+    }
+
+    val languageIndex = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
+        LanguageManager.Language.ZH -> 3
+        else -> 4
+    }
+
+    val playCateName = list.find {
+        it.getOrNull(0) == gameType && it.getOrNull(2) == gameCode
+    }?.getOrNull(languageIndex) ?: ""
+
+    text = playCateName
+
+}
+
+@BindingAdapter("parlayType")
+fun TextView.setPlayCateName(parlayType: String?) {
+
+    parlayType?.let {
+        text = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
+            LanguageManager.Language.ZH -> TextUtil.replaceParlayByC(it)
+            else -> it
+        }
     }
 }
 
