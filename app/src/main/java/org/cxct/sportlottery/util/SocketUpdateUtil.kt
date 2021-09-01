@@ -67,11 +67,11 @@ object SocketUpdateUtil {
                             true
                         }
 
-                        (gameType == GameType.TN.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
+                        (gameType == GameType.FT.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
                             matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
                             true
                         }
-                        (gameType == GameType.TN.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
+                        (gameType == GameType.FT.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
                             matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
                             true
                         }
