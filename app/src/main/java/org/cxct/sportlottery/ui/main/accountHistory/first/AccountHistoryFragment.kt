@@ -74,7 +74,9 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
         })
 
         viewModel.selectedSport.observe(viewLifecycleOwner, {
-            viewModel.searchBetRecord(it)
+            it.getContentIfNotHandled()?.apply {
+                viewModel.searchBetRecord(this)
+            }
         })
 
     }

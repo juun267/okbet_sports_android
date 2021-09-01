@@ -42,10 +42,10 @@ class AccountHistoryViewModel(
     val loading: LiveData<Boolean>
         get() = _loading
 
-    val selectedSport: LiveData<String?>
+    val selectedSport: LiveData<Event<String?>>
         get() = _selectedSport
 
-    val selectedDate: LiveData<String?>
+    val selectedDate: LiveData<Event<String?>>
         get() = _selectedDate
 
     val betRecordResult: LiveData<BetSettledListResult>
@@ -58,8 +58,8 @@ class AccountHistoryViewModel(
         get() = _betDetailResult
 
     private val _loading = MutableLiveData<Boolean>()
-    private val _selectedSport = MutableLiveData<String?>()
-    private val _selectedDate = MutableLiveData<String?>()
+    private val _selectedSport = MutableLiveData<Event<String?>>()
+    private val _selectedDate = MutableLiveData<Event<String?>>()
     private val _betSettledRecordResult = MutableLiveData<BetSettledListResult>()
     private var mBetSettledListRequest: BetSettledListRequest? = null
     private val _messageListResult = MutableLiveData<MessageListResult?>()
@@ -151,7 +151,7 @@ class AccountHistoryViewModel(
     private var nowDetailPage = 1
     val detailDataList = mutableListOf<org.cxct.sportlottery.network.bet.settledDetailList.Row>()
 
-    fun searchDetail(gameType: String? = selectedSport.value, date: String? = selectedDate.value) {
+    fun searchDetail(gameType: String? = selectedSport.value?.peekContent(), date: String? = selectedDate.value?.peekContent()) {
 
         val startTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.START_OF_DAY, TimeUtil.YMD_FORMAT).toString()
         val endTime = TimeUtil.dateToTimeStamp(date, TimeUtil.TimeType.END_OF_DAY, TimeUtil.YMD_FORMAT).toString()
@@ -205,11 +205,11 @@ class AccountHistoryViewModel(
     }
 
     fun setSelectedDate(date: String?) {
-        _selectedDate.value = date
+        _selectedDate.value = Event(date)
     }
 
     fun setSelectedSport(sport: String?) {
-        _selectedSport.value = sport
+        _selectedSport.value = Event(sport)
     }
 
     private fun loading() {

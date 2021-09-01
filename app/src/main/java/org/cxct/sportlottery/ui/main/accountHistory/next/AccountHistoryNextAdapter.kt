@@ -48,13 +48,13 @@ class AccountHistoryNextAdapter(
     var nowSelectedDate: String? = ""
         set(value) {
             field = value
-            notifyDataSetChanged()
+            notifyItemChanged(0)
         }
 
     var nowSelectedSport: String? = ""
         set(value) {
             field = value
-            notifyDataSetChanged()
+            notifyItemChanged(0)
         }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
