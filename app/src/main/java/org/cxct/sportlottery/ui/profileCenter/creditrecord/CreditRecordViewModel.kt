@@ -144,19 +144,26 @@ class CreditRecordViewModel(
                 it.formatBalance = TextUtil.formatMoney(balance)
             }
             it.reward?.let { reward ->
-                it.formatReward = TextUtil.formatMoney(reward)
+                it.formatReward = when {
+                    (reward > 0) -> {
+                        "+" + TextUtil.formatMoney(reward)
+                    }
+                    else -> {
+                        TextUtil.formatMoney(reward)
+                    }
+                }
             }
         }
     }
 
     private fun Row.postQuotaAmount() {
-        this.reward?.let {
+        this.reward?.let { reward ->
             this.formatReward = when {
-                (it > 0) -> {
-                    "+" + TextUtil.formatMoney(this.reward)
+                (reward > 0) -> {
+                    "+" + TextUtil.formatMoney(reward)
                 }
                 else -> {
-                    TextUtil.formatMoney(this.reward)
+                    TextUtil.formatMoney(reward)
                 }
             }
         }
