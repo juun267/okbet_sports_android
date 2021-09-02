@@ -122,13 +122,13 @@ object SocketUpdateUtil {
 
         if (oddsChangeEvent.eventId != null && oddsChangeEvent.eventId == matchOdd.matchInfo?.id) {
 
-            isNeedRefresh = when (matchOdd.oddsMap.isNullOrEmpty()) {
+            isNeedRefresh = when (matchOdd.odds.isNullOrEmpty()) {
                 true -> {
                     insertMatchOdds(matchOdd, oddsChangeEvent)
                 }
 
                 false -> {
-                    refreshMatchOdds(matchOdd.oddsMap, oddsChangeEvent) ||
+                    refreshMatchOdds(matchOdd.odds, oddsChangeEvent) ||
                             matchOdd.quickPlayCateList?.any {
                                 refreshMatchOdds(it.quickOdds ?: mutableMapOf(), oddsChangeEvent)
                             } ?: false
@@ -156,7 +156,7 @@ object SocketUpdateUtil {
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
-        matchOdd.oddsMap.values.forEach { odds ->
+        matchOdd.odds.values.forEach { odds ->
             odds.filter { odd ->
                 globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
             }.forEach { odd ->
@@ -189,9 +189,9 @@ object SocketUpdateUtil {
     }
 
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
-        matchOdd.oddsMap = oddsChangeEvent.odds?.mapValues {
+        matchOdd.odds.putAll(oddsChangeEvent.odds?.mapValues {
             it.value.toMutableList()
-        }?.toMutableMap() ?: mutableMapOf()
+        }?.toMutableMap() ?: mutableMapOf())
 
         return oddsChangeEvent.odds?.isNotEmpty() ?: false
     }
