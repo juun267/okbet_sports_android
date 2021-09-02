@@ -825,22 +825,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
 
-//                    is EpsListAdapter -> {
-//                        val epsOdds = epsListAdapter.dataList
-//
-//                        epsOdds.forEachIndexed { index, leagueOdd ->
-//                            if (leagueOdd.matchOdds?.any { matchOdd ->
-//                                    SocketUpdateUtil.updateMatchOdds(
-//                                        matchOdd,
-//                                        oddsChangeEvent
-//                                    )
-//                                } == true &&
-//                                !leagueOdd.isClose) {
-//
-//                                epsListAdapter.notifyItemChanged(index)
-//                            }
-//                        }
-//                    }
+                    is EpsListAdapter -> {
+                        val epsOdds = epsListAdapter.dataList
+
+                        epsOdds.forEachIndexed { index, leagueOdd ->
+                            if (leagueOdd.matchOdds?.any { matchOdd ->
+                                    SocketUpdateUtil.updateMatchOdds(
+                                        matchOdd,
+                                        oddsChangeEvent
+                                    )
+                                } == true &&
+                                !leagueOdd.isClose) {
+
+                                epsListAdapter.notifyItemChanged(index)
+                            }
+                        }
+                    }
                 }
             }
         })
@@ -866,22 +866,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
 
-//                    is EpsListAdapter -> {
-//                        val epsOdds = epsListAdapter.dataList
-//
-//                        epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
-//                            if (epsLeagueOddsItem.matchOdds?.any { matchOdd ->
-//                                    SocketUpdateUtil.updateOddStatus(
-//                                        matchOdd,
-//                                        globalStopEvent
-//                                    )
-//                                } == true &&
-//                                !epsLeagueOddsItem.isClose) {
-//
-//                                epsListAdapter.notifyItemChanged(index)
-//                            }
-//                        }
-//                    }
+                    is EpsListAdapter -> {
+                        val epsOdds = epsListAdapter.dataList
+
+                        epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
+                            if (epsLeagueOddsItem.matchOdds?.any { matchOdd ->
+                                    SocketUpdateUtil.updateOddStatus(
+                                        matchOdd,
+                                        globalStopEvent
+                                    )
+                                } == true &&
+                                !epsLeagueOddsItem.isClose) {
+
+                                epsListAdapter.notifyItemChanged(index)
+                            }
+                        }
+                    }
                 }
             }
         })
