@@ -28,59 +28,55 @@ object SocketUpdateUtil {
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
-                    isNeedRefresh = when {
-                        (matchStatusCO.status == 100) -> {
-                            matchOddList.remove(matchOdd)
-                            true
-                        }
-
-                        (matchStatusCO.homeScore != null && matchStatusCO.homeScore != matchOdd.matchInfo?.homeScore) -> {
-                            matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
-                            true
-                        }
-
-                        (matchStatusCO.awayScore != null && matchStatusCO.awayScore != matchOdd.matchInfo?.awayScore) -> {
-                            matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
-                            true
-                        }
-
-                        (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName) -> {
-                            matchOdd.matchInfo?.statusName = matchStatusCO.statusName
-                            true
-                        }
-
-                        (matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) -> {
-                            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
-                            true
-                        }
-
-                        (matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) -> {
-                            matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
-                            true
-                        }
-
-                        (gameType == GameType.TN.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
-                            matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
-                            true
-                        }
-                        (gameType == GameType.TN.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
-                            matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
-                            true
-                        }
-
-                        (gameType == GameType.FT.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
-                            matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
-                            true
-                        }
-                        (gameType == GameType.FT.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
-                            matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
-                            true
-                        }
-
-
-                        else -> false
+                    if (matchStatusCO.status == 100) {
+                        matchOddList.remove(matchOdd)
+                        isNeedRefresh = true
                     }
 
+                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName) {
+                        matchOdd.matchInfo?.statusName = matchStatusCO.statusName
+                        isNeedRefresh = true
+                    }
+
+                    if (matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
+                        matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+                        isNeedRefresh = true
+                    }
+
+                    if (matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
+                        matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
+                        isNeedRefresh = true
+                    }
+
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.homeScore != null && matchStatusCO.homeScore != matchOdd.matchInfo?.homeScore) {
+                        matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
+                        isNeedRefresh = true
+                    }
+
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.awayScore != null && matchStatusCO.awayScore != matchOdd.matchInfo?.awayScore) {
+                        matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                        isNeedRefresh = true
+                    }
+
+                    if (gameType == GameType.TN.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) {
+                        matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
+                        isNeedRefresh = true
+                    }
+
+                    if (gameType == GameType.TN.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) {
+                        matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
+                        isNeedRefresh = true
+                    }
+
+                    if (gameType == GameType.FT.key && matchStatusCO.homeCards != null && matchStatusCO.homeCards != matchOdd.matchInfo?.homeCards) {
+                        matchOdd.matchInfo?.homeCards = matchStatusCO.homeCards
+                        isNeedRefresh = true
+                    }
+
+                    if (gameType == GameType.FT.key && matchStatusCO.awayCards != null && matchStatusCO.awayCards != matchOdd.matchInfo?.awayCards) {
+                        matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
+                        isNeedRefresh = true
+                    }
                 }
             }
         }
