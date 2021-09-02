@@ -201,7 +201,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 tv_game_score_home.visibility = View.GONE
                                 tv_game_score_away.visibility = View.GONE
 
-                                //局比分
+                                //盤比分
                                 val homeTotalScore = data.matchInfo.homeTotalScore ?: 0
                                 val awayTotalScore = data.matchInfo.awayTotalScore ?: 0
                                 tv_game_total_score_home_center.text = "$homeTotalScore"
