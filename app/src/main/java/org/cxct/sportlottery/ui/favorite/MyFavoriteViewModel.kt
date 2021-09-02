@@ -38,6 +38,8 @@ class MyFavoriteViewModel(
     infoCenterRepository,
     myFavoriteRepository
 ) {
+    val showBetUpperLimit = betInfoRepository.showBetUpperLimit
+
     val sportQueryData: LiveData<Event<SportQueryData?>>
         get() = _sportQueryData
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
