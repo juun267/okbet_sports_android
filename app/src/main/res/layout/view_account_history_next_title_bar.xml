@@ -58,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:layout_width="match_parent"
-            app:defaultBottomSheetTitleText="@string/choose_bet_state"
             app:defaultStatusText="6-21 星期一"
             app:horizontalChainStyle="spread" />
 
@@ -82,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:layout_width="match_parent"
-            app:defaultBottomSheetTitleText="@string/choose_bet_state"
             app:defaultStatusText="@string/all_sport"
             app:horizontalChainStyle="spread" />
 
