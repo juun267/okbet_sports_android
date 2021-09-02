@@ -89,7 +89,7 @@
         tools:text="比赛延期" />
 
     <TextView
-        android:id="@+id/league_odd_eps"
+        android:id="@+id/league_odd_spt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorGray"
@@ -105,7 +105,7 @@
         android:layout_width="6dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/league_odd_eps"/>
+        app:layout_constraintStart_toEndOf="@id/league_odd_spt"/>
 
     <TextView
         android:id="@+id/league_odd_match_time"
