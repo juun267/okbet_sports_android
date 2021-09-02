@@ -10,11 +10,6 @@
             name="other"
             type="org.cxct.sportlottery.network.bet.settledDetailList.Other" />
 
-        <!--        <variable-->
-        <!--            name="matchOdd"-->
-        <!--            type="org.cxct.sportlottery.network.bet.MatchOdd" />-->
-
-
     </data>
 
     <LinearLayout
