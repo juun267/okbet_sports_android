@@ -24,6 +24,8 @@ data class MatchOdd(
     val awayId: String?,
     @Json(name = "playCateName")
     val playCateName: String?,
+    @Json(name = "playName")
+    val playName: String?,
     @Json(name = "spread")
     val spread: String?,
     @Json(name = "extInfo")

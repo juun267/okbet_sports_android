@@ -3,11 +3,11 @@ package org.cxct.sportlottery.util
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.text.format.DateUtils
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameType
@@ -50,6 +50,38 @@ fun TextView.setGameType(gameType: String?) {
         GameType.TN.key -> context.getString(GameType.TN.string)
         GameType.VB.key -> context.getString(GameType.VB.string)
         else -> ""
+    }
+}
+
+@BindingAdapter(value = ["playCateName_gameType", "playCateName_gameCode"], requireAll = true)
+fun TextView.setPlayCateName(gameType: String?, gameCode: String?) {
+
+    val list by lazy {
+        val json = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/gameCodeMapping.json")
+        json.fromJson<List<List<String>>>() ?: listOf()
+    }
+
+    val languageIndex = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
+        LanguageManager.Language.ZH -> 3
+        else -> 4
+    }
+
+    val playCateName = list.find {
+        it.getOrNull(0) == gameType && it.getOrNull(2) == gameCode
+    }?.getOrNull(languageIndex) ?: ""
+
+    text = playCateName
+
+}
+
+@BindingAdapter("parlayType")
+fun TextView.setPlayCateName(parlayType: String?) {
+
+    parlayType?.let {
+        text = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
+            LanguageManager.Language.ZH -> TextUtil.replaceParlayByC(it)
+            else -> it
+        }
     }
 }
 
@@ -111,6 +143,23 @@ fun TextView.setBetReceiptStatus(status: Int?) {
     text = when (status) {
         7 -> context.getString(R.string.bet_canceled)
         else -> context.getString(R.string.confirmed)
+    }
+}
+
+@BindingAdapter("statusVisibility") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setStatusVisibility(status: Int?) {
+    visibility = when (status) {
+        7 -> View.VISIBLE
+        else -> View.GONE
+    }
+}
+
+
+@BindingAdapter("hideByStatus") //状态 0：未开始，1：比赛中，2：已结束，3：延期，4：已取消
+fun TextView.setHideByStatus(status: Int?) {
+    visibility = when (status) {
+        7 -> View.GONE
+        else -> View.VISIBLE
     }
 }
 
@@ -286,6 +335,19 @@ fun TextView.setMoneyColor(profit: Double = 0.0) {
         profit < 0.0 -> R.color.colorRed
         profit == 0.0 -> R.color.colorGray
         else -> R.color.colorGray
+    }
+
+    this.setTextColor(ContextCompat.getColor(context, color))
+}
+
+
+@BindingAdapter("moneyColorWhite")
+fun TextView.setMoneyColorWhite(profit: Double = 0.0) {
+
+    val color = when {
+        profit >= 0.0 -> R.color.colorWhite
+        profit < 0.0 -> R.color.colorRedLight
+        else -> R.color.colorWhite
     }
 
     this.setTextColor(ContextCompat.getColor(context, color))
