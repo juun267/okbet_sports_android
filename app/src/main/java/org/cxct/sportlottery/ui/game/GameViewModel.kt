@@ -155,6 +155,8 @@ class GameViewModel(
     val playCate: LiveData<String?>
         get() = _playCate
 
+    val showBetUpperLimit = betInfoRepository.showBetUpperLimit
+
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
