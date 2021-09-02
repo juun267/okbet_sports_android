@@ -590,10 +590,17 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 dataList.forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                         if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
+                            updateMatchOdd.matchInfo?.homeTotalScore = matchStatusChangeEvent.matchStatusCO?.homeTotalScore
+                            updateMatchOdd.matchInfo?.awayTotalScore =
+                                matchStatusChangeEvent.matchStatusCO?.awayTotalScore
                             updateMatchOdd.matchInfo?.homeScore =
                                 matchStatusChangeEvent.matchStatusCO?.homeScore
                             updateMatchOdd.matchInfo?.awayScore =
                                 matchStatusChangeEvent.matchStatusCO?.awayScore
+                            updateMatchOdd.matchInfo?.homePoints =
+                                matchStatusChangeEvent.matchStatusCO?.homePoints
+                            updateMatchOdd.matchInfo?.awayPoints =
+                                matchStatusChangeEvent.matchStatusCO?.awayPoints
                             updateMatchOdd.matchInfo?.statusName =
                                 matchStatusChangeEvent.matchStatusCO?.statusName
 
