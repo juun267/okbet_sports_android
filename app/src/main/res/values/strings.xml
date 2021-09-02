@@ -432,6 +432,7 @@
 
     <string name="button_league_submit">提交 (%d)</string>
     <string name="login_notify">请登录以便使用此功能</string>
+    <string name="bet_notify_max_limit">最多可添加10个选项至投注单</string>
     <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
     <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>
     <string name="myfavorite_notify_match_add">已添加至我的赛事</string>
