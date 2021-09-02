@@ -4,6 +4,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchOdd
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
@@ -122,18 +123,32 @@ object SocketUpdateUtil {
 
         if (oddsChangeEvent.eventId != null && oddsChangeEvent.eventId == matchOdd.matchInfo?.id) {
 
-            isNeedRefresh = when (matchOdd.odds.isNullOrEmpty()) {
-                true -> {
-                    insertMatchOdds(matchOdd, oddsChangeEvent)
-                }
+            isNeedRefresh =
+                when (matchOdd.odds.isNullOrEmpty() && matchOdd.oddsEps?.eps.isNullOrEmpty()) {
+                    true -> {
+                        insertMatchOdds(matchOdd, oddsChangeEvent)
+                    }
 
-                false -> {
-                    refreshMatchOdds(matchOdd.odds, oddsChangeEvent) ||
-                            matchOdd.quickPlayCateList?.any {
-                                refreshMatchOdds(it.quickOdds ?: mutableMapOf(), oddsChangeEvent)
-                            } ?: false
+                    false -> {
+                        refreshMatchOdds(matchOdd.odds, oddsChangeEvent) ||
+
+                                matchOdd.quickPlayCateList?.any {
+                                    refreshMatchOdds(
+                                        it.quickOdds ?: mutableMapOf(),
+                                        oddsChangeEvent
+                                    )
+                                } ?: false ||
+
+                                refreshMatchOdds(
+                                    mapOf(
+                                        Pair(
+                                            PlayCate.EPS.value,
+                                            matchOdd.oddsEps?.eps ?: listOf()
+                                        )
+                                    ), oddsChangeEvent
+                                )
+                    }
                 }
-            }
         }
 
         return isNeedRefresh
@@ -192,6 +207,9 @@ object SocketUpdateUtil {
         matchOdd.odds.putAll(oddsChangeEvent.odds?.mapValues {
             it.value.toMutableList()
         }?.toMutableMap() ?: mutableMapOf())
+
+        matchOdd.oddsEps?.eps?.toMutableList()
+            ?.addAll(oddsChangeEvent.odds?.get(PlayCate.EPS.value) ?: mutableListOf())
 
         return oddsChangeEvent.odds?.isNotEmpty() ?: false
     }
