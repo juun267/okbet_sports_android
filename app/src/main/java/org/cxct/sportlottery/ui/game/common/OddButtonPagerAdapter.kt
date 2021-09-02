@@ -1,14 +1,15 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
@@ -144,6 +145,28 @@ class OddButtonPagerViewHolder private constructor(
         else -> 4
     }
 
+    private fun String.setupPlayCateName(): SpannableStringBuilder {
+        val showPlayCateName = SpannableStringBuilder()
+
+        val splitPlayCateName = this.split("\n")
+
+        splitPlayCateName.forEachIndexed { index, splitName ->
+            if (index == 0) {
+                showPlayCateName.append(splitName)
+                return@forEachIndexed
+            }
+
+            showPlayCateName.append("\n")
+
+            val spannableSplitName = SpannableString(splitName)
+            spannableSplitName.setSpan(ForegroundColorSpan(ContextCompat.getColor(itemView.context,
+                R.color.colorRedDark)), 0, splitName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            showPlayCateName.append(spannableSplitName)
+        }
+
+        return showPlayCateName
+    }
+
     private fun setupOddsButton(
         oddBtnType: TextView,
         oddBtnHome: OddsButton,
@@ -159,7 +182,7 @@ class OddButtonPagerViewHolder private constructor(
             it.getOrNull(0) == matchInfo?.gameType && it.getOrNull(2) == odds?.first
         }?.getOrNull(playTypeIndex) ?: ""
 
-        oddBtnType.text = playCateName
+        oddBtnType.text = playCateName.setupPlayCateName()
 
         oddBtnHome.apply homeButtonSettings@{
             when {
