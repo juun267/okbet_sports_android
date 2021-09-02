@@ -26,8 +26,8 @@ import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_mat
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_remain_time_icon
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_status
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_time
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_total_score_away
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_total_score_home
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_score_away
+import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_score_home
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_away
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_button_border
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_button_bottom_margin
@@ -205,14 +205,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setFtScoreText(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
-                setAllScoreTextAtFront(matchType, item)
+                setScoreTextAtFront(matchType, item)
                 setCardText(matchType, item)
             }
         }
 
         private fun setBkScoreText(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
-                setAllScoreTextAtFront(matchType, item)
+                setScoreTextAtFront(matchType, item)
             }
         }
 
@@ -294,21 +294,21 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
         }
 
-        private fun View.setAllScoreTextAtFront(matchType: MatchType, item: MatchOdd) {
-                league_odd_match_total_score_home.apply {
+        private fun View.setScoreTextAtFront(matchType: MatchType, item: MatchOdd) {
+                league_odd_match_score_home.apply {
                     visibility = when {
                         matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
                         else -> View.GONE
                     }
-                    text = (item.matchInfo?.homeTotalScore ?: 0).toString()
+                    text = (item.matchInfo?.homeScore ?: 0).toString()
                 }
 
-                league_odd_match_total_score_away.apply {
+                league_odd_match_score_away.apply {
                     visibility = when {
                         matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
                         else -> View.GONE
                     }
-                    text = (item.matchInfo?.awayTotalScore ?: 0).toString()
+                    text = (item.matchInfo?.awayScore ?: 0).toString()
                 }
         }
 
@@ -321,24 +321,24 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         private fun View.setPointText(matchType: MatchType, item: MatchOdd) {
-            league_odd_match_point_home.apply {
+            league_odd_match_point_home_bottom.apply {
                 visibility = isScoreTextVisible(matchType, item)
                 text = (item.matchInfo?.homePoints ?: 0).toString()
             }
 
-            league_odd_match_point_away.apply {
+            league_odd_match_point_away_bottom.apply {
                 visibility = isScoreTextVisible(matchType, item)
                 text = (item.matchInfo?.awayPoints ?: 0).toString()
             }
         }
 
         private fun View.setScoreText(matchType: MatchType, item: MatchOdd) {
-            league_odd_match_score_home.apply {
+            league_odd_match_score_home_bottom.apply {
                 visibility = isScoreTextVisible(matchType, item)
                 text = (item.matchInfo?.homeScore ?: 0).toString()
             }
 
-            league_odd_match_score_away.apply {
+            league_odd_match_score_away_bottom.apply {
                 visibility = isScoreTextVisible(matchType, item)
                 text = (item.matchInfo?.awayScore ?: 0).toString()
             }
@@ -347,15 +347,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun View.setAllScoreTextAtBottom(matchType: MatchType, item: MatchOdd) {
 
             //hide front total score text
-            league_odd_match_total_score_home.visibility = View.GONE
-            league_odd_match_total_score_away.visibility = View.GONE
+            league_odd_match_score_home.visibility = View.GONE
+            league_odd_match_score_away.visibility = View.GONE
 
-            league_odd_match_total_score_home_vb_tn.apply {
+            league_odd_match_total_score_home_bottom.apply {
                 visibility = isScoreTextVisible(matchType, item)
                 text = (item.matchInfo?.homeTotalScore ?: 0).toString()
             }
 
-            league_odd_match_total_score_away_vb_tn.apply {
+            league_odd_match_total_score_away_bottom.apply {
                 visibility = isScoreTextVisible(matchType, item)
                 text = (item.matchInfo?.awayTotalScore ?: 0).toString()
             }
@@ -384,10 +384,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 else
                     Typeface.NORMAL
 
-                league_odd_match_total_score_home.apply { setTypeface(this.typeface, homeStrongType) }
+                league_odd_match_score_home.apply { setTypeface(this.typeface, homeStrongType) }
                 league_odd_match_name_home.apply { setTypeface(this.typeface, homeStrongType) }
 
-                league_odd_match_total_score_away.apply { setTypeface(this.typeface, awayStrongType) }
+                league_odd_match_score_away.apply { setTypeface(this.typeface, awayStrongType) }
                 league_odd_match_name_away.apply { setTypeface(this.typeface, awayStrongType) }
             }
         }
