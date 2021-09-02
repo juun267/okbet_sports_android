@@ -38,23 +38,23 @@ object SocketUpdateUtil {
                         isNeedRefresh = true
                     }
 
-                    if (matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
-                        matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
-                        isNeedRefresh = true
-                    }
-
-                    if (matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
-                        matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
-                        isNeedRefresh = true
-                    }
-
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.homeScore != null && matchStatusCO.homeScore != matchOdd.matchInfo?.homeScore) {
+                    if (matchStatusCO.homeScore != null && matchStatusCO.homeScore != matchOdd.matchInfo?.homeScore) {
                         matchOdd.matchInfo?.homeScore = matchStatusCO.homeScore
                         isNeedRefresh = true
                     }
 
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.awayScore != null && matchStatusCO.awayScore != matchOdd.matchInfo?.awayScore) {
+                    if (matchStatusCO.awayScore != null && matchStatusCO.awayScore != matchOdd.matchInfo?.awayScore) {
                         matchOdd.matchInfo?.awayScore = matchStatusCO.awayScore
+                        isNeedRefresh = true
+                    }
+
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
+                        matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+                        isNeedRefresh = true
+                    }
+
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
+                        matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
                         isNeedRefresh = true
                     }
 
