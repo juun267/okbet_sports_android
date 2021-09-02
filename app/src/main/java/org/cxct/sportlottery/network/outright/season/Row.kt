@@ -13,7 +13,9 @@ data class Row(
     @Json(name = "sort")
     val sort: Int?,
     @Json(name = "num")
-    val num: Int?
+    val num: Int?,
+    @Json(name= "icon")
+    val icon: String
 ) {
     var isExpand = true
     var searchList = listOf<Season>()
