@@ -182,6 +182,14 @@ object SocketUpdateUtil {
             }
         }
 
+        matchOdd.oddsEps?.eps?.filter { odd -> globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId }
+            ?.forEach { odd ->
+                if (odd?.status != BetStatus.DEACTIVATED.code) {
+                    odd?.status = BetStatus.DEACTIVATED.code
+                    isNeedRefresh = true
+                }
+            }
+
         return isNeedRefresh
     }
 
