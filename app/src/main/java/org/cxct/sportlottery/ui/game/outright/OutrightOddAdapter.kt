@@ -28,7 +28,6 @@ class OutrightOddAdapter :
             field = value
             field?.let { matchOdd ->
                 val list = mutableListOf<Any>()
-                val firstKey = matchOdd.odds.entries.iterator().next().key
                 matchOdd.odds.forEach {
                     list.add(it.key)
 
@@ -37,7 +36,6 @@ class OutrightOddAdapter :
                             .filterIndexed { index, _ -> index < 4 }
                             .map { odd ->
                                 odd.outrightCateKey = it.key
-                                odd.isExpand = it.key == firstKey
                                 odd
                             })
 
@@ -57,29 +55,6 @@ class OutrightOddAdapter :
         }
 
     var outrightOddListener: OutrightOddListener? = null
-    var outrightOddExpandListener: OutrightOddExpandListener? = null
-
-    fun expandData(matchOdd: MatchOdd?,cateKey:String){
-        matchOdd?.let { matchOdd ->
-            val list = mutableListOf<Any>()
-            matchOdd.odds.forEach {
-                list.add(it.key)
-
-                list.addAll(
-                    it.value.filterNotNull()
-                        .filterIndexed { index, _ -> index < 4 }
-                        .map { odd ->
-                            odd.outrightCateKey = it.key
-                            odd.isExpand = if(cateKey == it.key) !odd.isExpand  else odd.isExpand
-                            odd
-                        })
-                if (it.value.filterNotNull().size > 4) {
-                    list.add(it.key to matchOdd)
-                }
-            }
-            data = list
-        }
-    }
 
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -119,7 +94,7 @@ class OutrightOddAdapter :
         when (holder) {
             is SubTitleViewHolder -> {
                 val item = data[position] as String
-                holder.bind(item, matchOdd?.dynamicMarkets, outrightOddExpandListener)
+                holder.bind(matchOdd,item, matchOdd?.dynamicMarkets, outrightOddListener)
             }
             is OddViewHolder -> {
                 val item = data[position] as Odd
@@ -187,7 +162,7 @@ class OutrightOddAdapter :
     class SubTitleViewHolder private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: String, dynamicMarkets: Map<String, DynamicMarket>?, outrightOddExpandListener: OutrightOddExpandListener?) {
+        fun bind(matchOdd: MatchOdd?,item: String, dynamicMarkets: Map<String, DynamicMarket>?,outrightOddListener: OutrightOddListener?) {
             itemView.outright_odd_subtitle.text = dynamicMarkets?.get(item)?.let {
                 when (LanguageManager.getSelectLanguage(itemView.context)) {
                     LanguageManager.Language.ZH -> {
@@ -200,7 +175,7 @@ class OutrightOddAdapter :
             }
             itemView.outright_odd_instruction.text = "1/3, 顶级 2" //TODO Cheryl: 等後端api的新數值再做更改
             itemView.ll_subtitle_content.setOnClickListener {
-                outrightOddExpandListener?.onClickExpand(item)
+                outrightOddListener?.onClickExpand(matchOdd,item)
             }
         }
 
@@ -242,12 +217,10 @@ class OutrightOddAdapter :
 
 class OutrightOddListener(
     val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd) -> Unit,
-    val clickListenerMore: (oddsKey: String, matchOdd: MatchOdd) -> Unit
+    val clickListenerMore: (oddsKey: String, matchOdd: MatchOdd) -> Unit,
+    val clickExpand: (matchOdd: MatchOdd?, oddsKey: String) -> Unit
 ) {
     fun onClickBet(matchOdd: MatchOdd?, odd: Odd) = clickListenerBet(matchOdd, odd)
     fun onClickMore(oddsKey: String, matchOdd: MatchOdd) = clickListenerMore(oddsKey, matchOdd)
-}
-
-class OutrightOddExpandListener(val clickExpand: (oddsKey: String) -> Unit){
-    fun onClickExpand(oddsKey: String) = clickExpand(oddsKey)
+    fun onClickExpand(matchOdd: MatchOdd?,oddsKey: String) = clickExpand(matchOdd, oddsKey)
 }

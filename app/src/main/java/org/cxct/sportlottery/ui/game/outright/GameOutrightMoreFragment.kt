@@ -38,7 +38,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
                     matchOdd?.let {
                         addOddsDialog(matchOdd, odd)
                     }
-                }, { _, _ -> }
+                }, { _, _ -> },{ _, _ -> }
             )
         }
     }
