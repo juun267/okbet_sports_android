@@ -5,7 +5,6 @@ import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.list.Odds
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 
 @JsonClass(generateAdapter = true)
