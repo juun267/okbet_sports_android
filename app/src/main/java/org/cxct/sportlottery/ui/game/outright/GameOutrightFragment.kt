@@ -124,10 +124,10 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                         }
 
                     val outrightLeagueOddDataList =
-                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds
+                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
                             ?: listOf()
                     outrightLeagueOddDataList.forEach { matchOdd ->
-                        val firstKey = matchOdd?.odds?.entries?.iterator()?.next()?.key
+                        val firstKey = matchOdd?.odds?.keys?.firstOrNull()
                         matchOdd?.odds?.forEach {
                             if (it.key == firstKey) {
                                 it.value.filterNotNull().forEach { odd ->
