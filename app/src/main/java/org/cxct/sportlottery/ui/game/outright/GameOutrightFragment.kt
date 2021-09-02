@@ -46,6 +46,14 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                             }
                         )
                     findNavController().navigate(action)
+                },
+                { matchOdd, oddsKey ->
+                    this.data.find { it == matchOdd }?.odds?.get(oddsKey)?.forEach { odd ->
+                        odd?.isExpand?.let { isExpand ->
+                            odd.isExpand = !isExpand
+                        }
+                    }
+                    this.notifyItemChanged(this.data.indexOf(matchOdd))
                 }
             )
         }
@@ -115,9 +123,21 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                             game_toolbar_bg.setBackgroundResource(gameImg)
                         }
 
-                    outrightLeagueOddAdapter.data =
-                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds
+                    val outrightLeagueOddDataList =
+                        outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
                             ?: listOf()
+                    outrightLeagueOddDataList.forEach { matchOdd ->
+                        val firstKey = matchOdd?.odds?.keys?.firstOrNull()
+                        matchOdd?.odds?.forEach {
+                            if (it.key == firstKey) {
+                                it.value.filterNotNull().forEach { odd ->
+                                    odd.isExpand = true
+                                }
+                            }
+                        }
+                    }
+
+                    outrightLeagueOddAdapter.data = outrightLeagueOddDataList
 
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds?.forEach { matchOdd ->
                         subscribeChannelHall(
