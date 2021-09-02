@@ -102,7 +102,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
             matchOddsItem?.forEach {
                 epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = null, isTitle = true))
 
-                it.odds?.eps?.forEach { EPSItem ->
+                it.oddsEps?.eps?.forEach { EPSItem ->
                     epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = EPSItem, isTitle = false))
                 }
             }

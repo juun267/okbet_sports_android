@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import kotlinx.android.synthetic.main.view_match_category_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -635,7 +634,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 epsOdds.forEach { epsLeagueOddsItem ->
                     epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
-                        matchOddsItem.odds?.eps?.forEach { odd ->
+                        matchOddsItem.oddsEps?.eps?.forEach { odd ->
                             odd?.isSelected = it.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
                             }
