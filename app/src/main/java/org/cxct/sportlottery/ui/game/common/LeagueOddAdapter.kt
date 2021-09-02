@@ -314,7 +314,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private val isScoreTextVisible = { matchType : MatchType, item: MatchOdd ->
             when {
-                matchType == MatchType.IN_PLAY || matchType == MatchType.AT_START || matchType == MatchType.TODAY || matchType == MatchType.EARLY || matchType == MatchType.PARLAY ||
+                matchType == MatchType.IN_PLAY ||
                         (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
                 else -> View.GONE
             }
