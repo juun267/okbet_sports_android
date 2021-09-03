@@ -400,7 +400,8 @@
     <string name="no_history_search">您搜寻或筛选项目查无对应资料</string>
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
-    <string name="ept_number">%d盘3胜</string>
+    <string name="spt_number_3_2">3盘2胜</string>
+    <string name="spt_number_5_3">5盘3胜</string>
 
     <string name="game_play_type_1x2">独赢</string>
     <string name="game_play_type_1x2_1st">独赢-上半场</string>
@@ -883,4 +884,5 @@
 
     <!--statistics-->
     <string name="statistics_title">数据统计</string>
+    <string name="game_postponed">比赛延期</string>
 </resources>
