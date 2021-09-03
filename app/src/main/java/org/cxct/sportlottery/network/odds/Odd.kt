@@ -64,4 +64,5 @@ data class Odd(
 
     var outrightCateKey: String? = null
 
+    var isExpand = false
 }
