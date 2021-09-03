@@ -207,6 +207,10 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         return response
     }
 
+    fun updateTransNum(transNum: Int) {
+        _transNum.postValue(transNum)
+    }
+
     private fun getDeviceName(): String {
         val manufacturer: String = Build.MANUFACTURER
         val model: String = Build.MODEL
