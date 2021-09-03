@@ -254,8 +254,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         itemView.league_odd_spt.text = " / $it"
                     }
 
-                    MatchType.EARLY, MatchType.PARLAY, MatchType.TODAY, MatchType.AT_START -> { //除3、5以外不顯示 //TODO: 串關尚未確定顯示邏輯(是否要判斷滾球做不同顯示?)
-                        if (it == 3 || it == 5) {
+                    MatchType.EARLY, MatchType.PARLAY, MatchType.TODAY -> { //TODO: 串關尚未確定顯示邏輯(是否要判斷滾球做不同顯示?)
+                        if (it == 3 || it == 5) {//除3、5以外不顯示
                             itemView.league_spt.visibility = View.VISIBLE
                             itemView.league_spt.text = when (it) {
                                 3 -> itemView.context.getString(R.string.spt_number_3_2)
@@ -492,6 +492,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
+            setStatusText(item, matchType)
+
+            itemView.league_odd_match_remain_time_icon.apply {
+                visibility = when {
+                    matchType == MatchType.AT_START -> View.VISIBLE
+                    matchType == MatchType.TODAY -> View.VISIBLE
+                    matchType == MatchType.MY_EVENT && item.matchInfo?.isAtStart == true -> View.VISIBLE
+                    else -> View.INVISIBLE
+                }
+            }
+        }
+
+        private fun setStatusText(item: MatchOdd, matchType: MatchType) {
             itemView.league_odd_match_status.text = when {
                 (matchType == MatchType.IN_PLAY &&
                         item.matchInfo?.status == 3 &&
@@ -502,8 +515,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
-                    item.matchInfo?.statusName
+                    if (item.matchInfo?.statusName != null) {
+                        itemView.league_odd_match_status.visibility = View.VISIBLE
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 6
+                        item.matchInfo.statusName
+                    }
+                    else {
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 0
+                        return
+                    }
                 }
+
                 matchType == MatchType.MY_EVENT -> {
                     when (item.matchInfo?.isInPlay) {
                         true -> item.matchInfo.statusName
@@ -511,7 +533,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
                 matchType == MatchType.AT_START -> {
-                    ""
+                    itemView.league_odd_match_status.visibility = View.GONE
+                    return
                 }
                 matchType == MatchType.TODAY -> {
                     itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
@@ -519,17 +542,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 else -> {
                     "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
-                }
-            }
-
-            //TODO : statusName在Socket有回傳值, 但此處為null
-
-            itemView.league_odd_match_remain_time_icon.apply {
-                visibility = when {
-                    matchType == MatchType.AT_START -> View.VISIBLE
-                    matchType == MatchType.TODAY -> View.VISIBLE
-                    matchType == MatchType.MY_EVENT && item.matchInfo?.isAtStart == true -> View.VISIBLE
-                    else -> View.INVISIBLE
                 }
             }
         }
