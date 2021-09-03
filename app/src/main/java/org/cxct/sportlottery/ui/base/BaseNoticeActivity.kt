@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
 import kotlin.reflect.KClass
 
@@ -14,6 +17,29 @@ abstract class BaseNoticeActivity<T : BaseNoticeViewModel>(clazz: KClass<T>) :
     private var mNoticeButton: TextView? = null
     private var noticeCount: Int? = null
     private var isGuest: Boolean? = null
+
+    protected val snackBarBetUpperLimitNotify by lazy {
+        Snackbar.make(
+            findViewById(android.R.id.content),
+            getString(R.string.login_notify),
+            Snackbar.LENGTH_LONG
+        ).apply {
+            val snackView: View = layoutInflater.inflate(
+                R.layout.snackbar_login_notify,
+                findViewById(android.R.id.content),
+                false
+            )
+            snackView.tv_notify.text = getString(R.string.bet_notify_max_limit)
+            (this.view as Snackbar.SnackbarLayout).apply {
+                findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                    visibility = View.INVISIBLE
+                }
+                background.alpha = 0
+                addView(snackView, 0)
+                setPadding(0, 0, 0, 0)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

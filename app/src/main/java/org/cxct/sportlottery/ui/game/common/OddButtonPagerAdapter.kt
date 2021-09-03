@@ -6,10 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.moshi.JsonAdapter
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
@@ -24,6 +20,7 @@ import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LocalJsonUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.fromJson
 
 
@@ -222,8 +219,8 @@ class OddButtonPagerViewHolder private constructor(
             }
 
             tv_odds.text = when (oddsType) {
-                OddsType.EU -> odds.second?.getOrNull(0)?.odds.toString()
-                OddsType.HK -> odds.second?.getOrNull(0)?.hkOdds.toString()
+                OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.odds ?: 1)
+                OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.hkOdds ?: 0)
             }
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
@@ -296,8 +293,8 @@ class OddButtonPagerViewHolder private constructor(
             }
 
             tv_odds.text = when (oddsType) {
-                OddsType.EU -> odds.second?.getOrNull(1)?.odds.toString()
-                OddsType.HK -> odds.second?.getOrNull(1)?.hkOdds.toString()
+                OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.odds ?: 1)
+                OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.hkOdds ?: 0)
             }
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
@@ -342,8 +339,8 @@ class OddButtonPagerViewHolder private constructor(
             }
 
             tv_odds.text = when (oddsType) {
-                OddsType.EU -> odds.second?.getOrNull(2)?.odds.toString()
-                OddsType.HK -> odds.second?.getOrNull(2)?.hkOdds.toString()
+                OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.odds ?: 1)
+                OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.hkOdds ?: 0)
             }
 
             this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
