@@ -221,7 +221,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setAllScoreTextAtBottom(matchType, item)
                 setScoreText(matchType, item)
                 setSptText(item, matchType)
-                setSptText(item, matchType)
             }
         }
 
@@ -232,7 +231,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setAllScoreTextAtBottom(matchType, item)
                 setScoreText(matchType, item)
                 setPointText(matchType, item)
-                setSptText(item, matchType)
                 setSptText(item, matchType)
 
             }
@@ -274,22 +272,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         private fun View.setCardText(matchType: MatchType, item: MatchOdd) {
-            //home
             league_odd_match_cards_home.apply {
                 visibility = when {
                     (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
                             && (item.matchInfo?.homeCards ?: 0 > 0) -> View.VISIBLE
-                    else -> View.INVISIBLE
+                    else -> View.GONE
                 }
                 text = (item.matchInfo?.homeCards ?: 0).toString()
             }
 
-            //away
             league_odd_match_cards_away.apply {
                 visibility = when {
                     (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false))
                             && (item.matchInfo?.awayCards ?: 0 > 0) -> View.VISIBLE
-                    else -> View.INVISIBLE
+                    else -> View.GONE
                 }
                 text = (item.matchInfo?.awayCards ?: 0).toString()
             }
