@@ -41,6 +41,9 @@ class BetInfoRepository(val androidContext: Context) {
     val betInfoList: LiveData<Event<MutableList<BetInfoListData>>>
         get() = _betInfoList
 
+    private val _showBetUpperLimit = MutableLiveData<Event<Boolean>>()
+    val showBetUpperLimit: LiveData<Event<Boolean>>
+        get() = _showBetUpperLimit
 
     private val _matchOddList = MutableLiveData<MutableList<MatchOdd>>()
     val matchOddList: LiveData<MutableList<MatchOdd>>
@@ -239,7 +242,10 @@ class BetInfoRepository(val androidContext: Context) {
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
-        if (betList.size >= BET_INFO_MAX_COUNT) return
+        if (betList.size >= BET_INFO_MAX_COUNT){
+            _showBetUpperLimit.postValue(Event(true))
+            return
+        }
 
         val emptyFilter = { item: String? ->
             if (item.isNullOrEmpty()) null else item

@@ -400,7 +400,8 @@
     <string name="no_history_search">您搜寻或筛选项目查无对应资料</string>
     <string name="odd_button_ou_o">大</string>
     <string name="odd_button_ou_u">小</string>
-    <string name="ept_number">%d盘3胜</string>
+    <string name="spt_number_3_2">3盘2胜</string>
+    <string name="spt_number_5_3">5盘3胜</string>
 
     <string name="game_play_type_1x2">独赢</string>
     <string name="game_play_type_1x2_1st">独赢-上半场</string>
@@ -432,6 +433,7 @@
 
     <string name="button_league_submit">提交 (%d)</string>
     <string name="login_notify">请登录以便使用此功能</string>
+    <string name="bet_notify_max_limit">最多可添加10个选项至投注单</string>
     <string name="myfavorite_notify_league_add">已添加至我的联赛</string>
     <string name="myfavorite_notify_league_remove">从我的联赛中移除</string>
     <string name="myfavorite_notify_match_add">已添加至我的赛事</string>
@@ -672,7 +674,8 @@
     <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
-    <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
+    <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还</string>
+    <string name="parlay_rule_nc1_ex">当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
     <string name="parlay_rule_at_least">至少2个选项获胜以确保派彩</string>
     <string name="parlay_rule_cant_warn">不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_rule_ncm">%1$s串%2$s是由%1$s个不同赛事组成的%2$s个不同的投注</string>
@@ -882,4 +885,5 @@
 
     <!--statistics-->
     <string name="statistics_title">数据统计</string>
+    <string name="game_postponed">比赛延期</string>
 </resources>

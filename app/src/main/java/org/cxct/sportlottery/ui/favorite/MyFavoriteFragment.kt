@@ -12,8 +12,6 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_my_favorite.*
 import kotlinx.android.synthetic.main.fragment_my_favorite.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -32,11 +30,10 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import timber.log.Timber
 
 
 class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteViewModel::class) {
@@ -162,37 +159,21 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
             it?.let { matchStatusChangeEvent ->
-                matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
-                    matchStatusCO.matchId?.let { matchId ->
+                val leagueOdds = leagueAdapter.data
 
-                        val leagueOdds = leagueAdapter.data
-
-                        leagueOdds.forEach { leagueOdd ->
-                            if (leagueOdd.isExpand) {
-
-                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                    matchOdd.matchInfo?.id == matchId
-                                }
-                                updateMatchOdd?.let {
-                                    if (matchStatusCO.status == 100) {
-                                        leagueOdd.matchOdds.remove(updateMatchOdd)
-                                        leagueAdapter.notifyItemRangeChanged(
-                                            leagueOdds.indexOf(leagueOdd),
-                                            leagueAdapter.itemCount
-                                        )
-                                    } else {
-                                        updateMatchOdd.matchInfo?.homeScore =
-                                            matchStatusCO.homeScore
-                                        updateMatchOdd.matchInfo?.awayScore =
-                                            matchStatusCO.awayScore
-                                        updateMatchOdd.matchInfo?.statusName =
-                                            matchStatusCO.statusName
-
-                                        leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                                    }
-                                }
-                            }
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (SocketUpdateUtil.updateMatchStatus(
+                            gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code,
+                            leagueOdd.matchOdds.toMutableList(),
+                            matchStatusChangeEvent
+                        ) &&
+                        leagueOdd.isExpand
+                    ) {
+                        if (leagueOdd.matchOdds.isNullOrEmpty()) {
+                            leagueAdapter.data.remove(leagueOdd)
                         }
+
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -200,33 +181,18 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         receiver.matchClock.observe(this.viewLifecycleOwner, {
             it?.let { matchClockEvent ->
-                matchClockEvent.matchClockCO?.let { matchClockCO ->
-                    matchClockCO.matchId?.let { matchId ->
+                val leagueOdds = leagueAdapter.data
 
-                        val leagueOdds = leagueAdapter.data
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateMatchClock(
+                                matchOdd,
+                                matchClockEvent
+                            )
+                        } &&
+                        leagueOdd.isExpand) {
 
-                        leagueOdds.forEach { leagueOdd ->
-                            if (leagueOdd.isExpand) {
-
-                                val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                    matchOdd.matchInfo?.id == matchId
-                                }
-
-                                updateMatchOdd?.let {
-                                    updateMatchOdd.leagueTime = when (matchClockCO.gameType) {
-                                        GameType.FT.key -> {
-                                            matchClockCO.matchTime
-                                        }
-                                        GameType.BK.key -> {
-                                            matchClockCO.remainingTimeInPeriod
-                                        }
-                                        else -> null
-                                    }
-
-                                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
-                                }
-                            }
-                        }
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -235,71 +201,25 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-                    val leagueOdds = leagueAdapter.data
-                    val oddsType = leagueAdapter.oddsType
 
-                    leagueOdds.forEach { leagueOdd ->
-                        if (leagueOdd.isExpand) {
-                            val updateMatchOdd = leagueOdd.matchOdds.find { matchOdd ->
-                                matchOdd.matchInfo?.id == it.eventId
-                            }
-                            if (updateMatchOdd?.odds.isNullOrEmpty()) {
-                                val playSelected =
-                                    playCategoryAdapter.data.find { play -> play.isSelected }
-                                when (playSelected?.code) {
-                                    MenuCode.MAIN.code -> updateMatchOdd?.odds =
-                                        PlayCateUtils.filterOdds(
-                                            oddTypeSocketMap.toMutableMap(),
-                                            updateMatchOdd?.matchInfo?.gameType ?: ""
-                                        )
-                                    else -> updateMatchOdd?.odds = PlayCateUtils.filterOdds(
-                                        oddTypeSocketMap.toMutableMap(),
-                                        updateMatchOdd?.matchInfo?.gameType ?: ""
+                val playSelected = playCategoryAdapter.data.find { play -> play.isSelected }
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateMatchOdds(
+                                matchOdd.apply {
+                                    PlayCateUtils.filterOdds(
+                                        this.odds,
+                                        this.matchInfo?.gameType ?: ""
                                     )
-                                        .filter { odds -> odds.key == playSelected?.playCateList?.firstOrNull()?.code }
-                                        .toMutableMap()
-                                }
-                            } else {
-                                updateMatchOdd?.odds?.forEach { oddTypeMap ->
-                                    val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                                    val odds = oddTypeMap.value
-
-                                    odds.forEach { odd ->
-                                        val oddSocket = oddsSocket?.find { oddSocket ->
-                                            oddSocket?.id == odd?.id
-                                        }
-
-                                        oddSocket?.let {
-                                            odd?.updateOddsState(oddSocket, oddsType)
-                                        }
-                                    }
-                                }
-
-                                updateMatchOdd?.quickPlayCateList?.forEach { quickPlayCate ->
-                                    quickPlayCate.quickOdds?.forEach { oddTypeMap ->
-                                        val oddsSocket = oddTypeSocketMap[oddTypeMap.key]
-                                        val odds = oddTypeMap.value
-
-                                        odds.forEach { odd ->
-                                            val oddSocket = oddsSocket?.find { oddSocket ->
-                                                oddSocket?.id == odd?.id
-                                            }
-
-                                            oddSocket?.let {
-                                                odd?.updateOddsState(oddSocket, oddsType)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-                            leagueAdapter.notifyItemChanged(
-                                leagueOdds.indexOf(
-                                    leagueOdd
-                                )
+                                        .filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
+                                }, oddsChangeEvent
                             )
-                        }
+                        } &&
+                        leagueOdd.isExpand
+                    ) {
+                        leagueAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -309,24 +229,17 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             it?.let { globalStopEvent ->
                 val leagueOdds = leagueAdapter.data
 
-                leagueOdds.forEach { leagueOdd ->
-                    leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { odds ->
-                            odds.forEach { odd ->
-                                odd?.updateOddStatus(globalStopEvent.producerId)
-                            }
-                        }
-
-                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds?.values?.forEach { odds ->
-                                odds.forEach { odd ->
-                                    odd?.updateOddStatus(globalStopEvent.producerId)
-                                }
-                            }
-                        }
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateOddStatus(
+                                matchOdd,
+                                globalStopEvent
+                            )
+                        } &&
+                        leagueOdd.isExpand
+                    ) {
+                        leagueAdapter.notifyItemChanged(index)
                     }
-
-                    leagueAdapter.notifyItemChanged(leagueOdds.indexOf(leagueOdd))
                 }
             }
         })
@@ -337,73 +250,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 subscribeHallChannel()
             }
         })
-    }
-
-    private fun Odd.updateOddsState(oddSocket: Odd, oddsType: OddsType): Odd {
-        when (oddsType) {
-            OddsType.EU -> {
-                this.odds?.let { oddValue ->
-                    oddSocket.odds?.let { oddSocketValue ->
-                        when {
-                            oddValue > oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SMALLER.state
-                            }
-                            oddValue < oddSocketValue -> {
-                                this.oddState =
-                                    OddState.LARGER.state
-                            }
-                            oddValue == oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SAME.state
-                            }
-                        }
-                    }
-                }
-            }
-
-            OddsType.HK -> {
-                this.hkOdds?.let { oddValue ->
-                    oddSocket.hkOdds?.let { oddSocketValue ->
-                        when {
-                            oddValue > oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SMALLER.state
-                            }
-                            oddValue < oddSocketValue -> {
-                                this.oddState =
-                                    OddState.LARGER.state
-                            }
-                            oddValue == oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SAME.state
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        this.odds = oddSocket.odds
-        this.hkOdds = oddSocket.hkOdds
-        this.status = oddSocket.status
-        this.extInfo = oddSocket.extInfo
-
-        return this
-    }
-
-    private fun Odd.updateOddStatus(producerId: Int?): Odd {
-        when (producerId) {
-            null -> {
-                this.status = BetStatus.DEACTIVATED.code
-            }
-            else -> {
-                if (this.producerId == producerId) {
-                    this.status = BetStatus.DEACTIVATED.code
-                }
-            }
-        }
-        return this
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {

@@ -39,7 +39,7 @@ abstract class BaseBottomNavViewModel(
     val showShoppingCart: LiveData<Boolean>
         get() = _showShoppingCart
 
-    val nowTransNum by lazy { loginRepository.transNum}
+    val nowTransNum: LiveData<Int?> get() = loginRepository.transNum
 
     private val _thirdGameCategory = MutableLiveData<Event<ThirdGameCategory?>>()
     private val _intentClass = MutableLiveData<Event<Class<*>>>()

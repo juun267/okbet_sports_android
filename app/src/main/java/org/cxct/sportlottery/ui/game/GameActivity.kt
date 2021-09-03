@@ -2,9 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -452,6 +450,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.isLogin.observe(this, {
             getAnnouncement()
+        })
+
+        viewModel.showBetUpperLimit.observe(this, {
+            if (it.getContentIfNotHandled() == true)
+                snackBarBetUpperLimitNotify.apply {
+                    setAnchorView(R.id.game_bottom_navigation)
+                    show()
+                }
         })
 
         viewModel.messageListResult.observe(this, {

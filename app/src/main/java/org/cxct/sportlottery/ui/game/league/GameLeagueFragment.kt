@@ -306,7 +306,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             SocketUpdateUtil.updateMatchOdds(
                                 matchOdd.apply {
                                     PlayCateUtils.filterOdds(
-                                        this.oddsMap,
+                                        this.odds,
                                         this.matchInfo?.gameType ?: ""
                                     )
                                 }, oddsChangeEvent

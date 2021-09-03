@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.util.TimeUtil
 
 
 abstract class BaseFavoriteViewModel(
@@ -87,7 +88,7 @@ abstract class BaseFavoriteViewModel(
                         }
                     }
                 }
-                mFavorMatchOddList.postValue(it)
+                mFavorMatchOddList.postValue(it.updateMatchType())
             }
         }
     }
@@ -115,11 +116,13 @@ abstract class BaseFavoriteViewModel(
                         this.gameType = GameType.getGameType(gameType)
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
-                            matchOdd.odds = matchOdd.odds.filter { odds -> odds.key == playCateCode }.toMutableMap()
+                            matchOdd.odds =
+                                matchOdd.odds.filter { odds -> odds.key == playCateCode }
+                                    .toMutableMap()
                         }
                     }
                 }
-                mFavorMatchOddList.postValue(it)
+                mFavorMatchOddList.postValue(it.updateMatchType())
             }
         }
     }
@@ -186,5 +189,19 @@ abstract class BaseFavoriteViewModel(
         })
 
         return list.toList()
+    }
+
+    private fun List<LeagueOdd>.updateMatchType(): List<LeagueOdd> {
+        this.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+
+                matchOdd.matchInfo?.isInPlay =
+                    System.currentTimeMillis() > matchOdd.matchInfo?.startTime ?: 0
+
+                matchOdd.matchInfo?.isAtStart =
+                    TimeUtil.getRemainTime(matchOdd.matchInfo?.startTime) < 60 * 60 * 1000L
+            }
+        }
+        return this
     }
 }
