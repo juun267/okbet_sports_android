@@ -262,6 +262,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                 5 -> itemView.context.getString(R.string.spt_number_5_3)
                                 else -> ""
                             }
+                        } else {
+                            itemView.league_spt.visibility = View.GONE
                         }
                     }
 
@@ -495,18 +497,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
-            itemView.space.visibility = if (matchType == MatchType.AT_START) View.GONE else View.VISIBLE
-
-
             itemView.league_odd_match_status.text = when {
                 (matchType == MatchType.IN_PLAY &&
                         item.matchInfo?.status == 3 &&
                         (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
                     itemView.league_odd_spt.visibility = View.GONE
                     itemView.league_odd_match_time.visibility = View.GONE
-
                     itemView.context.getString(R.string.game_postponed)
                 }
+
                 matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
                     item.matchInfo?.statusName
                 }

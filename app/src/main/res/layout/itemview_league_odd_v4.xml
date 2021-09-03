@@ -85,7 +85,9 @@
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toTopOf="@+id/league_spt"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_spt"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="比赛延期" />
 
@@ -95,18 +97,15 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
+        android:layout_marginHorizontal="6dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintBottom_toBottomOf="@+id/league_odd_match_status"
         app:layout_constraintEnd_toStartOf="@id/league_odd_match_time"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_status"
         app:layout_constraintTop_toTopOf="@+id/league_odd_match_status"
+        android:visibility="gone"
+        tools:visibility="visible"
         tools:text="/5" />
-
-    <Space
-        android:id="@+id/space"
-        android:layout_width="6dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/league_odd_spt"/>
 
     <TextView
         android:id="@+id/league_odd_match_time"
@@ -114,9 +113,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
-
         app:layout_constraintBottom_toBottomOf="@+id/league_odd_match_status"
-        app:layout_constraintStart_toEndOf="@id/space"
+        app:layout_constraintStart_toEndOf="@id/league_odd_spt"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_match_remain_time_icon"
         app:layout_constraintTop_toTopOf="@+id/league_odd_match_status"
         tools:text="16/06 21:00" />
 
@@ -131,7 +130,7 @@
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@+id/league_odd_match_status"
         tools:text="5盘3胜"
-        tools:visibility="visible" />
+        tools:visibility="gone" />
 
     <ImageView
         android:id="@+id/league_odd_match_remain_time_icon"
