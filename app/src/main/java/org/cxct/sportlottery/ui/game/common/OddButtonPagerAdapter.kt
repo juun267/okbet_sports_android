@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -158,7 +159,13 @@ class OddButtonPagerViewHolder private constructor(
             it.getOrNull(0) == matchInfo?.gameType && it.getOrNull(2) == odds?.first
         }?.getOrNull(playTypeIndex) ?: ""
 
-        oddBtnType.text = playCateName
+        val playCateNameStr = if (playCateName.contains("\n")) {
+            val strSplit = playCateName.split("\n")
+            "<font color=#666666>${strSplit.first()}</font><br><font color=#b73a20>${strSplit.getOrNull(1)}</font>"
+        } else {
+            "<font color=#666666>${playCateName}</font>"
+        }
+        oddBtnType.text = Html.fromHtml(playCateNameStr)
 
         oddBtnHome.apply homeButtonSettings@{
             when {
