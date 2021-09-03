@@ -383,6 +383,12 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
         })
 
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLockEvent ->
+                viewModel.updateLockMatchOdd(matchOddsLockEvent)
+            }
+        })
+
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
                 val betRefactorList = betListRefactorAdapter?.betList
