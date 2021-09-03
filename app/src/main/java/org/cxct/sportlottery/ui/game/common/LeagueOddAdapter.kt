@@ -254,7 +254,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         itemView.league_odd_spt.text = " / $it"
                     }
 
-                    MatchType.EARLY, MatchType.PARLAY, MatchType.TODAY -> { //TODO: 串關尚未確定顯示邏輯(是否要判斷滾球做不同顯示?)
+                    MatchType.EARLY, MatchType.PARLAY, MatchType.TODAY, MatchType.AT_START -> { //TODO: 串關尚未確定顯示邏輯(是否要判斷滾球做不同顯示?)
                         if (it == 3 || it == 5) {//除3、5以外不顯示
                             itemView.league_spt.visibility = View.VISIBLE
                             itemView.league_spt.text = when (it) {
