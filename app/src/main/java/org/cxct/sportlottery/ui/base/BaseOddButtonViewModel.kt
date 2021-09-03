@@ -374,6 +374,11 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.removeItem(oddId)
     }
 
+    fun removeBetInfoSingle() {
+        if (betInfoRepository.showBetInfoSingle.value?.peekContent() == true)
+            betInfoRepository.clear()
+    }
+
     fun removeBetInfoItemAndRefresh(oddId: String) {
         removeBetInfoItem(oddId)
         if (betInfoRepository.betInfoList.value?.peekContent()?.size != 0) {

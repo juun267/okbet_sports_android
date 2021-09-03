@@ -15,6 +15,7 @@ import org.cxct.sportlottery.ui.odds.OddsDetailListData
 object SocketUpdateUtil {
 
     fun updateMatchStatus(
+        gameType: String?,
         matchOddList: MutableList<MatchOdd>,
         matchStatusChangeEvent: MatchStatusChangeEvent
     ): Boolean {
@@ -47,8 +48,38 @@ object SocketUpdateUtil {
                             true
                         }
 
+                        (matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) -> {
+                            matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
+                            true
+                        }
+
+                        (matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) -> {
+                            matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
+                            true
+                        }
+
+                        (gameType == GameType.TN.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
+                            matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
+                            true
+                        }
+                        (gameType == GameType.TN.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
+                            matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
+                            true
+                        }
+
+                        (gameType == GameType.FT.key && matchStatusCO.homePoints != null && matchStatusCO.homePoints != matchOdd.matchInfo?.homePoints) -> {
+                            matchOdd.matchInfo?.homePoints = matchStatusCO.homePoints
+                            true
+                        }
+                        (gameType == GameType.FT.key && matchStatusCO.awayPoints != null && matchStatusCO.awayPoints != matchOdd.matchInfo?.awayPoints) -> {
+                            matchOdd.matchInfo?.awayPoints = matchStatusCO.awayPoints
+                            true
+                        }
+
+
                         else -> false
                     }
+
                 }
             }
         }

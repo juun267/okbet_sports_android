@@ -116,11 +116,15 @@ class MyFavoriteRepository {
 
     fun notifyFavorite(type: FavoriteType) {
         when (type) {
-            FavoriteType.SPORT -> _favorSportList.postValue(_favorSportList.value)
-            FavoriteType.LEAGUE -> _favorLeagueList.postValue(_favorLeagueList.value)
-            FavoriteType.MATCH -> _favorMatchList.postValue((_favorMatchList.value))
-            FavoriteType.OUTRIGHT -> _favoriteOutrightList.postValue(_favoriteOutrightList.value)
-            FavoriteType.PLAY_CATE -> _favorPlayCateList.postValue(_favorPlayCateList.value)
+            FavoriteType.SPORT -> _favorSportList.postValue(_favorSportList.value ?: listOf())
+            FavoriteType.LEAGUE -> _favorLeagueList.postValue(_favorLeagueList.value ?: listOf())
+            FavoriteType.MATCH -> _favorMatchList.postValue(_favorMatchList.value ?: listOf())
+            FavoriteType.OUTRIGHT -> _favoriteOutrightList.postValue(
+                _favoriteOutrightList.value ?: listOf()
+            )
+            FavoriteType.PLAY_CATE -> _favorPlayCateList.postValue(
+                _favorPlayCateList.value ?: listOf()
+            )
         }
     }
 

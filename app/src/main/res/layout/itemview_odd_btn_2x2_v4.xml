@@ -37,7 +37,7 @@
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row1"
         app:layout_constraintStart_toStartOf="@id/odd_btn_row1"
         app:layout_constraintTop_toTopOf="@id/odd_btn_row1"
-        tools:text="独赢\n123" />
+        tools:text="独赢" />
 
     <TextView
         android:id="@+id/odd_btn_row1_half"
@@ -96,7 +96,7 @@
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row2"
         app:layout_constraintStart_toStartOf="@id/odd_btn_row2"
         app:layout_constraintTop_toTopOf="@id/odd_btn_row2"
-        tools:text="独赢1234567890" />
+        tools:text="独赢" />
 
     <TextView
         android:id="@+id/odd_btn_row2_half"

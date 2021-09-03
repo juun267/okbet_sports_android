@@ -130,6 +130,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun setupLiveUrl(streamUrl: String) {
         nodeMediaManager.initNodeMediaPlayer(context, node_player, streamUrl)
+        nodeMediaManager.nodeMediaStart()
     }
 
     fun loadBottomSheetUrl(matchOdd: MatchOdd) {

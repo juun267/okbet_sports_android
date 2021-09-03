@@ -33,7 +33,8 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
-class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) : RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
+class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) :
+    RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -169,67 +170,62 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     MatchType.IN_PLAY -> {
                         tv_game_type.text = context.getString(R.string.home_tab_in_play)
 
-                        tv_game_score_home.visibility = View.VISIBLE
-                        tv_game_score_away.visibility = View.VISIBLE
-                        val homeScore = data.matchInfo?.homeScore ?: 0
-                        val awayScore = data.matchInfo?.awayScore ?: 0
-                        tv_game_score_home.text = "$homeScore"
-                        tv_game_score_away.text = "$awayScore"
+                        when (data.matchInfo?.gameType) {
+                            GameType.TN.key -> {
+                                tv_match_status.visibility = View.GONE
 
-                        when {
-                            homeScore > awayScore -> {
-                                tv_game_score_home.setTypeface(
-                                    tv_game_score_home.typeface,
-                                    Typeface.BOLD
-                                )
-                                tv_game_score_away.setTypeface(
-                                    tv_game_score_away.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_home.setTypeface(
-                                    tv_game_name_home.typeface,
-                                    Typeface.BOLD
-                                )
-                                tv_game_name_away.setTypeface(
-                                    tv_game_name_away.typeface,
-                                    Typeface.NORMAL
-                                )
+                                //盤比分
+                                tv_game_score_home.visibility = View.VISIBLE
+                                tv_game_score_away.visibility = View.VISIBLE
+                                val homeTotalScore = data.matchInfo.homeTotalScore ?: 0
+                                val awayTotalScore = data.matchInfo.awayTotalScore ?: 0
+                                tv_game_score_home.text = "$homeTotalScore"
+                                tv_game_score_away.text = "$awayTotalScore"
+
+                                //局比分
+                                tv_score.visibility = View.VISIBLE
+                                val homeScore = data.matchInfo.homeScore ?: 0
+                                val awayScore = data.matchInfo.awayScore ?: 0
+                                tv_score.text = "$homeScore–$awayScore"
+
+                                //點比分
+                                tv_point.visibility = View.VISIBLE
+                                val homePoint = data.matchInfo.homePoints ?: 0
+                                val awayPoint = data.matchInfo.awayPoints ?: 0
+                                tv_point.text = "$homePoint–$awayPoint"
                             }
-                            homeScore < awayScore -> {
-                                tv_game_score_home.setTypeface(
-                                    tv_game_score_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_score_away.setTypeface(
-                                    tv_game_score_away.typeface,
-                                    Typeface.BOLD
-                                )
-                                tv_game_name_home.setTypeface(
-                                    tv_game_name_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_away.setTypeface(
-                                    tv_game_name_away.typeface,
-                                    Typeface.BOLD
-                                )
+                            GameType.VB.key -> {
+                                tv_match_status.visibility = View.VISIBLE
+                                tv_match_status.text = "${data.matchInfo.statusName} / ${data.matchInfo.spt}" ?: ""
+
+                                tv_game_score_home.visibility = View.GONE
+                                tv_game_score_away.visibility = View.GONE
+
+                                //盤比分
+                                val homeTotalScore = data.matchInfo.homeTotalScore ?: 0
+                                val awayTotalScore = data.matchInfo.awayTotalScore ?: 0
+                                tv_game_total_score_home_center.text = "$homeTotalScore"
+                                tv_game_total_score_away_center.text = "$awayTotalScore"
+
+                                //點比分
+                                val homeScore = data.matchInfo.homeScore ?: 0
+                                val awayScore = data.matchInfo.awayScore ?: 0
+                                tv_game_score_home_center.text = "$homeScore"
+                                tv_game_score_away_center.text = "$awayScore"
+
+                                tv_score.visibility = View.GONE
+                                tv_point.visibility = View.GONE
                             }
                             else -> {
-                                tv_game_score_home.setTypeface(
-                                    tv_game_score_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_score_away.setTypeface(
-                                    tv_game_score_away.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_home.setTypeface(
-                                    tv_game_name_home.typeface,
-                                    Typeface.NORMAL
-                                )
-                                tv_game_name_away.setTypeface(
-                                    tv_game_name_away.typeface,
-                                    Typeface.NORMAL
-                                )
+                                tv_match_status.visibility = View.VISIBLE
+                                tv_match_status.text = data.matchInfo?.statusName ?: ""
+
+                                tv_game_score_home.visibility = View.VISIBLE
+                                tv_game_score_away.visibility = View.VISIBLE
+                                val homeScore = data.matchInfo?.homeScore ?: 0
+                                val awayScore = data.matchInfo?.awayScore ?: 0
+                                tv_game_score_home.text = "$homeScore"
+                                tv_game_score_away.text = "$awayScore"
                             }
                         }
                     }
@@ -241,6 +237,9 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                         tv_game_name_home.setTypeface(tv_game_name_home.typeface, Typeface.NORMAL)
                         tv_game_name_away.setTypeface(tv_game_name_away.typeface, Typeface.NORMAL)
+
+                        tv_score.visibility = View.GONE
+                        tv_point.visibility = View.GONE
                     }
                     else -> {
                     }
@@ -273,17 +272,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             itemView.apply {
                 when (matchType) {
                     MatchType.IN_PLAY -> {
-                        val statusName = if (data.matchInfo?.statusName.isNullOrEmpty())
-                            ""
-                        else
-                            data.matchInfo?.statusName + " "
-
                         when (data.matchInfo?.gameType) {
                             GameType.FT.key -> { //足球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, false) { timeMillis ->
-                                        val timeStr =
-                                            statusName + TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr = TimeUtil.timeFormat(timeMillis, "mm:ss")
                                         tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }
@@ -292,8 +285,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             GameType.BK.key -> { //籃球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, true) { timeMillis ->
-                                        val timeStr =
-                                            statusName + TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr = TimeUtil.timeFormat(timeMillis, "mm:ss")
                                         tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }

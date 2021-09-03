@@ -54,7 +54,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
-            app:defaultBottomSheetTitleText="@string/choose_bet_state"
             app:defaultStatusText="@string/all_sport"
             app:horizontalChainStyle="spread" />
 

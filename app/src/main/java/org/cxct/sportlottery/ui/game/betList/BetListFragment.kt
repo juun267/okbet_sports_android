@@ -186,6 +186,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             override fun refreshBetInfoTotal() {
                 checkAllAmountCanBet()
                 refreshAllAmount()
+                btn_bet.isOddsChanged = false //輸入金額的行為視為接受當前賠率
             }
 
             override fun showParlayRule(parlayType: String, parlayRule: String) {

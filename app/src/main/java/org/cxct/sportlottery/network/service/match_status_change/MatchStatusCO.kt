@@ -28,6 +28,10 @@ data class MatchStatusCO(
     val homeScore: Int ?= null,
     @Json(name = "homeTotalScore")
     val homeTotalScore: Int ?= null,
+    @Json(name = "homePoints")
+    val homePoints: Int ?= null,
+    @Json(name = "awayPoints")
+    val awayPoints: Int ?= null,
     @Json(name = "homeYellowCards")
     val homeYellowCards: Int ?= null,
     @Json(name = "latestStatus")

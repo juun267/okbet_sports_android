@@ -48,13 +48,13 @@ class AccountHistoryNextAdapter(
     var nowSelectedDate: String? = ""
         set(value) {
             field = value
-            notifyDataSetChanged()
+            notifyItemChanged(0)
         }
 
     var nowSelectedSport: String? = ""
         set(value) {
             field = value
-            notifyDataSetChanged()
+            notifyItemChanged(0)
         }
 
     private val adapterScope = CoroutineScope(Dispatchers.Default)
@@ -191,9 +191,6 @@ class AccountHistoryNextAdapter(
             first?.let {
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
-                binding.tvOddType.apply {
-                    text = this.context.getString(oddsType.res)
-                }
             }
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
@@ -216,6 +213,9 @@ class AccountHistoryNextAdapter(
 
     class ItemViewHolder private constructor(val binding: ItemAccountHistoryNextContentBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        private val roundAdapter by lazy { RoundAdapter() }
+
         fun bind(row: Row, oddsType: OddsType) {
             val first = row.matchOdds?.firstOrNull()
 
@@ -225,10 +225,6 @@ class AccountHistoryNextAdapter(
             first?.let {
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
-                binding.tvOddType.apply {
-                    text = this.context.getString(oddsType.res)
-                }
-
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
@@ -242,15 +238,11 @@ class AccountHistoryNextAdapter(
                     )
                 }
 
-                val arrayAdapter by lazy {
-                    ArrayAdapter(
-                        itemView.context,
-                        R.layout.item_account_history_next_context_listview_score,
-                        R.id.tv_score,
-                        scoreList
-                    );
+                binding.listScore.apply {
+                    layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+                    adapter = roundAdapter
                 }
-                binding.listScore.adapter = arrayAdapter
+                roundAdapter.submitList(scoreList)
 
             }
 
@@ -383,7 +375,7 @@ class AccountHistoryNextAdapter(
             fun from(parent: ViewGroup) =
                 NoDataViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.view_no_record, parent, false)
+                        .inflate(R.layout.itemview_game_no_record, parent, false)
                 )
         }
     }

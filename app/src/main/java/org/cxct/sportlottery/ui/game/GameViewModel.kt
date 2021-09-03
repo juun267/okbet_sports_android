@@ -708,37 +708,34 @@ class GameViewModel(
         }
     }
 
-    fun getOutrightOddsList(leagueId: String, matchType: String = MatchType.OUTRIGHT.postValue) {
-        getSportSelected(MatchType.OUTRIGHT)?.let { item ->
-            viewModelScope.launch {
-
-                val result = doNetwork(androidContext) {
-                    OneBoSportApi.outrightService.getOutrightOddsList(
-                        OutrightOddsListRequest(
-                            item.code,
-                            matchType = matchType,
-                            leagueIdList = listOf(leagueId)
-                        )
+    fun getOutrightOddsList(gameType: GameType, leagueId: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.outrightService.getOutrightOddsList(
+                    OutrightOddsListRequest(
+                        gameType.key,
+                        matchType = MatchType.OUTRIGHT.postValue,
+                        leagueIdList = listOf(leagueId)
                     )
-                }
+                )
+            }
 
-                result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
-                    leagueOdd.matchOdds?.forEach { matchOdd ->
-                        matchOdd?.odds?.values?.forEach { oddList ->
-                            oddList.updateOddSelectState()
-                        }
+            result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
+                leagueOdd.matchOdds?.forEach { matchOdd ->
+                    matchOdd?.odds?.values?.forEach { oddList ->
+                        oddList.updateOddSelectState()
                     }
                 }
-
-                val matchOdd =
-                    result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
-                matchOdd?.let {
-                    matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
-                    matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
-                }
-
-                _outrightOddsListResult.postValue(Event(result))
             }
+
+            val matchOdd =
+                result?.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.firstOrNull()
+            matchOdd?.let {
+                matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
+                matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
+            }
+
+            _outrightOddsListResult.postValue(Event(result))
         }
     }
 
@@ -1414,7 +1411,9 @@ class GameViewModel(
             }
             result?.let {
                 if (it.success) {
-                    _matchLiveInfo.postValue(Event(getStreamUrl(it.liveInfo)))
+                    getStreamUrl(it.liveInfo)?.let { streamUrl ->
+                        _matchLiveInfo.postValue(Event(streamUrl))
+                    }
                 }
             }
         }
@@ -1429,16 +1428,15 @@ class GameViewModel(
      *
      * 20210831 s型態還未有相關賽事，等相关比赛出现后，再解析
      */
-    private suspend fun getStreamUrl(liveInfo: LiveInfo): String {
+    private suspend fun getStreamUrl(liveInfo: LiveInfo): String? {
         return when (liveInfo.videoProvider) {
             "p2" -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(liveInfo.accessToken, liveInfo.streamURL)
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
-                    ?: ""
             }
             "i", "s" -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
-                liveUrlResponse.body()?.hlsUrl ?: ""
+                liveUrlResponse.body()?.hlsUrl
             }
             else -> {
                 liveInfo.streamURL

@@ -9,6 +9,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
@@ -40,6 +41,11 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
 
     private fun goHomePage() {
         startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        finish()
+    }
+
+    private fun goGamePage() {
+        startActivity(Intent(this@SplashActivity, GameActivity::class.java))
         finish()
     }
 
@@ -84,23 +90,39 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
             if (it.isForceUpdate || it.isShowUpdateDialog)
                 showAppDownloadDialog(it.isForceUpdate, it.version)
             else
-                goHomePage()
+                viewModel.goNextPage()
+        })
+
+        viewModel.isCreditAccount.observe(this, {
+            when (it) {
+                true -> {
+                    goGamePage()
+                }
+                false -> {
+                    goHomePage()
+                }
+            }
         })
     }
 
     //提示APP更新對話框
     private fun showAppDownloadDialog(isForceUpdate: Boolean, lastVersion: String) {
-        AppDownloadDialog(this, isForceUpdate, lastVersion, object : AppDownloadDialog.OnDownloadCallBack {
-            override fun onDownloadError() {
-                startActivity(Intent(this@SplashActivity, SplashActivity::class.java))
-                finish()
-            }
+        AppDownloadDialog(
+            this,
+            isForceUpdate,
+            lastVersion,
+            object : AppDownloadDialog.OnDownloadCallBack {
+                override fun onDownloadError() {
+                    startActivity(Intent(this@SplashActivity, SplashActivity::class.java))
+                    finish()
+                }
 
-            override fun goHomeActivity() {
-                goHomePage()
-                mVersionUpdateViewModel.lastShowUpdateTime = System.currentTimeMillis() //點擊取消 => 記錄此次提醒時間
-            }
+                override fun goHomeActivity() {
+                    mVersionUpdateViewModel.lastShowUpdateTime =
+                        System.currentTimeMillis() //點擊取消 => 記錄此次提醒時間
+                    viewModel.goNextPage()
+                }
 
-        }).show()
+            }).show()
     }
 }

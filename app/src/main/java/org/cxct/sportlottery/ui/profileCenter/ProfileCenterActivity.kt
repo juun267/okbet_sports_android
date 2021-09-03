@@ -110,6 +110,10 @@ class ProfileCenterActivity :
         iv_head.setOnClickListener {
             AvatarSelectorDialog(this, mSelectMediaListener).show(supportFragmentManager, null)
         }
+
+        profile_center_back.setOnClickListener {
+            finish()
+        }
     }
 
     private fun setupEditNickname() {
@@ -452,6 +456,12 @@ class ProfileCenterActivity :
     }
 
     private fun updateCreditAccountUI(isCreditAccount: Boolean) {
+        profile_center_back.visibility = if (isCreditAccount) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
         block_card.visibility = if (isCreditAccount) {
             View.GONE
         } else {

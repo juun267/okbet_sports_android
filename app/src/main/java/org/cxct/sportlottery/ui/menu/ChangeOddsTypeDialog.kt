@@ -7,12 +7,13 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_change_odd_type.*
 import kotlinx.android.synthetic.main.dialog_change_odd_type.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.menu.LeftMenuFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
 
-class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
+class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -22,7 +23,6 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog?.window?.setWindowAnimations(R.style.LeftMenu)
         initEvent(view)
         initObserver()
         getOddsType()
@@ -36,10 +36,6 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
                     (it as DialogFragment).dismiss()
                 }
                 dismiss()
-            }
-
-            img_back?.setOnClickListener {
-               dismiss()
             }
 
             rb_eu?.setOnClickListener {
@@ -80,6 +76,7 @@ class ChangeOddsTypeDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
     private fun selectOddsType(oddsType: OddsType) {
         viewModel.saveOddsType(oddsType)
+        dismiss()
     }
 
 

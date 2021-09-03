@@ -70,13 +70,17 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
         })
 
         viewModel.selectedDate.observe(viewLifecycleOwner, {
-            rvAdapter.nowSelectedDate = it
-            viewModel.searchDetail(date = it)
+            it.getContentIfNotHandled()?.apply {
+                rvAdapter.nowSelectedDate = this
+                viewModel.searchDetail(date = this)
+            }
         })
 
         viewModel.selectedSport.observe(viewLifecycleOwner, {
-            rvAdapter.nowSelectedSport = it
-            viewModel.searchDetail(gameType = it)
+            rvAdapter.nowSelectedSport = it.peekContent()
+            it.getContentIfNotHandled()?.apply {
+                viewModel.searchDetail(gameType = this)
+            }
         })
 
     }

@@ -40,8 +40,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 id = it.matchInfo?.id ?: "",
                 playCateNum = it.matchInfo?.playCateNum ?: 0,
                 startTime = it.matchInfo?.startTime,
-                status = it.matchInfo?.status ?: -1
-            ).apply {
+                status = it.matchInfo?.status ?: -1).apply {
                 gameType = sportCode
                 startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")

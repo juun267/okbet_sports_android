@@ -100,7 +100,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     override fun onStart() {
         super.onStart()
 
-        viewModel.getOutrightOddsList(args.eventId)
+        viewModel.getOutrightOddsList(args.gameType, args.eventId)
         loading()
     }
 
@@ -139,11 +139,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                     outrightLeagueOddAdapter.data = outrightLeagueOddDataList
 
-                    subscribeChannelHall(
-                        args.gameType.key,
-                        PlayCate.OUTRIGHT.value,
-                        args.eventId
-                    )
+                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds?.forEach { matchOdd ->
+                        subscribeChannelHall(
+                            args.gameType.key,
+                            PlayCate.OUTRIGHT.value,
+                            matchOdd?.matchInfo?.id
+                        )
+                    }
                 }
             }
         })
@@ -281,11 +283,14 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             unSubscribeChannelHallAll()
-            subscribeChannelHall(
-                args.gameType.key,
-                PlayCate.OUTRIGHT.value,
-                args.eventId
-            )
+
+            outrightLeagueOddAdapter.data.forEach { matchOdd ->
+                subscribeChannelHall(
+                    args.gameType.key,
+                    PlayCate.OUTRIGHT.value,
+                    matchOdd?.matchInfo?.id
+                )
+            }
         })
     }
 

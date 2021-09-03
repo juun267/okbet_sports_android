@@ -759,6 +759,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (SocketUpdateUtil.updateMatchStatus(
+                                    gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code,
                                     leagueOdd.matchOdds.toMutableList(),
                                     matchStatusChangeEvent
                                 ) &&

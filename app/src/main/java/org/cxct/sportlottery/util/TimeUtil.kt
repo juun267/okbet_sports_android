@@ -110,6 +110,32 @@ object TimeUtil {
     }
 
     /**
+     * return : 週幾
+     */
+    fun setupDayOfWeekAndToday(todayMillis: Long?): Int {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = todayMillis ?:0
+
+        val todayTimeMillis = Calendar.getInstance().timeInMillis
+
+        return if (timeFormat(todayMillis, YMD_FORMAT) == timeFormat(todayTimeMillis, YMD_FORMAT)) {
+            R.string.home_tab_today
+        } else {
+            when (calendar.get(Calendar.DAY_OF_WEEK)) {
+                Calendar.SUNDAY -> R.string.sunday2
+                Calendar.MONDAY -> R.string.monday2
+                Calendar.TUESDAY -> R.string.tuesday2
+                Calendar.WEDNESDAY -> R.string.wednesday2
+                Calendar.THURSDAY -> R.string.thursday2
+                Calendar.FRIDAY -> R.string.friday2
+                Calendar.SATURDAY -> R.string.saturday2
+                else -> R.string.sunday2
+            }
+        }
+
+    }
+
+    /**
      * return : 星期幾
      */
     fun setupDayOfWeek(date: String?): Int {
@@ -128,8 +154,8 @@ object TimeUtil {
         }
     }
 
-    fun getDefaultTimeStamp(): TimeRangeParams {
-        val cPair = getCalendarForDates(6)
+    fun getDefaultTimeStamp(minusDays: Int? = 6): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
         val minusDayTimeStamp = cPair.first.timeInMillis
         val todayTimeStamp = cPair.second.timeInMillis
         return object : TimeRangeParams {
@@ -141,8 +167,8 @@ object TimeUtil {
         }
     }
 
-    fun getDefaultDate(): TimeRangeParams {
-        val cPair = getCalendarForDates(6)
+    fun getDefaultDate(minusDays: Int? = 6): TimeRangeParams {
+        val cPair = getCalendarForDates(minusDays)
         val minusDay = timeFormat(cPair.first.timeInMillis, YMD_FORMAT)
         val today = timeFormat(cPair.second.timeInMillis, YMD_FORMAT)
         return object : TimeRangeParams {
