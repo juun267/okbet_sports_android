@@ -753,6 +753,11 @@ class GameViewModel(
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
     ) {
+        if (leagueIdList != null) {
+            _oddsListGameHallResult.value = Event(null)
+        } else {
+            _oddsListResult.value = Event(null)
+        }
 
         val emptyFilter = { list: List<String>? ->
             if (list.isNullOrEmpty()) null else list
@@ -804,7 +809,13 @@ class GameViewModel(
                 }
             }
 
-            result?.oddsListData?.leagueOdds?.firstOrNull()?.isExpand = true
+            result?.updateLeagueExpandState(
+                if (leagueIdList != null) {
+                    _oddsListResult.value?.peekContent()
+                } else {
+                    _oddsListGameHallResult.value?.peekContent()
+                }?.oddsListData?.leagueOdds ?: listOf()
+            )
 
             if (leagueIdList != null) {
                 _oddsListResult.postValue(Event(result))
@@ -1411,6 +1422,27 @@ class GameViewModel(
         }
 
         return this
+    }
+
+    private fun OddsListResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
+        val isLocalExistLeague = this.oddsListData?.leagueOdds?.any {
+            leagueOdds.map { leagueOdd ->
+                leagueOdd.league.id
+            }.contains(it.league.id)
+        }
+
+        when (isLocalExistLeague) {
+            true -> {
+                this.oddsListData?.leagueOdds?.forEach {
+                    it.isExpand = leagueOdds.find { leagueOdd ->
+                        it.league.id == leagueOdd.league.id
+                    }?.isExpand ?: false
+                }
+            }
+            false -> {
+                this.oddsListData?.leagueOdds?.firstOrNull()?.isExpand = true
+            }
+        }
     }
 
     fun getLiveInfo(matchId: String) {
