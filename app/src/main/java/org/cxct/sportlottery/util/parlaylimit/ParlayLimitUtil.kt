@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util.parlaylimit
 import android.annotation.SuppressLint
 import android.content.Context
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.BET_INFO_MAX_COUNT
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -146,7 +147,12 @@ object ParlayLimitUtil {
             val parlayCom = ParlayCom()
             parlayCom.num = list.size
             parlayCom.parlayType = list[0].size.toString() + "C1"
-            parlayCom.rule = "${String.format(context.getString(R.string.parlay_rule_nc1), list[0].size, list[0].size + 1)}\n$cantParlayWarn"
+
+            //串關舉例時, 不舉例超過投注數上限的例子, 例如: 投注上限10, 就不會舉例十一場賽事串的例子
+            val parlayComRule = String.format(context.getString(R.string.parlay_rule_nc1), list[0].size)
+            val parlayRuleExample = if (key == BET_INFO_MAX_COUNT) "" else "${String.format(context.getString(R.string.parlay_rule_nc1_ex), list[0].size, list[0].size + 1)}\n"
+            parlayCom.rule = "$parlayComRule\n$parlayRuleExample$cantParlayWarn"
+
             nC1RuleList.add(String.format(context.getString(R.string.parlay_rule_list_nc1), list.size, list[0].size.toString()))
             parlayCom.setComList(list)
             parlayComSOList.add(parlayCom)

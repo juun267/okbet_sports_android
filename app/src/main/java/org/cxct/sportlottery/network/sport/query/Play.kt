@@ -16,4 +16,5 @@ data class Play(
     val playCateList: List<PlayCate>?
 ) {
     var isSelected = false
+    var isLocked:Boolean? = null
 }

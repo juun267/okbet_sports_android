@@ -69,6 +69,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
             showLoginNotify()
         })
 
+        //TODO 不是通用的不應該放在這邊, 只要在需要顯示的頁面實作就好了
         viewModel.notifyMyFavorite.observe(this, {
             it.getContentIfNotHandled()?.let { result ->
                 when (result.type) {

@@ -97,6 +97,7 @@ class TransactionStatusViewModel(
                         page,
                         (rowList.size >= (result.total ?: 0))
                     )
+                loginRepository.updateTransNum(result.total ?: 0)
             }
         }
     }

@@ -2,9 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -316,13 +314,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             tabEarly?.tv_title?.setText(R.string.home_tab_early)
             tabEarly?.tv_number?.text = countEarly.toString()
 
-            val tabParlay = tabLayout.getTabAt(5)?.customView
-            tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
-            tabParlay?.tv_number?.text = countParlay.toString()
-
-            val tabOutright = tabLayout.getTabAt(6)?.customView
+            val tabOutright = tabLayout.getTabAt(5)?.customView
             tabOutright?.tv_title?.setText(R.string.home_tab_outright)
             tabOutright?.tv_number?.text = countOutright.toString()
+
+            val tabParlay = tabLayout.getTabAt(6)?.customView
+            tabParlay?.tv_title?.setText(R.string.home_tab_parlay)
+            tabParlay?.tv_number?.text = countParlay.toString()
 
             val tabEps = tabLayout.getTabAt(7)?.customView
             tabEps?.tv_title?.setText(R.string.home_tab_eps)
@@ -355,11 +353,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 loading()
             }
             5 -> {
-                viewModel.switchMatchType(MatchType.PARLAY)
+                viewModel.switchMatchType(MatchType.OUTRIGHT)
                 loading()
             }
             6 -> {
-                viewModel.switchMatchType(MatchType.OUTRIGHT)
+                viewModel.switchMatchType(MatchType.PARLAY)
                 loading()
             }
             7 -> {
@@ -454,6 +452,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             getAnnouncement()
         })
 
+        viewModel.showBetUpperLimit.observe(this, {
+            if (it.getContentIfNotHandled() == true)
+                snackBarBetUpperLimitNotify.apply {
+                    setAnchorView(R.id.game_bottom_navigation)
+                    show()
+                }
+        })
+
         viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
         })
@@ -477,10 +483,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.EARLY -> {
                         tabLayout.getTabAt(4)?.select()
                     }
-                    MatchType.PARLAY -> {
+                    MatchType.OUTRIGHT -> {
                         tabLayout.getTabAt(5)?.select()
                     }
-                    MatchType.OUTRIGHT -> {
+                    MatchType.PARLAY -> {
                         tabLayout.getTabAt(6)?.select()
                     }
                     MatchType.EPS -> {
@@ -613,8 +619,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             MatchType.AT_START -> updateSelectTabState(2)
             MatchType.TODAY -> updateSelectTabState(3)
             MatchType.EARLY -> updateSelectTabState(4)
-            MatchType.PARLAY -> updateSelectTabState(5)
-            MatchType.OUTRIGHT -> updateSelectTabState(6)
+            MatchType.OUTRIGHT -> updateSelectTabState(5)
+            MatchType.PARLAY -> updateSelectTabState(6)
             MatchType.EPS -> updateSelectTabState(7)
         }
     }

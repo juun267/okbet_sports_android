@@ -73,6 +73,7 @@ class TransactionStatusFragment : BaseFragment<TransactionStatusViewModel>(Trans
     private fun initObserve() {
         viewModel.betListData.observe(this, {
             recordDiffAdapter.setupBetList(it)
+            btn_back_to_top.visibility = if (it.row.isEmpty()) View.GONE else View.VISIBLE
         })
 
         viewModel.oddsType.observe(this, {
