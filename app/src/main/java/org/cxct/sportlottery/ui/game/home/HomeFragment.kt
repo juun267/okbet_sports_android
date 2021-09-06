@@ -253,7 +253,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 highlight_titleBar.setBackgroundResource(it)
             }
 
-            tv_play_type.text = when (GameType.getGameType(selectItem.code)) {
+            tv_play_type_highlight.text = when (GameType.getGameType(selectItem.code)) {
                 GameType.FT, GameType.BK -> getText(R.string.ou_hdp_hdp_title)
                 GameType.TN, GameType.VB -> getText(R.string.ou_hdp_1x2_title)
                 else -> ""
