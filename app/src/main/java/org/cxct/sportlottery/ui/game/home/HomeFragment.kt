@@ -578,6 +578,43 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.isCreditAccount.observe(viewLifecycleOwner, {
             updateThirdGameCard(!it)
         })
+
+        //遊戲卡片
+        viewModel.cardMatchTypeFT.observe(viewLifecycleOwner, { matchType ->
+            card_football.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.FT
+                )
+            }
+        })
+
+        viewModel.cardMatchTypeBK.observe(viewLifecycleOwner, { matchType ->
+            card_basketball.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.BK
+                )
+            }
+        })
+
+        viewModel.cardMatchTypeTN.observe(viewLifecycleOwner, { matchType ->
+            card_tennis.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.TN
+                )
+            }
+        })
+
+        viewModel.cardMatchTypeVB.observe(viewLifecycleOwner, { matchType ->
+            card_volleyball.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.VB
+                )
+            }
+        })
     }
 
     private fun initSocketObserver() {

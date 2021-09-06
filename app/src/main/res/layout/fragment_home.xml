@@ -51,8 +51,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="233"
-                            android:background="@drawable/fillet_4dp_home_game_item"
-                            android:visibility="@{gameViewModel.allFootballCount==0?View.GONE:View.VISIBLE}">
+                            android:background="@drawable/fillet_4dp_home_game_item">
 
                             <TextView
                                 android:id="@+id/label_en_ft"
@@ -123,16 +122,14 @@
 
                         <View
                             android:layout_width="6dp"
-                            android:layout_height="match_parent"
-                            android:visibility="@{gameViewModel.allFootballCount==0||gameViewModel.allBasketballCount==0?View.GONE:View.VISIBLE}" />
+                            android:layout_height="match_parent"/>
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/card_basketball"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="112"
-                            android:background="@drawable/fillet_4dp_home_game_item"
-                            android:visibility="@{gameViewModel.allBasketballCount==0?View.GONE:View.VISIBLE}">
+                            android:background="@drawable/fillet_4dp_home_game_item">
 
                             <TextView
                                 android:id="@+id/label_en_bk"
