@@ -125,7 +125,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.PENALTY_SINGLE_SEG4.ordinal, PlayCate.CORNER_SINGLE_SEG5.ordinal, PlayCate.CORNER_SINGLE_SEG6.ordinal
                     -> LayoutType.SINGLE.layout
 
-                    PlayCate.DC_OU.ordinal, PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal
+                    PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal
                     -> LayoutType.CS.layout
 
                     PlayCate.FGLG.ordinal
@@ -134,7 +134,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.SCO.ordinal
                     -> LayoutType.SCO.layout
 
-                    PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal, PlayCate.QUALIFYING_METHOD.ordinal
+                    PlayCate.DC_OU.ordinal, PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal, PlayCate.QUALIFYING_METHOD.ordinal
                     -> LayoutType.GROUP_6.layout
 
                     PlayCate.OU_BTS.ordinal, PlayCate.OU_OE.ordinal, PlayCate.OU_TTS1ST.ordinal
@@ -399,7 +399,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.PENALTY_SINGLE_SEG4.ordinal, PlayCate.CORNER_SINGLE_SEG5.ordinal, PlayCate.CORNER_SINGLE_SEG6.ordinal
                         -> forSingle(oddsDetail, 3)
 
-                        PlayCate.DC_OU.ordinal, PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal
+                        PlayCate.CS.ordinal, PlayCate.CS_OT.ordinal, PlayCate.CS_1ST_SD.ordinal
                         -> forCS(oddsDetail)
 
                         PlayCate.FGLG.ordinal
@@ -411,7 +411,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.QUALIFYING_METHOD.ordinal
                         -> group6Item(oddsDetail)
 
-                        PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal
+                        PlayCate.DC_OU.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal
                         -> group6ItemForDC(oddsDetail)
 
                         PlayCate.OU_BTS.ordinal
