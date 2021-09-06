@@ -49,7 +49,12 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(args.matchType, args.leagueId.toList(), args.matchId.toList(), it)
+                viewModel.switchPlay(
+                    args.matchType,
+                    args.leagueId.toList(),
+                    args.matchId.toList(),
+                    it
+                )
                 loading()
             }
         }
@@ -374,72 +379,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         return this
     }
 
-    private fun Odd.updateOddsState(oddSocket: Odd, oddsType: OddsType): Odd {
-        when (oddsType) {
-            OddsType.EU -> {
-                this.odds?.let { oddValue ->
-                    oddSocket.odds?.let { oddSocketValue ->
-                        when {
-                            oddValue > oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SMALLER.state
-                            }
-                            oddValue < oddSocketValue -> {
-                                this.oddState =
-                                    OddState.LARGER.state
-                            }
-                            oddValue == oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SAME.state
-                            }
-                        }
-                    }
-                }
-            }
-
-            OddsType.HK -> {
-                this.hkOdds?.let { oddValue ->
-                    oddSocket.hkOdds?.let { oddSocketValue ->
-                        when {
-                            oddValue > oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SMALLER.state
-                            }
-                            oddValue < oddSocketValue -> {
-                                this.oddState =
-                                    OddState.LARGER.state
-                            }
-                            oddValue == oddSocketValue -> {
-                                this.oddState =
-                                    OddState.SAME.state
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        this.odds = oddSocket.odds
-        this.hkOdds = oddSocket.hkOdds
-        this.status = oddSocket.status
-
-        return this
-    }
-
-    private fun Odd.updateOddStatus(producerId: Int?): Odd {
-        when (producerId) {
-            null -> {
-                this.status = BetStatus.DEACTIVATED.code
-            }
-            else -> {
-                if (this.producerId == producerId) {
-                    this.status = BetStatus.DEACTIVATED.code
-                }
-            }
-        }
-        return this
-    }
-
     private fun updateSportBackground(sportCode: String?) {
         Glide.with(requireContext()).load(
             when (sportCode) {
@@ -562,7 +501,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
         }
     }
-    
+
     override fun onStop() {
         super.onStop()
 
