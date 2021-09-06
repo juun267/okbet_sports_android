@@ -48,6 +48,9 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     findNavController().navigate(action)
                 },
                 { matchOdd, oddsKey ->
+
+                    subscribeChannelHall(matchOdd)
+
                     this.data.find { it == matchOdd }?.odds?.get(oddsKey)?.forEach { odd ->
                         odd?.isExpand?.let { isExpand ->
                             odd.isExpand = !isExpand
@@ -140,11 +143,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     outrightLeagueOddAdapter.data = outrightLeagueOddDataList
 
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds?.forEach { matchOdd ->
-                        subscribeChannelHall(
-                            args.gameType.key,
-                            PlayCate.OUTRIGHT.value,
-                            matchOdd?.matchInfo?.id
-                        )
+                        subscribeChannelHall(matchOdd)
                     }
                 }
             }
@@ -285,11 +284,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             unSubscribeChannelHallAll()
 
             outrightLeagueOddAdapter.data.forEach { matchOdd ->
-                subscribeChannelHall(
-                    args.gameType.key,
-                    PlayCate.OUTRIGHT.value,
-                    matchOdd?.matchInfo?.id
-                )
+                subscribeChannelHall(matchOdd)
             }
         })
     }
@@ -311,6 +306,29 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         }
 
         return this
+    }
+
+    private fun subscribeChannelHall(matchOdd: MatchOdd?) {
+        val isExpand = matchOdd?.odds?.values?.any {
+            it.any { odd -> odd?.isExpand ?: false }
+        }
+
+        when (isExpand) {
+            true -> {
+                subscribeChannelHall(
+                    args.gameType.key,
+                    PlayCate.OUTRIGHT.value,
+                    matchOdd.matchInfo?.id
+                )
+            }
+            false -> {
+                unSubscribeChannelHall(
+                    args.gameType.key,
+                    PlayCate.OUTRIGHT.value,
+                    matchOdd.matchInfo?.id
+                )
+            }
+        }
     }
 
     private fun addOddsDialog(
