@@ -180,6 +180,7 @@
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
+                android:text="@{matchOdd.spread}"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
                 app:layout_constraintStart_toEndOf="@id/tv_team_home"
                 app:layout_constraintTop_toTopOf="@+id/tv_team_home"
