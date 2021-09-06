@@ -233,13 +233,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             }
                         }
 
-                        tv_match_time.text = data.matchInfo?.startDateDisplay + " " + remainTime
+                        tv_match_time.text = "$remainTime"
                     }
 
                     else -> {
                         stopTimer()
-                        tv_match_time.text =
-                            "${data.matchInfo?.startDateDisplay ?: ""} ${data.matchInfo?.startTimeDisplay ?: ""}"
+                        tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
                     }
                 }
             }

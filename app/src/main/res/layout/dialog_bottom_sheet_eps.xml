@@ -30,7 +30,7 @@
             android:id="@+id/tv_game_type_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/title_eps_more"
+            android:text="@string/home_title_eps"
             android:textColor="@color/colorWhite1"
             android:textSize="@dimen/textSize16sp"
             android:layout_marginStart="10dp"
@@ -72,7 +72,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_more_eps_info_item"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:divider="@null"
         android:dividerHeight="0dp"
         tools:itemCount="5"

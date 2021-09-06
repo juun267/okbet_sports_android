@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -117,7 +118,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         ) {
             itemView.country_border.visibility = View.GONE
             itemView.country_name.visibility = View.GONE
-            itemView.country_img.visibility = View.GONE
+            itemView.country_webview.visibility = View.GONE
             itemView.country_league_expand.setExpanded(true, false)
 
             setupLeagueList(datePin, outrightCountryLeagueListener)
@@ -156,6 +157,10 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(item: Row, outrightCountryLeagueListener: OutrightCountryLeagueListener?) {
             itemView.apply {
                 country_name.text = item.name
+                val data =
+                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.icon)
+                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
+                country_webview.setBackgroundColor(Color.TRANSPARENT)
             }
 
             setupLeagueList(item, outrightCountryLeagueListener)

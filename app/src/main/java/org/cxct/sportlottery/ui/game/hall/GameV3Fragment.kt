@@ -670,7 +670,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it.find { play ->
                 play.isSelected
             }?.let { selectedPlay ->
-                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code) {
+                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code && selectedPlay.isLocked == false) {
                     showPlayCateBottomSheet(selectedPlay)
                 }
             }
