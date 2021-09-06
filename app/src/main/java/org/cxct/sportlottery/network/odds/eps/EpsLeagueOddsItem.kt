@@ -13,5 +13,5 @@ data class EpsLeagueOddsItem(
     @Json(name = "matchOdds")
     val matchOdds: List<MatchOddsItem>?
 ){
-    var isClose = false
+    var isClose = true
 }
