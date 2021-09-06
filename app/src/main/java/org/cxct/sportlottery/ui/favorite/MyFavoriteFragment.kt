@@ -225,6 +225,22 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }
         })
 
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLockEvent ->
+                val leagueOdds = leagueAdapter.data
+
+                leagueOdds.forEachIndexed { index, leagueOdd ->
+                    if (leagueOdd.matchOdds.any { matchOdd ->
+                            SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
+                        } &&
+                        leagueOdd.isExpand
+                    ) {
+                        leagueAdapter.notifyItemChanged(index)
+                    }
+                }
+            }
+        })
+
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
                 val leagueOdds = leagueAdapter.data
