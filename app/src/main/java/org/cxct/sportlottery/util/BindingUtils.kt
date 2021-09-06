@@ -129,7 +129,6 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
 @BindingAdapter("betParlayReceiptAmount")
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult) {
     text = when (itemData.status) {
-        7 -> "0"
         else -> if(itemData.num == 1){
             itemData.stake?.let { TextUtil.formatBetQuota(it) }
         }else{

@@ -47,9 +47,9 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 }
 
                 view.view_match_receipt.setBetReceiptBackground(status)
-                tv_bet_amount.setBetReceiptAmount(this)
+                tv_bet_amount.text = TextUtil.formatBetQuota(stake ?: 0)
                 tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
-                tv_winnable_amount.setMoneyFormat(winnable)
+                tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                 tv_bet_status.setBetReceiptStatus(status)
                 tv_bet_status.setReceiptStatusColor(status)
                 tv_receipt_status.setSingleReceiptStatusTips(status)
