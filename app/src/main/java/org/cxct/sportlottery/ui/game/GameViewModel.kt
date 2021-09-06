@@ -51,7 +51,10 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -86,7 +89,7 @@ class GameViewModel(
     val curMatchType: LiveData<MatchType?>
         get() = _curMatchType
 
-    val curChildMatchType: LiveData<MatchType?>
+    val curChildMatchType: LiveData<Event<MatchType?>>
         get() = _curChildMatchType
 
     val sportMenuResult: LiveData<SportMenuResult?>
@@ -159,7 +162,7 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
-    private val _curChildMatchType = MutableLiveData<MatchType?>()
+    private val _curChildMatchType = MutableLiveData<Event<MatchType?>>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -275,13 +278,14 @@ class GameViewModel(
     }
 
     fun switchMatchType(matchType: MatchType) {
+        _curChildMatchType.value = Event(null)
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
     }
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
-        _curChildMatchType.value = childMatchType
+        _curChildMatchType.value = Event(childMatchType)
         curMatchType.value?.let {
             getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
         }
@@ -555,6 +559,7 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
+        _curChildMatchType.value = Event(null)
 
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
@@ -586,7 +591,7 @@ class GameViewModel(
         isReloadPlayCate: Boolean = false
     ) {
 
-        val nowMatchType = curChildMatchType.value ?: matchType
+        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
 
         if (isReloadPlayCate) {
             getPlayCategory(nowMatchType)
@@ -681,7 +686,7 @@ class GameViewModel(
             getPlayCategory(matchType)
         }
 
-        val nowMatchType = curChildMatchType.value ?: matchType
+        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
 
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(

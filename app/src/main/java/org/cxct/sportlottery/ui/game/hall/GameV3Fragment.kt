@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
@@ -25,8 +26,8 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
+import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.query.Play
@@ -189,6 +190,28 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private val onTabSelectedListener = object : TabLayout.OnTabSelectedListener {
+        override fun onTabSelected(tab: TabLayout.Tab?) {
+            when (tab?.text.toString()) { //固定寫死
+                getString(R.string.game_tab_league_odd) -> { //賽事
+                    viewModel.switchChildMatchType(childMatchType = args.matchType)
+                }
+                getString(R.string.game_tab_outright_odd) -> { //冠軍
+                    viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
+                }
+                getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率
+                    viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
+                }
+            }
+        }
+
+        override fun onTabReselected(tab: TabLayout.Tab?) {
+        }
+
+        override fun onTabUnselected(tab: TabLayout.Tab?) {
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -267,27 +290,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun setupOddTab(view: View) {
         view.game_tabs.apply {
-            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab?) {
-                    when (tab?.text.toString()) { //固定寫死
-                        getString(R.string.game_tab_league_odd) -> { //賽事
-                            viewModel.switchChildMatchType(childMatchType = args.matchType)
-                        }
-                        getString(R.string.game_tab_outright_odd) -> { //冠軍
-                            viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
-                        }
-                        getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率
-                            viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
-                        }
-                    }
-                }
-
-                override fun onTabReselected(tab: TabLayout.Tab?) {
-                }
-
-                override fun onTabUnselected(tab: TabLayout.Tab?) {
-                }
-            })
+            addOnTabSelectedListener(onTabSelectedListener)
         }
 
         view.game_tab_odd_v4.visibility = when (args.matchType) {
@@ -380,17 +383,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         try {
-            initChildMatchType()
             initObserve()
             initSocketObserver()
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-    private fun initChildMatchType() {
-        viewModel.switchChildMatchType(null)
     }
 
     override fun onStart() {
@@ -463,7 +461,28 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
-            game_toolbar_match_type.text = gameToolbarMatchTypeText(it ?: args.matchType)
+            //TODO childMatchType更新選中
+            val childMatchType = it.getContentIfNotHandled()
+            game_toolbar_match_type.text = gameToolbarMatchTypeText(childMatchType ?: args.matchType)
+
+            //預設第一項
+            when(childMatchType){
+                null -> {
+                    //init tab select
+                    game_tabs.clearOnTabSelectedListeners()
+                    game_tabs.selectTab(game_tabs.getTabAt(0))
+                    game_tabs.addOnTabSelectedListener(onTabSelectedListener)
+                }
+                MatchType.OUTRIGHT -> {
+                    game_tabs.selectTab(game_tabs.getTabAt(1))
+                }
+                MatchType.EPS -> {
+                    game_tabs.selectTab(game_tabs.getTabAt(2))
+                }
+                else -> {
+                    game_tabs.selectTab(game_tabs.getTabAt(0))
+                }
+            }
         })
 
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, {
