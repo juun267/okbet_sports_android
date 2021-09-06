@@ -268,14 +268,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             viewModel.getHighlightMatch(selectItem.code)
         }
 
-        btn_display_all.setOnClickListener {
-            mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.let { data ->
-                val gameType = GameType.getGameType(data.code)
-
-                viewModel.navSpecialEntrance(MatchType.TODAY, gameType)
-            }
-        }
-
         rv_game_highlight.adapter = mRvHighlightAdapter
         mRvHighlightAdapter.onClickOddListener = mOnClickOddListener
         mRvHighlightAdapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
