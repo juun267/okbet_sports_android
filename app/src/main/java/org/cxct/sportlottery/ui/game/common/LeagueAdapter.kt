@@ -41,8 +41,9 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
         }
 
-    var leagueOddListener: LeagueOddListener? = null
+    var leagueListener: LeagueListener? = null
 
+    var leagueOddListener: LeagueOddListener? = null
 
     override fun getItemViewType(position: Int): Int {
         return when {
@@ -85,6 +86,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                 holder.bind(
                     item,
                     matchType,
+                    leagueListener,
                     leagueOddListener,
                     oddsType
                 )
@@ -118,13 +120,14 @@ class LeagueAdapter(private val matchType: MatchType) :
         fun bind(
             item: LeagueOdd,
             matchType: MatchType,
+            leagueListener: LeagueListener?,
             leagueOddListener: LeagueOddListener?,
             oddsType: OddsType
         ) {
             itemView.league_text.text = item.league.name
 
             setupLeagueOddList(item, leagueOddListener, oddsType)
-            setupLeagueOddExpand(item, matchType)
+            setupLeagueOddExpand(item, matchType, leagueListener)
         }
 
         private fun setupLeagueOddList(
@@ -151,6 +154,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         private fun setupLeagueOddExpand(
             item: LeagueOdd,
             matchType: MatchType,
+            leagueListener: LeagueListener?
         ) {
             itemView.league_expand.setExpanded(item.isExpand, false)
             updateTimer(matchType, item.gameType)
@@ -159,6 +163,8 @@ class LeagueAdapter(private val matchType: MatchType) :
                 item.isExpand = !item.isExpand
                 itemView.league_expand.setExpanded(item.isExpand, true)
                 updateTimer(matchType, item.gameType)
+
+                leagueListener?.onClickLeague(item.isExpand)
             }
         }
 
@@ -194,4 +200,8 @@ class LeagueAdapter(private val matchType: MatchType) :
             }
         }
     }
+}
+
+class LeagueListener(val clickListenerLeague: (isExpand: Boolean?) -> Unit) {
+    fun onClickLeague(isExpand: Boolean?) = clickListenerLeague(isExpand)
 }
