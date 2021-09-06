@@ -271,20 +271,23 @@
 
     <ImageView
         android:id="@+id/btn_chart"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginEnd="22dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:padding="4dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_chart_v4"
+        android:src="@drawable/ic_icon_statistics"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btn_star" />
+        app:layout_constraintEnd_toStartOf="@id/btn_star"
+        app:layout_constraintTop_toTopOf="@+id/btn_star"
+        app:tint="@color/colorGray" />
 
     <ImageView
         android:id="@+id/btn_star"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
