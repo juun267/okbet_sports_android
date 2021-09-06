@@ -934,6 +934,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         })
+
+        receiver.leagueChange.observe(this.viewLifecycleOwner, {
+            it?.let { leagueChangeEvent ->
+                when (game_list.adapter) {
+                    is LeagueAdapter -> {
+                        leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                            viewModel.getLeagueOddsList(args.matchType, leagueIdList, listOf())
+                            loading()
+                        }
+                    }
+                }
+            }
+        })
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
