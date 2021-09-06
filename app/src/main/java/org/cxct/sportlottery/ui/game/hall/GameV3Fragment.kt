@@ -864,6 +864,35 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLockEvent ->
+                when (game_list.adapter) {
+                    is LeagueAdapter -> {
+                        val leagueOdds = leagueAdapter.data
+
+                        leagueOdds.forEachIndexed { index, leagueOdd ->
+                            if (leagueOdd.matchOdds.any { matchOdd ->
+                                    SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
+                                } && leagueOdd.isExpand) {
+                                leagueAdapter.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                    is EpsListAdapter -> {
+                        val epsOdds = epsListAdapter.dataList
+
+                        epsOdds.forEachIndexed { index, leagueOdd ->
+                            if (leagueOdd.matchOdds?.any { matchOdd ->
+                                    SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
+                                } == true && !leagueOdd.isClose) {
+                                epsListAdapter.notifyItemChanged(index)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
 
