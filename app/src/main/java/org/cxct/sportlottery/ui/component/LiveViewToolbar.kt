@@ -58,15 +58,14 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private fun initOnclick() {
         iv_arrow.setOnClickListener {
             if (expand_layout.isExpanded) {
+                nodeMediaManager?.nodeMediaStop()
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
                 expand_layout.collapse()
                 liveToolBarListener?.onExpand(false)
-                nodeMediaManager.nodeMediaStop()
             } else {
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 expand_layout.expand()
                 liveToolBarListener?.onExpand(true)
-                nodeMediaManager.nodeMediaStart()
             }
         }
 
