@@ -165,7 +165,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     }
 
                     itemView.setBetReceiptBackground(status)
-                    tv_bet_amount.setBetParlayReceiptAmount(itemData)
+                    tv_bet_amount.setBetParlayReceiptAmount(itemData, betParlay?.find { parlayType == it.parlayType }?.num?:0)
                     tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
