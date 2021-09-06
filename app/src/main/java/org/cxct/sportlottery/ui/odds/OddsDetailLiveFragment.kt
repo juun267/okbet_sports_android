@@ -43,6 +43,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
+import org.cxct.sportlottery.ui.component.NodeMediaManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -103,6 +104,14 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         viewModel.getLiveInfo(it)
                     }
                 }
+            }
+        }
+    }
+
+    private val eventListener by lazy {
+        object : NodeMediaManager.LiveEventListener {
+            override fun reRequestStreamUrl() {
+                matchId?.let { viewModel.getLiveInfo(it, true) }
             }
         }
     }
@@ -313,8 +322,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         viewModel.matchLiveInfo.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { url ->
-                live_view_tool_bar.setupLiveUrl(url)
+            it.getContentIfNotHandled()?.let { liveStreamInfo ->
+                live_view_tool_bar.setupLiveUrl(liveStreamInfo.streamUrl)
             }
         })
     }
