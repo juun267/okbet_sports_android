@@ -438,8 +438,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf())
                 }
 
+                else -> {
+                }
             }
-
         })
 
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner, {
@@ -468,10 +469,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
             //TODO childMatchType更新選中
             val childMatchType = it.getContentIfNotHandled()
-            game_toolbar_match_type.text = gameToolbarMatchTypeText(childMatchType ?: args.matchType)
+            game_toolbar_match_type.text =
+                gameToolbarMatchTypeText(childMatchType ?: args.matchType)
 
             //預設第一項
-            when(childMatchType){
+            when (childMatchType) {
                 null -> {
                     //init tab select
                     game_tabs.clearOnTabSelectedListeners()
@@ -553,10 +555,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             it.getContentIfNotHandled()?.let { epsListResult ->
                 if (epsListResult.success) {
-                    val oddsEpsListData = epsListResult.rows
+                    val oddsEpsListDatas = epsListResult.rows
                     val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
 
-                    oddsEpsListData.forEachIndexed { indexDate, oddsEpsListData ->
+                    oddsEpsListDatas.forEachIndexed { indexDate, oddsEpsListData ->
                         val newLeagueOddsItem =
                             EpsLeagueOddsItem(
                                 date = oddsEpsListData.date,
