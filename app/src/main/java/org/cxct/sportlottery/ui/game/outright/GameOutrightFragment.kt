@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -247,6 +248,21 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                             }
                         }
 
+                    }
+                }
+            }
+        })
+
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLockEvent ->
+                outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
+                    if (matchOdd?.matchInfo?.id == matchOddsLockEvent.matchId) {
+                        matchOdd.odds.forEach { oddsMap ->
+                            oddsMap.value.forEach { odd ->
+                                odd?.status = BetStatus.LOCKED.code
+                            }
+                        }
+                        outrightLeagueOddAdapter.notifyItemChanged(index)
                     }
                 }
             }
