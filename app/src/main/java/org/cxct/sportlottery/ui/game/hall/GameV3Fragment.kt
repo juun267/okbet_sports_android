@@ -550,24 +550,29 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 if (epsListResult.success) {
                     val oddsEpsListData = epsListResult.rows
                     val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
-                    oddsEpsListData.forEach { oddsEpdListData ->
+
+                    oddsEpsListData.forEachIndexed { indexDate, oddsEpsListData ->
                         val newLeagueOddsItem =
                             EpsLeagueOddsItem(
-                                date = oddsEpdListData.date,
+                                date = oddsEpsListData.date,
                                 league = null,
                                 matchOdds = null
                             )
                         epsLeagueOddsItemList.add(newLeagueOddsItem)
-                        oddsEpdListData.leagueOdd.forEach { leaguesOddsItems ->
+
+                        oddsEpsListData.leagueOdd.forEachIndexed { indexLeague, leagueOdds ->
                             epsLeagueOddsItemList.add(
                                 EpsLeagueOddsItem(
                                     date = 0,
-                                    league = leaguesOddsItems?.league,
-                                    matchOdds = leaguesOddsItems?.matchOdds
-                                )
+                                    league = leagueOdds?.league,
+                                    matchOdds = leagueOdds?.matchOdds
+                                ).apply {
+                                    isClose = !(indexDate == 0 && indexLeague == 0)
+                                }
                             )
                         }
                     }
+
                     game_list.apply {
                         adapter = epsListAdapter.apply {
                             dataList = epsLeagueOddsItemList
