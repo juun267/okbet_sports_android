@@ -427,6 +427,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun setupLiveView() {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
+        live_view_tool_bar.setupNodeMediaPlayer(eventListener)
 
         matchOdd?.let {
             live_view_tool_bar.matchOdd = it
