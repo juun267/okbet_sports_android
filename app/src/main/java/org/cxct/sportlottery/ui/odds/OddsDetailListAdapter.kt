@@ -81,7 +81,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
 
     enum class LayoutType(val layout: Int) {
-        //        TWO_SPAN_COUNT(R.layout.content_odds_detail_list_2_span_count),
         CS(R.layout.content_odds_detail_list_cs),
         ONE_LIST(R.layout.content_odds_detail_list_one),
         SINGLE(R.layout.content_odds_detail_list_single),
@@ -235,19 +234,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         )
                     }
                 }
-
-//                LayoutType.TWO_SPAN_COUNT.layout -> {
-//                    rvBet?.apply {
-//                        addItemDecoration(
-//                            GridItemDecoration(
-//                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-//                                context.resources.getDimensionPixelOffset(R.dimen.recyclerview_item_dec_spec_odds_detail_odds),
-//                                ContextCompat.getColor(context, R.color.colorWhite),
-//                                false
-//                            )
-//                        )
-//                    }
-//                }
 
                 LayoutType.CS.layout -> {
                     rvHome?.apply {
@@ -628,17 +614,6 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
             }
         }
-
-//        private fun for2SpanCount(oddsDetail: OddsDetailListData) {
-//            rvBet?.apply {
-//                adapter = TypeTwoSpanCountGridAdapter(
-//                    oddsDetail,
-//                    onOddClickListener,
-//                    oddsType
-//                )
-//                layoutManager = GridLayoutManager(itemView.context, 2)
-//            }
-//        }
 
         private fun forFGLG(oddsDetail: OddsDetailListData) {
             itemView.findViewById<ConstraintLayout>(R.id.cl_tab).visibility =
