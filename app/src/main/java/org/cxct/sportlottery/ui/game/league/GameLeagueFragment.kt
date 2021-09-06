@@ -19,6 +19,7 @@ import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
@@ -55,6 +57,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
+            leagueListener = LeagueListener {
+                subscribeChannelHall(it)
+            }
+
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
                     when (args.matchType) {
@@ -197,7 +203,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
 
-                    subscribeHallChannel()
+                    leagueOdds.forEach { leagueOdd ->
+                        subscribeChannelHall(leagueOdd)
+                    }
                 }
             }
         })
@@ -343,7 +351,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let {
                 unSubscribeChannelHallAll()
-                subscribeHallChannel()
+
+                leagueAdapter.data.forEach { leagueOdd ->
+                    subscribeChannelHall(leagueOdd)
+                }
             }
         })
     }
@@ -531,19 +542,27 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
-    private fun subscribeHallChannel() {
-        leagueAdapter.data.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-
-                subscribeChannelHall(
-                    leagueOdd.gameType?.key,
-                    getPlayCateMenuCode(),
-                    matchOdd.matchInfo?.id
-                )
+    private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
+        leagueOdd.matchOdds.forEach { matchOdd ->
+            when (leagueOdd.isExpand) {
+                true -> {
+                    subscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        getPlayCateMenuCode(),
+                        matchOdd.matchInfo?.id
+                    )
+                }
+                false -> {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        getPlayCateMenuCode(),
+                        matchOdd.matchInfo?.id
+                    )
+                }
             }
         }
     }
-
+    
     override fun onStop() {
         super.onStop()
 
