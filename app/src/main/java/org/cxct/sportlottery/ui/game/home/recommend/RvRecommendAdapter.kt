@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.home.recommend
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         val dataList = mutableListOf<RecommendGameEntity>()
         result.rows?.forEach { row ->
             row.leagueOdds?.matchOdds?.forEach { oddData ->
-                val beans = oddData.odds?.map { OddBean(it.key, it.value) }?: listOf()
+                val beans = oddData.odds?.map { OddBean(it.key, it.value) } ?: listOf()
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
@@ -148,7 +149,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         View.GONE
                     }
 
-                    text = TimeUtil.timeFormat(data.matchInfo?.startTime, "MM/dd\nHH:mm")
+                    text = data.matchInfo?.getStartTime(context)
                 }
 
                 if (data.vpRecommendAdapter == null)
@@ -176,8 +177,12 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 }
             }
         }
+        private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
+            val todayDate = TimeUtil.timeFormat(System.currentTimeMillis(), "MM/dd")
+            return TimeUtil.timeFormat(this.startTime, "MM/dd\nHH:mm")
+                .replace(todayDate, context.getString(R.string.home_tab_today))
+        }
     }
-
 }
 
 //TODO simon test review MatchOdd 資料轉換
