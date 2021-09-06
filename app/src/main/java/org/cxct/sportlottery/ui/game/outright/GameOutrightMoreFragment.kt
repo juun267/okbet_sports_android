@@ -212,6 +212,19 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
             }
         })
 
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLockEvent ->
+                if (outrightOddAdapter.data?.second?.matchInfo?.id == matchOddsLockEvent.matchId) {
+                    outrightOddAdapter.data?.first?.filterNotNull()
+                        ?.forEachIndexed { index: Int, odd: Odd ->
+                            odd.status = BetStatus.LOCKED.code
+
+                            outrightOddAdapter.notifyItemChanged(index)
+                        }
+                }
+            }
+        })
+
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
                 outrightOddAdapter.data?.first?.filterNotNull()
