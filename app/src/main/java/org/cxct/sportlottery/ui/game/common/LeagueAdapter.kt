@@ -164,7 +164,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                 itemView.league_expand.setExpanded(item.isExpand, true)
                 updateTimer(matchType, item.gameType)
 
-                leagueListener?.onClickLeague(item.isExpand)
+                leagueListener?.onClickLeague(item)
             }
         }
 
@@ -202,6 +202,6 @@ class LeagueAdapter(private val matchType: MatchType) :
     }
 }
 
-class LeagueListener(val clickListenerLeague: (isExpand: Boolean?) -> Unit) {
-    fun onClickLeague(isExpand: Boolean?) = clickListenerLeague(isExpand)
+class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit) {
+    fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
 }
