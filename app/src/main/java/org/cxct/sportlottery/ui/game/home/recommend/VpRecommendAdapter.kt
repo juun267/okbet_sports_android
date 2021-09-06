@@ -31,7 +31,6 @@ class VpRecommendAdapter(
     val sportCode: String?,
     val dataList: List<OddBean>,
     private val isOutright: Int?,
-    val oddsType: OddsType,
     val matchOdd: MatchOdd,
     val dynamicMarkets: Map<String, DynamicMarket>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -40,6 +39,7 @@ class VpRecommendAdapter(
         RECOMMEND_OUTRIGHT, RECOMMEND
     }
 
+    var oddsType: OddsType = OddsType.EU
     var onClickOddListener: OnClickOddListener? = null
     var onClickOutrightOddListener: OnClickOddListener? = null
     var onClickMoreListener: OnClickMoreListener? = null

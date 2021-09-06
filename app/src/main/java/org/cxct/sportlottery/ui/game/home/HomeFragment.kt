@@ -536,6 +536,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 mRvGameTable4Adapter.oddsType = oddsType
+                mRecommendAdapter.oddsType = oddsType
+                mRvHighlightAdapter.oddsType = oddsType
             }
         })
 

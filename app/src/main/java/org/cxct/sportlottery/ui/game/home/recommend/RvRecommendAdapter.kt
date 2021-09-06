@@ -156,11 +156,11 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         data.code,
                         data.oddBeans,
                         data.isOutright,
-                        oddsType,
                         data.toMatchOdd(),
                         data.dynamicMarkets
                     )
 
+                data.vpRecommendAdapter?.oddsType = oddsType
                 data.vpRecommendAdapter?.onClickOddListener = onClickOddListener
                 data.vpRecommendAdapter?.onClickOutrightOddListener = onClickOutrightOddListener
                 data.vpRecommendAdapter?.onClickMoreListener = onClickMoreListener
