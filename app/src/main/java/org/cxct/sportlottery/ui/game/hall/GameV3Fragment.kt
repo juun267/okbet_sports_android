@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
@@ -40,6 +41,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
+import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
@@ -123,6 +125,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
+            leagueListener = LeagueListener {
+                subscribeChannelHall(it)
+            }
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
                     when (args.matchType) {
@@ -164,15 +169,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private val epsListAdapter by lazy {
-        EpsListAdapter(EpsListAdapter.EpsOddListener({ odd, betMatchInfo ->
-            addOddsDialog(
-                betMatchInfo,
-                odd,
-                getString(R.string.game_tab_price_boosts_odd)
-            )
-        }, { matchInfo ->
-            setEpsBottomSheet(matchInfo)
-        }))
+        EpsListAdapter(EpsListAdapter.EpsOddListener(
+            {
+                subscribeChannelHall(it)
+            },
+            { odd, betMatchInfo ->
+                addOddsDialog(
+                    betMatchInfo,
+                    odd,
+                    getString(R.string.game_tab_price_boosts_odd)
+                )
+            }, { matchInfo ->
+                setEpsBottomSheet(matchInfo)
+            })
+        )
     }
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
@@ -433,8 +443,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     updateSportType(it?.sportMenuData?.menu?.eps?.items ?: listOf())
                 }
 
+                else -> {
+                }
             }
-
         })
 
         viewModel.matchCategoryQueryResult.observe(this.viewLifecycleOwner, {
@@ -463,10 +474,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
             //TODO childMatchType更新選中
             val childMatchType = it.getContentIfNotHandled()
-            game_toolbar_match_type.text = gameToolbarMatchTypeText(childMatchType ?: args.matchType)
+            game_toolbar_match_type.text =
+                gameToolbarMatchTypeText(childMatchType ?: args.matchType)
 
             //預設第一項
-            when(childMatchType){
+            when (childMatchType) {
                 null -> {
                     //init tab select
                     game_tabs.clearOnTabSelectedListeners()
@@ -503,7 +515,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
 
-                    subscribeHallChannel()
+                    leagueOdds.forEach { leagueOdd ->
+                        subscribeChannelHall(leagueOdd)
+                    }
                 }
             }
         })
@@ -548,10 +562,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             it.getContentIfNotHandled()?.let { epsListResult ->
                 if (epsListResult.success) {
-                    val oddsEpsListData = epsListResult.rows
+                    val oddsEpsListDatas = epsListResult.rows
                     val epsLeagueOddsItemList = mutableListOf<EpsLeagueOddsItem>()
 
-                    oddsEpsListData.forEachIndexed { indexDate, oddsEpsListData ->
+                    oddsEpsListDatas.forEachIndexed { indexDate, oddsEpsListData ->
                         val newLeagueOddsItem =
                             EpsLeagueOddsItem(
                                 date = oddsEpsListData.date,
@@ -580,17 +594,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
 
                     epsLeagueOddsItemList.forEach { epsLeagueOddsItem ->
-                        if (epsLeagueOddsItem.date.toInt() == 0) {
-                            epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
-                                subscribeChannelHall(
-                                    gameType?.key,
-                                    PlayCate.EPS.value,
-                                    matchOddsItem.matchInfo?.id
-                                )
-                            }
-                        }
+                        subscribeChannelHall(epsLeagueOddsItem)
                     }
-
                 }
             }
         })
@@ -942,7 +947,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.producerUp.observe(this.viewLifecycleOwner, {
             it?.let {
                 unSubscribeChannelHallAll()
-                subscribeHallChannel()
+
+                when (game_list.adapter) {
+                    is LeagueAdapter -> {
+                        leagueAdapter.data.forEach { leagueOdd ->
+                            subscribeChannelHall(leagueOdd)
+                        }
+                    }
+
+                    is EpsListAdapter -> {
+                        epsListAdapter.dataList.forEach { epsLeagueOddsItem ->
+                            subscribeChannelHall(epsLeagueOddsItem)
+                        }
+                    }
+                }
             }
         })
     }
@@ -1186,24 +1204,41 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun subscribeHallChannel() {
-        leagueAdapter.data.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-
-                subscribeChannelHall(
-                    leagueOdd.gameType?.key,
-                    getPlayCateMenuCode(),
-                    matchOdd.matchInfo?.id
-                )
+    private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
+        leagueOdd.matchOdds.forEach { matchOdd ->
+            when (leagueOdd.isExpand) {
+                true -> {
+                    subscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        getPlayCateMenuCode(),
+                        matchOdd.matchInfo?.id
+                    )
+                }
+                false -> {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        getPlayCateMenuCode(),
+                        matchOdd.matchInfo?.id
+                    )
+                }
             }
         }
+    }
 
+    private fun subscribeChannelHall(epsLeagueOddsItem: EpsLeagueOddsItem) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
-        epsListAdapter.dataList.forEach { epsLeagueOddsItem ->
-            if (epsLeagueOddsItem.date.toInt() == 0) {
-                epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+        epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+            when (epsLeagueOddsItem.isClose) {
+                true -> {
+                    unSubscribeChannelHall(
+                        gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOddsItem.matchInfo?.id
+                    )
+                }
+                false -> {
                     subscribeChannelHall(
                         gameType?.key,
                         PlayCate.EPS.value,

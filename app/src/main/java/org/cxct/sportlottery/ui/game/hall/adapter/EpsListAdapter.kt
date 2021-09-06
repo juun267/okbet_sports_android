@@ -76,6 +76,8 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
             itemView.ll_league_title.setOnClickListener {
                 itemView.rv_league_odd_list.visibility = if(itemView.rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
                 item.isClose = !item.isClose
+
+                epsOddListener.clickListenerLeague(item)
             }
 
             itemView.tv_league_title.text = "${item.league?.name}"
@@ -143,10 +145,12 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
     }
 
     class EpsOddListener(
-        val clickListenerBet: (odd: Odd,matchInfo: MatchInfo) -> Unit,
+        val clickListenerLeague: (item: EpsLeagueOddsItem) -> Unit,
+        val clickListenerBet: (odd: Odd, matchInfo: MatchInfo) -> Unit,
         val clickBetListenerInfo: (matchInfo: MatchInfo) -> Unit
-    ){
-        fun onClickBet(odd: Odd,matchInfo: MatchInfo) = clickListenerBet(odd,matchInfo)
+    ) {
+        fun onClickLeague(item: EpsLeagueOddsItem) = clickListenerLeague(item)
+        fun onClickBet(odd: Odd, matchInfo: MatchInfo) = clickListenerBet(odd, matchInfo)
         fun onClickInfo(matchInfo: MatchInfo) = clickBetListenerInfo(matchInfo)
     }
 }
