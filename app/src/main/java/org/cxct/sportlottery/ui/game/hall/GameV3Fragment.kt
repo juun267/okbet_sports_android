@@ -164,15 +164,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private val epsListAdapter by lazy {
-        EpsListAdapter(EpsListAdapter.EpsOddListener({ odd, betMatchInfo ->
-            addOddsDialog(
-                betMatchInfo,
-                odd,
-                getString(R.string.game_tab_price_boosts_odd)
-            )
-        }, { matchInfo ->
-            setEpsBottomSheet(matchInfo)
-        }))
+        EpsListAdapter(EpsListAdapter.EpsOddListener(
+            {
+
+            },
+            { odd, betMatchInfo ->
+                addOddsDialog(
+                    betMatchInfo,
+                    odd,
+                    getString(R.string.game_tab_price_boosts_odd)
+                )
+            }, { matchInfo ->
+                setEpsBottomSheet(matchInfo)
+            })
+        )
     }
 
     private lateinit var moreEpsInfoBottomSheet: BottomSheetDialog
