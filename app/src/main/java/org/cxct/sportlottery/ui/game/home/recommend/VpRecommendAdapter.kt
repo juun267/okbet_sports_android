@@ -187,7 +187,7 @@ class VpRecommendAdapter(
                     setupOdd(data.oddList.getOrNull(0), oddsType)
 
                     tv_name.apply {
-                        text = data.oddList.getOrNull(0)?.spread
+                        text = data.oddList.getOrNull(0)?.getSpreadName(context)
                         visibility = View.VISIBLE
                     }
 
@@ -215,7 +215,7 @@ class VpRecommendAdapter(
                     setupOdd(data.oddList.getOrNull(1), oddsType)
 
                     tv_name.apply {
-                        text = data.oddList.getOrNull(1)?.spread
+                        text = data.oddList.getOrNull(1)?.getSpreadName(context)
                         visibility = View.VISIBLE
                     }
 
@@ -243,7 +243,7 @@ class VpRecommendAdapter(
                     setupOdd(data.oddList.getOrNull(2), oddsType)
 
                     tv_name.apply {
-                        text = data.oddList.getOrNull(2)?.spread
+                        text = data.oddList.getOrNull(2)?.getSpreadName(context)
                         visibility = View.VISIBLE
                     }
 
@@ -271,7 +271,7 @@ class VpRecommendAdapter(
                     setupOdd(data.oddList.getOrNull(3), oddsType)
 
                     tv_name.apply {
-                        text = data.oddList.getOrNull(3)?.spread
+                        text = data.oddList.getOrNull(3)?.getSpreadName(context)
                         visibility = View.VISIBLE
                     }
 
@@ -306,6 +306,15 @@ class VpRecommendAdapter(
                 else -> {
                     this.en
                 }
+            }
+        }
+
+        private fun Odd.getSpreadName(context: Context): String?{
+            return when ( LanguageManager.getSelectLanguage(context)){
+                LanguageManager.Language.ZH -> {
+                    this.nameMap?.get("zh")
+                }
+                else -> this.nameMap?.get("en")
             }
         }
     }
