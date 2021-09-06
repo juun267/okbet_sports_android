@@ -126,13 +126,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     val outrightLeagueOddDataList =
                         outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
                             ?: listOf()
-                    outrightLeagueOddDataList.forEach { matchOdd ->
+
+                    outrightLeagueOddDataList.forEachIndexed { index, matchOdd ->
                         val firstKey = matchOdd?.odds?.keys?.firstOrNull()
-                        matchOdd?.odds?.forEach {
-                            if (it.key == firstKey) {
-                                it.value.filterNotNull().forEach { odd ->
-                                    odd.isExpand = true
-                                }
+
+                        matchOdd?.odds?.forEach { oddsMap ->
+                            oddsMap.value.filterNotNull().forEach { odd ->
+                                odd.isExpand = index == 0 && oddsMap.key == firstKey
                             }
                         }
                     }
