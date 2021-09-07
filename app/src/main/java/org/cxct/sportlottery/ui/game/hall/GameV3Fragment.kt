@@ -940,6 +940,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                            unSubscribeChannelHallAll()
                             viewModel.getLeagueOddsList(args.matchType, leagueIdList, listOf())
                             loading()
                         }

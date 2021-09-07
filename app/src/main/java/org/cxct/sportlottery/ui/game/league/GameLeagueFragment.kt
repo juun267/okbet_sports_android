@@ -366,6 +366,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         receiver.leagueChange.observe(this.viewLifecycleOwner, {
             it?.let { leagueChangeEvent ->
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                    unSubscribeChannelHallAll()
                     viewModel.getLeagueOddsList(args.matchType, leagueIdList, listOf())
                     loading()
                 }
