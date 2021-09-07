@@ -763,6 +763,14 @@ class GameViewModel(
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
     ) {
+        when (matchType) {
+            MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+                _oddsListResult.value = Event(null)
+            }
+            MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+                _oddsListGameHallResult.value = Event(null)
+            }
+        }
 
         val emptyFilter = { list: List<String>? ->
             if (list.isNullOrEmpty()) null else list
@@ -814,20 +822,36 @@ class GameViewModel(
                 }
             }
 
-            result?.oddsListData?.leagueOdds?.firstOrNull()?.isExpand = true
+            result?.updateLeagueExpandState(
+                when (matchType) {
+                    MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+                        _oddsListGameHallResult.value?.peekContent()
+                    }
+                    MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+                        _oddsListResult.value?.peekContent()
+                    }
+                    else -> {
+                        null
+                    }
+                }?.oddsListData?.leagueOdds ?: listOf()
+            )
 
-            if (leagueIdList != null) {
-                _oddsListResult.postValue(Event(result))
-            } else {
-                if (_leagueFilterList.value?.isNotEmpty() == true) {
-                    result?.oddsListData?.leagueOddsFilter =
-                        result?.oddsListData?.leagueOdds?.filter {
-                            leagueFilterList.value?.map { league -> league.id }
-                                ?.contains(it.league.id) ?: false
-                        }
+            when (matchType) {
+                MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+                    if (_leagueFilterList.value?.isNotEmpty() == true) {
+                        result?.oddsListData?.leagueOddsFilter =
+                            result?.oddsListData?.leagueOdds?.filter {
+                                leagueFilterList.value?.map { league -> league.id }
+                                    ?.contains(it.league.id) ?: false
+                            }
+                    }
+
+                    _oddsListGameHallResult.postValue(Event(result))
                 }
 
-                _oddsListGameHallResult.postValue(Event(result))
+                MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+                    _oddsListResult.postValue(Event(result))
+                }
             }
 
             notifyFavorite(FavoriteType.MATCH)
@@ -1421,6 +1445,27 @@ class GameViewModel(
         }
 
         return this
+    }
+
+    private fun OddsListResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
+        val isLocalExistLeague = this.oddsListData?.leagueOdds?.any {
+            leagueOdds.map { leagueOdd ->
+                leagueOdd.league.id
+            }.contains(it.league.id)
+        }
+
+        when (isLocalExistLeague) {
+            true -> {
+                this.oddsListData?.leagueOdds?.forEach {
+                    it.isExpand = leagueOdds.find { leagueOdd ->
+                        it.league.id == leagueOdd.league.id
+                    }?.isExpand ?: false
+                }
+            }
+            false -> {
+                this.oddsListData?.leagueOdds?.firstOrNull()?.isExpand = true
+            }
+        }
     }
 
     /**
