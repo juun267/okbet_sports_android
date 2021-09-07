@@ -23,6 +23,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -48,6 +49,9 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     findNavController().navigate(action)
                 },
                 { matchOdd, oddsKey ->
+
+                    subscribeChannelHall(matchOdd)
+
                     this.data.find { it == matchOdd }?.odds?.get(oddsKey)?.forEach { odd ->
                         odd?.isExpand?.let { isExpand ->
                             odd.isExpand = !isExpand
@@ -126,13 +130,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     val outrightLeagueOddDataList =
                         outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds
                             ?: listOf()
-                    outrightLeagueOddDataList.forEach { matchOdd ->
+
+                    outrightLeagueOddDataList.forEachIndexed { index, matchOdd ->
                         val firstKey = matchOdd?.odds?.keys?.firstOrNull()
-                        matchOdd?.odds?.forEach {
-                            if (it.key == firstKey) {
-                                it.value.filterNotNull().forEach { odd ->
-                                    odd.isExpand = true
-                                }
+
+                        matchOdd?.odds?.forEach { oddsMap ->
+                            oddsMap.value.filterNotNull().forEach { odd ->
+                                odd.isExpand = index == 0 && oddsMap.key == firstKey
                             }
                         }
                     }
@@ -140,11 +144,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                     outrightLeagueOddAdapter.data = outrightLeagueOddDataList
 
                     outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds?.forEach { matchOdd ->
-                        subscribeChannelHall(
-                            args.gameType.key,
-                            PlayCate.OUTRIGHT.value,
-                            matchOdd?.matchInfo?.id
-                        )
+                        subscribeChannelHall(matchOdd)
                     }
                 }
             }
@@ -252,6 +252,21 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             }
         })
 
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLockEvent ->
+                outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
+                    if (matchOdd?.matchInfo?.id == matchOddsLockEvent.matchId) {
+                        matchOdd.odds.forEach { oddsMap ->
+                            oddsMap.value.forEach { odd ->
+                                odd?.status = BetStatus.LOCKED.code
+                            }
+                        }
+                        outrightLeagueOddAdapter.notifyItemChanged(index)
+                    }
+                }
+            }
+        })
+
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
                 val odds = mutableListOf<Odd>()
@@ -285,11 +300,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             unSubscribeChannelHallAll()
 
             outrightLeagueOddAdapter.data.forEach { matchOdd ->
-                subscribeChannelHall(
-                    args.gameType.key,
-                    PlayCate.OUTRIGHT.value,
-                    matchOdd?.matchInfo?.id
-                )
+                subscribeChannelHall(matchOdd)
             }
         })
     }
@@ -311,6 +322,29 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         }
 
         return this
+    }
+
+    private fun subscribeChannelHall(matchOdd: MatchOdd?) {
+        val isExpand = matchOdd?.odds?.values?.any {
+            it.any { odd -> odd?.isExpand ?: false }
+        }
+
+        when (isExpand) {
+            true -> {
+                subscribeChannelHall(
+                    args.gameType.key,
+                    PlayCate.OUTRIGHT.value,
+                    matchOdd.matchInfo?.id
+                )
+            }
+            false -> {
+                unSubscribeChannelHall(
+                    args.gameType.key,
+                    PlayCate.OUTRIGHT.value,
+                    matchOdd.matchInfo?.id
+                )
+            }
+        }
     }
 
     private fun addOddsDialog(

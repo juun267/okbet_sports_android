@@ -268,14 +268,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             viewModel.getHighlightMatch(selectItem.code)
         }
 
-        btn_display_all.setOnClickListener {
-            mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.let { data ->
-                val gameType = GameType.getGameType(data.code)
-
-                viewModel.navSpecialEntrance(MatchType.TODAY, gameType)
-            }
-        }
-
         rv_game_highlight.adapter = mRvHighlightAdapter
         mRvHighlightAdapter.onClickOddListener = mOnClickOddListener
         mRvHighlightAdapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
@@ -536,6 +528,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.oddsType.observe(this.viewLifecycleOwner, {
             it?.let { oddsType ->
                 mRvGameTable4Adapter.oddsType = oddsType
+                mRecommendAdapter.oddsType = oddsType
+                mRvHighlightAdapter.oddsType = oddsType
             }
         })
 
@@ -840,6 +834,71 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                         mRvHighlightAdapter.notifyItemChanged(index)
                                     }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLock ->
+                //滾球盤、即將開賽盤
+                val dataList = mRvGameTable4Adapter.getData()
+                dataList.forEachIndexed { index, gameEntity ->
+                    //先找出要更新的 賽事
+                    val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
+                        matchOdd.matchInfo?.id == matchOddsLock.matchId
+                    }
+                    val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
+
+                    //mapping 要更新的賠率
+                    if (!updateMatchOdd?.odds.isNullOrEmpty()) {
+                        updateMatchOdd?.odds?.forEach oldOddList@{ oldOddMap ->
+                            oldOddMap.value.forEach { oldOdd ->
+                                if (oldOdd == null) return@oldOddList
+
+                                oldOdd.status = BetStatus.LOCKED.code
+                            }
+                        }
+                        mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+                    }
+                }
+
+                //推薦賽事
+                val recommendDataList = mRecommendAdapter.getData()
+                recommendDataList.forEachIndexed { index, entity ->
+                    if (entity.matchInfo?.id != matchOddsLock.matchId)
+                        return@forEachIndexed
+
+                    //mapping 要更新的賠率
+                    if (!entity.oddBeans.isNullOrEmpty()) {
+                        entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
+                            val oldOddList = oddBean.oddList
+                            oldOddList.forEach { oldOdd ->
+                                oldOdd?.status = BetStatus.LOCKED.code
+
+                                //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
+                                mRecommendAdapter.notifySubItemChanged(
+                                    index,
+                                    indexOddBean
+                                )
+                            }
+                        }
+                    }
+                }
+
+                //精選賽事
+                val highlightDataList = mRvHighlightAdapter.getData()
+                highlightDataList.forEachIndexed { index, updateMatchOdd ->
+                    if (!updateMatchOdd.odds.isNullOrEmpty()) {
+                        updateMatchOdd.odds.forEach { oldOddMap ->
+                            oldOddMap.value.forEach oldOddList@{ oldOdd ->
+                                if (oldOdd == null) return@oldOddList
+
+                                oldOdd.status = BetStatus.LOCKED.code
+
+                                mRvHighlightAdapter.notifyItemChanged(index)
                             }
                         }
                     }

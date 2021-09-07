@@ -9,9 +9,13 @@ import cn.nodemedia.NodePlayerDelegate
 import cn.nodemedia.NodePlayerView
 import timber.log.Timber
 
-class NodeMediaManager {
+class NodeMediaManager(liveEventListener: LiveEventListener) {
 
     private var nodePlayer: NodePlayer? = null
+
+    interface LiveEventListener{
+        fun reRequestStreamUrl()
+    }
 
     private val handler: Handler = @SuppressLint("HandlerLeak")
     object : Handler() {
@@ -27,8 +31,12 @@ class NodeMediaManager {
                     Timber.i("NodeMediaPlayer 1001 連接成功")
                 }
                 1002 -> {
+                    Timber.i("NodeMediaPlayer 1002 视频连接失败, 会进行自动重连.")
                 }
                 1003 -> {
+                    Timber.i("NodeMediaPlayer 1003 视频开始重连")
+                    nodePlayer?.stop()
+                    liveEventListener.reRequestStreamUrl()
                 }
                 1004 ->  {
                     // 视频播放结束

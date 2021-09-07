@@ -30,7 +30,7 @@ object PlayCateUtils {
             }
 
             PlayCate.HDP.value, PlayCate.SET_HDP.value, PlayCate.HDP_SEG1.value, PlayCate.HDP_1ST.value, PlayCate.HDP_INCL_OT.value,
-            PlayCate.OU.value, PlayCate.OU_1ST.value, PlayCate.OU_2ST.value, PlayCate.OU_I_OT.value,
+            PlayCate.OU.value, PlayCate.OU_1ST.value, PlayCate.OU_2ST.value, PlayCate.OU_INCL_OT.value,
             PlayCate.BTS.value,
             PlayCate.OE.value,
             PlayCate.TG_OU.value,
@@ -38,10 +38,9 @@ object PlayCateUtils {
             PlayCate.TG_OU_H_1ST.value, PlayCate.TG_OU_C_1ST.value,
             PlayCate.TWTN.value,
             PlayCate.CLSH.value,
-            PlayCate.C_OU.value,
-            PlayCate.C_OE.value,
-            PlayCate.OU_I_OT.value,
-            PlayCate.SINGLE_OT.value, PlayCate.SINGLE_OT_2.value,
+            PlayCate.CORNER_OU.value,
+            PlayCate.CORNER_OE.value,
+            PlayCate.SINGLE_OT.value, PlayCate.SINGLE_INCL_OT.value,
             PlayCate.WBH.value,
             PlayCate.WEH.value,
             PlayCate.SBH.value
@@ -108,7 +107,7 @@ object PlayCateUtils {
         PlayCate.OU_1ST.value -> {
             R.string.game_play_type_ou_1st
         }
-        PlayCate.OU_I_OT.value -> {
+        PlayCate.OU_INCL_OT.value -> {
             R.string.game_play_type_ou_incl_ot
         }
         PlayCate.BTS.value -> {
@@ -132,10 +131,10 @@ object PlayCateUtils {
         PlayCate.EPS.value -> {
             R.string.game_play_type_eps
         }
-        PlayCate.C_OU.value -> {
+        PlayCate.CORNER_OU.value -> {
             R.string.game_play_type_c_ou
         }
-        PlayCate.C_OE.value -> {
+        PlayCate.CORNER_OE.value -> {
             R.string.game_play_type_c_oe
         }
         else -> null
@@ -144,7 +143,7 @@ object PlayCateUtils {
     fun getOUSeries() = listOf(
         PlayCate.OU,
         PlayCate.OU_1ST,
-        PlayCate.OU_I_OT,
+        PlayCate.OU_INCL_OT,
         PlayCate.TG_OU_C_1ST,
         PlayCate.TG_OU_H_1ST,
         PlayCate.TG_OU_C_INCL_OT,

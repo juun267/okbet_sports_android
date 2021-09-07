@@ -126,14 +126,12 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
     }
 }
 
-@BindingAdapter("betParlayReceiptAmount")
-fun TextView.setBetParlayReceiptAmount(itemData: BetResult) {
+fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
-        7 -> "0"
-        else -> if(itemData.num == 1){
+        else -> if(parlayNum == 1){
             itemData.stake?.let { TextUtil.formatBetQuota(it) }
         }else{
-            itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * ${itemData.num}" }
+            itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * $parlayNum" }
         }
     }
 }

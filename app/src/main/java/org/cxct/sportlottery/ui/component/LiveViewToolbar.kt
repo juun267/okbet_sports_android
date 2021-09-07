@@ -28,7 +28,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    private val nodeMediaManager by lazy { NodeMediaManager() }
+    private var nodeMediaManager: NodeMediaManager? = null
 
     lateinit var matchOdd: MatchOdd
 
@@ -58,15 +58,14 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private fun initOnclick() {
         iv_arrow.setOnClickListener {
             if (expand_layout.isExpanded) {
+                nodeMediaManager?.nodeMediaStop()
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
                 expand_layout.collapse()
                 liveToolBarListener?.onExpand(false)
-                nodeMediaManager.nodeMediaStop()
             } else {
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 expand_layout.expand()
                 liveToolBarListener?.onExpand(true)
-                nodeMediaManager.nodeMediaStart()
             }
         }
 
@@ -128,9 +127,13 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
+    fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener){
+        nodeMediaManager = NodeMediaManager(eventListener)
+    }
+
     fun setupLiveUrl(streamUrl: String) {
-        nodeMediaManager.initNodeMediaPlayer(context, node_player, streamUrl)
-        nodeMediaManager.nodeMediaStart()
+        nodeMediaManager?.initNodeMediaPlayer(context, node_player, streamUrl)
+        nodeMediaManager?.nodeMediaStart()
     }
 
     fun loadBottomSheetUrl(matchOdd: MatchOdd) {
@@ -155,15 +158,15 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun startNodeMediaPlayer() {
-        nodeMediaManager.nodeMediaStart()
+        nodeMediaManager?.nodeMediaStart()
     }
 
     fun stopNodeMediaPlayer() {
-        nodeMediaManager.nodeMediaStop()
+        nodeMediaManager?.nodeMediaStop()
     }
 
     fun releaseNodeMediaPlayer() {
-        nodeMediaManager.nodeMediaRelease()
+        nodeMediaManager?.nodeMediaRelease()
     }
 
 }
