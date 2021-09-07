@@ -733,7 +733,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                         oldOdd.odds = newOdd.odds
                                         oldOdd.hkOdds = newOdd.hkOdds
-                                        oldOdd.status = newOddState
+                                        oldOdd.oddState = newOddState
 
                                         //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                         mRvGameTable4Adapter.notifySubItemChanged(
@@ -784,8 +784,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                                 oldOdd?.odds = newOdd.odds
                                                 oldOdd?.hkOdds = newOdd.hkOdds
-                                                oldOdd?.status = newOddState
-
+                                                oldOdd?.oddState = newOddState
                                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                                 mRecommendAdapter.notifySubItemChanged(
                                                     index,
@@ -837,7 +836,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                         oldOdd.odds = newOdd.odds
                                         oldOdd.hkOdds = newOdd.hkOdds
-                                        oldOdd.status = newOddState
+                                        oldOdd.oddState = newOddState
 
                                         mRvHighlightAdapter.notifyItemChanged(index)
                                     }
