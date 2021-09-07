@@ -221,13 +221,25 @@ class GameViewModel(
     val allFootballCount: LiveData<Int> //全部足球比賽的數量
         get() = _allFootballCount
 
+    private val _cardMatchTypeFT = MutableLiveData<MatchType>()
+    val cardMatchTypeFT: LiveData<MatchType> //目前有資料的足球ＭatchType
+        get() = _cardMatchTypeFT
+
     private val _allBasketballCount = MutableLiveData<Int>()
     val allBasketballCount: LiveData<Int> //全部籃球比賽的數量
         get() = _allBasketballCount
 
+    private val _cardMatchTypeBK = MutableLiveData<MatchType>()
+    val cardMatchTypeBK: LiveData<MatchType> //目前有資料的籃球ＭatchType
+        get() = _cardMatchTypeBK
+
     private val _allTennisCount = MutableLiveData<Int>()
     val allTennisCount: LiveData<Int> //全部網球比賽的數量
         get() = _allTennisCount
+
+    private val _cardMatchTypeTN = MutableLiveData<MatchType>()
+    val cardMatchTypeTN: LiveData<MatchType> //目前有資料的網球ＭatchType
+        get() = _cardMatchTypeTN
 
     private val _allBadmintonCount = MutableLiveData<Int>()
     val allBadmintonCount: LiveData<Int> //全部羽毛球比賽的數量
@@ -236,6 +248,10 @@ class GameViewModel(
     private val _allVolleyballCount = MutableLiveData<Int>()
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
+
+    private val _cardMatchTypeVB = MutableLiveData<MatchType>()
+    val cardMatchTypeVB: LiveData<MatchType> //目前有資料的排球ＭatchType
+        get() = _cardMatchTypeVB
 
     private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
     val betInfoResult: LiveData<Event<BetInfoResult?>>
@@ -369,34 +385,76 @@ class GameViewModel(
                 sportMenuResult
             )
         )
-        _allFootballCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.FT,
-                sportMenuResult
-            )
-        )
-        _allBasketballCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.BK,
-                sportMenuResult
-            )
-        )
-        _allTennisCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.TN,
-                sportMenuResult
-            )
-        )
-        _allVolleyballCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.VB,
-                sportMenuResult
-            )
-        )
+        var countFT = 0
+        when{
+            getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult) != 0 -> {
+                countFT = getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult)
+                _cardMatchTypeFT.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.FT, sportMenuResult) != 0 -> {
+                countFT = getSportCount(MatchType.EARLY, GameType.FT, sportMenuResult)
+                _cardMatchTypeFT.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.FT, sportMenuResult) != 0 -> {
+                countFT = getSportCount(MatchType.PARLAY, GameType.FT, sportMenuResult)
+                _cardMatchTypeFT.postValue(MatchType.PARLAY)
+            }
+        }
+        _allFootballCount.postValue(countFT)
+
+
+
+        var countBK = 0
+        when{
+            getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult) != 0 -> {
+                countBK = getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult)
+                _cardMatchTypeBK.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.BK, sportMenuResult) != 0 -> {
+                countBK = getSportCount(MatchType.EARLY, GameType.BK, sportMenuResult)
+                _cardMatchTypeBK.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.BK, sportMenuResult) != 0 -> {
+                countBK = getSportCount(MatchType.PARLAY, GameType.BK, sportMenuResult)
+                _cardMatchTypeBK.postValue(MatchType.PARLAY)
+            }
+        }
+        _allBasketballCount.postValue(countBK)
+
+
+        var countTN = 0
+        when{
+            getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult) != 0 -> {
+                countTN = getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult)
+                _cardMatchTypeTN.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.TN, sportMenuResult) != 0 -> {
+                countTN = getSportCount(MatchType.EARLY, GameType.TN, sportMenuResult)
+                _cardMatchTypeTN.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.TN, sportMenuResult) != 0 -> {
+                countTN = getSportCount(MatchType.PARLAY, GameType.TN, sportMenuResult)
+                _cardMatchTypeTN.postValue(MatchType.PARLAY)
+            }
+        }
+        _allTennisCount.postValue(countTN)
+
+        var countVB = 0
+        when{
+            getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult) != 0 -> {
+                countVB = getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult)
+                _cardMatchTypeVB.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.VB, sportMenuResult) != 0 -> {
+                countVB = getSportCount(MatchType.EARLY, GameType.VB, sportMenuResult)
+                _cardMatchTypeVB.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.VB, sportMenuResult) != 0 -> {
+                countVB = getSportCount(MatchType.PARLAY, GameType.VB, sportMenuResult)
+                _cardMatchTypeVB.postValue(MatchType.PARLAY)
+            }
+        }
+        _allVolleyballCount.postValue(countVB)
     }
 
     private fun SportMenuData.sortSport(): SportMenuData {

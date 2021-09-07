@@ -253,7 +253,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 highlight_titleBar.setBackgroundResource(it)
             }
 
-            tv_play_type.text = when (GameType.getGameType(selectItem.code)) {
+            tv_play_type_highlight.text = when (GameType.getGameType(selectItem.code)) {
                 GameType.FT, GameType.BK -> getText(R.string.ou_hdp_hdp_title)
                 GameType.TN, GameType.VB -> getText(R.string.ou_hdp_1x2_title)
                 else -> ""
@@ -572,6 +572,43 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.isCreditAccount.observe(viewLifecycleOwner, {
             updateThirdGameCard(!it)
         })
+
+        //遊戲卡片
+        viewModel.cardMatchTypeFT.observe(viewLifecycleOwner, { matchType ->
+            card_football.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.FT
+                )
+            }
+        })
+
+        viewModel.cardMatchTypeBK.observe(viewLifecycleOwner, { matchType ->
+            card_basketball.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.BK
+                )
+            }
+        })
+
+        viewModel.cardMatchTypeTN.observe(viewLifecycleOwner, { matchType ->
+            card_tennis.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.TN
+                )
+            }
+        })
+
+        viewModel.cardMatchTypeVB.observe(viewLifecycleOwner, { matchType ->
+            card_volleyball.setOnClickListener {
+                viewModel.navSpecialEntrance(
+                    matchType,
+                    GameType.VB
+                )
+            }
+        })
     }
 
     private fun initSocketObserver() {
@@ -690,7 +727,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                         oldOdd.odds = newOdd.odds
                                         oldOdd.hkOdds = newOdd.hkOdds
-                                        oldOdd.status = newOddState
+                                        oldOdd.oddState = newOddState
 
                                         //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                         mRvGameTable4Adapter.notifySubItemChanged(
@@ -741,8 +778,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                                 oldOdd?.odds = newOdd.odds
                                                 oldOdd?.hkOdds = newOdd.hkOdds
-                                                oldOdd?.status = newOddState
-
+                                                oldOdd?.oddState = newOddState
                                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                                 mRecommendAdapter.notifySubItemChanged(
                                                     index,
@@ -794,7 +830,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                                         oldOdd.odds = newOdd.odds
                                         oldOdd.hkOdds = newOdd.hkOdds
-                                        oldOdd.status = newOddState
+                                        oldOdd.oddState = newOddState
 
                                         mRvHighlightAdapter.notifyItemChanged(index)
                                     }
