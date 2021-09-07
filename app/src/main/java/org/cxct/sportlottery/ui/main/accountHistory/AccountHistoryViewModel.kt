@@ -174,6 +174,7 @@ class AccountHistoryViewModel(
                     mBetDetailRequest = BetSettledDetailListRequest(
                         startTime = it.startTime,
                         endTime = it.endTime,
+                        statDate = selectedDate.value?.peekContent(),
                         page = it.page?.plus(1),
                         pageSize = PAGE_SIZE)
                     getDetailList(mBetDetailRequest!!)
