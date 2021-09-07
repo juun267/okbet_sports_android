@@ -521,32 +521,6 @@
                     tools:itemCount="1"
                     tools:listitem="@layout/home_highlight_item"/>
 
-                <LinearLayout
-                    android:id="@+id/btn_display_all"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp"
-                    android:gravity="center"
-                    android:minHeight="48dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/display_all"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/textSize14sp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_iconarrow" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

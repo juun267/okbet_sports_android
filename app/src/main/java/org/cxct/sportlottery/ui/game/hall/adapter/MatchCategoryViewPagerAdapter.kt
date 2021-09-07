@@ -11,7 +11,8 @@ import org.cxct.sportlottery.network.today.Row
 class MatchCategoryViewPagerAdapter(private val itemClickListener: OnItemClickListener) : RecyclerView.Adapter<MatchCategoryViewHolder>() {
     var data = listOf<Row>()
         set(value) {
-            field = value
+            //20210906 與PM確認, 最多顯示兩筆
+            field = value.filterIndexed { index, _ -> index < 2 }
             notifyDataSetChanged()
         }
 
