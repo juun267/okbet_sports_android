@@ -6,7 +6,8 @@ import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 
 interface MatchOdd {
     val matchInfo: MatchInfo?
-    val odds: MutableMap<String, MutableList<Odd?>>
+    var odds: MutableMap<String, MutableList<Odd?>>
+    val oddsSort: String?
     val quickPlayCateList: List<QuickPlayCate>?
     val oddsEps: Odds?
 }

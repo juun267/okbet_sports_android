@@ -115,6 +115,18 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun sortOdds(matchOdd: MatchOdd) {
+        val sortOrder = matchOdd.oddsSort?.split(",")
+        matchOdd.odds = matchOdd.odds.toSortedMap(compareBy<String> {
+            val oddsIndex = sortOrder?.indexOf(it)
+            oddsIndex
+        }.thenBy { it })
+
+    }
+
     fun updateMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         var isNeedRefresh = false
 
@@ -231,6 +243,9 @@ object SocketUpdateUtil {
         matchOdd.odds.putAll(oddsChangeEvent.odds?.mapValues {
             it.value.toMutableList()
         }?.toMutableMap() ?: mutableMapOf())
+
+        //新增盤口時將盤口排序
+        sortOdds(matchOdd)
 
         matchOdd.oddsEps?.eps?.toMutableList()
             ?.addAll(oddsChangeEvent.odds?.get(PlayCate.EPS.value) ?: mutableListOf())
