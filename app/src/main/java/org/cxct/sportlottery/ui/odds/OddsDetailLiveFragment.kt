@@ -411,9 +411,16 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setupStartTime() {
+
         matchOdd?.matchInfo?.apply {
-            tv_home_name.text = homeName
-            tv_away_name.text = awayName
+
+            this.homeName?.let {
+                tv_home_name.text = it
+            }
+
+            this.awayName?.let {
+                tv_away_name.text = it
+            }
 
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
 
@@ -421,6 +428,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             }
         }
+
     }
 
     private fun setupLiveView() {
@@ -461,36 +469,35 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setupFrontScore(event: MatchStatusChangeEvent) {
-        tv_home_score.apply {
-            visibility = View.VISIBLE
-            text = event.matchStatusCO?.homeTotalScore.toString()
+        event.matchStatusCO?.homeTotalScore?.let {
+            tv_home_score.visibility = View.VISIBLE
+            tv_home_score.text = it.toString()
         }
 
-        tv_away_score.apply {
-            visibility = View.VISIBLE
-            text = event.matchStatusCO?.awayTotalScore.toString()
+        event.matchStatusCO?.awayTotalScore?.let {
+            tv_away_score.visibility = View.VISIBLE
+            tv_away_score.text = it.toString()
         }
     }
 
     private fun setupBackScore(event: MatchStatusChangeEvent) {
-        tv_home_score_total.apply {
-            visibility = View.VISIBLE
-            text = event.matchStatusCO?.homeTotalScore.toString()
+        event.matchStatusCO?.homeTotalScore?.let {
+            tv_home_score_total.visibility = View.VISIBLE
+            tv_home_score_total.text = it.toString()
+        }
+        event.matchStatusCO?.awayTotalScore?.let {
+            tv_away_score_total.visibility = View.VISIBLE
+            tv_away_score_total.text = it.toString()
         }
 
-        tv_away_score_total.apply {
-            visibility = View.VISIBLE
-            text = event.matchStatusCO?.awayTotalScore.toString()
+        event.matchStatusList?.lastOrNull()?.homeScore?.let {
+            tv_home_score_live.visibility = View.VISIBLE
+            tv_home_score_live.text = it.toString()
         }
 
-        tv_home_score_live.apply {
-            visibility = View.VISIBLE
-            text = event.matchStatusList?.lastOrNull()?.homeScore.toString()
-        }
-
-        tv_away_score_live.apply {
-            visibility = View.VISIBLE
-            text = event.matchStatusList?.lastOrNull()?.awayScore.toString()
+        event.matchStatusList?.lastOrNull()?.awayScore?.let {
+            tv_away_score_live.visibility = View.VISIBLE
+            tv_away_score_live.text = it.toString()
         }
 
         ll_time.visibility = View.GONE
@@ -523,13 +530,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         event.matchStatusList?.forEachIndexed { index, it ->
             val spanStatusName = SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
-            val spanScore = SpannableString("${it.homeScore}-${it.awayScore}  ")
+            val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
 
             if (index == event.matchStatusList.lastIndex) {
-                spanStatusName.setSpan(StyleSpan(Typeface.BOLD),
+                spanStatusName.setSpan(
+                    StyleSpan(Typeface.BOLD),
                     0,
                     spanStatusName.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
                 spanScore.setSpan(StyleSpan(Typeface.BOLD), 0, spanScore.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
 
@@ -549,7 +558,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         event.matchStatusList?.forEachIndexed { index, it ->
             if (index != event.matchStatusList.lastIndex) {
-                val spanScore = SpannableString("${it.homeScore}-${it.awayScore}")
+                val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}")
                 statusBuilder.append(spanScore)
             }
 
