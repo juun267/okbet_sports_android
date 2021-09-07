@@ -84,7 +84,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/tv_home_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_home_name"
-                tools:text="5" />
+                tools:text="5"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_home_name"
@@ -109,32 +110,34 @@
                 android:id="@+id/tv_home_score_total"
                 android:layout_width="32dp"
                 android:layout_height="0dp"
+                android:gravity="center|end"
                 android:textColor="@color/colorOrangeLight"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
-                android:gravity="center|end"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_home_name"
                 app:layout_constraintEnd_toStartOf="@+id/tv_home_score_live"
                 app:layout_constraintStart_toEndOf="@+id/tv_home_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_home_name"
-                tools:text="5" />
+                tools:text="5"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_home_score_live"
                 android:layout_width="32dp"
                 android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:gravity="center|end"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
-                android:gravity="center|end"
                 android:visibility="gone"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_home_score_total"
                 app:layout_constraintEnd_toStartOf="@+id/ll_time"
                 app:layout_constraintStart_toEndOf="@+id/tv_home_score_total"
                 app:layout_constraintTop_toTopOf="@+id/tv_home_score_total"
-                tools:text="5" />
+                tools:text="5"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_away_score"
@@ -148,7 +151,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/tv_away_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_away_name"
-                tools:text="5" />
+                tools:text="5"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_away_name"
@@ -172,32 +176,34 @@
                 android:id="@+id/tv_away_score_total"
                 android:layout_width="32dp"
                 android:layout_height="0dp"
+                android:gravity="center|end"
                 android:textColor="@color/colorOrangeLight"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
-                android:gravity="center|end"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
                 app:layout_constraintEnd_toStartOf="@+id/tv_away_score_live"
                 app:layout_constraintStart_toEndOf="@+id/tv_away_name"
                 app:layout_constraintTop_toTopOf="@+id/tv_away_name"
-                tools:text="5" />
+                tools:text="5"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_away_score_live"
                 android:layout_width="32dp"
                 android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:gravity="center|end"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
-                android:gravity="center|end"
                 android:visibility="gone"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_away_score_total"
                 app:layout_constraintEnd_toStartOf="@+id/ll_time"
                 app:layout_constraintStart_toEndOf="@+id/tv_away_score_total"
                 app:layout_constraintTop_toTopOf="@+id/tv_away_score_total"
-                tools:text="5" />
+                tools:text="5"
+                tools:visibility="visible" />
 
             <LinearLayout
                 android:id="@+id/ll_time"
@@ -240,7 +246,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_away_name"
-                tools:text="第一節14-15  第二節15-14" />
+                tools:text="第一節14-15  第二節15-14"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/tv_status_right"
@@ -253,7 +260,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/tv_status_left"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_status_left"
-                tools:text="14-15  15-14" />
+                tools:text="14-15  15-14"
+                tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
