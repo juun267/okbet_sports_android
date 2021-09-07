@@ -33,11 +33,6 @@ object SocketUpdateUtil {
                         isNeedRefresh = true
                     }
 
-                    if (matchStatusCO.status != matchOdd.matchInfo?.socketMatchStatus) {
-                        matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
-                        isNeedRefresh = true
-                    }
-
                     if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName) {
                         matchOdd.matchInfo?.statusName = matchStatusCO.statusName
                         isNeedRefresh = true
