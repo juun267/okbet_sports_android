@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -78,6 +79,15 @@ class GameViewModel(
     infoCenterRepository,
     myFavoriteRepository
 ) {
+    companion object {
+        const val GameLiveSP = "GameLiveSharedPreferences"
+    }
+
+    private val gameLiveSharedPreferences by lazy {
+        androidContext.getSharedPreferences(GameLiveSP,
+            Context.MODE_PRIVATE)
+    }
+
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = betInfoRepository.parlayList
 
@@ -244,8 +254,8 @@ class GameViewModel(
         get() = _oddsDetailList
 
     //賽事直播網址
-    private val _matchLiveInfo = MutableLiveData<Event<String>>()
-    val matchLiveInfo: LiveData<Event<String>>
+    private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>>()
+    val matchLiveInfo: LiveData<Event<LiveStreamInfo>>
         get() = _matchLiveInfo
 
     //Loading
@@ -1376,7 +1386,7 @@ class GameViewModel(
 
         playList?.let {
             _playList.value = it
-            if(play.isLocked == false){
+            if (play.isLocked == false) {
                 _playCate.value = (
                         when (play.selectionType == SelectionType.SELECTABLE.code) {
                             true -> {
@@ -1458,18 +1468,36 @@ class GameViewModel(
         }
     }
 
-    fun getLiveInfo(matchId: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.matchService.getMatchLiveInfo(MatchLiveInfoRequest(1, matchId))
-            }
-            result?.let {
-                if (it.success) {
-                    getStreamUrl(it.liveInfo)?.let { streamUrl ->
-                        _matchLiveInfo.postValue(Event(streamUrl))
+    /**
+     * @param matchId 獲取直播的賽事id
+     * @param getNewest 是否要獲取最新 true: api請求獲取最新的直播地址 false: 讀取暫存直播地址
+     */
+    fun getLiveInfo(matchId: String, getNewest: Boolean = false) {
+        //同樣賽事已經請求過最新地址則不再請求
+        val nowMatchLiveInfo = matchLiveInfo.value?.peekContent()
+        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest) return
+
+        val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
+
+        //沒有暫存網址時請求最新網址
+        if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
+            viewModelScope.launch {
+                val result = doNetwork(androidContext) {
+                    OneBoSportApi.matchService.getMatchLiveInfo(MatchLiveInfoRequest(1, matchId))
+                }
+                result?.let {
+                    if (it.success) {
+                        val streamUrl = getStreamUrl(it.liveInfo)?.let { streamRealUrl ->
+                            val editor = gameLiveSharedPreferences.edit()
+                            editor.putString(matchId, streamRealUrl).apply()
+                            streamRealUrl
+                        }?: ""
+                        _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, streamUrl, true)))
                     }
                 }
             }
+        } else {
+            _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, tempLiveStreamUrl, false)))
         }
     }
 

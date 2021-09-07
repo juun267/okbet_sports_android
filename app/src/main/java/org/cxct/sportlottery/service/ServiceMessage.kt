@@ -6,6 +6,7 @@ import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -89,6 +90,11 @@ object ServiceMessage {
 
     fun getLeagueChange(messageStr: String): LeagueChangeEvent? {
         val adapter = moshi.adapter(LeagueChangeEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
+    fun getMatchOddsLock(messageStr: String): MatchOddsLockEvent? {
+        val adapter = moshi.adapter(MatchOddsLockEvent::class.java)
         return adapter.fromJson(messageStr)
     }
 }

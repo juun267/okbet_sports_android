@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
@@ -200,6 +201,13 @@ abstract class BaseOddButtonViewModel(
         }
 
         updateBetInfoListByMatchOddChange(newList)
+    }
+
+    fun updateLockMatchOdd(matchOddsLock: MatchOddsLockEvent) {
+        betInfoRepository.betInfoList.value?.peekContent()
+            ?.find { it.matchOdd.matchId == matchOddsLock.matchId }?.matchOdd?.status = BetStatus.LOCKED.code
+
+        betInfoRepository.notifyBetInfoChanged()
     }
 
     fun updateMatchOdd(changeEvent: Any) {
