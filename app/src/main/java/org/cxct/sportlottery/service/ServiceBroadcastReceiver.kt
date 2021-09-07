@@ -183,7 +183,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     }
                     EventType.MATCH_ODDS_LOCK -> {
                         val data = ServiceMessage.getMatchOddsLock(jObjStr)
-
+                        _matchOddsLock.value = data
                     }
 
 
