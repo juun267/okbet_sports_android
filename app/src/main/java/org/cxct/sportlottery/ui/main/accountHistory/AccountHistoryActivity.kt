@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_account_history.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
@@ -160,6 +162,11 @@ class AccountHistoryActivity :
     }
 
     private fun initObserve() {
+
+        viewModel.userInfo.observe(this, {
+            updateAvatar(it?.iconUrl)
+        })
+
         viewModel.messageListResult.observe(this, {
             updateUiWithResult(it)
         })
@@ -167,6 +174,10 @@ class AccountHistoryActivity :
         viewModel.settlementNotificationMsg.observe(this, {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
+        })
+
+        viewModel.userInfo.observe(this, {
+            updateAvatar(it?.iconUrl)
         })
 
         viewModel.isLogin.observe(this, {
@@ -232,6 +243,13 @@ class AccountHistoryActivity :
             iv_head.visibility = View.GONE
             tv_odds_type.visibility = View.GONE
         }
+    }
+
+    private fun updateAvatar(iconUrl: String?) {
+        Glide.with(this).load(iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
+                iv_head
+            ) //載入頭像
     }
 
     override fun initToolBar() {
