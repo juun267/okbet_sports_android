@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="@id/quick_odd_eps_btn1"
         tools:text="东京不死鸟会赢3-2" />
 
-    <org.cxct.sportlottery.ui.game.widget.EpsOddButton
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/quick_odd_eps_btn1"
         android:layout_width="72dp"
         android:layout_height="56dp"

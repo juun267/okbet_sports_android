@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_odd_btn_eps.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class OddButtonEpsAdapter : RecyclerView.Adapter<OddButtonEpsViewHolder>() {
 
@@ -14,6 +15,14 @@ class OddButtonEpsAdapter : RecyclerView.Adapter<OddButtonEpsViewHolder>() {
         set(value) {
             field = value
             notifyDataSetChanged()
+        }
+
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
+                notifyDataSetChanged()
+            }
         }
 
     private val oddStateRefreshListener by lazy {
@@ -28,7 +37,7 @@ class OddButtonEpsAdapter : RecyclerView.Adapter<OddButtonEpsViewHolder>() {
 
     override fun onBindViewHolder(holder: OddButtonEpsViewHolder, position: Int) {
         data[position]?.let {
-            holder.bind(it)
+            holder.bind(it, oddsType)
         }
     }
 
@@ -42,14 +51,13 @@ class OddButtonEpsViewHolder private constructor(
     override val oddStateChangeListener: OddStateChangeListener
 ) : OddStateViewHolder(itemView) {
 
-    fun bind(odd: Odd) {
+    fun bind(odd: Odd, oddsType: OddsType) {
         itemView.quick_odd_eps_text1.apply {
             text = odd.name ?: ""
         }
 
         itemView.quick_odd_eps_btn1.apply {
-            setOddsValue(odd.extInfo ?: "", odd.odds.toString())
-            setFlag()
+            setupOddForEPS(odd, oddsType)
         }
     }
 
