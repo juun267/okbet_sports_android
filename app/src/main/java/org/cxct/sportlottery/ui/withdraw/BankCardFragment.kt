@@ -546,7 +546,6 @@ class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
             itemView.apply {
                 checkbox_item.text = data.contract
                 linear_layout.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.colorWhite6) else ContextCompat.getDrawable(context, R.color.colorWhite)
-                img_check.visibility = if (itemChecked) View.VISIBLE else View.GONE
 
                 checkbox_item.setOnClickListener {
                     if (selectedPosition != position) {

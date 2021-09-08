@@ -159,32 +159,11 @@
                             android:id="@+id/iv_vip"
                             android:layout_width="120dp"
                             android:layout_height="120dp"
-                            android:src="@drawable/ic_vip_level_01"
+                            tools:src="@drawable/ic_vip_level_01"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <!--                    <androidx.cardview.widget.CardView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_below="@id/cl_user"
-                                            android:layout_centerHorizontal="true"
-                                            android:layout_marginTop="-16dp"
-                                            app:cardBackgroundColor="@color/colorBlue"
-                                            app:cardCornerRadius="16dp">
-
-                                            <TextView
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:paddingStart="32dp"
-                                                android:paddingTop="6dp"
-                                                android:paddingEnd="32dp"
-                                                android:paddingBottom="6dp"
-                                                android:text="@string/member_level"
-                                                android:textColor="@android:color/white"
-                                                android:textSize="@dimen/textSize14sp" />
-                                        </androidx.cardview.widget.CardView>-->
 
                 </RelativeLayout>
 
@@ -504,7 +483,8 @@
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="8dp"
                                 android:layout_marginEnd="8dp"
-                                app:defaultBottomSheetTitleText="@string/select_plat"
+                                app:arrowAtEnd="false"
+                                app:defaultBottomSheetTitleText="@string/game_play_type"
                                 app:horizontalChainStyle="spread_inside" />
                         </LinearLayout>
 
@@ -528,6 +508,7 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical"
                             android:overScrollMode="never"
+                            tools:listitem="@layout/item_title_third_rebates_form"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
