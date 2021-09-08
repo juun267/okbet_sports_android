@@ -4,8 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite4"
+    android:paddingBottom="8dp"
     tools:ignore="spUsage">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/colorWhite4"
+        app:layout_constraintBottom_toBottomOf="@id/quick_odd_btn_indicator_other"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/quick_odd_match_border"
