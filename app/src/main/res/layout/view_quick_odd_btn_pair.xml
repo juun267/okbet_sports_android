@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite4"
+    android:padding="20dp"
+    tools:ignore="spUsage">
+
+    <RadioGroup
+        android:id="@+id/quick_odd_pair_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/quick_odd_pair_tab_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:button="@null"
+            android:textColor="@color/selector_tab_text_color"
+            android:textSize="@dimen/textSize20sp"
+            tools:text="全場" />
+
+        <RadioButton
+            android:id="@+id/quick_odd_pair_tab_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:textColor="@color/selector_tab_text_color"
+            android:textSize="@dimen/textSize20sp"
+            tools:text="上半場" />
+    </RadioGroup>
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_one_1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/quick_odd＿btn_pair_one_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd_pair_tab" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_one_2"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/quick_odd＿btn_pair_one_1"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd_pair_tab" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_two_1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/quick_odd＿btn_pair_two_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_one_1" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_two_2"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/quick_odd＿btn_pair_two_1"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_one_1" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_three_1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/quick_odd＿btn_pair_three_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_two_1" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_three_2"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/quick_odd＿btn_pair_three_1"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_two_1" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_four_1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/quick_odd＿btn_pair_four_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_three_1" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_four_2"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/quick_odd＿btn_pair_four_1"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_three_1" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_five_1"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/quick_odd＿btn_pair_five_2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_four_1" />
+
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/quick_odd＿btn_pair_five_2"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/quick_odd＿btn_pair_five_1"
+        app:layout_constraintTop_toBottomOf="@id/quick_odd＿btn_pair_four_1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
