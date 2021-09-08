@@ -239,6 +239,7 @@ class FinanceViewModel(
             }
 
             result?.rows?.let {
+                withdrawLogList.clear()
                 withdrawLogList.addAll(it)
             }
 
