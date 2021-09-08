@@ -217,7 +217,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         private fun setStatusTextColor(matchType: MatchType) {
-            val color = if (matchType == MatchType.IN_PLAY) R.color.colorRedDark else R.color.colorGray
+            val color =
+                if (matchType == MatchType.IN_PLAY) R.color.colorRedDark else R.color.colorGray
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
@@ -497,11 +498,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
                     if (item.matchInfo?.statusName != null) {
                         itemView.league_odd_match_status.visibility = View.VISIBLE
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 6
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
+                            6
                         item.matchInfo.statusName
-                    }
-                    else {
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 0
+                    } else {
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
+                            0
                         return
                     }
                 }
@@ -672,6 +674,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         private fun setupQuickOddButtonPair(quickOdds: Map<String, List<Odd?>>) {
+            val adapter by lazy { OddButtonPairAdapter() }
+
             itemView.league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
 
             itemView.quick_odd_pair_tab_1.apply {
@@ -692,176 +696,22 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
             }
 
+            itemView.quick_odd_pair_list.apply {
+                this.adapter = adapter
+            }
+
             itemView.quick_odd_pair_tab.apply {
                 setOnCheckedChangeListener { _, checkedId ->
                     when (checkedId) {
                         R.id.quick_odd_pair_tab_1 -> {
-                            val odds = quickOdds[PlayCate.HDP.value] ?: quickOdds[PlayCate.OU.value]
-
-                            itemView.quick_odd_btn_pair_one_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 2) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_one_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 2) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_two_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 4) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_two_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 4) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_three_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 6) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_three_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 6) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_four_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 8) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_four_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 8) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_five_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 10) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_five_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 10) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
+                            adapter.odds =
+                                quickOdds[PlayCate.HDP.value] ?: quickOdds[PlayCate.OU.value]
+                                        ?: listOf()
                         }
 
                         R.id.quick_odd_pair_tab_2 -> {
-                            val odds = quickOdds[PlayCate.HDP_1ST.value]
-                                ?: quickOdds[PlayCate.OU_1ST.value]
-
-                            itemView.quick_odd_btn_pair_one_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 2) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_one_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 2) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_two_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 4) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_two_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 4) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_three_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 6) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_three_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 6) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_four_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 8) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_four_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 8) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_five_1.apply {
-                                visibility = if (odds?.size ?: 0 >= 10) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
-
-                            itemView.quick_odd_btn_pair_five_2.apply {
-                                visibility = if (odds?.size ?: 0 >= 10) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
+                            adapter.odds = quickOdds[PlayCate.HDP_1ST.value]
+                                ?: quickOdds[PlayCate.OU_1ST.value] ?: listOf()
                         }
                     }
                 }
