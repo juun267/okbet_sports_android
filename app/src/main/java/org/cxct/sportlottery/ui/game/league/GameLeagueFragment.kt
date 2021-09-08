@@ -20,6 +20,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.OddsListData
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -196,7 +197,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
-                    game_toolbar_match_type.text = oddsListResult.oddsListData?.sport?.name
+                    updateToolbar(oddsListResult.oddsListData)
 
                     updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
@@ -264,6 +265,21 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             leagueAdapter.notifyDataSetChanged()
         })
+    }
+
+    private fun updateToolbar(oddsListData: OddsListData?) {
+        when {
+            (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
+                game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
+                game_toolbar_sport_type.text =
+                    oddsListData?.leagueOdds?.firstOrNull()?.league?.name ?: ""
+            }
+
+            (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
+                game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
+                game_toolbar_sport_type.text = args.matchType.name
+            }
+        }
     }
 
     private fun initSocketObserver() {
