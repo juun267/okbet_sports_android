@@ -36,7 +36,17 @@ class OddButtonPairAdapter : RecyclerView.Adapter<OddButtonPairViewHolder>() {
 
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) {}
+            override fun refreshOddButton(odd: Odd) {
+                data.forEach { oddMap ->
+                    val oddIdList = oddMap.value.mapNotNull {
+                        it.value?.id
+                    }
+
+                    if (oddIdList.contains(odd.id)) {
+                        notifyItemChanged(oddMap.key)
+                    }
+                }
+            }
         }
     }
 
@@ -64,13 +74,17 @@ class OddButtonPairViewHolder private constructor(
         itemView.quick_odd_btn_pair_one_1.apply pair1ButtonSettings@{
             if (oddPair.size < 2) return@pair1ButtonSettings
 
-            setupOdd(oddPair[0].value, oddsType)
+            setupOdd(oddPair.getOrNull(0)?.value, oddsType)
+
+            this@OddButtonPairViewHolder.setupOddState(this, oddPair.getOrNull(0)?.value)
         }
 
         itemView.quick_odd_btn_pair_one_2.apply pair2ButtonSettings@{
             if (oddPair.size < 2) return@pair2ButtonSettings
 
-            setupOdd(oddPair[1].value, oddsType)
+            setupOdd(oddPair.getOrNull(1)?.value, oddsType)
+
+            this@OddButtonPairViewHolder.setupOddState(this, oddPair.getOrNull(1)?.value)
         }
     }
 
