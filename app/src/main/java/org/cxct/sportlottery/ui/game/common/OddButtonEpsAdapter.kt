@@ -27,7 +27,11 @@ class OddButtonEpsAdapter : RecyclerView.Adapter<OddButtonEpsViewHolder>() {
 
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
-            override fun refreshOddButton(odd: Odd) {}
+            override fun refreshOddButton(odd: Odd) {
+                notifyItemChanged(data.indexOf(data.filterNotNull().find {
+                    it.id == odd.id
+                }))
+            }
         }
     }
 
@@ -58,6 +62,8 @@ class OddButtonEpsViewHolder private constructor(
 
         itemView.quick_odd_eps_btn1.apply {
             setupOddForEPS(odd, oddsType)
+
+            this@OddButtonEpsViewHolder.setupOddState(this, odd)
         }
     }
 
