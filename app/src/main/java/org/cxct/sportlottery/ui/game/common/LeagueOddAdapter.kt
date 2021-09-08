@@ -779,41 +779,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         private fun setupQuickOddButtonEps(quickOdds: Map<String, List<Odd?>>) {
+            val adapter by lazy { OddButtonEpsAdapter() }
+
             itemView.league_odd_quick_odd_btn_eps.visibility = View.VISIBLE
 
-            itemView.quick_odd_eps_text1.apply {
-                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 1) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-                text = quickOdds[quickOdds.keys.firstOrNull()]?.firstOrNull()?.name
-            }
-
-            itemView.quick_odd_eps_btn1.apply {
-                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 1) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-            }
-
-            itemView.quick_odd_eps_text2.apply {
-                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-                text = quickOdds[quickOdds.keys.firstOrNull()]?.get(1)?.name
-            }
-
-            itemView.quick_odd_eps_btn2.apply {
-                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+            itemView.quick_odd_eps_list.apply {
+                this.adapter = adapter.apply {
+                    data = quickOdds[quickOdds.keys.firstOrNull()] ?: listOf()
                 }
             }
         }
