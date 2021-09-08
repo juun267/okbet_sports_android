@@ -12,34 +12,14 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_indicator_main
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_indicator_other
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_pager_main
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_btn_pager_other
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_border_row1
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_border_row2
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_favorite
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_name_away
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_name_home
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_play_count
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_price_boost
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_remain_time_icon
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_status
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_time
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_score_away
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_match_score_home
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_away
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_button_border
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_button_bottom_margin
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_border
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_close
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_divider
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_cate_tabs
-import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.league_odd_quick_home
+import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
+import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
+import kotlinx.android.synthetic.main.view_quick_odd_btn_pair.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -139,9 +119,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupMatchTime(item, matchType, isTimerEnable)
 
-            setupQuickCategory(item, leagueOddListener)
-
             setupOddsButton(item, oddsType, leagueOddListener)
+
+            setupQuickCategory(item, leagueOddListener)
         }
 
         private fun setupMatchInfo(
@@ -546,6 +526,51 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
+        private fun setupOddsButton(
+            item: MatchOdd,
+            oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?
+        ) {
+
+            itemView.league_odd_btn_pager_main.apply {
+                this.adapter = OddButtonPagerAdapter(item.matchInfo).apply {
+
+                    this.odds = item.odds
+
+                    this.oddsType = oddsType
+
+                    this.listener = OddButtonListener { matchInfo, odd, playCateName ->
+                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                    }
+                }
+
+                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+                    override fun onPageScrolled(
+                        position: Int,
+                        positionOffset: Float,
+                        positionOffsetPixels: Int
+                    ) {
+                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+
+                        item.positionButtonPage = position
+                    }
+                })
+
+                setCurrentItem(item.positionButtonPage, false)
+            }
+
+            itemView.league_odd_btn_indicator_main.apply {
+
+                visibility = if (item.odds.size > 2) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                setupWithViewPager2(itemView.league_odd_btn_pager_main)
+            }
+        }
+
         private fun setupQuickCategory(
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?
@@ -623,105 +648,245 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
             }
 
-            itemView.league_odd_quick_button_border.apply {
-                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-            }
-
-            itemView.league_odd_quick_button_bottom_margin.apply {
-                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-            }
-
-            itemView.league_odd_quick_home.apply {
-                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
+            when (item.quickPlayCateList?.find { it.isSelected }?.code) {
+                QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value -> {
+                    setupQuickOddButtonPair(
+                        item.quickPlayCateList.find { it.isSelected }?.quickOdds ?: mapOf()
+                    )
                 }
 
-                text = item.matchInfo?.homeName
-            }
-
-            itemView.league_odd_quick_away.apply {
-                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
+                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
+                    setupQuickOddButtonPager(item, leagueOddListener)
                 }
 
-                text = item.matchInfo?.awayName
-            }
-
-            itemView.league_odd_btn_pager_other.apply {
-                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
+                QuickPlayCate.QUICK_EPS.value -> {
+                    setupQuickOddButtonEps(
+                        item.quickPlayCateList.find { it.isSelected }?.quickOdds ?: mapOf()
+                    )
                 }
-            }
 
-            itemView.league_odd_btn_indicator_other.apply {
-                visibility = if (item.quickPlayCateList?.find { it.isSelected } == null) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
+                else -> {
+                    invisibleOddButtons()
                 }
             }
         }
 
-        private fun setupOddsButton(
+        private fun setupQuickOddButtonPair(quickOdds: Map<String, List<Odd?>>) {
+            itemView.league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
+
+            itemView.quick_odd_pair_tab_1.apply {
+                visibility =
+                    if (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
+
+            itemView.quick_odd_pair_tab_2.apply {
+                visibility =
+                    if (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }) {
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+            }
+
+            itemView.quick_odd_pair_tab.apply {
+                setOnCheckedChangeListener { _, checkedId ->
+                    when (checkedId) {
+                        R.id.quick_odd_pair_tab_1 -> {
+                            val odds = quickOdds[PlayCate.HDP.value] ?: quickOdds[PlayCate.OU.value]
+
+                            itemView.quick_odd_btn_pair_one_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 2) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_one_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 2) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_two_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 4) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_two_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 4) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_three_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 6) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_three_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 6) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_four_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 8) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_four_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 8) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_five_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 10) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_five_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 10) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+                        }
+
+                        R.id.quick_odd_pair_tab_2 -> {
+                            val odds = quickOdds[PlayCate.HDP_1ST.value]
+                                ?: quickOdds[PlayCate.OU_1ST.value]
+
+                            itemView.quick_odd_btn_pair_one_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 2) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_one_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 2) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_two_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 4) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_two_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 4) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_three_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 6) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_three_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 6) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_four_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 8) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_four_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 8) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_five_1.apply {
+                                visibility = if (odds?.size ?: 0 >= 10) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+
+                            itemView.quick_odd_btn_pair_five_2.apply {
+                                visibility = if (odds?.size ?: 0 >= 10) {
+                                    View.VISIBLE
+                                } else {
+                                    View.GONE
+                                }
+                            }
+                        }
+                    }
+                }
+
+                check(
+                    when {
+                        (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }) -> R.id.quick_odd_pair_tab_1
+                        (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }) -> R.id.quick_odd_pair_tab_2
+                        else -> -1
+                    }
+                )
+            }
+        }
+
+        private fun setupQuickOddButtonPager(
             item: MatchOdd,
-            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
+            itemView.league_odd_quick_odd_btn_pager.visibility = View.VISIBLE
 
-            itemView.league_odd_btn_pager_main.apply {
-                this.adapter = OddButtonPagerAdapter(item.matchInfo).apply {
+            itemView.quick_odd_home.text = item.matchInfo?.homeName ?: ""
 
-                    this.odds = item.odds
+            itemView.quick_odd_away.text = item.matchInfo?.awayName ?: ""
 
-                    this.oddsType = oddsType
-
-                    this.listener = OddButtonListener { matchInfo, odd, playCateName ->
-                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
-                    }
-                }
-
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
-                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-
-                        item.positionButtonPage = position
-                    }
-                })
-
-                setCurrentItem(item.positionButtonPage, false)
-            }
-
-            itemView.league_odd_btn_indicator_main.apply {
-
-                visibility = if (item.odds.size > 2) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-
-                setupWithViewPager2(itemView.league_odd_btn_pager_main)
-            }
-
-
-            itemView.league_odd_btn_pager_other.apply {
+            itemView.quick_odd_btn_pager_other.apply {
                 this.adapter = OddButtonPagerAdapter(item.matchInfo).apply {
 
                     this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
@@ -751,8 +916,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 )
             }
 
-            itemView.league_odd_btn_indicator_other.apply {
-
+            itemView.quick_odd_btn_indicator_other.apply {
                 visibility =
                     if (item.quickPlayCateList?.find { it.isSelected }?.quickOdds?.size ?: 0 > 2) {
                         View.VISIBLE
@@ -760,8 +924,54 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         View.GONE
                     }
 
-                setupWithViewPager2(itemView.league_odd_btn_pager_other)
+                setupWithViewPager2(itemView.quick_odd_btn_pager_other)
             }
+        }
+
+        private fun setupQuickOddButtonEps(quickOdds: Map<String, List<Odd?>>) {
+            itemView.league_odd_quick_odd_btn_eps.visibility = View.VISIBLE
+
+            itemView.quick_odd_eps_text1.apply {
+                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 1) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                text = quickOdds[quickOdds.keys.firstOrNull()]?.firstOrNull()?.name
+            }
+
+            itemView.quick_odd_eps_btn1.apply {
+                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 1) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+
+            itemView.quick_odd_eps_text2.apply {
+                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 2) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+
+                text = quickOdds[quickOdds.keys.firstOrNull()]?.get(1)?.name
+            }
+
+            itemView.quick_odd_eps_btn2.apply {
+                visibility = if (quickOdds[quickOdds.keys.firstOrNull()]?.size ?: 0 >= 2) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            }
+        }
+
+        private fun invisibleOddButtons() {
+            itemView.league_odd_quick_odd_btn_pair.visibility = View.GONE
+            itemView.league_odd_quick_odd_btn_pager.visibility = View.GONE
+            itemView.league_odd_quick_odd_btn_eps.visibility = View.GONE
         }
 
         companion object {
