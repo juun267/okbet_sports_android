@@ -208,6 +208,7 @@
     <string name="level_max">已是最高层级</string>
     <string name="unlimited">无上限</string>
     <string name="select_plat">选择平台</string>
+    <string name="game_play_type">游戏类别</string>
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
