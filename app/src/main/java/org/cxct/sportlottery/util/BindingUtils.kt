@@ -304,6 +304,8 @@ val gameNameMap: Map<String?, Int> = mapOf(
     "OGPLUS" to R.string.third_game_ogplus,
     "CR" to R.string.third_game_cr,
     "KY" to R.string.third_game_ky,
+    "VNCP" to R.string.third_game_vncp,
+    "LEG" to R.string.third_game_leg,
 )
 
 @BindingAdapter("platName")
