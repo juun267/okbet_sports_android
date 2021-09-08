@@ -242,6 +242,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         }
                         setupStartTime()
                         setupLiveView()
+
+                        if (args.matchType == MatchType.IN_PLAY) {
+                            tv_spt.text = " / ${it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt}"
+                        }
+
                     }
                     false -> {
                         showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
@@ -582,7 +587,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_status_right.text = statusBuilder
 
         tv_status_left.text = when (getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> event.matchStatusCO?.statusNameI18n?.zh
+            LanguageManager.Language.ZH -> "${event.matchStatusCO?.statusNameI18n?.zh}"
             LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
             else -> event.matchStatusCO?.statusName
         }
