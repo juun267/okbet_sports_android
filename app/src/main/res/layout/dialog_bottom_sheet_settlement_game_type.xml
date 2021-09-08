@@ -26,10 +26,9 @@
     <ListView
         android:id="@+id/lv_game_type"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="wrap_content"
         android:divider="@null"
         android:dividerHeight="0dp"
-        tools:listitem="@layout/item_listview_settlement_game_type"
-        tools:itemCount="5"/>
+        tools:listitem="@layout/item_listview_settlement_game_type" />
 
 </LinearLayout>
