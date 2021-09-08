@@ -252,7 +252,7 @@ object SocketUpdateUtil {
     }
 
     private fun refreshMatchOdds(
-        oddsMap: Map<String, List<Odd?>>,
+        oddsMap: Map<String, List<Odd?>?>,
         oddsChangeEvent: OddsChangeEvent
     ): Boolean {
         var isNeedRefresh = false
@@ -261,7 +261,7 @@ object SocketUpdateUtil {
             val oddsSocket = oddsChangeEvent.odds?.get(oddTypeMap.key)
             val odds = oddTypeMap.value
 
-            odds.forEach { odd ->
+            odds?.forEach { odd ->
                 val oddSocket = oddsSocket?.find { oddSocket ->
                     oddSocket?.id == odd?.id
                 }
