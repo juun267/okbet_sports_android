@@ -81,7 +81,9 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                     epsOddListener.clickListenerLeague(item)
                 }
 
-                tv_league_title.text = "${item.league?.name}"
+                item.league?.name?.let {
+                    tv_league_title.text = it
+                }
 
                 val data =
                     String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.league?.categoryIcon)
