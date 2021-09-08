@@ -70,6 +70,12 @@ class CreditRecordActivity :
 
     private fun setupCreditRecordList() {
         credit_record_list.apply {
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.item_spacing_credit_record
+                )
+            )
 
             adapter = creditRecordAdapter
 
