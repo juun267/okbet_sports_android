@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_odd_btn_pair.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 
-class OddButtonPairAdapter : RecyclerView.Adapter<OddButtonPairViewHolder>() {
+class OddButtonPairAdapter(private val matchInfo: MatchInfo?) :
+    RecyclerView.Adapter<OddButtonPairViewHolder>() {
 
     var odds: List<Odd?> = listOf()
         set(value) {
@@ -27,6 +29,8 @@ class OddButtonPairAdapter : RecyclerView.Adapter<OddButtonPairViewHolder>() {
                 notifyDataSetChanged()
             }
         }
+
+    var listener: OddButtonListener? = null
 
     private var data: Map<Int, List<IndexedValue<Odd?>>> = mapOf()
         set(value) {
@@ -56,7 +60,7 @@ class OddButtonPairAdapter : RecyclerView.Adapter<OddButtonPairViewHolder>() {
 
     override fun onBindViewHolder(holder: OddButtonPairViewHolder, position: Int) {
         data[position]?.let {
-            holder.bind(it, oddsType)
+            holder.bind(matchInfo, it, oddsType, listener)
         }
     }
 
@@ -70,13 +74,24 @@ class OddButtonPairViewHolder private constructor(
     override val oddStateChangeListener: OddStateChangeListener
 ) : OddStateViewHolder(itemView) {
 
-    fun bind(oddPair: List<IndexedValue<Odd?>>, oddsType: OddsType) {
+    fun bind(
+        matchInfo: MatchInfo?,
+        oddPair: List<IndexedValue<Odd?>>,
+        oddsType: OddsType,
+        oddButtonListener: OddButtonListener?
+    ) {
         itemView.quick_odd_btn_pair_one_1.apply pair1ButtonSettings@{
             if (oddPair.size < 2) return@pair1ButtonSettings
 
             setupOdd(oddPair.getOrNull(0)?.value, oddsType)
 
             this@OddButtonPairViewHolder.setupOddState(this, oddPair.getOrNull(0)?.value)
+
+            setOnClickListener {
+                oddPair.getOrNull(0)?.value?.let { odd ->
+                    oddButtonListener?.onClickBet(matchInfo, odd)
+                }
+            }
         }
 
         itemView.quick_odd_btn_pair_one_2.apply pair2ButtonSettings@{
@@ -85,6 +100,12 @@ class OddButtonPairViewHolder private constructor(
             setupOdd(oddPair.getOrNull(1)?.value, oddsType)
 
             this@OddButtonPairViewHolder.setupOddState(this, oddPair.getOrNull(1)?.value)
+
+            setOnClickListener {
+                oddPair.getOrNull(1)?.value?.let { odd ->
+                    oddButtonListener?.onClickBet(matchInfo, odd)
+                }
+            }
         }
     }
 
