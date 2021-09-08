@@ -8,8 +8,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -78,6 +79,8 @@ abstract class BaseFavoriteViewModel(
                     MyFavoriteMatchRequest(gameType, playCateMenu)
                 )
             }
+
+            result?.sortOdds()
 
             result?.rows?.let {
                 it.forEach { leagueOdd ->
@@ -189,6 +192,21 @@ abstract class BaseFavoriteViewModel(
         })
 
         return list.toList()
+    }
+
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun MyFavoriteMatchResult.sortOdds() {
+        this.rows?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                val sortOrder = matchOdd.oddsSort?.split(",")
+                matchOdd.odds = matchOdd.odds.toSortedMap(compareBy<String> {
+                    val oddsIndex = sortOrder?.indexOf(it)
+                    oddsIndex
+                }.thenBy { it })
+            }
+        }
     }
 
     private fun List<LeagueOdd>.updateMatchType(): List<LeagueOdd> {

@@ -859,6 +859,8 @@ class GameViewModel(
                     )
                 )
             }
+            
+            result?.sortOdds()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -1459,6 +1461,21 @@ class GameViewModel(
                             }
                         }
                         )
+            }
+        }
+    }
+
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun OddsListResult.sortOdds() {
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                val sortOrder = matchOdd.oddsSort?.split(",")
+                matchOdd.odds = matchOdd.odds.toSortedMap(compareBy<String> {
+                    val oddsIndex = sortOrder?.indexOf(it)
+                    oddsIndex
+                }.thenBy { it })
             }
         }
     }
