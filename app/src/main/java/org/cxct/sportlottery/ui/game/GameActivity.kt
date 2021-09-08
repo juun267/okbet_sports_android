@@ -450,6 +450,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.isLogin.observe(this, {
             getAnnouncement()
+            if (it == true) {
+                this.run {
+                    MainActivity.reStart(this)
+                }
+            }
         })
 
         viewModel.showBetUpperLimit.observe(this, {
