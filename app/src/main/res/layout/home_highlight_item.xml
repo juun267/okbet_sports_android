@@ -134,17 +134,20 @@
 
         <ImageView
             android:id="@+id/btn_chart"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:layout_marginEnd="22dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:padding="4dp"
+            android:layout_marginEnd="8dp"
             android:contentDescription="@null"
+            app:tint="@color/colorGray"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_chart_v4" />
+            android:src="@drawable/ic_icon_statistics" />
 
         <ImageView
             android:id="@+id/btn_star"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            app:tint="@color/colorGray"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
             android:src="@drawable/selector_star_v4" />

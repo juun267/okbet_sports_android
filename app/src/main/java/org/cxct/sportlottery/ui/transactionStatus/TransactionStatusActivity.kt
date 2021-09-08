@@ -6,6 +6,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_transaction_status.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.fragment_transaction_status.*
@@ -58,6 +60,13 @@ class TransactionStatusActivity :
     override fun onPause() {
         super.onPause()
         rv_marquee.stopAuto()
+    }
+
+    private fun updateAvatar(iconUrl: String?) {
+        Glide.with(this).load(iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
+                iv_head
+            ) //載入頭像
     }
 
     override fun initToolBar() {
@@ -202,6 +211,10 @@ class TransactionStatusActivity :
 
         viewModel.isLogin.observe(this, {
             getAnnouncement()
+        })
+
+        viewModel.userInfo.observe(this, {
+            updateAvatar(it?.iconUrl)
         })
 
         viewModel.nowTransNum.observe(this, {

@@ -122,6 +122,21 @@
                 tools:text="菲尼克斯太阳" />
 
             <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:gravity="center"
+                android:text="@{matchOdd.spread}"
+                android:textColor="@color/colorRedDark"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
+                app:layout_constraintStart_toEndOf="@id/tv_play_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_play_name"
+                tools:text="5.5" />
+
+            <TextView
                 android:id="@+id/tv_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -132,7 +147,7 @@
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_play_name"
-                app:layout_constraintStart_toEndOf="@id/tv_play_name"
+                app:layout_constraintStart_toEndOf="@id/tv_score"
                 app:layout_constraintTop_toTopOf="@+id/tv_play_name" />
 
             <TextView
@@ -164,20 +179,6 @@
                 tools:text="菲尼克斯太阳" />
 
             <TextView
-                android:id="@+id/tv_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:gravity="center"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
-                app:layout_constraintStart_toEndOf="@id/tv_team_home"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_home"
-                tools:text="5.5" />
-
-            <TextView
                 android:id="@+id/text_view_v"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -187,7 +188,7 @@
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
-                app:layout_constraintStart_toEndOf="@id/tv_score"
+                app:layout_constraintStart_toEndOf="@id/tv_team_home"
                 app:layout_constraintTop_toTopOf="@+id/tv_team_home" />
 
             <TextView
