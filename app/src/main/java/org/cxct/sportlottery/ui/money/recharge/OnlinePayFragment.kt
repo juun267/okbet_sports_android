@@ -191,8 +191,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun getAmountLimitHint(): String {
         return String.format(
             getString(R.string.edt_hint_deposit_money),
-            ArithUtil.round(mSelectRechCfgs?.minMoney ?: 0.00,2, RoundingMode.HALF_UP),
-            ArithUtil.round(mSelectRechCfgs?.maxMoney ?: 999999.00,2, RoundingMode.HALF_UP)
+            mSelectRechCfgs?.minMoney?.toLong() ?: 0,
+            mSelectRechCfgs?.maxMoney?.toLong() ?: 999999
         )
     }
 
