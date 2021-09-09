@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.*
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_recommend_champion.view.*
+import kotlinx.android.synthetic.main.home_recommend_eps.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.tv_play_type
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
@@ -22,9 +23,7 @@ import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalJsonUtil
-import org.cxct.sportlottery.util.fromJson
+import org.cxct.sportlottery.util.*
 
 
 class VpRecommendAdapter(
@@ -36,7 +35,7 @@ class VpRecommendAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
-        RECOMMEND_OUTRIGHT, RECOMMEND
+        RECOMMEND_OUTRIGHT, RECOMMEND, RECOMMEND_EPS
     }
 
     var oddsType: OddsType = OddsType.EU
@@ -66,13 +65,10 @@ class VpRecommendAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when (isOutright) {
-            0 -> {
-                ItemType.RECOMMEND.ordinal
-            }
-            else -> {
-                ItemType.RECOMMEND_OUTRIGHT.ordinal
-            }
+        return when{
+            isOutright != 0 -> ItemType.RECOMMEND_OUTRIGHT.ordinal //冠軍推薦賽事
+            dataList[position].playTypeCode == PlayCate.EPS.value -> ItemType.RECOMMEND_EPS.ordinal //特優賠率
+            else -> ItemType.RECOMMEND.ordinal //一般推薦賽事
         }
     }
 
@@ -82,6 +78,11 @@ class VpRecommendAdapter(
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.home_recommend_vp, parent, false)
                 ViewHolderHdpOu(view)
+            }
+            ItemType.RECOMMEND_EPS.ordinal -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.home_recommend_eps, parent, false)
+                ViewHolderEPS(view)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context)
@@ -98,7 +99,10 @@ class VpRecommendAdapter(
                     val data = dataList[position]
                     holder.bind(data)
                 }
-
+                is ViewHolderEPS ->{
+                    val data = dataList[position]
+                    holder.bind(data)
+                }
                 is ViewHolderRecOutright -> {
                     val data = dataList[0]
                     holder.bind(data, dynamicMarkets)
@@ -117,38 +121,51 @@ class VpRecommendAdapter(
     ) : OddStateViewHolder(itemView) {
 
         fun bind(data: OddBean) {
-            itemView.apply {
-                //TODO simon test review playTypeCode = "EPS",更優賠率 盤口 顯示處理
-                val playTypeStr = list.find {
-                    it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
-                }?.getOrNull(playTypeIndex)
+            when(data.playTypeCode){
+                PlayCate.EPS.value ->{
+                    itemView.apply {
+                        tv_play_type_eps.text = list.find {
+                            it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
+                        }?.getOrNull(playTypeIndex)
 
-                tv_play_type.text = playTypeStr
-
-                sportCode?.let {
-                    val spanCount = PlayCateUtils.getPlayCateSpanCount(data.playTypeCode, sportCode)
-
-                    if (spanCount > 0 && data.oddList.isNotEmpty()) {
-                        odd_btn_home.visibility = View.VISIBLE
-                        setupOddsButton(odd_btn_home, data.oddList[0])
-                    } else {
-                        odd_btn_home.visibility = View.GONE
+                        setupOddsButton(btn_odd_eps, data.oddList[0])
                     }
+                }
+                else ->{
+                    itemView.apply {
+                        val playTypeStr = list.find {
+                            it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
+                        }?.getOrNull(playTypeIndex)
 
-                    if (spanCount > 1 && data.oddList.size > 1) {
-                        odd_btn_away.visibility = View.VISIBLE
-                        setupOddsButton(odd_btn_away, data.oddList[1])
-                    } else {
-                        odd_btn_away.visibility = View.GONE
-                    }
-                    if (spanCount > 2 && data.oddList.size > 2) {
-                        odd_btn_draw.visibility = View.VISIBLE
-                        setupOddsButton(odd_btn_draw, data.oddList[2])
-                    } else {
-                        odd_btn_draw.visibility = View.GONE
+                        tv_play_type.text = playTypeStr
+
+                        sportCode?.let {
+                            val spanCount = PlayCateUtils.getPlayCateSpanCount(data.playTypeCode, sportCode)
+
+                            if (spanCount > 0 && data.oddList.isNotEmpty()) {
+                                odd_btn_home.visibility = View.VISIBLE
+                                setupOddsButton(odd_btn_home, data.oddList[0])
+                            } else {
+                                odd_btn_home.visibility = View.GONE
+                            }
+
+                            if (spanCount > 1 && data.oddList.size > 1) {
+                                odd_btn_away.visibility = View.VISIBLE
+                                setupOddsButton(odd_btn_away, data.oddList[1])
+                            } else {
+                                odd_btn_away.visibility = View.GONE
+                            }
+                            if (spanCount > 2 && data.oddList.size > 2) {
+                                odd_btn_draw.visibility = View.VISIBLE
+                                setupOddsButton(odd_btn_draw, data.oddList[2])
+                            } else {
+                                odd_btn_draw.visibility = View.GONE
+                            }
+                        }
                     }
                 }
             }
+
         }
 
         private fun setupOddsButton(oddsButton: OddsButton, odd: Odd?) {
@@ -315,6 +332,40 @@ class VpRecommendAdapter(
                     this.nameMap?.get("zh")
                 }
                 else -> this.nameMap?.get("en")
+            }
+        }
+    }
+
+    inner class ViewHolderEPS(
+        itemView: View,
+        override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
+    ) : OddStateViewHolder(itemView) {
+
+        fun bind(data: OddBean) {
+            itemView.apply {
+                tv_play_type_eps.text = list.find {
+                    it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
+                }?.getOrNull(playTypeIndex)
+
+                tv_title_eps.text = data.oddList.getOrNull(0)?.name
+
+                setupOddForEPS(btn_odd_eps, data.oddList[0], oddsType)
+            }
+        }
+
+        private fun setupOddForEPS(oddsButton: OddsButton, odd: Odd?, oddsType: OddsType) {
+            oddsButton.apply {
+                setupOddForEPS(odd, oddsType)
+                setupOddState(oddsButton, odd)
+                setOnClickListener {
+                    val playCateName = itemView.tv_play_type_eps.text.toString()
+
+                    odd?.let {
+                        onClickOddListener?.onClickBet(matchOdd.apply {
+                            this.matchInfo?.gameType = sportCode
+                        }, odd, playCateName)
+                    }
+                }
             }
         }
     }
