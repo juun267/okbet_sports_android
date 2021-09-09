@@ -514,6 +514,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         getPlayCateMenuCode(),
                         matchOdd.matchInfo?.id
                     )
+
+                    if (matchOdd.matchInfo?.eps == 1) {
+                        subscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            PlayCate.EPS.value,
+                            matchOdd.matchInfo.id
+                        )
+                    }
                 }
                 false -> {
                     unSubscribeChannelHall(
@@ -521,6 +529,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         getPlayCateMenuCode(),
                         matchOdd.matchInfo?.id
                     )
+
+                    if (matchOdd.matchInfo?.eps == 1) {
+                        unSubscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            PlayCate.EPS.value,
+                            matchOdd.matchInfo.id
+                        )
+                    }
                 }
             }
         }
