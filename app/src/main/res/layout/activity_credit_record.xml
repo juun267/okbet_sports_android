@@ -105,10 +105,12 @@
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintBottom_toTopOf="@id/credit_record_quota_border"
         app:layout_constraintTop_toBottomOf="@id/credit_record_remain_border"
         app:srlDragRate="0.3"
-        app:srlEnableLoadMore="true">
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/credit_record_list"
@@ -120,7 +122,7 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="1"
+            tools:itemCount="5"
             tools:listitem="@layout/itemview_credit_record" />
 
     </com.scwang.smart.refresh.layout.SmartRefreshLayout>
