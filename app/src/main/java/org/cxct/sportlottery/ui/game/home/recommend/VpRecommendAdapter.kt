@@ -133,7 +133,6 @@ class VpRecommendAdapter(
                 }
                 else ->{
                     itemView.apply {
-                        //TODO simon test review playTypeCode = "EPS",更優賠率 盤口 顯示處理
                         val playTypeStr = list.find {
                             it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
                         }?.getOrNull(playTypeIndex)
