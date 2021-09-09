@@ -64,7 +64,7 @@ abstract class BaseFavoriteViewModel(
         }
     }
 
-    fun getFavoriteMatch(gameType: String?, playCateMenu: String?) {
+    fun getFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String? = null) {
         if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
             return
@@ -89,42 +89,11 @@ abstract class BaseFavoriteViewModel(
                         this.gameType = GameType.getGameType(gameType)
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
-                        }
-                    }
-                }
-                mFavorMatchOddList.postValue(it.updateMatchType())
-            }
-
-            result?.updateLeagueExpandState(mFavorMatchOddList.value ?: listOf())
-        }
-    }
-
-    fun getFilterFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String?) {
-        if (isLogin.value != true) {
-            mNotifyLogin.postValue(true)
-            return
-        }
-
-        if (gameType == null || playCateMenu == null) {
-            return
-        }
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavoriteMatch(
-                    MyFavoriteMatchRequest(gameType, playCateMenu)
-                )
-            }
-
-            result?.rows?.let {
-                it.forEach { leagueOdd ->
-                    leagueOdd.apply {
-                        this.gameType = GameType.getGameType(gameType)
-                        this.matchOdds.forEach { matchOdd ->
-                            matchOdd.matchInfo?.isFavorite = true
-                            matchOdd.odds =
-                                matchOdd.odds.filter { odds -> odds.key == playCateCode }
-                                    .toMutableMap()
+                            playCateCode?.let {
+                                matchOdd.odds =
+                                    matchOdd.odds.filter { odds -> odds.key == playCateCode }
+                                        .toMutableMap()
+                            }
                         }
                     }
                 }
