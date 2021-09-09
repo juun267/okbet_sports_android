@@ -127,23 +127,25 @@ object SocketUpdateUtil {
                     }
 
                     false -> {
-                        refreshMatchOdds(matchOdd.odds, oddsChangeEvent) ||
+                        val isNeedRefreshMatchOdds =
+                            refreshMatchOdds(matchOdd.odds, oddsChangeEvent)
 
-                                matchOdd.quickPlayCateList?.any {
-                                    refreshMatchOdds(
-                                        it.quickOdds ?: mutableMapOf(),
-                                        oddsChangeEvent
-                                    )
-                                } ?: false ||
+                        val isNeedRefreshQuickOdds = matchOdd.quickPlayCateList?.any {
+                            refreshMatchOdds(
+                                it.quickOdds ?: mutableMapOf(), oddsChangeEvent
+                            )
+                        } ?: false
 
-                                refreshMatchOdds(
-                                    mapOf(
-                                        Pair(
-                                            PlayCate.EPS.value,
-                                            matchOdd.oddsEps?.eps ?: listOf()
-                                        )
-                                    ), oddsChangeEvent
+                        val isNeedRefreshEpsOdds = refreshMatchOdds(
+                            mapOf(
+                                Pair(
+                                    PlayCate.EPS.value,
+                                    matchOdd.oddsEps?.eps ?: listOf()
                                 )
+                            ), oddsChangeEvent
+                        )
+
+                        isNeedRefreshMatchOdds || isNeedRefreshQuickOdds || isNeedRefreshEpsOdds
                     }
                 }
         }
