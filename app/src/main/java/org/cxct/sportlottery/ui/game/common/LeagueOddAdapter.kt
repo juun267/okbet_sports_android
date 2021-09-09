@@ -683,7 +683,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             val adapter by lazy {
                 OddButtonPairAdapter(item.matchInfo).apply {
                     listener = OddButtonListener { matchInfo, odd, playCateName ->
-                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        leagueOddListener?.onClickBet(
+                            matchInfo,
+                            odd,
+                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
+                        )
                     }
                 }
             }
