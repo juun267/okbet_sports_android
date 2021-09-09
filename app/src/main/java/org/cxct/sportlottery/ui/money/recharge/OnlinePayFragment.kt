@@ -173,8 +173,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(
-                        it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
+                    tv_fee_amount.text = TextUtil.formatMoney(
+                        ArithUtil.toMoneyFormat(
+                            it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
+                        ).toDouble()
                     )
                 }
             }
@@ -213,7 +215,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 title_fee_amount.text = getString(R.string.title_rebate_amount)
             }
             tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
-            tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
+            tv_fee_amount.text =
+                TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble())
         }
     }
 
