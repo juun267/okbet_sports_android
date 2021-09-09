@@ -557,9 +557,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.epsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
 
-            val gameType =
-                GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
-
             it.getContentIfNotHandled()?.let { epsListResult ->
                 if (epsListResult.success) {
                     val oddsEpsListDatas = epsListResult.rows
@@ -646,7 +643,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                         matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
                             quickPlayCate.quickOdds?.forEach { map ->
-                                map.value.forEach { odd ->
+                                map.value?.forEach { odd ->
                                     odd?.isSelected = it.any { betInfoListData ->
                                         betInfoListData.matchOdd.oddsId == odd?.id
                                     }

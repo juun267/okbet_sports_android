@@ -679,7 +679,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setupQuickOddButtonPair(
             matchInfo: MatchInfo?,
-            quickOdds: Map<String, List<Odd?>>,
+            quickOdds: Map<String, List<Odd?>?>,
             leagueOddListener: LeagueOddListener?
         ) {
             val adapter by lazy {
@@ -795,7 +795,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setupQuickOddButtonEps(
             matchInfo: MatchInfo?,
             leagueOddListener: LeagueOddListener?,
-            quickOdds: Map<String, List<Odd?>>
+            quickOdds: Map<String, List<Odd?>?>
         ) {
             val adapter by lazy {
                 OddButtonEpsAdapter(matchInfo).apply {
