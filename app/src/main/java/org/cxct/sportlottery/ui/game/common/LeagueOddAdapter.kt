@@ -663,11 +663,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 QuickPlayCate.QUICK_EPS.value -> {
-                    setupQuickOddButtonEps(
-                        item.matchInfo,
-                        leagueOddListener,
-                        item.quickPlayCateList.find { it.isSelected }?.quickOdds ?: mapOf()
-                    )
+                    setupQuickOddButtonEps(item, leagueOddListener)
                 }
 
                 else -> {
@@ -803,18 +799,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupQuickOddButtonEps(
-            matchInfo: MatchInfo?,
-            leagueOddListener: LeagueOddListener?,
-            quickOdds: Map<String, List<Odd?>?>
-        ) {
+        private fun setupQuickOddButtonEps(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
             val adapter by lazy {
-                OddButtonEpsAdapter(matchInfo).apply {
+                OddButtonEpsAdapter(item.matchInfo).apply {
                     listener = OddButtonListener { matchInfo, odd, playCateName ->
-                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        leagueOddListener?.onClickBet(
+                            matchInfo,
+                            odd,
+                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
+                        )
                     }
                 }
             }
+
+            val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
 
             itemView.league_odd_quick_odd_btn_eps.visibility = View.VISIBLE
 
