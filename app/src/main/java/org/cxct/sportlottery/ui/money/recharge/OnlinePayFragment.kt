@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.TextUtil
 import java.math.RoundingMode
 import kotlin.math.abs
 
@@ -191,8 +192,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun getAmountLimitHint(): String {
         return String.format(
             getString(R.string.edt_hint_deposit_money),
-            mSelectRechCfgs?.minMoney?.toLong() ?: 0,
-            mSelectRechCfgs?.maxMoney?.toLong() ?: 999999
+            TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toLong() ?: 0),
+            TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toLong() ?: 999999)
         )
     }
 
