@@ -869,6 +869,12 @@
     <string name="odds_button_name_u">小</string>
     <string name="odds_button_name_singular">单</string>
     <string name="odds_button_name_dual">双</string>
+    <string name="odds_button_name_hh">主队-主队</string>
+    <string name="odds_button_name_hc">主队-客队</string>
+    <string name="odds_button_name_dh">和局-主队</string>
+    <string name="odds_button_name_dc">和局-客队</string>
+    <string name="odds_button_name_ch">客队-主队</string>
+    <string name="odds_button_name_cc">客队-客队</string>
     <string name="odds_button_name_hdh">主队或和局-主队</string>
     <string name="odds_button_name_hdc">主队或和局-客队</string>
     <string name="odds_button_name_cdh">客队或和局-主队</string>
