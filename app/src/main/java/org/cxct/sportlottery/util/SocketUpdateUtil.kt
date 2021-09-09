@@ -130,10 +130,10 @@ object SocketUpdateUtil {
                         val isNeedRefreshMatchOdds =
                             refreshMatchOdds(matchOdd.odds, oddsChangeEvent)
 
-                        val isNeedRefreshQuickOdds = matchOdd.quickPlayCateList?.any {
-                            refreshMatchOdds(
-                                it.quickOdds ?: mutableMapOf(), oddsChangeEvent
-                            )
+                        val isNeedRefreshQuickOdds = matchOdd.quickPlayCateList?.map {
+                            refreshMatchOdds(it.quickOdds ?: mutableMapOf(), oddsChangeEvent)
+                        }?.any {
+                            it
                         } ?: false
 
                         val isNeedRefreshEpsOdds = refreshMatchOdds(
