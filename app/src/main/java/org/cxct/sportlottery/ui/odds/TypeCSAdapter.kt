@@ -86,6 +86,18 @@ class TypeCSAdapter(
                         tv_name.text = oddsName
                     }
 
+                    checkKey(PlayCate.DC_FLG.value) -> {
+                        tv_name.text = when (odd?.playCode) {
+                            "DC&FLG-HD-H" -> this.context.getString(R.string.odds_button_name_hdh)
+                            "DC&FLG-HD-C" -> this.context.getString(R.string.odds_button_name_hdc)
+                            "DC&FLG-CD-H" -> this.context.getString(R.string.odds_button_name_cdh)
+                            "DC&FLG-CD-C" -> this.context.getString(R.string.odds_button_name_cdc)
+                            "DC&FLG-HC-H" -> this.context.getString(R.string.odds_button_name_hch)
+                            "DC&FLG-HC-C" -> this.context.getString(R.string.odds_button_name_hcc)
+                            else -> ""
+                        }
+                    }
+
                     checkKey(PlayCate.SINGLE_FLG.value) -> {
                         val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("-")
                         tv_name.text = oddsName?.plus(context.getString(R.string.odds_button_name_plus_flg))
