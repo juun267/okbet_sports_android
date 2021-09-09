@@ -244,6 +244,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         setupLiveView()
 
                         if (args.matchType == MatchType.IN_PLAY) {
+                            tv_spt.visibility = View.VISIBLE
                             tv_spt.text = " / ${it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt}"
                         }
 
@@ -430,13 +431,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         matchOdd?.matchInfo?.apply {
 
-            this.homeName?.let {
-                tv_home_name.text = it
-            }
+            tv_home_name.text = this.homeName ?: ""
 
-            this.awayName?.let {
-                tv_away_name.text = it
-            }
+            tv_away_name.text = this.awayName ?: ""
 
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
 
@@ -486,36 +483,25 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setupFrontScore(event: MatchStatusChangeEvent) {
-        event.matchStatusCO?.homeTotalScore?.let {
-            tv_home_score.visibility = View.VISIBLE
-            tv_home_score.text = it.toString()
-        }
+        tv_home_score.visibility = View.VISIBLE
+        tv_home_score.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString()
 
-        event.matchStatusCO?.awayTotalScore?.let {
-            tv_away_score.visibility = View.VISIBLE
-            tv_away_score.text = it.toString()
-        }
+        tv_away_score.visibility = View.VISIBLE
+        tv_away_score.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
     }
 
     private fun setupBackScore(event: MatchStatusChangeEvent) {
-        event.matchStatusCO?.homeTotalScore?.let {
-            tv_home_score_total.visibility = View.VISIBLE
-            tv_home_score_total.text = it.toString()
-        }
-        event.matchStatusCO?.awayTotalScore?.let {
-            tv_away_score_total.visibility = View.VISIBLE
-            tv_away_score_total.text = it.toString()
-        }
+        tv_home_score_total.visibility = View.VISIBLE
+        tv_home_score_total.text = (event.matchStatusCO?.homeTotalScore ?: 0).toString()
 
-        event.matchStatusList?.lastOrNull()?.homeScore?.let {
-            tv_home_score_live.visibility = View.VISIBLE
-            tv_home_score_live.text = it.toString()
-        }
+        tv_away_score_total.visibility = View.VISIBLE
+        tv_away_score_total.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
 
-        event.matchStatusList?.lastOrNull()?.awayScore?.let {
-            tv_away_score_live.visibility = View.VISIBLE
-            tv_away_score_live.text = it.toString()
-        }
+        tv_home_score_live.visibility = View.VISIBLE
+        tv_home_score_live.text = (event.matchStatusList?.lastOrNull()?.homeScore ?: 0).toString()
+
+        tv_away_score_live.visibility = View.VISIBLE
+        tv_away_score_live.text = (event.matchStatusList?.lastOrNull()?.awayScore ?: 0).toString()
 
         ll_time.visibility = View.GONE
     }
@@ -531,11 +517,24 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 setupFrontScore(event)
                 setupStatusBk(event)
             }
+            GameType.TN -> {
+                setupPoint(event)
+                setupBackScore(event)
+                setupStatusTnVB(event)
+            }
             else -> {
                 setupBackScore(event)
                 setupStatusTnVB(event)
             }
         }
+    }
+
+    private fun setupPoint(event: MatchStatusChangeEvent) {
+        tv_home_point_live.visibility = View.VISIBLE
+        tv_home_point_live.text = (event.matchStatusList?.lastOrNull()?.homePoint ?: 0).toString()
+
+        tv_away_point_live.visibility = View.VISIBLE
+        tv_away_point_live.text = (event.matchStatusList?.lastOrNull()?.awayPoint ?: 0).toString()
     }
 
     private fun setupStatusBk(event: MatchStatusChangeEvent) {
