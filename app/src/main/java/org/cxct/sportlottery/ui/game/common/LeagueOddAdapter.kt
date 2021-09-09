@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
@@ -644,6 +645,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnCheckedChangeListener { _, checkedId ->
                     item.quickPlayCateList?.forEach {
                         it.isSelected = (it.hashCode() == checkedId)
+                        it.positionButtonPage = 0
+                        it.positionButtonPairTab = 0
                     }
 
                     leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
@@ -652,11 +655,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             when (item.quickPlayCateList?.find { it.isSelected }?.code) {
                 QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value -> {
-                    setupQuickOddButtonPair(
-                        item.matchInfo,
-                        item.quickPlayCateList.find { it.isSelected }?.quickOdds ?: mapOf(),
-                        leagueOddListener
-                    )
+                    setupQuickOddButtonPair(item, leagueOddListener)
                 }
 
                 QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
@@ -678,23 +677,25 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         private fun setupQuickOddButtonPair(
-            matchInfo: MatchInfo?,
-            quickOdds: Map<String, List<Odd?>?>,
+            item: MatchOdd,
             leagueOddListener: LeagueOddListener?
         ) {
             val adapter by lazy {
-                OddButtonPairAdapter(matchInfo).apply {
+                OddButtonPairAdapter(item.matchInfo).apply {
                     listener = OddButtonListener { matchInfo, odd, playCateName ->
                         leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
                     }
                 }
             }
 
+            val quickOdds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
+
             itemView.league_odd_quick_odd_btn_pair.visibility = View.VISIBLE
 
             itemView.quick_odd_pair_tab_1.apply {
                 visibility =
-                    if (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }) {
+                    if (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }
+                        && !(quickOdds[PlayCate.HDP.value].isNullOrEmpty() && quickOdds[PlayCate.OU.value].isNullOrEmpty())) {
                         View.VISIBLE
                     } else {
                         View.GONE
@@ -703,7 +704,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.quick_odd_pair_tab_2.apply {
                 visibility =
-                    if (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }) {
+                    if (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }
+                        && !(quickOdds[PlayCate.HDP_1ST.value].isNullOrEmpty() && quickOdds[PlayCate.OU_1ST.value].isNullOrEmpty())) {
                         View.VISIBLE
                     } else {
                         View.GONE
@@ -718,12 +720,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setOnCheckedChangeListener { _, checkedId ->
                     when (checkedId) {
                         R.id.quick_odd_pair_tab_1 -> {
+                            item.quickPlayCateList?.find { it.isSelected }?.positionButtonPairTab =
+                                0
+
                             adapter.odds =
                                 quickOdds[PlayCate.HDP.value] ?: quickOdds[PlayCate.OU.value]
                                         ?: listOf()
                         }
 
                         R.id.quick_odd_pair_tab_2 -> {
+                            item.quickPlayCateList?.find { it.isSelected }?.positionButtonPairTab =
+                                1
+
                             adapter.odds = quickOdds[PlayCate.HDP_1ST.value]
                                 ?: quickOdds[PlayCate.OU_1ST.value] ?: listOf()
                         }
@@ -732,9 +740,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 check(
                     when {
-                        (quickOdds.keys.any { it == PlayCate.HDP.value || it == PlayCate.OU.value }) -> R.id.quick_odd_pair_tab_1
-                        (quickOdds.keys.any { it == PlayCate.HDP_1ST.value || it == PlayCate.OU_1ST.value }) -> R.id.quick_odd_pair_tab_2
-                        else -> -1
+                        (itemView.quick_odd_pair_tab_2.isVisible && item.quickPlayCateList?.find { it.isSelected }?.positionButtonPairTab == 1) -> R.id.quick_odd_pair_tab_2
+                        else -> R.id.quick_odd_pair_tab_1
                     }
                 )
             }

@@ -20,4 +20,5 @@ data class QuickPlayCate(
     var quickOdds: Map<String, List<Odd?>?>? = null
 
     var positionButtonPage = 0
+    var positionButtonPairTab = 0
 }
