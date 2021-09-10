@@ -17,7 +17,8 @@ data class QuickPlayCate(
     val sort: Int?
 ) {
     var isSelected = false
-    var quickOdds: Map<String, List<Odd?>>? = null
+    var quickOdds: Map<String, List<Odd?>?>? = null
 
     var positionButtonPage = 0
+    var positionButtonPairTab = 0
 }
