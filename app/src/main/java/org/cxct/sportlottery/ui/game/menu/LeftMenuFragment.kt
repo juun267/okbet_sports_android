@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
+import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.util.JumpUtil
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
@@ -62,7 +63,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         }
         //盤口設定
         tv_odds_type.setOnClickListener {
-            ChangeOddsTypeDialog().show(parentFragmentManager, null)
+            ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
         }
     }
 
@@ -148,6 +149,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     private fun updateFavorSport(favorSportTypeList: List<String>) {
         val selectedList = unselectedAdapter.data.filter {
             favorSportTypeList.contains(it.gameType)
+        }.sortedBy {
+            favorSportTypeList.indexOf(it.gameType)
         }
         selectedAdapter.data = selectedList
     }

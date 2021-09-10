@@ -86,8 +86,10 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 tab_layout.post {
                     //初始選定 tab 頁面
                     val selectCate = ThirdGameCategory.getCategory(args.categoryCode)
-                    if (selectCate == tabCate)
+                    if (selectCate == tabCate) {
                         view_pager.setCurrentItem(position, false)
+                        view_pager.visibility = View.VISIBLE
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

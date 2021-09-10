@@ -17,6 +17,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
@@ -131,6 +132,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             appVersion = BuildConfig.VERSION_NAME
         )
         viewModel.login(loginRequest, password)
+
     }
 
     private fun setupRememberPWD() {
@@ -173,7 +175,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            finish()
+            this.run {
+                MainActivity.reStart(this)
+            }
         } else {
             updateValidCode()
             showErrorDialog(loginResult.msg)

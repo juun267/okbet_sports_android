@@ -29,13 +29,6 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
         TITLE_BAR, ITEM, FOOTER, NO_DATA
     }
 
-
-    var oddsType: OddsType = OddsType.EU
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     private var allDateList = mutableListOf<Row>().apply {
         for (i in 0 until 8) {
             add(Row(statDate = TimeUtil.getMinusDate(i, TimeUtil.YMD_FORMAT)))

@@ -15,7 +15,7 @@ data class MatchOdd(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo? = null,
     @Json(name = "odds")
-    override var odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf(
+    override var oddsMap: MutableMap<String, MutableList<Odd?>> = mutableMapOf(
         PlayCate.HDP.value to mutableListOf(),
         PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()
@@ -25,7 +25,7 @@ data class MatchOdd(
     @Json(name = "quickPlayCateList")
     override val quickPlayCateList: List<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
-    val oddsSortL: String? = null
+    override val oddsSort: String? = null
 ) : MatchOdd {
     override val oddsEps: Odds? = null
 

@@ -11,7 +11,7 @@ import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 
-
+@Deprecated(" SINGLE_2_ITEM and TWO_SPAN_COUNT are same layout")
 class TypeTwoSpanCountGridAdapter(
     private val oddsDetail: OddsDetailListData,
     private val onOddClickListener: OnOddClickListener,

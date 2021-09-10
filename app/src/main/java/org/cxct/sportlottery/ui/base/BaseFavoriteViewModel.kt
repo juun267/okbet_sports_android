@@ -8,8 +8,9 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
+import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -62,7 +63,7 @@ abstract class BaseFavoriteViewModel(
         }
     }
 
-    fun getFavoriteMatch(gameType: String?, playCateMenu: String?) {
+    fun getFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String? = null) {
         if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
             return
@@ -79,36 +80,7 @@ abstract class BaseFavoriteViewModel(
                 )
             }
 
-            result?.rows?.let {
-                it.forEach { leagueOdd ->
-                    leagueOdd.apply {
-                        this.gameType = GameType.getGameType(gameType)
-                        this.matchOdds.forEach { matchOdd ->
-                            matchOdd.matchInfo?.isFavorite = true
-                        }
-                    }
-                }
-                mFavorMatchOddList.postValue(it.updateMatchType())
-            }
-        }
-    }
-
-    fun getFilterFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String?) {
-        if (isLogin.value != true) {
-            mNotifyLogin.postValue(true)
-            return
-        }
-
-        if (gameType == null || playCateMenu == null) {
-            return
-        }
-
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.favoriteService.getMyFavoriteMatch(
-                    MyFavoriteMatchRequest(gameType, playCateMenu)
-                )
-            }
+            result?.sortOdds()
 
             result?.rows?.let {
                 it.forEach { leagueOdd ->
@@ -116,14 +88,18 @@ abstract class BaseFavoriteViewModel(
                         this.gameType = GameType.getGameType(gameType)
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
-                            matchOdd.odds =
-                                matchOdd.odds.filter { odds -> odds.key == playCateCode }
-                                    .toMutableMap()
+                            playCateCode?.let {
+                                matchOdd.oddsMap =
+                                    matchOdd.oddsMap.filter { odds -> odds.key == playCateCode }
+                                        .toMutableMap()
+                            }
                         }
                     }
                 }
                 mFavorMatchOddList.postValue(it.updateMatchType())
             }
+
+            result?.updateLeagueExpandState(mFavorMatchOddList.value ?: listOf())
         }
     }
 
@@ -189,6 +165,42 @@ abstract class BaseFavoriteViewModel(
         })
 
         return list.toList()
+    }
+
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun MyFavoriteMatchResult.sortOdds() {
+        this.rows?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                val sortOrder = matchOdd.oddsSort?.split(",")
+                matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
+                    val oddsIndex = sortOrder?.indexOf(it)
+                    oddsIndex
+                }.thenBy { it })
+            }
+        }
+    }
+
+    private fun MyFavoriteMatchResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
+        val isLocalExistLeague = this.rows?.any {
+            leagueOdds.map { leagueOdd ->
+                leagueOdd.league.id
+            }.contains(it.league.id)
+        }
+
+        when (isLocalExistLeague) {
+            true -> {
+                this.rows?.forEach {
+                    it.isExpand = leagueOdds.find { leagueOdd ->
+                        it.league.id == leagueOdd.league.id
+                    }?.isExpand ?: false
+                }
+            }
+            false -> {
+                this.rows?.firstOrNull()?.isExpand = true
+            }
+        }
     }
 
     private fun List<LeagueOdd>.updateMatchType(): List<LeagueOdd> {

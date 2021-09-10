@@ -79,7 +79,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
-                    matchOdd.odds.toList()
+                    matchOdd.oddsMap.toList()
                         .find { map -> map.second.find { it == odd } != null } != null
                 }))
             }
@@ -159,22 +159,22 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                 oddListHDP = when (gameType) {
                     GameType.TN.key -> {
-                        data.odds[PlayCate.SET_HDP.value]
+                        data.oddsMap[PlayCate.SET_HDP.value]
                     }
                     GameType.BK.key -> {
-                        data.odds[PlayCate.HDP_INCL_OT.value]
+                        data.oddsMap[PlayCate.HDP_INCL_OT.value]
                     }
                     else -> {
-                        data.odds[PlayCate.HDP.value]
+                        data.oddsMap[PlayCate.HDP.value]
                     }
                 }
 
                 oddList1x2 = when (gameType) {
                     GameType.BK.key -> {
-                        data.odds[PlayCate.SINGLE_OT.value]
+                        data.oddsMap[PlayCate.SINGLE_OT.value]
                     }
                     else -> {
-                        data.odds[PlayCate.SINGLE.value]
+                        data.oddsMap[PlayCate.SINGLE.value]
                     }
                 }
             }
@@ -233,13 +233,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             }
                         }
 
-                        tv_match_time.text = data.matchInfo?.startDateDisplay + " " + remainTime
+                        tv_match_time.text = "$remainTime"
                     }
 
                     else -> {
                         stopTimer()
-                        tv_match_time.text =
-                            "${data.matchInfo?.startDateDisplay ?: ""} ${data.matchInfo?.startTimeDisplay ?: ""}"
+                        tv_match_time.text = data.matchInfo?.startTimeDisplay ?: ""
                     }
                 }
             }

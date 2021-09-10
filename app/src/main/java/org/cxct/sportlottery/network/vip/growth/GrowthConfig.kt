@@ -21,6 +21,3 @@ data class GrowthConfig(
     @Json(name = "remark")
     val remark: String,
 )
-
-const val GROWTH_CONFIG_RECHARGE_ID = 11
-const val GROWTH_CONFIG_BET_ID = 12

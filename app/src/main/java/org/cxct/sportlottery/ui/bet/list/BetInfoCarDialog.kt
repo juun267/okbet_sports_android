@@ -334,6 +334,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
         })
+
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsLockEvent ->
+                viewModel.updateLockMatchOdd(matchOddsLockEvent)
+            }
+        })
     }
 
     private fun showBottomSheetDialog(result: BetAddResult) {

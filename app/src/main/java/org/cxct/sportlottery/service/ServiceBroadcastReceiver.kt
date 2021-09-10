@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.notice.NoticeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -73,6 +74,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val leagueChange: LiveData<LeagueChangeEvent?>
         get() = _leagueChange
 
+    val matchOddsLock: LiveData<MatchOddsLockEvent?>
+        get() = _matchOddsLock
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -88,6 +92,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
+    private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -176,6 +181,11 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         val data = ServiceMessage.getLeagueChange(jObjStr)
                         _leagueChange.value = data
                     }
+                    EventType.MATCH_ODDS_LOCK -> {
+                        val data = ServiceMessage.getMatchOddsLock(jObjStr)
+                        _matchOddsLock.value = data
+                    }
+
 
                     //具体赛事/赛季频道
                     EventType.MATCH_ODDS_CHANGE -> {

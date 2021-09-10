@@ -208,11 +208,12 @@
     <string name="level_max">已是最高层级</string>
     <string name="unlimited">无上限</string>
     <string name="select_plat">选择平台</string>
+    <string name="game_play_type">游戏类别</string>
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">充值 3 元可获得 %1$s 点成长值</string>
-    <string name="hint_bet_growth">投注 1 元可获得 %1$s 点成长值</string>
+    <string name="hint_recharge_growth">充值 %d 元可获得 %d 点成长值</string>
+    <string name="hint_bet_growth">投注 %d 元可获得 %d 点成长值</string>
 
     <!--  HelpCenter  -->
     <string name="contact_us">联络我们</string>
@@ -477,7 +478,7 @@
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
     <string name="title_deposit_money">充值金额</string>
-    <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
+    <string name="edt_hint_deposit_money">限额 %1$s～%2$s RMB</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">姓名须与银行户口一致</string>
@@ -777,6 +778,9 @@
     <string name="third_game_cgcp">创信彩票</string>
     <string name="third_game_ogplus">OG+真人</string>
     <string name="third_game_cr">皇冠体育</string>
+    <string name="third_game_ky">开元棋牌</string>
+    <string name="third_game_vncp">CG越南彩票</string>
+    <string name="third_game_leg">乐游棋牌</string>
     <string name="out_account_">转出账户：</string>
     <string name="in_account_">转入账户：</string>
     <string name="transfer_amount">转换金额：</string>
@@ -812,7 +816,6 @@
     <string name="write_suggestion">填写建议</string>
     <string name="can_input_1_to_500_word">可输入1–500字</string>
     <string name="must_fill_this_column">此栏位为必填栏位</string>
-    <string name="third_game_ky">开元棋牌</string>
     <string name="choose_title">选择状态</string>
 
     <!--odd type-->
@@ -866,6 +869,18 @@
     <string name="odds_button_name_u">小</string>
     <string name="odds_button_name_singular">单</string>
     <string name="odds_button_name_dual">双</string>
+    <string name="odds_button_name_hh">主队-主队</string>
+    <string name="odds_button_name_hc">主队-客队</string>
+    <string name="odds_button_name_dh">和局-主队</string>
+    <string name="odds_button_name_dc">和局-客队</string>
+    <string name="odds_button_name_ch">客队-主队</string>
+    <string name="odds_button_name_cc">客队-客队</string>
+    <string name="odds_button_name_hdh">主队或和局-主队</string>
+    <string name="odds_button_name_hdc">主队或和局-客队</string>
+    <string name="odds_button_name_cdh">客队或和局-主队</string>
+    <string name="odds_button_name_cdc">客队或和局-客队</string>
+    <string name="odds_button_name_hch">主队或客队-主队</string>
+    <string name="odds_button_name_hcc">主队或客队-客队</string>
     <string name="odds_button_name_plus_flg">首次进球</string>
     <string name="bet_succeeded">您已成功投注</string>
     <string name="bet_fail">投注失敗</string>

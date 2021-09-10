@@ -74,7 +74,7 @@
             android:scaleType="centerInside"
             android:paddingHorizontal="16dp"
             android:layout_gravity="center_vertical|end"
-            android:src="@drawable/ic_icon_arrow_gray" />
+            android:src="@drawable/selector_ic_arrow_gray_blue_v4" />
     </FrameLayout>
 
 </LinearLayout>

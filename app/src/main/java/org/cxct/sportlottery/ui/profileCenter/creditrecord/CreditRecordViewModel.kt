@@ -92,9 +92,10 @@ class CreditRecordViewModel(
                     it.postRemainDay()
                     _userCreditCircleHistory.postValue(it)
                 } else {
-                    val currentList =
-                        _userCreditCircleHistory.value?.toMutableList() ?: mutableListOf()
-                    currentList.addAll(it)
+                    val currentList = _userCreditCircleHistory.value?.toMutableList() ?: mutableListOf()
+                    if (pageIndex != 1) {
+                        currentList.addAll(it)
+                    }
 
                     _userCreditCircleHistory.postValue(currentList)
                 }

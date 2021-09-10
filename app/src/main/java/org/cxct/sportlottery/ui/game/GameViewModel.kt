@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -51,7 +52,10 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -75,6 +79,15 @@ class GameViewModel(
     infoCenterRepository,
     myFavoriteRepository
 ) {
+    companion object {
+        const val GameLiveSP = "GameLiveSharedPreferences"
+    }
+
+    private val gameLiveSharedPreferences by lazy {
+        androidContext.getSharedPreferences(GameLiveSP,
+            Context.MODE_PRIVATE)
+    }
+
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = betInfoRepository.parlayList
 
@@ -86,7 +99,7 @@ class GameViewModel(
     val curMatchType: LiveData<MatchType?>
         get() = _curMatchType
 
-    val curChildMatchType: LiveData<MatchType?>
+    val curChildMatchType: LiveData<Event<MatchType?>>
         get() = _curChildMatchType
 
     val sportMenuResult: LiveData<SportMenuResult?>
@@ -159,7 +172,7 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
-    private val _curChildMatchType = MutableLiveData<MatchType?>()
+    private val _curChildMatchType = MutableLiveData<Event<MatchType?>>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -208,13 +221,25 @@ class GameViewModel(
     val allFootballCount: LiveData<Int> //全部足球比賽的數量
         get() = _allFootballCount
 
+    private val _cardMatchTypeFT = MutableLiveData<MatchType>()
+    val cardMatchTypeFT: LiveData<MatchType> //目前有資料的足球ＭatchType
+        get() = _cardMatchTypeFT
+
     private val _allBasketballCount = MutableLiveData<Int>()
     val allBasketballCount: LiveData<Int> //全部籃球比賽的數量
         get() = _allBasketballCount
 
+    private val _cardMatchTypeBK = MutableLiveData<MatchType>()
+    val cardMatchTypeBK: LiveData<MatchType> //目前有資料的籃球ＭatchType
+        get() = _cardMatchTypeBK
+
     private val _allTennisCount = MutableLiveData<Int>()
     val allTennisCount: LiveData<Int> //全部網球比賽的數量
         get() = _allTennisCount
+
+    private val _cardMatchTypeTN = MutableLiveData<MatchType>()
+    val cardMatchTypeTN: LiveData<MatchType> //目前有資料的網球ＭatchType
+        get() = _cardMatchTypeTN
 
     private val _allBadmintonCount = MutableLiveData<Int>()
     val allBadmintonCount: LiveData<Int> //全部羽毛球比賽的數量
@@ -223,6 +248,10 @@ class GameViewModel(
     private val _allVolleyballCount = MutableLiveData<Int>()
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
+
+    private val _cardMatchTypeVB = MutableLiveData<MatchType>()
+    val cardMatchTypeVB: LiveData<MatchType> //目前有資料的排球ＭatchType
+        get() = _cardMatchTypeVB
 
     private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
     val betInfoResult: LiveData<Event<BetInfoResult?>>
@@ -241,8 +270,8 @@ class GameViewModel(
         get() = _oddsDetailList
 
     //賽事直播網址
-    private val _matchLiveInfo = MutableLiveData<Event<String>>()
-    val matchLiveInfo: LiveData<Event<String>>
+    private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>>()
+    val matchLiveInfo: LiveData<Event<LiveStreamInfo>>
         get() = _matchLiveInfo
 
     //Loading
@@ -275,13 +304,20 @@ class GameViewModel(
     }
 
     fun switchMatchType(matchType: MatchType) {
+        _curChildMatchType.value = Event(null)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
     }
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
-        _curChildMatchType.value = childMatchType
+        _curChildMatchType.value = Event(childMatchType)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
         curMatchType.value?.let {
             getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
         }
@@ -355,34 +391,59 @@ class GameViewModel(
                 sportMenuResult
             )
         )
-        _allFootballCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.FT,
-                sportMenuResult
-            )
-        )
-        _allBasketballCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.BK,
-                sportMenuResult
-            )
-        )
-        _allTennisCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.TN,
-                sportMenuResult
-            )
-        )
-        _allVolleyballCount.postValue(
-            getSportCount(
-                MatchType.TODAY,
-                GameType.VB,
-                sportMenuResult
-            )
-        )
+
+        when{
+            getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult) != 0 -> {
+                _cardMatchTypeFT.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.FT, sportMenuResult) != 0 -> {
+                _cardMatchTypeFT.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.FT, sportMenuResult) != 0 -> {
+                _cardMatchTypeFT.postValue(MatchType.PARLAY)
+            }
+        }
+        _allFootballCount.postValue(getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult))
+
+        when{
+            getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult) != 0 -> {
+                _cardMatchTypeBK.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.BK, sportMenuResult) != 0 -> {
+                _cardMatchTypeBK.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.BK, sportMenuResult) != 0 -> {
+                _cardMatchTypeBK.postValue(MatchType.PARLAY)
+            }
+        }
+        _allBasketballCount.postValue(getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult))
+
+
+        when{
+            getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult) != 0 -> {
+                _cardMatchTypeTN.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.TN, sportMenuResult) != 0 -> {
+                _cardMatchTypeTN.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.TN, sportMenuResult) != 0 -> {
+                _cardMatchTypeTN.postValue(MatchType.PARLAY)
+            }
+        }
+        _allTennisCount.postValue(getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult))
+
+        when{
+            getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult) != 0 -> {
+                _cardMatchTypeVB.postValue(MatchType.TODAY)
+            }
+            getSportCount(MatchType.EARLY, GameType.VB, sportMenuResult) != 0 -> {
+                _cardMatchTypeVB.postValue(MatchType.EARLY)
+            }
+            getSportCount(MatchType.PARLAY, GameType.VB, sportMenuResult) != 0 -> {
+                _cardMatchTypeVB.postValue(MatchType.PARLAY)
+            }
+        }
+        _allVolleyballCount.postValue(getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult))
     }
 
     private fun SportMenuData.sortSport(): SportMenuData {
@@ -425,7 +486,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.forEach { map ->
+                        matchOdd.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -464,7 +525,7 @@ class GameViewModel(
                         }
 
                         //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                        matchOdd.odds.forEach { map ->
+                        matchOdd.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -555,6 +616,9 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
+        _curChildMatchType.value = Event(null)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
 
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
@@ -586,7 +650,7 @@ class GameViewModel(
         isReloadPlayCate: Boolean = false
     ) {
 
-        val nowMatchType = curChildMatchType.value ?: matchType
+        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
 
         if (isReloadPlayCate) {
             getPlayCategory(nowMatchType)
@@ -681,7 +745,7 @@ class GameViewModel(
             getPlayCategory(matchType)
         }
 
-        val nowMatchType = curChildMatchType.value ?: matchType
+        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
 
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
@@ -748,6 +812,14 @@ class GameViewModel(
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
     ) {
+        when (matchType) {
+            MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+                _oddsListResult.value = Event(null)
+            }
+            MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+                _oddsListGameHallResult.value = Event(null)
+            }
+        }
 
         val emptyFilter = { list: List<String>? ->
             if (list.isNullOrEmpty()) null else list
@@ -778,6 +850,8 @@ class GameViewModel(
                     )
                 )
             }
+            
+            result?.sortOdds()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -791,26 +865,44 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
-                    matchOdd.odds =
-                        PlayCateUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
-                    matchOdd.odds.forEach { map ->
+                    matchOdd.oddsMap =
+                        PlayCateUtils.filterOdds(matchOdd.oddsMap, result.oddsListData.sport.code)
+                    matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
                     }
                 }
             }
 
-            if (leagueIdList != null) {
-                _oddsListResult.postValue(Event(result))
-            } else {
-                if (_leagueFilterList.value?.isNotEmpty() == true) {
-                    result?.oddsListData?.leagueOddsFilter =
-                        result?.oddsListData?.leagueOdds?.filter {
-                            leagueFilterList.value?.map { league -> league.id }
-                                ?.contains(it.league.id) ?: false
-                        }
+            result?.updateLeagueExpandState(
+                when (matchType) {
+                    MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+                        _oddsListGameHallResult.value?.peekContent()
+                    }
+                    MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+                        _oddsListResult.value?.peekContent()
+                    }
+                    else -> {
+                        null
+                    }
+                }?.oddsListData?.leagueOdds ?: listOf()
+            )
+
+            when (matchType) {
+                MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+                    if (_leagueFilterList.value?.isNotEmpty() == true) {
+                        result?.oddsListData?.leagueOddsFilter =
+                            result?.oddsListData?.leagueOdds?.filter {
+                                leagueFilterList.value?.map { league -> league.id }
+                                    ?.contains(it.league.id) ?: false
+                            }
+                    }
+
+                    _oddsListGameHallResult.postValue(Event(result))
                 }
 
-                _oddsListGameHallResult.postValue(Event(result))
+                MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+                    _oddsListResult.postValue(Event(result))
+                }
             }
 
             notifyFavorite(FavoriteType.MATCH)
@@ -893,6 +985,8 @@ class GameViewModel(
             }
 
             _outrightLeagueListResult.postValue(Event(result))
+
+            notifyFavorite(FavoriteType.LEAGUE)
         }
     }
 
@@ -1345,20 +1439,37 @@ class GameViewModel(
 
         playList?.let {
             _playList.value = it
-            _playCate.value = (
-                    when (play.selectionType == SelectionType.SELECTABLE.code) {
-                        true -> {
-                            it.find { play ->
-                                play.isSelected
-                            }?.playCateList?.find { playCate ->
-                                playCate.isSelected
-                            }?.code
+            if (play.isLocked == false) {
+                _playCate.value = (
+                        when (play.selectionType == SelectionType.SELECTABLE.code) {
+                            true -> {
+                                it.find { play ->
+                                    play.isSelected
+                                }?.playCateList?.find { playCate ->
+                                    playCate.isSelected
+                                }?.code
+                            }
+                            false -> {
+                                null
+                            }
                         }
-                        false -> {
-                            null
-                        }
-                    }
-                    )
+                        )
+            }
+        }
+    }
+
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun OddsListResult.sortOdds() {
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                val sortOrder = matchOdd.oddsSort?.split(",")
+                matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
+                    val oddsIndex = sortOrder?.indexOf(it)
+                    oddsIndex
+                }.thenBy { it })
+            }
         }
     }
 
@@ -1382,10 +1493,8 @@ class GameViewModel(
                     quickPlayCate.isSelected =
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
-                    quickPlayCate.quickOdds = PlayCateUtils.filterOdds(
-                        quickListData.quickOdds?.get(quickPlayCate.code) ?: mapOf(),
-                        quickPlayCate.gameType ?: ""
-                    )
+                    quickPlayCate.quickOdds =
+                        quickListData.quickOdds?.get(quickPlayCate.code) ?: mapOf()
                 }
             }
         }
@@ -1404,18 +1513,57 @@ class GameViewModel(
         return this
     }
 
-    fun getLiveInfo(matchId: String) {
-        viewModelScope.launch {
-            val result = doNetwork(androidContext) {
-                OneBoSportApi.matchService.getMatchLiveInfo(MatchLiveInfoRequest(1, matchId))
+    private fun OddsListResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
+        val isLocalExistLeague = this.oddsListData?.leagueOdds?.any {
+            leagueOdds.map { leagueOdd ->
+                leagueOdd.league.id
+            }.contains(it.league.id)
+        }
+
+        when (isLocalExistLeague) {
+            true -> {
+                this.oddsListData?.leagueOdds?.forEach {
+                    it.isExpand = leagueOdds.find { leagueOdd ->
+                        it.league.id == leagueOdd.league.id
+                    }?.isExpand ?: false
+                }
             }
-            result?.let {
-                if (it.success) {
-                    getStreamUrl(it.liveInfo)?.let { streamUrl ->
-                        _matchLiveInfo.postValue(Event(streamUrl))
+            false -> {
+                this.oddsListData?.leagueOdds?.firstOrNull()?.isExpand = true
+            }
+        }
+    }
+
+    /**
+     * @param matchId 獲取直播的賽事id
+     * @param getNewest 是否要獲取最新 true: api請求獲取最新的直播地址 false: 讀取暫存直播地址
+     */
+    fun getLiveInfo(matchId: String, getNewest: Boolean = false) {
+        //同樣賽事已經請求過最新地址則不再請求
+        val nowMatchLiveInfo = matchLiveInfo.value?.peekContent()
+        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest) return
+
+        val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
+
+        //沒有暫存網址時請求最新網址
+        if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
+            viewModelScope.launch {
+                val result = doNetwork(androidContext) {
+                    OneBoSportApi.matchService.getMatchLiveInfo(MatchLiveInfoRequest(1, matchId))
+                }
+                result?.let {
+                    if (it.success) {
+                        val streamUrl = getStreamUrl(it.liveInfo)?.let { streamRealUrl ->
+                            val editor = gameLiveSharedPreferences.edit()
+                            editor.putString(matchId, streamRealUrl).apply()
+                            streamRealUrl
+                        }?: ""
+                        _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, streamUrl, true)))
                     }
                 }
             }
+        } else {
+            _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, tempLiveStreamUrl, false)))
         }
     }
 
