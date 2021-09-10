@@ -25,5 +25,5 @@ data class MatchResultPlayList(
     @Json(name = "spread")
     val spread: String?,
     @Json(name = "updateTime")
-    val updateTime: Long
+    val updateTime: Long?
 )

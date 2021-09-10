@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,7 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_date_line.view.*
 import kotlinx.android.synthetic.main.content_eps_league_rv.view.*
+import kotlinx.android.synthetic.main.content_eps_league_rv.view.country_webview
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -72,20 +74,27 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         }
 
         fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,epsOddListener: EpsOddListener) {
+            itemView.apply {
+                ll_league_title.setOnClickListener {
+                    rv_league_odd_list.visibility = if(rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
+                    item.isClose = !item.isClose
+                    epsOddListener.clickListenerLeague(item)
+                }
 
-            itemView.ll_league_title.setOnClickListener {
-                itemView.rv_league_odd_list.visibility = if(itemView.rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
-                item.isClose = !item.isClose
+                item.league?.name?.let {
+                    tv_league_title.text = it
+                }
 
-                epsOddListener.clickListenerLeague(item)
+                val data =
+                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.league?.categoryIcon)
+                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
+                country_webview.setBackgroundColor(Color.TRANSPARENT)
+
+                if (item.isClose)
+                    rv_league_odd_list.visibility = View.GONE
+                else
+                    rv_league_odd_list.visibility = View.VISIBLE
             }
-
-            itemView.tv_league_title.text = "${item.league?.name}"
-
-            if (item.isClose)
-                itemView.rv_league_odd_list.visibility = View.GONE
-            else
-                itemView.rv_league_odd_list.visibility = View.VISIBLE
 
             epsListV2Adapter.epsOddListener = epsOddListener
 
@@ -96,8 +105,6 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 }
             }
         }
-
-
 
         private fun filterEpsOddsList(matchOddsItem: List<MatchOddsItem>?): MutableList<EpsOdds> {
             val epsOddsList = mutableListOf<EpsOdds>()

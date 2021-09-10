@@ -25,7 +25,7 @@ data class MatchOdd(
     @Json(name = "quickPlayCateList")
     override val quickPlayCateList: List<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
-    val oddsSortL: String? = null
+    override val oddsSort: String? = null
 ) : MatchOdd {
     override val oddsEps: Odds? = null
 

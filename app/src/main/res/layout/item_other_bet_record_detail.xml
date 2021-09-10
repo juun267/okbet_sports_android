@@ -12,7 +12,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:minHeight="48dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@color/colorWhite"
         android:orientation="horizontal"
@@ -66,13 +67,12 @@
             android:layout_weight="2"
             android:ellipsize="end"
             android:gravity="center"
-            android:maxLines="1"
             android:text="@{data.orderNo}"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp"
-            tools:text="123456789123456" />
+            tools:text="12345678912345" />
 
     </LinearLayout>
 

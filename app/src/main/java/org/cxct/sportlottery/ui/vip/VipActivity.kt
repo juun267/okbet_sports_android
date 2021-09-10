@@ -15,8 +15,6 @@ import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.user.info.UserInfoData
-import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_BET_ID
-import org.cxct.sportlottery.network.vip.growth.GROWTH_CONFIG_RECHARGE_ID
 import org.cxct.sportlottery.network.vip.growth.GrowthConfig
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
@@ -217,11 +215,17 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun setupGrowthHint(growthConfigs: List<GrowthConfig>) {
-        val rechargeGrowthHint = growthConfigs.find { it.id == GROWTH_CONFIG_RECHARGE_ID }?.growth
-        val betGrowthHint = growthConfigs.find { it.id == GROWTH_CONFIG_BET_ID }?.growth
+        growthConfigs.firstOrNull()?.growth?.let { growth ->
+            growthConfigs.firstOrNull()?.unit?.let { unit ->
+                tv_hint_recharge_growth.text = String.format(getString(R.string.hint_recharge_growth), unit, growth)
+            }
+        }
 
-        tv_hint_recharge_growth.text = String.format(getString(R.string.hint_recharge_growth), rechargeGrowthHint)
-        tv_hint_bet_growth.text = String.format(getString(R.string.hint_bet_growth), betGrowthHint)
+        growthConfigs.getOrNull(1)?.growth?.let { growth ->
+            growthConfigs.getOrNull(1)?.unit?.let { unit ->
+                tv_hint_bet_growth.text = String.format(getString(R.string.hint_bet_growth), unit, growth)
+            }
+        }
     }
 
     private fun setupBannerData() {

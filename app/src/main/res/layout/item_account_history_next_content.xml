@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorBlue"
             android:gravity="center"
-            android:minHeight="48dp"
+            android:minHeight="76dp"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
             android:paddingVertical="9dp"
@@ -50,11 +50,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:gravity="center"
+                android:gravity="start"
                 android:text="@{matchOdd.homeName}"
                 android:textColor="@color/blueLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_playName"
                 tools:text="菲尼克斯太阳" />
@@ -64,27 +63,27 @@
                 android:id="@+id/text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
                 android:gravity="center"
                 android:text="@string/verse"
                 android:textColor="@color/blueLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
-                app:layout_constraintStart_toEndOf="@id/tv_team_home"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_home" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_team_homeway"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/tv_team_homeway"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="6dp"
-                android:gravity="center"
+                android:gravity="start"
                 android:text="@{matchOdd.awayName}"
                 android:textColor="@color/blueLight"
                 android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
-                app:layout_constraintStart_toEndOf="@id/text_view"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_home"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@+id/text_view"
+                app:layout_constraintTop_toBottomOf="@+id/tv_team_home"
                 tools:text="菲尼克斯太阳" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

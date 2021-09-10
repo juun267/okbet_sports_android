@@ -6,6 +6,8 @@ import android.view.MenuItem
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_my_favorite.*
 import kotlinx.android.synthetic.main.activity_my_favorite.drawer_layout
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
@@ -195,6 +197,10 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
                 }
         })
 
+        viewModel.userInfo.observe(this, {
+            updateAvatar(it?.iconUrl)
+        })
+
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
                 BetInfoCarDialog().show(
@@ -207,6 +213,13 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         viewModel.nowTransNum.observe(this, {
             navigation_transaction_status.trans_number.text = it.toString()
         })
+    }
+
+    private fun updateAvatar(iconUrl: String?) {
+        Glide.with(this).load(iconUrl)
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(
+                iv_head
+            ) //載入頭像
     }
 
     override fun updateUiWithLogin(isLogin: Boolean) {

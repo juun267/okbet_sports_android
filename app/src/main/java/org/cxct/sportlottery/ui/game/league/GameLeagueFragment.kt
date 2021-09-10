@@ -14,12 +14,11 @@ import kotlinx.android.synthetic.main.fragment_game_league.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.OddsListData
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
@@ -35,7 +34,6 @@ import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.PlayCategoryListener
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
@@ -196,7 +194,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 if (oddsListResult.success) {
                     val leagueOdds = oddsListResult.oddsListData?.leagueOdds ?: listOf()
 
-                    game_toolbar_match_type.text = oddsListResult.oddsListData?.sport?.name
+                    updateToolbar(oddsListResult.oddsListData)
 
                     updateSportBackground(oddsListResult.oddsListData?.sport?.code)
 
@@ -235,7 +233,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                         matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
                             quickPlayCate.quickOdds?.forEach { map ->
-                                map.value.forEach { odd ->
+                                map.value?.forEach { odd ->
                                     odd?.isSelected = it.any { betInfoListData ->
                                         betInfoListData.matchOdd.oddsId == odd?.id
                                     }
@@ -264,6 +262,21 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             leagueAdapter.notifyDataSetChanged()
         })
+    }
+
+    private fun updateToolbar(oddsListData: OddsListData?) {
+        when {
+            (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
+                game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
+                game_toolbar_sport_type.text =
+                    oddsListData?.leagueOdds?.firstOrNull()?.league?.name ?: ""
+            }
+
+            (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
+                game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
+                game_toolbar_sport_type.text = args.matchType.name
+            }
+        }
     }
 
     private fun initSocketObserver() {
@@ -517,6 +530,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         getPlayCateMenuCode(),
                         matchOdd.matchInfo?.id
                     )
+
+                    if (matchOdd.matchInfo?.eps == 1) {
+                        subscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            PlayCate.EPS.value,
+                            matchOdd.matchInfo.id
+                        )
+                    }
                 }
                 false -> {
                     unSubscribeChannelHall(
@@ -524,6 +545,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         getPlayCateMenuCode(),
                         matchOdd.matchInfo?.id
                     )
+
+                    if (matchOdd.matchInfo?.eps == 1) {
+                        unSubscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            PlayCate.EPS.value,
+                            matchOdd.matchInfo.id
+                        )
+                    }
                 }
             }
         }

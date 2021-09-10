@@ -27,7 +27,7 @@ import org.cxct.sportlottery.util.fromJson
 class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
-    var odds: Map<String, List<Odd?>> = mapOf()
+    var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
             field = value
 

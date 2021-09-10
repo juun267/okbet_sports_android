@@ -385,76 +385,59 @@ class GameViewModel(
                 sportMenuResult
             )
         )
-        var countFT = 0
+
         when{
             getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult) != 0 -> {
-                countFT = getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult)
                 _cardMatchTypeFT.postValue(MatchType.TODAY)
             }
             getSportCount(MatchType.EARLY, GameType.FT, sportMenuResult) != 0 -> {
-                countFT = getSportCount(MatchType.EARLY, GameType.FT, sportMenuResult)
                 _cardMatchTypeFT.postValue(MatchType.EARLY)
             }
             getSportCount(MatchType.PARLAY, GameType.FT, sportMenuResult) != 0 -> {
-                countFT = getSportCount(MatchType.PARLAY, GameType.FT, sportMenuResult)
                 _cardMatchTypeFT.postValue(MatchType.PARLAY)
             }
         }
-        _allFootballCount.postValue(countFT)
+        _allFootballCount.postValue(getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult))
 
-
-
-        var countBK = 0
         when{
             getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult) != 0 -> {
-                countBK = getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult)
                 _cardMatchTypeBK.postValue(MatchType.TODAY)
             }
             getSportCount(MatchType.EARLY, GameType.BK, sportMenuResult) != 0 -> {
-                countBK = getSportCount(MatchType.EARLY, GameType.BK, sportMenuResult)
                 _cardMatchTypeBK.postValue(MatchType.EARLY)
             }
             getSportCount(MatchType.PARLAY, GameType.BK, sportMenuResult) != 0 -> {
-                countBK = getSportCount(MatchType.PARLAY, GameType.BK, sportMenuResult)
                 _cardMatchTypeBK.postValue(MatchType.PARLAY)
             }
         }
-        _allBasketballCount.postValue(countBK)
+        _allBasketballCount.postValue(getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult))
 
 
-        var countTN = 0
         when{
             getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult) != 0 -> {
-                countTN = getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult)
                 _cardMatchTypeTN.postValue(MatchType.TODAY)
             }
             getSportCount(MatchType.EARLY, GameType.TN, sportMenuResult) != 0 -> {
-                countTN = getSportCount(MatchType.EARLY, GameType.TN, sportMenuResult)
                 _cardMatchTypeTN.postValue(MatchType.EARLY)
             }
             getSportCount(MatchType.PARLAY, GameType.TN, sportMenuResult) != 0 -> {
-                countTN = getSportCount(MatchType.PARLAY, GameType.TN, sportMenuResult)
                 _cardMatchTypeTN.postValue(MatchType.PARLAY)
             }
         }
-        _allTennisCount.postValue(countTN)
+        _allTennisCount.postValue(getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult))
 
-        var countVB = 0
         when{
             getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult) != 0 -> {
-                countVB = getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult)
                 _cardMatchTypeVB.postValue(MatchType.TODAY)
             }
             getSportCount(MatchType.EARLY, GameType.VB, sportMenuResult) != 0 -> {
-                countVB = getSportCount(MatchType.EARLY, GameType.VB, sportMenuResult)
                 _cardMatchTypeVB.postValue(MatchType.EARLY)
             }
             getSportCount(MatchType.PARLAY, GameType.VB, sportMenuResult) != 0 -> {
-                countVB = getSportCount(MatchType.PARLAY, GameType.VB, sportMenuResult)
                 _cardMatchTypeVB.postValue(MatchType.PARLAY)
             }
         }
-        _allVolleyballCount.postValue(countVB)
+        _allVolleyballCount.postValue(getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult))
     }
 
     private fun SportMenuData.sortSport(): SportMenuData {
@@ -859,6 +842,8 @@ class GameViewModel(
                     )
                 )
             }
+            
+            result?.sortOdds()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -1463,6 +1448,21 @@ class GameViewModel(
         }
     }
 
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun OddsListResult.sortOdds() {
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+                val sortOrder = matchOdd.oddsSort?.split(",")
+                matchOdd.odds = matchOdd.odds.toSortedMap(compareBy<String> {
+                    val oddsIndex = sortOrder?.indexOf(it)
+                    oddsIndex
+                }.thenBy { it })
+            }
+        }
+    }
+
     private fun List<Odd?>.updateOddSelectState() {
         this.forEach { odd ->
             odd?.isSelected = betInfoRepository.betInfoList.value?.peekContent()
@@ -1483,10 +1483,8 @@ class GameViewModel(
                     quickPlayCate.isSelected =
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
-                    quickPlayCate.quickOdds = PlayCateUtils.filterOdds(
-                        quickListData.quickOdds?.get(quickPlayCate.code) ?: mapOf(),
-                        quickPlayCate.gameType ?: ""
-                    )
+                    quickPlayCate.quickOdds =
+                        quickListData.quickOdds?.get(quickPlayCate.code) ?: mapOf()
                 }
             }
         }

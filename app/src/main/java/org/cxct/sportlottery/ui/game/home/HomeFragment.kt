@@ -841,6 +841,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        receiver.leagueChange.observe(this.viewLifecycleOwner, {
+            viewModel.getMatchPreload()
+        })
+
         receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
             it?.let { matchOddsLock ->
                 //滾球盤、即將開賽盤

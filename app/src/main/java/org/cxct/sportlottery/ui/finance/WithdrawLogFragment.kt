@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.finance
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -136,7 +137,7 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         viewModel.userWithdrawListResult.observe(this.viewLifecycleOwner,  {
             it?.let {
                 withdrawLogAdapter.data = it
-                setupNoRecordView(it.isEmpty())
+                setupNoRecordView(it.isNullOrEmpty())
             }
         })
 

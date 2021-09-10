@@ -17,17 +17,19 @@ import org.cxct.sportlottery.ui.main.accountHistory.*
 
 class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHistoryViewModel::class) {
 
-    private val rvAdapter = AccountHistoryAdapter(ItemClickListener {
-        it.let { data ->
-            viewModel.setSelectedDate(data.statDate)
-            val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
-            findNavController().navigate(action)
-        }
-    }, BackClickListener {
-        activity?.finish()
-    }, SportSelectListener {
-        viewModel.setSelectedSport(it)
-    })
+    private val rvAdapter by lazy {
+        AccountHistoryAdapter(ItemClickListener {
+            it.let { data ->
+                viewModel.setSelectedDate(data.statDate)
+                val action = AccountHistoryFragmentDirections.actionAccountHistoryFragmentToAccountHistoryNextFragment(data.statDate)
+                findNavController().navigate(action)
+            }
+        }, BackClickListener {
+            activity?.finish()
+        }, SportSelectListener {
+            viewModel.setSelectedSport(it)
+        })
+    }
 
     private val recyclerViewOnScrollListener: RecyclerView.OnScrollListener = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -69,10 +71,6 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
             }
         })
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
-            rvAdapter.oddsType = it
-        })
-
         viewModel.selectedSport.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.apply {
                 viewModel.searchBetRecord(this)
@@ -87,7 +85,6 @@ class AccountHistoryFragment : BaseFragment<AccountHistoryViewModel>(AccountHist
             addItemDecoration(DividerItemDecorator(ContextCompat.getDrawable(context, R.drawable.divider_gray)))
             addOnScrollListener(recyclerViewOnScrollListener)
         }
-
     }
 
 }

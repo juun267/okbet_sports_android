@@ -321,22 +321,26 @@ class AccountHistoryNextAdapter(
                     backClickListener.onClick()
                 }
 
+                //sport
+                sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
+                sport_selector.dataList = sportStatusList
+
                 sport_selector.selectedText =
                     sportStatusList.find { it.code == nowSelectedSport }?.showName
                 sport_selector.selectedTag = nowSelectedSport
+
+                sport_selector.setOnItemSelectedListener {
+                    sportSelectListener.onSelect(it.code)
+                }
+
+                //date
+                date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
+                date_selector.dataList = dateStatusList
 
                 date_selector.selectedText =
                     dateStatusList.find { it.code == nowSelectedDate }?.showName
                 date_selector.selectedTag = nowSelectedDate
 
-                sport_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
-                sport_selector.dataList = sportStatusList
-                sport_selector.setOnItemSelectedListener {
-                    sportSelectListener.onSelect(it.code)
-                }
-
-                date_selector.setCloseBtnText(context.getString(R.string.bottom_sheet_close))
-                date_selector.dataList = dateStatusList
                 date_selector.setOnItemSelectedListener {
                     dateSelectListener.onSelect(it.code)
                 }
