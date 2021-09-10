@@ -305,6 +305,9 @@ class GameViewModel(
 
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = Event(null)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
@@ -312,6 +315,9 @@ class GameViewModel(
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
         _curChildMatchType.value = Event(childMatchType)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
         curMatchType.value?.let {
             getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
         }
@@ -611,6 +617,8 @@ class GameViewModel(
     fun switchSportType(matchType: MatchType, item: Item) {
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         _curChildMatchType.value = Event(null)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
 
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
