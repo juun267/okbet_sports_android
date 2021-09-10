@@ -182,71 +182,12 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
-                oddsChangeEvent.odds?.let { oddTypeSocketMap ->
-                    val odds = mutableListOf<Odd>()
 
-                    outrightLeagueOddAdapter.data.forEach { matchOdd ->
-                        matchOdd?.oddsMap?.values?.forEach { oddList ->
-                            odds.addAll(oddList.filterNotNull())
-                        }
-                    }
+                val matchOdds = outrightLeagueOddAdapter.data
 
-                    odds.forEachIndexed { index: Int, odd: Odd ->
-                        val oddsType = outrightLeagueOddAdapter.oddsType
-
-                        oddTypeSocketMap.forEach { oddTypeSocketMapEntry ->
-                            val oddSocket = oddTypeSocketMapEntry.value.find { oddSocket ->
-                                oddSocket?.id == odd.id
-                            }
-
-                            oddSocket?.let { oddSocketNonNull ->
-                                when (oddsType) {
-                                    OddsType.EU -> {
-                                        odd.odds?.let { oddValue ->
-                                            oddSocketNonNull.odds?.let { oddSocketValue ->
-                                                when {
-                                                    oddValue > oddSocketValue -> {
-                                                        odd.oddState = OddState.SMALLER.state
-                                                    }
-                                                    oddValue < oddSocketValue -> {
-                                                        odd.oddState = OddState.LARGER.state
-                                                    }
-                                                    oddValue == oddSocketValue -> {
-                                                        odd.oddState = OddState.SAME.state
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    OddsType.HK -> {
-                                        odd.hkOdds?.let { oddValue ->
-                                            oddSocketNonNull.hkOdds?.let { oddSocketValue ->
-                                                when {
-                                                    oddValue > oddSocketValue -> {
-                                                        odd.oddState = OddState.SMALLER.state
-                                                    }
-                                                    oddValue < oddSocketValue -> {
-                                                        odd.oddState = OddState.LARGER.state
-                                                    }
-                                                    oddValue == oddSocketValue -> {
-                                                        odd.oddState = OddState.SAME.state
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-
-                                odd.odds = oddSocketNonNull.odds
-                                odd.hkOdds = oddSocketNonNull.hkOdds
-
-                                odd.status = oddSocketNonNull.status
-
-                                outrightLeagueOddAdapter.notifyItemChanged(index)
-                            }
-                        }
-
+                matchOdds.filterNotNull().forEachIndexed { index, matchOdd ->
+                    if (SocketUpdateUtil.updateMatchOdds(matchOdd, oddsChangeEvent)) {
+                        outrightLeagueOddAdapter.notifyItemChanged(index)
                     }
                 }
             }
