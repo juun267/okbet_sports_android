@@ -380,19 +380,25 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         ) {
             when (matchType) {
                 MatchType.IN_PLAY -> {
-                    listener = object : TimerListener {
-                        override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.league_odd_match_time.text =
-                                TimeUtil.timeFormat(timeMillis, "mm:ss")
-                            item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
+                    if (item.matchInfo?.socketMatchStatus != 31) { //滾球半場時(status == 31)，不需顯示計時器
+                        itemView.league_odd_match_time.visibility = View.VISIBLE
+                        listener = object : TimerListener {
+                            override fun onTimerUpdate(timeMillis: Long) {
+                                itemView.league_odd_match_time.text =
+                                    TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
+                            }
                         }
-                    }
 
-                    updateTimer(
-                        isTimerEnable,
-                        item.matchInfo?.leagueTime ?: 0,
-                        item.matchInfo?.gameType == GameType.BK.key
-                    )
+                        updateTimer(
+                            isTimerEnable,
+                            item.matchInfo?.leagueTime ?: 0,
+                            item.matchInfo?.gameType == GameType.BK.key
+                        )
+
+                    } else {
+                        itemView.league_odd_match_time.visibility = View.GONE
+                    }
                 }
 
                 MatchType.AT_START -> {
@@ -503,8 +509,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             6
                         item.matchInfo.statusName
                     } else {
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-                            0
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 0
                         return
                     }
                 }
