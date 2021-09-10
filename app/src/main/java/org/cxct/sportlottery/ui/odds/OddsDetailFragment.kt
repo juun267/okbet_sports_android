@@ -209,7 +209,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                 val pinList = oddsDetailListAdapter.oddsDetailDataList.filter {
                     playCateCodeList?.contains(it.gameType) ?: false
-                }.sortedByDescending { it.originPosition }
+                }.sortedByDescending { oddsDetailListData ->
+                    playCateCodeList?.indexOf(oddsDetailListData.gameType)
+                }
 
                 val epsSize = oddsDetailListAdapter.oddsDetailDataList.groupBy {
                     it.gameType == PlayCate.EPS.value
