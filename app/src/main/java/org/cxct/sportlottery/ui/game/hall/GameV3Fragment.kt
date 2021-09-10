@@ -754,7 +754,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leaguePinList.addAll(pinLeague)
         }
 
-        countryAdapter.datePin = leaguePinList
+        countryAdapter.datePin = leaguePinList.sortedBy {
+            leagueListPin.indexOf(it.id)
+        }
     }
 
     private fun updateLeaguePinOutright(leagueListPin: List<String>) {
@@ -772,7 +774,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leaguePinList.addAll(pinLeague)
         }
 
-        outrightCountryAdapter.datePin = leaguePinList
+        outrightCountryAdapter.datePin = leaguePinList.sortedBy {
+            leagueListPin.indexOf(it.id)
+        }
     }
 
     private fun initSocketObserver() {
