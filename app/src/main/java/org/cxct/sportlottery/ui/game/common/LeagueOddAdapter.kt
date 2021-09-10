@@ -658,7 +658,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     setupQuickOddButtonPair(item, leagueOddListener)
                 }
 
-                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
+                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
                     setupQuickOddButtonPager(item, leagueOddListener)
                 }
 
