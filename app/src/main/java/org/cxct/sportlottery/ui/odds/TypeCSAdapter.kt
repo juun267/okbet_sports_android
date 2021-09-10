@@ -71,18 +71,6 @@ class TypeCSAdapter(
                     checkKey(PlayCate.OU_BTS.value) -> {
                         val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("&")
                         tv_name.text = oddsName
-
-//                        tv_name.text = when (odd?.playCode) {
-//                            "OU&BTS-O-Y " -> this.context.getString(R.string.odds_button_name_oy)
-//                            "OU&BTS-O-N " -> this.context.getString(R.string.odds_button_name_on)
-//                            "OU&BTS-U-Y " -> this.context.getString(R.string.odds_button_name_uy)
-//                            "OU&BTS-U-N " -> this.context.getString(R.string.odds_button_name_un)
-//                            "OU&OE-O-O " -> this.context.getString(R.string.odds_button_name_oo)
-//                            "OU&OE-O-E " -> this.context.getString(R.string.odds_button_name_oe)
-//                            "OU&OE-U-O " -> this.context.getString(R.string.odds_button_name_uo)
-//                            "OU&OE-U-E " -> this.context.getString(R.string.odds_button_name_ue)
-//                            else -> ""
-//                        }
                     }
 
                     checkKey(PlayCate.SINGLE_BTS.value) || checkKey(PlayCate.DC_BTS.value) -> {
