@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
+import org.cxct.sportlottery.util.TextUtil
 import java.math.RoundingMode
 import kotlin.math.abs
 
@@ -129,6 +130,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     //依據選擇的支付渠道，刷新UI
     @SuppressLint("SetTextI18n")
     private fun refreshSelectRechCfgs() {
+        ll_remark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
         tv_hint.text = mSelectRechCfgs?.remark
         et_recharge_online_amount.setHint(getAmountLimitHint())
 
@@ -172,8 +174,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 if (it.isEmpty() || it.isBlank()) {
                     tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
                 } else {
-                    tv_fee_amount.text = ArithUtil.toMoneyFormat(
-                        it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
+                    tv_fee_amount.text = TextUtil.formatMoney(
+                        ArithUtil.toMoneyFormat(
+                            it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
+                        ).toDouble()
                     )
                 }
             }
@@ -191,19 +195,19 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun getAmountLimitHint(): String {
         return String.format(
             getString(R.string.edt_hint_deposit_money),
-            ArithUtil.round(mSelectRechCfgs?.minMoney ?: 0.00,2, RoundingMode.HALF_UP),
-            ArithUtil.round(mSelectRechCfgs?.maxMoney ?: 999999.00,2, RoundingMode.HALF_UP)
+            TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toLong() ?: 0),
+            TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toLong() ?: 999999)
         )
     }
 
     private fun setupRebateFee() {
         val rebateFee = mSelectRechCfgs?.rebateFee
         if (rebateFee == null || rebateFee == 0.0) {
-            ll_fee_rate.visibility = View.GONE
-            ll_fee_amount.visibility = View.GONE
+            title_fee_rate.text = getString(R.string.title_fee_rate)
+            title_fee_amount.text = getString(R.string.title_fee_amount)
+            tv_fee_rate.text = "0.000"
+            tv_fee_amount.text = "0.000"
         } else {
-            ll_fee_rate.visibility = View.VISIBLE
-            ll_fee_amount.visibility = View.VISIBLE
             if (rebateFee < 0.0) {
                 title_fee_rate.text = getString(R.string.title_fee_rate)
                 title_fee_amount.text = getString(R.string.title_fee_amount)
@@ -212,7 +216,8 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 title_fee_amount.text = getString(R.string.title_rebate_amount)
             }
             tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
-            tv_fee_amount.text = ArithUtil.toOddFormat(0.0.times(100))
+            tv_fee_amount.text =
+                TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble())
         }
     }
 

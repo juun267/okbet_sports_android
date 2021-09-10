@@ -28,6 +28,7 @@ import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 import java.util.ArrayList
 import kotlin.math.abs
 
@@ -328,7 +329,7 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
                     //充值金額
                     tv_recharge_money.text = String.format(
                         resources.getString(R.string.txv_recharge_money),
-                        ArithUtil.toMoneyFormat(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0))
+                        TextUtil.formatMoney(ArithUtil.toMoneyFormat(it.toLong().times(mSelectRechCfgs?.exchangeRate ?: 1.0)).toDouble())
                     )
                     //返利/手續費金額
                     if (mSelectRechCfgs?.rebateFee ?: 0.0 > 0.0) { //返利/手續費金額
