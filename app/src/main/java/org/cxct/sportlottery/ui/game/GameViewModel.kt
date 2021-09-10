@@ -977,6 +977,8 @@ class GameViewModel(
             }
 
             _outrightLeagueListResult.postValue(Event(result))
+
+            notifyFavorite(FavoriteType.LEAGUE)
         }
     }
 
