@@ -243,7 +243,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         setupStartTime()
                         setupLiveView()
 
-                        if (args.matchType == MatchType.IN_PLAY) {
+                        if (args.matchType == MatchType.IN_PLAY &&
+                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)) {
                             tv_spt.visibility = View.VISIBLE
                             tv_spt.text = " / ${it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt}"
                         }
