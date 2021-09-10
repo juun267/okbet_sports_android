@@ -86,9 +86,28 @@ class TypeCSAdapter(
                         tv_name.text = oddsName
                     }
 
+                    checkKey(PlayCate.DC_FLG.value) -> {
+                        tv_name.text = when (odd?.playCode) {
+                            "DC&FLG-HD-H" -> this.context.getString(R.string.odds_button_name_hdh)
+                            "DC&FLG-HD-C" -> this.context.getString(R.string.odds_button_name_hdc)
+                            "DC&FLG-CD-H" -> this.context.getString(R.string.odds_button_name_cdh)
+                            "DC&FLG-CD-C" -> this.context.getString(R.string.odds_button_name_cdc)
+                            "DC&FLG-HC-H" -> this.context.getString(R.string.odds_button_name_hch)
+                            "DC&FLG-HC-C" -> this.context.getString(R.string.odds_button_name_hcc)
+                            else -> ""
+                        }
+                    }
+                        
                     checkKey(PlayCate.SINGLE_FLG.value) -> {
-                        val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("-")
-                        tv_name.text = oddsName?.plus(context.getString(R.string.odds_button_name_plus_flg))
+                        tv_name.text = when (odd?.playCode) {
+                            "1X2&FLG-H-H" -> this.context.getString(R.string.odds_button_name_hdh)
+                            "1X2&FLG-H-C" -> this.context.getString(R.string.odds_button_name_hdc)
+                            "1X2&FLG-D-H" -> this.context.getString(R.string.odds_button_name_cdh)
+                            "1X2&FLG-D-C" -> this.context.getString(R.string.odds_button_name_cdc)
+                            "1X2&FLG-C-H" -> this.context.getString(R.string.odds_button_name_hch)
+                            "1X2&FLG-C-C" -> this.context.getString(R.string.odds_button_name_hcc)
+                            else -> ""
+                        }
                     }
                 }
             }
