@@ -881,6 +881,14 @@
     <string name="odds_button_name_cdc">客队或和局-客队</string>
     <string name="odds_button_name_hch">主队或客队-主队</string>
     <string name="odds_button_name_hcc">主队或客队-客队</string>
+    <string name ="odds_button_name_oy">大-是</string>
+    <string name ="odds_button_name_on">大-否</string>
+    <string name ="odds_button_name_uy">小-是</string>
+    <string name ="odds_button_name_un">小-否</string>
+    <string name ="odds_button_name_oo">大-单</string>
+    <string name ="odds_button_name_oe">小-单</string>
+    <string name ="odds_button_name_uo">大-双</string>
+    <string name ="odds_button_name_ue">小-双</string>
     <string name="odds_button_name_plus_flg">首次进球</string>
     <string name="bet_succeeded">您已成功投注</string>
     <string name="bet_fail">投注失敗</string>

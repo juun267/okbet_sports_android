@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.odds
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,11 +61,28 @@ class TypeCSAdapter(
                 }
 
                 when {
-                    checkKey(PlayCate.SINGLE_OU.value) || checkKey(PlayCate.DC_OU.value) || checkKey(PlayCate.OU_BTS.value) -> {
+                    checkKey(PlayCate.SINGLE_OU.value) || checkKey(PlayCate.DC_OU.value) -> {
                         tv_name.text = when (adapterPosition) {
                             0 -> itemView.context.getString(R.string.odds_button_name_o)
                             else -> itemView.context.getString(R.string.odds_button_name_u)
                         }
+                    }
+
+                    checkKey(PlayCate.OU_BTS.value) -> {
+                        val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("&")
+                        tv_name.text = oddsName
+
+//                        tv_name.text = when (odd?.playCode) {
+//                            "OU&BTS-O-Y " -> this.context.getString(R.string.odds_button_name_oy)
+//                            "OU&BTS-O-N " -> this.context.getString(R.string.odds_button_name_on)
+//                            "OU&BTS-U-Y " -> this.context.getString(R.string.odds_button_name_uy)
+//                            "OU&BTS-U-N " -> this.context.getString(R.string.odds_button_name_un)
+//                            "OU&OE-O-O " -> this.context.getString(R.string.odds_button_name_oo)
+//                            "OU&OE-O-E " -> this.context.getString(R.string.odds_button_name_oe)
+//                            "OU&OE-U-O " -> this.context.getString(R.string.odds_button_name_uo)
+//                            "OU&OE-U-E " -> this.context.getString(R.string.odds_button_name_ue)
+//                            else -> ""
+//                        }
                     }
 
                     checkKey(PlayCate.SINGLE_BTS.value) || checkKey(PlayCate.DC_BTS.value) -> {
