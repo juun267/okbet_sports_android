@@ -788,7 +788,7 @@ class GameViewModel(
 
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
-                    matchOdd?.odds?.values?.forEach { oddList ->
+                    matchOdd?.oddsMap?.values?.forEach { oddList ->
                         oddList.updateOddSelectState()
                     }
                 }
