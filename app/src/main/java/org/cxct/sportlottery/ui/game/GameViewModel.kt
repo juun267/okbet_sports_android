@@ -791,6 +791,8 @@ class GameViewModel(
                     matchOdd?.oddsMap?.values?.forEach { oddList ->
                         oddList.updateOddSelectState()
                     }
+
+                    matchOdd?.sortOdds()
                 }
             }
 
@@ -850,8 +852,6 @@ class GameViewModel(
                     )
                 )
             }
-            
-            result?.sortOdds()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -870,6 +870,8 @@ class GameViewModel(
                     matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
                     }
+
+                    matchOdd.sortOdds()
                 }
             }
 
@@ -1461,16 +1463,12 @@ class GameViewModel(
     /**
      * 根據賽事的oddsSort將盤口重新排序
      */
-    private fun OddsListResult.sortOdds() {
-        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                val sortOrder = matchOdd.oddsSort?.split(",")
-                matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
-                    val oddsIndex = sortOrder?.indexOf(it)
-                    oddsIndex
-                }.thenBy { it })
-            }
-        }
+    private fun MatchOdd.sortOdds() {
+        val sortOrder = this.oddsSort?.split(",")
+        this.oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
+            val oddsIndex = sortOrder?.indexOf(it)
+            oddsIndex
+        }.thenBy { it })
     }
 
     private fun List<Odd?>.updateOddSelectState() {
