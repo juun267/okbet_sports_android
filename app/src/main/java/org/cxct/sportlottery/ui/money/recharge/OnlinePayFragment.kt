@@ -130,6 +130,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     //依據選擇的支付渠道，刷新UI
     @SuppressLint("SetTextI18n")
     private fun refreshSelectRechCfgs() {
+        ll_remark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
         tv_hint.text = mSelectRechCfgs?.remark
         et_recharge_online_amount.setHint(getAmountLimitHint())
 
@@ -202,11 +203,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     private fun setupRebateFee() {
         val rebateFee = mSelectRechCfgs?.rebateFee
         if (rebateFee == null || rebateFee == 0.0) {
-            ll_fee_rate.visibility = View.GONE
-            ll_fee_amount.visibility = View.GONE
+            title_fee_rate.text = getString(R.string.title_fee_rate)
+            title_fee_amount.text = getString(R.string.title_fee_amount)
+            tv_fee_rate.text = "0.000"
+            tv_fee_amount.text = "0.000"
         } else {
-            ll_fee_rate.visibility = View.VISIBLE
-            ll_fee_amount.visibility = View.VISIBLE
             if (rebateFee < 0.0) {
                 title_fee_rate.text = getString(R.string.title_fee_rate)
                 title_fee_amount.text = getString(R.string.title_fee_amount)
