@@ -98,6 +98,16 @@ class MyFavoriteViewModel(
         }
     }
 
+    fun getFavoriteMatch() {
+        val gameType = sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code
+        val playCateMenu =
+            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.code
+        val playCateCode =
+            sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.find { it.isSelected }?.code
+
+        getFavoriteMatch(gameType, playCateMenu, playCateCode)
+    }
+
     fun switchGameType(item: Item) {
         _sportQueryData.postValue(
             Event(

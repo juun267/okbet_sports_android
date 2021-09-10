@@ -274,6 +274,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 }
             }
         })
+
+        receiver.leagueChange.observe(this.viewLifecycleOwner, {
+            it?.let {
+                viewModel.getFavoriteMatch()
+                loading()
+            }
+        })
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
