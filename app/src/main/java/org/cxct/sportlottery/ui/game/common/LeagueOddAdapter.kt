@@ -60,7 +60,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(data.indexOf(data.find { matchOdd ->
-                    matchOdd.odds.toList()
+                    matchOdd.oddsMap.toList()
                         .find { map -> map.second.find { it == odd } != null } != null
                 }))
             }
@@ -346,13 +346,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.apply {
                 val oddListHDP = when (item.matchInfo?.gameType) {
                     GameType.TN.key -> {
-                        item.odds[PlayCate.SET_HDP.value]
+                        item.oddsMap[PlayCate.SET_HDP.value]
                     }
                     GameType.BK.key -> {
-                        item.odds[PlayCate.HDP_INCL_OT.value]
+                        item.oddsMap[PlayCate.HDP_INCL_OT.value]
                     }
                     else -> {
-                        item.odds[PlayCate.HDP.value]
+                        item.oddsMap[PlayCate.HDP.value]
                     }
                 }
                 val homeStrongType = if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
@@ -543,7 +543,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_btn_pager_main.apply {
                 this.adapter = OddButtonPagerAdapter(item.matchInfo).apply {
 
-                    this.odds = item.odds
+                    this.odds = item.oddsMap
 
                     this.oddsType = oddsType
 
@@ -569,7 +569,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.league_odd_btn_indicator_main.apply {
 
-                visibility = if (item.odds.size > 2) {
+                visibility = if (item.oddsMap.size > 2) {
                     View.VISIBLE
                 } else {
                     View.GONE

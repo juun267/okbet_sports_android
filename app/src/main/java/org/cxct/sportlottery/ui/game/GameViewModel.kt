@@ -486,7 +486,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.forEach { map ->
+                        matchOdd.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -525,7 +525,7 @@ class GameViewModel(
                         }
 
                         //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                        matchOdd.odds.forEach { map ->
+                        matchOdd.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -865,9 +865,9 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
-                    matchOdd.odds =
-                        PlayCateUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
-                    matchOdd.odds.forEach { map ->
+                    matchOdd.oddsMap =
+                        PlayCateUtils.filterOdds(matchOdd.oddsMap, result.oddsListData.sport.code)
+                    matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
                     }
                 }
@@ -1465,7 +1465,7 @@ class GameViewModel(
         this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 val sortOrder = matchOdd.oddsSort?.split(",")
-                matchOdd.odds = matchOdd.odds.toSortedMap(compareBy<String> {
+                matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
                     val oddsIndex = sortOrder?.indexOf(it)
                     oddsIndex
                 }.thenBy { it })

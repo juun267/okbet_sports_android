@@ -125,7 +125,7 @@ object SocketUpdateUtil {
      */
     private fun sortOdds(matchOdd: MatchOdd) {
         val sortOrder = matchOdd.oddsSort?.split(",")
-        matchOdd.odds = matchOdd.odds.toSortedMap(compareBy<String> {
+        matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
             val oddsIndex = sortOrder?.indexOf(it)
             oddsIndex
         }.thenBy { it })
@@ -138,14 +138,14 @@ object SocketUpdateUtil {
         if (oddsChangeEvent.eventId != null && oddsChangeEvent.eventId == matchOdd.matchInfo?.id) {
 
             isNeedRefresh =
-                when (matchOdd.odds.isNullOrEmpty() && matchOdd.oddsEps?.eps.isNullOrEmpty()) {
+                when (matchOdd.oddsMap.isNullOrEmpty() && matchOdd.oddsEps?.eps.isNullOrEmpty()) {
                     true -> {
                         insertMatchOdds(matchOdd, oddsChangeEvent)
                     }
 
                     false -> {
                         val isNeedRefreshMatchOdds =
-                            refreshMatchOdds(matchOdd.odds, oddsChangeEvent)
+                            refreshMatchOdds(matchOdd.oddsMap, oddsChangeEvent)
 
                         val isNeedRefreshQuickOdds = matchOdd.quickPlayCateList?.map {
                             refreshMatchOdds(it.quickOdds ?: mutableMapOf(), oddsChangeEvent)
@@ -187,7 +187,7 @@ object SocketUpdateUtil {
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
-        matchOdd.odds.values.forEach { odds ->
+        matchOdd.oddsMap.values.forEach { odds ->
             odds.filter { odd ->
                 globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
             }.forEach { odd ->
@@ -231,7 +231,7 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
-            matchOdd.odds.values.forEach { odd ->
+            matchOdd.oddsMap.values.forEach { odd ->
                 odd.forEach {
                     it?.status = BetStatus.LOCKED.code
                     isNeedRefresh = true
@@ -247,7 +247,7 @@ object SocketUpdateUtil {
     }
 
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
-        matchOdd.odds.putAll(oddsChangeEvent.odds?.mapValues {
+        matchOdd.oddsMap.putAll(oddsChangeEvent.odds?.mapValues {
             it.value.toMutableList()
         }?.toMutableMap() ?: mutableMapOf())
 
