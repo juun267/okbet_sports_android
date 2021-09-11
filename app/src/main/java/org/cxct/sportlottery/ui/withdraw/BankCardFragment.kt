@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.network.money.config.Bank
 import org.cxct.sportlottery.network.money.config.Detail
 import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.TextUtil
@@ -41,15 +42,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private val args: BankCardFragmentArgs by navArgs()
     private val mBankCardStatus by lazy { args.editBankCard != null } //true: 編輯, false: 新增
     private val mAddSwitch: TransferTypeAddSwitch? by lazy { args.transferTypeAddSwitch } //是否可新增資金卡
-
-    private val protocolAdapter by lazy {
-        ProtocolAdapter(OnSelectProtocol {
-            sv_protocol.apply {
-                setCryptoProtocol(it)
-                dismiss()
-            }
-        })
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -112,7 +104,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun initView() {
         changeTransferType(transferType)
         showHideTab()
-        sv_protocol.setAdapter(protocolAdapter)
 
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
@@ -276,7 +267,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun clearCryptoInputFiled() {
         et_wallet.resetText()
         et_withdrawal_password.resetText()
-        protocolAdapter.initSelectStatus()
+//        protocolAdapter.initSelectStatus()
         clearFocus()
     }
 
@@ -336,7 +327,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         })
 
         viewModel.addCryptoCardList.observe(this.viewLifecycleOwner, {
-            protocolAdapter.dataList = it
+
+            val sheetList: List<StatusSheetData> = it.map { item ->
+                StatusSheetData(item.contract, item.contract)
+            }
+            sv_protocol.dataList = sheetList
+            sv_protocol.selectedText = it.firstOrNull()?.contract
+            sv_protocol.selectedTag = it.firstOrNull()?.contract
+
             val modifyMoneyCardDetail = it.find { list -> list.contract == args.editBankCard?.bankName }
             setCryptoProtocol(modifyMoneyCardDetail ?: it.firstOrNull())
         })
@@ -500,94 +498,4 @@ class ListViewHolder {
 
 class BankSelectorAdapterListener(private val selectListener: (item: Bank) -> Unit) {
     fun onSelect(item: Bank) = selectListener(item)
-}
-
-//虛擬幣 協議/渠道選擇
-class ProtocolAdapter(private val selectedListener: OnSelectProtocol) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    companion object {
-        var dataCheckedList = mutableListOf<Boolean>()
-        var selectedPosition = 0
-    }
-
-    var dataList = listOf<Detail>()
-        set(value) {
-            field = value
-            dataCheckedList = MutableList(value.size) { it == 0 }
-            notifyDataSetChanged()
-        }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ThirdGamesItemViewHolder.form(parent)
-    }
-
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is ThirdGamesItemViewHolder -> {
-                holder.bind(this, dataList, position, selectedListener)
-            }
-        }
-    }
-
-    class ThirdGamesItemViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(
-            adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,
-            dataList: List<Detail>,
-            position: Int,
-            selectedListener: OnSelectProtocol
-        ) {
-            val data = dataList[position]
-            val itemChecked = dataCheckedList[position]
-            itemView.apply {
-                checkbox_item.text = data.contract
-                linear_layout.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.colorWhite6) else ContextCompat.getDrawable(context, R.color.colorWhite)
-
-                checkbox_item.setOnClickListener {
-                    if (selectedPosition != position) {
-                        selectedListener.onSelected(data)
-                        itemChecked(adapter, position)
-                    }
-                }
-            }
-        }
-
-        private fun itemChecked(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, checkIndex: Int) {
-            dataCheckedList[selectedPosition] = false
-            dataCheckedList[checkIndex] = true
-            adapter.apply {
-                notifyItemChanged(selectedPosition)
-                notifyItemChanged(checkIndex)
-            }
-            selectedPosition = checkIndex
-        }
-
-        companion object {
-            fun form(viewGroup: ViewGroup): RecyclerView.ViewHolder {
-                val inflater = LayoutInflater.from(viewGroup.context)
-                val view = inflater.inflate(R.layout.content_common_bottom_sheet_item, viewGroup, false)
-                return ThirdGamesItemViewHolder(view)
-            }
-        }
-    }
-
-    fun initSelectStatus() {
-        dataCheckedList.forEachIndexed { index, _ ->
-            dataCheckedList[index] = index == 0
-        }
-        dataList.firstOrNull()?.let {
-            selectedListener.onSelected(it)
-        }
-        notifyItemChanged(selectedPosition)
-        notifyItemChanged(0)
-    }
-
-}
-
-class OnSelectProtocol(val selectedListener: (protocol: Detail) -> Unit) {
-    fun onSelected(protocol: Detail) = selectedListener(protocol)
 }
