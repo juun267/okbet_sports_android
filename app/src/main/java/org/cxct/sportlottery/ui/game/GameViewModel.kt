@@ -281,6 +281,15 @@ class GameViewModel(
 
     private var sportQueryData: SportQueryData? = null
 
+    private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
+        MatchType.IN_PLAY.postValue to null,
+        MatchType.AT_START.postValue to null,
+        MatchType.TODAY.postValue to null,
+        MatchType.EARLY.postValue to null,
+        MatchType.OUTRIGHT.postValue to null,
+        MatchType.PARLAY.postValue to null,
+        MatchType.EPS.postValue to null
+    )
 
     fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
         _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
