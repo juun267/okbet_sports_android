@@ -664,7 +664,8 @@ class GameViewModel(
         matchType: MatchType,
         isReloadDate: Boolean,
         date: String? = null,
-        isReloadPlayCate: Boolean = false
+        isReloadPlayCate: Boolean = false,
+        isLastSportType: Boolean = false
     ) {
 
         val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
