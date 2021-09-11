@@ -633,11 +633,15 @@ class GameViewModel(
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         _curChildMatchType.value = Event(null)
 
+        recordSportType(matchType, item)
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
         filterLeague(listOf())
     }
 
+    private fun recordSportType(matchType: MatchType, item: Item){
+        lastSportTypeHashMap[matchType.postValue] = item.code
+    }
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
 
