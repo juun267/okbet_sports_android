@@ -680,28 +680,30 @@ class GameViewModel(
 
         val sportItem = getSportSelected(matchType)
 
-        sportItem?.let { item ->
+        val sportItemCode = if(isLastSportType) lastSportTypeHashMap[matchType.postValue] else sportItem?.code
+
+        sportItemCode?.let {
             when (nowMatchType) {
                 MatchType.IN_PLAY -> {
-                    getOddsList(item.code, nowMatchType.postValue)
+                    getOddsList(sportItemCode, nowMatchType.postValue)
                 }
                 MatchType.TODAY -> {
                     getLeagueList(
-                        item.code,
+                        sportItemCode,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.EARLY -> {
                     getLeagueList(
-                        item.code,
+                        sportItemCode,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.PARLAY -> {
                     getLeagueList(
-                        item.code,
+                        sportItemCode,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams(),
                         date
@@ -709,18 +711,18 @@ class GameViewModel(
 
                 }
                 MatchType.OUTRIGHT -> {
-                    getOutrightSeasonList(item.code)
+                    getOutrightSeasonList(sportItemCode)
                 }
                 MatchType.AT_START -> {
                     getOddsList(
-                        item.code,
+                        sportItemCode,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.EPS -> {
                     val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(), TimeUtil.YMD_FORMAT)
-                    getEpsList(item.code, startTime = time)
+                    getEpsList(sportItemCode, startTime = time)
                 }
                 else -> {
                 }
