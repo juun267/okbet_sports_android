@@ -384,9 +384,20 @@ class GameViewModel(
             }
 
             sportQueryData = result?.sportQueryData
+            checkLastSportType(matchType,sportQueryData)
         }
     }
 
+    private fun checkLastSportType(matchType: MatchType, sportQueryData: SportQueryData?){
+        var isContain = false
+
+        sportQueryData?.items?.forEach { item ->
+            if(item.code == lastSportTypeHashMap[matchType.postValue])
+                isContain=true
+        }
+        if(!isContain)
+            lastSportTypeHashMap[matchType.postValue] = sportQueryData?.items?.firstOrNull()?.code
+    }
     private fun postHomeCardCount(sportMenuResult: SportMenuResult?) {
         _asStartCount.postValue(
             getMatchCount(
