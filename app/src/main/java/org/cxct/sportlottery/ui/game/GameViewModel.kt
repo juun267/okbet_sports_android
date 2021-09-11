@@ -61,6 +61,7 @@ import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class GameViewModel(
     androidContext: Application,
