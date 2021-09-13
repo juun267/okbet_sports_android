@@ -267,7 +267,6 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
     private fun clearCryptoInputFiled() {
         et_wallet.resetText()
         et_withdrawal_password.resetText()
-//        protocolAdapter.initSelectStatus()
         clearFocus()
     }
 
