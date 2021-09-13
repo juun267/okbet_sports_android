@@ -682,6 +682,9 @@ class GameViewModel(
 
         val sportItemCode = if(isLastSportType) lastSportTypeHashMap[matchType.postValue] else sportItem?.code
 
+        if (isLastSportType)
+            _sportMenuResult.value?.updateSportSelectState(matchType, sportItemCode)
+
         sportItemCode?.let {
             when (nowMatchType) {
                 MatchType.IN_PLAY -> {
