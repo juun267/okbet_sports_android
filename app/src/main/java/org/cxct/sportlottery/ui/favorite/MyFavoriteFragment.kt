@@ -373,6 +373,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 fl_no_game.visibility = View.GONE
             }
         })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            it?.let { oddsType ->
+                leagueAdapter.oddsType = oddsType
+            }
+        })
     }
 
     private fun updateGameTypeList(items: List<Item>?) {
