@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.odds
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.PlayCode
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.widget.OddsButton
@@ -62,16 +60,11 @@ class TypeCSAdapter(
                 }
 
                 when {
-                    checkKey(PlayCate.SINGLE_OU.value) || checkKey(PlayCate.DC_OU.value) -> {
+                    checkKey(PlayCate.SINGLE_OU.value) || checkKey(PlayCate.DC_OU.value) || checkKey(PlayCate.OU_BTS.value) -> {
                         tv_name.text = when (adapterPosition) {
-                            0 -> itemView.context.getString(R.string.odd_button_ou_o)
-                            else -> itemView.context.getString(R.string.odd_button_ou_u)
+                            0 -> itemView.context.getString(R.string.odds_button_name_o)
+                            else -> itemView.context.getString(R.string.odds_button_name_u)
                         }
-                    }
-
-                    checkKey(PlayCate.OU_BTS.value) -> {
-                        val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("&")
-                        tv_name.text = oddsName
                     }
 
                     checkKey(PlayCate.SINGLE_BTS.value) || checkKey(PlayCate.DC_BTS.value) -> {
@@ -82,45 +75,37 @@ class TypeCSAdapter(
                     }
 
                     checkKey(PlayCate.OU_OE.value) -> {
-                        tv_name.text = when (odd?.playCode) {
-                            PlayCode.OU_OE_O_O.value -> this.context.getString(R.string.odds_button_name_singular)
-                            PlayCode.OU_OE_O_E.value -> this.context.getString(R.string.odds_button_name_dual)
-                            PlayCode.OU_OE_U_O.value -> this.context.getString(R.string.odds_button_name_singular)
-                            PlayCode.OU_OE_U_E.value -> this.context.getString(R.string.odds_button_name_dual)
-                            else -> ""
+                        tv_name.text = when (adapterPosition) {
+                            0 -> itemView.context.getString(R.string.odds_button_name_singular)
+                            else -> itemView.context.getString(R.string.odds_button_name_dual)
                         }
                     }
 
                     checkKey(PlayCate.OU_TTS1ST.value) -> {
-                        tv_name.text = when (odd?.playCode) {
-                            PlayCode.OU_TTS1ST_O_H.value -> this.context.getString(R.string.odds_button_name_home)
-                            PlayCode.OU_TTS1ST_U_H.value -> this.context.getString(R.string.odds_button_name_home)
-                            PlayCode.OU_TTS1ST_O_C.value -> this.context.getString(R.string.odds_button_name_away)
-                            PlayCode.OU_TTS1ST_U_C.value -> this.context.getString(R.string.odds_button_name_away)
-                            else -> ""
-                        }
+                        val oddsName = (odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)?.substringAfter("&")
+                        tv_name.text = oddsName
                     }
 
                     checkKey(PlayCate.DC_FLG.value) -> {
                         tv_name.text = when (odd?.playCode) {
-                            PlayCode.DC_FLG_HD_H.value -> this.context.getString(R.string.odds_button_name_hdh)
-                            PlayCode.DC_FLG_HD_C.value -> this.context.getString(R.string.odds_button_name_hdc)
-                            PlayCode.DC_FLG_CD_H.value -> this.context.getString(R.string.odds_button_name_cdh)
-                            PlayCode.DC_FLG_CD_C.value -> this.context.getString(R.string.odds_button_name_cdc)
-                            PlayCode.DC_FLG_HC_H.value -> this.context.getString(R.string.odds_button_name_hch)
-                            PlayCode.DC_FLG_HC_C.value -> this.context.getString(R.string.odds_button_name_hcc)
+                            "DC&FLG-HD-H" -> this.context.getString(R.string.odds_button_name_hdh)
+                            "DC&FLG-HD-C" -> this.context.getString(R.string.odds_button_name_hdc)
+                            "DC&FLG-CD-H" -> this.context.getString(R.string.odds_button_name_cdh)
+                            "DC&FLG-CD-C" -> this.context.getString(R.string.odds_button_name_cdc)
+                            "DC&FLG-HC-H" -> this.context.getString(R.string.odds_button_name_hch)
+                            "DC&FLG-HC-C" -> this.context.getString(R.string.odds_button_name_hcc)
                             else -> ""
                         }
                     }
-
+                        
                     checkKey(PlayCate.SINGLE_FLG.value) -> {
                         tv_name.text = when (odd?.playCode) {
-                            PlayCode.SINGLE_FLG_H_H.value -> this.context.getString(R.string.odds_button_name_hdh)
-                            PlayCode.SINGLE_FLG_H_C.value -> this.context.getString(R.string.odds_button_name_hdc)
-                            PlayCode.SINGLE_FLG_D_H.value -> this.context.getString(R.string.odds_button_name_cdh)
-                            PlayCode.SINGLE_FLG_D_C.value -> this.context.getString(R.string.odds_button_name_cdc)
-                            PlayCode.SINGLE_FLG_C_H.value -> this.context.getString(R.string.odds_button_name_hch)
-                            PlayCode.SINGLE_FLG_C_C.value -> this.context.getString(R.string.odds_button_name_hcc)
+                            "1X2&FLG-H-H" -> this.context.getString(R.string.odds_button_name_hdh)
+                            "1X2&FLG-H-C" -> this.context.getString(R.string.odds_button_name_hdc)
+                            "1X2&FLG-D-H" -> this.context.getString(R.string.odds_button_name_cdh)
+                            "1X2&FLG-D-C" -> this.context.getString(R.string.odds_button_name_cdc)
+                            "1X2&FLG-C-H" -> this.context.getString(R.string.odds_button_name_hch)
+                            "1X2&FLG-C-C" -> this.context.getString(R.string.odds_button_name_hcc)
                             else -> ""
                         }
                     }
