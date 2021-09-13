@@ -113,6 +113,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             override fun reRequestStreamUrl() {
                 matchId?.let { viewModel.getLiveInfo(it, true) }
             }
+
+            override fun isLiveShowing(isShowing: Boolean) {
+                live_view_tool_bar.showLiveView(isShowing)
+            }
         }
     }
 
