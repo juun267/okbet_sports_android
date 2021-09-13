@@ -634,7 +634,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { oddList ->
+                        matchOdd.oddsMap.values.forEach { oddList ->
                             oddList.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
@@ -755,7 +755,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leaguePinList.addAll(pinLeague)
         }
 
-        countryAdapter.datePin = leaguePinList
+        countryAdapter.datePin = leaguePinList.sortedBy {
+            leagueListPin.indexOf(it.id)
+        }
     }
 
     private fun updateLeaguePinOutright(leagueListPin: List<String>) {
@@ -773,7 +775,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leaguePinList.addAll(pinLeague)
         }
 
-        outrightCountryAdapter.datePin = leaguePinList
+        outrightCountryAdapter.datePin = leaguePinList.sortedBy {
+            leagueListPin.indexOf(it.id)
+        }
     }
 
     private fun initSocketObserver() {
@@ -839,7 +843,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     SocketUpdateUtil.updateMatchOdds(
                                         matchOdd.apply {
                                             PlayCateUtils.filterOdds(
-                                                this.odds,
+                                                this.oddsMap,
                                                 this.matchInfo?.gameType ?: ""
                                             )
                                         }, oddsChangeEvent

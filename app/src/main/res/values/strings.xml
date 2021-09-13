@@ -478,7 +478,7 @@
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
     <string name="title_deposit_money">充值金额</string>
-    <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
+    <string name="edt_hint_deposit_money">限额 %1$s～%2$s RMB</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">姓名须与银行户口一致</string>

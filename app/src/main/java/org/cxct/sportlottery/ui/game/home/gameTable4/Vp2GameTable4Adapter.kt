@@ -48,7 +48,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
-                    matchOdd.odds.toList()
+                    matchOdd.oddsMap.toList()
                         .find { map -> map.second.find { it == odd } != null } != null
                 }))
             }
@@ -130,22 +130,22 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                 oddListHDP = when (gameType) {
                     GameType.TN.key -> {
-                        data.odds[PlayCate.SET_HDP.value]
+                        data.oddsMap[PlayCate.SET_HDP.value]
                     }
                     GameType.BK.key -> {
-                        data.odds[PlayCate.HDP_INCL_OT.value]
+                        data.oddsMap[PlayCate.HDP_INCL_OT.value]
                     }
                     else -> {
-                        data.odds[PlayCate.HDP.value]
+                        data.oddsMap[PlayCate.HDP.value]
                     }
                 }
 
                 oddList1x2 = when (gameType) {
                     GameType.BK.key -> {
-                        data.odds[PlayCate.SINGLE_OT.value]
+                        data.oddsMap[PlayCate.SINGLE_OT.value]
                     }
                     else -> {
-                        data.odds[PlayCate.SINGLE.value]
+                        data.oddsMap[PlayCate.SINGLE.value]
                     }
                 }
             }

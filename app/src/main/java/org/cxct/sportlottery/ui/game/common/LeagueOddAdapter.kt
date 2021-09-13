@@ -17,10 +17,7 @@ import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pair.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -60,7 +57,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(data.indexOf(data.find { matchOdd ->
-                    matchOdd.odds.toList()
+                    matchOdd.oddsMap.toList()
                         .find { map -> map.second.find { it == odd } != null } != null
                 }))
             }
@@ -346,13 +343,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.apply {
                 val oddListHDP = when (item.matchInfo?.gameType) {
                     GameType.TN.key -> {
-                        item.odds[PlayCate.SET_HDP.value]
+                        item.oddsMap[PlayCate.SET_HDP.value]
                     }
                     GameType.BK.key -> {
-                        item.odds[PlayCate.HDP_INCL_OT.value]
+                        item.oddsMap[PlayCate.HDP_INCL_OT.value]
                     }
                     else -> {
-                        item.odds[PlayCate.HDP.value]
+                        item.oddsMap[PlayCate.HDP.value]
                     }
                 }
                 val homeStrongType = if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
@@ -380,19 +377,27 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         ) {
             when (matchType) {
                 MatchType.IN_PLAY -> {
-                    listener = object : TimerListener {
-                        override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.league_odd_match_time.text =
-                                TimeUtil.timeFormat(timeMillis, "mm:ss")
-                            item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
-                        }
-                    }
+                    val socketValue = item.matchInfo?.socketMatchStatus
 
-                    updateTimer(
-                        isTimerEnable,
-                        item.matchInfo?.leagueTime ?: 0,
-                        item.matchInfo?.gameType == GameType.BK.key
-                    )
+                    if (noNeedCount(socketValue)) {
+                        itemView.league_odd_match_time.visibility = View.VISIBLE
+                        listener = object : TimerListener {
+                            override fun onTimerUpdate(timeMillis: Long) {
+                                itemView.league_odd_match_time.text =
+                                    TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                item.matchInfo?.leagueTime = (timeMillis / 1000).toInt()
+                            }
+                        }
+
+                        updateTimer(
+                            isTimerEnable,
+                            item.matchInfo?.leagueTime ?: 0,
+                            item.matchInfo?.gameType == GameType.BK.key
+                        )
+
+                    } else {
+                        itemView.league_odd_match_time.visibility = View.GONE
+                    }
                 }
 
                 MatchType.AT_START -> {
@@ -486,6 +491,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
+        //不需顯示計時器 -> [1:第一节, 2:第二节, 6:上半场, 7:下半场, 13:第一节, 14:第二节, 15:第三节, 16:第四节, 106:加时赛上半场, 107:加时赛下半场]
+        private fun noNeedCount(status: Int?): Boolean {
+            return status != GameMatchStatus.SECTION_ONE.value
+                    && status != GameMatchStatus.SECTION_TWO.value
+                    && status != GameMatchStatus.FIRST_HALF.value
+                    && status != GameMatchStatus.SECOND_HALF.value
+                    && status != GameMatchStatus.SECTION_ONE_2.value
+                    && status != GameMatchStatus.SECTION_TWO_2.value
+                    && status != GameMatchStatus.SECTION_THREE.value
+                    && status != GameMatchStatus.FOURTH_QUARTER.value
+                    && status != GameMatchStatus.OVERTIME_FIRST_HALF.value
+                    && status != GameMatchStatus.OVERTIME_SECOND_HALF.value
+        }
+
         private fun setStatusText(item: MatchOdd, matchType: MatchType) {
             itemView.league_odd_match_status.text = when {
                 (matchType == MatchType.IN_PLAY &&
@@ -503,8 +522,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             6
                         item.matchInfo.statusName
                     } else {
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-                            0
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 0
                         return
                     }
                 }
@@ -538,7 +556,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_btn_pager_main.apply {
                 this.adapter = OddButtonPagerAdapter(item.matchInfo).apply {
 
-                    this.odds = item.odds
+                    this.odds = item.oddsMap
 
                     this.oddsType = oddsType
 
@@ -564,7 +582,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.league_odd_btn_indicator_main.apply {
 
-                visibility = if (item.odds.size > 2) {
+                visibility = if (item.oddsMap.size > 2) {
                     View.VISIBLE
                 } else {
                     View.GONE

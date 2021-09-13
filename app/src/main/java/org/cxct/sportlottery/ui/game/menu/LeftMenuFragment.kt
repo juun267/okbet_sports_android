@@ -149,6 +149,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     private fun updateFavorSport(favorSportTypeList: List<String>) {
         val selectedList = unselectedAdapter.data.filter {
             favorSportTypeList.contains(it.gameType)
+        }.sortedBy {
+            favorSportTypeList.indexOf(it.gameType)
         }
         selectedAdapter.data = selectedList
     }

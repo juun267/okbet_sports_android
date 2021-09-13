@@ -223,7 +223,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.values.forEach { oddList ->
+                        matchOdd.oddsMap.values.forEach { oddList ->
                             oddList.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
@@ -332,7 +332,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             SocketUpdateUtil.updateMatchOdds(
                                 matchOdd.apply {
                                     PlayCateUtils.filterOdds(
-                                        this.odds,
+                                        this.oddsMap,
                                         this.matchInfo?.gameType ?: ""
                                     )
                                 }, oddsChangeEvent

@@ -21,7 +21,7 @@ import org.cxct.sportlottery.util.TimeUtil
 
 class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { DATE, ITEM }
+    private enum class ViewType { DATE, ITEM, NO_DATA }
 
     var dataList = listOf<EpsLeagueOddsItem>()
         set(value) {
@@ -119,15 +119,30 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         }
     }
 
+    class NoDataViewHolder private constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+
+        companion object {
+            fun from(parent: ViewGroup): NoDataViewHolder {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.view_no_record, parent, false)
+
+                return NoDataViewHolder(view)
+            }
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
-        return when (dataList[position].date.toInt()) {
-            0 -> ViewType.ITEM.ordinal
+        return when {
+            dataList.isNullOrEmpty() -> ViewType.NO_DATA.ordinal
+            (dataList[position].date.toInt() == 0) -> ViewType.ITEM.ordinal
             else -> ViewType.DATE.ordinal
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
+            ViewType.NO_DATA.ordinal -> NoDataViewHolder.from(parent)
             ViewType.ITEM.ordinal -> ItemViewHolder.from(parent)
             ViewType.DATE.ordinal -> DateViewHolder.from(parent)
             else -> DateViewHolder.from(parent)
@@ -145,7 +160,11 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         }
     }
 
-    override fun getItemCount() = dataList.size
+    override fun getItemCount() = if (dataList.isEmpty()) {
+        1
+    } else {
+        dataList.size
+    }
 
     class ItemClickListener(private val clickListener: (odd: Odd) -> Unit) {
         fun onClick(odd: Odd) = clickListener(odd)

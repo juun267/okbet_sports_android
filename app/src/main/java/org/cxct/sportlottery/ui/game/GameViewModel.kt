@@ -315,6 +315,9 @@ class GameViewModel(
 
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = Event(null)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
         getSportMenu(matchType)
         getAllPlayCategory(matchType)
         filterLeague(listOf())
@@ -322,6 +325,9 @@ class GameViewModel(
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
         _curChildMatchType.value = Event(childMatchType)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
         curMatchType.value?.let {
             getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
         }
@@ -501,7 +507,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
-                        matchOdd.odds.forEach { map ->
+                        matchOdd.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -540,7 +546,7 @@ class GameViewModel(
                         }
 
                         //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
-                        matchOdd.odds.forEach { map ->
+                        matchOdd.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -632,6 +638,8 @@ class GameViewModel(
     fun switchSportType(matchType: MatchType, item: Item) {
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
         _curChildMatchType.value = Event(null)
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
 
         recordSportType(matchType, item)
         getGameHallList(matchType, true, isReloadPlayCate = true)
@@ -811,9 +819,11 @@ class GameViewModel(
 
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
-                    matchOdd?.odds?.values?.forEach { oddList ->
+                    matchOdd?.oddsMap?.values?.forEach { oddList ->
                         oddList.updateOddSelectState()
                     }
+
+                    matchOdd?.sortOdds()
                 }
             }
 
@@ -873,8 +883,6 @@ class GameViewModel(
                     )
                 )
             }
-            
-            result?.sortOdds()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -888,11 +896,13 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
-                    matchOdd.odds =
-                        PlayCateUtils.filterOdds(matchOdd.odds, result.oddsListData.sport.code)
-                    matchOdd.odds.forEach { map ->
+                    matchOdd.oddsMap =
+                        PlayCateUtils.filterOdds(matchOdd.oddsMap, result.oddsListData.sport.code)
+                    matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
                     }
+
+                    matchOdd.sortOdds()
                 }
             }
 
@@ -1008,6 +1018,8 @@ class GameViewModel(
             }
 
             _outrightLeagueListResult.postValue(Event(result))
+
+            notifyFavorite(FavoriteType.LEAGUE)
         }
     }
 
@@ -1482,16 +1494,12 @@ class GameViewModel(
     /**
      * 根據賽事的oddsSort將盤口重新排序
      */
-    private fun OddsListResult.sortOdds() {
-        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach { matchOdd ->
-                val sortOrder = matchOdd.oddsSort?.split(",")
-                matchOdd.odds = matchOdd.odds.toSortedMap(compareBy<String> {
-                    val oddsIndex = sortOrder?.indexOf(it)
-                    oddsIndex
-                }.thenBy { it })
-            }
-        }
+    private fun MatchOdd.sortOdds() {
+        val sortOrder = this.oddsSort?.split(",")
+        this.oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
+            val oddsIndex = sortOrder?.indexOf(it)
+            oddsIndex
+        }.thenBy { it })
     }
 
     private fun List<Odd?>.updateOddSelectState() {

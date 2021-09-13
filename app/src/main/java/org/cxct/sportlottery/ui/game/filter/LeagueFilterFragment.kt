@@ -104,7 +104,9 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 leaguePinList.addAll(pinLeague)
             }
 
-            countryAdapter.datePin = leaguePinList
+            countryAdapter.datePin = leaguePinList.sortedBy { league ->
+                it.indexOf(league.id)
+            }
         })
 
         viewModel.leagueSelectedList.observe(this.viewLifecycleOwner, {

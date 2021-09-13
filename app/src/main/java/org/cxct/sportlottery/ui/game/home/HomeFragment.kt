@@ -198,7 +198,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         gameType = gameType,
                         matchOdd = org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            odds = matchOdd.odds,
+                            oddsMap = matchOdd.oddsMap,
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = null,
                             quickPlayCateList = matchOdd.quickPlayCateList
@@ -217,7 +217,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         oddsKey,
                         org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            odds = matchOdd.odds,
+                            oddsMap = matchOdd.oddsMap,
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = listOf(),
                             quickPlayCateList = matchOdd.quickPlayCateList
@@ -694,10 +694,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
                     //mapping 要更新的賠率
-                    if (updateMatchOdd?.odds.isNullOrEmpty()) {
+                    if (updateMatchOdd?.oddsMap.isNullOrEmpty()) {
                         oddsChangeEvent.odds?.mapValues { it.value.toMutableList() }
                             ?.let { newMatchOdds ->
-                                updateMatchOdd?.odds = newMatchOdds.toMutableMap()
+                                updateMatchOdd?.oddsMap = newMatchOdds.toMutableMap()
 
                                 //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
                                 mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
@@ -707,7 +707,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         oddsChangeEvent.odds?.forEach { map ->
                             val key = map.key
                             val newOddList = map.value
-                            val oldOddList = updateMatchOdd?.odds?.get(key)
+                            val oldOddList = updateMatchOdd?.oddsMap?.get(key)
 
                             oldOddList?.forEach oldOddList@{ oldOdd ->
                                 if (oldOdd == null) return@oldOddList
@@ -797,10 +797,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val highlightDataList = mRvHighlightAdapter.getData()
                 val highlightOddsType = mRvHighlightAdapter.oddsType
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
-                    if (updateMatchOdd.odds.isNullOrEmpty()) {
+                    if (updateMatchOdd.oddsMap.isNullOrEmpty()) {
                         oddsChangeEvent.odds?.mapValues { it.value.toMutableList() }
                             ?.let { newMatchOdds ->
-                                updateMatchOdd.odds = newMatchOdds.toMutableMap()
+                                updateMatchOdd.oddsMap = newMatchOdds.toMutableMap()
 
                                 mRvHighlightAdapter.notifyItemChanged(index)
                             }
@@ -809,7 +809,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         oddsChangeEvent.odds?.forEach { map ->
                             val key = map.key
                             val newOddList = map.value
-                            val oldOddList = updateMatchOdd.odds[key]
+                            val oldOddList = updateMatchOdd.oddsMap[key]
 
                             oldOddList?.forEach oldOddList@{ oldOdd ->
                                 if (oldOdd == null)
@@ -857,8 +857,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
                     //mapping 要更新的賠率
-                    if (!updateMatchOdd?.odds.isNullOrEmpty()) {
-                        updateMatchOdd?.odds?.forEach oldOddList@{ oldOddMap ->
+                    if (!updateMatchOdd?.oddsMap.isNullOrEmpty()) {
+                        updateMatchOdd?.oddsMap?.forEach oldOddList@{ oldOddMap ->
                             oldOddMap.value.forEach { oldOdd ->
                                 if (oldOdd == null) return@oldOddList
 
@@ -895,8 +895,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 //精選賽事
                 val highlightDataList = mRvHighlightAdapter.getData()
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
-                    if (!updateMatchOdd.odds.isNullOrEmpty()) {
-                        updateMatchOdd.odds.forEach { oldOddMap ->
+                    if (!updateMatchOdd.oddsMap.isNullOrEmpty()) {
+                        updateMatchOdd.oddsMap.forEach { oldOddMap ->
                             oldOddMap.value.forEach oldOddList@{ oldOdd ->
                                 if (oldOdd == null) return@oldOddList
 
@@ -915,7 +915,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 //滾球盤、即將開賽盤
                 mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
-                        matchOdd.odds.values.forEach { odds ->
+                        matchOdd.oddsMap.values.forEach { odds ->
                             odds.forEach { odd ->
                                 if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
                                     odd?.status = BetStatus.DEACTIVATED.code
@@ -946,7 +946,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 //精選賽事
                 mRvHighlightAdapter.getData().forEachIndexed { index, matchOdd ->
-                    matchOdd.odds.values.forEach { odds ->
+                    matchOdd.oddsMap.values.forEach { odds ->
                         odds.forEach { odd ->
                             if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
                                 odd?.status = BetStatus.DEACTIVATED.code
@@ -1108,7 +1108,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         //滾球盤、即將開賽盤
         mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
             gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
-                matchOdd.odds.values.forEach { oddList ->
+                matchOdd.oddsMap.values.forEach { oddList ->
                     oddList.forEach { odd ->
                         odd?.isSelected = result.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
@@ -1135,7 +1135,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         //精選賽事
         mRvHighlightAdapter.getData().forEach { matchOdd ->
-            matchOdd.odds.values.forEach { oddList ->
+            matchOdd.oddsMap.values.forEach { oddList ->
                 oddList.forEach { odd ->
                     odd?.isSelected = result.any { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == odd?.id
