@@ -1593,14 +1593,14 @@ class GameViewModel(
      */
     private suspend fun getStreamUrl(response: Response): String? {
         return when (response.videoProvider) {
-            "p2" -> {
+            VideoProvider.P2.code -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
                     response.accessToken,
                     response.streamURL
                 )
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
             }
-            "i", "s" -> {
+            VideoProvider.I.code, VideoProvider.S.code -> {
                 val liveUrlResponse =
                     OneBoSportApi.matchService.getLiveIUrl("https://${response.streamURL}")
                 liveUrlResponse.body()?.hlsUrl
