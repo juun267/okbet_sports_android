@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
+import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
@@ -129,6 +130,11 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener){
         nodeMediaManager = NodeMediaManager(eventListener)
+    }
+
+    fun showLiveView(showLive: Boolean) {
+        node_player.isVisible = showLive
+        default_img.isVisible = !showLive
     }
 
     fun setupLiveUrl(streamUrl: String) {
