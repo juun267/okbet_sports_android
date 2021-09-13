@@ -198,7 +198,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         gameType = gameType,
                         matchOdd = org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            odds = matchOdd.oddsMap,
+                            oddsMap = matchOdd.oddsMap,
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = null,
                             quickPlayCateList = matchOdd.quickPlayCateList
@@ -217,7 +217,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         oddsKey,
                         org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
-                            odds = matchOdd.oddsMap,
+                            oddsMap = matchOdd.oddsMap,
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = listOf(),
                             quickPlayCateList = matchOdd.quickPlayCateList

@@ -89,7 +89,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
         outright_more_type.text = args.matchOdd.dynamicMarkets[oddsKey]?.getTranslate()
 
         outright_more_more.apply {
-            visibility = if (args.matchOdd.odds.size > 1) {
+            visibility = if (args.matchOdd.oddsMap.size > 1) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -98,7 +98,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
             setOnClickListener {
                 showBottomSheetDialog(
                     getString(R.string.bottom_sheet_title_play_type),
-                    args.matchOdd.odds.keys.map {
+                    args.matchOdd.oddsMap.keys.map {
                         StatusSheetData(it, args.matchOdd.dynamicMarkets[it]?.getTranslate())
                     },
                     StatusSheetData(
@@ -119,7 +119,7 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private fun setupOutrightOddList(oddsKey: String?) {
         outright_more_odd_list.apply {
             adapter = outrightOddAdapter.apply {
-                data = args.matchOdd.odds[oddsKey] to args.matchOdd
+                data = args.matchOdd.oddsMap[oddsKey] to args.matchOdd
             }
         }
     }
