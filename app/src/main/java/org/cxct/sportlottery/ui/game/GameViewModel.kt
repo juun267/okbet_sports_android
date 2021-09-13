@@ -21,8 +21,8 @@ import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
 import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
-import org.cxct.sportlottery.network.matchLiveInfo.LiveInfo
-import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveInfoRequest
+import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
+import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -851,6 +851,7 @@ class GameViewModel(
                 )
             }
             
+
             result?.sortOdds()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
@@ -1549,16 +1550,30 @@ class GameViewModel(
         if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
-                    OneBoSportApi.matchService.getMatchLiveInfo(MatchLiveInfoRequest(1, matchId))
+                    OneBoSportApi.matchService.getMatchLiveUrl(MatchLiveUrlRequest(1, matchId))
                 }
-                result?.let {
-                    if (it.success) {
-                        val streamUrl = getStreamUrl(it.liveInfo)?.let { streamRealUrl ->
-                            val editor = gameLiveSharedPreferences.edit()
-                            editor.putString(matchId, streamRealUrl).apply()
-                            streamRealUrl
-                        }?: ""
-                        _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, streamUrl, true)))
+
+                result?.t?.let {
+                    val matchLiveInfo = OneBoSportApi.matchService.getMatchLiveInfo(it)
+
+                    if (matchLiveInfo.isSuccessful && matchLiveInfo.body()?.isSuccess == true) {
+                        matchLiveInfo.body()?.response?.let { response ->
+                            val streamUrl = getStreamUrl(response)?.let { streamRealUrl ->
+                                val editor = gameLiveSharedPreferences.edit()
+                                editor.putString(matchId, streamRealUrl).apply()
+                                streamRealUrl
+                            } ?: ""
+
+                            _matchLiveInfo.postValue(
+                                Event(
+                                    LiveStreamInfo(
+                                        matchId,
+                                        streamUrl,
+                                        true
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -1576,18 +1591,22 @@ class GameViewModel(
      *
      * 20210831 s型態還未有相關賽事，等相关比赛出现后，再解析
      */
-    private suspend fun getStreamUrl(liveInfo: LiveInfo): String? {
-        return when (liveInfo.videoProvider) {
+    private suspend fun getStreamUrl(response: Response): String? {
+        return when (response.videoProvider) {
             "p2" -> {
-                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(liveInfo.accessToken, liveInfo.streamURL)
+                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
+                    response.accessToken,
+                    response.streamURL
+                )
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
             }
             "i", "s" -> {
-                val liveUrlResponse = OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
+                val liveUrlResponse =
+                    OneBoSportApi.matchService.getLiveIUrl("https://${response.streamURL}")
                 liveUrlResponse.body()?.hlsUrl
             }
             else -> {
-                liveInfo.streamURL
+                response.streamURL
             }
         }
     }
