@@ -170,7 +170,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@homeButtonSettings
                 }
-                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds == null) -> {
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds ?: 0.0 <= 0.0) -> {
                     betStatus = BetStatus.LOCKED.code
                     return@homeButtonSettings
                 }
@@ -244,7 +244,7 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@awayButtonSettings
                 }
-                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds == null) -> {
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds ?: 0.0 <= 0.0) -> {
                     betStatus = BetStatus.LOCKED.code
                     return@awayButtonSettings
                 }
@@ -318,19 +318,19 @@ class OddButtonPagerViewHolder private constructor(
                     betStatus = BetStatus.DEACTIVATED.code
                     return@drawButtonSettings
                 }
-                (odds?.second?.getOrNull(2)?.odds == null) -> {
+                (odds?.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
                     betStatus = BetStatus.LOCKED.code
                     return@drawButtonSettings
                 }
                 else -> {
-                    betStatus = odds.second?.getOrNull(2)?.status
+                    betStatus = odds?.second?.getOrNull(2)?.status
                 }
             }
 
             tv_name.apply {
-                text = odds.second?.getOrNull(2)?.nameMap?.get(
+                text = odds?.second?.getOrNull(2)?.nameMap?.get(
                     LanguageManager.getSelectLanguage(context).key
-                ) ?: odds.second?.getOrNull(2)?.name
+                ) ?: odds?.second?.getOrNull(2)?.name
                 visibility = View.VISIBLE
             }
 
@@ -339,16 +339,16 @@ class OddButtonPagerViewHolder private constructor(
             }
 
             tv_odds.text = when (oddsType) {
-                OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.odds ?: 1)
-                OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.hkOdds ?: 0)
+                OddsType.EU -> TextUtil.formatForOdd(odds?.second?.getOrNull(2)?.odds ?: 1)
+                OddsType.HK -> TextUtil.formatForOdd(odds?.second?.getOrNull(2)?.hkOdds ?: 0)
             }
 
-            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
+            this@OddButtonPagerViewHolder.setupOddState(this, odds?.second?.getOrNull(2))
 
-            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
+            isSelected = odds?.second?.getOrNull(2)?.isSelected ?: false
 
             setOnClickListener { _ ->
-                odds.second?.getOrNull(2)?.let { odd ->
+                odds?.second?.getOrNull(2)?.let { odd ->
                     oddButtonListener?.onClickBet(
                         matchInfo,
                         odd,
