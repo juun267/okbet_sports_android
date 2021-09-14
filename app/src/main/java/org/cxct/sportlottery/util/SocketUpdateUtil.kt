@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.GameType
@@ -12,9 +13,17 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
 object SocketUpdateUtil {
+    private val playCateMappingList by lazy {
+        val json = LocalJsonUtil.getLocalJson(
+            MultiLanguagesApplication.appContext,
+            "localJson/PlayCateMapping.json"
+        )
+        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
+    }
 
     fun updateMatchStatus(
         gameType: String?,
@@ -247,9 +256,9 @@ object SocketUpdateUtil {
     }
 
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
-        matchOdd.oddsMap.putAll(oddsChangeEvent.odds?.mapValues {
-            it.value.toMutableList()
-        }?.toMutableMap() ?: mutableMapOf())
+        matchOdd.oddsMap.putAll(
+            oddsChangeEvent.odds?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType) ?: mapOf()
+        )
 
         //新增盤口時將盤口排序
         sortOdds(matchOdd)
@@ -390,5 +399,18 @@ object SocketUpdateUtil {
         }
 
         return isNeedRefresh
+    }
+
+    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String?): MutableMap<String, MutableList<Odd?>> {
+        return this.mapValues { map ->
+            val playCateMapItem = playCateMappingList.find {
+                it.gameType == gameType && it.playCateCode == map.key
+            }
+
+            map.value?.filterIndexed { index, _ ->
+                index < playCateMapItem?.playCateNum ?: 0
+            }?.toMutableList() ?: mutableListOf()
+
+        }.toMutableMap()
     }
 }

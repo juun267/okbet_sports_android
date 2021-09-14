@@ -2,6 +2,9 @@ package org.cxct.sportlottery.network.common
 
 interface MatchInfo {
     val id: String
+
+    val gameType: String?
+
     var awayScore: Int?
     var homeScore: Int?
     var statusName: String?
