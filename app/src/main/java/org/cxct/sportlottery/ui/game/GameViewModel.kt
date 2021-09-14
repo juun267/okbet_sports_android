@@ -85,8 +85,10 @@ class GameViewModel(
     }
 
     private val gameLiveSharedPreferences by lazy {
-        androidContext.getSharedPreferences(GameLiveSP,
-            Context.MODE_PRIVATE)
+        androidContext.getSharedPreferences(
+            GameLiveSP,
+            Context.MODE_PRIVATE
+        )
     }
 
     val parlayList: LiveData<MutableList<ParlayOdd>>
@@ -391,20 +393,21 @@ class GameViewModel(
             }
 
             sportQueryData = result?.sportQueryData
-            checkLastSportType(matchType,sportQueryData)
+            checkLastSportType(matchType, sportQueryData)
         }
     }
 
-    private fun checkLastSportType(matchType: MatchType, sportQueryData: SportQueryData?){
+    private fun checkLastSportType(matchType: MatchType, sportQueryData: SportQueryData?) {
         var isContain = false
 
         sportQueryData?.items?.forEach { item ->
-            if(item.code == lastSportTypeHashMap[matchType.postValue])
-                isContain=true
+            if (item.code == lastSportTypeHashMap[matchType.postValue])
+                isContain = true
         }
-        if(!isContain)
+        if (!isContain)
             lastSportTypeHashMap[matchType.postValue] = sportQueryData?.items?.firstOrNull()?.code
     }
+
     private fun postHomeCardCount(sportMenuResult: SportMenuResult?) {
         _asStartCount.postValue(
             getMatchCount(
@@ -413,7 +416,7 @@ class GameViewModel(
             )
         )
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult) != 0 -> {
                 _cardMatchTypeFT.postValue(MatchType.TODAY)
             }
@@ -426,7 +429,7 @@ class GameViewModel(
         }
         _allFootballCount.postValue(getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult))
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult) != 0 -> {
                 _cardMatchTypeBK.postValue(MatchType.TODAY)
             }
@@ -440,7 +443,7 @@ class GameViewModel(
         _allBasketballCount.postValue(getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult))
 
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult) != 0 -> {
                 _cardMatchTypeTN.postValue(MatchType.TODAY)
             }
@@ -453,7 +456,7 @@ class GameViewModel(
         }
         _allTennisCount.postValue(getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult))
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult) != 0 -> {
                 _cardMatchTypeVB.postValue(MatchType.TODAY)
             }
@@ -647,9 +650,10 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
-    private fun recordSportType(matchType: MatchType, item: Item){
+    private fun recordSportType(matchType: MatchType, item: Item) {
         lastSportTypeHashMap[matchType.postValue] = item.code
     }
+
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
 
@@ -688,7 +692,8 @@ class GameViewModel(
 
         val sportItem = getSportSelected(matchType)
 
-        val sportItemCode = if(isLastSportType) lastSportTypeHashMap[matchType.postValue] else sportItem?.code
+        val sportItemCode =
+            if (isLastSportType) lastSportTypeHashMap[matchType.postValue] else sportItem?.code
 
         if (isLastSportType)
             _sportMenuResult.value?.updateSportSelectState(matchType, sportItemCode)
@@ -1586,7 +1591,7 @@ class GameViewModel(
                             val editor = gameLiveSharedPreferences.edit()
                             editor.putString(matchId, streamRealUrl).apply()
                             streamRealUrl
-                        }?: ""
+                        } ?: ""
                         _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, streamUrl, true)))
                     }
                 }
@@ -1608,11 +1613,15 @@ class GameViewModel(
     private suspend fun getStreamUrl(liveInfo: LiveInfo): String? {
         return when (liveInfo.videoProvider) {
             "p2" -> {
-                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(liveInfo.accessToken, liveInfo.streamURL)
+                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
+                    liveInfo.accessToken,
+                    liveInfo.streamURL
+                )
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
             }
             "i", "s" -> {
-                val liveUrlResponse = OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
+                val liveUrlResponse =
+                    OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
                 liveUrlResponse.body()?.hlsUrl
             }
             else -> {
