@@ -159,6 +159,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             favorSportTypeList.indexOf(it.gameType)
         }
         selectedAdapter.data = selectedList
+        line_pin.visibility = if(selectedList.isNotEmpty() && selectedList.size < 4) View.VISIBLE else View.GONE
     }
 
     private fun navSportEntrance(sport:String){
