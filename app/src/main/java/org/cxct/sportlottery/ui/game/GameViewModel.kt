@@ -61,6 +61,7 @@ import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class GameViewModel(
     androidContext: Application,
@@ -84,8 +85,10 @@ class GameViewModel(
     }
 
     private val gameLiveSharedPreferences by lazy {
-        androidContext.getSharedPreferences(GameLiveSP,
-            Context.MODE_PRIVATE)
+        androidContext.getSharedPreferences(
+            GameLiveSP,
+            Context.MODE_PRIVATE
+        )
     }
 
     val parlayList: LiveData<MutableList<ParlayOdd>>
@@ -281,6 +284,15 @@ class GameViewModel(
 
     private var sportQueryData: SportQueryData? = null
 
+    private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
+        MatchType.IN_PLAY.postValue to null,
+        MatchType.AT_START.postValue to null,
+        MatchType.TODAY.postValue to null,
+        MatchType.EARLY.postValue to null,
+        MatchType.OUTRIGHT.postValue to null,
+        MatchType.PARLAY.postValue to null,
+        MatchType.EPS.postValue to null
+    )
 
     fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
         _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
@@ -381,7 +393,19 @@ class GameViewModel(
             }
 
             sportQueryData = result?.sportQueryData
+            checkLastSportType(matchType, sportQueryData)
         }
+    }
+
+    private fun checkLastSportType(matchType: MatchType, sportQueryData: SportQueryData?) {
+        var isContain = false
+
+        sportQueryData?.items?.forEach { item ->
+            if (item.code == lastSportTypeHashMap[matchType.postValue])
+                isContain = true
+        }
+        if (!isContain)
+            lastSportTypeHashMap[matchType.postValue] = sportQueryData?.items?.firstOrNull()?.code
     }
 
     private fun postHomeCardCount(sportMenuResult: SportMenuResult?) {
@@ -392,7 +416,7 @@ class GameViewModel(
             )
         )
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult) != 0 -> {
                 _cardMatchTypeFT.postValue(MatchType.TODAY)
             }
@@ -405,7 +429,7 @@ class GameViewModel(
         }
         _allFootballCount.postValue(getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult))
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult) != 0 -> {
                 _cardMatchTypeBK.postValue(MatchType.TODAY)
             }
@@ -419,7 +443,7 @@ class GameViewModel(
         _allBasketballCount.postValue(getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult))
 
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult) != 0 -> {
                 _cardMatchTypeTN.postValue(MatchType.TODAY)
             }
@@ -432,7 +456,7 @@ class GameViewModel(
         }
         _allTennisCount.postValue(getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult))
 
-        when{
+        when {
             getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult) != 0 -> {
                 _cardMatchTypeVB.postValue(MatchType.TODAY)
             }
@@ -620,9 +644,14 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
+        recordSportType(matchType, item)
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
         filterLeague(listOf())
+    }
+
+    private fun recordSportType(matchType: MatchType, item: Item) {
+        lastSportTypeHashMap[matchType.postValue] = item.code
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {
@@ -647,7 +676,8 @@ class GameViewModel(
         matchType: MatchType,
         isReloadDate: Boolean,
         date: String? = null,
-        isReloadPlayCate: Boolean = false
+        isReloadPlayCate: Boolean = false,
+        isLastSportType: Boolean = false
     ) {
 
         val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
@@ -659,6 +689,13 @@ class GameViewModel(
         if (isReloadDate) {
             getDateRow(nowMatchType)
         }
+
+
+        if (isLastSportType)
+            _sportMenuResult.value?.updateSportSelectState(
+                matchType,
+                lastSportTypeHashMap[matchType.postValue]
+            )
 
         val sportItem = getSportSelected(matchType)
 
@@ -1555,7 +1592,7 @@ class GameViewModel(
                             val editor = gameLiveSharedPreferences.edit()
                             editor.putString(matchId, streamRealUrl).apply()
                             streamRealUrl
-                        }?: ""
+                        } ?: ""
                         _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, streamUrl, true)))
                     }
                 }
@@ -1577,11 +1614,15 @@ class GameViewModel(
     private suspend fun getStreamUrl(liveInfo: LiveInfo): String? {
         return when (liveInfo.videoProvider) {
             "p2" -> {
-                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(liveInfo.accessToken, liveInfo.streamURL)
+                val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
+                    liveInfo.accessToken,
+                    liveInfo.streamURL
+                )
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
             }
             "i", "s" -> {
-                val liveUrlResponse = OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
+                val liveUrlResponse =
+                    OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
                 liveUrlResponse.body()?.hlsUrl
             }
             else -> {
