@@ -10,6 +10,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
@@ -21,14 +22,19 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     //點擊置頂後
     private var unselectedAdapter =
         LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { gameType ->
-            viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-        })
+            viewModel.pinFavorite(
+                FavoriteType.SPORT,
+                gameType
+            )
+        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //取消置頂
     var selectedAdapter =
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { gameType ->
             viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-        })
+        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
