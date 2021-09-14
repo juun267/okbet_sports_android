@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import org.cxct.sportlottery.R
 
-class LeftMenuItemSelectedAdapter(private val clickListener: ItemClickListener) :
+class LeftMenuItemSelectedAdapter(private val clickListener: ItemClickListener,private val sportClickListener: LeftMenuItemAdapter.SportClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { ITEM, FOOTER }
@@ -116,7 +116,7 @@ class LeftMenuItemSelectedAdapter(private val clickListener: ItemClickListener) 
         when (holder) {
             is ItemViewHolder -> {
                 val data = data[position]
-                holder.bind(data, clickListener)
+                holder.bind(data, clickListener, sportClickListener)
             }
         }
     }
