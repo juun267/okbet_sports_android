@@ -406,7 +406,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.getGameHallList(
             matchType = args.matchType,
             isReloadDate = true,
-            isReloadPlayCate = true
+            isReloadPlayCate = true,
+            isLastSportType = true
         )
         viewModel.getMatchCategoryQuery(args.matchType)
         loading()
