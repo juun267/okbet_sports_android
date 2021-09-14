@@ -841,12 +841,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        matchOdd.apply {
-                                            PlayCateUtils.filterOdds(
-                                                this.oddsMap,
-                                                this.matchInfo?.gameType ?: ""
-                                            )
-                                        }, oddsChangeEvent
+                                        matchOdd, oddsChangeEvent
                                     )
                                 } &&
                                 leagueOdd.isExpand
