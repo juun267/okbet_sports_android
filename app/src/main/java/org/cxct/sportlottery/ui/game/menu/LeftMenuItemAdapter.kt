@@ -114,5 +114,9 @@ class LeftMenuItemAdapter(private val clickListener: ItemClickListener) :
         fun onClick(string: String) = clickListener(string)
     }
 
+    class SportClickListener(val clickSportListener: (gameType: String) -> Unit) {
+        fun onClickSport(gameType: String) = clickSportListener(gameType)
+    }
+
 
 }
