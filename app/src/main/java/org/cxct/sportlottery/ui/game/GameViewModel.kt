@@ -90,14 +90,6 @@ class GameViewModel(
         )
     }
 
-    private val playCateMappingList by lazy {
-        val json = LocalJsonUtil.getLocalJson(
-            MultiLanguagesApplication.appContext,
-            "localJson/PlayCateMapping.json"
-        )
-        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
-    }
-
     val parlayList: LiveData<MutableList<ParlayOdd>>
         get() = betInfoRepository.parlayList
 
@@ -1524,19 +1516,6 @@ class GameViewModel(
         }
     }
 
-    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String): MutableMap<String, MutableList<Odd?>> {
-        return this.mapValues { map ->
-            val playCateMapItem = playCateMappingList.find {
-                it.gameType == gameType && it.playCateCode == map.key
-            }
-
-            map.value?.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
-            }?.toMutableList() ?: mutableListOf()
-
-        }.toMutableMap()
-    }
-
     private fun OddsListResult.updateQuickPlayCate(
         matchId: String,
         quickListData: QuickListData
@@ -1549,7 +1528,8 @@ class GameViewModel(
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds =
-                        quickListData.quickOdds?.get(quickPlayCate.code) ?: mapOf()
+                        quickListData.quickOdds?.get(quickPlayCate.code)
+                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
                 }
             }
         }

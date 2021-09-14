@@ -215,11 +215,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
                                 matchOdd.apply {
-                                    PlayCateUtils.filterOdds(
-                                        this.oddsMap,
-                                        this.matchInfo?.gameType ?: ""
-                                    )
-                                        .filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
+                                    this.oddsMap.filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
                                 }, oddsChangeEvent
                             )
                         } &&
