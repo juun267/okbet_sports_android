@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import org.cxct.sportlottery.R
 
-class LeftMenuItemSelectedAdapter(private val clickListener: ItemClickListener,private val sportClickListener: LeftMenuItemAdapter.SportClickListener) :
+class LeftMenuItemSelectedAdapter(
+    private val clickListener: ItemClickListener,
+    private val sportClickListener: LeftMenuItemAdapter.SportClickListener
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { ITEM, FOOTER }
@@ -97,9 +100,9 @@ class LeftMenuItemSelectedAdapter(private val clickListener: ItemClickListener,p
     }
 
     override fun getItemCount(): Int {
-        return if(data.isNotEmpty()){
+        return if (data.isNotEmpty()) {
             data.size + 1
-        }else{
+        } else {
             data.size
         }
     }
