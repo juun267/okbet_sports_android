@@ -15,8 +15,6 @@ class LeftMenuItemSelectedAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private enum class ViewType { ITEM, FOOTER }
-
     var data = listOf<MenuItemData>()
         set(value) {
             field = value
@@ -79,40 +77,12 @@ class LeftMenuItemSelectedAdapter(
         }
     }
 
-    class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        companion object {
-            fun from(parent: ViewGroup): FooterViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.content_footer_line, parent, false)
-                return FooterViewHolder(view)
-            }
-        }
-    }
-
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            data.size -> ViewType.FOOTER.ordinal
-            else -> ViewType.ITEM.ordinal
-        }
-    }
-
     override fun getItemCount(): Int {
-        return if (data.isNotEmpty()) {
-            data.size + 1
-        } else {
-            data.size
-        }
+        return data.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ViewType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            ViewType.FOOTER.ordinal -> FooterViewHolder.from(parent)
-            else -> FooterViewHolder.from(parent)
-        }
+        return ItemViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
