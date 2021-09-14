@@ -9,7 +9,10 @@ import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import org.cxct.sportlottery.R
 
 
-class LeftMenuItemAdapter(private val clickListener: ItemClickListener,private val sportClickListener: SportClickListener) :
+class LeftMenuItemAdapter(
+    private val clickListener: ItemClickListener,
+    private val sportClickListener: SportClickListener
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { ITEM, FOOTER }
@@ -31,7 +34,11 @@ class LeftMenuItemAdapter(private val clickListener: ItemClickListener,private v
             }
         }
 
-        fun bind(item: MenuItemData, clickListener: ItemClickListener,sportClickListener:SportClickListener) {
+        fun bind(
+            item: MenuItemData,
+            clickListener: ItemClickListener,
+            sportClickListener: SportClickListener
+        ) {
             itemView.apply {
                 when (item.isSelected) {
                     0 -> {
@@ -93,9 +100,9 @@ class LeftMenuItemAdapter(private val clickListener: ItemClickListener,private v
     }
 
     override fun getItemCount(): Int {
-        return if(data.isNotEmpty()){
+        return if (data.isNotEmpty()) {
             data.size + 1
-        }else{
+        } else {
             data.size
         }
     }
@@ -112,7 +119,7 @@ class LeftMenuItemAdapter(private val clickListener: ItemClickListener,private v
         when (holder) {
             is ItemViewHolder -> {
                 val data = data[position]
-                holder.bind(data, clickListener,sportClickListener)
+                holder.bind(data, clickListener, sportClickListener)
             }
         }
     }
