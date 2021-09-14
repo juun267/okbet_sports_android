@@ -909,7 +909,7 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
-                    matchOdd.oddsMap.filterPlayCateSpanned(gameType)
+                    matchOdd.oddsMap = matchOdd.oddsMap.filterPlayCateSpanned(gameType)
 
                     matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
