@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -49,13 +50,11 @@ import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -89,6 +88,14 @@ class GameViewModel(
             GameLiveSP,
             Context.MODE_PRIVATE
         )
+    }
+
+    private val playCateMappingList by lazy {
+        val json = LocalJsonUtil.getLocalJson(
+            MultiLanguagesApplication.appContext,
+            "localJson/PlayCateMapping.json"
+        )
+        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
     }
 
     val parlayList: LiveData<MutableList<ParlayOdd>>
@@ -902,8 +909,8 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
-                    matchOdd.oddsMap =
-                        PlayCateUtils.filterOdds(matchOdd.oddsMap, result.oddsListData.sport.code)
+                    matchOdd.oddsMap.filterPlayCateSpanned(gameType)
+
                     matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
                     }
@@ -1515,6 +1522,19 @@ class GameViewModel(
                     betInfoListData.matchOdd.oddsId == odd?.id
                 }
         }
+    }
+
+    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String): MutableMap<String, MutableList<Odd?>> {
+        return this.mapValues { map ->
+            val playCateMapItem = playCateMappingList.find {
+                it.gameType == gameType && it.playCateCode == map.key
+            }
+
+            map.value?.filterIndexed { index, _ ->
+                index < playCateMapItem?.playCateNum ?: 0
+            }?.toMutableList() ?: mutableListOf()
+
+        }.toMutableMap()
     }
 
     private fun OddsListResult.updateQuickPlayCate(
