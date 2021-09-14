@@ -31,21 +31,32 @@ class LeftMenuItemSelectedAdapter(private val clickListener: ItemClickListener) 
             }
         }
 
-        fun bind(item: MenuItemData, clickListener: ItemClickListener) {
-            when (item.isSelected) {
-                0 -> {
-                    itemView.cl_content.visibility = View.GONE
-                    setVisibility(false)
-                }
-                1 -> {
-                    itemView.cl_content.visibility = View.VISIBLE
-                    itemView.img_price.setImageResource(item.imgId)
-                    itemView.txv_price.text = item.title
-                    itemView.btn_select.setImageResource(R.drawable.ic_pin_selected_v4)
-                    itemView.btn_select.setOnClickListener {
-                        clickListener.onClick(item.gameType)
+        fun bind(
+            item: MenuItemData,
+            clickListener: ItemClickListener,
+            sportClickListener: LeftMenuItemAdapter.SportClickListener
+        ) {
+            itemView.apply {
+                when (item.isSelected) {
+                    0 -> {
+                        cl_content.visibility = View.GONE
+                        setVisibility(false)
                     }
-                    setVisibility(true)
+                    1 -> {
+                        cl_content.apply {
+                            setOnClickListener {
+                                sportClickListener.onClickSport(item.gameType)
+                            }
+                            visibility = View.VISIBLE
+                        }
+                        img_price.setImageResource(item.imgId)
+                        txv_price.text = item.title
+                        btn_select.setImageResource(R.drawable.ic_pin_selected_v4)
+                        btn_select.setOnClickListener {
+                            clickListener.onClick(item.gameType)
+                        }
+                        setVisibility(true)
+                    }
                 }
             }
         }
