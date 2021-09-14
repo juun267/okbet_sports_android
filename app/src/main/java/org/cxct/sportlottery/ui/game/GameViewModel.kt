@@ -692,34 +692,34 @@ class GameViewModel(
 
         val sportItem = getSportSelected(matchType)
 
-        val sportItemCode =
-            if (isLastSportType) lastSportTypeHashMap[matchType.postValue] else sportItem?.code
-
         if (isLastSportType)
-            _sportMenuResult.value?.updateSportSelectState(matchType, sportItemCode)
+            _sportMenuResult.value?.updateSportSelectState(
+                matchType,
+                lastSportTypeHashMap[matchType.postValue]
+            )
 
-        sportItemCode?.let {
+        getSportSelected(matchType)?.let { item ->
             when (nowMatchType) {
                 MatchType.IN_PLAY -> {
-                    getOddsList(sportItemCode, nowMatchType.postValue)
+                    getOddsList(item.code, nowMatchType.postValue)
                 }
                 MatchType.TODAY -> {
                     getLeagueList(
-                        sportItemCode,
+                        item.code,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.EARLY -> {
                     getLeagueList(
-                        sportItemCode,
+                        item.code,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.PARLAY -> {
                     getLeagueList(
-                        sportItemCode,
+                        item.code,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams(),
                         date
@@ -727,18 +727,18 @@ class GameViewModel(
 
                 }
                 MatchType.OUTRIGHT -> {
-                    getOutrightSeasonList(sportItemCode)
+                    getOutrightSeasonList(item.code)
                 }
                 MatchType.AT_START -> {
                     getOddsList(
-                        sportItemCode,
+                        item.code,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams()
                     )
                 }
                 MatchType.EPS -> {
                     val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(), TimeUtil.YMD_FORMAT)
-                    getEpsList(sportItemCode, startTime = time)
+                    getEpsList(item.code, startTime = time)
                 }
                 else -> {
                 }
