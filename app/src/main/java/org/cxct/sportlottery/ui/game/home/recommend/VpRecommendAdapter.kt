@@ -139,28 +139,25 @@ class VpRecommendAdapter(
 
                         tv_play_type.text = playTypeStr
 
-                        sportCode?.let {
-                            val spanCount = PlayCateUtils.getPlayCateSpanCount(data.playTypeCode, sportCode)
+                        if (data.oddList.isNotEmpty()) {
+                            odd_btn_home.visibility = View.VISIBLE
+                            setupOddsButton(odd_btn_home, data.oddList[0])
+                        } else {
+                            odd_btn_home.visibility = View.GONE
+                        }
 
-                            if (spanCount > 0 && data.oddList.isNotEmpty()) {
-                                odd_btn_home.visibility = View.VISIBLE
-                                setupOddsButton(odd_btn_home, data.oddList[0])
-                            } else {
-                                odd_btn_home.visibility = View.GONE
-                            }
+                        if (data.oddList.size > 1) {
+                            odd_btn_away.visibility = View.VISIBLE
+                            setupOddsButton(odd_btn_away, data.oddList[1])
+                        } else {
+                            odd_btn_away.visibility = View.GONE
+                        }
 
-                            if (spanCount > 1 && data.oddList.size > 1) {
-                                odd_btn_away.visibility = View.VISIBLE
-                                setupOddsButton(odd_btn_away, data.oddList[1])
-                            } else {
-                                odd_btn_away.visibility = View.GONE
-                            }
-                            if (spanCount > 2 && data.oddList.size > 2) {
-                                odd_btn_draw.visibility = View.VISIBLE
-                                setupOddsButton(odd_btn_draw, data.oddList[2])
-                            } else {
-                                odd_btn_draw.visibility = View.GONE
-                            }
+                        if (data.oddList.size > 2) {
+                            odd_btn_draw.visibility = View.VISIBLE
+                            setupOddsButton(odd_btn_draw, data.oddList[2])
+                        } else {
+                            odd_btn_draw.visibility = View.GONE
                         }
                     }
                 }

@@ -598,6 +598,7 @@ class GameViewModel(
                                     }
                             }
                         }
+                        oddData.odds = oddData.odds?.filterPlayCateSpanned(row.sport?.code)
                     }
                 }
 
