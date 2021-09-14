@@ -154,4 +154,29 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         }
         selectedAdapter.data = selectedList
     }
+
+    private fun navSportEntrance(sport:String){
+        val matchType = when (sport) {
+            GameType.FT.name -> viewModel.cardMatchTypeFT.value
+            GameType.BK.name -> viewModel.cardMatchTypeBK.value
+            GameType.TN.name -> viewModel.cardMatchTypeTN.value
+            GameType.VB.name -> viewModel.cardMatchTypeFT.value
+            else -> MatchType.TODAY
+        }
+        val sportType = when (sport) {
+            GameType.FT.name -> GameType.FT
+            GameType.BK.name -> GameType.BK
+            GameType.TN.name -> GameType.TN
+            GameType.VB.name -> GameType.VB
+            else -> GameType.FT
+        }
+        matchType?.let {
+            viewModel.navSpecialEntrance(
+                it,
+                sportType
+            )
+            dismiss()
+        }
+    }
+
 }
