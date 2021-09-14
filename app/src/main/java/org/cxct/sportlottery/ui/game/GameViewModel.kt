@@ -690,7 +690,6 @@ class GameViewModel(
             getDateRow(nowMatchType)
         }
 
-        val sportItem = getSportSelected(matchType)
 
         if (isLastSportType)
             _sportMenuResult.value?.updateSportSelectState(
@@ -698,7 +697,9 @@ class GameViewModel(
                 lastSportTypeHashMap[matchType.postValue]
             )
 
-        getSportSelected(matchType)?.let { item ->
+        val sportItem = getSportSelected(matchType)
+
+        sportItem?.let { item ->
             when (nowMatchType) {
                 MatchType.IN_PLAY -> {
                     getOddsList(item.code, nowMatchType.postValue)
