@@ -17,5 +17,5 @@ data class PlayCateMapItem(
     @Json(name = "playCateNameEn")
     val playCateNameEn: String,
     @Json(name = "playCateNum")
-    val playCateNum: String
+    val playCateNum: Int
 )
