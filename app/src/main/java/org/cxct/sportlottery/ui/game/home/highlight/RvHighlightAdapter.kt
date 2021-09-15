@@ -66,6 +66,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
     //TODO simon test review 精選賽事是不是一定是 MatchType.TODAY，是的話可以再簡化判斷邏輯
     private val matchType: MatchType = MatchType.TODAY
+    private var matchType: MatchType = MatchType.TODAY
 
     var onClickOddListener: OnClickOddListener? = null
 
@@ -129,6 +130,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private var timer: Timer? = null
 
         fun bind(data: MatchOdd) {
+            setMatchType(data)
             setupOddList(data)
             setupMatchInfo(data)
             setupTime(data)
@@ -151,6 +153,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             itemView.btn_chart.setOnClickListener {
                 onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
             }
+        }
+
+        private fun setMatchType(data: MatchOdd) {
+            matchType = if(TimeUtil.getRemainTime(data.matchInfo?.startTime) < 60 * 60 * 1000L) MatchType.AT_START else  MatchType.TODAY
         }
 
         private fun setupOddList(data: MatchOdd) {
