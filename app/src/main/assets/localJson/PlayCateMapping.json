@@ -1,0 +1,466 @@
+[
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,MATCH,RECOMMEND,SPECIAL_MATCH,SPECIAL_MATCH_MOBILE,HOME_INPLAY,HOME_INPLAY_MOBILE,HOME_ATSTART,HOME_ATSTART_MOBILE",
+    "playCateCode": "HDP",
+    "playCateName": "让球",
+    "playCateNameEn": "Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,MATCH,RECOMMEND,SPECIAL_MATCH,HOME_INPLAY,HOME_ATSTART",
+    "playCateCode": "O/U",
+    "playCateName": "进球 大/小",
+    "playCateNameEn": "Goals O/U",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,MATCH,RECOMMEND",
+    "playCateCode": "1X2",
+    "playCateName": "独赢",
+    "playCateNameEn": "1 X 2",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,1ST",
+    "playCateCode": "1X2-1ST",
+    "playCateName": "独赢\r\n上半场",
+    "playCateNameEn": "1 X 2\r\n1st Half",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,1ST",
+    "playCateCode": "HDP-1ST",
+    "playCateName": "让球\r\n上半场",
+    "playCateNameEn": "Handicap\r\n1st Half",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,1ST",
+    "playCateCode": "O/U-1ST",
+    "playCateName": "进球 大/小\r\n上半场",
+    "playCateNameEn": "Goals O/U\r\n1st Half",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,MATCH,RECOMMEND",
+    "playCateCode": "BTS",
+    "playCateName": "双方球队进球",
+    "playCateNameEn": "Both Teams to Score",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN",
+    "playCateCode": "O/E",
+    "playCateName": "进球 单/双",
+    "playCateNameEn": "Goals O/E",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "1ST",
+    "playCateCode": "BTS-1ST",
+    "playCateName": "双方球队进球\r\n上半场",
+    "playCateNameEn": "Both Teams to Score\r\n1st Half",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "CORNERS",
+    "playCateCode": "CORNER-HDP",
+    "playCateName": "角球让球",
+    "playCateNameEn": "Corners: Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "CORNERS,RECOMMEND",
+    "playCateCode": "CORNER-O/U",
+    "playCateName": "角球大/小",
+    "playCateNameEn": "Corners: Over / Under",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "CORNERS",
+    "playCateCode": "CORNER-1X2",
+    "playCateName": "角球独赢",
+    "playCateNameEn": "Corners: 1 X 2",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "PENALTY",
+    "playCateCode": "PENALTY-HDP",
+    "playCateName": "罚牌数:让球",
+    "playCateNameEn": "Bookings: Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "PENALTY",
+    "playCateCode": "PENALTY-O/U",
+    "playCateName": "罚牌数大/小",
+    "playCateNameEn": "Bookings:Over / Under",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "PENALTY",
+    "playCateCode": "PENALTY-1X2",
+    "playCateName": "罚牌数独赢",
+    "playCateNameEn": "Bookings:1 X 2 ",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "COMBO",
+    "playCateCode": "1X2-O/U",
+    "playCateName": "独赢&大小球{spread}",
+    "playCateNameEn": "1 X 2 & Over {spread} Goals",
+    "playCateNum": 6
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "COMBO",
+    "playCateCode": "1X2-BTS",
+    "playCateName": "独赢&都得分",
+    "playCateNameEn": "1 X 2 & Both to Score",
+    "playCateNum": 6
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "OUTRIGHT",
+    "playCateCode": "WINNER",
+    "playCateName": "冠军",
+    "playCateNameEn": "Winner",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "RECOMMEND,EPS",
+    "playCateCode": "EPS",
+    "playCateName": "更优赔率",
+    "playCateNameEn": "Price Boosts",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,HOME_INPLAY,HOME_INPLAY_MOBILE",
+    "playCateCode": "HDP-OT",
+    "playCateName": "让球\r\n加时赛",
+    "playCateNameEn": "Handicap (extra time)",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN,HOME_INPLAY",
+    "playCateCode": "O/U-OT",
+    "playCateName": "进球 大/小\r\n加时赛",
+    "playCateNameEn": "Goals O/U (extra time)",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN",
+    "playCateCode": "1X2-OT",
+    "playCateName": "独赢\r\n加时赛",
+    "playCateNameEn": "1 X 2 (extra time)",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN",
+    "playCateCode": "BTS-OT",
+    "playCateName": "双方球队进球\r\n加时赛",
+    "playCateNameEn": "Both Teams to Score (extra time)",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "FT",
+    "menuCode": "MAIN",
+    "playCateCode": "NGOAL-OT",
+    "playCateName": "下个得分\r\n加时赛",
+    "playCateNameEn": "Next score (extra time)",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MATCH",
+    "playCateCode": "HDP",
+    "playCateName": "让球",
+    "playCateNameEn": "Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MATCH",
+    "playCateCode": "O/U",
+    "playCateName": "球队积分",
+    "playCateNameEn": "Total Points",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "O/U",
+    "playCateCode": "O/U",
+    "playCateName": "队伍总积分",
+    "playCateNameEn": "Team Total Points",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MATCH",
+    "playCateCode": "1X2",
+    "playCateName": "独赢",
+    "playCateNameEn": "Winner",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN,RECOMMEND,SPECIAL_MATCH,SPECIAL_MATCH_MOBILE,HOME_INPLAY,HOME_INPLAY_MOBILE,HOME_ATSTART,HOME_ATSTART_MOBILE",
+    "playCateCode": "HDP-INCL-OT",
+    "playCateName": "让球(含加时)",
+    "playCateNameEn": "Handicap (incl. overtime)",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN",
+    "playCateCode": "O/U-INCL-OT",
+    "playCateName": "球队积分",
+    "playCateNameEn": "Total Points",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN",
+    "playCateCode": "TG&O/U-H-INCL-OT",
+    "playCateName": "第1队得分",
+    "playCateNameEn": "Team 1 Points",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN",
+    "playCateCode": "TG&O/U-C-INCL-OT",
+    "playCateName": "第2队得分",
+    "playCateNameEn": "Team 2 Points",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN,1ST",
+    "playCateCode": "HDP-1ST",
+    "playCateName": "让球\r\n上半场",
+    "playCateNameEn": "Handicap\r\n1st Half",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN,1ST",
+    "playCateCode": "O/U-1ST",
+    "playCateName": "球队积分\r\n上半场",
+    "playCateNameEn": "Total Points\r\n1st Half",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN",
+    "playCateCode": "TG&O/U-H-1ST",
+    "playCateName": "第1队得分\r\n上半场",
+    "playCateNameEn": "Team 1 Points\r\n1st Half",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "MAIN",
+    "playCateCode": "TG&O/U-C-1ST",
+    "playCateName": "第2队得分\r\n上半场",
+    "playCateNameEn": "Team 2 Points\r\n1st Half",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "1ST",
+    "playCateCode": "1X2-1ST",
+    "playCateName": "独赢\r\n上半场",
+    "playCateNameEn": "Winner\r\n1st Half",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "SEG1",
+    "playCateCode": "HDP-SEG1",
+    "playCateName": "让球\r\n第1节",
+    "playCateNameEn": "Handicap\r\n1st Qtr",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "SEG1",
+    "playCateCode": "O/U-SEG1",
+    "playCateName": "球队积分\r\n第1节",
+    "playCateNameEn": "Total Points\r\n1st Qtr",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "SEG1",
+    "playCateCode": "1X2-SEG1",
+    "playCateName": "独赢\r\n第一节",
+    "playCateNameEn": "Winner\r\n1st Qtr",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "OUTRIGHT",
+    "playCateCode": "WINNER",
+    "playCateName": "冠军",
+    "playCateNameEn": "Winner",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "RECOMMEND,HOME_INPLAY,HOME_ATSTART",
+    "playCateCode": "1X2-INCL-OT",
+    "playCateName": "独赢(含加时)",
+    "playCateNameEn": "Winner (incl. overtime)",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "RECOMMEND,EPS",
+    "playCateCode": "EPS",
+    "playCateName": "更优赔率",
+    "playCateNameEn": "Price Boosts",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "BK",
+    "menuCode": "SPECIAL_MATCH",
+    "playCateCode": "O/U-INCL-OT",
+    "playCateName": "大/小(含加时)",
+    "playCateNameEn": "Over / Under (incl. overtime)",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "TN",
+    "menuCode": "MAIN,MATCH,RECOMMEND",
+    "playCateCode": "HDP",
+    "playCateName": "让局",
+    "playCateNameEn": "Game Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "TN",
+    "menuCode": "MAIN,MATCH",
+    "playCateCode": "O/U",
+    "playCateName": "总局数",
+    "playCateNameEn": "Total Games",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "TN",
+    "menuCode": "MAIN,MATCH,RECOMMEND,SPECIAL_MATCH,SPECIAL_MATCH_MOBILE,HOME_INPLAY,HOME_INPLAY_MOBILE,HOME_ATSTART,HOME_ATSTART_MOBILE",
+    "playCateCode": "1X2",
+    "playCateName": "独赢",
+    "playCateNameEn": "Winner",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "TN",
+    "menuCode": "MAIN,MATCH,SPECIAL_MATCH,HOME_INPLAY,HOME_ATSTART",
+    "playCateCode": "SET-HDP",
+    "playCateName": "让盘",
+    "playCateNameEn": "Set Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "TN",
+    "menuCode": "MAIN,1X2",
+    "playCateCode": "1X2-SEG1",
+    "playCateName": "独赢盘\r\n第1盘",
+    "playCateNameEn": "Winner\r\n1st Set",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "TN",
+    "menuCode": "OUTRIGHT",
+    "playCateCode": "WINNER",
+    "playCateName": "冠军",
+    "playCateNameEn": "Winner",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "TN",
+    "menuCode": "RECOMMEND,EPS",
+    "playCateCode": "EPS",
+    "playCateName": "更优赔率",
+    "playCateNameEn": "Price Boosts",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "VB",
+    "menuCode": "MAIN,MATCH,RECOMMEND",
+    "playCateCode": "HDP",
+    "playCateName": "让分",
+    "playCateNameEn": "Point Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "VB",
+    "menuCode": "MATCH",
+    "playCateCode": "O/U",
+    "playCateName": "球队积分",
+    "playCateNameEn": "Total Points",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "VB",
+    "menuCode": "MAIN,MATCH,RECOMMEND,SPECIAL_MATCH,SPECIAL_MATCH_MOBILE,HOME_INPLAY,HOME_INPLAY_MOBILE,HOME_ATSTART,HOME_ATSTART_MOBILE",
+    "playCateCode": "1X2",
+    "playCateName": "独赢",
+    "playCateNameEn": "Winner",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "VB",
+    "menuCode": "MAIN,MATCH,SPECIAL_MATCH,HOME_INPLAY,HOME_ATSTART",
+    "playCateCode": "SET-HDP",
+    "playCateName": "让盘",
+    "playCateNameEn": "Set Handicap",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "VB",
+    "menuCode": "MAIN",
+    "playCateCode": "HDP-SEG1",
+    "playCateName": "让分-第一盘",
+    "playCateNameEn": "Point Handicap - 1st Set",
+    "playCateNum": 2
+  },
+  {
+    "gameType": "VB",
+    "menuCode": "OUTRIGHT",
+    "playCateCode": "WINNER",
+    "playCateName": "冠军",
+    "playCateNameEn": "Winner",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "VB",
+    "menuCode": "RECOMMEND,EPS",
+    "playCateCode": "EPS",
+    "playCateName": "更优赔率",
+    "playCateNameEn": "Price Boosts",
+    "playCateNum": 3
+  }
+]

@@ -46,7 +46,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")
             }
             val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
-            it.odds?.forEach { odd ->
+            it.oddsMap.forEach { odd ->
                 odds[odd.key] = odd.value.toMutableList()
             }
             MatchOdd(matchInfo, odds)

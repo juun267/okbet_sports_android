@@ -39,7 +39,6 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
@@ -841,12 +840,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        matchOdd.apply {
-                                            PlayCateUtils.filterOdds(
-                                                this.oddsMap,
-                                                this.matchInfo?.gameType ?: ""
-                                            )
-                                        }, oddsChangeEvent
+                                        matchOdd, oddsChangeEvent
                                     )
                                 } &&
                                 leagueOdd.isExpand

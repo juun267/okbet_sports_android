@@ -6,6 +6,7 @@ import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @JsonClass(generateAdapter = true)
 data class MatchOddsItem(
@@ -17,6 +18,8 @@ data class MatchOddsItem(
     override var oddsMap: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
 
     override val quickPlayCateList: List<QuickPlayCate>? = null
+
+    override var playCateMappingList: List<PlayCateMapItem>? = null
 
     override val oddsSort: String? = null
 

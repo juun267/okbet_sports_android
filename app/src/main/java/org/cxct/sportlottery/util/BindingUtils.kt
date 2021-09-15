@@ -54,27 +54,6 @@ fun TextView.setGameType(gameType: String?) {
     }
 }
 
-@BindingAdapter(value = ["playCateName_gameType", "playCateName_gameCode"], requireAll = true)
-fun TextView.setPlayCateName(gameType: String?, gameCode: String?) {
-
-    val list by lazy {
-        val json = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/gameCodeMapping.json")
-        json.fromJson<List<List<String>>>() ?: listOf()
-    }
-
-    val languageIndex = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
-        LanguageManager.Language.ZH -> 3
-        else -> 4
-    }
-
-    val playCateName = list.find {
-        it.getOrNull(0) == gameType && it.getOrNull(2) == gameCode
-    }?.getOrNull(languageIndex) ?: ""
-
-    text = playCateName
-
-}
-
 @BindingAdapter("parlayType")
 fun TextView.setPlayCateName(parlayType: String?) {
 
