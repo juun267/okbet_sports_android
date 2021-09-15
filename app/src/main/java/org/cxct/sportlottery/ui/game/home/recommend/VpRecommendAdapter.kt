@@ -17,7 +17,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
-import org.cxct.sportlottery.ui.game.PlayCateUtils
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
@@ -55,13 +55,11 @@ class VpRecommendAdapter(
     }
 
     private val list by lazy {
-        val json = LocalJsonUtil.getLocalJson(MultiLanguagesApplication.appContext, "localJson/gameCodeMapping.json")
-        json.fromJson<List<List<String>>>() ?: listOf()
-    }
-
-    private val playTypeIndex = when (LanguageManager.getSelectLanguage(MultiLanguagesApplication.appContext)) {
-        LanguageManager.Language.ZH -> 3
-        else -> 4
+        val json = LocalJsonUtil.getLocalJson(
+            MultiLanguagesApplication.appContext,
+            "localJson/PlayCateMapping.json"
+        )
+        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -121,21 +119,21 @@ class VpRecommendAdapter(
     ) : OddStateViewHolder(itemView) {
 
         fun bind(data: OddBean) {
-            when(data.playTypeCode){
-                PlayCate.EPS.value ->{
+            when (data.playTypeCode) {
+                PlayCate.EPS.value -> {
                     itemView.apply {
                         tv_play_type_eps.text = list.find {
-                            it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
-                        }?.getOrNull(playTypeIndex)
+                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
+                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
                         setupOddsButton(btn_odd_eps, data.oddList[0])
                     }
                 }
-                else ->{
+                else -> {
                     itemView.apply {
                         val playTypeStr = list.find {
-                            it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
-                        }?.getOrNull(playTypeIndex)
+                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
+                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
                         tv_play_type.text = playTypeStr
 
@@ -341,8 +339,8 @@ class VpRecommendAdapter(
         fun bind(data: OddBean) {
             itemView.apply {
                 tv_play_type_eps.text = list.find {
-                    it.getOrNull(0) == sportCode && it.getOrNull(2) == data.playTypeCode
-                }?.getOrNull(playTypeIndex)
+                    it.gameType == sportCode && it.playCateCode == data.playTypeCode
+                }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
                 tv_title_eps.text = data.oddList.getOrNull(0)?.name
 
@@ -363,6 +361,17 @@ class VpRecommendAdapter(
                         }, odd, playCateName)
                     }
                 }
+            }
+        }
+    }
+
+    private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {
+        return when (l) {
+            LanguageManager.Language.EN -> {
+                this.playCateNameEn
+            }
+            else -> {
+                this.playCateName
             }
         }
     }
