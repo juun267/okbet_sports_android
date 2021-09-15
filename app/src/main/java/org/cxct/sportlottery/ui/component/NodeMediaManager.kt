@@ -15,6 +15,7 @@ class NodeMediaManager(liveEventListener: LiveEventListener) {
 
     interface LiveEventListener{
         fun reRequestStreamUrl()
+        fun isLiveShowing(isShowing: Boolean)
     }
 
     private val handler: Handler = @SuppressLint("HandlerLeak")
@@ -25,27 +26,33 @@ class NodeMediaManager(liveEventListener: LiveEventListener) {
             when (msg.what) {
                 1000 -> {
                     Timber.i("NodeMediaPlayer 1000 正在连接视频")
+                    liveEventListener.isLiveShowing(false)
                 }
                 1001 ->  {
                     // 视频连接成功
                     Timber.i("NodeMediaPlayer 1001 連接成功")
+                    liveEventListener.isLiveShowing(true)
                 }
                 1002 -> {
                     Timber.i("NodeMediaPlayer 1002 视频连接失败, 会进行自动重连.")
+                    liveEventListener.isLiveShowing(false)
                 }
                 1003 -> {
                     Timber.i("NodeMediaPlayer 1003 视频开始重连")
                     nodePlayer?.stop()
                     liveEventListener.reRequestStreamUrl()
+                    liveEventListener.isLiveShowing(false)
                 }
                 1004 ->  {
                     // 视频播放结束
                     Timber.i("NodeMediaPlayer 1004 视频播放结束")
+                    liveEventListener.isLiveShowing(false)
                 }
                 1005 -> {
                 }
                 1103 -> {
                     Timber.i("NodeMediaPlayer 1103 收到RTMP协议Stream EOF,或 NetStream.Play.UnpublishNotify, 会进行自动重连.")
+                    liveEventListener.isLiveShowing(false)
                 }
             }
         }
