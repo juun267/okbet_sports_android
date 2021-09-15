@@ -5,19 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
-import org.cxct.sportlottery.util.LocalJsonUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.fromJson
 
 
 abstract class BaseFavoriteViewModel(
@@ -34,14 +29,6 @@ abstract class BaseFavoriteViewModel(
     betInfoRepository,
     infoCenterRepository
 ) {
-    private val playCateMappingList by lazy {
-        val json = LocalJsonUtil.getLocalJson(
-            MultiLanguagesApplication.appContext,
-            "localJson/PlayCateMapping.json"
-        )
-        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
-    }
-
     //TODO add notify login ui to activity/fragment
     val notifyLogin: LiveData<Boolean>
         get() = mNotifyLogin
@@ -193,19 +180,6 @@ abstract class BaseFavoriteViewModel(
                 }.thenBy { it })
             }
         }
-    }
-
-    protected fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String?): MutableMap<String, MutableList<Odd?>> {
-        return this.mapValues { map ->
-            val playCateMapItem = playCateMappingList.find {
-                it.gameType == gameType && it.playCateCode == map.key
-            }
-
-            map.value?.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
-            }?.toMutableList() ?: mutableListOf()
-
-        }.toMutableMap()
     }
 
     private fun MyFavoriteMatchResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
