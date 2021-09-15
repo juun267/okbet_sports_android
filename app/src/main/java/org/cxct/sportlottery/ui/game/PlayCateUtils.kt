@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 
+@Deprecated("Replace with PlayCateMapping.json")
 object PlayCateUtils {
 
     fun filterOdds(
