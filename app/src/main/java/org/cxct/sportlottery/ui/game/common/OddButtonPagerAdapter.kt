@@ -324,6 +324,10 @@ class OddButtonPagerViewHolder private constructor(
                     visibility = View.VISIBLE
                 }
 
+                tv_spread.apply {
+                    visibility = View.INVISIBLE
+                }
+
                 tv_odds.text = when (oddsType) {
                     OddsType.EU -> TextUtil.formatForOdd(odds?.second?.getOrNull(2)?.odds ?: 1)
                     OddsType.HK -> TextUtil.formatForOdd(odds?.second?.getOrNull(2)?.hkOdds ?: 0)
