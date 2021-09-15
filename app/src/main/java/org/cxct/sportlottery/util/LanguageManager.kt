@@ -28,7 +28,8 @@ object LanguageManager {
 //            Language.VI.key -> Language.VI
             else -> {
                 //若APP local 未設定過語系，就使用系統語系判斷
-                val local = getSystemLocale(context)
+//                val local = getSystemLocale(context)
+                val local = Locale.ENGLISH
 
                 when {
                     local.language == Locale.ENGLISH.language -> Language.EN
