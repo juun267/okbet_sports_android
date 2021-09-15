@@ -715,7 +715,6 @@
     <string name="credit_record_day">%s 日</string>
     <string name="credit_record_status_unsettle">尚未到結算日期</string>
     <string name="parlay_rule_nc1_ex">当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
-
     <string name="game_play_type">游戏类别</string>
     <string name="spt_number_3_2">3盘2胜</string>
     <string name="spt_number_5_3">5盘3胜</string>
