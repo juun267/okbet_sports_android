@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.util
 
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.GameType
@@ -17,13 +16,6 @@ import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
 object SocketUpdateUtil {
-    private val playCateMappingList by lazy {
-        val json = LocalJsonUtil.getLocalJson(
-            MultiLanguagesApplication.appContext,
-            "localJson/PlayCateMapping.json"
-        )
-        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
-    }
 
     fun updateMatchStatus(
         gameType: String?,
@@ -257,7 +249,10 @@ object SocketUpdateUtil {
 
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         matchOdd.oddsMap.putAll(
-            oddsChangeEvent.odds?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType) ?: mapOf()
+            oddsChangeEvent.odds?.filterPlayCateSpanned(
+                matchOdd.matchInfo?.gameType,
+                matchOdd.playCateMappingList
+            ) ?: mapOf()
         )
 
         //新增盤口時將盤口排序
@@ -401,9 +396,12 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(gameType: String?): MutableMap<String, MutableList<Odd?>> {
+    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
+        gameType: String?,
+        playCateMappingList: List<PlayCateMapItem>?
+    ): MutableMap<String, MutableList<Odd?>> {
         return this.mapValues { map ->
-            val playCateMapItem = playCateMappingList.find {
+            val playCateMapItem = playCateMappingList?.find {
                 it.gameType == gameType && it.playCateCode == map.key
             }
 
