@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_recommend_vp.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
 import kotlinx.android.synthetic.main.view_odd_btn_column_v4.view.*
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.common.PlayCate
@@ -21,12 +20,13 @@ import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.LocalJsonUtil
 import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.fromJson
 
 
-class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
+class OddButtonPagerAdapter(
+    private val matchInfo: MatchInfo?,
+    private val playCateMappingList: List<PlayCateMapItem>?
+) :
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
 
     var odds: Map<String, List<Odd?>?> = mapOf()
@@ -82,6 +82,7 @@ class OddButtonPagerAdapter(private val matchInfo: MatchInfo?) :
         try {
             holder.bind(
                 matchInfo,
+                playCateMappingList,
                 listOf(
                     Pair(
                         data[position].getOrNull(0)?.first,
@@ -108,16 +109,9 @@ class OddButtonPagerViewHolder private constructor(
     private val oddStateRefreshListener: OddStateChangeListener
 ) : OddStateViewHolder(itemView) {
 
-    private val list by lazy {
-        val json = LocalJsonUtil.getLocalJson(
-            MultiLanguagesApplication.appContext,
-            "localJson/PlayCateMapping.json"
-        )
-        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
-    }
-
     fun bind(
         matchInfo: MatchInfo?,
+        playCateMappingList: List<PlayCateMapItem>?,
         odds: List<Pair<String?, List<Odd?>?>>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
@@ -127,7 +121,9 @@ class OddButtonPagerViewHolder private constructor(
             itemView.odd_btn_row1_home,
             itemView.odd_btn_row1_away,
             itemView.odd_btn_row1_draw,
-            matchInfo, odds?.get(0), oddsType, oddButtonListener
+            matchInfo,
+            playCateMappingList,
+            odds?.get(0), oddsType, oddButtonListener
         )
 
         setupOddsButton(
@@ -135,7 +131,9 @@ class OddButtonPagerViewHolder private constructor(
             itemView.odd_btn_row2_home,
             itemView.odd_btn_row2_away,
             itemView.odd_btn_row2_draw,
-            matchInfo, odds?.get(1), oddsType, oddButtonListener
+            matchInfo,
+            playCateMappingList,
+            odds?.get(1), oddsType, oddButtonListener
         )
     }
 
@@ -145,11 +143,12 @@ class OddButtonPagerViewHolder private constructor(
         oddBtnAway: OddsButton,
         oddBtnDraw: OddsButton,
         matchInfo: MatchInfo?,
+        playCateMappingList: List<PlayCateMapItem>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
     ) {
-        list.find {
+        playCateMappingList?.find {
             it.gameType == matchInfo?.gameType && it.playCateCode == odds?.first
         }?.let { playCateMapItem ->
 
