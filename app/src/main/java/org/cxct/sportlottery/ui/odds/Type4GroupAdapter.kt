@@ -50,7 +50,7 @@ class Type4GroupAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (groupList.isNotEmpty() && keys.isNotEmpty()) {
-            keys[position]?.let { holder.bindModel(groupList[position], it) }
+            keys[position]?.let { holder.bindModel(groupList[position].sortedBy { item -> item?.rowSort }, it) }
         }
     }
 
