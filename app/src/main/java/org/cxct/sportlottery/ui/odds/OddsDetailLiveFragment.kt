@@ -533,6 +533,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         when (args.gameType) {
             GameType.FT -> {
+                setCardText(event)
                 setupFrontScore(event)
             }
             GameType.BK -> {
@@ -549,6 +550,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 setupStatusTnVB(event)
             }
         }
+    }
+
+    private fun setCardText(event: MatchStatusChangeEvent) {
+
+        tv_home_card.visibility = View.VISIBLE
+        tv_home_card.text = (event.matchStatusList?.lastOrNull()?.homeCards ?: 0).toString()
+
+        tv_away_card.visibility = View.VISIBLE
+        tv_away_card.text = (event.matchStatusList?.lastOrNull()?.awayCards ?: 0).toString()
     }
 
     private fun setupPoint(event: MatchStatusChangeEvent) {
