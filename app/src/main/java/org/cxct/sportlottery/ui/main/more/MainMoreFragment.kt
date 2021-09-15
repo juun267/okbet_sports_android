@@ -42,7 +42,6 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setGameData(cateDataList: List<GameCateData>?) {
         //第三方遊戲開啟才顯示 類別 tabLayout
-        tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
         tab_layout.removeAllTabs()
 
         //過濾掉 遊戲數為 0 的類別
@@ -89,6 +88,7 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                     if (selectCate == tabCate) {
                         view_pager.setCurrentItem(position, false)
                         view_pager.visibility = View.VISIBLE
+                        tab_layout.visibility = if (sConfigData?.thirdOpen == FLAG_OPEN) View.VISIBLE else View.GONE
                     }
                 }
             } catch (e: Exception) {
