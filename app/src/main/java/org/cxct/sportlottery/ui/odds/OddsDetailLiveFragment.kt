@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.webkit.*
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -554,10 +555,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun setCardText(event: MatchStatusChangeEvent) {
 
-        tv_home_card.visibility = View.VISIBLE
+
+        tv_home_card.isVisible = (event.matchStatusList?.lastOrNull()?.homeCards?:0 > 0)
         tv_home_card.text = (event.matchStatusList?.lastOrNull()?.homeCards ?: 0).toString()
 
-        tv_away_card.visibility = View.VISIBLE
+        tv_away_card.isVisible = (event.matchStatusList?.lastOrNull()?.awayCards?:0 > 0)
         tv_away_card.text = (event.matchStatusList?.lastOrNull()?.awayCards ?: 0).toString()
     }
 
