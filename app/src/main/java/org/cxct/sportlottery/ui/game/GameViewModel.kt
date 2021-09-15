@@ -590,7 +590,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
-                        oddData.odds?.forEach { map ->
+                        oddData.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -598,7 +598,7 @@ class GameViewModel(
                                     }
                             }
                         }
-                        oddData.odds = oddData.odds?.filterPlayCateSpanned(row.sport?.code)
+                        oddData.oddsMap = oddData.oddsMap.filterPlayCateSpanned(row.sport?.code)
                     }
                 }
 
@@ -621,7 +621,7 @@ class GameViewModel(
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.t?.odds?.forEach { oddData ->
-                    oddData.odds?.forEach { map ->
+                    oddData.oddsMap.forEach { map ->
                         map.value.forEach { odd ->
                             odd?.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {

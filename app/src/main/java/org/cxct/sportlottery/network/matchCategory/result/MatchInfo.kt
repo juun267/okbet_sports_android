@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.matchCategory.result
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.network.common.MatchInfo
 
 @JsonClass(generateAdapter = true)
 data class MatchInfo(
@@ -13,7 +14,7 @@ data class MatchInfo(
     @Json(name = "homeName")
     val homeName: String?,
     @Json(name = "id")
-    val id: String?,
+    override val id: String,
     @Json(name = "img")
     val img: String?,
     @Json(name = "leagueId")
@@ -30,4 +31,29 @@ data class MatchInfo(
     val startTime: Long?,
     @Json(name = "status")
     val status: Int?
-)
+) : MatchInfo {
+
+    override val gameType: String? = null
+
+    override var awayScore: Int? = null
+
+    override var homeScore: Int? = null
+
+    override var statusName: String? = null
+
+    override var leagueTime: Int? = null
+
+    override var socketMatchStatus: Int? = null
+
+    override var homeTotalScore: Int? = null
+
+    override var awayTotalScore: Int? = null
+
+    override var homePoints: Int? = null
+
+    override var awayPoints: Int? = null
+
+    override var homeCards: Int? = null
+
+    override var awayCards: Int? = null
+}

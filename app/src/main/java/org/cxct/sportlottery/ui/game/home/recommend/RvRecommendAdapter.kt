@@ -34,7 +34,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         val dataList = mutableListOf<RecommendGameEntity>()
         result.rows?.forEach { row ->
             row.leagueOdds?.matchOdds?.forEach { oddData ->
-                val beans = oddData.odds?.map { OddBean(it.key, it.value) } ?: listOf()
+                val beans = oddData.oddsMap.map { OddBean(it.key, it.value) } ?: listOf()
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
