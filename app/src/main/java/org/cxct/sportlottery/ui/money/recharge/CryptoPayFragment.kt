@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -599,8 +600,8 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         et_recharge_amount.setHint(
             String.format(
                 getString(R.string.edt_hint_crypto_pay_count),
-                mSelectRechCfgs?.minMoney?.toInt(),
-                mSelectRechCfgs?.maxMoney?.toInt()
+                TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toInt() ?: 0),
+                TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toInt() ?: 999999)
             )
         )
     }

@@ -285,8 +285,8 @@ class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewMo
         et_recharge_account.setHint(
             String.format(
                 getString(R.string.edt_hint_crypto_pay_count),
-                mSelectRechCfgs?.minMoney?.toInt(),
-                mSelectRechCfgs?.maxMoney?.toInt()
+                TextUtil.formatMoneyNoDecimal(mSelectRechCfgs?.minMoney?.toInt() ?: 0),
+                TextUtil.formatMoneyNoDecimal(mSelectRechCfgs?.maxMoney?.toInt() ?: 0)
             )
         )
     }
