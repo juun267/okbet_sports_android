@@ -890,9 +890,6 @@ class GameViewModel(
                 )
             }
             
-
-            result?.sortOdds()
-
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.let { matchInfo ->
