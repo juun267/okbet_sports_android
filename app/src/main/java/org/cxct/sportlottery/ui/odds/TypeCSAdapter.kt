@@ -115,12 +115,12 @@ class TypeCSAdapter(
 
                     checkKey(PlayCate.SINGLE_FLG.value) -> {
                         tv_name.text = when (odd?.playCode) {
-                            PlayCode.ONEXTWO_FLG_H_H.value -> this.context.getString(R.string.odds_button_name_hdh)
-                            PlayCode.ONEXTWO_FLG_H_C.value -> this.context.getString(R.string.odds_button_name_hdc)
-                            PlayCode.ONEXTWO_FLG_D_H.value -> this.context.getString(R.string.odds_button_name_cdh)
-                            PlayCode.ONEXTWO_FLG_D_C.value -> this.context.getString(R.string.odds_button_name_cdc)
-                            PlayCode.ONEXTWO_FLG_C_H.value -> this.context.getString(R.string.odds_button_name_hch)
-                            PlayCode.ONEXTWO_FLG_C_C.value -> this.context.getString(R.string.odds_button_name_hcc)
+                            PlayCode.SINGLE_FLG_H_H.value -> this.context.getString(R.string.odds_button_name_hdh)
+                            PlayCode.SINGLE_FLG_H_C.value -> this.context.getString(R.string.odds_button_name_hdc)
+                            PlayCode.SINGLE_FLG_D_H.value -> this.context.getString(R.string.odds_button_name_cdh)
+                            PlayCode.SINGLE_FLG_D_C.value -> this.context.getString(R.string.odds_button_name_cdc)
+                            PlayCode.SINGLE_FLG_C_H.value -> this.context.getString(R.string.odds_button_name_hch)
+                            PlayCode.SINGLE_FLG_C_C.value -> this.context.getString(R.string.odds_button_name_hcc)
                             else -> ""
                         }
                     }
