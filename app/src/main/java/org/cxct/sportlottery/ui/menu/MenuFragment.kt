@@ -163,16 +163,13 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupSelectLanguage() {
-        //TODO simon test bug No.10171 紀錄：現階段為中英文欄未對應問題,先暫時隱藏,暫等翻譯完成後,再開啟此功能
-        btn_change_language.visibility = View.INVISIBLE
-
-
-        btn_change_language.text = when (LanguageManager.getSelectLanguage(btn_change_language.context)) {
-            LanguageManager.Language.ZH -> getString(R.string.language_cn)
-            LanguageManager.Language.ZHT -> getString(R.string.language_zht)
-            LanguageManager.Language.VI -> getString(R.string.language_vi)
-            LanguageManager.Language.EN -> getString(R.string.language_en)
-        }
+        btn_change_language.text =
+            when (LanguageManager.getSelectLanguage(btn_change_language.context)) {
+                LanguageManager.Language.ZH -> getString(R.string.language_cn)
+                LanguageManager.Language.ZHT -> getString(R.string.language_zht)
+                LanguageManager.Language.VI -> getString(R.string.language_vi)
+                LanguageManager.Language.EN -> getString(R.string.language_en)
+            }
     }
 
     private fun setupVersion() {
