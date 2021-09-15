@@ -599,6 +599,7 @@ class GameViewModel(
                             }
                         }
                         oddData.oddsMap = oddData.oddsMap.filterPlayCateSpanned(row.sport?.code)
+                        oddData.playCateMappingList = playCateMappingList
                     }
                 }
 
@@ -838,6 +839,7 @@ class GameViewModel(
             matchOdd?.let {
                 matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
                 matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
+                matchOdd.playCateMappingList = playCateMappingList
             }
 
             _outrightOddsListResult.postValue(Event(result))
@@ -901,6 +903,8 @@ class GameViewModel(
 
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
+
+                    matchOdd.playCateMappingList = playCateMappingList
 
                     matchOdd.oddsMap = matchOdd.oddsMap.filterPlayCateSpanned(gameType)
 
@@ -1044,6 +1048,15 @@ class GameViewModel(
                     )
                 )
             }
+
+            result?.rows?.forEach {
+                it.leagueOdd.forEach { leagueOdds ->
+                    leagueOdds?.matchOdds?.forEach { matchOddsItem ->
+                        matchOddsItem.playCateMappingList = playCateMappingList
+                    }
+                }
+            }
+
             _epsListResult.postValue(Event(result))
         }
     }

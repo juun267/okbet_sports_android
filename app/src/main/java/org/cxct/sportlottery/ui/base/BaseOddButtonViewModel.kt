@@ -40,7 +40,7 @@ abstract class BaseOddButtonViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
-    private val playCateMappingList by lazy {
+    protected val playCateMappingList by lazy {
         val json = LocalJsonUtil.getLocalJson(
             MultiLanguagesApplication.appContext,
             "localJson/PlayCateMapping.json"
