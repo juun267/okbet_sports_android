@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
