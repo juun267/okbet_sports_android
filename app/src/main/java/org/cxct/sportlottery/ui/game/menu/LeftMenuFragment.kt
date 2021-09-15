@@ -4,12 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_left_menu.*
+import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
@@ -21,14 +26,22 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     //點擊置頂後
     private var unselectedAdapter =
         LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { gameType ->
-            viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-        })
+            viewModel.pinFavorite(
+                FavoriteType.SPORT,
+                gameType
+            )
+            setSnackBarMyFavoriteNotify( MyFavoriteNotifyType.SPORT_ADD.code)
+        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //取消置頂
     var selectedAdapter =
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { gameType ->
             viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-        })
+            setSnackBarMyFavoriteNotify( MyFavoriteNotifyType.SPORT_REMOVE.code)
+        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
+
+    //提示
+    var snackBarMyFavoriteNotify: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -153,5 +166,66 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             favorSportTypeList.indexOf(it.gameType)
         }
         selectedAdapter.data = selectedList
+        line_pin.visibility = if(selectedList.isNotEmpty() && selectedList.size < 4) View.VISIBLE else View.GONE
     }
+
+    private fun navSportEntrance(sport:String){
+        val matchType = when (sport) {
+            GameType.FT.name -> viewModel.cardMatchTypeFT.value
+            GameType.BK.name -> viewModel.cardMatchTypeBK.value
+            GameType.TN.name -> viewModel.cardMatchTypeTN.value
+            GameType.VB.name -> viewModel.cardMatchTypeFT.value
+            else -> MatchType.TODAY
+        }
+        val sportType = when (sport) {
+            GameType.FT.name -> GameType.FT
+            GameType.BK.name -> GameType.BK
+            GameType.TN.name -> GameType.TN
+            GameType.VB.name -> GameType.VB
+            else -> GameType.FT
+        }
+        matchType?.let {
+            viewModel.navSpecialEntrance(
+                it,
+                sportType
+            )
+            dismiss()
+        }
+    }
+
+    private fun setSnackBarMyFavoriteNotify(myFavoriteNotifyType:Int){
+        val title = when(myFavoriteNotifyType){
+
+            MyFavoriteNotifyType.SPORT_ADD.code-> getString(R.string.myfavorite_notify_detail_add)
+
+            MyFavoriteNotifyType.SPORT_REMOVE.code-> getString(R.string.myfavorite_notify_detail_remove)
+
+            else -> ""
+        }
+
+        snackBarMyFavoriteNotify = activity?.let {
+            Snackbar.make(
+                this@LeftMenuFragment.requireView(),
+                title,
+                Snackbar.LENGTH_LONG
+            ).apply {
+                val snackView: View = layoutInflater.inflate(
+                    R.layout.snackbar_my_favorite_notify,
+                    activity?.findViewById(android.R.id.content),
+                    false
+                )
+                snackView.txv_title.text = title
+                (this.view as Snackbar.SnackbarLayout).apply {
+                    findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                        visibility = View.INVISIBLE
+                    }
+                    background.alpha = 0
+                    addView(snackView, 0)
+                    setPadding(0, 0, 0, 0)
+                }
+            }
+        }
+        snackBarMyFavoriteNotify?.show()
+    }
+
 }

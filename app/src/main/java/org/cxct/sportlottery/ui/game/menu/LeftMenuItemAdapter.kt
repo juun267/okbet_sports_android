@@ -9,10 +9,11 @@ import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import org.cxct.sportlottery.R
 
 
-class LeftMenuItemAdapter(private val clickListener: ItemClickListener) :
+class LeftMenuItemAdapter(
+    private val clickListener: ItemClickListener,
+    private val sportClickListener: SportClickListener
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    private enum class ViewType { ITEM, FOOTER }
 
     var data = listOf<MenuItemData>()
         set(value) {
@@ -31,21 +32,32 @@ class LeftMenuItemAdapter(private val clickListener: ItemClickListener) :
             }
         }
 
-        fun bind(item: MenuItemData, clickListener: ItemClickListener) {
-            when (item.isSelected) {
-                0 -> {
-                    itemView.cl_content.visibility = View.VISIBLE
-                    itemView.img_price.setImageResource(item.imgId)
-                    itemView.txv_price.text = item.title
-                    itemView.btn_select.setImageResource(R.drawable.ic_pin_v4)
-                    itemView.btn_select.setOnClickListener {
-                        clickListener.onClick(item.gameType)
+        fun bind(
+            item: MenuItemData,
+            clickListener: ItemClickListener,
+            sportClickListener: SportClickListener
+        ) {
+            itemView.apply {
+                when (item.isSelected) {
+                    0 -> {
+                        cl_content.apply {
+                            setOnClickListener {
+                                sportClickListener.onClickSport(item.gameType)
+                            }
+                            visibility = View.VISIBLE
+                        }
+                        img_price.setImageResource(item.imgId)
+                        txv_price.text = item.title
+                        btn_select.setImageResource(R.drawable.ic_pin_v4)
+                        btn_select.setOnClickListener {
+                            clickListener.onClick(item.gameType)
+                        }
+                        setVisibility(true)
                     }
-                    setVisibility(true)
-                }
-                1 -> {
-                    itemView.cl_content.visibility = View.GONE
-                    setVisibility(false)
+                    1 -> {
+                        cl_content.visibility = View.GONE
+                        setVisibility(false)
+                    }
                 }
             }
         }
@@ -65,53 +77,29 @@ class LeftMenuItemAdapter(private val clickListener: ItemClickListener) :
         }
     }
 
-    class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        companion object {
-            fun from(parent: ViewGroup): FooterViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.content_footer_line, parent, false)
-                return FooterViewHolder(view)
-            }
-        }
-    }
-
-
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            data.size -> ViewType.FOOTER.ordinal
-            else -> ViewType.ITEM.ordinal
-        }
-    }
-
     override fun getItemCount(): Int {
-        return if(data.isNotEmpty()){
-            data.size + 1
-        }else{
-            data.size
-        }
+        return data.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            ViewType.ITEM.ordinal -> ItemViewHolder.from(parent)
-            ViewType.FOOTER.ordinal -> FooterViewHolder.from(parent)
-            else -> FooterViewHolder.from(parent)
-        }
+        return ItemViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
                 val data = data[position]
-                holder.bind(data, clickListener)
+                holder.bind(data, clickListener, sportClickListener)
             }
         }
     }
 
     class ItemClickListener(private val clickListener: (string: String) -> Unit) {
         fun onClick(string: String) = clickListener(string)
+    }
+
+    class SportClickListener(val clickSportListener: (gameType: String) -> Unit) {
+        fun onClickSport(gameType: String) = clickSportListener(gameType)
     }
 
 
