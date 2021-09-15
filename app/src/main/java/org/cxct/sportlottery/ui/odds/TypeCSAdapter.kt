@@ -63,8 +63,8 @@ class TypeCSAdapter(
                 when {
                     checkKey(PlayCate.SINGLE_OU.value) || checkKey(PlayCate.DC_OU.value) -> {
                         tv_name.text = when (adapterPosition) {
-                            0 -> itemView.context.getString(R.string.odds_button_name_o)
-                            else -> itemView.context.getString(R.string.odds_button_name_u)
+                            0 -> itemView.context.getString(R.string.odd_button_ou_o)
+                            else -> itemView.context.getString(R.string.odd_button_ou_u)
                         }
                     }
 
