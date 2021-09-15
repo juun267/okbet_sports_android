@@ -119,7 +119,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupOddsButton(item, oddsType, leagueOddListener)
 
-            setupQuickCategory(item, leagueOddListener)
+            setupQuickCategory(item, oddsType, leagueOddListener)
         }
 
         private fun setupMatchInfo(
@@ -594,6 +594,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setupQuickCategory(
             item: MatchOdd,
+            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
 
@@ -673,15 +674,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             when (item.quickPlayCateList?.find { it.isSelected }?.code) {
                 QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value -> {
-                    setupQuickOddButtonPair(item, leagueOddListener)
+                    setupQuickOddButtonPair(item, oddsType, leagueOddListener)
                 }
 
                 QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
-                    setupQuickOddButtonPager(item, leagueOddListener)
+                    setupQuickOddButtonPager(item, oddsType, leagueOddListener)
                 }
 
                 QuickPlayCate.QUICK_EPS.value -> {
-                    setupQuickOddButtonEps(item, leagueOddListener)
+                    setupQuickOddButtonEps(item, oddsType, leagueOddListener)
                 }
 
                 else -> {
@@ -692,10 +693,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setupQuickOddButtonPair(
             item: MatchOdd,
+            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
             val adapter by lazy {
                 OddButtonPairAdapter(item.matchInfo).apply {
+                    this.oddsType = oddsType
+
                     listener = OddButtonListener { matchInfo, odd, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
@@ -767,6 +771,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setupQuickOddButtonPager(
             item: MatchOdd,
+            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
             itemView.league_odd_quick_odd_btn_pager.visibility = View.VISIBLE
@@ -817,9 +822,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupQuickOddButtonEps(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        private fun setupQuickOddButtonEps(
+            item: MatchOdd,
+            oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?
+        ) {
             val adapter by lazy {
                 OddButtonEpsAdapter(item.matchInfo).apply {
+                    this.oddsType = oddsType
+
                     listener = OddButtonListener { matchInfo, odd, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
