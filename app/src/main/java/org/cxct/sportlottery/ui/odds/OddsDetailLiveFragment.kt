@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -45,11 +46,8 @@ import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
 import org.cxct.sportlottery.ui.component.NodeMediaManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
-import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.DM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import java.util.*
@@ -68,6 +66,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
+    
+    private var curStatus: Int? = null
 
     override var startTime: Long = 0
     override var timer: Timer = Timer()
@@ -85,12 +85,26 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
 
-        if (timeMillis >= 0) {
-            tv_time_bottom?.apply {
-                text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-            }
+        if (needCountStatus(curStatus)) {
+            if (timeMillis >= 0) {
+                tv_time_bottom?.apply {
+                    text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                    setTextColor(ContextCompat.getColor(this.context, R.color.colorSilver))
+                }
+                tv_time_top?.apply {
+                    setTextColor(ContextCompat.getColor(this.context, R.color.colorSilver))
+                }
 
-            startTime = timeMillis / 1000L
+                startTime = timeMillis / 1000L
+            }
+        } else {
+            tv_time_bottom?.apply {
+                text = this.context.getString(R.string.time_null)
+                setTextColor(ContextCompat.getColor(this.context, R.color.colorOrangeLight))
+            }
+            tv_time_top?.apply {
+                setTextColor(ContextCompat.getColor(this.context, R.color.colorOrangeLight))
+            }
         }
 
         return@Handler false
@@ -356,6 +370,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
                         curHomeScore = homeScore
                         curAwayScore = awayScore
+                        curStatus = status
 
                         setupStatusList(matchStatusChangeEvent)
                     }
