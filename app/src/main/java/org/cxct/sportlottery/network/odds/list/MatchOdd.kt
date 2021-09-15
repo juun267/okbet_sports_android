@@ -9,6 +9,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.eps.Odds
 import org.cxct.sportlottery.network.outright.odds.DynamicMarket
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
@@ -27,7 +28,10 @@ data class MatchOdd(
     @Json(name = "oddsSort")
     override val oddsSort: String? = null
 ) : MatchOdd {
+
     override val oddsEps: Odds? = null
+
+    override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var isExpand = false
     var leagueTime: Int? = null
