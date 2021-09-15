@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_QUERY
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_RECOMMEND
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MATCH
 import org.cxct.sportlottery.network.Constants.MATCH_CATEGORY_SPECIAL_MENU
+import org.cxct.sportlottery.network.Constants.MATCH_LIVE_URL
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_EPS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_LIST
 import org.cxct.sportlottery.network.Constants.MATCH_ODDS_QUICK_LIST
@@ -90,6 +91,7 @@ import org.cxct.sportlottery.network.league.LeagueListResult
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlResponse
 import org.cxct.sportlottery.network.matchresult.list.MatchResultListResult
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.money.MoneyAddResult
@@ -219,6 +221,10 @@ object ErrorUtils {
                     (url.contains(MATCH_PRELOAD)) -> {
                         @Suppress("UNCHECKED_CAST")
                         return MatchPreloadResult(it.code, it.msg, it.success, null) as T
+                    }
+                    (url.contains(MATCH_LIVE_URL)) -> {
+                        @Suppress("UNCHECKED_CAST")
+                        return MatchLiveUrlResponse(it.code, it.msg, it.success, null) as T
                     }
                     (url.contains(MATCH_ODDS_EPS_LIST)) -> {
                         @Suppress("UNCHECKED_CAST")

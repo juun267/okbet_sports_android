@@ -8,16 +8,18 @@
     <color name="colorBlueDark">#1F4780</color>
     <color name="colorSilverBlue">#A9BEDF</color>
 
-    <color name="colorOrangeLight">#FF9E3C</color>
+    <color name="colorOrangeLight">#FF9200</color>
     <color name="colorOrange">#FF8000</color>
 
     <color name="colorRedLight">#e7837c</color>
     <color name="colorRed">#E44438</color>
     <color name="colorRedDark">#B73A20</color>
+    <color name="colorRedPersian">#CE3636</color>
 
     <color name="colorGreenLight">#08ab75</color>
     <color name="colorGreen">#08DC6E</color>
-    <color name="colorSeaGreen">#08AB74</color>
+    <color name="colorGreenSea">#08AB74</color>
+    <color name="colorGreenKeppel">#3DB893</color>
 
     <color name="colorWhite">#FCFCFC</color>
     <color name="colorWhite1">#F3F4F5</color>
@@ -28,6 +30,7 @@
     <color name="colorWhite6">#E2E2E2</color>
     <color name="colorWhite7">#DFEAF8</color>
     <color name="colorWhite8">#E6E6E6</color>
+    <color name="colorWhite9">#F3F3F3</color>
 
 
     <color name="colorSilverLight">#CCCCCC</color>
@@ -39,6 +42,7 @@
     <color name="colorGray">#666666</color> <!--106 106 106-->
     <color name="colorGrayDark">#404040</color>
     <color name="colorGrayDark2">#444444</color>
+    <color name="colorGrayGallery">#EEEEEE</color>
 
     <color name="colorBlackLight">#333333</color>
     <color name="colorBlack">#000000</color>

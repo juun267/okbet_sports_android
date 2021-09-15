@@ -6,5 +6,7 @@ enum class MyFavoriteNotifyType(val code: Int) {
     MATCH_ADD(2),
     MATCH_REMOVE(3),
     DETAIL_ADD(4),
-    DETAIL_REMOVE(5)
+    DETAIL_REMOVE(5),
+    SPORT_ADD(6),
+    SPORT_REMOVE(7)
 }

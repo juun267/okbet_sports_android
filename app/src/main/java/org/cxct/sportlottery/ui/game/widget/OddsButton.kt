@@ -100,7 +100,8 @@ class OddsButton @JvmOverloads constructor(
 
         isSelected = odd?.isSelected ?: false
 
-        betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        betStatus =
+            if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
@@ -118,7 +119,8 @@ class OddsButton @JvmOverloads constructor(
 
         isSelected = odd?.isSelected ?: false
 
-        betStatus = if (getOdds(odd, oddsType) == 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        betStatus =
+            if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
 

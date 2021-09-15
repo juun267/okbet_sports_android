@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.needCountStatus
 import java.util.*
 
 
@@ -119,7 +120,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             setupOddsButton(item, oddsType, leagueOddListener)
 
-            setupQuickCategory(item, leagueOddListener)
+            setupQuickCategory(item, oddsType, leagueOddListener)
         }
 
         private fun setupMatchInfo(
@@ -379,7 +380,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 MatchType.IN_PLAY -> {
                     val socketValue = item.matchInfo?.socketMatchStatus
 
-                    if (noNeedCount(socketValue)) {
+                    if (needCountStatus(socketValue)) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
@@ -491,20 +492,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        //不需顯示計時器 -> [1:第一节, 2:第二节, 6:上半场, 7:下半场, 13:第一节, 14:第二节, 15:第三节, 16:第四节, 106:加时赛上半场, 107:加时赛下半场]
-        private fun noNeedCount(status: Int?): Boolean {
-            return status != GameMatchStatus.SECTION_ONE.value
-                    && status != GameMatchStatus.SECTION_TWO.value
-                    && status != GameMatchStatus.FIRST_HALF.value
-                    && status != GameMatchStatus.SECOND_HALF.value
-                    && status != GameMatchStatus.SECTION_ONE_2.value
-                    && status != GameMatchStatus.SECTION_TWO_2.value
-                    && status != GameMatchStatus.SECTION_THREE.value
-                    && status != GameMatchStatus.FOURTH_QUARTER.value
-                    && status != GameMatchStatus.OVERTIME_FIRST_HALF.value
-                    && status != GameMatchStatus.OVERTIME_SECOND_HALF.value
-        }
-
         private fun setStatusText(item: MatchOdd, matchType: MatchType) {
             itemView.league_odd_match_status.text = when {
                 (matchType == MatchType.IN_PLAY &&
@@ -595,6 +582,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setupQuickCategory(
             item: MatchOdd,
+            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
 
@@ -674,15 +662,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             when (item.quickPlayCateList?.find { it.isSelected }?.code) {
                 QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value -> {
-                    setupQuickOddButtonPair(item, leagueOddListener)
+                    setupQuickOddButtonPair(item, oddsType, leagueOddListener)
                 }
 
                 QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
-                    setupQuickOddButtonPager(item, leagueOddListener)
+                    setupQuickOddButtonPager(item, oddsType, leagueOddListener)
                 }
 
                 QuickPlayCate.QUICK_EPS.value -> {
-                    setupQuickOddButtonEps(item, leagueOddListener)
+                    setupQuickOddButtonEps(item, oddsType, leagueOddListener)
                 }
 
                 else -> {
@@ -693,10 +681,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setupQuickOddButtonPair(
             item: MatchOdd,
+            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
             val adapter by lazy {
                 OddButtonPairAdapter(item.matchInfo).apply {
+                    this.oddsType = oddsType
+
                     listener = OddButtonListener { matchInfo, odd, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
@@ -768,6 +759,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setupQuickOddButtonPager(
             item: MatchOdd,
+            oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
             itemView.league_odd_quick_odd_btn_pager.visibility = View.VISIBLE
@@ -819,9 +811,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setupQuickOddButtonEps(item: MatchOdd, leagueOddListener: LeagueOddListener?) {
+        private fun setupQuickOddButtonEps(
+            item: MatchOdd,
+            oddsType: OddsType,
+            leagueOddListener: LeagueOddListener?
+        ) {
             val adapter by lazy {
                 OddButtonEpsAdapter(item.matchInfo).apply {
+                    this.oddsType = oddsType
+
                     listener = OddButtonListener { matchInfo, odd, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
