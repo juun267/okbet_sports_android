@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.needCountStatus
 import java.util.*
 
 
@@ -379,7 +380,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 MatchType.IN_PLAY -> {
                     val socketValue = item.matchInfo?.socketMatchStatus
 
-                    if (noNeedCount(socketValue)) {
+                    if (needCountStatus(socketValue)) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
@@ -489,20 +490,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     else -> View.INVISIBLE
                 }
             }
-        }
-
-        //不需顯示計時器 -> [1:第一节, 2:第二节, 6:上半场, 7:下半场, 13:第一节, 14:第二节, 15:第三节, 16:第四节, 106:加时赛上半场, 107:加时赛下半场]
-        private fun noNeedCount(status: Int?): Boolean {
-            return status != GameMatchStatus.SECTION_ONE.value
-                    && status != GameMatchStatus.SECTION_TWO.value
-                    && status != GameMatchStatus.FIRST_HALF.value
-                    && status != GameMatchStatus.SECOND_HALF.value
-                    && status != GameMatchStatus.SECTION_ONE_2.value
-                    && status != GameMatchStatus.SECTION_TWO_2.value
-                    && status != GameMatchStatus.SECTION_THREE.value
-                    && status != GameMatchStatus.FOURTH_QUARTER.value
-                    && status != GameMatchStatus.OVERTIME_FIRST_HALF.value
-                    && status != GameMatchStatus.OVERTIME_SECOND_HALF.value
         }
 
         private fun setStatusText(item: MatchOdd, matchType: MatchType) {
