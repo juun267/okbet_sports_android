@@ -89,21 +89,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             if (timeMillis >= 0) {
                 tv_time_bottom?.apply {
                     text = TimeUtil.timeFormat(timeMillis, "mm:ss")
-                    setTextColor(ContextCompat.getColor(this.context, R.color.colorSilver))
                 }
-                tv_time_top?.apply {
-                    setTextColor(ContextCompat.getColor(this.context, R.color.colorSilver))
-                }
-
                 startTime = timeMillis / 1000L
             }
         } else {
             tv_time_bottom?.apply {
                 text = this.context.getString(R.string.time_null)
-                setTextColor(ContextCompat.getColor(this.context, R.color.colorOrangeLight))
-            }
-            tv_time_top?.apply {
-                setTextColor(ContextCompat.getColor(this.context, R.color.colorOrangeLight))
             }
         }
 
@@ -260,6 +251,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         }
                         setupStartTime()
                         setupLiveView()
+
+
+                        if (args.matchType == MatchType.IN_PLAY) {
+                            tv_time_bottom?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorOrangeLight))
+                            tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorOrangeLight))
+                        } else {
+                            tv_time_bottom?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
+                            tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
+                        }
 
                         if (args.matchType == MatchType.IN_PLAY &&
                             (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)) {

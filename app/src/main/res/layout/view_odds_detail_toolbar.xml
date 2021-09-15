@@ -171,6 +171,23 @@
                 tools:visibility="visible" />
 
             <TextView
+                android:id="@+id/tv_away_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorRed"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/textSize12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_away_name"
+                app:layout_constraintVertical_bias="0.6"
+                tools:text="5"
+                tools:visibility="visible" />
+
+
+            <TextView
                 android:id="@+id/tv_away_score"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -178,10 +195,11 @@
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold"
                 android:visibility="gone"
+                android:layout_marginStart="4dp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_away_name"
                 app:layout_constraintEnd_toStartOf="@+id/tv_away_name"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tv_away_name"
+                app:layout_constraintStart_toEndOf="@+id/tv_away_card"
                 tools:text="5"
                 tools:visibility="visible" />
 
