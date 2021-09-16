@@ -51,6 +51,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
 /**
@@ -915,46 +916,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 //滾球盤、即將開賽盤
                 mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
-                        matchOdd.oddsMap.values.forEach { odds ->
-                            odds.forEach { odd ->
-                                if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                                    odd?.status = BetStatus.DEACTIVATED.code
-                                    mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
-                                }
-
-                                //20210713 紀錄：這邊只設定禁用狀態，解開會依照 socket producerUp 去更新 BetStatus
-                            }
+                        if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)) {
+                            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
                         }
                     }
                 }
-
 
                 //推薦賽事
                 mRecommendAdapter.getData().forEachIndexed { index, entity ->
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
-                        oddBean.oddList.forEach { odd ->
-                            if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                                odd?.status = BetStatus.DEACTIVATED.code
-                                mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
-                            }
-
-                            //20210713 紀錄：這邊只設定禁用狀態，解開會依照 socket producerUp 去更新 BetStatus
+                        if (SocketUpdateUtil.updateOddStatus(oddBean, globalStopEvent)) {
+                            mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
                         }
                     }
                 }
 
-
                 //精選賽事
                 mRvHighlightAdapter.getData().forEachIndexed { index, matchOdd ->
-                    matchOdd.oddsMap.values.forEach { odds ->
-                        odds.forEach { odd ->
-                            if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                                odd?.status = BetStatus.DEACTIVATED.code
-                                mRvHighlightAdapter.notifyItemChanged(index)
-                            }
-
-                            //20210713 紀錄：這邊只設定禁用狀態，解開會依照 socket producerUp 去更新 BetStatus
-                        }
+                    if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)) {
+                        mRvHighlightAdapter.notifyItemChanged(index)
                     }
                 }
             }
