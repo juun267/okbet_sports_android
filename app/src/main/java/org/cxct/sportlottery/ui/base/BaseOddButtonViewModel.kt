@@ -468,6 +468,20 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
+        this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
+            this.oddsEps?.eps?.let { oddList ->
+                odd.status = when {
+                    (oddList.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (oddList.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
         this.quickPlayCateList?.forEach { quickPlayCate ->
             quickPlayCate.quickOdds?.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
