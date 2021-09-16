@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -54,6 +55,15 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
+
+    companion object{
+        //切換語系，activity 要重啟才會生效
+        fun reStart(context: Context) {
+            val intent = Intent(context, GameActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+    }
 
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
