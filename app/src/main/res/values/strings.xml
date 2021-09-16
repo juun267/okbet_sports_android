@@ -181,8 +181,8 @@
     <string name="daily_bet_range">每日有效打码区间值</string>
     <string name="title_rebates_rate">返水%数</string>
     <string name="daily_rebates">单日最大返水</string>
-    <string name="hint_recharge_growth">充值 3 元可获得 %1$s 点成长值</string>
-    <string name="hint_bet_growth">投注 1 元可获得 %1$s 点成长值</string>
+    <string name="hint_recharge_growth">充值 %d 元可获得 %d 点成长值</string>
+    <string name="hint_bet_growth">投注 %d 元可获得 %d 点成长值</string>
     <string name="contact_us">联络我们</string>
     <string name="game_rule">游戏规则</string>
     <string name="sport_bet_rule">体育投注规则</string>
@@ -359,7 +359,7 @@
     <string name="odds_detail_play_type_bts_n">并非双方球队进球</string>
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
-    <string name="odds_detail_play_type_dc_12">44198</string>
+    <string name="odds_detail_play_type_dc_12">1/2</string>
     <string name="odds_detail_play_type_ou_o">大</string>
     <string name="odds_detail_play_type_ou_u">小</string>
     <string name="bottom_sheet_close">关闭</string>
@@ -371,7 +371,7 @@
     <string name="title_account">账号：</string>
     <string name="title_address">地址：</string>
     <string name="title_deposit_money">充值金额</string>
-    <string name="edt_hint_deposit_money">限额%1$s～%2$sRMB</string>
+    <string name="edt_hint_deposit_money">限额 %1$s～%2$s RMB</string>
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">姓名须与银行户口一致</string>
@@ -547,10 +547,10 @@
     <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
     <string name="bet_list_single">单注</string>
     <string name="bet_list_view_more_options">查看所有多个选项</string>
-    <string name="bet_list_cant_parlay_warn">提醒若同一赛事投注项目不可进行串关</string>
+    <string name="bet_list_cant_parlay_warn">提醒若同一赛事, 不同球种, 冠军等投注项目不可进行串关</string>
     <string name="bet_info_odd_content_close">所选投注的一个或多个选项已关闭</string>
     <string name="bet_info_remove_closed">移除已关闭的选项</string>
-    <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n当有更多的赛事选项时，%1$s串1可以被组合成复式连串，例如%2$s场赛事可以排列组合出%2$s个%1$s串1</string>
+    <string name="parlay_rule_nc1">%1$s串1是%1$s个选项组成的单一投注\n必须赢得所有选项方可获得返还\n</string>
     <string name="parlay_rule_at_least">至少2个选项获胜以确保派彩</string>
     <string name="parlay_rule_cant_warn">不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_rule_ncm">%1$s串%2$s是由%1$s个不同赛事组成的%2$s个不同的投注</string>

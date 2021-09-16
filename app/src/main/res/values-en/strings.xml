@@ -364,7 +364,7 @@
     <string name="title_account">Account</string>
     <string name="title_address">Address</string>
     <string name="title_deposit_money">Top-up amount</string>
-    <string name="edt_hint_deposit_money">Limit%1$s～%2$sRMB</string>
+    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>
     <string name="title_real_name">Verified name</string>
     <string name="title_nick_name">Your nickname</string>
     <string name="edt_hint_real_name">The account name must match the bank account name</string>
@@ -540,10 +540,10 @@
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Single bet</string>
     <string name="bet_list_view_more_options">Show all the multiple options</string>
-    <string name="bet_list_cant_parlay_warn">Remind if the same match betting items can not be linked for parlay</string>
+    <string name="bet_list_cant_parlay_warn">Remind if same match, different sports, champions and other betting items can not be linked for parlay</string>
     <string name="bet_info_odd_content_close">One or more options for the selected bet have been closed</string>
     <string name="bet_info_remove_closed">Remove disabled options</string>
-    <string name="parlay_rule_nc1">%1$s string 1 is a single bet of %1$s options \n must win all options to be returned \n When there are more options, %1$s string 1 can be combined into a double sequence, for example, %2$s matches can be combined into %2$s matches %1$s string 1</string>
+    <string name="parlay_rule_nc1">%1$s string 1 is a single bet of %1$s options \n must win all options to be returned \n</string>
     <string name="parlay_rule_at_least">At least 2 options win to make sure the lottery</string>
     <string name="parlay_rule_cant_warn">Different types of sport and champion gameplay can not be linked for parlay</string>
     <string name="parlay_rule_ncm">The %1$S string %2$s is a %2$s bet made up of %1$S different races</string>
