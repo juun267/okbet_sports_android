@@ -166,6 +166,10 @@ object SocketUpdateUtil {
                         isNeedRefreshMatchOdds || isNeedRefreshQuickOdds || isNeedRefreshEpsOdds
                     }
                 }
+
+            if (isNeedRefresh) {
+                matchOdd.updateOddStatus()
+            }
         }
 
         return isNeedRefresh
@@ -206,6 +210,10 @@ object SocketUpdateUtil {
                     isNeedRefresh = true
                 }
             }
+
+        if (isNeedRefresh) {
+            matchOdd.updateOddStatus()
+        }
 
         return isNeedRefresh
     }
@@ -410,5 +418,54 @@ object SocketUpdateUtil {
             }?.toMutableList() ?: mutableListOf()
 
         }.toMutableMap()
+    }
+
+    private fun MatchOdd.updateOddStatus() {
+        this.oddsMap.forEach {
+            it.value.filterNotNull().forEach { odd ->
+
+                odd.status = when {
+                    (it.value.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (it.value.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
+            this.oddsEps?.eps?.let { oddList ->
+                odd.status = when {
+                    (oddList.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (oddList.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.quickPlayCateList?.forEach { quickPlayCate ->
+            quickPlayCate.quickOdds?.forEach {
+                it.value?.filterNotNull()?.forEach { odd ->
+                    it.value?.let { oddList ->
+                        odd.status = when {
+                            (oddList.filterNotNull()
+                                .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                            (oddList.filterNotNull()
+                                .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                            else -> odd.status
+                        }
+                    }
+                }
+            }
+        }
     }
 }
