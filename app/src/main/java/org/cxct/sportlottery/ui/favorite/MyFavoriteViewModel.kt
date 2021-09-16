@@ -18,7 +18,6 @@ import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -203,11 +202,8 @@ class MyFavoriteViewModel(
                     quickPlayCate.isSelected =
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
-
-                    quickPlayCate.quickOdds = PlayCateUtils.filterOdds(
-                        quickListData.quickOdds?.get(quickPlayCate.code) ?: mapOf(),
-                        quickPlayCate.gameType ?: ""
-                    )
+                    quickPlayCate.quickOdds =
+                        quickPlayCate.quickOdds?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
                 }
             }
         }

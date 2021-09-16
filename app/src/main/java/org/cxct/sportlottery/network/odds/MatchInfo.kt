@@ -11,7 +11,7 @@ import org.cxct.sportlottery.network.common.MatchInfo
 @JsonClass(generateAdapter = true)
 data class MatchInfo(
     @Json(name = "gameType")
-    var gameType: String?,
+    override var gameType: String?,
     @Json(name = "awayName")
     val awayName: String?,
     @Json(name = "endTime")

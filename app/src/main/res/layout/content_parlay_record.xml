@@ -90,7 +90,7 @@
                     android:id="@+id/content_parlay_winnable_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorSeaGreen"
+                    android:textColor="@color/colorGreenSea"
                     android:textSize="@dimen/textSize13sp"
                     tools:text="9,999,999.000" />
             </LinearLayout>

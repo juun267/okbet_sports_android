@@ -92,7 +92,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
                 when (tab?.position) {
                     1 -> {
-                        setTitle(context.getString(R.string.bottom_sheet_statistics))
+                        setTitle(context.getString(R.string.statistics_title))
                         loadBottomSheetUrl(matchOdd)
                     }
                 }

@@ -24,7 +24,6 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
-import org.cxct.sportlottery.ui.game.PlayCateUtils
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
 import org.cxct.sportlottery.ui.game.common.LeagueOddListener
@@ -215,11 +214,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
                                 matchOdd.apply {
-                                    PlayCateUtils.filterOdds(
-                                        this.oddsMap,
-                                        this.matchInfo?.gameType ?: ""
-                                    )
-                                        .filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
+                                    this.oddsMap.filter { odds -> playSelected?.code == MenuCode.MAIN.code || odds.key == playSelected?.playCateList?.firstOrNull()?.code }
                                 }, oddsChangeEvent
                             )
                         } &&
@@ -371,6 +366,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 fl_no_game.visibility = View.VISIBLE
             } else {
                 fl_no_game.visibility = View.GONE
+            }
+        })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            it?.let { oddsType ->
+                leagueAdapter.oddsType = oddsType
             }
         })
     }

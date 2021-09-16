@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -21,8 +22,8 @@ import org.cxct.sportlottery.network.matchCategory.MatchCategoryRequest
 import org.cxct.sportlottery.network.matchCategory.MatchRecommendRequest
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
-import org.cxct.sportlottery.network.matchLiveInfo.LiveInfo
-import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveInfoRequest
+import org.cxct.sportlottery.network.matchLiveInfo.MatchLiveUrlRequest
+import org.cxct.sportlottery.network.matchLiveInfo.Response
 import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailRequest
@@ -49,13 +50,11 @@ import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -591,7 +590,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
-                        oddData.odds?.forEach { map ->
+                        oddData.oddsMap.forEach { map ->
                             map.value.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -599,6 +598,8 @@ class GameViewModel(
                                     }
                             }
                         }
+                        oddData.oddsMap = oddData.oddsMap.filterPlayCateSpanned(row.sport?.code)
+                        oddData.playCateMappingList = playCateMappingList
                     }
                 }
 
@@ -621,7 +622,7 @@ class GameViewModel(
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.t?.odds?.forEach { oddData ->
-                    oddData.odds?.forEach { map ->
+                    oddData.oddsMap.forEach { map ->
                         map.value.forEach { odd ->
                             odd?.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {
@@ -838,6 +839,7 @@ class GameViewModel(
             matchOdd?.let {
                 matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
                 matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
+                matchOdd.playCateMappingList = playCateMappingList
             }
 
             _outrightOddsListResult.postValue(Event(result))
@@ -889,7 +891,7 @@ class GameViewModel(
                     )
                 )
             }
-
+            
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.let { matchInfo ->
@@ -902,8 +904,10 @@ class GameViewModel(
                         matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
                     }
 
-                    matchOdd.oddsMap =
-                        PlayCateUtils.filterOdds(matchOdd.oddsMap, result.oddsListData.sport.code)
+                    matchOdd.playCateMappingList = playCateMappingList
+
+                    matchOdd.oddsMap = matchOdd.oddsMap.filterPlayCateSpanned(gameType)
+
                     matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
                     }
@@ -1044,6 +1048,15 @@ class GameViewModel(
                     )
                 )
             }
+
+            result?.rows?.forEach {
+                it.leagueOdd.forEach { leagueOdds ->
+                    leagueOdds?.matchOdds?.forEach { matchOddsItem ->
+                        matchOddsItem.playCateMappingList = playCateMappingList
+                    }
+                }
+            }
+
             _epsListResult.postValue(Event(result))
         }
     }
@@ -1529,7 +1542,8 @@ class GameViewModel(
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds =
-                        quickListData.quickOdds?.get(quickPlayCate.code) ?: mapOf()
+                        quickListData.quickOdds?.get(quickPlayCate.code)
+                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
                 }
             }
         }
@@ -1584,16 +1598,30 @@ class GameViewModel(
         if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
             viewModelScope.launch {
                 val result = doNetwork(androidContext) {
-                    OneBoSportApi.matchService.getMatchLiveInfo(MatchLiveInfoRequest(1, matchId))
+                    OneBoSportApi.matchService.getMatchLiveUrl(MatchLiveUrlRequest(1, matchId))
                 }
-                result?.let {
-                    if (it.success) {
-                        val streamUrl = getStreamUrl(it.liveInfo)?.let { streamRealUrl ->
-                            val editor = gameLiveSharedPreferences.edit()
-                            editor.putString(matchId, streamRealUrl).apply()
-                            streamRealUrl
-                        } ?: ""
-                        _matchLiveInfo.postValue(Event(LiveStreamInfo(matchId, streamUrl, true)))
+
+                result?.t?.let {
+                    val matchLiveInfo = OneBoSportApi.matchService.getMatchLiveInfo(it)
+
+                    if (matchLiveInfo.isSuccessful && matchLiveInfo.body()?.isSuccess == true) {
+                        matchLiveInfo.body()?.response?.let { response ->
+                            val streamUrl = getStreamUrl(response)?.let { streamRealUrl ->
+                                val editor = gameLiveSharedPreferences.edit()
+                                editor.putString(matchId, streamRealUrl).apply()
+                                streamRealUrl
+                            } ?: ""
+
+                            _matchLiveInfo.postValue(
+                                Event(
+                                    LiveStreamInfo(
+                                        matchId,
+                                        streamUrl,
+                                        true
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -1611,22 +1639,22 @@ class GameViewModel(
      *
      * 20210831 s型態還未有相關賽事，等相关比赛出现后，再解析
      */
-    private suspend fun getStreamUrl(liveInfo: LiveInfo): String? {
-        return when (liveInfo.videoProvider) {
-            "p2" -> {
+    private suspend fun getStreamUrl(response: Response): String? {
+        return when (response.videoProvider) {
+            VideoProvider.P2.code -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
-                    liveInfo.accessToken,
-                    liveInfo.streamURL
+                    response.accessToken,
+                    response.streamURL
                 )
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
             }
-            "i", "s" -> {
+            VideoProvider.I.code, VideoProvider.S.code -> {
                 val liveUrlResponse =
-                    OneBoSportApi.matchService.getLiveIUrl("https://${liveInfo.streamURL}")
+                    OneBoSportApi.matchService.getLiveIUrl("https://${response.streamURL}")
                 liveUrlResponse.body()?.hlsUrl
             }
             else -> {
-                liveInfo.streamURL
+                response.streamURL
             }
         }
     }

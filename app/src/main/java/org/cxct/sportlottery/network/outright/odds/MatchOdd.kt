@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.Odds
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @Parcelize
 @JsonClass(generateAdapter = true)
@@ -30,6 +31,9 @@ data class MatchOdd(
 ) : MatchOdd, Parcelable {
     @IgnoredOnParcel
     override val oddsEps: Odds? = null
+
+    @IgnoredOnParcel
+    override var playCateMappingList: List<PlayCateMapItem>? = null
 
     @IgnoredOnParcel
     var startDate: String = ""

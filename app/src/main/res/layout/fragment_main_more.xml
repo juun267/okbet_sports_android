@@ -14,15 +14,17 @@
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
         android:minHeight="84dp"
+        android:visibility="gone"
         app:tabIndicatorHeight="0dp"
         app:tabMode="fixed"
         app:tabPaddingBottom="5dp"
         app:tabPaddingEnd="0dp"
         app:tabPaddingStart="0dp"
         app:tabPaddingTop="2dp"
-        app:tabRippleColor="@color/transparent">
+        app:tabRippleColor="@color/transparent"
+        tools:visibility="visible">
 
-        <!-- 此處僅為預覽示意，實際上 tab 要動態添加 -->
+    <!-- 此處僅為預覽示意，實際上 tab 要動態添加 -->
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

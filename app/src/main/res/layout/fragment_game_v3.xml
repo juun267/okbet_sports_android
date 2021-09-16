@@ -85,9 +85,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_play_category"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"

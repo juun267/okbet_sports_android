@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -27,11 +28,9 @@ import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 
 
 abstract class BaseOddButtonViewModel(
@@ -40,6 +39,15 @@ abstract class BaseOddButtonViewModel(
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
+
+    protected val playCateMappingList by lazy {
+        val json = LocalJsonUtil.getLocalJson(
+            MultiLanguagesApplication.appContext,
+            "localJson/PlayCateMapping.json"
+        )
+        json.fromJson<List<PlayCateMapItem>>() ?: listOf()
+    }
+
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
@@ -427,6 +435,22 @@ abstract class BaseOddButtonViewModel(
             else -> OddState.SAME.state
         }
     }
+
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
+        gameType: String?
+    ): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+        return this.mapValues { map ->
+            val playCateMapItem = playCateMappingList.find {
+                it.gameType == gameType && it.playCateCode == map.key
+            }
+
+            map.value?.filterIndexed { index, _ ->
+                index < playCateMapItem?.playCateNum ?: 0
+            }?.toMutableList() ?: mutableListOf()
+
+        }.toMutableMap()
+    }
+
 
     private fun getSpreadState(oldSpread: String, newSpread: String): Int =
         when {
