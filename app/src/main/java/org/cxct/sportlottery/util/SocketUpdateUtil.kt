@@ -134,6 +134,28 @@ object SocketUpdateUtil {
 
     }
 
+    fun updateMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
+        var isNeedRefresh = false
+
+        isNeedRefresh = when (oddBean.oddList.isNullOrEmpty()) {
+            true -> {
+                insertMatchOdds(oddBean, oddsChangeEvent)
+            }
+            false -> {
+                refreshMatchOdds(
+                    mapOf(Pair(oddBean.playTypeCode, oddBean.oddList)),
+                    oddsChangeEvent
+                )
+            }
+        }
+
+        if (isNeedRefresh) {
+            oddBean.updateOddStatus()
+        }
+
+        return isNeedRefresh
+    }
+
     fun updateMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         var isNeedRefresh = false
 
@@ -281,6 +303,13 @@ object SocketUpdateUtil {
         }
 
         return isNeedRefresh
+    }
+
+    private fun insertMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
+        oddBean.oddList.toMutableList()
+            .addAll(oddsChangeEvent.odds?.get(oddBean.playTypeCode) ?: listOf())
+
+        return oddsChangeEvent.odds?.isNotEmpty() ?: false
     }
 
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
