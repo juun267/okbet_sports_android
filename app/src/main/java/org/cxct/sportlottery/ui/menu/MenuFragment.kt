@@ -77,11 +77,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.isCreditAccount.observe(viewLifecycleOwner, {
-            menu_other_bet_record.visibility = if (it) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+            updateUIVisibility(it)
         })
 
         viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
@@ -184,6 +180,15 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getOddsType() {
         viewModel.getOddsType()
+    }
+
+    private fun updateUIVisibility(isCreditAccount: Boolean){
+        //其他投注記錄 信用盤 或 第三方關閉 隱藏
+        menu_other_bet_record.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
     }
 
     private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {
