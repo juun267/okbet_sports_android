@@ -163,7 +163,10 @@ class ProfileCenterActivity :
         btn_logout.setOnClickListener {
             viewModel.doLogoutCleanUser {
                 run {
-                    MainActivity.reStart(this)
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
                 }
             }
 
