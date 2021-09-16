@@ -906,6 +906,10 @@ class GameViewModel(
                     }
 
                     matchOdd.sortOdds()
+
+                    if (!getPlayCateCodeList().isNullOrEmpty())
+                        matchOdd.oddsMap.entries.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
+
                 }
             }
 
