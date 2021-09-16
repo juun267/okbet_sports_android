@@ -88,8 +88,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(args.matchType, it)
-                loading()
+                if (it.selectionType == SelectionType.SELECTABLE.code) { //被鎖 或是不能下拉
+                    when {
+                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
+                        !it.isSelected && it.isLocked == null -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //當前被點選的狀態
+                        it.isSelected -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //之前點選過然後離開又回來 要預設帶入
+                        !it.isSelected && it.isLocked == false -> {
+                            viewModel.switchPlay(args.matchType, it)
+                            loading()
+                        }
+                    }
+                } else {
+                    viewModel.switchPlay(args.matchType, it)
+                    upDateSelectPlay(it)
+                    loading()
+                }
             }
         }
     }
