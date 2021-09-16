@@ -1488,22 +1488,26 @@ class GameViewModel(
 
         playList?.let {
             _playList.value = it
-            if (play.isLocked == false) {
-                _playCate.value = (
-                        when (play.selectionType == SelectionType.SELECTABLE.code) {
-                            true -> {
-                                it.find { play ->
-                                    play.isSelected
-                                }?.playCateList?.find { playCate ->
-                                    playCate.isSelected
-                                }?.code
+            _playCate.value = (
+                    when (play.selectionType == SelectionType.SELECTABLE.code) {
+                        true -> {
+                            when (play.isLocked) {
+                                false -> {
+                                    it.find { play ->
+                                        play.isSelected
+                                    }?.playCateList?.find { playCate ->
+                                        playCate.isSelected
+                                    }?.code
+                                }
+                                else -> return@let
                             }
-                            false -> {
-                                null
-                            }
+
                         }
-                        )
-            }
+                        false -> {
+                            null
+                        }
+                    }
+                    )
         }
     }
 
