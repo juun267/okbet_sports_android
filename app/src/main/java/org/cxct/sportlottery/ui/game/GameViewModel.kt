@@ -657,13 +657,6 @@ class GameViewModel(
 
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
-
-        getGameHallList(matchType, false)
-    }
-
-    fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
-        _playCate.value = playCateCode
-
         getGameHallList(matchType, false)
     }
 
