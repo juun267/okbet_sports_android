@@ -2,7 +2,6 @@ package org.cxct.sportlottery.network.bet.info
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.error.BetAddError
@@ -44,7 +43,7 @@ data class MatchOdd(
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")
-    var status: Int = BetStatus.ACTIVATED.code,
+    var status: Int?,
     @Json(name = "gameType")
     var gameType: String,
     @Json(name = "homeScore")
