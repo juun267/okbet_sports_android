@@ -487,6 +487,23 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+    protected fun org.cxct.sportlottery.network.odds.detail.MatchOdd.updateOddStatus() {
+        this.odds.forEach {
+            it.value.odds.filterNotNull().forEach { odd ->
+
+                odd.status = when {
+                    (it.value.odds.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (it.value.odds.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+    }
+
     private fun getSpreadState(oldSpread: String, newSpread: String): Int =
         when {
             newSpread != oldSpread -> SpreadState.DIFFERENT.state
