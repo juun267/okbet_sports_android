@@ -186,6 +186,10 @@ object SocketUpdateUtil {
             false -> {
                 refreshMatchOdds(oddsDetailListData, matchOddsChangeEvent)
             }
+        }.apply {
+            if (this) {
+                oddsDetailListData.updateOddStatus()
+            }
         }
     }
 
@@ -231,6 +235,10 @@ object SocketUpdateUtil {
                 odd?.status = BetStatus.DEACTIVATED.code
                 isNeedRefresh = true
             }
+        }
+
+        if (isNeedRefresh) {
+            oddsDetailListData.updateOddStatus()
         }
 
         return isNeedRefresh
@@ -465,6 +473,21 @@ object SocketUpdateUtil {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun OddsDetailListData.updateOddStatus() {
+        this.oddArrayList.filterNotNull().forEach { odd ->
+
+            odd.status = when {
+                (this.oddArrayList.filterNotNull()
+                    .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                (this.oddArrayList.filterNotNull()
+                    .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                else -> odd.status
             }
         }
     }
