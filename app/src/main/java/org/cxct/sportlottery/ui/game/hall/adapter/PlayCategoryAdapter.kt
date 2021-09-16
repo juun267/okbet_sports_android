@@ -55,12 +55,6 @@ class PlayCategoryAdapter : RecyclerView.Adapter<PlayCategoryAdapter.ViewHolderP
             itemView.isSelected = item.isSelected
 
             itemView.setOnClickListener {
-                if (item.selectionType == SelectionType.SELECTABLE.code) {
-                    item.isLocked = when {
-                        item.isLocked == null || item.isSelected -> false
-                        else -> true
-                    }
-                }
                 playCategoryListener?.onClick(item)
             }
         }
