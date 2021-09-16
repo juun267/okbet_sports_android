@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
+import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
 object SocketUpdateUtil {
@@ -191,6 +192,25 @@ object SocketUpdateUtil {
                 oddsDetailListData.updateOddStatus()
             }
         }
+    }
+
+    fun updateOddStatus(oddBean: OddBean, globalStopEvent: GlobalStopEvent): Boolean {
+        var isNeedRefresh = false
+
+        oddBean.oddList.filter { odd ->
+            globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+        }.forEach { odd ->
+            if (odd?.status != BetStatus.DEACTIVATED.code) {
+                odd?.status = BetStatus.DEACTIVATED.code
+                isNeedRefresh = true
+            }
+        }
+
+        if (isNeedRefresh) {
+            oddBean.updateOddStatus()
+        }
+
+        return isNeedRefresh
     }
 
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
@@ -426,6 +446,21 @@ object SocketUpdateUtil {
             }?.toMutableList() ?: mutableListOf()
 
         }.toMutableMap()
+    }
+
+    private fun OddBean.updateOddStatus() {
+        this.oddList.filterNotNull().forEach { odd ->
+
+            odd.status = when {
+                (this.oddList.filterNotNull()
+                    .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                (this.oddList.filterNotNull()
+                    .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                else -> odd.status
+            }
+        }
     }
 
     private fun MatchOdd.updateOddStatus() {
