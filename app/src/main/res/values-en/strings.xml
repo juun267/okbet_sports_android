@@ -137,6 +137,13 @@
     <string name="friday">Friday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+    <string name="monday2">Monday</string>
+    <string name="tuesday2">Tuesday</string>
+    <string name="wednesday2">Wednesday</string>
+    <string name="thursday2">Thursday</string>
+    <string name="friday2"> Friday</string>
+    <string name="saturday2">Saturday</string>
+    <string name="sunday2">Sunday</string>
     <string name="game_announcement">Game Announcement</string>
     <string name="member_benefits">Member benefits</string>
     <string name="transfer_notes">Transfer must know</string>
