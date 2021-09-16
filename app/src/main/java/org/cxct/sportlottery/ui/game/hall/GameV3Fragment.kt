@@ -1103,6 +1103,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             })
     }
 
+    //更新isLocked狀態
+    private fun upDateSelectPlay(play: Play) {
+        val platData = playCategoryAdapter.data.find { it == play }
+        if (platData?.selectionType == SelectionType.SELECTABLE.code) {
+            platData.isLocked = when {
+                platData.isLocked == null || platData.isSelected -> false
+                else -> true
+            }
+        }
+    }
+
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
         val intent = Intent(activity, MainActivity::class.java)
             .putExtra(MainActivity.ARGS_THIRD_GAME_CATE, thirdGameCategory)
