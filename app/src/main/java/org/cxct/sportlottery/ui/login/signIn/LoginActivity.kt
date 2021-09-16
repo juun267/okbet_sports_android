@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.BitmapUtil
@@ -176,7 +177,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         hideLoading()
         if (loginResult.success) {
             this.run {
-                MainActivity.reStart(this)
+                if (sConfigData?.thirdOpen == FLAG_OPEN)
+                    MainActivity.reStart(this)
+                else
+                    GameActivity.reStart(this)
             }
         } else {
             updateValidCode()
