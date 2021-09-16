@@ -1096,8 +1096,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
-            StatusSheetAdapter.ItemCheckedListener { _, data ->
-                viewModel.switchPlayCategory(args.matchType, data.code)
+            StatusSheetAdapter.ItemCheckedListener { _, _ ->
+                viewModel.switchPlay(args.matchType,play)
+                upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
