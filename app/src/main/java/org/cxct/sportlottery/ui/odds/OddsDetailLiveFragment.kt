@@ -70,6 +70,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     
     private var curStatus: Int? = null
 
+    private var spt: Int? = null
+
     override var startTime: Long = 0
     override var timer: Timer = Timer()
     override var timerHandler: Handler = Handler {
@@ -262,11 +264,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
                         }
 
-                        if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)) {
-                            tv_spt.visibility = View.VISIBLE
-                            tv_spt.text = " / ${it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt}"
-                        }
+                        spt = it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt
 
                     }
                     false -> {
@@ -554,8 +552,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
-
-
         tv_home_card.isVisible = (event.matchStatusList?.lastOrNull()?.homeCards?:0 > 0)
         tv_home_card.text = (event.matchStatusList?.lastOrNull()?.homeCards ?: 0).toString()
 
@@ -595,8 +591,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             statusBuilder.append(spanStatusName).append(spanScore)
         }
 
-        tv_status_left.text = statusBuilder
+        val statusBuilderText = if (spt!=null && spt?:0 > 0) " $statusBuilder / $spt"
+        else statusBuilder
+        tv_status_left.text = statusBuilderText
     }
+
 
     private fun setupStatusTnVB(event: MatchStatusChangeEvent) {
         if (event.matchStatusList?.isEmpty() == true) return
@@ -619,10 +618,15 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         tv_status_right.text = statusBuilder
 
+        val setStatusText = { status: String? ->
+            if (spt!=null && spt?:0 > 0) " $status / $spt"
+            else status
+        }
+
         tv_status_left.text = when (getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> "${event.matchStatusCO?.statusNameI18n?.zh}"
-            LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
-            else -> event.matchStatusCO?.statusName
+            LanguageManager.Language.ZH -> setStatusText(event.matchStatusCO?.statusNameI18n?.zh)
+            LanguageManager.Language.EN -> setStatusText(event.matchStatusCO?.statusNameI18n?.en)
+            else -> setStatusText(event.matchStatusCO?.statusName)
         }
     }
 }
