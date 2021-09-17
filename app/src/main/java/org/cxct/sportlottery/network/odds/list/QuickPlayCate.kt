@@ -14,7 +14,9 @@ data class QuickPlayCate(
     @Json(name = "name")
     val name: String?,
     @Json(name = "sort")
-    val sort: Int?
+    val sort: Int?,
+    @Json(name = "nameMap")
+    val nameMap: Map<String?, String?>? = null
 ) {
     var isSelected = false
     var quickOdds: Map<String, List<Odd?>?>? = null
