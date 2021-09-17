@@ -658,6 +658,14 @@ class GameViewModel(
         getGameHallList(matchType, false)
     }
 
+    fun switchPlayCategory(matchType: MatchType,play: Play, playCateCode: String?) {
+        _playList.value?.forEach {
+            it.isSelected = (it == play)
+        }
+        _playCate.value = playCateCode
+        getGameHallList(matchType, false)
+    }
+
     fun switchMatchDate(matchType: MatchType, date: Date) {
         _curDate.value?.updateDateSelectedState(date)
 
@@ -1488,17 +1496,11 @@ class GameViewModel(
             _playCate.value = (
                     when (play.selectionType == SelectionType.SELECTABLE.code) {
                         true -> {
-                            when (play.isLocked) {
-                                false -> {
-                                    it.find { play ->
-                                        play.isSelected
-                                    }?.playCateList?.find { playCate ->
-                                        playCate.isSelected
-                                    }?.code
-                                }
-                                else -> return@let
-                            }
-
+                            it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.find { playCate ->
+                                playCate.isSelected
+                            }?.code
                         }
                         false -> {
                             null
