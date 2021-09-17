@@ -191,6 +191,7 @@ object SocketUpdateUtil {
                 }
 
             if (isNeedRefresh) {
+                sortOdds(matchOdd)
                 matchOdd.updateOddStatus()
             }
         }
@@ -320,9 +321,6 @@ object SocketUpdateUtil {
             ) ?: mapOf()
         )
 
-        //新增盤口時將盤口排序
-        sortOdds(matchOdd)
-
         matchOdd.oddsEps?.eps?.toMutableList()
             ?.addAll(oddsChangeEvent.odds?.get(PlayCate.EPS.value) ?: mutableListOf())
 
@@ -348,53 +346,64 @@ object SocketUpdateUtil {
     ): Boolean {
         var isNeedRefresh = false
 
-        oddsMap.forEach { oddTypeMap ->
-            val oddsSocket = oddsChangeEvent.odds?.get(oddTypeMap.key)
-            val odds = oddTypeMap.value
+        oddsChangeEvent.odds?.forEach { oddsMapSocket ->
+            when (oddsMap.keys.contains(oddsMapSocket.key)) {
+                true -> {
+                    oddsMap.forEach { oddTypeMap ->
+                        val oddsSocket = oddsChangeEvent.odds[oddTypeMap.key]
+                        val odds = oddTypeMap.value
 
-            odds?.forEach { odd ->
-                val oddSocket = oddsSocket?.find { oddSocket ->
-                    oddSocket?.id == odd?.id
-                }
+                        odds?.forEach { odd ->
+                            val oddSocket = oddsSocket?.find { oddSocket ->
+                                oddSocket?.id == odd?.id
+                            }
 
-                oddSocket?.let {
-                    odd?.odds?.let { oddValue ->
-                        oddSocket.odds?.let { oddSocketValue ->
-                            when {
-                                oddValue > oddSocketValue -> {
-                                    odd.oddState =
-                                        OddState.SMALLER.state
+                            oddSocket?.let {
+                                odd?.odds?.let { oddValue ->
+                                    oddSocket.odds?.let { oddSocketValue ->
+                                        when {
+                                            oddValue > oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.SMALLER.state
+
+                                                isNeedRefresh = true
+                                            }
+                                            oddValue < oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.LARGER.state
+
+                                                isNeedRefresh = true
+                                            }
+                                            oddValue == oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.SAME.state
+                                            }
+                                        }
+                                    }
+                                }
+
+                                odd?.odds = oddSocket.odds
+                                odd?.hkOdds = oddSocket.hkOdds
+
+                                if (odd?.status != oddSocket.status) {
+                                    odd?.status = oddSocket.status
 
                                     isNeedRefresh = true
                                 }
-                                oddValue < oddSocketValue -> {
-                                    odd.oddState =
-                                        OddState.LARGER.state
+
+                                if (odd?.extInfo != oddSocket.extInfo) {
+                                    odd?.extInfo = oddSocket.extInfo
 
                                     isNeedRefresh = true
-                                }
-                                oddValue == oddSocketValue -> {
-                                    odd.oddState =
-                                        OddState.SAME.state
                                 }
                             }
                         }
                     }
+                }
 
-                    odd?.odds = oddSocket.odds
-                    odd?.hkOdds = oddSocket.hkOdds
-
-                    if (odd?.status != oddSocket.status) {
-                        odd?.status = oddSocket.status
-
-                        isNeedRefresh = true
-                    }
-
-                    if (odd?.extInfo != oddSocket.extInfo) {
-                        odd?.extInfo = oddSocket.extInfo
-
-                        isNeedRefresh = true
-                    }
+                false -> {
+                    oddsMap.toMutableMap()[oddsMapSocket.key] = oddsMapSocket.value
+                    isNeedRefresh = true
                 }
             }
         }
