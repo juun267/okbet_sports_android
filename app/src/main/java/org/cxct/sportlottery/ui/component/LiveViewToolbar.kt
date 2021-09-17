@@ -33,11 +33,22 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     lateinit var matchOdd: MatchOdd
 
-    interface LiveToolBarListener{
+    interface LiveToolBarListener {
         fun onExpand(expanded: Boolean)
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
+
+    private var nodeMediaListener: NodeMediaManager.NodeMediaListener = object : NodeMediaManager.NodeMediaListener {
+        override fun streamLoading() {
+            liveLoading()
+        }
+
+        override fun isLiveShowing(isShowing: Boolean) {
+            showLiveView(isShowing)
+        }
+
+    }
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
@@ -59,24 +70,40 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private fun initOnclick() {
         iv_arrow.setOnClickListener {
             if (expand_layout.isExpanded) {
-                nodeMediaManager?.nodeMediaStop()
-                iv_arrow.animate().rotation(0f).setDuration(100).start()
-                expand_layout.collapse()
-                liveToolBarListener?.onExpand(false)
+                switchLiveView(false)
             } else {
-                iv_arrow.animate().rotation(180f).setDuration(100).start()
-                expand_layout.expand()
-                liveToolBarListener?.onExpand(true)
+                switchLiveView(true)
             }
         }
 
         expand_layout.setOnExpansionUpdateListener { _, state ->
             tab_layout.getTabAt(0)?.setIcon(
                 when (state) {
-                    0 -> R.drawable.ic_icon_game_schedule
-                    else -> R.drawable.ic_icon_game_schedule_ec
+                    0 -> R.drawable.ic_live_player
+                    else -> R.drawable.ic_live_player_selected
                 }
             )
+        }
+    }
+
+    private fun switchLiveView(open: Boolean)
+    {
+        when (open){
+            true -> {
+                iv_arrow.animate().rotation(180f).setDuration(100).start()
+
+                if (tab_layout.selectedTabPosition != 0)
+                    tab_layout.getTabAt(0)?.select()
+
+                expand_layout.expand()
+                liveToolBarListener?.onExpand(true)
+            }
+            false -> {
+                nodeMediaManager?.nodeMediaStop()
+                iv_arrow.animate().rotation(0f).setDuration(100).start()
+                expand_layout.collapse()
+                liveToolBarListener?.onExpand(false)
+            }
         }
     }
 
@@ -91,6 +118,9 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 }
 
                 when (tab?.position) {
+                    0 -> {
+                        switchLiveView(true)
+                    }
                     1 -> {
                         setTitle(context.getString(R.string.statistics_title))
                         loadBottomSheetUrl(matchOdd)
@@ -105,7 +135,16 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-
+                when (tab?.position){
+                    0 -> when (expand_layout.isExpanded) {
+                        true -> {
+                            nodeMediaManager?.nodeMediaReload()
+                        }
+                        false -> {
+                            switchLiveView(true)
+                        }
+                    }
+                }
             }
 
         })
@@ -128,13 +167,20 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener){
-        nodeMediaManager = NodeMediaManager(eventListener)
+    fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener) {
+        nodeMediaManager = NodeMediaManager(eventListener, nodeMediaListener)
+    }
+
+    fun liveLoading() {
+        node_player.visibility = View.GONE
+        iv_live_status.visibility = View.VISIBLE
+        iv_live_status.setImageResource(R.drawable.img_stream_loading)
     }
 
     fun showLiveView(showLive: Boolean) {
         node_player.isVisible = showLive
-        default_img.isVisible = !showLive
+        iv_live_status.isVisible = !showLive
+        iv_live_status.setImageResource(R.drawable.img_no_live)
     }
 
     fun setupLiveUrl(streamUrl: String) {

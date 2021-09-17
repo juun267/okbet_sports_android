@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/default_img"
+                android:id="@+id/iv_live_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:src="@drawable/img_no_live"
@@ -50,19 +50,26 @@
             android:layout_height="52dp"
             android:background="@color/colorWhite"
             app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
             app:tabIndicatorColor="@color/colorBlue"
             app:tabIndicatorFullWidth="false"
+            app:tabIndicatorHeight="0dp"
+            app:tabMode="fixed"
             app:tabRippleColor="@color/transparent"
             app:tabSelectedTextColor="@color/colorWhite"
             app:tabTextColor="@color/colorGray">
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_live_player_selected" />
+
+            <!--動畫先不做只用直播
+            <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_schedule"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:icon="@drawable/ic_icon_game_schedule"/>
+                android:icon="@drawable/ic_icon_game_schedule" />-->
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/tab_statistics"
