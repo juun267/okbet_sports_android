@@ -169,14 +169,18 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
         userInfo.let { user ->
             when (StaticData.getTestFlag(userInfo.testFlag)) {
                 TestFlag.GUEST -> {
-                    tv_greet.text = if ((user.fullName ?: "").isNotEmpty()) user.fullName else (TextUtil.maskUserName(user.fullName ?: ""))
+                    tv_greet.text =
+                        if ((user.fullName ?: "").isNotEmpty()) user.fullName else (TextUtil.maskUserName(user.fullName
+                            ?: ""))
                 }
                 else -> {
-                    tv_greet.text = if (user.nickName.isNotEmpty()) user.nickName else (TextUtil.maskUserName(user.userName))
+                    tv_greet.text =
+                        if (user.nickName.isNotEmpty()) user.nickName else (TextUtil.maskUserName(user.userName))
                 }
             }
         }
     }
+
     private fun updateUserVipLevel(testFlag: Long, levelId: Int) {
         userVipLevel = when (StaticData.getTestFlag(testFlag)) {
             TestFlag.GUEST -> null
@@ -190,7 +194,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
         userVipLevel?.apply {
             when (StaticData.getTestFlag(userInfo.testFlag)) {
                 TestFlag.GUEST -> tv_vip_name.text = ""
-                else ->  tv_vip_name.text = levelRequirement.levelName
+                else -> tv_vip_name.text = levelRequirement.levelName
             }
             iv_vip.setImageDrawable(
                 ContextCompat.getDrawable(
@@ -231,7 +235,8 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
     private fun setupBannerData() {
         banner_vip_level.apply {
             val layoutParams: android.widget.LinearLayout.LayoutParams =
-                android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT, (ScreenUtil.getScreenWidth(this@VipActivity) / 2.5).toInt())
+                android.widget.LinearLayout.LayoutParams(android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    (ScreenUtil.getScreenWidth(this@VipActivity) / 2.5).toInt())
             setLayoutParams(layoutParams)
             setBannerData(R.layout.item_banner_member_level, setupBannerLevelRequirement())
             loadImage { _, model, view, _ ->
@@ -305,12 +310,18 @@ class ThirdGameAdapter(private val selectedListener: OnSelectThirdGames) :
     }
 
     class ThirdGamesItemViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, dataList: List<GameFirmValues>, position: Int, selectedListener: OnSelectThirdGames) {
+        fun bind(
+            adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>,
+            dataList: List<GameFirmValues>,
+            position: Int,
+            selectedListener: OnSelectThirdGames,
+        ) {
             val data = dataList[position]
             val itemChecked = dataCheckedList[position]
             itemView.apply {
                 checkbox_item.text = data.firmName
-                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context, R.color.colorWhite6) else ContextCompat.getDrawable(context, android.R.color.white)
+                checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context,
+                    R.color.colorWhite6) else ContextCompat.getDrawable(context, android.R.color.white)
                 checkbox_item.setOnClickListener {
                     if (selectedPosition != position) {
                         selectedListener.onSelected(data)
