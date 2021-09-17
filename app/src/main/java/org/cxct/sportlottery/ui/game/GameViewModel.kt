@@ -517,6 +517,7 @@ class GameViewModel(
                                     }
                             }
                         }
+                        matchOdd.updateOddStatus()
                     }
                 }
 
@@ -556,6 +557,7 @@ class GameViewModel(
                                     }
                             }
                         }
+                        matchOdd.updateOddStatus()
                     }
                 }
 
@@ -600,6 +602,7 @@ class GameViewModel(
                         }
                         oddData.oddsMap = oddData.oddsMap.filterPlayCateSpanned(row.sport?.code)
                         oddData.playCateMappingList = playCateMappingList
+                        oddData.updateOddStatus()
                     }
                 }
 
@@ -630,6 +633,7 @@ class GameViewModel(
                                 }
                         }
                     }
+                    oddData.updateOddStatus()
                 }
 
                 _highlightMatchResult.postValue(Event(result))
@@ -840,6 +844,7 @@ class GameViewModel(
                 matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
                 matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
                 matchOdd.playCateMappingList = playCateMappingList
+                matchOdd.updateOddStatus()
             }
 
             _outrightOddsListResult.postValue(Event(result))
@@ -913,6 +918,8 @@ class GameViewModel(
                     }
 
                     matchOdd.sortOdds()
+
+                    matchOdd.updateOddStatus()
                 }
             }
 
@@ -1053,6 +1060,7 @@ class GameViewModel(
                 it.leagueOdd.forEach { leagueOdds ->
                     leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.playCateMappingList = playCateMappingList
+                        matchOddsItem.updateOddStatus()
                     }
                 }
             }
@@ -1248,6 +1256,8 @@ class GameViewModel(
                         )
                     )
                 }
+
+                result.oddsDetailData?.matchOdd?.updateOddStatus()
 
                 //因UI需求 特優賠率移到第一項
                 list.find { it.gameType == PlayCate.EPS.value }.apply {

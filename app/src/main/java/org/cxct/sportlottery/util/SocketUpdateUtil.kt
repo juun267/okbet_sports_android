@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
+import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
 object SocketUpdateUtil {
@@ -133,6 +134,28 @@ object SocketUpdateUtil {
 
     }
 
+    fun updateMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
+        var isNeedRefresh = false
+
+        isNeedRefresh = when (oddBean.oddList.isNullOrEmpty()) {
+            true -> {
+                insertMatchOdds(oddBean, oddsChangeEvent)
+            }
+            false -> {
+                refreshMatchOdds(
+                    mapOf(Pair(oddBean.playTypeCode, oddBean.oddList)),
+                    oddsChangeEvent
+                )
+            }
+        }
+
+        if (isNeedRefresh) {
+            oddBean.updateOddStatus()
+        }
+
+        return isNeedRefresh
+    }
+
     fun updateMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         var isNeedRefresh = false
 
@@ -166,6 +189,10 @@ object SocketUpdateUtil {
                         isNeedRefreshMatchOdds || isNeedRefreshQuickOdds || isNeedRefreshEpsOdds
                     }
                 }
+
+            if (isNeedRefresh) {
+                matchOdd.updateOddStatus()
+            }
         }
 
         return isNeedRefresh
@@ -182,7 +209,30 @@ object SocketUpdateUtil {
             false -> {
                 refreshMatchOdds(oddsDetailListData, matchOddsChangeEvent)
             }
+        }.apply {
+            if (this) {
+                oddsDetailListData.updateOddStatus()
+            }
         }
+    }
+
+    fun updateOddStatus(oddBean: OddBean, globalStopEvent: GlobalStopEvent): Boolean {
+        var isNeedRefresh = false
+
+        oddBean.oddList.filter { odd ->
+            globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
+        }.forEach { odd ->
+            if (odd?.status != BetStatus.DEACTIVATED.code) {
+                odd?.status = BetStatus.DEACTIVATED.code
+                isNeedRefresh = true
+            }
+        }
+
+        if (isNeedRefresh) {
+            oddBean.updateOddStatus()
+        }
+
+        return isNeedRefresh
     }
 
     fun updateOddStatus(matchOdd: MatchOdd, globalStopEvent: GlobalStopEvent): Boolean {
@@ -207,6 +257,10 @@ object SocketUpdateUtil {
                 }
             }
 
+        if (isNeedRefresh) {
+            matchOdd.updateOddStatus()
+        }
+
         return isNeedRefresh
     }
 
@@ -223,6 +277,10 @@ object SocketUpdateUtil {
                 odd?.status = BetStatus.DEACTIVATED.code
                 isNeedRefresh = true
             }
+        }
+
+        if (isNeedRefresh) {
+            oddsDetailListData.updateOddStatus()
         }
 
         return isNeedRefresh
@@ -245,6 +303,13 @@ object SocketUpdateUtil {
         }
 
         return isNeedRefresh
+    }
+
+    private fun insertMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
+        oddBean.oddList.toMutableList()
+            .addAll(oddsChangeEvent.odds?.get(oddBean.playTypeCode) ?: listOf())
+
+        return oddsChangeEvent.odds?.isNotEmpty() ?: false
     }
 
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
@@ -410,5 +475,84 @@ object SocketUpdateUtil {
             }?.toMutableList() ?: mutableListOf()
 
         }.toMutableMap()
+    }
+
+    private fun OddBean.updateOddStatus() {
+        this.oddList.filterNotNull().forEach { odd ->
+
+            odd.status = when {
+                (this.oddList.filterNotNull()
+                    .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                (this.oddList.filterNotNull()
+                    .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                else -> odd.status
+            }
+        }
+    }
+
+    private fun MatchOdd.updateOddStatus() {
+        this.oddsMap.forEach {
+            it.value.filterNotNull().forEach { odd ->
+
+                odd.status = when {
+                    (it.value.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (it.value.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
+            this.oddsEps?.eps?.let { oddList ->
+                odd.status = when {
+                    (oddList.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (oddList.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.quickPlayCateList?.forEach { quickPlayCate ->
+            quickPlayCate.quickOdds?.forEach {
+                it.value?.filterNotNull()?.forEach { odd ->
+                    it.value?.let { oddList ->
+                        odd.status = when {
+                            (oddList.filterNotNull()
+                                .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                            (oddList.filterNotNull()
+                                .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                            else -> odd.status
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun OddsDetailListData.updateOddStatus() {
+        this.oddArrayList.filterNotNull().forEach { odd ->
+
+            odd.status = when {
+                (this.oddArrayList.filterNotNull()
+                    .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                (this.oddArrayList.filterNotNull()
+                    .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                else -> odd.status
+            }
+        }
     }
 }
