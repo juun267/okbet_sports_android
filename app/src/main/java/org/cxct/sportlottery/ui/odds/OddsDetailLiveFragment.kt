@@ -9,12 +9,14 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -262,9 +264,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)) {
+                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
+                            && tv_status_left.isVisible) {
                             tv_spt.visibility = View.VISIBLE
-                            tv_spt.text = " / ${it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt}"
+                            tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt)?:0}"
                         }
 
                     }
@@ -545,7 +548,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 setupBackScore(event)
                 setupStatusTnVB(event)
             }
-            else -> {
+            GameType.VB -> {
                 setupBackScore(event)
                 setupStatusTnVB(event)
             }
@@ -553,20 +556,19 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
-
-        tv_home_card.visibility = View.VISIBLE
+        tv_home_card.isVisible = (event.matchStatusList?.lastOrNull()?.homeCards?:0 > 0)
         tv_home_card.text = (event.matchStatusList?.lastOrNull()?.homeCards ?: 0).toString()
 
-        tv_away_card.visibility = View.VISIBLE
+        tv_away_card.isVisible = (event.matchStatusList?.lastOrNull()?.awayCards?:0 > 0)
         tv_away_card.text = (event.matchStatusList?.lastOrNull()?.awayCards ?: 0).toString()
     }
 
     private fun setupPoint(event: MatchStatusChangeEvent) {
         tv_home_point_live.visibility = View.VISIBLE
-        tv_home_point_live.text = (event.matchStatusList?.lastOrNull()?.homePoint ?: 0).toString()
+        tv_home_point_live.text = (event.matchStatusCO?.homePoints ?: 0).toString()
 
         tv_away_point_live.visibility = View.VISIBLE
-        tv_away_point_live.text = (event.matchStatusList?.lastOrNull()?.awayPoint ?: 0).toString()
+        tv_away_point_live.text = (event.matchStatusCO?.awayPoints ?: 0).toString()
     }
 
     private fun setupStatusBk(event: MatchStatusChangeEvent) {
