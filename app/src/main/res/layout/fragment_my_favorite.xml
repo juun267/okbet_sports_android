@@ -124,8 +124,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/colorWhite"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/favorite_toolbar">
+                app:layout_constraintTop_toBottomOf="@+id/favorite_toolbar"
+                tools:visibility="visible">
 
                 <include layout="@layout/view_no_game" />
             </FrameLayout>
