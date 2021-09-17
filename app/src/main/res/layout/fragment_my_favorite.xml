@@ -27,7 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@color/colorWhite"
-                app:layout_constraintTop_toTopOf="parent">
+                android:visibility="invisible"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible">
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
