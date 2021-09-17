@@ -158,6 +158,7 @@ object SocketUpdateUtil {
 
     fun updateMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         var isNeedRefresh = false
+        var isNeedRefreshPlayCate = false
 
         if (oddsChangeEvent.eventId != null && oddsChangeEvent.eventId == matchOdd.matchInfo?.id) {
 
@@ -190,13 +191,22 @@ object SocketUpdateUtil {
                     }
                 }
 
+            isNeedRefreshPlayCate = when (matchOdd.quickPlayCateList.isNullOrEmpty()) {
+                true -> {
+                    insertPlayCate(matchOdd, oddsChangeEvent)
+                }
+                false -> {
+                    refreshPlayCate(matchOdd, oddsChangeEvent)
+                }
+            }
+
             if (isNeedRefresh) {
                 sortOdds(matchOdd)
                 matchOdd.updateOddStatus()
             }
         }
 
-        return isNeedRefresh
+        return isNeedRefresh || isNeedRefreshPlayCate
     }
 
     fun updateMatchOdds(
@@ -340,6 +350,11 @@ object SocketUpdateUtil {
         return odds?.odds?.isNotEmpty() ?: false
     }
 
+    private fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+        matchOdd.quickPlayCateList = oddsChangeEvent.quickPlayCateList
+        return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
+    }
+
     private fun refreshMatchOdds(
         oddsMap: Map<String, List<Odd?>?>,
         oddsChangeEvent: OddsChangeEvent
@@ -467,6 +482,20 @@ object SocketUpdateUtil {
             }
         }
 
+        return isNeedRefresh
+    }
+
+    private fun refreshPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+        var isNeedRefresh = false
+
+        oddsChangeEvent.quickPlayCateList?.forEach { quickPlayCateSocket ->
+            when (matchOdd.quickPlayCateList?.contains(quickPlayCateSocket)) {
+                false -> {
+                    matchOdd.quickPlayCateList?.toMutableList()?.add(quickPlayCateSocket)
+                    isNeedRefresh = true
+                }
+            }
+        }
         return isNeedRefresh
     }
 
