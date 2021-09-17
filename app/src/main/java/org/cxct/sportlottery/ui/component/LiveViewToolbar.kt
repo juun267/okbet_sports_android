@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
@@ -34,7 +33,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     lateinit var matchOdd: MatchOdd
 
     interface LiveToolBarListener {
-        fun onExpand(expanded: Boolean)
+        fun onExpand()
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -57,7 +56,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         try {
             initOnclick()
             setupBottomSheet()
-            setupTab()
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -68,6 +66,22 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
 
     private fun initOnclick() {
+        iv_play.setOnClickListener {
+            when (expand_layout.isExpanded) {
+                true -> {
+                    nodeMediaManager?.nodeMediaReload()
+                }
+                false -> {
+                    switchLiveView(true)
+                }
+            }
+        }
+
+        iv_statistics.setOnClickListener {
+            setTitle(context.getString(R.string.statistics_title))
+            loadBottomSheetUrl(matchOdd)
+        }
+
         iv_arrow.setOnClickListener {
             if (expand_layout.isExpanded) {
                 switchLiveView(false)
@@ -77,7 +91,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
 
         expand_layout.setOnExpansionUpdateListener { _, state ->
-            tab_layout.getTabAt(0)?.setIcon(
+            iv_play.setImageResource(
                 when (state) {
                     0 -> R.drawable.ic_live_player
                     else -> R.drawable.ic_live_player_selected
@@ -86,68 +100,22 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    private fun switchLiveView(open: Boolean)
-    {
-        when (open){
+    private fun switchLiveView(open: Boolean) {
+        when (open) {
             true -> {
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
-
-                if (tab_layout.selectedTabPosition != 0)
-                    tab_layout.getTabAt(0)?.select()
-
+                iv_play.isSelected = true
                 expand_layout.expand()
-                liveToolBarListener?.onExpand(true)
+                liveToolBarListener?.onExpand()
             }
             false -> {
                 nodeMediaManager?.nodeMediaStop()
+
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
+                iv_play.isSelected = false
                 expand_layout.collapse()
-                liveToolBarListener?.onExpand(false)
             }
         }
-    }
-
-    private fun setupTab() {
-        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-
-                if (tab?.position != 0) {
-                    if (!webBottomSheet.isShowing) {
-                        webBottomSheet.show()
-                    } else webBottomSheet.dismiss()
-                }
-
-                when (tab?.position) {
-                    0 -> {
-                        switchLiveView(true)
-                    }
-                    1 -> {
-                        setTitle(context.getString(R.string.statistics_title))
-                        loadBottomSheetUrl(matchOdd)
-                    }
-                }
-
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-                when (tab?.position){
-                    0 -> when (expand_layout.isExpanded) {
-                        true -> {
-                            nodeMediaManager?.nodeMediaReload()
-                        }
-                        false -> {
-                            switchLiveView(true)
-                        }
-                    }
-                }
-            }
-
-        })
     }
 
     private fun setupBottomSheet() {
@@ -155,9 +123,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         webBottomSheet.iv_close.setOnClickListener {
             webBottomSheet.dismiss()
         }
-        webBottomSheet.setOnDismissListener {
-            tab_layout.getTabAt(0)?.select()
-        }
+
         val settings: WebSettings = bottomSheetView.bottom_sheet_web_view.settings
         settings.javaScriptEnabled = true
         bottomSheetView.bottom_sheet_web_view.webViewClient = WebViewClient()

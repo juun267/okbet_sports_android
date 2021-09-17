@@ -103,11 +103,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private val liveToolBarListener by lazy {
         object : LiveViewToolbar.LiveToolBarListener {
-            override fun onExpand(expanded: Boolean) {
-                if (expanded) {
-                    matchId?.let {
-                        viewModel.getLiveInfo(it)
-                    }
+            override fun onExpand() {
+                matchId?.let {
+                    viewModel.getLiveInfo(it)
                 }
             }
         }

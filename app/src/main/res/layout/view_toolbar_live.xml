@@ -39,45 +39,34 @@
 
     </net.cachapa.expandablelayout.ExpandableLayout>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:orientation="horizontal">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:background="@color/colorWhite"
-            app:tabGravity="center"
-            app:tabIndicatorColor="@color/colorBlue"
-            app:tabIndicatorFullWidth="false"
-            app:tabIndicatorHeight="0dp"
-            app:tabMode="fixed"
-            app:tabRippleColor="@color/transparent"
-            app:tabSelectedTextColor="@color/colorWhite"
-            app:tabTextColor="@color/colorGray">
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_live_play"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_statistics"
+            />
 
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_live_player_selected" />
-
-            <!--動畫先不做只用直播
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_schedule"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_icon_game_schedule" />-->
-
-            <com.google.android.material.tabs.TabItem
-                android:id="@+id/tab_statistics"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/selector_icon_statistics"/>
-
-        </com.google.android.material.tabs.TabLayout>
+        <ImageView
+            android:id="@+id/iv_statistics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_icon_statistics"
+            app:layout_constraintStart_toEndOf="@+id/iv_play"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
         <ImageView
             android:id="@+id/iv_arrow"
@@ -86,8 +75,10 @@
             android:contentDescription="@null"
             android:scaleType="centerInside"
             android:paddingHorizontal="16dp"
-            android:layout_gravity="center_vertical|end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:src="@drawable/selector_ic_arrow_gray_blue_v4" />
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
