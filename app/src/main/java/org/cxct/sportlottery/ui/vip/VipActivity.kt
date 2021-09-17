@@ -16,8 +16,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.third_game.third_games.GameFirmValues
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.vip.growth.GrowthConfig
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.ScreenUtil
 import org.cxct.sportlottery.util.TextUtil
@@ -59,6 +61,10 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
     private fun initObserve() {
         viewModel.apply {
+            isCreditAccount.observe(this@VipActivity, {
+                updateThirdUI(it)
+            })
+
             //讀取資料
             loadingResult.observe(this@VipActivity, Observer {
                 it.apply {
@@ -90,6 +96,11 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
                 thirdRebatesAdapter.dataList = it
             })
         }
+    }
+
+    private fun updateThirdUI(isCreditAccount: Boolean) {
+        ll_third_table.visibility =
+            if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) View.GONE else View.VISIBLE
     }
 
     private fun initView() {
