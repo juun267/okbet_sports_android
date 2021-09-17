@@ -877,8 +877,7 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = timeFilter(timeRangeParams?.startTime),
                         endTime = timeFilter(timeRangeParams?.endTime),
-                        playCateMenuCode = getPlayCateSelected()?.code ?: "",
-                        playCateCodeList = getPlayCateCodeList()
+                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
                     )
                 )
             }
