@@ -9,10 +9,10 @@ data class MatchStatus(
     val homeScore: Int? = null,
     @Json(name = "awayScore")
     val awayScore: Int? = null,
-    @Json(name = "homePoint")
-    val homePoint: Int? = null,
-    @Json(name = "awayPoint")
-    val awayPoint: Int? = null,
+    @Json(name = "homePoints")
+    val homePoints: Int? = null,
+    @Json(name = "awayPoints")
+    val awayPoints: Int? = null,
     @Json(name = "homeCards")
     val homeCards: Int? = null,
     @Json(name = "awayCards")

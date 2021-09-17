@@ -565,11 +565,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun setupPoint(event: MatchStatusChangeEvent) {
         tv_home_point_live.visibility = View.VISIBLE
-        tv_home_point_live.text = (event.matchStatusList?.lastOrNull()?.homePoint ?: 0).toString()
+        tv_home_point_live.text = (event.matchStatusCO?.homePoints ?: 0).toString()
 
         tv_away_point_live.visibility = View.VISIBLE
-        tv_away_point_live.text = (event.matchStatusList?.lastOrNull()?.awayPoint ?: 0).toString()
-
+        tv_away_point_live.text = (event.matchStatusCO?.awayPoints ?: 0).toString()
     }
 
     private fun setupStatusBk(event: MatchStatusChangeEvent) {
