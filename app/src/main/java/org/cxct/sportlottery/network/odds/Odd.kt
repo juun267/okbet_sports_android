@@ -48,8 +48,10 @@ data class Odd(
     var extInfo: String? = null,
 
     @Json(name = "playCode")
-    val playCode: String? = null
+    val playCode: String? = null,
 
+    @Json(name = "rowSort")
+    val rowSort: Int? = null
 
 ) : OddStateParams, Parcelable {
 
