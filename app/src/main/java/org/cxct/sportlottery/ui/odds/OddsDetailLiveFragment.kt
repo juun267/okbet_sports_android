@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,8 +70,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private var curAwayScore: Int? = null
     
     private var curStatus: Int? = null
-
-    private var spt: Int? = null
 
     override var startTime: Long = 0
     override var timer: Timer = Timer()
@@ -264,7 +263,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
                         }
 
-                        spt = it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt
+                        if (args.matchType == MatchType.IN_PLAY &&
+                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
+                            && tv_status_left.isVisible) {
+                            tv_spt.visibility = View.VISIBLE
+                            tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt)?:0}"
+                        }
 
                     }
                     false -> {
@@ -544,7 +548,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 setupBackScore(event)
                 setupStatusTnVB(event)
             }
-            else -> {
+            GameType.VB -> {
                 setupBackScore(event)
                 setupStatusTnVB(event)
             }
@@ -565,6 +569,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         tv_away_point_live.visibility = View.VISIBLE
         tv_away_point_live.text = (event.matchStatusList?.lastOrNull()?.awayPoint ?: 0).toString()
+
     }
 
     private fun setupStatusBk(event: MatchStatusChangeEvent) {
@@ -591,11 +596,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             statusBuilder.append(spanStatusName).append(spanScore)
         }
 
-        val statusBuilderText = if (spt!=null && spt?:0 > 0) " $statusBuilder / $spt"
-        else statusBuilder
-        tv_status_left.text = statusBuilderText
+        tv_status_left.text = statusBuilder
     }
-
 
     private fun setupStatusTnVB(event: MatchStatusChangeEvent) {
         if (event.matchStatusList?.isEmpty() == true) return
@@ -618,15 +620,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         tv_status_right.text = statusBuilder
 
-        val setStatusText = { status: String? ->
-            if (spt!=null && spt?:0 > 0) " $status / $spt"
-            else status
-        }
-
         tv_status_left.text = when (getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> setStatusText(event.matchStatusCO?.statusNameI18n?.zh)
-            LanguageManager.Language.EN -> setStatusText(event.matchStatusCO?.statusNameI18n?.en)
-            else -> setStatusText(event.matchStatusCO?.statusName)
+            LanguageManager.Language.ZH -> "${event.matchStatusCO?.statusNameI18n?.zh}"
+            LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
+            else -> event.matchStatusCO?.statusName
         }
     }
 }
