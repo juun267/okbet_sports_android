@@ -83,6 +83,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
+    private var lotteryCount = 0
+    private var liveCount = 0
+    private var pokerCount = 0
+    private var slotCount = 0
+    private var fishingCount = 0
+    private var isCreditAccount = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -570,7 +578,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.isCreditAccount.observe(viewLifecycleOwner, {
-            updateThirdGameCard(!it)
+            isCreditAccount = it
+            updateThirdGameCard()
         })
 
         //遊戲卡片
@@ -1000,62 +1009,33 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateInPlayUI(gameCateList: List<GameCateData>?) {
-        val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
-        val lotteryCount =
+        lotteryCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val liveCount =
+        liveCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val pokerCount =
+        pokerCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val slotCount =
+        slotCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.DZ }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val fishingCount =
+        fishingCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.BY }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
 
-        card_lottery.visibility =
-            if (isShowThirdGame && lotteryCount > 0) View.VISIBLE else View.GONE
-        card_live.visibility = if (isShowThirdGame && liveCount > 0) View.VISIBLE else View.GONE
-        card_poker.visibility = if (isShowThirdGame && pokerCount > 0) View.VISIBLE else View.GONE
-        card_slot.visibility = if (isShowThirdGame && slotCount > 0) View.VISIBLE else View.GONE
-        card_fishing.visibility =
-            if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
+        updateThirdGameCard()
     }
 
-    private fun updateThirdGameCard(isVisible: Boolean) {
-        card_lottery.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_live.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_poker.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_slot.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_fishing.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+    private fun updateThirdGameCard() {
+        card_lottery.visibility =
+            if (isShowThirdGame && lotteryCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_live.visibility = if (isShowThirdGame && liveCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_poker.visibility = if (isShowThirdGame && pokerCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_slot.visibility = if (isShowThirdGame && slotCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_fishing.visibility =
+            if (isShowThirdGame && fishingCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
     }
 
     private fun navOddsDetailFragment(
