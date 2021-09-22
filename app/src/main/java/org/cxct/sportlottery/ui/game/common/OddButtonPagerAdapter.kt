@@ -95,7 +95,19 @@ class OddButtonPagerAdapter(
                 listener
             )
         } catch (e: Exception) {
+            e.printStackTrace()
 
+            holder.bind(
+                matchInfo,
+                playCateMappingList,
+                listOf(
+                    Pair(
+                        data[position].getOrNull(0)?.first, data[position].getOrNull(0)?.second),
+                    Pair(data[position].getOrNull(1)?.first, data[position].getOrNull(1)?.second)
+                ),
+                oddsType,
+                listener
+            )
         }
     }
 
