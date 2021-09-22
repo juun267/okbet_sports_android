@@ -58,7 +58,7 @@ abstract class BaseBottomNavViewModel(
     fun navMainPage(thirdGameCategory: ThirdGameCategory) {
         _thirdGameCategory.postValue(
             Event(
-                if (isCreditAccount.value == true) {
+                if (isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN) {
                     null
                 } else {
                     thirdGameCategory

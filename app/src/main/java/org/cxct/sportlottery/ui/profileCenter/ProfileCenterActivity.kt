@@ -163,7 +163,10 @@ class ProfileCenterActivity :
         btn_logout.setOnClickListener {
             viewModel.doLogoutCleanUser {
                 run {
-                    MainActivity.reStart(this)
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
                 }
             }
 
@@ -456,6 +459,8 @@ class ProfileCenterActivity :
     }
 
     private fun updateCreditAccountUI(isCreditAccount: Boolean) {
+        val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
+
         profile_center_back.visibility = if (isCreditAccount) {
             View.VISIBLE
         } else {
@@ -474,7 +479,7 @@ class ProfileCenterActivity :
             View.GONE
         }
 
-        btn_account_transfer.visibility = if (isCreditAccount) {
+        btn_account_transfer.visibility = if (isCreditAccount || !thirdOpen) {
             View.GONE
         } else {
             View.VISIBLE
@@ -486,7 +491,7 @@ class ProfileCenterActivity :
             View.VISIBLE
         }
 
-        btn_other_bet_record.visibility = if (isCreditAccount) {
+        btn_other_bet_record.visibility = if (isCreditAccount || !thirdOpen) {
             View.GONE
         } else {
             View.VISIBLE

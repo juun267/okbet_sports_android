@@ -16,9 +16,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -56,7 +59,9 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private fun showDialogLogout(message: String) {
         showTokenPromptDialog(message) {
-            viewModel.doLogoutCleanUser { MainActivity.reStart(this) }
+            viewModel.doLogoutCleanUser {
+                if (sConfigData?.thirdOpen == FLAG_OPEN) MainActivity.reStart(this) else GameActivity.reStart(this)
+            }
         }
     }
 
