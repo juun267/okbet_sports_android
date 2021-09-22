@@ -136,7 +136,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             setupOddButton(data)
 
             itemView.iv_match_in_play.visibility =
-                if (matchType == MatchType.IN_PLAY) View.VISIBLE else View.GONE
+                if (matchType == MatchType.IN_PLAY || matchType == MatchType.AT_START) View.VISIBLE else View.GONE
 
             itemView.iv_match_price.visibility =
                 if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
@@ -228,17 +228,18 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             itemView.apply {
                 when (matchType) {
                     MatchType.AT_START -> {
-                        val remainTime = data.matchInfo?.remainTime?.let { remainTime ->
+                        data.matchInfo?.remainTime = data.matchInfo?.startTime
+                        data.matchInfo?.remainTime?.let { remainTime ->
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
-                                data.matchInfo.remainTime = timeMillis
-                                String.format(
+                                val timeStr = String.format(
                                     itemView.context.resources.getString(R.string.at_start_remain_minute),
                                     TimeUtil.timeFormat(timeMillis, "mm")
                                 )
+                                tv_match_time.text = timeStr
+
+                                data.matchInfo.remainTime = timeMillis
                             }
                         }
-
-                        tv_match_time.text = "$remainTime"
                     }
 
                     else -> {
