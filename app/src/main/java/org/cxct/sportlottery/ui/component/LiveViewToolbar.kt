@@ -29,6 +29,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
     private var nodeMediaManager: NodeMediaManager? = null
+    private var mStreamUrl: String = ""
 
     lateinit var matchOdd: MatchOdd
 
@@ -51,7 +52,9 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
-        addView(view)
+        addView(view).apply {
+            expand_layout.collapse(false)
+        }
 
         try {
             initOnclick()
@@ -101,12 +104,15 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun switchLiveView(open: Boolean) {
+        if (!iv_play.isVisible) return
+
         when (open) {
             true -> {
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 iv_play.isSelected = true
                 expand_layout.expand()
                 liveToolBarListener?.onExpand()
+                if (mStreamUrl.isNotEmpty()) nodeMediaManager?.nodeMediaStart()
             }
             false -> {
                 nodeMediaManager?.nodeMediaStop()
@@ -137,6 +143,12 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         nodeMediaManager = NodeMediaManager(eventListener, nodeMediaListener)
     }
 
+    fun setupPlayerControl(show: Boolean) {
+        switchLiveView(show)
+        iv_play.isVisible = show
+        iv_arrow.isVisible = show
+    }
+
     fun liveLoading() {
         node_player.visibility = View.GONE
         iv_live_status.visibility = View.VISIBLE
@@ -150,6 +162,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun setupLiveUrl(streamUrl: String) {
+        mStreamUrl = streamUrl
         nodeMediaManager?.initNodeMediaPlayer(context, node_player, streamUrl)
         nodeMediaManager?.nodeMediaStart()
     }

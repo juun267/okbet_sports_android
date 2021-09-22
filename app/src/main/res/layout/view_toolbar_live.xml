@@ -18,14 +18,14 @@
         <FrameLayout
             android:id="@+id/web_view_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="232dp"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/iv_live_status"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/img_no_live"
+                android:layout_height="match_parent"
+                android:src="@drawable/img_stream_loading"
                 android:scaleType="fitXY"/>
             
             <!-- Media Layout -->

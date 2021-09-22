@@ -39,6 +39,8 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.repository.FLAG_LIVE
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -244,7 +246,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             }
                         }
                         setupStartTime()
-                        setupLiveView()
+                        setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
 
                         if (args.matchType == MatchType.IN_PLAY) {
@@ -460,9 +462,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     }
 
-    private fun setupLiveView() {
+    private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupNodeMediaPlayer(eventListener)
+        live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
 
         matchOdd?.let {
             live_view_tool_bar.matchOdd = it
