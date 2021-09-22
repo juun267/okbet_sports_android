@@ -19,7 +19,7 @@ object TimeUtil {
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
     private const val YMDE_FORMAT = "yyyy-MMMM-d-EEE"
     private const val YMDE_HMS_FORMAT = "yyyy-MMMM-d-EEE HH:mm:ss"
-    const val DMY_HM_FORMAT = "dd/MM/yyyy HH:mm"
+    private const val DMY_HM_FORMAT = "MM-dd-yyyy HH:mm"
 
     fun stampToDateHMS(time: Long): String {
         return timeFormat(time, YMD_HMS_FORMAT)
