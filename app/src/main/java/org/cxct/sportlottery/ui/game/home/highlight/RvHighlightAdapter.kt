@@ -228,7 +228,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             itemView.apply {
                 when (matchType) {
                     MatchType.AT_START -> {
-                        data.matchInfo?.remainTime = data.matchInfo?.startTime
+                        if (data.matchInfo?.remainTime == null)
+                            data.matchInfo?.remainTime = data.matchInfo?.startTime
+
                         data.matchInfo?.remainTime?.let { remainTime ->
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
                                 val timeStr = String.format(
