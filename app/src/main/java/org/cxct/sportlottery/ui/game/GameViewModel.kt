@@ -599,7 +599,7 @@ class GameViewModel(
                             }
                         }
                         oddData.oddsMap =
-                            oddData.oddsMap.filterPlayCateSpanned(row.sport?.code).splitPlayCate()
+                            oddData.oddsMap.filterPlayCateSpanned(row.sport?.code).splitPlayCate().sortPlayCate()
                                 .toMutableFormat()
                         oddData.playCateMappingList = playCateMappingList
                         oddData.updateOddStatus()
@@ -912,7 +912,7 @@ class GameViewModel(
                     matchOdd.playCateMappingList = playCateMappingList
 
                     matchOdd.oddsMap =
-                        matchOdd.oddsMap.filterPlayCateSpanned(gameType).splitPlayCate()
+                        matchOdd.oddsMap.filterPlayCateSpanned(gameType).splitPlayCate().sortPlayCate()
                             .toMutableFormat()
 
                     matchOdd.oddsMap.forEach { map ->
@@ -1555,7 +1555,7 @@ class GameViewModel(
 
                     quickPlayCate.quickOdds =
                         quickListData.quickOdds?.get(quickPlayCate.code)
-                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()
+                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()?.sortPlayCate()
                 }
             }
         }

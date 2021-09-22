@@ -84,10 +84,10 @@ class OddButtonPagerAdapter(
                 listOf(
                     Pair(
                         data[position].getOrNull(0)?.first,
-                        data[position].getOrNull(0)?.second?.sortedBy { it?.id?.toDouble() }),
+                        data[position].getOrNull(0)?.second),
                     Pair(
                         data[position].getOrNull(1)?.first,
-                        data[position].getOrNull(1)?.second?.sortedBy { it?.id?.toDouble() })
+                        data[position].getOrNull(1)?.second)
                 ),
                 oddsType,
                 listener

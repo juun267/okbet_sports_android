@@ -437,6 +437,20 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
+        gameType: String?
+    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        return this.mapValues { map ->
+            val playCateMapItem = playCateMappingList.find {
+                it.gameType == gameType && it.playCateCode == map.key
+            }
+
+            map.value?.filterIndexed { index, _ ->
+                index < playCateMapItem?.playCateNum ?: 0
+            }
+        }
+    }
+
     protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.splitPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
         val splitMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
 
@@ -467,18 +481,28 @@ abstract class BaseOddButtonViewModel(
         return splitMap
     }
 
-    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
-        gameType: String?
-    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
-        return this.mapValues { map ->
-            val playCateMapItem = playCateMappingList.find {
-                it.gameType == gameType && it.playCateCode == map.key
-            }
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.sortPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val sortMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
 
-            map.value?.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
+        this.forEach { oddsMap ->
+            if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
+                val oddList = oddsMap.value?.toMutableList()
+
+                oddList?.indexOf(
+                    oddList.find {
+                        it?.nameMap?.get(LanguageManager.Language.EN.key)?.contains("Draw") ?: false
+                    }
+                )?.let {
+                    oddList.add(oddList.size - 1, oddList.removeAt(it))
+                }
+
+                sortMap[oddsMap.key] = oddList
+            } else {
+                sortMap[oddsMap.key] = oddsMap.value
             }
         }
+
+        return sortMap
     }
 
     protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {

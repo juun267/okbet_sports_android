@@ -328,7 +328,7 @@ object SocketUpdateUtil {
             oddsChangeEvent.odds?.splitPlayCate()?.filterPlayCateSpanned(
                 matchOdd.matchInfo?.gameType,
                 matchOdd.playCateMappingList
-            )?.toMutableFormat() ?: mapOf()
+            )?.sortPlayCate()?.toMutableFormat() ?: mapOf()
         )
 
         matchOdd.oddsEps?.eps?.toMutableList()
@@ -542,6 +542,30 @@ object SocketUpdateUtil {
                 index < playCateMapItem?.playCateNum ?: 0
             }
         }
+    }
+
+    private fun Map<String, List<Odd?>?>.sortPlayCate(): Map<String, List<Odd?>?> {
+        val sortMap = mutableMapOf<String, List<Odd?>?>()
+
+        this.forEach { oddsMap ->
+            if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
+                val oddList = oddsMap.value?.toMutableList()
+
+                oddList?.indexOf(
+                    oddList.find {
+                        it?.nameMap?.get(LanguageManager.Language.EN.key)?.contains("Draw") ?: false
+                    }
+                )?.let {
+                    oddList.add(oddList.size - 1, oddList.removeAt(it))
+                }
+
+                sortMap[oddsMap.key] = oddList
+            } else {
+                sortMap[oddsMap.key] = oddsMap.value
+            }
+        }
+
+        return sortMap
     }
 
     private fun Map<String, List<Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<Odd?>> {
