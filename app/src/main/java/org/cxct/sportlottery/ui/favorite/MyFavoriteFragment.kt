@@ -355,11 +355,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }
         })
 
-        viewModel.curPlay.observe(this.viewLifecycleOwner, {
-            if (it.selectionType == SelectionType.SELECTABLE.code && it.isLocked == false)
-                showPlayCateBottomSheet(it)
-        })
-
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, {
             hideLoading()
             leagueAdapter.data = it.toMutableList()

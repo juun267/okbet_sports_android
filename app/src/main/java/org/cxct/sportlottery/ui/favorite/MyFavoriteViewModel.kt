@@ -43,10 +43,6 @@ class MyFavoriteViewModel(
         get() = _sportQueryData
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
 
-    val curPlay: LiveData<Play>
-        get() = _curPlay
-    private val _curPlay = MutableLiveData<Play>()
-
     fun getSportQuery() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -143,7 +139,6 @@ class MyFavoriteViewModel(
         )
 
         if (play.selectionType == SelectionType.SELECTABLE.code) {
-            _curPlay.postValue(play)
         } else {
             getFavoriteMatch(
                 sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
