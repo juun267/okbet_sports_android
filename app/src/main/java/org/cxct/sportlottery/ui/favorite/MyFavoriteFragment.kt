@@ -51,6 +51,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
                 viewModel.switchPlay(it)
+    //更新isLocked狀態
+    private fun upDateSelectPlay(play: Play) {
+        val platData = playCategoryAdapter.data.find { it == play }
+        if (platData?.selectionType == SelectionType.SELECTABLE.code) {
+            platData.isLocked = when {
+                platData.isLocked == null || platData.isSelected -> false
+                else -> true
             }
         }
     }
