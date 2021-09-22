@@ -204,7 +204,7 @@ class MyFavoriteViewModel(
 
                     quickPlayCate.quickOdds =
                         quickListData.quickOdds?.get(quickPlayCate.code)
-                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
+                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()
                 }
             }
         }

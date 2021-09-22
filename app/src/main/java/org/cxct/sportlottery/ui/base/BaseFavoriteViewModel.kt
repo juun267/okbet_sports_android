@@ -91,7 +91,7 @@ abstract class BaseFavoriteViewModel(
                             playCateCode?.let {
                                 matchOdd.oddsMap =
                                     matchOdd.oddsMap.filter { odds -> odds.key == playCateCode }
-                                        .filterPlayCateSpanned(gameType).toMutableFormat()
+                                        .filterPlayCateSpanned(gameType).splitPlayCate().toMutableFormat()
                             }
                             matchOdd.playCateMappingList = playCateMappingList
                         }

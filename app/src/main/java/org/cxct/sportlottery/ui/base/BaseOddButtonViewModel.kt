@@ -437,6 +437,36 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.splitPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val splitMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+
+        this.forEach { oddsMap ->
+            when (oddsMap.key) {
+                PlayCate.SINGLE_OU.value -> {
+                    splitMap[PlayCate.SINGLE_OU_O.value] =
+                        listOf(oddsMap.value?.get(0), oddsMap.value?.get(2), oddsMap.value?.get(4))
+
+                    splitMap[PlayCate.SINGLE_OU_U.value] =
+                        listOf(oddsMap.value?.get(1), oddsMap.value?.get(3), oddsMap.value?.get(5))
+                }
+
+                PlayCate.SINGLE_BTS.value -> {
+                    splitMap[PlayCate.SINGLE_BTS_Y.value] =
+                        listOf(oddsMap.value?.get(0), oddsMap.value?.get(2), oddsMap.value?.get(4))
+
+                    splitMap[PlayCate.SINGLE_BTS_N.value] =
+                        listOf(oddsMap.value?.get(1), oddsMap.value?.get(3), oddsMap.value?.get(5))
+                }
+
+                else -> {
+                    splitMap[oddsMap.key] = oddsMap.value
+                }
+            }
+        }
+
+        return splitMap
+    }
+
     protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
         gameType: String?
     ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {

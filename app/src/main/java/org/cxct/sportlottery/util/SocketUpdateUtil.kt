@@ -325,7 +325,7 @@ object SocketUpdateUtil {
 
     private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         matchOdd.oddsMap.putAll(
-            oddsChangeEvent.odds?.filterPlayCateSpanned(
+            oddsChangeEvent.odds?.splitPlayCate()?.filterPlayCateSpanned(
                 matchOdd.matchInfo?.gameType,
                 matchOdd.playCateMappingList
             )?.toMutableFormat() ?: mapOf()
@@ -497,6 +497,36 @@ object SocketUpdateUtil {
             }
         }
         return isNeedRefresh
+    }
+
+    private fun Map<String, List<Odd?>?>.splitPlayCate(): Map<String, List<Odd?>?> {
+        val splitMap = mutableMapOf<String, List<Odd?>?>()
+
+        this.forEach { oddsMap ->
+            when (oddsMap.key) {
+                PlayCate.SINGLE_OU.value -> {
+                    splitMap[PlayCate.SINGLE_OU_O.value] =
+                        listOf(oddsMap.value?.get(0), oddsMap.value?.get(2), oddsMap.value?.get(4))
+
+                    splitMap[PlayCate.SINGLE_OU_U.value] =
+                        listOf(oddsMap.value?.get(1), oddsMap.value?.get(3), oddsMap.value?.get(5))
+                }
+
+                PlayCate.SINGLE_BTS.value -> {
+                    splitMap[PlayCate.SINGLE_BTS_Y.value] =
+                        listOf(oddsMap.value?.get(0), oddsMap.value?.get(2), oddsMap.value?.get(4))
+
+                    splitMap[PlayCate.SINGLE_BTS_N.value] =
+                        listOf(oddsMap.value?.get(1), oddsMap.value?.get(3), oddsMap.value?.get(5))
+                }
+
+                else -> {
+                    splitMap[oddsMap.key] = oddsMap.value
+                }
+            }
+        }
+
+        return splitMap
     }
 
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
