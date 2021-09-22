@@ -8,13 +8,11 @@ import com.squareup.moshi.JsonClass
 data class PlayCateMapItem(
     @Json(name = "gameType")
     val gameType: String,
-    @Json(name = "menuCode")
-    val menuCode: String,
     @Json(name = "playCateCode")
     val playCateCode: String,
     @Json(name = "playCateName")
     val playCateName: String,
-    @Json(name = "playCateNameEn")
+    @Json(name = "playCateName-english")
     val playCateNameEn: String,
     @Json(name = "playCateNum")
     val playCateNum: Int
