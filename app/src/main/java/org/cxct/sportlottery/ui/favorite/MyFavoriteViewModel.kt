@@ -123,23 +123,33 @@ class MyFavoriteViewModel(
     }
 
     fun switchPlay(play: Play) {
-        _sportQueryData.postValue(
-            Event(
-                _sportQueryData.value?.peekContent()?.updatePlaySelected(play).apply {
-                    val curPlayCate =
-                        this?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList
-
-                    curPlayCate?.forEach {
-                        it.isSelected =
-                            (curPlayCate.indexOf(it) == 0)
-                                    && (this?.items?.find { item -> item.isSelected }?.play?.find { play -> play.isSelected }?.selectionType == SelectionType.SELECTABLE.code)
-                    }
-                }
-            )
-        )
 
         if (play.selectionType == SelectionType.SELECTABLE.code) {
+            _sportQueryData.postValue(
+                Event(
+                    _sportQueryData.value?.peekContent()?.updatePlaySelected(play)
+                )
+            )
+            val playCateCode =
+                sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.find { it.isSelected }?.code
+
+            switchPlayCategory(play,playCateCode)
         } else {
+            _sportQueryData.postValue(
+                Event(
+                    _sportQueryData.value?.peekContent()?.updatePlaySelected(play).apply {
+                        val curPlayCate =
+                            this?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList
+
+                        curPlayCate?.forEach {
+                            it.isSelected =
+                                (curPlayCate.indexOf(it) == 0)
+                                        && (this?.items?.find { item -> item.isSelected }?.play?.find { play -> play.isSelected }?.selectionType == SelectionType.SELECTABLE.code)
+                        }
+                    }
+                )
+            )
+
             getFavoriteMatch(
                 sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
                 play.code
