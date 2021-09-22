@@ -436,7 +436,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun showPlayCateBottomSheet(play: Play) {
-        viewModel.switchPlayCategory(play.playCateList?.firstOrNull()?.code)
         showBottomSheetDialog(
             play.name,
             play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
