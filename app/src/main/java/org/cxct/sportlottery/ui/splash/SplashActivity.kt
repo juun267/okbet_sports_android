@@ -93,7 +93,7 @@ class SplashActivity : BaseActivity<SplashViewModel>(SplashViewModel::class) {
                 viewModel.goNextPage()
         })
 
-        viewModel.isCreditAccount.observe(this, {
+        viewModel.skipHomePage.observe(this, {
             when (it) {
                 true -> {
                     goGamePage()

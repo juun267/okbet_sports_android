@@ -38,12 +38,12 @@ class SplashViewModel(
     val configResult: LiveData<ConfigResult?>
         get() = _configResult
 
-    val isCreditAccount: LiveData<Boolean>
-        get() = _isCreditAccount
+    val skipHomePage: LiveData<Boolean>
+        get() = _skipHomePage
 
     private val _configResult = MutableLiveData<ConfigResult?>()
 
-    private val _isCreditAccount = MutableLiveData<Boolean>()
+    private val _skipHomePage = MutableLiveData<Boolean>()
 
     /**
      * 1. 先讀取 local 端儲存的 host 使用 getConfig() 檢查，看可不可用
@@ -96,7 +96,7 @@ class SplashViewModel(
     }
 
     fun goNextPage() {
-        _isCreditAccount.postValue(loginRepository.isCreditAccount.value)
+        _skipHomePage.postValue(loginRepository.isCreditAccount.value == true || sConfigData?.thirdOpen != FLAG_OPEN)
     }
 
     private suspend fun sendGetHostRequest(index: Int) {

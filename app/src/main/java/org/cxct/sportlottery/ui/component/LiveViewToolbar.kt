@@ -12,7 +12,6 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
@@ -30,23 +29,36 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
     private var nodeMediaManager: NodeMediaManager? = null
+    private var mStreamUrl: String = ""
 
     lateinit var matchOdd: MatchOdd
 
-    interface LiveToolBarListener{
-        fun onExpand(expanded: Boolean)
+    interface LiveToolBarListener {
+        fun onExpand()
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
 
+    private var nodeMediaListener: NodeMediaManager.NodeMediaListener = object : NodeMediaManager.NodeMediaListener {
+        override fun streamLoading() {
+            liveLoading()
+        }
+
+        override fun isLiveShowing(isShowing: Boolean) {
+            showLiveView(isShowing)
+        }
+
+    }
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
-        addView(view)
+        addView(view).apply {
+            expand_layout.collapse(false)
+        }
 
         try {
             initOnclick()
             setupBottomSheet()
-            setupTab()
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -57,58 +69,59 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
 
     private fun initOnclick() {
+        iv_play.setOnClickListener {
+            when (expand_layout.isExpanded) {
+                true -> {
+                    nodeMediaManager?.nodeMediaReload()
+                }
+                false -> {
+                    switchLiveView(true)
+                }
+            }
+        }
+
+        iv_statistics.setOnClickListener {
+            setTitle(context.getString(R.string.statistics_title))
+            loadBottomSheetUrl(matchOdd)
+        }
+
         iv_arrow.setOnClickListener {
             if (expand_layout.isExpanded) {
-                nodeMediaManager?.nodeMediaStop()
-                iv_arrow.animate().rotation(0f).setDuration(100).start()
-                expand_layout.collapse()
-                liveToolBarListener?.onExpand(false)
+                switchLiveView(false)
             } else {
-                iv_arrow.animate().rotation(180f).setDuration(100).start()
-                expand_layout.expand()
-                liveToolBarListener?.onExpand(true)
+                switchLiveView(true)
             }
         }
 
         expand_layout.setOnExpansionUpdateListener { _, state ->
-            tab_layout.getTabAt(0)?.setIcon(
+            iv_play.setImageResource(
                 when (state) {
-                    0 -> R.drawable.ic_icon_game_schedule
-                    else -> R.drawable.ic_icon_game_schedule_ec
+                    0 -> R.drawable.ic_live_player
+                    else -> R.drawable.ic_live_player_selected
                 }
             )
         }
     }
 
-    private fun setupTab() {
-        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
+    private fun switchLiveView(open: Boolean) {
+        if (!iv_play.isVisible) return
 
-                if (tab?.position != 0) {
-                    if (!webBottomSheet.isShowing) {
-                        webBottomSheet.show()
-                    } else webBottomSheet.dismiss()
-                }
-
-                when (tab?.position) {
-                    1 -> {
-                        setTitle(context.getString(R.string.statistics_title))
-                        loadBottomSheetUrl(matchOdd)
-                    }
-                }
-
-
+        when (open) {
+            true -> {
+                iv_arrow.animate().rotation(180f).setDuration(100).start()
+                iv_play.isSelected = true
+                expand_layout.expand()
+                liveToolBarListener?.onExpand()
+                if (mStreamUrl.isNotEmpty()) nodeMediaManager?.nodeMediaStart()
             }
+            false -> {
+                nodeMediaManager?.nodeMediaStop()
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
+                iv_arrow.animate().rotation(0f).setDuration(100).start()
+                iv_play.isSelected = false
+                expand_layout.collapse()
             }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-        })
+        }
     }
 
     private fun setupBottomSheet() {
@@ -116,9 +129,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         webBottomSheet.iv_close.setOnClickListener {
             webBottomSheet.dismiss()
         }
-        webBottomSheet.setOnDismissListener {
-            tab_layout.getTabAt(0)?.select()
-        }
+
         val settings: WebSettings = bottomSheetView.bottom_sheet_web_view.settings
         settings.javaScriptEnabled = true
         bottomSheetView.bottom_sheet_web_view.webViewClient = WebViewClient()
@@ -128,16 +139,30 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener){
-        nodeMediaManager = NodeMediaManager(eventListener)
+    fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener) {
+        nodeMediaManager = NodeMediaManager(eventListener, nodeMediaListener)
+    }
+
+    fun setupPlayerControl(show: Boolean) {
+        switchLiveView(show)
+        iv_play.isVisible = show
+        iv_arrow.isVisible = show
+    }
+
+    fun liveLoading() {
+        node_player.visibility = View.GONE
+        iv_live_status.visibility = View.VISIBLE
+        iv_live_status.setImageResource(R.drawable.img_stream_loading)
     }
 
     fun showLiveView(showLive: Boolean) {
         node_player.isVisible = showLive
-        default_img.isVisible = !showLive
+        iv_live_status.isVisible = !showLive
+        iv_live_status.setImageResource(R.drawable.img_no_live)
     }
 
     fun setupLiveUrl(streamUrl: String) {
+        mStreamUrl = streamUrl
         nodeMediaManager?.initNodeMediaPlayer(context, node_player, streamUrl)
         nodeMediaManager?.nodeMediaStart()
     }

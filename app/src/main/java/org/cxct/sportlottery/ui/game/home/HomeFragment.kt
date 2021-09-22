@@ -51,6 +51,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
 /**
@@ -82,6 +83,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             addOddsDialog(matchOdd, odd, playCateName)
         }
     }
+
+    private val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
+    private var lotteryCount = 0
+    private var liveCount = 0
+    private var pokerCount = 0
+    private var slotCount = 0
+    private var fishingCount = 0
+    private var isCreditAccount = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -570,7 +579,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.isCreditAccount.observe(viewLifecycleOwner, {
-            updateThirdGameCard(!it)
+            isCreditAccount = it
+            updateThirdGameCard()
         })
 
         //遊戲卡片
@@ -685,157 +695,43 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 //滾球盤、即將開賽盤
                 val dataList = mRvGameTable4Adapter.getData()
-                val oddsType = mRvGameTable4Adapter.oddsType
                 dataList.forEachIndexed { index, gameEntity ->
                     //先找出要更新的 賽事
                     val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
                         matchOdd.matchInfo?.id == it.eventId
                     }
-                    val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
-                    //mapping 要更新的賠率
-                    if (updateMatchOdd?.oddsMap.isNullOrEmpty()) {
-                        oddsChangeEvent.odds?.mapValues { it.value.toMutableList() }
-                            ?.let { newMatchOdds ->
-                                updateMatchOdd?.oddsMap = newMatchOdds.toMutableMap()
+                    updateMatchOdd?.let { updateMatchOddNonNull ->
+                        val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
-                                //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
-                                mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
-                            }
-
-                    } else {
-                        oddsChangeEvent.odds?.forEach { map ->
-                            val key = map.key
-                            val newOddList = map.value
-                            val oldOddList = updateMatchOdd?.oddsMap?.get(key)
-
-                            oldOddList?.forEach oldOddList@{ oldOdd ->
-                                if (oldOdd == null) return@oldOddList
-
-                                newOddList.find { newOdd -> oldOdd.id == newOdd?.id }
-                                    ?.let { newOdd ->
-                                        val newOddState = when (oddsType) {
-                                            OddsType.EU -> judgeOddState(
-                                                oldOdd.odds,
-                                                newOdd.odds
-                                            ).state
-                                            OddsType.HK -> judgeOddState(
-                                                oldOdd.hkOdds,
-                                                newOdd.hkOdds
-                                            ).state
-                                        }
-
-                                        oldOdd.odds = newOdd.odds
-                                        oldOdd.hkOdds = newOdd.hkOdds
-                                        oldOdd.oddState = newOddState
-
-                                        //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
-                                        mRvGameTable4Adapter.notifySubItemChanged(
-                                            index,
-                                            indexMatchOdd
-                                        )
-                                    }
-                            }
+                        if (SocketUpdateUtil.updateMatchOdds(
+                                updateMatchOddNonNull,
+                                oddsChangeEvent
+                            )
+                        ) {
+                            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
                         }
                     }
                 }
 
-
                 //推薦賽事
                 val recommendDataList = mRecommendAdapter.getData()
-                val recommendOddsType = mRvGameTable4Adapter.oddsType
                 recommendDataList.forEachIndexed { index, entity ->
                     if (entity.matchInfo?.id != it.eventId)
                         return@forEachIndexed
 
-                    //mapping 要更新的賠率
-                    if (entity.oddBeans.isNullOrEmpty()) {
-                        entity.oddBeans = it.odds?.map {
-                            OddBean(it.key, it.value.filterNotNull())
-                        } ?: listOf()
-                        mRecommendAdapter.notifyItemChanged(index)
-
-                    } else {
-                        oddsChangeEvent.odds?.forEach { map ->
-                            val key = map.key
-                            val newOddList = map.value
-                            entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
-                                if (key == oddBean.playTypeCode) {
-                                    val oldOddList = oddBean.oddList
-                                    oldOddList.forEach { oldOdd ->
-                                        newOddList.find { newOdd -> oldOdd?.id == newOdd?.id }
-                                            ?.let { newOdd ->
-                                                val newOddState = when (recommendOddsType) {
-                                                    OddsType.EU -> judgeOddState(
-                                                        oldOdd?.odds,
-                                                        newOdd.odds
-                                                    ).state
-                                                    OddsType.HK -> judgeOddState(
-                                                        oldOdd?.hkOdds,
-                                                        newOdd.hkOdds
-                                                    ).state
-                                                }
-
-                                                oldOdd?.odds = newOdd.odds
-                                                oldOdd?.hkOdds = newOdd.hkOdds
-                                                oldOdd?.oddState = newOddState
-                                                //20210713 紀錄：只刷新內層 viewPager 的 sub Item，才不會導致每次刷新，viewPager 都會跑到第一頁
-                                                mRecommendAdapter.notifySubItemChanged(
-                                                    index,
-                                                    indexOddBean
-                                                )
-                                            }
-                                    }
-                                }
-                            }
+                    entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
+                        if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
+                            mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
                         }
                     }
                 }
 
-
                 //精選賽事
                 val highlightDataList = mRvHighlightAdapter.getData()
-                val highlightOddsType = mRvHighlightAdapter.oddsType
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
-                    if (updateMatchOdd.oddsMap.isNullOrEmpty()) {
-                        oddsChangeEvent.odds?.mapValues { it.value.toMutableList() }
-                            ?.let { newMatchOdds ->
-                                updateMatchOdd.oddsMap = newMatchOdds.toMutableMap()
-
-                                mRvHighlightAdapter.notifyItemChanged(index)
-                            }
-
-                    } else {
-                        oddsChangeEvent.odds?.forEach { map ->
-                            val key = map.key
-                            val newOddList = map.value
-                            val oldOddList = updateMatchOdd.oddsMap[key]
-
-                            oldOddList?.forEach oldOddList@{ oldOdd ->
-                                if (oldOdd == null)
-                                    return@oldOddList
-
-                                newOddList.find { newOdd -> oldOdd.id == newOdd?.id }
-                                    ?.let { newOdd ->
-                                        val newOddState = when (highlightOddsType) {
-                                            OddsType.EU -> judgeOddState(
-                                                oldOdd.odds,
-                                                newOdd.odds
-                                            ).state
-                                            OddsType.HK -> judgeOddState(
-                                                oldOdd.hkOdds,
-                                                newOdd.hkOdds
-                                            ).state
-                                        }
-
-                                        oldOdd.odds = newOdd.odds
-                                        oldOdd.hkOdds = newOdd.hkOdds
-                                        oldOdd.oddState = newOddState
-
-                                        mRvHighlightAdapter.notifyItemChanged(index)
-                                    }
-                            }
-                        }
+                    if (SocketUpdateUtil.updateMatchOdds(updateMatchOdd, oddsChangeEvent)) {
+                        mRvHighlightAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -915,46 +811,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 //滾球盤、即將開賽盤
                 mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
-                        matchOdd.oddsMap.values.forEach { odds ->
-                            odds.forEach { odd ->
-                                if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                                    odd?.status = BetStatus.DEACTIVATED.code
-                                    mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
-                                }
-
-                                //20210713 紀錄：這邊只設定禁用狀態，解開會依照 socket producerUp 去更新 BetStatus
-                            }
+                        if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)) {
+                            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
                         }
                     }
                 }
-
 
                 //推薦賽事
                 mRecommendAdapter.getData().forEachIndexed { index, entity ->
                     entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
-                        oddBean.oddList.forEach { odd ->
-                            if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                                odd?.status = BetStatus.DEACTIVATED.code
-                                mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
-                            }
-
-                            //20210713 紀錄：這邊只設定禁用狀態，解開會依照 socket producerUp 去更新 BetStatus
+                        if (SocketUpdateUtil.updateOddStatus(oddBean, globalStopEvent)) {
+                            mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
                         }
                     }
                 }
 
-
                 //精選賽事
                 mRvHighlightAdapter.getData().forEachIndexed { index, matchOdd ->
-                    matchOdd.oddsMap.values.forEach { odds ->
-                        odds.forEach { odd ->
-                            if (globalStopEvent.producerId == null || odd?.producerId == globalStopEvent.producerId) {
-                                odd?.status = BetStatus.DEACTIVATED.code
-                                mRvHighlightAdapter.notifyItemChanged(index)
-                            }
-
-                            //20210713 紀錄：這邊只設定禁用狀態，解開會依照 socket producerUp 去更新 BetStatus
-                        }
+                    if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)) {
+                        mRvHighlightAdapter.notifyItemChanged(index)
                     }
                 }
             }
@@ -1000,62 +875,33 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateInPlayUI(gameCateList: List<GameCateData>?) {
-        val isShowThirdGame = sConfigData?.thirdOpen == FLAG_OPEN
-        val lotteryCount =
+        lotteryCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.CGCP }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val liveCount =
+        liveCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.LIVE }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val pokerCount =
+        pokerCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.QP }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val slotCount =
+        slotCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.DZ }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
-        val fishingCount =
+        fishingCount =
             gameCateList?.find { it.categoryThird == ThirdGameCategory.BY }?.tabDataList?.sumBy { it.gameList.size }
                 ?: 0
 
-        card_lottery.visibility =
-            if (isShowThirdGame && lotteryCount > 0) View.VISIBLE else View.GONE
-        card_live.visibility = if (isShowThirdGame && liveCount > 0) View.VISIBLE else View.GONE
-        card_poker.visibility = if (isShowThirdGame && pokerCount > 0) View.VISIBLE else View.GONE
-        card_slot.visibility = if (isShowThirdGame && slotCount > 0) View.VISIBLE else View.GONE
-        card_fishing.visibility =
-            if (isShowThirdGame && fishingCount > 0) View.VISIBLE else View.GONE
+        updateThirdGameCard()
     }
 
-    private fun updateThirdGameCard(isVisible: Boolean) {
-        card_lottery.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_live.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_poker.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_slot.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-        card_fishing.visibility = if (isVisible) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+    private fun updateThirdGameCard() {
+        card_lottery.visibility =
+            if (isShowThirdGame && lotteryCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_live.visibility = if (isShowThirdGame && liveCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_poker.visibility = if (isShowThirdGame && pokerCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_slot.visibility = if (isShowThirdGame && slotCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+        card_fishing.visibility =
+            if (isShowThirdGame && fishingCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
     }
 
     private fun navOddsDetailFragment(

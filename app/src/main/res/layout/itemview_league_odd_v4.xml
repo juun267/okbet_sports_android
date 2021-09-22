@@ -147,10 +147,12 @@
         android:background="@color/colorRedDark"
         android:paddingHorizontal="1dp"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize12sp"
         android:visibility="invisible"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_match_border_row1"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_home"
-        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_home"
         tools:text="1"
         tools:visibility="visible" />
@@ -164,7 +166,7 @@
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_home"
         app:layout_constraintEnd_toStartOf="@+id/league_odd_match_name_home"
-        app:layout_constraintStart_toEndOf="@id/league_odd_match_cards_home"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_home"
         tools:text="1" />
 
@@ -246,10 +248,12 @@
         android:background="@color/colorRedDark"
         android:paddingHorizontal="1dp"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/textSize14sp"
+        android:textSize="@dimen/textSize12sp"
         android:visibility="invisible"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintEnd_toStartOf="@+id/league_odd_match_border_row1"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_away"
-        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_away"
         tools:text="1"
         tools:visibility="visible" />
@@ -263,7 +267,7 @@
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_away"
         app:layout_constraintEnd_toStartOf="@+id/league_odd_match_name_away"
-        app:layout_constraintStart_toEndOf="@+id/league_odd_match_cards_away"
+        app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row1"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_away"
         tools:text="0" />
 

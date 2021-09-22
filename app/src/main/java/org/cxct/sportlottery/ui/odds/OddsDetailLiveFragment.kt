@@ -9,12 +9,14 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -39,6 +41,8 @@ import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
+import org.cxct.sportlottery.repository.FLAG_LIVE
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -103,11 +107,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private val liveToolBarListener by lazy {
         object : LiveViewToolbar.LiveToolBarListener {
-            override fun onExpand(expanded: Boolean) {
-                if (expanded) {
-                    matchId?.let {
-                        viewModel.getLiveInfo(it)
-                    }
+            override fun onExpand() {
+                matchId?.let {
+                    viewModel.getLiveInfo(it)
                 }
             }
         }
@@ -117,10 +119,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         object : NodeMediaManager.LiveEventListener {
             override fun reRequestStreamUrl() {
                 matchId?.let { viewModel.getLiveInfo(it, true) }
-            }
-
-            override fun isLiveShowing(isShowing: Boolean) {
-                live_view_tool_bar.showLiveView(isShowing)
             }
         }
     }
@@ -250,7 +248,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             }
                         }
                         setupStartTime()
-                        setupLiveView()
+                        setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
 
                         if (args.matchType == MatchType.IN_PLAY) {
@@ -262,9 +260,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)) {
+                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
+                            && tv_status_left.isVisible) {
                             tv_spt.visibility = View.VISIBLE
-                            tv_spt.text = " / ${it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt}"
+                            tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt)?:0}"
                         }
 
                     }
@@ -466,9 +465,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     }
 
-    private fun setupLiveView() {
+    private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupNodeMediaPlayer(eventListener)
+        live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
 
         matchOdd?.let {
             live_view_tool_bar.matchOdd = it
@@ -545,7 +545,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 setupBackScore(event)
                 setupStatusTnVB(event)
             }
-            else -> {
+            GameType.VB -> {
                 setupBackScore(event)
                 setupStatusTnVB(event)
             }
@@ -553,20 +553,19 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
-
-        tv_home_card.visibility = View.VISIBLE
+        tv_home_card.isVisible = (event.matchStatusList?.lastOrNull()?.homeCards?:0 > 0)
         tv_home_card.text = (event.matchStatusList?.lastOrNull()?.homeCards ?: 0).toString()
 
-        tv_away_card.visibility = View.VISIBLE
+        tv_away_card.isVisible = (event.matchStatusList?.lastOrNull()?.awayCards?:0 > 0)
         tv_away_card.text = (event.matchStatusList?.lastOrNull()?.awayCards ?: 0).toString()
     }
 
     private fun setupPoint(event: MatchStatusChangeEvent) {
         tv_home_point_live.visibility = View.VISIBLE
-        tv_home_point_live.text = (event.matchStatusList?.lastOrNull()?.homePoint ?: 0).toString()
+        tv_home_point_live.text = (event.matchStatusCO?.homePoints ?: 0).toString()
 
         tv_away_point_live.visibility = View.VISIBLE
-        tv_away_point_live.text = (event.matchStatusList?.lastOrNull()?.awayPoint ?: 0).toString()
+        tv_away_point_live.text = (event.matchStatusCO?.awayPoints ?: 0).toString()
     }
 
     private fun setupStatusBk(event: MatchStatusChangeEvent) {

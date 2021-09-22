@@ -354,6 +354,16 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                 }
                             }
                         }
+
+                        matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                            quickPlayCate.quickOdds?.forEach { map ->
+                                map.value?.forEach { odd ->
+                                    odd?.isSelected = it.any { betInfoListData ->
+                                        betInfoListData.matchOdd.oddsId == odd?.id
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -363,8 +373,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.favorMatchList.observe(this.viewLifecycleOwner, { favorMatchList ->
             if (favorMatchList.isNullOrEmpty()) {
+                favorite_toolbar.visibility = View.VISIBLE
                 fl_no_game.visibility = View.VISIBLE
             } else {
+                favorite_toolbar.visibility = View.GONE
                 fl_no_game.visibility = View.GONE
             }
         })
