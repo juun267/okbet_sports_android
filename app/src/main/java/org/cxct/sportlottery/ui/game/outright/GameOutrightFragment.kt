@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
-import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.Odd
@@ -21,7 +20,6 @@ import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
@@ -210,29 +208,13 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
         receiver.globalStop.observe(this.viewLifecycleOwner, {
             it?.let { globalStopEvent ->
-                val odds = mutableListOf<Odd>()
 
-                outrightLeagueOddAdapter.data.forEach { matchOdd ->
-                    matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        odds.addAll(oddList.filterNotNull())
-                    }
-                }
-
-                odds.forEach { odd ->
-                    when (globalStopEvent.producerId) {
-                        null -> {
-                            odd.status = BetStatus.DEACTIVATED.code
-                        }
-                        else -> {
-                            odd.producerId?.let { producerId ->
-                                if (producerId == globalStopEvent.producerId) {
-                                    odd.status = BetStatus.DEACTIVATED.code
-                                }
-                            }
+                outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
+                    matchOdd?.let {
+                        if (SocketUpdateUtil.updateOddStatus(matchOdd, globalStopEvent)) {
+                            outrightLeagueOddAdapter.notifyItemChanged(index)
                         }
                     }
-
-                    outrightLeagueOddAdapter.notifyItemChanged(odds.indexOf(odd))
                 }
             }
         })

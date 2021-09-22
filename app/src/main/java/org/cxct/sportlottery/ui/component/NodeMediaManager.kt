@@ -9,12 +9,16 @@ import cn.nodemedia.NodePlayerDelegate
 import cn.nodemedia.NodePlayerView
 import timber.log.Timber
 
-class NodeMediaManager(liveEventListener: LiveEventListener) {
+class NodeMediaManager(liveEventListener: LiveEventListener, nodeMediaListener: NodeMediaListener) {
 
     private var nodePlayer: NodePlayer? = null
 
     interface LiveEventListener{
         fun reRequestStreamUrl()
+    }
+
+    interface NodeMediaListener{
+        fun streamLoading()
         fun isLiveShowing(isShowing: Boolean)
     }
 
@@ -26,33 +30,33 @@ class NodeMediaManager(liveEventListener: LiveEventListener) {
             when (msg.what) {
                 1000 -> {
                     Timber.i("NodeMediaPlayer 1000 正在连接视频")
-                    liveEventListener.isLiveShowing(false)
+                    nodeMediaListener.streamLoading()
                 }
                 1001 ->  {
                     // 视频连接成功
                     Timber.i("NodeMediaPlayer 1001 連接成功")
-                    liveEventListener.isLiveShowing(true)
+                    nodeMediaListener.isLiveShowing(true)
                 }
                 1002 -> {
                     Timber.i("NodeMediaPlayer 1002 视频连接失败, 会进行自动重连.")
-                    liveEventListener.isLiveShowing(false)
+                    nodeMediaListener.isLiveShowing(false)
                 }
                 1003 -> {
                     Timber.i("NodeMediaPlayer 1003 视频开始重连")
                     nodePlayer?.stop()
                     liveEventListener.reRequestStreamUrl()
-                    liveEventListener.isLiveShowing(false)
+                    nodeMediaListener.isLiveShowing(false)
                 }
                 1004 ->  {
                     // 视频播放结束
                     Timber.i("NodeMediaPlayer 1004 视频播放结束")
-                    liveEventListener.isLiveShowing(false)
+                    nodeMediaListener.isLiveShowing(false)
                 }
                 1005 -> {
                 }
                 1103 -> {
                     Timber.i("NodeMediaPlayer 1103 收到RTMP协议Stream EOF,或 NetStream.Play.UnpublishNotify, 会进行自动重连.")
-                    liveEventListener.isLiveShowing(false)
+                    nodeMediaListener.isLiveShowing(false)
                 }
             }
         }
@@ -163,5 +167,10 @@ class NodeMediaManager(liveEventListener: LiveEventListener) {
 
     fun nodeMediaRelease() {
         nodePlayer?.release()
+    }
+
+    fun nodeMediaReload() {
+        nodePlayer?.stop()
+        nodePlayer?.start()
     }
 }

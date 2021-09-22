@@ -155,7 +155,12 @@ class OddButtonPagerViewHolder private constructor(
             val playCateName =
                 playCateMapItem.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
-            oddBtnType.text = playCateName.updatePlayCateColor()
+            oddBtnType.text = when {
+                (odds?.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
+                    ?: true) -> itemView.resources.getString(R.string.unknown_data)
+
+                else -> playCateName.updatePlayCateColor()
+            }
 
             oddBtnHome.apply homeButtonSettings@{
                 when {
@@ -305,7 +310,7 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnDraw.apply drawButtonSettings@{
                 when {
                     (odds?.second?.size ?: 0 < 3) -> {
-                        betStatus = BetStatus.DEACTIVATED.code
+                        visibility = View.GONE
                         return@drawButtonSettings
                     }
                     (odds?.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {

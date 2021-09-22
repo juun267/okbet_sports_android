@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddError
@@ -451,6 +452,71 @@ abstract class BaseOddButtonViewModel(
         }.toMutableMap()
     }
 
+    protected fun MatchOdd.updateOddStatus() {
+        this.oddsMap.forEach {
+            it.value.filterNotNull().forEach { odd ->
+
+                odd.status = when {
+                    (it.value.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (it.value.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
+            this.oddsEps?.eps?.let { oddList ->
+                odd.status = when {
+                    (oddList.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (oddList.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.quickPlayCateList?.forEach { quickPlayCate ->
+            quickPlayCate.quickOdds?.forEach {
+                it.value?.filterNotNull()?.forEach { odd ->
+                    it.value?.let { oddList ->
+                        odd.status = when {
+                            (oddList.filterNotNull()
+                                .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                            (oddList.filterNotNull()
+                                .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                            else -> odd.status
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected fun org.cxct.sportlottery.network.odds.detail.MatchOdd.updateOddStatus() {
+        this.odds.forEach {
+            it.value.odds.filterNotNull().forEach { odd ->
+
+                odd.status = when {
+                    (it.value.odds.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (it.value.odds.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+    }
 
     private fun getSpreadState(oldSpread: String, newSpread: String): Int =
         when {

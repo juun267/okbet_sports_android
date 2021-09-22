@@ -84,9 +84,14 @@ class FinanceViewModel(
 
     fun getRecordList() {
         val recordStrList = androidContext.resources.getStringArray(R.array.finance_array)
+        val recordHideStrList = androidContext.resources.getStringArray(R.array.finance_hide_array)
         val recordImgList = androidContext.resources.obtainTypedArray(R.array.finance_img_array)
 
-        val recordList = recordStrList.map {
+        val recordList = recordStrList.filter {
+            if (sConfigData?.thirdOpen == FLAG_OPEN) true else {
+                !recordHideStrList.contains(it)
+            }
+        }.map {
             it to recordImgList.getResourceId(recordStrList.indexOf(it), -1)
         }
         recordImgList.recycle()
