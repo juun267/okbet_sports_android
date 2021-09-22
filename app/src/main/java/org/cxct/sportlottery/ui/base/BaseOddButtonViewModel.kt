@@ -439,7 +439,7 @@ abstract class BaseOddButtonViewModel(
 
     protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
         gameType: String?
-    ): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
         return this.mapValues { map ->
             val playCateMapItem = playCateMappingList.find {
                 it.gameType == gameType && it.playCateCode == map.key
@@ -447,8 +447,13 @@ abstract class BaseOddButtonViewModel(
 
             map.value?.filterIndexed { index, _ ->
                 index < playCateMapItem?.playCateNum ?: 0
-            }?.toMutableList() ?: mutableListOf()
+            }
+        }
+    }
 
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+        return this.mapValues { map ->
+            map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
     }
 

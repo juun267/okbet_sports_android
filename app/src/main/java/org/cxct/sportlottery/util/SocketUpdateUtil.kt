@@ -328,7 +328,7 @@ object SocketUpdateUtil {
             oddsChangeEvent.odds?.filterPlayCateSpanned(
                 matchOdd.matchInfo?.gameType,
                 matchOdd.playCateMappingList
-            ) ?: mapOf()
+            )?.toMutableFormat() ?: mapOf()
         )
 
         matchOdd.oddsEps?.eps?.toMutableList()
@@ -502,7 +502,7 @@ object SocketUpdateUtil {
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
         gameType: String?,
         playCateMappingList: List<PlayCateMapItem>?
-    ): MutableMap<String, MutableList<Odd?>> {
+    ): Map<String, List<Odd?>?> {
         return this.mapValues { map ->
             val playCateMapItem = playCateMappingList?.find {
                 it.gameType == gameType && it.playCateCode == map.key
@@ -510,8 +510,13 @@ object SocketUpdateUtil {
 
             map.value?.filterIndexed { index, _ ->
                 index < playCateMapItem?.playCateNum ?: 0
-            }?.toMutableList() ?: mutableListOf()
+            }
+        }
+    }
 
+    private fun Map<String, List<Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<Odd?>> {
+        return this.mapValues { map ->
+            map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
     }
 
