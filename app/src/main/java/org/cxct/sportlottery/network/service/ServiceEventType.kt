@@ -4,6 +4,10 @@ interface ServiceEventType {
     val eventType: String?
 }
 
+interface ServiceChannel {
+    var channel: String?
+}
+
 enum class EventType(val value: String) {
     /*投注大廳 /notify/hall/{gameType}/{cateMenuCode}/{eventId}*/
     MATCH_STATUS_CHANGE("MATCH_STATUS_CHANGE"), //賽事比分
