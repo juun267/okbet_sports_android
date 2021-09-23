@@ -158,8 +158,10 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.apply {
                 country_name.text = item.name
 
-                val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)
-                iv_country.setImageDrawable(countryIcon)
+                if (item.icon.isNotEmpty()){
+                    val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)
+                    iv_country.setImageDrawable(countryIcon)
+                }
             }
 
             setupLeagueList(item, outrightCountryLeagueListener)

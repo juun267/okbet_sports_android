@@ -85,8 +85,10 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 }
 
                 item.league?.categoryIcon?.let { iconSvg ->
-                    val countryIcon = SvgUtil.getSvgDrawable(context, iconSvg)
-                    iv_country.setImageDrawable(countryIcon)
+                    if (iconSvg.isNotEmpty()){
+                        val countryIcon = SvgUtil.getSvgDrawable(context, iconSvg)
+                        iv_country.setImageDrawable(countryIcon)
+                    }
                 }
 
                 if (item.isClose)

@@ -141,8 +141,11 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.apply {
 
                 country_text.text = item.name
-                val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)
-                iv_country.setImageDrawable(countryIcon)
+
+                if (item.icon.isNotEmpty()){
+                    val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)
+                    iv_country.setImageDrawable(countryIcon)
+                }
             }
             setupLeagueList(item, countryLeagueListener)
             setupCountryExpand(item)

@@ -127,8 +127,10 @@ class LeagueAdapter(private val matchType: MatchType) :
         ) {
             itemView.league_text.text = item.league.name
 
-            val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
-            itemView.iv_country.setImageDrawable(countryIcon)
+            if (item.league.categoryIcon.isNotEmpty()){
+                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+                itemView.iv_country.setImageDrawable(countryIcon)
+            }
 
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
