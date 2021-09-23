@@ -137,9 +137,7 @@ object SocketUpdateUtil {
     }
 
     fun updateMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
-        var isNeedRefresh = false
-
-        isNeedRefresh = when (oddBean.oddList.isNullOrEmpty()) {
+        val isNeedRefresh = when (oddBean.oddList.isNullOrEmpty()) {
             true -> {
                 insertMatchOdds(oddBean, oddsChangeEvent)
             }
