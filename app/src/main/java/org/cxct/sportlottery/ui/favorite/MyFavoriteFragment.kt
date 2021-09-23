@@ -50,7 +50,39 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(it)
+                if (it.selectionType == SelectionType.SELECTABLE.code) { //被鎖 或是不能下拉
+                    when {
+                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
+                        !it.isSelected && it.isLocked == null -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //當前被點選的狀態
+                        it.isSelected -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //之前點選過然後離開又回來 要預設帶入
+                        !it.isSelected && it.isLocked == false -> {
+                            viewModel.switchPlay(it)
+                            loading()
+                        }
+                    }
+                } else {
+                    viewModel.switchPlay(it)
+                    upDateSelectPlay(it)
+                    loading()
+                }
+
+            }
+        }
+    }
+
+    //更新isLocked狀態
+    private fun upDateSelectPlay(play: Play) {
+        val platData = playCategoryAdapter.data.find { it == play }
+        if (platData?.selectionType == SelectionType.SELECTABLE.code) {
+            platData.isLocked = when {
+                platData.isLocked == null || platData.isSelected -> false
+                else -> true
             }
         }
     }
@@ -323,11 +355,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }
         })
 
-        viewModel.curPlay.observe(this.viewLifecycleOwner, {
-            if (it.selectionType == SelectionType.SELECTABLE.code && it.isLocked == false)
-                showPlayCateBottomSheet(it)
-        })
-
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, {
             hideLoading()
             leagueAdapter.data = it.toMutableList()
@@ -419,7 +446,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun showPlayCateBottomSheet(play: Play) {
-        viewModel.switchPlayCategory(play.playCateList?.firstOrNull()?.code)
         showBottomSheetDialog(
             play.name,
             play.playCateList?.map { playCate -> StatusSheetData(playCate.code, playCate.name) }
@@ -429,7 +455,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, data ->
-                viewModel.switchPlayCategory(data.code)
+                viewModel.switchPlayCategory(play,data.code)
+                upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
             })
     }

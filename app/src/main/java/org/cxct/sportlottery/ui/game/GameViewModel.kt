@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -50,7 +49,6 @@ import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -661,13 +659,14 @@ class GameViewModel(
 
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
-
         getGameHallList(matchType, false)
     }
 
-    fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
+    fun switchPlayCategory(matchType: MatchType,play: Play, playCateCode: String?) {
+        _playList.value?.forEach {
+            it.isSelected = (it == play)
+        }
         _playCate.value = playCateCode
-
         getGameHallList(matchType, false)
     }
 
@@ -891,12 +890,11 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = timeFilter(timeRangeParams?.startTime),
                         endTime = timeFilter(timeRangeParams?.endTime),
-                        playCateMenuCode = getPlayCateSelected()?.code ?: "",
-                        playCateCodeList = getPlayCateCodeList()
+                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
                     )
                 )
             }
-            
+
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.let { matchInfo ->
@@ -918,6 +916,9 @@ class GameViewModel(
                     }
 
                     matchOdd.sortOdds()
+
+                    if (!getPlayCateCodeList().isNullOrEmpty())
+                        matchOdd.oddsMap.entries.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
 
                     matchOdd.updateOddStatus()
                 }
@@ -1501,22 +1502,20 @@ class GameViewModel(
 
         playList?.let {
             _playList.value = it
-            if (play.isLocked == false) {
-                _playCate.value = (
-                        when (play.selectionType == SelectionType.SELECTABLE.code) {
-                            true -> {
-                                it.find { play ->
-                                    play.isSelected
-                                }?.playCateList?.find { playCate ->
-                                    playCate.isSelected
-                                }?.code
-                            }
-                            false -> {
-                                null
-                            }
+            _playCate.value = (
+                    when (play.selectionType == SelectionType.SELECTABLE.code) {
+                        true -> {
+                            it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.find { playCate ->
+                                playCate.isSelected
+                            }?.code
                         }
-                        )
-            }
+                        false -> {
+                            null
+                        }
+                    }
+                    )
         }
     }
 

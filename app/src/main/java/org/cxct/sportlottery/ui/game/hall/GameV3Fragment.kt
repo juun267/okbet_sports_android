@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -88,8 +89,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(args.matchType, it)
-                loading()
+                if (it.selectionType == SelectionType.SELECTABLE.code) { //被鎖 或是不能下拉
+                    when {
+                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
+                        !it.isSelected && it.isLocked == null -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //當前被點選的狀態
+                        it.isSelected -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //之前點選過然後離開又回來 要預設帶入
+                        !it.isSelected && it.isLocked == false -> {
+                            viewModel.switchPlay(args.matchType, it)
+                            loading()
+                        }
+                    }
+                } else {
+                    viewModel.switchPlay(args.matchType, it)
+                    upDateSelectPlay(it)
+                    loading()
+                }
             }
         }
     }
@@ -692,14 +712,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
-
-            it.find { play ->
-                play.isSelected
-            }?.let { selectedPlay ->
-                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code && selectedPlay.isLocked == false) {
-                    showPlayCateBottomSheet(selectedPlay)
-                }
-            }
         })
 
         viewModel.playCate.observe(this.viewLifecycleOwner, {
@@ -1077,11 +1089,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
-            StatusSheetAdapter.ItemCheckedListener { _, data ->
-                viewModel.switchPlayCategory(args.matchType, data.code)
+            StatusSheetAdapter.ItemCheckedListener { _, playCate ->
+                viewModel.switchPlayCategory(args.matchType,play,playCate.code)
+                upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
+    }
+
+    //更新isLocked狀態
+    private fun upDateSelectPlay(play: Play) {
+        val platData = playCategoryAdapter.data.find { it == play }
+        if (platData?.selectionType == SelectionType.SELECTABLE.code) {
+            platData.isLocked = when {
+                platData.isLocked == null || platData.isSelected -> false
+                else -> true
+            }
+        }
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {
