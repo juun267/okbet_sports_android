@@ -27,19 +27,11 @@
             android:textStyle="bold"
             tools:text="欧洲足球锦标赛2020" />
 
-        <WebView
-            android:id="@+id/country_webview"
-            android:layout_marginEnd="16dp"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:scrollbars="none"
-            android:touchscreenBlocksFocus="true"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="@id/country_border"
-            app:layout_constraintEnd_toEndOf="@id/country_border"
-            app:layout_constraintTop_toTopOf="@id/country_border"
-            tools:ignore="WebViewLayout" />
+        <ImageView
+            android:id="@+id/iv_country"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp" />
 
     </LinearLayout>
 

@@ -249,6 +249,9 @@ dependencies {
 
     //DateTimePicker
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
+    //SVG rendering library
+    implementation 'com.caverock:androidsvg-aar:1.4'
 }
 
 multiLanguages {

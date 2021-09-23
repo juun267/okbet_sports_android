@@ -1,15 +1,15 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Color
+import android.graphics.drawable.PictureDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.caverock.androidsvg.SVG
 import kotlinx.android.synthetic.main.content_eps_date_line.view.*
 import kotlinx.android.synthetic.main.content_eps_league_rv.view.*
-import kotlinx.android.synthetic.main.content_eps_league_rv.view.country_webview
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -73,7 +73,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
             }
         }
 
-        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,epsOddListener: EpsOddListener) {
+        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType, epsOddListener: EpsOddListener) {
             itemView.apply {
                 ll_league_title.setOnClickListener {
                     rv_league_odd_list.visibility = if(rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
@@ -86,9 +86,10 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 }
 
                 val data =
-                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.league?.categoryIcon)
-                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
-                country_webview.setBackgroundColor(Color.TRANSPARENT)
+                    String.format(context.getString(R.string.svg_format), 48, 48, 24, 24, item.league?.categoryIcon)
+                val svgFile = SVG.getFromString(data)
+                val vectorDrawable = PictureDrawable(svgFile.renderToPicture())
+                iv_country.setImageDrawable(vectorDrawable)
 
                 if (item.isClose)
                     rv_league_odd_list.visibility = View.GONE
