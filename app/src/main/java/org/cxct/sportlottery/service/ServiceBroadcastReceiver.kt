@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEv
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.json.JSONArray
@@ -109,6 +110,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun receiveMessage(bundle: Bundle?) {
+        val channelStr = bundle?.getString(CHANNEL_KEY, "") ?: ""
         val messageStr = bundle?.getString(SERVER_MESSAGE_KEY, "") ?: ""
 
         val jsonArray = if (messageStr.isNotEmpty()) {
@@ -174,7 +176,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         _matchClock.value = data
                     }
                     EventType.ODDS_CHANGE -> {
-                        val data = ServiceMessage.getOddsChange(jObjStr)
+                        val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
+                            channel = channelStr
+                        }
                         _oddsChange.value = data
                     }
                     EventType.LEAGUE_CHANGE -> {
