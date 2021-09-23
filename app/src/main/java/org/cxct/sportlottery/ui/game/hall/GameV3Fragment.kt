@@ -386,6 +386,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         view.game_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+            addItemDecoration(
+                SpaceItemDecoration(context, R.dimen.item_spacing_league)
+            )
         }
     }
 
