@@ -461,7 +461,7 @@ class ProfileCenterActivity :
     private fun updateCreditAccountUI(isCreditAccount: Boolean) {
         val thirdOpen = sConfigData?.thirdOpen == FLAG_OPEN
 
-        profile_center_back.visibility = if (isCreditAccount) {
+        profile_center_back.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
             View.VISIBLE
         } else {
             View.GONE
@@ -503,7 +503,7 @@ class ProfileCenterActivity :
             View.VISIBLE
         }
 
-        bottom_nav_view.visibility = if (isCreditAccount) {
+        bottom_nav_view.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
             View.GONE
         } else {
             View.VISIBLE
