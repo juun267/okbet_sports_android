@@ -158,6 +158,7 @@ object SocketUpdateUtil {
 
     fun updateMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
         var isNeedRefresh = false
+        var isNeedRefreshPlayCate = false
 
         if (oddsChangeEvent.eventId != null && oddsChangeEvent.eventId == matchOdd.matchInfo?.id) {
 
@@ -190,12 +191,22 @@ object SocketUpdateUtil {
                     }
                 }
 
+            isNeedRefreshPlayCate = when (matchOdd.quickPlayCateList.isNullOrEmpty()) {
+                true -> {
+                    insertPlayCate(matchOdd, oddsChangeEvent)
+                }
+                false -> {
+                    refreshPlayCate(matchOdd, oddsChangeEvent)
+                }
+            }
+
             if (isNeedRefresh) {
+                sortOdds(matchOdd)
                 matchOdd.updateOddStatus()
             }
         }
 
-        return isNeedRefresh
+        return isNeedRefresh || isNeedRefreshPlayCate
     }
 
     fun updateMatchOdds(
@@ -320,9 +331,6 @@ object SocketUpdateUtil {
             ) ?: mapOf()
         )
 
-        //新增盤口時將盤口排序
-        sortOdds(matchOdd)
-
         matchOdd.oddsEps?.eps?.toMutableList()
             ?.addAll(oddsChangeEvent.odds?.get(PlayCate.EPS.value) ?: mutableListOf())
 
@@ -342,59 +350,75 @@ object SocketUpdateUtil {
         return odds?.odds?.isNotEmpty() ?: false
     }
 
+    private fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+        matchOdd.quickPlayCateList = oddsChangeEvent.quickPlayCateList
+        return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
+    }
+
     private fun refreshMatchOdds(
         oddsMap: Map<String, List<Odd?>?>,
         oddsChangeEvent: OddsChangeEvent
     ): Boolean {
         var isNeedRefresh = false
 
-        oddsMap.forEach { oddTypeMap ->
-            val oddsSocket = oddsChangeEvent.odds?.get(oddTypeMap.key)
-            val odds = oddTypeMap.value
+        oddsChangeEvent.odds?.forEach { oddsMapSocket ->
+            when (oddsMap.keys.contains(oddsMapSocket.key)) {
+                true -> {
+                    oddsMap.forEach { oddTypeMap ->
+                        val oddsSocket = oddsChangeEvent.odds[oddTypeMap.key]
+                        val odds = oddTypeMap.value
 
-            odds?.forEach { odd ->
-                val oddSocket = oddsSocket?.find { oddSocket ->
-                    oddSocket?.id == odd?.id
-                }
+                        odds?.forEach { odd ->
+                            val oddSocket = oddsSocket?.find { oddSocket ->
+                                oddSocket?.id == odd?.id
+                            }
 
-                oddSocket?.let {
-                    odd?.odds?.let { oddValue ->
-                        oddSocket.odds?.let { oddSocketValue ->
-                            when {
-                                oddValue > oddSocketValue -> {
-                                    odd.oddState =
-                                        OddState.SMALLER.state
+                            oddSocket?.let {
+                                odd?.odds?.let { oddValue ->
+                                    oddSocket.odds?.let { oddSocketValue ->
+                                        when {
+                                            oddValue > oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.SMALLER.state
+
+                                                isNeedRefresh = true
+                                            }
+                                            oddValue < oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.LARGER.state
+
+                                                isNeedRefresh = true
+                                            }
+                                            oddValue == oddSocketValue -> {
+                                                odd.oddState =
+                                                    OddState.SAME.state
+                                            }
+                                        }
+                                    }
+                                }
+
+                                odd?.odds = oddSocket.odds
+                                odd?.hkOdds = oddSocket.hkOdds
+
+                                if (odd?.status != oddSocket.status) {
+                                    odd?.status = oddSocket.status
 
                                     isNeedRefresh = true
                                 }
-                                oddValue < oddSocketValue -> {
-                                    odd.oddState =
-                                        OddState.LARGER.state
+
+                                if (odd?.extInfo != oddSocket.extInfo) {
+                                    odd?.extInfo = oddSocket.extInfo
 
                                     isNeedRefresh = true
-                                }
-                                oddValue == oddSocketValue -> {
-                                    odd.oddState =
-                                        OddState.SAME.state
                                 }
                             }
                         }
                     }
+                }
 
-                    odd?.odds = oddSocket.odds
-                    odd?.hkOdds = oddSocket.hkOdds
-
-                    if (odd?.status != oddSocket.status) {
-                        odd?.status = oddSocket.status
-
-                        isNeedRefresh = true
-                    }
-
-                    if (odd?.extInfo != oddSocket.extInfo) {
-                        odd?.extInfo = oddSocket.extInfo
-
-                        isNeedRefresh = true
-                    }
+                false -> {
+                    oddsMap.toMutableMap()[oddsMapSocket.key] = oddsMapSocket.value
+                    isNeedRefresh = true
                 }
             }
         }
@@ -458,6 +482,20 @@ object SocketUpdateUtil {
             }
         }
 
+        return isNeedRefresh
+    }
+
+    private fun refreshPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+        var isNeedRefresh = false
+
+        oddsChangeEvent.quickPlayCateList?.forEach { quickPlayCateSocket ->
+            when (matchOdd.quickPlayCateList?.contains(quickPlayCateSocket)) {
+                false -> {
+                    matchOdd.quickPlayCateList?.toMutableList()?.add(quickPlayCateSocket)
+                    isNeedRefresh = true
+                }
+            }
+        }
         return isNeedRefresh
     }
 

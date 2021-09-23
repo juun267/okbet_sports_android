@@ -24,7 +24,7 @@ data class MatchOdd(
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: Map<String, DynamicMarket>? = null,
     @Json(name = "quickPlayCateList")
-    override val quickPlayCateList: List<QuickPlayCate>? = null,
+    override var quickPlayCateList: List<QuickPlayCate>? = null,
     @Json(name = "oddsSort")
     override val oddsSort: String? = null
 ) : MatchOdd {
