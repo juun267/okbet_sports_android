@@ -173,8 +173,7 @@ class OutrightOddAdapter :
                     }
                 }
             }
-            itemView.outright_odd_instruction.text = "1/3, 顶级 2" //TODO Cheryl: 等後端api的新數值再做更改
-            itemView.ll_subtitle_content.setOnClickListener {
+            itemView.outright_odd_subtitle.setOnClickListener {
                 outrightOddListener?.onClickExpand(matchOdd,item)
             }
         }
