@@ -54,7 +54,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 params.setMargins(0,14,0,0)
                 itemView.ll_content.layoutParams = params
             }
-            itemView.tv_date.text = TimeUtil.stampToMD(item.date) + itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))
+            itemView.tv_date.text = "${TimeUtil.stampToMD(item.date)}  ${itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))}"
         }
     }
 
