@@ -840,7 +840,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        matchOdd, oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent
                                     )
                                 } &&
                                 leagueOdd.isExpand
@@ -856,8 +856,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         epsOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        matchOdd,
-                                        oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent
                                     )
                                 } == true &&
                                 !leagueOdd.isClose) {

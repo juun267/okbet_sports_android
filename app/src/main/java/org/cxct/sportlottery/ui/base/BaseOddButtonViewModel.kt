@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -504,18 +505,23 @@ abstract class BaseOddButtonViewModel(
 
         this.forEach { oddsMap ->
             if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
+
                 val oddList = oddsMap.value?.toMutableList()
 
-                oddList?.indexOf(
-                    oddList.find {
-                        it?.nameMap?.get(LanguageManager.Language.EN.key)?.contains("Draw") ?: false
-                    }
+                oddList?.indexOf(oddList.find {
+                    it?.nameMap?.get(LanguageManager.Language.EN.key)
+                        ?.split(androidContext.getString(R.string.dash_no_trans))
+                        ?.getOrNull(0)?.contains(androidContext.getString(R.string.draw_no_trans))
+                        ?: false
+                }
                 )?.let {
                     oddList.add(oddList.size - 1, oddList.removeAt(it))
                 }
 
                 sortMap[oddsMap.key] = oddList
+
             } else {
+
                 sortMap[oddsMap.key] = oddsMap.value
             }
         }

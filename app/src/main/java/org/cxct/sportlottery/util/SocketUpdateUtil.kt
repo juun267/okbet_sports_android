@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.util
 
+import android.content.Context
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.common.GameType
@@ -156,7 +158,11 @@ object SocketUpdateUtil {
         return isNeedRefresh
     }
 
-    fun updateMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+    fun updateMatchOdds(
+        context: Context?,
+        matchOdd: MatchOdd,
+        oddsChangeEvent: OddsChangeEvent
+    ): Boolean {
         var isNeedRefresh = false
         var isNeedRefreshPlayCate = false
 
@@ -165,7 +171,7 @@ object SocketUpdateUtil {
             isNeedRefresh =
                 when (matchOdd.oddsMap.isNullOrEmpty() && matchOdd.oddsEps?.eps.isNullOrEmpty()) {
                     true -> {
-                        insertMatchOdds(matchOdd, oddsChangeEvent)
+                        insertMatchOdds(context, matchOdd, oddsChangeEvent)
                     }
 
                     false -> {
@@ -323,12 +329,16 @@ object SocketUpdateUtil {
         return oddsChangeEvent.odds?.isNotEmpty() ?: false
     }
 
-    private fun insertMatchOdds(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
+    private fun insertMatchOdds(
+        context: Context?,
+        matchOdd: MatchOdd,
+        oddsChangeEvent: OddsChangeEvent
+    ): Boolean {
         matchOdd.oddsMap.putAll(
             oddsChangeEvent.odds?.splitPlayCate()?.filterPlayCateSpanned(
                 matchOdd.matchInfo?.gameType,
                 matchOdd.playCateMappingList
-            )?.sortPlayCate()?.toMutableFormat() ?: mapOf()
+            )?.sortPlayCate(context)?.toMutableFormat() ?: mapOf()
         )
 
         matchOdd.oddsEps?.eps?.toMutableList()
@@ -562,17 +572,19 @@ object SocketUpdateUtil {
         }
     }
 
-    private fun Map<String, List<Odd?>?>.sortPlayCate(): Map<String, List<Odd?>?> {
+    private fun Map<String, List<Odd?>?>.sortPlayCate(context: Context?): Map<String, List<Odd?>?> {
         val sortMap = mutableMapOf<String, List<Odd?>?>()
 
         this.forEach { oddsMap ->
-            if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
+            if (context != null && oddsMap.key.contains(PlayCate.SINGLE.value)) {
                 val oddList = oddsMap.value?.toMutableList()
 
-                oddList?.indexOf(
-                    oddList.find {
-                        it?.nameMap?.get(LanguageManager.Language.EN.key)?.contains("Draw") ?: false
-                    }
+                oddList?.indexOf(oddList.find {
+                    it?.nameMap?.get(LanguageManager.Language.EN.key)
+                        ?.split(context.getString(R.string.dash_no_trans))
+                        ?.getOrNull(0)?.contains(context.getString(R.string.draw_no_trans))
+                        ?: false
+                }
                 )?.let {
                     oddList.add(oddList.size - 1, oddList.removeAt(it))
                 }
