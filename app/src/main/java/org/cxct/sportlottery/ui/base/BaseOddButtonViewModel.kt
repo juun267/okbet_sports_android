@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -439,7 +440,7 @@ abstract class BaseOddButtonViewModel(
 
     protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
         gameType: String?
-    ): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
         return this.mapValues { map ->
             val playCateMapItem = playCateMappingList.find {
                 it.gameType == gameType && it.playCateCode == map.key
@@ -447,8 +448,92 @@ abstract class BaseOddButtonViewModel(
 
             map.value?.filterIndexed { index, _ ->
                 index < playCateMapItem?.playCateNum ?: 0
-            }?.toMutableList() ?: mutableListOf()
+            }
+        }
+    }
 
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.splitPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val splitMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+
+        this.forEach { oddsMap ->
+            when (oddsMap.key) {
+                PlayCate.SINGLE_OU.value -> {
+
+                    splitMap[PlayCate.SINGLE_OU_O.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(0),
+                            oddsMap.value?.getOrNull(2),
+                            oddsMap.value?.getOrNull(4)
+                        )
+
+                    splitMap[PlayCate.SINGLE_OU_U.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(1),
+                            oddsMap.value?.getOrNull(3),
+                            oddsMap.value?.getOrNull(5)
+                        )
+                }
+
+                PlayCate.SINGLE_BTS.value -> {
+
+                    splitMap[PlayCate.SINGLE_BTS_Y.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(0),
+                            oddsMap.value?.getOrNull(2),
+                            oddsMap.value?.getOrNull(4)
+                        )
+
+                    splitMap[PlayCate.SINGLE_BTS_N.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(1),
+                            oddsMap.value?.getOrNull(3),
+                            oddsMap.value?.getOrNull(5)
+                        )
+                }
+
+                else -> {
+                    splitMap[oddsMap.key] = oddsMap.value
+                }
+            }
+        }
+
+        return splitMap
+    }
+
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.sortPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val sortMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+
+        this.forEach { oddsMap ->
+            if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
+
+                val oddList = oddsMap.value?.toMutableList()
+
+                oddList?.indexOf(oddList.find {
+                    it?.nameMap?.get(LanguageManager.Language.EN.key)
+                        ?.split(androidContext.getString(R.string.dash_no_trans))
+                        ?.getOrNull(0)?.contains(androidContext.getString(R.string.draw_no_trans))
+                        ?: false
+                }
+                )?.let {
+                    if (it >= 0) {
+                        oddList.add(oddList.removeAt(it))
+                    }
+                }
+
+                sortMap[oddsMap.key] = oddList
+
+            } else {
+
+                sortMap[oddsMap.key] = oddsMap.value
+            }
+        }
+
+        return sortMap
+    }
+
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+        return this.mapValues { map ->
+            map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
     }
 

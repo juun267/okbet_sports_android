@@ -113,10 +113,38 @@
   },
   {
     "gameType": "FT",
+    "playCateCode": "1X2-O/U-O",
+    "playCateName": "独赢&大",
+    "playCateName-english": "1 X 2 & Over",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "1X2-O/U-U",
+    "playCateName": "独赢&小",
+    "playCateName-english": "1 X 2 & Under",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
     "playCateCode": "1X2-BTS",
     "playCateName": "独赢&都得分",
     "playCateName-english": "1 X 2 & Both to Score",
     "playCateNum": 6
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "1X2-BTS-Y",
+    "playCateName": "独赢&双方球队进球-是",
+    "playCateName-english": "1 X 2 & Both to Score - Yes",
+    "playCateNum": 3
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "1X2-BTS-N",
+    "playCateName": "独赢&双方球队进球-否",
+    "playCateName-english": "1 X 2 & Both to Score - No",
+    "playCateNum": 3
   },
   {
     "gameType": "FT",

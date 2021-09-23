@@ -187,10 +187,14 @@ enum class PlayCate(val value: String) {
     SINGLE_2ST("1X2-2ST"),//独赢-下半場
     SINGLE_2ST_INCL_OT("1X2-2ST-INCL-OT"),
     SINGLE_BTS("1X2-BTS"),//独赢&双方球队进球
+    SINGLE_BTS_Y("1X2-BTS-Y"),
+    SINGLE_BTS_N("1X2-BTS-N"),
     SINGLE_FLG("1X2-FLG"),//独赢-最先進球
     SINGLE_INCL_OT("1X2-INCL-OT"),
     SINGLE_OT("1X2-OT"),
     SINGLE_OU("1X2-O/U"),//独赢大/小
+    SINGLE_OU_O("1X2-O/U-O"),
+    SINGLE_OU_U("1X2-O/U-U"),
     SINGLE_SEG1("1X2-SEG1"),
     SINGLE_SEG1_GAMES("1X2_SEG1_GAMES"),
     SINGLE_SEG1_ND("1X2-SEG1-ND"),
