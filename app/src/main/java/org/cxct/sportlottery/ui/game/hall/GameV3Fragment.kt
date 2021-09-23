@@ -472,13 +472,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
-            //TODO childMatchType更新選中
-            val childMatchType = it.getContentIfNotHandled()
             game_toolbar_match_type.text =
-                gameToolbarMatchTypeText(childMatchType ?: args.matchType)
+                gameToolbarMatchTypeText(it ?: args.matchType)
 
             //預設第一項
-            when (childMatchType) {
+            when (it) {
                 null -> {
                     //init tab select
                     game_tabs.clearOnTabSelectedListeners()

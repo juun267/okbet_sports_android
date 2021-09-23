@@ -101,7 +101,7 @@ class GameViewModel(
     val curMatchType: LiveData<MatchType?>
         get() = _curMatchType
 
-    val curChildMatchType: LiveData<Event<MatchType?>>
+    val curChildMatchType: LiveData<MatchType?>
         get() = _curChildMatchType
 
     val sportMenuResult: LiveData<SportMenuResult?>
@@ -174,7 +174,7 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
-    private val _curChildMatchType = MutableLiveData<Event<MatchType?>>()
+    private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -315,7 +315,7 @@ class GameViewModel(
     }
 
     fun switchMatchType(matchType: MatchType) {
-        _curChildMatchType.value = Event(null)
+        _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
@@ -325,7 +325,7 @@ class GameViewModel(
     }
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
-        _curChildMatchType.value = Event(childMatchType)
+        _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
@@ -645,7 +645,7 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
-        _curChildMatchType.value = Event(null)
+        _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
@@ -685,7 +685,7 @@ class GameViewModel(
         isLastSportType: Boolean = false
     ) {
 
-        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
+        val nowMatchType = curChildMatchType.value ?: matchType
 
         if (isReloadPlayCate) {
             getPlayCategory(nowMatchType)
@@ -787,7 +787,7 @@ class GameViewModel(
             getPlayCategory(matchType)
         }
 
-        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
+        val nowMatchType = curChildMatchType.value ?: matchType
 
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
