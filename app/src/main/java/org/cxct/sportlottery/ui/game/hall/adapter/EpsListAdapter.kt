@@ -1,13 +1,11 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.PictureDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.caverock.androidsvg.SVG
 import kotlinx.android.synthetic.main.content_eps_date_line.view.*
 import kotlinx.android.synthetic.main.content_eps_league_rv.view.*
 import org.cxct.sportlottery.R
@@ -17,6 +15,7 @@ import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 import org.cxct.sportlottery.network.odds.eps.MatchOddsItem
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -85,11 +84,10 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                     tv_league_title.text = it
                 }
 
-                val data =
-                    String.format(context.getString(R.string.svg_format), 48, 48, 24, 24, item.league?.categoryIcon)
-                val svgFile = SVG.getFromString(data)
-                val vectorDrawable = PictureDrawable(svgFile.renderToPicture())
-                iv_country.setImageDrawable(vectorDrawable)
+                item.league?.categoryIcon?.let { iconSvg ->
+                    val countryIcon = SvgUtil.getSvgDrawable(context, iconSvg)
+                    iv_country.setImageDrawable(countryIcon)
+                }
 
                 if (item.isClose)
                     rv_league_odd_list.visibility = View.GONE
