@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.main.accountHistory
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager

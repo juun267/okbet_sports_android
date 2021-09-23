@@ -2,13 +2,10 @@ package org.cxct.sportlottery.ui.base
 
 import android.content.Intent
 import android.os.Bundle
-import kotlinx.android.synthetic.main.view_toolbar_main.*
-import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
 import kotlin.reflect.KClass
 
 
