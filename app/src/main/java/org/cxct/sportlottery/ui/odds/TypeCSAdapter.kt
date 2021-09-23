@@ -89,6 +89,8 @@ class TypeCSAdapter(
                             PlayCode.OU_OE_U_E.value -> this.context.getString(R.string.odds_button_name_dual)
                             else -> ""
                         }
+
+                        tv_spread.text = ""
                     }
 
                     checkKey(PlayCate.OU_TTS1ST.value) -> {
@@ -99,6 +101,8 @@ class TypeCSAdapter(
                             PlayCode.OU_TTS1ST_U_C.value -> this.context.getString(R.string.odds_button_name_away)
                             else -> ""
                         }
+
+                        tv_spread.text = ""
                     }
 
                     checkKey(PlayCate.DC_FLG.value) -> {
