@@ -189,6 +189,12 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         } else {
             View.VISIBLE
         }
+
+        menu_member_level.visibility = if (sConfigData?.thirdOpen != FLAG_OPEN) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
     }
 
     private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {
