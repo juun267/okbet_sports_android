@@ -138,6 +138,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         view.game_league_odd_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+            addItemDecoration(
+                SpaceItemDecoration(context, R.dimen.item_spacing_league)
+            )
         }
     }
 
