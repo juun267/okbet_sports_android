@@ -162,9 +162,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betListRefactorAdapter = BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
             override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
                 viewModel.removeBetInfoItem(oddsId)
-                //當前item為最後一個時
-                if (currentItemCount == 1)
-                    activity?.supportFragmentManager?.popBackStack()
             }
 
             override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
@@ -283,7 +280,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             btnDeleteAllConfirm.setOnClickListener {
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
                 viewModel.removeBetInfoAll()
-                activity?.supportFragmentManager?.popBackStack()
             }
         }
     }
@@ -309,6 +305,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betInfoList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
+                if (list.isEmptyBetList()) return@let
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
 
@@ -440,6 +437,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             parlayList,
             oddsType
         )
+    }
+
+    private fun MutableList<BetInfoListData>.isEmptyBetList(): Boolean{
+        return if (this.isNullOrEmpty()){
+            activity?.supportFragmentManager?.popBackStack()
+            true
+        }else{
+            false
+        }
     }
 
     /**
