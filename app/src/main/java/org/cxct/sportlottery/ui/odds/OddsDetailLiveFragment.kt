@@ -520,10 +520,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_away_score_total.text = (event.matchStatusCO?.awayTotalScore ?: 0).toString()
 
         tv_home_score_live.visibility = View.VISIBLE
-        tv_home_score_live.text = (event.matchStatusList?.lastOrNull()?.homeScore ?: 0).toString()
+        tv_home_score_live.text = (event.matchStatusCO?.homeScore ?: 0).toString()
 
         tv_away_score_live.visibility = View.VISIBLE
-        tv_away_score_live.text = (event.matchStatusList?.lastOrNull()?.awayScore ?: 0).toString()
+        tv_away_score_live.text = (event.matchStatusCO?.awayScore ?: 0).toString()
 
         ll_time.visibility = View.GONE
     }
@@ -553,11 +553,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
-        tv_home_card.isVisible = (event.matchStatusList?.lastOrNull()?.homeCards?:0 > 0)
-        tv_home_card.text = (event.matchStatusList?.lastOrNull()?.homeCards ?: 0).toString()
+        tv_home_card.isVisible = (event.matchStatusCO?.homeCards ?:0 > 0)
+        tv_home_card.text = (event.matchStatusCO?.homeCards ?: 0).toString()
 
-        tv_away_card.isVisible = (event.matchStatusList?.lastOrNull()?.awayCards?:0 > 0)
-        tv_away_card.text = (event.matchStatusList?.lastOrNull()?.awayCards ?: 0).toString()
+        tv_away_card.isVisible = (event.matchStatusCO?.awayCards ?: 0 > 0)
+        tv_away_card.text = (event.matchStatusCO?.awayCards ?: 0).toString()
     }
 
     private fun setupPoint(event: MatchStatusChangeEvent) {
