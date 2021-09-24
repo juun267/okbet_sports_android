@@ -48,7 +48,7 @@
     <string name="concat_date_time">%s %s</string>
 
     <!--svg format-->
-    <string name="svg_format">&lt;svg xmlns=&#34;http://www.w3.org/2000/svg&#34; xmlns:xlink=&#34;http://www.w3.org/1999/xlink&#34; width=&#34;%d&#34; height=&#34;%d&#34; viewBox=&#34;0 0 %d %d&#34;&gt;%s&lt;/svg&gt;</string>
+    <string name="svg_format">&lt;svg xmlns=\u0027http://www.w3.org/2000/svg\u0027 xmlns:xlink=\u0027http://www.w3.org/1999/xlink\u0027 width=\u0027%d\u0027 height=\u0027%d\u0027 viewBox=\u00270 0 %d %d\u0027 &gt;%s&lt;/svg&gt;</string>
 
     <string name="dash_no_trans">-</string>
     <string name="draw_no_trans">Draw</string>
