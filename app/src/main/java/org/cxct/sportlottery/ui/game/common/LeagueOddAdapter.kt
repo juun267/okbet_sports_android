@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.common
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -381,12 +380,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 MatchType.IN_PLAY -> {
                     val socketValue = item.matchInfo?.socketMatchStatus
 
-                    Log.e(">>>", "isTimerEnable = $isTimerEnable")
                     if (needCountStatus(socketValue)) {
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
-                                Log.e(">>>", "timeMillis = $timeMillis")
                                 if (timeMillis > 0) {
                                     itemView.league_odd_match_time.text =
                                         TimeUtil.timeFormat(timeMillis, "mm:ss")
