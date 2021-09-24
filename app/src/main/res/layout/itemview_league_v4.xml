@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="@id/league_border"
         app:layout_constraintEnd_toEndOf="@id/league_border"
         app:layout_constraintTop_toTopOf="@id/league_border"
-        tools:ignore="ContentDescription" />
+        tools:ignore="WebViewLayout" />
 
     <net.cachapa.expandablelayout.ExpandableLayout
         android:id="@+id/league_expand"

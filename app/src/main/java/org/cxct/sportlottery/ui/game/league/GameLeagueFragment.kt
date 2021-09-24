@@ -329,7 +329,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
-                                matchOdd, oddsChangeEvent
+                                context, matchOdd, oddsChangeEvent
                             )
                         } &&
                         leagueOdd.isExpand
