@@ -489,10 +489,6 @@ class MainFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun setupUpdate() {
         btn_update.apply {
-            when (LanguageManager.getSelectLanguage(context)) {
-                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> setImageResource(R.drawable.ic_main_btn_update_v4_vn)
-                else -> setImageResource(R.drawable.ic_main_btn_update_v4_en)
-            }
             setOnClickListener {
                 startActivity(Intent(activity, VersionUpdateActivity::class.java))
             }
