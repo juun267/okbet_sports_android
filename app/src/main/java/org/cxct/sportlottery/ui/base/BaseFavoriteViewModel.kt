@@ -111,7 +111,8 @@ abstract class BaseFavoriteViewModel(
 
                         matchOdd.playCateMappingList = playCateMappingList
 
-                        matchOdd.oddsMap = matchOdd.oddsMap.filterPlayCateSpanned(gameType)
+                        matchOdd.oddsMap =
+                            matchOdd.oddsMap.filterPlayCateSpanned(gameType).toMutableFormat()
                     }
                 }
 
