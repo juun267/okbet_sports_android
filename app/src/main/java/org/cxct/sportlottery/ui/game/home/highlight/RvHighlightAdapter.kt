@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -136,7 +137,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             setupOddButton(data)
 
             itemView.iv_match_in_play.visibility =
-                if (matchType == MatchType.IN_PLAY || matchType == MatchType.AT_START) View.VISIBLE else View.GONE
+                if (matchType == MatchType.AT_START) View.VISIBLE else View.GONE
 
             itemView.iv_match_price.visibility =
                 if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
@@ -229,8 +230,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 when (matchType) {
                     MatchType.AT_START -> {
                         if (data.matchInfo?.remainTime == null)
-                            data.matchInfo?.remainTime = data.matchInfo?.startTime
-
+                            data.matchInfo?.remainTime = data.matchInfo?.startTime?.minus(
+                                System.currentTimeMillis()
+                            )
                         data.matchInfo?.remainTime?.let { remainTime ->
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
                                 val timeStr = String.format(
