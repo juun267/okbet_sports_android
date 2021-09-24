@@ -584,7 +584,9 @@ object SocketUpdateUtil {
                         ?: false
                 }
                 )?.let {
-                    oddList.add(oddList.size - 1, oddList.removeAt(it))
+                    if (it >= 0) {
+                        oddList.add(oddList.removeAt(it))
+                    }
                 }
 
                 sortMap[oddsMap.key] = oddList
