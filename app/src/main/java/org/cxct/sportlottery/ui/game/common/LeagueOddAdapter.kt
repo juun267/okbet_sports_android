@@ -384,7 +384,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         itemView.league_odd_match_time.visibility = View.VISIBLE
                         listener = object : TimerListener {
                             override fun onTimerUpdate(timeMillis: Long) {
-                                if (timeMillis > 0) {
+                                if (timeMillis > 1000) {
                                     itemView.league_odd_match_time.text =
                                         TimeUtil.timeFormat(timeMillis, "mm:ss")
                                 } else {
@@ -432,9 +432,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             if (item.matchInfo?.gameType == GameType.FT.name || item.matchInfo?.gameType == GameType.BK.name) {
                                 listener = object : TimerListener {
                                     override fun onTimerUpdate(timeMillis: Long) {
-                                        itemView.league_odd_match_time.text =
-                                            TimeUtil.timeFormat(timeMillis, "mm:ss")
-                                        item.matchInfo.leagueTime = (timeMillis / 1000).toInt()
+                                        if (timeMillis > 1000) {
+                                            itemView.league_odd_match_time.text =
+                                                TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                            item.matchInfo.leagueTime = (timeMillis / 1000).toInt()
+                                        } else {
+                                            itemView.league_odd_match_time.text = itemView.context.getString(R.string.time_null)
+                                        }
                                     }
                                 }
 
