@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
     android:orientation="vertical"
     tools:context=".ui.game.hall.adapter.EpsListAdapter">
 
@@ -48,6 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
         android:paddingBottom="14dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

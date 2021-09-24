@@ -184,7 +184,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 val matchOdds = outrightLeagueOddAdapter.data
 
                 matchOdds.filterNotNull().forEachIndexed { index, matchOdd ->
-                    if (SocketUpdateUtil.updateMatchOdds(matchOdd, oddsChangeEvent)) {
+                    if (SocketUpdateUtil.updateMatchOdds(context, matchOdd, oddsChangeEvent)) {
                         outrightLeagueOddAdapter.notifyItemChanged(index)
                     }
                 }

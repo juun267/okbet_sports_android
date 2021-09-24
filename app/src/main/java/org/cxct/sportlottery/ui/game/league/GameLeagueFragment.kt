@@ -138,6 +138,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         view.game_league_odd_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+            addItemDecoration(
+                SpaceItemDecoration(context, R.dimen.item_spacing_league)
+            )
         }
     }
 
@@ -334,7 +338,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
-                                matchOdd, oddsChangeEvent
+                                context, matchOdd, oddsChangeEvent
                             )
                         } &&
                         leagueOdd.isExpand

@@ -59,10 +59,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     var hasBetClosed: Boolean = false
 
+    var hasParlayList: Boolean = false
+
     var parlayList: MutableList<ParlayOdd>? = mutableListOf()
         set(value) {
             //若無法組合串關時, 給予空物件用來紀錄”單注填充所有單注“的輸入金額
             field = if (value?.size == 0) {
+                hasParlayList = false
                 mutableListOf(
                     ParlayOdd(
                         max = -1,
@@ -74,6 +77,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     )
                 )
             } else {
+                hasParlayList = true
                 value
             }
             notifyDataSetChanged()
@@ -127,6 +131,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     betList ?: mutableListOf(),
                     oddsType,
                     hasBetClosed,
+                    hasParlayList,
                     moreOptionCollapse,
                     onItemClickListener,
                     { notifyDataSetChanged() },
@@ -410,6 +415,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             betList: MutableList<BetInfoListData>,
             oddsType: OddsType,
             hasBetClosed: Boolean,
+            hasParlayList: Boolean,
             moreOptionCollapse: Boolean,
             onItemClickListener: OnItemClickListener,
             notifyAllBet: () -> Unit,
@@ -417,29 +423,22 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 when (parlayListSize) {
-                    0 -> {
-                        item_first_connect.visibility = View.GONE
-                        ll_more_option.visibility = View.GONE
-
-                        setupSingleItem(
-                            betList,
-                            itemData,
-                            oddsType,
-                            onItemClickListener,
-                            notifyAllBet
-                        )
-                    }
                     1 -> {
-                        item_first_connect.visibility = View.VISIBLE
                         ll_more_option.visibility = View.GONE
+                        if (hasParlayList){
+                            item_first_connect.visibility = View.VISIBLE
 
-                        setupParlayItem(
-                            itemData,
-                            oddsType,
-                            hasBetClosed,
-                            true,
-                            onItemClickListener
-                        )
+                            setupParlayItem(
+                                itemData,
+                                oddsType,
+                                hasBetClosed,
+                                true,
+                                onItemClickListener
+                            )
+                        }else {
+                            item_first_connect.visibility = View.GONE
+                        }
+
                         setupSingleItem(
                             betList,
                             itemData,
