@@ -145,7 +145,7 @@ object SocketUpdateUtil {
             false -> {
                 refreshMatchOdds(
                     mapOf(Pair(oddBean.playTypeCode, oddBean.oddList)),
-                    oddsChangeEvent
+                    oddsChangeEvent.odds,
                 )
             }
         }
@@ -174,32 +174,45 @@ object SocketUpdateUtil {
                 isNeedRefresh = when {
                     (cateMenuCode == PlayCate.EPS.value) -> {
                         updateMatchOdds(
-                            context,
                             mapOf(Pair(PlayCate.EPS.value, matchOdd.oddsEps?.eps ?: listOf())),
-                            oddsChangeEvent,
-                            matchOdd.matchInfo?.gameType,
-                            matchOdd.playCateMappingList
+                            oddsChangeEvent.odds,
                         )
                     }
 
                     (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
+                        val oddsMapSocket =
+                            if (cateMenuCode == QuickPlayCate.QUICK_CORNERS.value || cateMenuCode == QuickPlayCate.QUICK_PENALTY.value || cateMenuCode == QuickPlayCate.QUICK_ADVANCE.value) {
+                                oddsChangeEvent.odds
+                                    ?.splitPlayCate()
+                                    ?.filterPlayCateSpanned(
+                                        matchOdd.matchInfo?.gameType,
+                                        matchOdd.playCateMappingList
+                                    )
+                                    ?.sortPlayCate(context)
+
+                            } else {
+                                oddsChangeEvent.odds
+                            }
+
                         updateMatchOdds(
-                            context,
                             matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds
                                 ?: mapOf(),
-                            oddsChangeEvent,
-                            matchOdd.matchInfo?.gameType,
-                            matchOdd.playCateMappingList
+                            oddsMapSocket,
                         )
                     }
 
                     else -> {
+                        val oddsMapSocket = oddsChangeEvent.odds
+                            ?.splitPlayCate()
+                            ?.filterPlayCateSpanned(
+                                matchOdd.matchInfo?.gameType,
+                                matchOdd.playCateMappingList
+                            )
+                            ?.sortPlayCate(context)
+
                         updateMatchOdds(
-                            context,
                             matchOdd.oddsMap,
-                            oddsChangeEvent,
-                            matchOdd.matchInfo?.gameType,
-                            matchOdd.playCateMappingList
+                            oddsMapSocket,
                         )
                     }
                 }
@@ -224,18 +237,15 @@ object SocketUpdateUtil {
     }
 
     private fun updateMatchOdds(
-        context: Context?,
         oddsMap: Map<String, List<Odd?>?>,
-        oddsChangeEvent: OddsChangeEvent,
-        gameType: String?,
-        playCateMappingList: List<PlayCateMapItem>?
+        oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
         return when (oddsMap.isNullOrEmpty()) {
             true -> {
-                insertMatchOdds(context, oddsMap, oddsChangeEvent, gameType, playCateMappingList)
+                insertMatchOdds(oddsMap, oddsMapSocket)
             }
             false -> {
-                refreshMatchOdds(oddsMap, oddsChangeEvent)
+                refreshMatchOdds(oddsMap, oddsMapSocket)
             }
         }
     }
@@ -355,21 +365,12 @@ object SocketUpdateUtil {
     }
 
     private fun insertMatchOdds(
-        context: Context?,
         oddsMap: Map<String, List<Odd?>?>,
-        oddsChangeEvent: OddsChangeEvent,
-        gameType: String?,
-        playCateMappingList: List<PlayCateMapItem>?
+        oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
-        oddsMap.toMutableMap().putAll(
-            oddsChangeEvent.odds
-                ?.splitPlayCate()
-                ?.filterPlayCateSpanned(gameType, playCateMappingList)
-                ?.sortPlayCate(context)
-                ?: mapOf()
-        )
+        oddsMap.toMutableMap().putAll(oddsMapSocket ?: mapOf())
 
-        return oddsChangeEvent.odds?.isNotEmpty() ?: false
+        return oddsMapSocket?.isNotEmpty() ?: false
     }
 
     private fun insertMatchOdds(
@@ -392,15 +393,15 @@ object SocketUpdateUtil {
 
     private fun refreshMatchOdds(
         oddsMap: Map<String, List<Odd?>?>,
-        oddsChangeEvent: OddsChangeEvent
+        oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
         var isNeedRefresh = false
 
-        oddsChangeEvent.odds?.forEach { oddsMapSocket ->
-            when (oddsMap.keys.contains(oddsMapSocket.key)) {
+        oddsMapSocket?.forEach { oddsMapEntrySocket ->
+            when (oddsMap.keys.contains(oddsMapEntrySocket.key)) {
                 true -> {
                     oddsMap.forEach { oddTypeMap ->
-                        val oddsSocket = oddsChangeEvent.odds[oddTypeMap.key]
+                        val oddsSocket = oddsMapSocket[oddTypeMap.key]
                         val odds = oddTypeMap.value
 
                         odds?.forEach { odd ->
@@ -452,7 +453,7 @@ object SocketUpdateUtil {
                 }
 
                 false -> {
-                    oddsMap.toMutableMap()[oddsMapSocket.key] = oddsMapSocket.value
+                    oddsMap.toMutableMap()[oddsMapEntrySocket.key] = oddsMapEntrySocket.value
                     isNeedRefresh = true
                 }
             }
