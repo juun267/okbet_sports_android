@@ -496,9 +496,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
-            game_toolbar_match_type.text =
-                gameToolbarMatchTypeText(it ?: args.matchType)
-
+            //TODO childMatchType更新選中
             //預設第一項
             when (it) {
                 null -> {
