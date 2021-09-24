@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.main.accountHistory
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,9 +29,11 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 
 
@@ -255,6 +256,8 @@ class AccountHistoryActivity :
     override fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
+        iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
+
         //點擊 logo 回到首頁
         iv_logo.setOnClickListener {
             viewModel.navMainPage(ThirdGameCategory.MAIN)
@@ -279,6 +282,10 @@ class AccountHistoryActivity :
 
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
+        }
+
+        iv_language.setOnClickListener {
+            ChangeLanguageDialog().show(supportFragmentManager, null)
         }
     }
 

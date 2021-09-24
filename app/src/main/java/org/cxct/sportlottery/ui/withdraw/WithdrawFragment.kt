@@ -290,6 +290,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)
             bankCardAdapter = BankCardAdapter(lv_bank_item.context, bankCardList, BankCardAdapterListener {
+                view.et_withdrawal_amount.setText("")
+
                 val cardIcon = when (it.transferType) {
                     TransferType.BANK -> getBankIconByBankName(it.bankName)
                     TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)

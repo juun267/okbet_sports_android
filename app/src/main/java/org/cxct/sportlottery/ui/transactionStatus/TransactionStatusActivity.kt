@@ -3,14 +3,12 @@ package org.cxct.sportlottery.ui.transactionStatus
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_transaction_status.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
-import kotlinx.android.synthetic.main.fragment_transaction_status.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_message.*
@@ -29,9 +27,11 @@ import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
+import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 
 class TransactionStatusActivity :
@@ -75,6 +75,8 @@ class TransactionStatusActivity :
             viewModel.navMainPage(ThirdGameCategory.MAIN)
         }
 
+        iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
+
         //頭像 當 側邊欄 開/關
         iv_head.setOnClickListener {
             if (drawer_layout.isDrawerOpen(nav_right)) drawer_layout.closeDrawers()
@@ -94,6 +96,10 @@ class TransactionStatusActivity :
 
         tv_odds_type.setOnClickListener {
             ChangeOddsTypeDialog().show(supportFragmentManager, null)
+        }
+
+        iv_language.setOnClickListener {
+            ChangeLanguageDialog().show(supportFragmentManager, null)
         }
     }
 

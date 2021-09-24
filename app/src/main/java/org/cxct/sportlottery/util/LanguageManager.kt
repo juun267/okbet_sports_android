@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
+import org.cxct.sportlottery.R
 import java.util.*
 
 object LanguageManager {
@@ -40,6 +41,13 @@ object LanguageManager {
                 }
             }
         }
+    }
+
+    fun getLanguageFlag(context: Context?): Int{
+            return when (getSelectLanguage(context)) {
+                Language.ZH -> R.drawable.ic_flag_cn
+                else -> R.drawable.ic_flag_en
+            }
     }
 
     /**
