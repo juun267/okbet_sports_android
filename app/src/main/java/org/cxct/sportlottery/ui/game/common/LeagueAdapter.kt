@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -148,6 +149,13 @@ class LeagueAdapter(private val matchType: MatchType) :
                     this.leagueOddListener = leagueOddListener
                     this.oddsType = oddsType
                 }
+            }
+
+            itemView.apply {
+                val data =
+                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.league.categoryIcon)
+                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
+                country_webview.setBackgroundColor(Color.TRANSPARENT)
             }
         }
 

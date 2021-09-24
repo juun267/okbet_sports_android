@@ -705,6 +705,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
                         if (SocketUpdateUtil.updateMatchOdds(
+                                context,
                                 updateMatchOddNonNull,
                                 oddsChangeEvent
                             )
@@ -730,7 +731,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 //精選賽事
                 val highlightDataList = mRvHighlightAdapter.getData()
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
-                    if (SocketUpdateUtil.updateMatchOdds(updateMatchOdd, oddsChangeEvent)) {
+                    if (SocketUpdateUtil.updateMatchOdds(
+                            context,
+                            updateMatchOdd,
+                            oddsChangeEvent
+                        )
+                    ) {
                         mRvHighlightAdapter.notifyItemChanged(index)
                     }
                 }

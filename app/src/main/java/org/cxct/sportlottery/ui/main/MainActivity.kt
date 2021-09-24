@@ -23,10 +23,12 @@ import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 import org.cxct.sportlottery.ui.main.more.MainMoreFragmentArgs
 import org.cxct.sportlottery.ui.main.news.NewsDialog
+import org.cxct.sportlottery.ui.menu.ChangeLanguageDialog
 import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
 import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -98,6 +100,8 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
     private fun initToolBar() {
         iv_logo.setImageResource(R.drawable.ic_logo)
 
+        iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
+
         //點擊 logo 回到首頁
         iv_logo.setOnClickListener {
             navController.popBackStack(R.id.mainFragment, false)
@@ -118,6 +122,10 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
         btn_register.setOnClickListener {
             startActivity(Intent(this@MainActivity, RegisterActivity::class.java))
+        }
+
+        iv_language.setOnClickListener {
+            ChangeLanguageDialog().show(supportFragmentManager, null)
         }
     }
 

@@ -22,6 +22,16 @@
         android:scaleType="fitStart"
         android:src="@drawable/ic_logo" />
 
+    <ImageView
+        android:id="@+id/iv_language"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_flag_en"
+        />
+
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
