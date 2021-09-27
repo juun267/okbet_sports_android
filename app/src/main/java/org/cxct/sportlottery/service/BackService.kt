@@ -292,6 +292,13 @@ class BackService : Service() {
         }
     }
 
+    fun subscribeSportChannelHall(gameType: String?){
+        if (gameType == null) return
+
+        val url = "$URL_HALL/$mPlatformId/$gameType"
+        subscribeChannel(url)
+    }
+
     fun subscribeHallChannel(gameType: String?, cateMenuCode: String?, eventId: String?) {
         if (gameType == null || eventId == null) return
 
