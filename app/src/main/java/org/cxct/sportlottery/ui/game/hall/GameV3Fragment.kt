@@ -212,7 +212,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             MatchType.TODAY -> getString(R.string.home_tab_today)
             MatchType.EARLY -> getString(R.string.home_tab_early)
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
-            MatchType.AT_START -> getString(R.string.home_tab_at_start)
+            MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
             MatchType.EPS -> getString(R.string.home_title_eps)
             else -> ""
