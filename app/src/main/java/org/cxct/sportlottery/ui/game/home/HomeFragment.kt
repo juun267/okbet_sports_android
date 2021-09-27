@@ -718,51 +718,58 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
 
-                //滾球盤、即將開賽盤
-                val dataList = mRvGameTable4Adapter.getData()
-                dataList.forEachIndexed { index, gameEntity ->
-                    //先找出要更新的 賽事
-                    val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
-                        matchOdd.matchInfo?.id == it.eventId
-                    }
+                when (oddsChangeEvent.getCateMenuCode()) {
+                    MenuCode.HOME_INPLAY_MOBILE, MenuCode.HOME_ATSTART_MOBILE -> {
+                        //滾球盤、即將開賽盤
+                        val dataList = mRvGameTable4Adapter.getData()
+                        dataList.forEachIndexed { index, gameEntity ->
+                            //先找出要更新的 賽事
+                            val updateMatchOdd = gameEntity.matchOdds.find { matchOdd ->
+                                matchOdd.matchInfo?.id == it.eventId
+                            }
 
-                    updateMatchOdd?.let { updateMatchOddNonNull ->
-                        val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
+                            updateMatchOdd?.let { updateMatchOddNonNull ->
+                                val indexMatchOdd = gameEntity.matchOdds.indexOf(updateMatchOdd)
 
-                        if (SocketUpdateUtil.updateMatchOdds(
-                                context,
-                                updateMatchOddNonNull,
-                                oddsChangeEvent
-                            )
-                        ) {
-                            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+                                if (SocketUpdateUtil.updateMatchOdds(
+                                        context,
+                                        updateMatchOddNonNull,
+                                        oddsChangeEvent
+                                    )
+                                ) {
+                                    mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+                                }
+                            }
                         }
                     }
-                }
+                    MenuCode.RECOMMEND -> {
+                        //推薦賽事
+                        val recommendDataList = mRecommendAdapter.getData()
+                        recommendDataList.forEachIndexed { index, entity ->
+                            if (entity.matchInfo?.id != it.eventId)
+                                return@forEachIndexed
 
-                //推薦賽事
-                val recommendDataList = mRecommendAdapter.getData()
-                recommendDataList.forEachIndexed { index, entity ->
-                    if (entity.matchInfo?.id != it.eventId)
-                        return@forEachIndexed
-
-                    entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
-                        if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
-                            mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
+                            entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
+                                if (SocketUpdateUtil.updateMatchOdds(oddBean, oddsChangeEvent)) {
+                                    mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
+                                }
+                            }
                         }
                     }
-                }
 
-                //精選賽事
-                val highlightDataList = mRvHighlightAdapter.getData()
-                highlightDataList.forEachIndexed { index, updateMatchOdd ->
-                    if (SocketUpdateUtil.updateMatchOdds(
-                            context,
-                            updateMatchOdd,
-                            oddsChangeEvent
-                        )
-                    ) {
-                        mRvHighlightAdapter.notifyItemChanged(index)
+                    MenuCode.SPECIAL_MATCH_MOBILE -> {
+                        //精選賽事
+                        val highlightDataList = mRvHighlightAdapter.getData()
+                        highlightDataList.forEachIndexed { index, updateMatchOdd ->
+                            if (SocketUpdateUtil.updateMatchOdds(
+                                    context,
+                                    updateMatchOdd,
+                                    oddsChangeEvent
+                                )
+                            ) {
+                                mRvHighlightAdapter.notifyItemChanged(index)
+                            }
+                        }
                     }
                 }
             }
@@ -892,6 +899,20 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         return this
+    }
+
+    /**
+     * @description channel format : /ws/notify/hall/{platformId}/{gameType}/{cateMenuCode}/{eventId}
+     */
+    private fun OddsChangeEvent.getCateMenuCode(): MenuCode? {
+        return try {
+            this.channel?.split("/")?.getOrNull(6)?.let { cateMenu ->
+                MenuCode.valueOf(cateMenu)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun queryData() {
