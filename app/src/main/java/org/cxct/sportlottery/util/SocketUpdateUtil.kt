@@ -291,9 +291,9 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         matchOdd.oddsMap.values.forEach { odds ->
-            odds.filter { odd ->
+            odds?.filter { odd ->
                 globalStopEvent.producerId == null || globalStopEvent.producerId == odd?.producerId
-            }.forEach { odd ->
+            }?.forEach { odd ->
                 if (odd?.status != BetStatus.DEACTIVATED.code) {
                     odd?.status = BetStatus.DEACTIVATED.code
                     isNeedRefresh = true
@@ -343,7 +343,7 @@ object SocketUpdateUtil {
 
         if (matchOdd.matchInfo?.id == matchOddsLockEvent.matchId) {
             matchOdd.oddsMap.values.forEach { odd ->
-                odd.forEach {
+                odd?.forEach {
                     it?.status = BetStatus.LOCKED.code
                     isNeedRefresh = true
                 }
@@ -649,14 +649,15 @@ object SocketUpdateUtil {
 
     private fun MatchOdd.updateOddStatus() {
         this.oddsMap.forEach {
-            it.value.filterNotNull().forEach { odd ->
+            it.value?.filterNotNull()?.forEach { odd ->
 
                 odd.status = when {
-                    (it.value.filterNotNull()
-                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+                    (it.value?.filterNotNull()
+                        ?.all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }
+                        ?: true) -> BetStatus.DEACTIVATED.code
 
-                    (it.value.filterNotNull()
-                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+                    (it.value?.filterNotNull()
+                        ?.any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } ?: true && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
 
                     else -> odd.status
                 }

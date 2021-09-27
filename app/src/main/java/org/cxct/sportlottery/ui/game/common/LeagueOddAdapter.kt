@@ -59,7 +59,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(data.indexOf(data.find { matchOdd ->
                     matchOdd.oddsMap.toList()
-                        .find { map -> map.second.find { it == odd } != null } != null
+                        .find { map -> map.second?.find { it == odd } != null } != null
                 }))
             }
         }
