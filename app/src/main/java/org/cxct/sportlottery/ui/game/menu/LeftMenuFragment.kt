@@ -184,12 +184,16 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             GameType.VB.name -> GameType.VB
             else -> GameType.FT
         }
-        matchType?.let {
-            viewModel.navSpecialEntrance(
-                it,
-                sportType
-            )
-            dismiss()
+        if (matchType != null) {
+            matchType.let {
+                viewModel.navSpecialEntrance(
+                    it,
+                    sportType
+                )
+                dismiss()
+            }
+        } else {
+            setSnackBarMyFavoriteNotify(isGameClose = true, gameType = sportType)
         }
     }
 
