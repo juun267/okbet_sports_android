@@ -312,6 +312,10 @@ class GameViewModel(
         }
     }
 
+    fun setSportClosePromptMessage(sport:String){
+        _errorPromptMessage.postValue(Event(String.format(androidContext.getString(R.string.message_no_sport_game),sport)))
+    }
+
     fun switchMatchType(matchType: MatchType) {
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
