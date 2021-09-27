@@ -30,14 +30,14 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 FavoriteType.SPORT,
                 gameType
             )
-            setSnackBarMyFavoriteNotify( MyFavoriteNotifyType.SPORT_ADD.code)
+            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_ADD.code)
         }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //取消置頂
     var selectedAdapter =
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { gameType ->
             viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-            setSnackBarMyFavoriteNotify( MyFavoriteNotifyType.SPORT_REMOVE.code)
+            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_REMOVE.code)
         }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //提示
