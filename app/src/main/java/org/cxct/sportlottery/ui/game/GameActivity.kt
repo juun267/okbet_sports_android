@@ -487,7 +487,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         })
 
         viewModel.specialEntrance.observe(this, {
-            it?.let {
+            it?.let { specialEntrance ->
                 when (it.matchType) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()
@@ -511,6 +511,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         tabLayout.getTabAt(7)?.select()
                     }
                 }
+                specialEntrance.gameType?.let { gameType -> viewModel.recordSportType(specialEntrance.matchType, gameType.key) }
             }
         })
 

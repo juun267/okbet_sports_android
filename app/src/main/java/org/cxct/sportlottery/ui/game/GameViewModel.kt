@@ -657,14 +657,14 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
-        recordSportType(matchType, item)
+        recordSportType(matchType, item.code)
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
         filterLeague(listOf())
     }
 
-    private fun recordSportType(matchType: MatchType, item: Item) {
-        lastSportTypeHashMap[matchType.postValue] = item.code
+    fun recordSportType(matchType: MatchType, sportType: String) {
+        lastSportTypeHashMap[matchType.postValue] = sportType
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {
