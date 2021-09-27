@@ -221,24 +221,24 @@ class GameViewModel(
     val allFootballCount: LiveData<Int> //全部足球比賽的數量
         get() = _allFootballCount
 
-    private val _cardMatchTypeFT = MutableLiveData<MatchType>()
-    val cardMatchTypeFT: LiveData<MatchType> //目前有資料的足球ＭatchType
+    private val _cardMatchTypeFT = MutableLiveData<MatchType?>()
+    val cardMatchTypeFT: LiveData<MatchType?> //目前有資料的足球ＭatchType
         get() = _cardMatchTypeFT
 
     private val _allBasketballCount = MutableLiveData<Int>()
     val allBasketballCount: LiveData<Int> //全部籃球比賽的數量
         get() = _allBasketballCount
 
-    private val _cardMatchTypeBK = MutableLiveData<MatchType>()
-    val cardMatchTypeBK: LiveData<MatchType> //目前有資料的籃球ＭatchType
+    private val _cardMatchTypeBK = MutableLiveData<MatchType?>()
+    val cardMatchTypeBK: LiveData<MatchType?> //目前有資料的籃球ＭatchType
         get() = _cardMatchTypeBK
 
     private val _allTennisCount = MutableLiveData<Int>()
     val allTennisCount: LiveData<Int> //全部網球比賽的數量
         get() = _allTennisCount
 
-    private val _cardMatchTypeTN = MutableLiveData<MatchType>()
-    val cardMatchTypeTN: LiveData<MatchType> //目前有資料的網球ＭatchType
+    private val _cardMatchTypeTN = MutableLiveData<MatchType?>()
+    val cardMatchTypeTN: LiveData<MatchType?> //目前有資料的網球ＭatchType
         get() = _cardMatchTypeTN
 
     private val _allBadmintonCount = MutableLiveData<Int>()
@@ -249,8 +249,8 @@ class GameViewModel(
     val allVolleyballCount: LiveData<Int> //全部排球比賽的數量
         get() = _allVolleyballCount
 
-    private val _cardMatchTypeVB = MutableLiveData<MatchType>()
-    val cardMatchTypeVB: LiveData<MatchType> //目前有資料的排球ＭatchType
+    private val _cardMatchTypeVB = MutableLiveData<MatchType?>()
+    val cardMatchTypeVB: LiveData<MatchType?> //目前有資料的排球ＭatchType
         get() = _cardMatchTypeVB
 
     private val _betInfoResult = MutableLiveData<Event<BetInfoResult?>>()
@@ -423,6 +423,7 @@ class GameViewModel(
             getSportCount(MatchType.PARLAY, GameType.FT, sportMenuResult) != 0 -> {
                 _cardMatchTypeFT.postValue(MatchType.PARLAY)
             }
+            else ->  _cardMatchTypeFT.postValue(null)
         }
         _allFootballCount.postValue(getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult))
 
@@ -436,6 +437,7 @@ class GameViewModel(
             getSportCount(MatchType.PARLAY, GameType.BK, sportMenuResult) != 0 -> {
                 _cardMatchTypeBK.postValue(MatchType.PARLAY)
             }
+            else ->  _cardMatchTypeBK.postValue(null)
         }
         _allBasketballCount.postValue(getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult))
 
@@ -450,6 +452,7 @@ class GameViewModel(
             getSportCount(MatchType.PARLAY, GameType.TN, sportMenuResult) != 0 -> {
                 _cardMatchTypeTN.postValue(MatchType.PARLAY)
             }
+            else ->  _cardMatchTypeTN.postValue(null)
         }
         _allTennisCount.postValue(getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult))
 
@@ -463,6 +466,7 @@ class GameViewModel(
             getSportCount(MatchType.PARLAY, GameType.VB, sportMenuResult) != 0 -> {
                 _cardMatchTypeVB.postValue(MatchType.PARLAY)
             }
+            else ->  _cardMatchTypeVB.postValue(null)
         }
         _allVolleyballCount.postValue(getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult))
     }
