@@ -1549,17 +1549,23 @@ class GameViewModel(
         this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    val quickOddsApi = when (quickPlayCate.code) {
+                        QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
+                            quickListData.quickOdds?.get(quickPlayCate.code)
+                                ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
+                                ?.splitPlayCate()
+                                ?.sortPlayCate()
+                        }
+                        else -> {
+                            quickListData.quickOdds?.get(quickPlayCate.code)
+                        }
+                    }
 
                     quickPlayCate.isSelected =
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds.putAll(
-                        quickListData.quickOdds?.get(quickPlayCate.code)
-                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
-                            ?.splitPlayCate()
-                            ?.sortPlayCate()
-                            ?.toMutableFormat()
-                            ?: mutableMapOf()
+                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
                     )
                 }
             }
