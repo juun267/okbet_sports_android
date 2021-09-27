@@ -144,7 +144,7 @@ object SocketUpdateUtil {
             }
             false -> {
                 refreshMatchOdds(
-                    mapOf(Pair(oddBean.playTypeCode, oddBean.oddList)),
+                    mutableMapOf(Pair(oddBean.playTypeCode, oddBean.oddList.toMutableList())),
                     oddsChangeEvent.odds,
                 )
             }
@@ -397,7 +397,7 @@ object SocketUpdateUtil {
     }
 
     private fun refreshMatchOdds(
-        oddsMap: Map<String, List<Odd?>?>,
+        oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
         var isNeedRefresh = false
@@ -409,46 +409,51 @@ object SocketUpdateUtil {
                         val oddsSocket = oddsMapSocket[oddTypeMap.key]
                         val odds = oddTypeMap.value
 
-                        odds?.forEach { odd ->
-                            val oddSocket = oddsSocket?.find { oddSocket ->
-                                oddSocket?.id == odd?.id
-                            }
+                        oddsSocket?.forEach { oddSocket ->
+                            when (odds?.map { it?.id }?.contains(oddSocket?.id)) {
+                                true -> {
+                                    val odd = odds.find { odd ->
+                                        odd?.id == oddSocket?.id
+                                    }
 
-                            oddSocket?.let {
-                                odd?.odds?.let { oddValue ->
-                                    oddSocket.odds?.let { oddSocketValue ->
-                                        when {
-                                            oddValue > oddSocketValue -> {
-                                                odd.oddState =
-                                                    OddState.SMALLER.state
+                                    odd?.odds?.let { oddValue ->
+                                        oddSocket?.odds?.let { oddSocketValue ->
+                                            when {
+                                                oddValue > oddSocketValue -> {
+                                                    odd.oddState = OddState.SMALLER.state
 
-                                                isNeedRefresh = true
-                                            }
-                                            oddValue < oddSocketValue -> {
-                                                odd.oddState =
-                                                    OddState.LARGER.state
+                                                    isNeedRefresh = true
+                                                }
+                                                oddValue < oddSocketValue -> {
+                                                    odd.oddState = OddState.LARGER.state
 
-                                                isNeedRefresh = true
-                                            }
-                                            oddValue == oddSocketValue -> {
-                                                odd.oddState =
-                                                    OddState.SAME.state
+                                                    isNeedRefresh = true
+                                                }
+                                                oddValue == oddSocketValue -> {
+                                                    odd.oddState = OddState.SAME.state
+                                                }
                                             }
                                         }
                                     }
+
+                                    odd?.odds = oddSocket?.odds
+                                    odd?.hkOdds = oddSocket?.hkOdds
+
+                                    if (odd?.status != oddSocket?.status) {
+                                        odd?.status = oddSocket?.status
+
+                                        isNeedRefresh = true
+                                    }
+
+                                    if (odd?.extInfo != oddSocket?.extInfo) {
+                                        odd?.extInfo = oddSocket?.extInfo
+
+                                        isNeedRefresh = true
+                                    }
                                 }
 
-                                odd?.odds = oddSocket.odds
-                                odd?.hkOdds = oddSocket.hkOdds
-
-                                if (odd?.status != oddSocket.status) {
-                                    odd?.status = oddSocket.status
-
-                                    isNeedRefresh = true
-                                }
-
-                                if (odd?.extInfo != oddSocket.extInfo) {
-                                    odd?.extInfo = oddSocket.extInfo
+                                false -> {
+                                    odds.add(oddSocket)
 
                                     isNeedRefresh = true
                                 }
@@ -458,7 +463,8 @@ object SocketUpdateUtil {
                 }
 
                 false -> {
-                    oddsMap.toMutableMap()[oddsMapEntrySocket.key] = oddsMapEntrySocket.value
+                    oddsMap[oddsMapEntrySocket.key] = oddsMapEntrySocket.value?.toMutableList()
+
                     isNeedRefresh = true
                 }
             }
