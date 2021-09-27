@@ -410,7 +410,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         override fun onTimerUpdate(timeMillis: Long) {
                             itemView.league_odd_match_time.text = String.format(
                                 itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                TimeUtil.timeFormat(timeMillis, "mm")
+                                TimeUtil.timeFormat(timeMillis, "m")
                             )
                             item.matchInfo?.remainTime = timeMillis
                         }
