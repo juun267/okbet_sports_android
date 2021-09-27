@@ -5,6 +5,7 @@ import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.EventType
+import org.cxct.sportlottery.network.service.ServiceChannel
 import org.cxct.sportlottery.network.service.ServiceEventType
 
 @JsonClass(generateAdapter = true)
@@ -21,4 +22,7 @@ data class OddsChangeEvent(
     val dynamicMarkets: Map<String, DynamicMarkets>? = mapOf(), //动态市场字典(冠军玩法有效)， key: 对应odds的key, value: {zh:"xxx",en:"cxxewe"}
     @Json(name = "quickPlayCateList")
     val quickPlayCateList: List<QuickPlayCate>? = null,
-) : ServiceEventType
+) : ServiceEventType, ServiceChannel {
+
+    override var channel: String? = null
+}

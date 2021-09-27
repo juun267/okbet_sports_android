@@ -157,6 +157,7 @@ class VpRecommendAdapter(
         private fun setupOddsButton(oddsButton: OddsButton, odd: Odd?) {
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
+                this@ViewHolderHdpOu.setupOddState(oddsButton, odd)
                 setOnClickListener {
                     val playCateName = itemView.tv_play_type.text.toString()
 
