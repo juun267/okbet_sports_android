@@ -208,9 +208,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             else -> {
                 when (myFavoriteNotifyType) {
 
-                    MyFavoriteNotifyType.SPORT_ADD.code -> getString(R.string.myfavorite_notify_detail_add)
+                    MyFavoriteNotifyType.SPORT_ADD.code -> getString(R.string.myfavorite_notify_league_add)
 
-                    MyFavoriteNotifyType.SPORT_REMOVE.code -> getString(R.string.myfavorite_notify_detail_remove)
+                    MyFavoriteNotifyType.SPORT_REMOVE.code -> getString(R.string.myfavorite_notify_league_remove)
 
                     else -> ""
                 }
