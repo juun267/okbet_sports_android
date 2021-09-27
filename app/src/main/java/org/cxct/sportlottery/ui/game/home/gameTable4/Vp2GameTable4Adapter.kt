@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd1
@@ -110,6 +111,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             }
             itemView.iv_match_price.visibility =
                 if (data.matchInfo?.eps == 1) View.VISIBLE else View.GONE
+
+            itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1)
 
             itemView.table_match_info_border.setOnClickListener {
                 onClickMatchListener?.onClick(data)
