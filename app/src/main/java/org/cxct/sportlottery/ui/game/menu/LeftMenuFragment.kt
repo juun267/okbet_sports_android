@@ -198,10 +198,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     private fun setSnackBarMyFavoriteNotify(
         myFavoriteNotifyType: Int? = null,
         isGameClose: Boolean? = false,
-        gameType: GameType? = null
+        gameType: GameType? = null,
+        isLogin: Boolean? = true
     ) {
-        val title = when (isGameClose) {
-            true -> String.format(
+        val title = when {
+            isLogin == false -> getString(R.string.login_notify)
+            isGameClose == true -> String.format(
                 getString(R.string.message_no_sport_game),
                 getString(gameType?.string ?: 0)
             )
