@@ -1034,6 +1034,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         gameTypeList.find { it.isSelected }?.let { item ->
             game_toolbar_sport_type.text = item.name
             updateSportBackground(item)
+            subscribeSportChannelHall(item.code)
         }
     }
 
