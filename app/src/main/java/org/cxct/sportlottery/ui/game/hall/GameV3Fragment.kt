@@ -1031,20 +1031,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun updateSportType(gameTypeList: List<Item>) {
         gameTypeAdapter.dataSport = gameTypeList
 
-        gameTypeList.find { it.isSelected }?.let { item ->
-            game_toolbar_sport_type.text = item.name
+        gameTypeList.find { it.isSelected }.let { item ->
+            game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
             updateSportBackground(item)
         }
     }
 
-    private fun updateSportBackground(sport: Item) {
+    private fun updateSportBackground(sport: Item?) {
         when {
             game_bg_layer2.isVisible -> game_bg_layer2
             game_bg_layer3.isVisible -> game_bg_layer3
             else -> null
         }?.let {
             Glide.with(requireContext()).load(
-                when (sport.code) {
+                when (sport?.code) {
                     GameType.FT.key -> {
                         when {
                             game_bg_layer2.isVisible -> R.drawable.soccer108
@@ -1073,7 +1073,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             else -> null
                         }
                     }
-                    else -> null
+                    else -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.soccer108
+                            game_bg_layer3.isVisible -> R.drawable.soccer140
+                            else -> null
+                        }
+                    }
                 }
             ).into(it)
         }
