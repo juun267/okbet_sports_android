@@ -14,6 +14,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -127,6 +128,11 @@ class LeagueAdapter(private val matchType: MatchType) :
         ) {
             itemView.league_text.text = item.league.name
 
+            if (item.league.categoryIcon.isNotEmpty()){
+                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+                itemView.iv_country.setImageDrawable(countryIcon)
+            }
+
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
@@ -149,13 +155,6 @@ class LeagueAdapter(private val matchType: MatchType) :
                     this.leagueOddListener = leagueOddListener
                     this.oddsType = oddsType
                 }
-            }
-
-            itemView.apply {
-                val data =
-                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.league.categoryIcon)
-                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
-                country_webview.setBackgroundColor(Color.TRANSPARENT)
             }
         }
 

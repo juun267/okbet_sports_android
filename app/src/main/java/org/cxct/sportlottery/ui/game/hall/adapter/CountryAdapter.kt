@@ -1,17 +1,16 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_country_v4.view.*
-import kotlinx.android.synthetic.main.itemview_country_v4.view.country_border
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.network.league.Row
 import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.util.SvgUtil
 
 class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -102,7 +101,7 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun bind(leagueList: List<League>, countryLeagueListener: CountryLeagueListener?) {
             itemView.country_border.visibility = View.GONE
             itemView.country_text.visibility = View.GONE
-            itemView.country_webview.visibility = View.GONE
+            itemView.iv_country.visibility = View.GONE
             itemView.country_expand.setExpanded(true, false)
 
             setupLeagueList(leagueList, countryLeagueListener)
@@ -140,12 +139,13 @@ class CountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(item: Row, countryLeagueListener: CountryLeagueListener?) {
             itemView.apply {
-                val data =
-                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.icon)
 
                 country_text.text = item.name
-                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
-                country_webview.setBackgroundColor(Color.TRANSPARENT)
+
+                if (item.icon.isNotEmpty()){
+                    val countryIcon = SvgUtil.getSvgDrawable(context, item.icon)
+                    iv_country.setImageDrawable(countryIcon)
+                }
             }
             setupLeagueList(item, countryLeagueListener)
             setupCountryExpand(item)

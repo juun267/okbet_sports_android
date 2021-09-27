@@ -450,7 +450,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             timer?.schedule(object : TimerTask() {
                 override fun run() {
                     when {
-                        timeMillis < 0 -> timeMillis = 0
+                        timeMillis < 0 -> {
+                            timeMillis = 0
+                            mTimerMap[adapterPosition]?.cancel()
+                        }
                         isDecrease -> timeMillis -= 1000
                         !isDecrease -> timeMillis += 1000
                     }
