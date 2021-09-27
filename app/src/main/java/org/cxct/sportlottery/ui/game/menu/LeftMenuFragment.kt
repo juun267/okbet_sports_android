@@ -17,7 +17,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.util.JumpUtil
 
@@ -59,7 +58,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         initButton()
     }
 
-    //TODO
     private fun initButton() {
         // 返回
         btn_close.setOnClickListener {
