@@ -1303,6 +1303,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onStop()
 
         unSubscribeChannelHallAll()
+        unSubscribeChannelHallSport()
     }
 
     override fun onDestroyView() {

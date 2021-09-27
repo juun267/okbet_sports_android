@@ -37,6 +37,10 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
         (activity as BaseSocketActivity<*>).unSubscribeChannelHallAll()
     }
 
+    protected fun unSubscribeChannelHallSport() {
+        (activity as BaseSocketActivity<*>).unSubscribeChannelHallSport()
+    }
+
     protected fun unSubscribeChannelEventAll() {
         (activity as BaseSocketActivity<*>).unSubscribeChannelEventAll()
     }

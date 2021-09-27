@@ -36,6 +36,8 @@ class BackService : Service() {
         const val URL_ALL = "/ws/notify/all" //全体公共频道
         const val URL_PING = "/ws/ping" //心跳检测通道 （pong消息将发往用户私人频道）
 
+        private const val SPORT_HALL_CHANNEL_LENGTH = 6
+
         private var mUserId: Long? = null
         private var mPlatformId: Long? = null
 
@@ -317,7 +319,18 @@ class BackService : Service() {
         //要 clone 一份 list 來處理 url 判斷，避免刪減 map 資料時產生 ConcurrentModificationException
         val urlList = mSubscribedMap.keys.toList()
         urlList.forEach { url ->
-            if (url.contains("$URL_HALL/"))
+            // 解除球種頻道以外的訂閱, 球種頻道格式:/ws/notify/hall/1/FT
+            if (url.contains("$URL_HALL/") && url.split("/").size > SPORT_HALL_CHANNEL_LENGTH)
+                unsubscribeChannel(url)
+        }
+    }
+
+    fun unsubscribeSportHallChannel() {
+        //要 clone 一份 list 來處理 url 判斷，避免刪減 map 資料時產生 ConcurrentModificationException
+        val urlList = mSubscribedMap.keys.toList()
+        urlList.forEach { url ->
+            // 解除球種頻道以外的訂閱, 球種頻道格式:/ws/notify/hall/1/FT
+            if (url.contains("$URL_HALL/") && url.split("/").size == SPORT_HALL_CHANNEL_LENGTH)
                 unsubscribeChannel(url)
         }
     }

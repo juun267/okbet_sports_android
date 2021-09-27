@@ -120,6 +120,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         backService.unsubscribeAllHallChannel()
     }
 
+    fun unSubscribeChannelHallSport(){
+        backService.unsubscribeSportHallChannel()
+    }
+
     fun unSubscribeChannelEventAll() {
         backService.unsubscribeAllEventChannel()
     }

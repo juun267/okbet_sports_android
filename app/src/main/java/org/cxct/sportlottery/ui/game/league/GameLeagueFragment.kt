@@ -567,6 +567,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         super.onStop()
 
         unSubscribeChannelHallAll()
+        unSubscribeChannelHallSport()
     }
 
     override fun onDestroyView() {
