@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
@@ -25,18 +26,32 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     //點擊置頂後
     private var unselectedAdapter =
         LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { gameType ->
-            viewModel.pinFavorite(
-                FavoriteType.SPORT,
-                gameType
-            )
-            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_ADD.code)
+            when (viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    viewModel.pinFavorite(
+                        FavoriteType.SPORT,
+                        gameType
+                    )
+                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_ADD.code)
+                }
+                else -> { //遊客 //尚未登入
+                    setSnackBarMyFavoriteNotify(isLogin = false)
+                }
+            }
         }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //取消置頂
     var selectedAdapter =
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { gameType ->
-            viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_REMOVE.code)
+            when (viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    viewModel.pinFavorite(FavoriteType.SPORT, gameType)
+                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_REMOVE.code)
+                }
+                else -> { //遊客 //尚未登入
+                    setSnackBarMyFavoriteNotify(isLogin = false)
+                }
+            }
         }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //提示
