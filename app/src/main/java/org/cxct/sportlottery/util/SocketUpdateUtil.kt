@@ -174,7 +174,12 @@ object SocketUpdateUtil {
                 isNeedRefresh = when {
                     (cateMenuCode == PlayCate.EPS.value) -> {
                         updateMatchOdds(
-                            mapOf(Pair(PlayCate.EPS.value, matchOdd.oddsEps?.eps ?: listOf())),
+                            mutableMapOf(
+                                Pair(
+                                    PlayCate.EPS.value,
+                                    matchOdd.oddsEps?.eps?.toMutableList() ?: mutableListOf()
+                                )
+                            ),
                             oddsChangeEvent.odds,
                         )
                     }
@@ -195,8 +200,8 @@ object SocketUpdateUtil {
                             }
 
                         updateMatchOdds(
-                            matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds
-                                ?: mapOf(),
+                            matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat()
+                                ?: mutableMapOf(),
                             oddsMapSocket,
                         )
                     }
@@ -237,7 +242,7 @@ object SocketUpdateUtil {
     }
 
     private fun updateMatchOdds(
-        oddsMap: Map<String, List<Odd?>?>,
+        oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
         return when (oddsMap.isNullOrEmpty()) {
@@ -365,10 +370,10 @@ object SocketUpdateUtil {
     }
 
     private fun insertMatchOdds(
-        oddsMap: Map<String, List<Odd?>?>,
+        oddsMap: MutableMap<String, MutableList<Odd?>?>,
         oddsMapSocket: Map<String, List<Odd?>?>?,
     ): Boolean {
-        oddsMap.toMutableMap().putAll(oddsMapSocket ?: mapOf())
+        oddsMap.putAll(oddsMapSocket?.toMutableFormat() ?: mutableMapOf())
 
         return oddsMapSocket?.isNotEmpty() ?: false
     }
@@ -626,7 +631,7 @@ object SocketUpdateUtil {
         return sortMap
     }
 
-    private fun Map<String, List<Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<Odd?>> {
+    private fun Map<String, List<Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<Odd?>?> {
         return this.mapValues { map ->
             map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
