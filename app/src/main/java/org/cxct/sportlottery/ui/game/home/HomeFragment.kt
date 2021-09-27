@@ -586,37 +586,45 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         //遊戲卡片
         viewModel.cardMatchTypeFT.observe(viewLifecycleOwner, { matchType ->
             card_football.setOnClickListener {
-                viewModel.navSpecialEntrance(
-                    matchType,
-                    GameType.FT
-                )
+                    matchType?.let { it ->
+                        viewModel.navSpecialEntrance(
+                            it,
+                            GameType.FT
+                        )
+                    }
             }
         })
 
         viewModel.cardMatchTypeBK.observe(viewLifecycleOwner, { matchType ->
             card_basketball.setOnClickListener {
-                viewModel.navSpecialEntrance(
-                    matchType,
-                    GameType.BK
-                )
+                matchType?.let { it ->
+                    viewModel.navSpecialEntrance(
+                        it,
+                        GameType.BK
+                    )
+                }
             }
         })
 
         viewModel.cardMatchTypeTN.observe(viewLifecycleOwner, { matchType ->
             card_tennis.setOnClickListener {
-                viewModel.navSpecialEntrance(
-                    matchType,
-                    GameType.TN
-                )
+                matchType?.let { it ->
+                    viewModel.navSpecialEntrance(
+                        it,
+                        GameType.TN
+                    )
+                }
             }
         })
 
         viewModel.cardMatchTypeVB.observe(viewLifecycleOwner, { matchType ->
             card_volleyball.setOnClickListener {
-                viewModel.navSpecialEntrance(
-                    matchType,
-                    GameType.VB
-                )
+                matchType?.let { it ->
+                    viewModel.navSpecialEntrance(
+                        it,
+                        GameType.VB
+                    )
+                }
             }
         })
     }
