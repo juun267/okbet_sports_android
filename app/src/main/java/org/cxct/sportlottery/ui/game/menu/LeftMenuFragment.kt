@@ -174,7 +174,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             GameType.FT.name -> viewModel.cardMatchTypeFT.value
             GameType.BK.name -> viewModel.cardMatchTypeBK.value
             GameType.TN.name -> viewModel.cardMatchTypeTN.value
-            GameType.VB.name -> viewModel.cardMatchTypeFT.value
+            GameType.VB.name -> viewModel.cardMatchTypeVB.value
             else -> MatchType.TODAY
         }
         val sportType = when (sport) {
