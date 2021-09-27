@@ -158,6 +158,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onStart() {
         super.onStart()
+        
+        subscribeSportChannelHall(args.gameType.key)
 
         viewModel.getLeagueOddsList(
             args.matchType,
