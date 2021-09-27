@@ -354,25 +354,11 @@
         tools:ignore="ContentDescription"
         tools:visibility="visible" />
 
-    <ImageView
-        android:id="@+id/iv_play"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_live_player"
-        android:visibility="gone"
-        android:layout_marginHorizontal="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
-        app:layout_constraintStart_toEndOf="@+id/league_odd_match_price_boost"
-        app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
-        tools:ignore="ContentDescription"
-        tools:visibility="visible" />
-
     <Space
         android:id="@+id/space_icon"
         android:layout_width="10dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/iv_play"
+        app:layout_constraintStart_toEndOf="@id/league_odd_match_price_boost"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_price_boost" />
 
     <TextView

@@ -255,17 +255,6 @@
         app:layout_constraintStart_toEndOf="@id/iv_match_in_play"
         app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count" />
 
-    <ImageView
-        android:id="@+id/iv_play"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="10dp"
-        android:src="@drawable/selector_live_play"
-        app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
-        app:layout_constraintStart_toEndOf="@id/iv_match_price"
-        app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count"
-        />
-
     <TextView
         android:id="@+id/tv_match_play_type_count"
         android:layout_width="wrap_content"
@@ -277,7 +266,7 @@
         android:textSize="@dimen/textSize12sp"
         app:drawableRightCompat="@drawable/ic_iconarrow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_play"
+        app:layout_constraintStart_toEndOf="@id/iv_match_price"
         tools:text="54" />
 
     <ImageView
