@@ -43,10 +43,6 @@ class MyFavoriteViewModel(
         get() = _sportQueryData
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
 
-    val curPlay: LiveData<Play>
-        get() = _curPlay
-    private val _curPlay = MutableLiveData<Play>()
-
     fun getSportQuery() {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -127,24 +123,33 @@ class MyFavoriteViewModel(
     }
 
     fun switchPlay(play: Play) {
-        _sportQueryData.postValue(
-            Event(
-                _sportQueryData.value?.peekContent()?.updatePlaySelected(play).apply {
-                    val curPlayCate =
-                        this?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList
-
-                    curPlayCate?.forEach {
-                        it.isSelected =
-                            (curPlayCate.indexOf(it) == 0)
-                                    && (this?.items?.find { item -> item.isSelected }?.play?.find { play -> play.isSelected }?.selectionType == SelectionType.SELECTABLE.code)
-                    }
-                }
-            )
-        )
 
         if (play.selectionType == SelectionType.SELECTABLE.code) {
-            _curPlay.postValue(play)
+            _sportQueryData.postValue(
+                Event(
+                    _sportQueryData.value?.peekContent()?.updatePlaySelected(play)
+                )
+            )
+            val playCateCode =
+                sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList?.find { it.isSelected }?.code
+
+            switchPlayCategory(play,playCateCode)
         } else {
+            _sportQueryData.postValue(
+                Event(
+                    _sportQueryData.value?.peekContent()?.updatePlaySelected(play).apply {
+                        val curPlayCate =
+                            this?.items?.find { it.isSelected }?.play?.find { it.isSelected }?.playCateList
+
+                        curPlayCate?.forEach {
+                            it.isSelected =
+                                (curPlayCate.indexOf(it) == 0)
+                                        && (this?.items?.find { item -> item.isSelected }?.play?.find { play -> play.isSelected }?.selectionType == SelectionType.SELECTABLE.code)
+                        }
+                    }
+                )
+            )
+
             getFavoriteMatch(
                 sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
                 play.code
@@ -152,7 +157,7 @@ class MyFavoriteViewModel(
         }
     }
 
-    fun switchPlayCategory(playCateCode: String?) {
+    fun switchPlayCategory(play: Play,playCateCode: String?) {
         getFavoriteMatch(
             sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
             MenuCode.MAIN.code,
@@ -160,7 +165,7 @@ class MyFavoriteViewModel(
         )
         _sportQueryData.postValue(
             Event(
-                _sportQueryData.value?.peekContent()?.updatePlayCateSelected(playCateCode)
+                _sportQueryData.value?.peekContent()?.updatePlaySelected(play)?.updatePlayCateSelected(playCateCode)
             )
         )
     }
@@ -203,7 +208,8 @@ class MyFavoriteViewModel(
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
                     quickPlayCate.quickOdds =
-                        quickPlayCate.quickOdds?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
+                        quickListData.quickOdds?.get(quickPlayCate.code)
+                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()?.sortPlayCate()
                 }
             }
         }

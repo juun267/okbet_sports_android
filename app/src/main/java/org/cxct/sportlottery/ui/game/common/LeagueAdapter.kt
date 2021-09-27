@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -125,6 +127,11 @@ class LeagueAdapter(private val matchType: MatchType) :
             oddsType: OddsType
         ) {
             itemView.league_text.text = item.league.name
+
+            if (item.league.categoryIcon.isNotEmpty()){
+                val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
+                itemView.iv_country.setImageDrawable(countryIcon)
+            }
 
             setupLeagueOddList(item, leagueOddListener, oddsType)
             setupLeagueOddExpand(item, matchType, leagueListener)

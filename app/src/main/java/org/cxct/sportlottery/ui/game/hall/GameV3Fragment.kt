@@ -49,6 +49,7 @@ import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
+import timber.log.Timber
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -88,8 +89,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(args.matchType, it)
-                loading()
+                if (it.selectionType == SelectionType.SELECTABLE.code) { //被鎖 或是不能下拉
+                    when {
+                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
+                        !it.isSelected && it.isLocked == null -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //當前被點選的狀態
+                        it.isSelected -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //之前點選過然後離開又回來 要預設帶入
+                        !it.isSelected && it.isLocked == false -> {
+                            viewModel.switchPlay(args.matchType, it)
+                            loading()
+                        }
+                    }
+                } else {
+                    viewModel.switchPlay(args.matchType, it)
+                    upDateSelectPlay(it)
+                    loading()
+                }
             }
         }
     }
@@ -259,7 +279,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
-                MatchType.IN_PLAY -> View.VISIBLE
+                MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
                 else -> View.GONE
             }
 
@@ -386,6 +406,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         view.game_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+            addItemDecoration(
+                SpaceItemDecoration(context, R.dimen.item_spacing_league)
+            )
         }
     }
 
@@ -473,12 +497,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.curChildMatchType.observe(this.viewLifecycleOwner, {
             //TODO childMatchType更新選中
-            val childMatchType = it.getContentIfNotHandled()
-            game_toolbar_match_type.text =
-                gameToolbarMatchTypeText(childMatchType ?: args.matchType)
-
             //預設第一項
-            when (childMatchType) {
+            when (it) {
                 null -> {
                     //init tab select
                     game_tabs.clearOnTabSelectedListeners()
@@ -692,14 +712,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
-
-            it.find { play ->
-                play.isSelected
-            }?.let { selectedPlay ->
-                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code && selectedPlay.isLocked == false) {
-                    showPlayCateBottomSheet(selectedPlay)
-                }
-            }
         })
 
         viewModel.playCate.observe(this.viewLifecycleOwner, {
@@ -840,7 +852,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        matchOdd, oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent
                                     )
                                 } &&
                                 leagueOdd.isExpand
@@ -856,8 +868,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         epsOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
-                                        matchOdd,
-                                        oddsChangeEvent
+                                        context, matchOdd, oddsChangeEvent
                                     )
                                 } == true &&
                                 !leagueOdd.isClose) {
@@ -1077,11 +1088,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.code,
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
-            StatusSheetAdapter.ItemCheckedListener { _, data ->
-                viewModel.switchPlayCategory(args.matchType, data.code)
+            StatusSheetAdapter.ItemCheckedListener { _, playCate ->
+                viewModel.switchPlayCategory(args.matchType,play,playCate.code)
+                upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
+    }
+
+    //更新isLocked狀態
+    private fun upDateSelectPlay(play: Play) {
+        val platData = playCategoryAdapter.data.find { it == play }
+        if (platData?.selectionType == SelectionType.SELECTABLE.code) {
+            platData.isLocked = when {
+                platData.isLocked == null || platData.isSelected -> false
+                else -> true
+            }
+        }
     }
 
     private fun navThirdGame(thirdGameCategory: ThirdGameCategory) {

@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_eps_date_line.view.*
 import kotlinx.android.synthetic.main.content_eps_league_rv.view.*
-import kotlinx.android.synthetic.main.content_eps_league_rv.view.country_webview
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -17,6 +15,7 @@ import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 import org.cxct.sportlottery.network.odds.eps.MatchOddsItem
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -54,7 +53,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 params.setMargins(0,14,0,0)
                 itemView.ll_content.layoutParams = params
             }
-            itemView.tv_date.text = TimeUtil.stampToMD(item.date) + itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))
+            itemView.tv_date.text = "${TimeUtil.stampToMD(item.date)}  ${itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))}"
         }
     }
 
@@ -73,7 +72,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
             }
         }
 
-        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType ,epsOddListener: EpsOddListener) {
+        fun bind(item: EpsLeagueOddsItem, mOddsType: OddsType, epsOddListener: EpsOddListener) {
             itemView.apply {
                 ll_league_title.setOnClickListener {
                     rv_league_odd_list.visibility = if(rv_league_odd_list.visibility == View.VISIBLE){View.GONE} else{View.VISIBLE}
@@ -85,10 +84,12 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                     tv_league_title.text = it
                 }
 
-                val data =
-                    String.format(context.getString(R.string.svg_format), 24, 24, 24, 24, item.league?.categoryIcon)
-                country_webview.loadDataWithBaseURL(null, data, "text/html", "UTF-8", null)
-                country_webview.setBackgroundColor(Color.TRANSPARENT)
+                item.league?.categoryIcon?.let { iconSvg ->
+                    if (iconSvg.isNotEmpty()){
+                        val countryIcon = SvgUtil.getSvgDrawable(context, iconSvg)
+                        iv_country.setImageDrawable(countryIcon)
+                    }
+                }
 
                 if (item.isClose)
                     rv_league_odd_list.visibility = View.GONE

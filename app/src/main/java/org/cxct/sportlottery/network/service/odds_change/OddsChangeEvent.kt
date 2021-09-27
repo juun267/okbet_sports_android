@@ -3,6 +3,7 @@ package org.cxct.sportlottery.network.service.odds_change
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.QuickPlayCate
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceEventType
 
@@ -17,5 +18,7 @@ data class OddsChangeEvent(
     @Json(name = "odds")
     val odds: Map<String, List<Odd?>>? = mapOf(), //key=>玩法类型code, value=>赔率列表
     @Json(name = "dynamicMarkets")
-    val dynamicMarkets: Map<String, DynamicMarkets>? = mapOf() //动态市场字典(冠军玩法有效)， key: 对应odds的key, value: {zh:"xxx",en:"cxxewe"}
+    val dynamicMarkets: Map<String, DynamicMarkets>? = mapOf(), //动态市场字典(冠军玩法有效)， key: 对应odds的key, value: {zh:"xxx",en:"cxxewe"}
+    @Json(name = "quickPlayCateList")
+    val quickPlayCateList: List<QuickPlayCate>? = null,
 ) : ServiceEventType

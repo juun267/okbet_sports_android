@@ -51,7 +51,6 @@ class EpsListV2Adapter :
             itemView.tv_title.text = "${item.epsItem?.name}"
             
             itemView.btn_odd.apply {
-                betStatus = item.epsItem?.status ?: BetStatus.DEACTIVATED.code
                 isSelected = item.epsItem?.isSelected ?: false
                 setOnClickListener {
                     item.epsItem?.let { Odd ->

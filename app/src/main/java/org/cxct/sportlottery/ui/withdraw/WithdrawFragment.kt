@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.withdraw
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -290,6 +291,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         bankCardBottomSheet.apply {
             setContentView(bankCardBottomSheetView)
             bankCardAdapter = BankCardAdapter(lv_bank_item.context, bankCardList, BankCardAdapterListener {
+
                 val cardIcon = when (it.transferType) {
                     TransferType.BANK -> getBankIconByBankName(it.bankName)
                     TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
@@ -300,6 +302,9 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
                 withdrawBankCardData = it
                 viewModel.setupWithdrawCard(it)
+
+                view.et_withdrawal_amount.resetText()
+
                 dismiss()
             })
             lv_bank_item.adapter = bankCardAdapter

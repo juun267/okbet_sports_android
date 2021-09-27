@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.network.bet.add.Stake
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddError
@@ -438,7 +440,7 @@ abstract class BaseOddButtonViewModel(
 
     protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
         gameType: String?
-    ): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
         return this.mapValues { map ->
             val playCateMapItem = playCateMappingList.find {
                 it.gameType == gameType && it.playCateCode == map.key
@@ -446,11 +448,160 @@ abstract class BaseOddButtonViewModel(
 
             map.value?.filterIndexed { index, _ ->
                 index < playCateMapItem?.playCateNum ?: 0
-            }?.toMutableList() ?: mutableListOf()
+            }
+        }
+    }
 
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.splitPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val splitMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+
+        this.forEach { oddsMap ->
+            when (oddsMap.key) {
+                PlayCate.SINGLE_OU.value -> {
+
+                    splitMap[PlayCate.SINGLE_OU_O.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(0),
+                            oddsMap.value?.getOrNull(2),
+                            oddsMap.value?.getOrNull(4)
+                        )
+
+                    splitMap[PlayCate.SINGLE_OU_U.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(1),
+                            oddsMap.value?.getOrNull(3),
+                            oddsMap.value?.getOrNull(5)
+                        )
+                }
+
+                PlayCate.SINGLE_BTS.value -> {
+
+                    splitMap[PlayCate.SINGLE_BTS_Y.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(0),
+                            oddsMap.value?.getOrNull(2),
+                            oddsMap.value?.getOrNull(4)
+                        )
+
+                    splitMap[PlayCate.SINGLE_BTS_N.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(1),
+                            oddsMap.value?.getOrNull(3),
+                            oddsMap.value?.getOrNull(5)
+                        )
+                }
+
+                else -> {
+                    splitMap[oddsMap.key] = oddsMap.value
+                }
+            }
+        }
+
+        return splitMap
+    }
+
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.sortPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val sortMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+
+        this.forEach { oddsMap ->
+            if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
+
+                val oddList = oddsMap.value?.toMutableList()
+
+                oddList?.indexOf(oddList.find {
+                    it?.nameMap?.get(LanguageManager.Language.EN.key)
+                        ?.split(androidContext.getString(R.string.dash_no_trans))
+                        ?.getOrNull(0)?.contains(androidContext.getString(R.string.draw_no_trans))
+                        ?: false
+                }
+                )?.let {
+                    if (it >= 0) {
+                        oddList.add(oddList.removeAt(it))
+                    }
+                }
+
+                sortMap[oddsMap.key] = oddList
+
+            } else {
+
+                sortMap[oddsMap.key] = oddsMap.value
+            }
+        }
+
+        return sortMap
+    }
+
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+        return this.mapValues { map ->
+            map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
     }
 
+    protected fun MatchOdd.updateOddStatus() {
+        this.oddsMap.forEach {
+            it.value.filterNotNull().forEach { odd ->
+
+                odd.status = when {
+                    (it.value.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (it.value.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
+            this.oddsEps?.eps?.let { oddList ->
+                odd.status = when {
+                    (oddList.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (oddList.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+
+        this.quickPlayCateList?.forEach { quickPlayCate ->
+            quickPlayCate.quickOdds?.forEach {
+                it.value?.filterNotNull()?.forEach { odd ->
+                    it.value?.let { oddList ->
+                        odd.status = when {
+                            (oddList.filterNotNull()
+                                .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                            (oddList.filterNotNull()
+                                .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                            else -> odd.status
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected fun org.cxct.sportlottery.network.odds.detail.MatchOdd.updateOddStatus() {
+        this.odds.forEach {
+            it.value.odds.filterNotNull().forEach { odd ->
+
+                odd.status = when {
+                    (it.value.odds.filterNotNull()
+                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+
+                    (it.value.odds.filterNotNull()
+                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+
+                    else -> odd.status
+                }
+            }
+        }
+    }
 
     private fun getSpreadState(oldSpread: String, newSpread: String): Int =
         when {

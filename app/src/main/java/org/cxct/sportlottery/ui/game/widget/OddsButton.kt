@@ -35,15 +35,13 @@ class OddsButton @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-
     var betStatus: Int? = null
         set(value) {
             field = value
             field?.let {
-                if (hideItem) setupBetStatusWithHideItem(it) else setupBetStatus(it)
+                setupBetStatus(it)
             }
         }
-
 
     var oddStatus: Int? = null
         set(value) {
@@ -53,20 +51,15 @@ class OddsButton @JvmOverloads constructor(
             }
         }
 
-
     private var mFillet = true
-
 
     private var hideItem = false
 
-
     private var mBackground: Drawable? = null
-
 
     init {
         init(attrs)
     }
-
 
     private fun init(attrs: AttributeSet?) {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.OddsButton)
@@ -83,7 +76,6 @@ class OddsButton @JvmOverloads constructor(
             typedArray.recycle()
         }
     }
-
 
     fun setupOdd(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
@@ -113,7 +105,12 @@ class OddsButton @JvmOverloads constructor(
         tv_spread.visibility = View.GONE
 
         tv_odds.apply {
-            setTextColor(ContextCompat.getColorStateList(context, R.color.selector_button_odd_bottom_text_eps))
+            setTextColor(
+                ContextCompat.getColorStateList(
+                    context,
+                    R.color.selector_button_odd_bottom_text_eps
+                )
+            )
             text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         }
 
@@ -123,35 +120,8 @@ class OddsButton @JvmOverloads constructor(
             if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
-
     //常駐顯示按鈕 依狀態隱藏鎖頭
     private fun setupBetStatus(betStatus: Int) {
-        img_odd_lock.apply {
-            background = ContextCompat.getDrawable(
-                context,
-                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
-            )
-
-            visibility =
-                if (betStatus == BetStatus.LOCKED.code || betStatus == BetStatus.DEACTIVATED.code) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-        }
-
-        isEnabled = (betStatus == BetStatus.ACTIVATED.code)
-    }
-
-
-    //依狀態需要隱藏按鈕
-    private fun setupBetStatusWithHideItem(betStatus: Int) {
-        visibility = if (betStatus == BetStatus.DEACTIVATED.code) {
-            View.INVISIBLE
-        } else {
-            View.VISIBLE
-        }
-
         img_odd_lock.apply {
             background = ContextCompat.getDrawable(
                 context,
@@ -166,9 +136,22 @@ class OddsButton @JvmOverloads constructor(
                 }
         }
 
+        img_odd_unknown.apply {
+            background = ContextCompat.getDrawable(
+                context,
+                if (mFillet) R.drawable.bg_radius_4_button_odds_lock else R.drawable.bg_radius_0_button_odds_lock
+            )
+
+            visibility =
+                if (betStatus == BetStatus.DEACTIVATED.code) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+        }
+
         isEnabled = (betStatus == BetStatus.ACTIVATED.code)
     }
-
 
     private fun setupOddState(oddState: Int) {
         if (!isEnabled) return
@@ -206,6 +189,4 @@ class OddsButton @JvmOverloads constructor(
             }
         }
     }
-
-
 }

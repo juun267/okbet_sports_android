@@ -22,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.26"
+        versionName "1.0.28"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -249,6 +249,9 @@ dependencies {
 
     //DateTimePicker
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
+
+    //SVG rendering library
+    implementation 'com.caverock:androidsvg-aar:1.4'
 }
 
 multiLanguages {

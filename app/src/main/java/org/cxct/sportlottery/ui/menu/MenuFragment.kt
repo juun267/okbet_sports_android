@@ -13,10 +13,13 @@ import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.StaticData
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.MainViewModel
@@ -74,11 +77,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.isCreditAccount.observe(viewLifecycleOwner, {
-            menu_other_bet_record.visibility = if (it) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+            updateUIVisibility(it)
         })
 
         viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
@@ -148,7 +147,10 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         btn_sign_out.setOnClickListener {
             viewModel.doLogoutCleanUser {
                 context?.run {
-                    MainActivity.reStart(this)
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
                 }
             }
             mDownMenuListener?.onClick(btn_sign_out)
@@ -163,16 +165,13 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     }
 
     private fun setupSelectLanguage() {
-        //TODO simon test bug No.10171 紀錄：現階段為中英文欄未對應問題,先暫時隱藏,暫等翻譯完成後,再開啟此功能
-        btn_change_language.visibility = View.INVISIBLE
-
-
-        btn_change_language.text = when (LanguageManager.getSelectLanguage(btn_change_language.context)) {
-            LanguageManager.Language.ZH -> getString(R.string.language_cn)
-            LanguageManager.Language.ZHT -> getString(R.string.language_zht)
-            LanguageManager.Language.VI -> getString(R.string.language_vi)
-            LanguageManager.Language.EN -> getString(R.string.language_en)
-        }
+        btn_change_language.text =
+            when (LanguageManager.getSelectLanguage(btn_change_language.context)) {
+                LanguageManager.Language.ZH -> getString(R.string.language_cn)
+                LanguageManager.Language.ZHT -> getString(R.string.language_zht)
+                LanguageManager.Language.VI -> getString(R.string.language_vi)
+                LanguageManager.Language.EN -> getString(R.string.language_en)
+            }
     }
 
     private fun setupVersion() {
@@ -181,6 +180,21 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
     private fun getOddsType() {
         viewModel.getOddsType()
+    }
+
+    private fun updateUIVisibility(isCreditAccount: Boolean){
+        //其他投注記錄 信用盤 或 第三方關閉 隱藏
+        menu_other_bet_record.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        menu_member_level.visibility = if (sConfigData?.thirdOpen != FLAG_OPEN) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
     }
 
     private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {

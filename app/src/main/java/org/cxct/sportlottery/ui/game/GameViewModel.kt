@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.info.BetInfoResult
@@ -50,7 +49,6 @@ import org.cxct.sportlottery.network.today.MatchCategoryQueryRequest
 import org.cxct.sportlottery.network.today.MatchCategoryQueryResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
@@ -101,7 +99,7 @@ class GameViewModel(
     val curMatchType: LiveData<MatchType?>
         get() = _curMatchType
 
-    val curChildMatchType: LiveData<Event<MatchType?>>
+    val curChildMatchType: LiveData<MatchType?>
         get() = _curChildMatchType
 
     val sportMenuResult: LiveData<SportMenuResult?>
@@ -174,7 +172,7 @@ class GameViewModel(
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
     private val _curMatchType = MutableLiveData<MatchType?>()
-    private val _curChildMatchType = MutableLiveData<Event<MatchType?>>()
+    private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
@@ -315,7 +313,7 @@ class GameViewModel(
     }
 
     fun switchMatchType(matchType: MatchType) {
-        _curChildMatchType.value = Event(null)
+        _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
@@ -325,7 +323,7 @@ class GameViewModel(
     }
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
-        _curChildMatchType.value = Event(childMatchType)
+        _curChildMatchType.value = childMatchType
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
@@ -517,6 +515,7 @@ class GameViewModel(
                                     }
                             }
                         }
+                        matchOdd.updateOddStatus()
                     }
                 }
 
@@ -556,6 +555,7 @@ class GameViewModel(
                                     }
                             }
                         }
+                        matchOdd.updateOddStatus()
                     }
                 }
 
@@ -598,8 +598,11 @@ class GameViewModel(
                                     }
                             }
                         }
-                        oddData.oddsMap = oddData.oddsMap.filterPlayCateSpanned(row.sport?.code)
+                        oddData.oddsMap =
+                            oddData.oddsMap.filterPlayCateSpanned(row.sport?.code).splitPlayCate().sortPlayCate()
+                                .toMutableFormat()
                         oddData.playCateMappingList = playCateMappingList
+                        oddData.updateOddStatus()
                     }
                 }
 
@@ -630,6 +633,7 @@ class GameViewModel(
                                 }
                         }
                     }
+                    oddData.updateOddStatus()
                 }
 
                 _highlightMatchResult.postValue(Event(result))
@@ -641,7 +645,7 @@ class GameViewModel(
 
     fun switchSportType(matchType: MatchType, item: Item) {
         _sportMenuResult.value?.updateSportSelectState(matchType, item.code)
-        _curChildMatchType.value = Event(null)
+        _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
@@ -657,13 +661,14 @@ class GameViewModel(
 
     fun switchPlay(matchType: MatchType, play: Play) {
         updatePlaySelectedState(play)
-
         getGameHallList(matchType, false)
     }
 
-    fun switchPlayCategory(matchType: MatchType, playCateCode: String?) {
+    fun switchPlayCategory(matchType: MatchType,play: Play, playCateCode: String?) {
+        _playList.value?.forEach {
+            it.isSelected = (it == play)
+        }
         _playCate.value = playCateCode
-
         getGameHallList(matchType, false)
     }
 
@@ -681,7 +686,7 @@ class GameViewModel(
         isLastSportType: Boolean = false
     ) {
 
-        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
+        val nowMatchType = curChildMatchType.value ?: matchType
 
         if (isReloadPlayCate) {
             getPlayCategory(nowMatchType)
@@ -783,7 +788,7 @@ class GameViewModel(
             getPlayCategory(matchType)
         }
 
-        val nowMatchType = curChildMatchType.value?.peekContent() ?: matchType
+        val nowMatchType = curChildMatchType.value ?: matchType
 
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
@@ -840,6 +845,7 @@ class GameViewModel(
                 matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
                 matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
                 matchOdd.playCateMappingList = playCateMappingList
+                matchOdd.updateOddStatus()
             }
 
             _outrightOddsListResult.postValue(Event(result))
@@ -886,12 +892,11 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = timeFilter(timeRangeParams?.startTime),
                         endTime = timeFilter(timeRangeParams?.endTime),
-                        playCateMenuCode = getPlayCateSelected()?.code ?: "",
-                        playCateCodeList = getPlayCateCodeList()
+                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
                     )
                 )
             }
-            
+
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.let { matchInfo ->
@@ -906,13 +911,20 @@ class GameViewModel(
 
                     matchOdd.playCateMappingList = playCateMappingList
 
-                    matchOdd.oddsMap = matchOdd.oddsMap.filterPlayCateSpanned(gameType)
+                    matchOdd.oddsMap =
+                        matchOdd.oddsMap.filterPlayCateSpanned(gameType).splitPlayCate().sortPlayCate()
+                            .toMutableFormat()
 
                     matchOdd.oddsMap.forEach { map ->
                         map.value.updateOddSelectState()
                     }
 
                     matchOdd.sortOdds()
+
+                    if (!getPlayCateCodeList().isNullOrEmpty())
+                        matchOdd.oddsMap.entries.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
+
+                    matchOdd.updateOddStatus()
                 }
             }
 
@@ -1053,6 +1065,7 @@ class GameViewModel(
                 it.leagueOdd.forEach { leagueOdds ->
                     leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.playCateMappingList = playCateMappingList
+                        matchOddsItem.updateOddStatus()
                     }
                 }
             }
@@ -1248,6 +1261,8 @@ class GameViewModel(
                         )
                     )
                 }
+
+                result.oddsDetailData?.matchOdd?.updateOddStatus()
 
                 //因UI需求 特優賠率移到第一項
                 list.find { it.gameType == PlayCate.EPS.value }.apply {
@@ -1491,22 +1506,20 @@ class GameViewModel(
 
         playList?.let {
             _playList.value = it
-            if (play.isLocked == false) {
-                _playCate.value = (
-                        when (play.selectionType == SelectionType.SELECTABLE.code) {
-                            true -> {
-                                it.find { play ->
-                                    play.isSelected
-                                }?.playCateList?.find { playCate ->
-                                    playCate.isSelected
-                                }?.code
-                            }
-                            false -> {
-                                null
-                            }
+            _playCate.value = (
+                    when (play.selectionType == SelectionType.SELECTABLE.code) {
+                        true -> {
+                            it.find { play ->
+                                play.isSelected
+                            }?.playCateList?.find { playCate ->
+                                playCate.isSelected
+                            }?.code
                         }
-                        )
-            }
+                        false -> {
+                            null
+                        }
+                    }
+                    )
         }
     }
 
@@ -1543,7 +1556,7 @@ class GameViewModel(
 
                     quickPlayCate.quickOdds =
                         quickListData.quickOdds?.get(quickPlayCate.code)
-                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
+                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()?.sortPlayCate()
                 }
             }
         }

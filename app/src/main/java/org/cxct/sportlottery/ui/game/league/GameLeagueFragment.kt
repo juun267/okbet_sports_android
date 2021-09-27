@@ -138,6 +138,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         view.game_league_odd_list.apply {
             this.layoutManager =
                 SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
+
+            addItemDecoration(
+                SpaceItemDecoration(context, R.dimen.item_spacing_league)
+            )
         }
     }
 
@@ -272,8 +276,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
 
             (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
-                game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else oddsListData?.sport?.name ?: ""
-                game_toolbar_sport_type.text = args.matchType.name
+                game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
+                game_toolbar_sport_type.text = when (args.matchType) {
+                    MatchType.TODAY -> getString(R.string.home_tab_today)
+                    MatchType.EARLY -> getString(R.string.home_tab_early)
+                    MatchType.PARLAY -> getString(R.string.home_tab_parlay)
+                    MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
+                    else -> ""
+                }
             }
         }
     }
@@ -329,7 +339,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueOdds.forEachIndexed { index, leagueOdd ->
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateMatchOdds(
-                                matchOdd, oddsChangeEvent
+                                context, matchOdd, oddsChangeEvent
                             )
                         } &&
                         leagueOdd.isExpand

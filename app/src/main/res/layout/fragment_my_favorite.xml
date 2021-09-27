@@ -27,7 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@color/colorWhite"
-                app:layout_constraintTop_toTopOf="parent">
+                android:visibility="invisible"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible">
 
                 <TextView
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
@@ -97,13 +99,15 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/favorite_play_category"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll_favorite_game_type_title"
                 tools:itemCount="1"
                 tools:listitem="@layout/itemview_play_category_v4" />
@@ -122,8 +126,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/colorWhite"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/favorite_toolbar">
+                app:layout_constraintTop_toBottomOf="@+id/favorite_toolbar"
+                tools:visibility="visible">
 
                 <include layout="@layout/view_no_game" />
             </FrameLayout>

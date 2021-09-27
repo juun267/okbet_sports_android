@@ -91,11 +91,31 @@ abstract class BaseFavoriteViewModel(
                             playCateCode?.let {
                                 matchOdd.oddsMap =
                                     matchOdd.oddsMap.filter { odds -> odds.key == playCateCode }
-                                        .filterPlayCateSpanned(gameType)
+                                        .filterPlayCateSpanned(gameType).splitPlayCate()
+                                        .sortPlayCate().toMutableFormat()
                             }
+                            matchOdd.playCateMappingList = playCateMappingList
                         }
                     }
+
+                    leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.matchInfo?.let { matchInfo ->
+                            matchInfo.startDateDisplay =
+                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
+
+                            matchOdd.matchInfo.startTimeDisplay =
+                                TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
+
+                            matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)
+                        }
+
+                        matchOdd.playCateMappingList = playCateMappingList
+
+                        matchOdd.oddsMap =
+                            matchOdd.oddsMap.filterPlayCateSpanned(gameType).toMutableFormat()
+                    }
                 }
+
                 mFavorMatchOddList.postValue(it.updateMatchType())
             }
 
