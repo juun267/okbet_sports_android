@@ -193,14 +193,26 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun setSnackBarMyFavoriteNotify(myFavoriteNotifyType:Int){
-        val title = when(myFavoriteNotifyType){
+    private fun setSnackBarMyFavoriteNotify(
+        myFavoriteNotifyType: Int? = null,
+        isGameClose: Boolean? = false,
+        gameType: GameType? = null
+    ) {
+        val title = when (isGameClose) {
+            true -> String.format(
+                getString(R.string.message_no_sport_game),
+                getString(gameType?.string ?: 0)
+            )
+            else -> {
+                when (myFavoriteNotifyType) {
 
-            MyFavoriteNotifyType.SPORT_ADD.code-> getString(R.string.myfavorite_notify_detail_add)
+                    MyFavoriteNotifyType.SPORT_ADD.code -> getString(R.string.myfavorite_notify_detail_add)
 
-            MyFavoriteNotifyType.SPORT_REMOVE.code-> getString(R.string.myfavorite_notify_detail_remove)
+                    MyFavoriteNotifyType.SPORT_REMOVE.code -> getString(R.string.myfavorite_notify_detail_remove)
 
-            else -> ""
+                    else -> ""
+                }
+            }
         }
 
         snackBarMyFavoriteNotify = activity?.let {
