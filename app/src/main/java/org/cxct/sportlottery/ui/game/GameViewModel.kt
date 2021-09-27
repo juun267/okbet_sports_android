@@ -1553,9 +1553,14 @@ class GameViewModel(
                     quickPlayCate.isSelected =
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
-                    quickPlayCate.quickOdds =
+                    quickPlayCate.quickOdds.putAll(
                         quickListData.quickOdds?.get(quickPlayCate.code)
-                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()?.sortPlayCate()
+                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
+                            ?.splitPlayCate()
+                            ?.sortPlayCate()
+                            ?.toMutableFormat()
+                            ?: mutableMapOf()
+                    )
                 }
             }
         }
