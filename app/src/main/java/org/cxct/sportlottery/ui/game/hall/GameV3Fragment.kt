@@ -542,6 +542,52 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        viewModel.oddsListGameHallIncrementResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { leagueListIncrementResult ->
+                val leagueListIncrement = leagueListIncrementResult.oddsListResult
+
+                leagueListIncrementResult.leagueIdList?.forEach { leagueId ->
+                    //判斷此聯賽是否已經於畫面顯示
+                    leagueAdapter.data.find { adapterLeagueOdd -> adapterLeagueOdd.league.id == leagueId }
+                        ?.let { onScreenLeague ->
+
+                            val targetIndex = leagueAdapter.data.indexOf(onScreenLeague)
+                            val changedLeague =
+                                leagueListIncrement?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.league.id == onScreenLeague.league.id }
+
+                            //若api response沒有該聯賽資料則不顯示該聯賽
+                            changedLeague?.let { changedLeagueOdd ->
+                                unSubscribeLeagueChannelHall(leagueAdapter.data[targetIndex])
+                                val targetLeagueOdd = leagueAdapter.data[targetIndex]
+                                //TODO 更新的邏輯, 賠率變大變小, 狀態等等
+                                leagueAdapter.data[targetIndex] = changedLeagueOdd.apply {
+                                    this.isExpand = targetLeagueOdd.isExpand
+                                    this.gameType = targetLeagueOdd.gameType
+                                    this.searchMatchOdds = targetLeagueOdd.searchMatchOdds
+                                }
+                                subscribeChannelHall(leagueAdapter.data[targetIndex])
+                            } ?: run {
+                                leagueAdapter.notifyItemRemoved(targetIndex)
+                            }
+                        } ?: run {
+                        //不在畫面上的League
+                        val changedLeague =
+                            leagueListIncrement?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.league.id == leagueId }
+                        changedLeague?.let { changedLeagueOdd ->
+                            val gameType = GameType.getGameType(leagueListIncrement.oddsListData.sport.code)
+                            val insertLeagueOdd = changedLeagueOdd.apply {
+                                this.gameType = gameType
+                                this.isExpand = false
+                            }
+                            leagueAdapter.data.add(insertLeagueOdd)
+                            leagueAdapter.notifyItemInserted(leagueAdapter.data.size - 1)
+                            subscribeChannelHall(insertLeagueOdd)
+                        }
+                    }
+                }
+            }
+        })
+
         viewModel.leagueListResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { leagueListResult ->
                 hideLoading()
@@ -976,9 +1022,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                            unSubscribeChannelHallAll()
-                            viewModel.getLeagueOddsList(args.matchType, leagueIdList, listOf())
-                            loading()
+                            viewModel.getLeagueOddsList(args.matchType, leagueIdList, listOf(), isIncrement = true)
                         }
                     }
                 }
@@ -1271,6 +1315,25 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         )
                     }
                 }
+            }
+        }
+    }
+
+    private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd){
+        leagueOdd.matchOdds.forEach {matchOdd ->
+            Timber.e("Dean, unSubscribe leagueOdd = $leagueOdd , matchId = ${matchOdd.matchInfo?.id}")
+            unSubscribeChannelHall(
+                leagueOdd.gameType?.key,
+                getPlayCateMenuCode(),
+                matchOdd.matchInfo?.id
+            )
+
+            if (matchOdd.matchInfo?.eps == 1) {
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    PlayCate.EPS.value,
+                    matchOdd.matchInfo.id
+                )
             }
         }
     }

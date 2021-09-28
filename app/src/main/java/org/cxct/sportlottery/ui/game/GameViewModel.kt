@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListRequest
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListResult
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.OddsListIncrementResult
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListData
@@ -108,6 +109,9 @@ class GameViewModel(
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
 
+    val oddsListGameHallIncrementResult: LiveData<Event<OddsListIncrementResult?>>
+        get() = _oddsListGameHallIncrementResult
+
     val oddsListResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListResult
 
@@ -175,6 +179,7 @@ class GameViewModel(
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _oddsListGameHallIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightLeagueListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
@@ -777,14 +782,18 @@ class GameViewModel(
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
+    /**
+     * @update by Dean, 20210927, 配合socket event: league_change 新增參數 isIncrement, 作為識別是否增量更新
+     */
     fun getLeagueOddsList(
         matchType: MatchType,
         leagueIdList: List<String>,
         matchIdList: List<String>,
-        isReloadPlayCate: Boolean = false
+        isReloadPlayCate: Boolean = false,
+        isIncrement: Boolean = false,
     ) {
 
-        if (isReloadPlayCate) {
+        if (isReloadPlayCate && !isIncrement) {
             getPlayCategory(matchType)
         }
 
@@ -796,7 +805,8 @@ class GameViewModel(
                 matchType.postValue,
                 getCurrentTimeRangeParams(),
                 leagueIdList,
-                matchIdList
+                matchIdList,
+                isIncrement
             )
         }
     }
@@ -858,6 +868,7 @@ class GameViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
+        isIncrement: Boolean = false
     ) {
         when (matchType) {
             MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
@@ -952,7 +963,10 @@ class GameViewModel(
                             }
                     }
 
-                    _oddsListGameHallResult.postValue(Event(result))
+                    if (isIncrement)
+                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                    else
+                        _oddsListGameHallResult.postValue(Event(result))
                 }
 
                 MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
