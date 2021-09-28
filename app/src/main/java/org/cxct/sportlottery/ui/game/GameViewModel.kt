@@ -774,13 +774,17 @@ class GameViewModel(
 
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
-
+    
     fun switchPlayCategory(
         matchType: MatchType,
         leagueIdList: List<String>,
         matchIdList: List<String>,
+        play: Play,
         playCateCode: String?
     ) {
+       _playList.value?.forEach {
+           it.isSelected = (it == play)
+       }
         _playCate.value = playCateCode
 
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
