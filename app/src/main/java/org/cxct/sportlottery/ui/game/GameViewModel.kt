@@ -293,6 +293,7 @@ class GameViewModel(
 
     fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
         _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
+        gameType?.let { recordSportType(matchType, it.key) }
     }
 
     private fun getSpecEntranceFromHome(
@@ -663,7 +664,7 @@ class GameViewModel(
         filterLeague(listOf())
     }
 
-    fun recordSportType(matchType: MatchType, sportType: String) {
+    private fun recordSportType(matchType: MatchType, sportType: String) {
         lastSportTypeHashMap[matchType.postValue] = sportType
     }
 
