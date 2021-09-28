@@ -33,6 +33,7 @@ object SocketUpdateUtil {
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
+                    //TODO fix : ConcurrentModificationException 
                     if (matchStatusCO.status == 100) {
                         matchOddList.remove(matchOdd)
                         isNeedRefresh = true
