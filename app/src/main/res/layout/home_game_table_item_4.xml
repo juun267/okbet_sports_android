@@ -260,7 +260,7 @@
         android:layout_width="14dp"
         android:layout_height="14dp"
         android:layout_marginStart="10dp"
-        android:src="@drawable/selector_live_play"
+        android:src="@drawable/ic_live_player"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/iv_match_price"
         app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count"
