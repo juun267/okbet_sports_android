@@ -1020,7 +1020,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.leagueChange.observe(this.viewLifecycleOwner, {
             it?.let { leagueChangeEvent ->
                 when (game_list.adapter) {
-                    is LeagueAdapter, is CountryAdapter -> {
+                    is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
                         leagueChangeEvent.leagueIdList?.let { leagueIdList ->
                             viewModel.getGameHallList(args.matchType,
                                 isReloadDate = false,
