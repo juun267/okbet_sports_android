@@ -76,11 +76,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             it.matchInfo
         }
 
+        var detailMatchType = matchType
+        
+        if(matchType == MatchType.MY_EVENT){
+            detailMatchType = data[position].matchInfo?.startTime?.let { refreshMatchType(it) } ?: MatchType.MY_EVENT
+        }
+
         when (holder) {
             is ViewHolderHdpOu -> {
                 holder.stopTimer()
                 holder.bind(
-                    matchType,
+                    detailMatchType,
                     item,
                     leagueOddListener,
                     isTimerEnable,
@@ -99,6 +105,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
            else -> MatchType.MY_EVENT
         }
     }
+
     override fun getItemCount(): Int = data.size
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
