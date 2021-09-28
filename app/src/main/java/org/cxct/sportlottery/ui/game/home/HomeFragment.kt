@@ -586,44 +586,61 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         //遊戲卡片
         viewModel.cardMatchTypeFT.observe(viewLifecycleOwner, { matchType ->
             card_football.setOnClickListener {
-                    matchType?.let { it ->
+                if (matchType != null) {
+                    matchType.let {
                         viewModel.navSpecialEntrance(
                             it,
                             GameType.FT
                         )
                     }
+                } else {
+                    viewModel.setSportClosePromptMessage(getString(GameType.FT.string))
+                }
             }
         })
 
+
         viewModel.cardMatchTypeBK.observe(viewLifecycleOwner, { matchType ->
             card_basketball.setOnClickListener {
-                matchType?.let { it ->
-                    viewModel.navSpecialEntrance(
-                        it,
-                        GameType.BK
-                    )
+                if (matchType != null) {
+                    matchType.let {
+                        viewModel.navSpecialEntrance(
+                            it,
+                            GameType.BK
+                        )
+                    }
+                } else {
+                    viewModel.setSportClosePromptMessage(getString(GameType.BK.string))
                 }
             }
         })
 
         viewModel.cardMatchTypeTN.observe(viewLifecycleOwner, { matchType ->
             card_tennis.setOnClickListener {
-                matchType?.let { it ->
-                    viewModel.navSpecialEntrance(
-                        it,
-                        GameType.TN
-                    )
+                if (matchType != null) {
+                    matchType.let {
+                        viewModel.navSpecialEntrance(
+                            it,
+                            GameType.TN
+                        )
+                    }
+                } else {
+                    viewModel.setSportClosePromptMessage(getString(GameType.TN.string))
                 }
             }
         })
 
         viewModel.cardMatchTypeVB.observe(viewLifecycleOwner, { matchType ->
             card_volleyball.setOnClickListener {
-                matchType?.let { it ->
-                    viewModel.navSpecialEntrance(
-                        it,
-                        GameType.VB
-                    )
+                if (matchType != null) {
+                    matchType.let {
+                        viewModel.navSpecialEntrance(
+                            it,
+                            GameType.VB
+                        )
+                    }
+                } else {
+                    viewModel.setSportClosePromptMessage(getString(GameType.VB.string))
                 }
             }
         })
