@@ -53,13 +53,15 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class GameViewModel(
     androidContext: Application,
@@ -724,14 +726,16 @@ class GameViewModel(
                     getLeagueList(
                         item.code,
                         nowMatchType.postValue,
-                        getCurrentTimeRangeParams()
+                        getCurrentTimeRangeParams(),
+                        isIncrement = isIncrement
                     )
                 }
                 MatchType.EARLY -> {
                     getLeagueList(
                         item.code,
                         nowMatchType.postValue,
-                        getCurrentTimeRangeParams()
+                        getCurrentTimeRangeParams(),
+                        isIncrement = isIncrement
                     )
                 }
                 MatchType.PARLAY -> {
@@ -739,7 +743,8 @@ class GameViewModel(
                         item.code,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams(),
-                        date
+                        date,
+                        isIncrement = isIncrement
                     )
 
                 }
@@ -1029,7 +1034,8 @@ class GameViewModel(
         gameType: String,
         matchType: String,
         timeRangeParams: TimeRangeParams?,
-        date: String? = null
+        date: String? = null,
+        isIncrement: Boolean = false
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1044,9 +1050,17 @@ class GameViewModel(
                 )
             }
 
-            _leagueListResult.value = (Event(result))
 
-            clearSelectedLeague()
+            if (isIncrement) {
+                result?.rows?.forEach { row ->
+                    row.list.forEach { league ->
+                        league.isSelected = _leagueSelectedList.value?.contains(league) == true
+                    }
+                }
+            } else
+                clearSelectedLeague()
+
+            _leagueListResult.value = (Event(result))
 
             notifyFavorite(FavoriteType.LEAGUE)
         }
