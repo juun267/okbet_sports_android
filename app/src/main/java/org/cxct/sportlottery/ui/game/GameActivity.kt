@@ -487,7 +487,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         })
 
         viewModel.specialEntrance.observe(this, {
-            it?.let {
+            it?.let { _ ->
                 when (it.matchType) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()

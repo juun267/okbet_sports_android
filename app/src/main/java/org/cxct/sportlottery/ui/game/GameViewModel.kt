@@ -293,6 +293,7 @@ class GameViewModel(
 
     fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
         _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
+        gameType?.let { recordSportType(matchType, it.key) }
     }
 
     private fun getSpecEntranceFromHome(
@@ -310,6 +311,10 @@ class GameViewModel(
         else -> {
             SpecialEntrance(matchType, gameType)
         }
+    }
+
+    fun setSportClosePromptMessage(sport:String){
+        _errorPromptMessage.postValue(Event(String.format(androidContext.getString(R.string.message_no_sport_game),sport)))
     }
 
     fun switchMatchType(matchType: MatchType) {
@@ -653,14 +658,14 @@ class GameViewModel(
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
 
-        recordSportType(matchType, item)
+        recordSportType(matchType, item.code)
         getGameHallList(matchType, true, isReloadPlayCate = true)
         getMatchCategoryQuery(matchType)
         filterLeague(listOf())
     }
 
-    private fun recordSportType(matchType: MatchType, item: Item) {
-        lastSportTypeHashMap[matchType.postValue] = item.code
+    private fun recordSportType(matchType: MatchType, sportType: String) {
+        lastSportTypeHashMap[matchType.postValue] = sportType
     }
 
     fun switchPlay(matchType: MatchType, play: Play) {

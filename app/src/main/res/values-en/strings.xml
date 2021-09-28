@@ -359,7 +359,7 @@
     <string name="odds_detail_play_type_bts_n">Neither team scored</string>
     <string name="odds_detail_play_type_dc_1X">1/X</string>
     <string name="odds_detail_play_type_dc_2X">2/X</string>
-    <string name="odds_detail_play_type_dc_12">44198</string>
+    <string name="odds_detail_play_type_dc_12">1/2</string>
     <string name="odds_detail_play_type_ou_o">Big</string>
     <string name="odds_detail_play_type_ou_u">Small</string>
     <string name="bottom_sheet_close">Close</string>
