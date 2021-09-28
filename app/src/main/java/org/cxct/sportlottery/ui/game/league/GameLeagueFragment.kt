@@ -197,14 +197,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initObserve() {
         viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
-
-            it.find { play ->
-                play.isSelected
-            }?.let { selectedPlay ->
-                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code && selectedPlay.isLocked == false) {
-                    showPlayCateBottomSheet(selectedPlay)
-                }
-            }
         })
 
         viewModel.playCate.observe(this.viewLifecycleOwner, {
