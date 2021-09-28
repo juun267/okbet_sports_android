@@ -228,7 +228,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.values.forEach { oddList ->
-                            oddList.forEach { odd ->
+                            oddList?.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
@@ -543,7 +543,27 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             matchOdd.matchInfo.id
                         )
                     }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        when (it.isSelected) {
+                            true -> {
+                                subscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                            false -> {
+                                unSubscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                        }
+                    }
                 }
+
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -556,6 +576,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             leagueOdd.gameType?.key,
                             PlayCate.EPS.value,
                             matchOdd.matchInfo.id
+                        )
+                    }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        unSubscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            it.code,
+                            matchOdd.matchInfo?.id
                         )
                     }
                 }

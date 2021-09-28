@@ -19,7 +19,7 @@ data class QuickPlayCate(
     val nameMap: Map<String?, String?>? = null
 ) {
     var isSelected = false
-    var quickOdds: Map<String, List<Odd?>?>? = null
+    val quickOdds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
 
     var positionButtonPage = 0
     var positionButtonPairTab = 0

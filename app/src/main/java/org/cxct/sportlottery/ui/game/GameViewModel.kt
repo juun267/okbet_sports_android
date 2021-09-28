@@ -512,7 +512,7 @@ class GameViewModel(
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.forEach { map ->
-                            map.value.forEach { odd ->
+                            map.value?.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
                                         it.matchOdd.oddsId == odd?.id
@@ -552,7 +552,7 @@ class GameViewModel(
 
                         //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                         matchOdd.oddsMap.forEach { map ->
-                            map.value.forEach { odd ->
+                            map.value?.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
                                         it.matchOdd.oddsId == odd?.id
@@ -595,7 +595,7 @@ class GameViewModel(
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
                         oddData.oddsMap.forEach { map ->
-                            map.value.forEach { odd ->
+                            map.value?.forEach { odd ->
                                 odd?.isSelected =
                                     betInfoRepository.betInfoList.value?.peekContent()?.any {
                                         it.matchOdd.oddsId == odd?.id
@@ -630,7 +630,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.t?.odds?.forEach { oddData ->
                     oddData.oddsMap.forEach { map ->
-                        map.value.forEach { odd ->
+                        map.value?.forEach { odd ->
                             odd?.isSelected =
                                 betInfoRepository.betInfoList.value?.peekContent()?.any {
                                     it.matchOdd.oddsId == odd?.id
@@ -836,7 +836,7 @@ class GameViewModel(
             result?.outrightOddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds?.forEach { matchOdd ->
                     matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        oddList.updateOddSelectState()
+                        oddList?.updateOddSelectState()
                     }
 
                     matchOdd?.sortOdds()
@@ -920,7 +920,7 @@ class GameViewModel(
                             .toMutableFormat()
 
                     matchOdd.oddsMap.forEach { map ->
-                        map.value.updateOddSelectState()
+                        map.value?.updateOddSelectState()
                     }
 
                     matchOdd.sortOdds()
@@ -1554,13 +1554,24 @@ class GameViewModel(
         this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    val quickOddsApi = when (quickPlayCate.code) {
+                        QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
+                            quickListData.quickOdds?.get(quickPlayCate.code)
+                                ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
+                                ?.splitPlayCate()
+                                ?.sortPlayCate()
+                        }
+                        else -> {
+                            quickListData.quickOdds?.get(quickPlayCate.code)
+                        }
+                    }
 
                     quickPlayCate.isSelected =
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
-                    quickPlayCate.quickOdds =
-                        quickListData.quickOdds?.get(quickPlayCate.code)
-                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()?.sortPlayCate()
+                    quickPlayCate.quickOdds.putAll(
+                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
+                    )
                 }
             }
         }

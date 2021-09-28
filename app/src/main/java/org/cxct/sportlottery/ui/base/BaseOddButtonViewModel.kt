@@ -531,7 +531,7 @@ abstract class BaseOddButtonViewModel(
         return sortMap
     }
 
-    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>> {
+    protected fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<org.cxct.sportlottery.network.odds.Odd?>?> {
         return this.mapValues { map ->
             map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
@@ -539,14 +539,15 @@ abstract class BaseOddButtonViewModel(
 
     protected fun MatchOdd.updateOddStatus() {
         this.oddsMap.forEach {
-            it.value.filterNotNull().forEach { odd ->
+            it.value?.filterNotNull()?.forEach { odd ->
 
                 odd.status = when {
-                    (it.value.filterNotNull()
-                        .all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }) -> BetStatus.DEACTIVATED.code
+                    (it.value?.filterNotNull()
+                        ?.all { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code }
+                        ?: true) -> BetStatus.DEACTIVATED.code
 
-                    (it.value.filterNotNull()
-                        .any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
+                    (it.value?.filterNotNull()
+                        ?.any { mOdd -> mOdd.status == null || mOdd.status == BetStatus.DEACTIVATED.code } ?: true && odd.status == BetStatus.DEACTIVATED.code) -> BetStatus.LOCKED.code
 
                     else -> odd.status
                 }

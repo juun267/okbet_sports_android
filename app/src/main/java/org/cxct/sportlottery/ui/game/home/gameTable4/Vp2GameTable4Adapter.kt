@@ -49,7 +49,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
                     matchOdd.oddsMap.toList()
-                        .find { map -> map.second.find { it == odd } != null } != null
+                        .find { map -> map.second?.find { it == odd } != null } != null
                 }))
             }
         }

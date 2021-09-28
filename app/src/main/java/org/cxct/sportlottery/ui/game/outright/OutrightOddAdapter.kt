@@ -32,15 +32,16 @@ class OutrightOddAdapter :
                     list.add(it.key)
 
                     list.addAll(
-                        it.value.filterNotNull()
-                            .filterIndexed { index, _ -> index < 4 }
-                            .map { odd ->
+                        it.value?.filterNotNull()
+                            ?.filterIndexed { index, _ -> index < 4 }
+                            ?.map { odd ->
                                 odd.outrightCateKey = it.key
                                 odd
-                            })
+                            } ?: listOf()
+                    )
 
 
-                    if (it.value.filterNotNull().size > 4) {
+                    if (it.value?.filterNotNull()?.size ?: 0 > 4) {
                         list.add(it.key to matchOdd)
                     }
                 }

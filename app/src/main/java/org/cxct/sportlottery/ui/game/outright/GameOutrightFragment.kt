@@ -133,7 +133,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                         val firstKey = matchOdd?.oddsMap?.keys?.firstOrNull()
 
                         matchOdd?.oddsMap?.forEach { oddsMap ->
-                            oddsMap.value.filterNotNull().forEach { odd ->
+                            oddsMap.value?.filterNotNull()?.forEach { odd ->
                                 odd.isExpand = index == 0 && oddsMap.key == firstKey
                             }
                         }
@@ -154,7 +154,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                 outrightLeagueOddAdapter.data.forEach { matchOdd ->
                     matchOdd?.oddsMap?.values?.forEach { oddList ->
-                        odds.addAll(oddList.filterNotNull())
+                        odds.addAll(oddList?.filterNotNull() ?: mutableListOf())
                     }
                 }
 
@@ -196,7 +196,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
                 outrightLeagueOddAdapter.data.forEachIndexed { index, matchOdd ->
                     if (matchOdd?.matchInfo?.id == matchOddsLockEvent.matchId) {
                         matchOdd.oddsMap.forEach { oddsMap ->
-                            oddsMap.value.forEach { odd ->
+                            oddsMap.value?.forEach { odd ->
                                 odd?.status = BetStatus.LOCKED.code
                             }
                         }
@@ -249,7 +249,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
     private fun subscribeChannelHall(matchOdd: MatchOdd?) {
         val isExpand = matchOdd?.oddsMap?.values?.any {
-            it.any { odd -> odd?.isExpand ?: false }
+            it?.any { odd -> odd?.isExpand ?: false } ?: false
         }
 
         when (isExpand) {

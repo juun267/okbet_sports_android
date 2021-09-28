@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MenuCode
+import org.cxct.sportlottery.network.common.QuickPlayCate
 import org.cxct.sportlottery.network.common.SelectionType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.quick.QuickListData
@@ -204,12 +205,24 @@ class MyFavoriteViewModel(
         this.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
+                    val quickOddsApi = when (quickPlayCate.code) {
+                        QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
+                            quickListData.quickOdds?.get(quickPlayCate.code)
+                                ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
+                                ?.splitPlayCate()
+                                ?.sortPlayCate()
+                        }
+                        else -> {
+                            quickListData.quickOdds?.get(quickPlayCate.code)
+                        }
+                    }
+
                     quickPlayCate.isSelected =
                         (quickPlayCate.isSelected && (matchOdd.matchInfo?.id == matchId))
 
-                    quickPlayCate.quickOdds =
-                        quickListData.quickOdds?.get(quickPlayCate.code)
-                            ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)?.splitPlayCate()?.sortPlayCate()
+                    quickPlayCate.quickOdds.putAll(
+                        quickOddsApi?.toMutableFormat() ?: mutableMapOf()
+                    )
                 }
             }
         }

@@ -16,7 +16,7 @@ data class OddData(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo?,
     @Json(name = "odds")
-    override var oddsMap: MutableMap<String, MutableList<Odd?>>,
+    override var oddsMap: MutableMap<String, MutableList<Odd?>?>,
     @Json(name = "oddsList")
     val oddsList: List<Odd>?,
     @Json(name = "quickPlayCateList")
