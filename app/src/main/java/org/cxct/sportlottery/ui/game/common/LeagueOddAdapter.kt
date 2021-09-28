@@ -52,6 +52,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
+    enum class GameStatus(val code: Int) {
+        NOT_STARTED(0),
+        NOW_PLAYING(1),
+        ENDED(2),
+        POSTPONED(3),
+        CANCELED(4)
+    }
+
     var leagueOddListener: LeagueOddListener? = null
 
     private val oddStateRefreshListener by lazy {
@@ -276,7 +284,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun View.setScoreTextAtFront(matchType: MatchType, item: MatchOdd) {
             league_odd_match_score_home.apply {
                 visibility = when {
-                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) || (matchType == MatchType.PARLAY && item.matchInfo?.status == 1) -> View.VISIBLE
+                    matchType == MatchType.IN_PLAY ||
+                            (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) ||
+                            (matchType == MatchType.PARLAY && item.matchInfo?.status == GameStatus.NOW_PLAYING.code) -> View.VISIBLE
                     else -> View.GONE
                 }
                 text = (item.matchInfo?.homeScore ?: 0).toString()
@@ -284,7 +294,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             league_odd_match_score_away.apply {
                 visibility = when {
-                    matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false)|| (matchType == MatchType.PARLAY && item.matchInfo?.status == 1) -> View.VISIBLE
+                    matchType == MatchType.IN_PLAY ||
+                            (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false)||
+                            (matchType == MatchType.PARLAY && item.matchInfo?.status == GameStatus.NOW_PLAYING.code) -> View.VISIBLE
                     else -> View.GONE
                 }
                 text = (item.matchInfo?.awayScore ?: 0).toString()
