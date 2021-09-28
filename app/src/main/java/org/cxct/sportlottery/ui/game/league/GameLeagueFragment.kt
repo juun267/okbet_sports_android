@@ -467,6 +467,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     args.matchType,
                     args.leagueId.toList(),
                     args.matchId.toList(),
+                    play,
                     data.code
                 )
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
