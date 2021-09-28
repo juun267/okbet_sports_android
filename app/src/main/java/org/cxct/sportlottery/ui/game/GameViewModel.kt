@@ -117,6 +117,9 @@ class GameViewModel(
     val oddsListResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListResult
 
+    val oddsListIncrementResult: LiveData<Event<OddsListIncrementResult?>>
+        get() = _oddsListIncrementResult
+
     val leagueListResult: LiveData<Event<LeagueListResult?>>
         get() = _leagueListResult
 
@@ -183,6 +186,7 @@ class GameViewModel(
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListGameHallIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _oddsListIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightLeagueListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
@@ -982,7 +986,10 @@ class GameViewModel(
                 }
 
                 MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
-                    _oddsListResult.postValue(Event(result))
+                    if (isIncrement)
+                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                    else
+                        _oddsListResult.postValue(Event(result))
                 }
             }
 
