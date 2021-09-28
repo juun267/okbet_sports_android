@@ -208,9 +208,6 @@ class MyFavoriteViewModel(
                     val quickOddsApi = when (quickPlayCate.code) {
                         QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
                             quickListData.quickOdds?.get(quickPlayCate.code)
-                                ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
-                                ?.splitPlayCate()
-                                ?.sortPlayCate()
                         }
                         else -> {
                             quickListData.quickOdds?.get(quickPlayCate.code)

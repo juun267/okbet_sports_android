@@ -29,7 +29,7 @@ class OddButtonPagerAdapter(
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value
+            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
 
             data = field.keys.withIndex().groupBy {
                 it.index / 2
@@ -95,6 +95,99 @@ class OddButtonPagerAdapter(
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.splitPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val splitMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+
+        this.forEach { oddsMap ->
+            when (oddsMap.key) {
+                PlayCate.SINGLE_OU.value -> {
+
+                    splitMap[PlayCate.SINGLE_OU_O.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(0),
+                            oddsMap.value?.getOrNull(2),
+                            oddsMap.value?.getOrNull(4)
+                        )
+
+                    splitMap[PlayCate.SINGLE_OU_U.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(1),
+                            oddsMap.value?.getOrNull(3),
+                            oddsMap.value?.getOrNull(5)
+                        )
+                }
+
+                PlayCate.SINGLE_BTS.value -> {
+
+                    splitMap[PlayCate.SINGLE_BTS_Y.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(0),
+                            oddsMap.value?.getOrNull(2),
+                            oddsMap.value?.getOrNull(4)
+                        )
+
+                    splitMap[PlayCate.SINGLE_BTS_N.value] =
+                        listOf(
+                            oddsMap.value?.getOrNull(1),
+                            oddsMap.value?.getOrNull(3),
+                            oddsMap.value?.getOrNull(5)
+                        )
+                }
+
+                else -> {
+                    splitMap[oddsMap.key] = oddsMap.value
+                }
+            }
+        }
+
+        return splitMap
+    }
+
+    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
+        gameType: String?
+    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        return this.mapValues { map ->
+            val playCateMapItem = playCateMappingList?.find {
+                it.gameType == gameType && it.playCateCode == map.key
+            }
+
+            map.value?.filterIndexed { index, _ ->
+                index < playCateMapItem?.playCateNum ?: 0
+            }
+        }
+    }
+
+    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.sortPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+        val sortMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+
+        this.forEach { oddsMap ->
+            if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
+
+                val oddList = oddsMap.value?.toMutableList()
+
+                oddList?.indexOf(oddList.find {
+                    it?.nameMap?.get(LanguageManager.Language.EN.key)
+                        ?.split("-")
+                        ?.getOrNull(0)?.contains("Draw")
+                        ?: false
+                }
+                )?.let {
+                    if (it >= 0) {
+                        oddList.add(oddList.removeAt(it))
+                    }
+                }
+
+                sortMap[oddsMap.key] = oddList
+
+            } else {
+
+                sortMap[oddsMap.key] = oddsMap.value
+            }
+        }
+
+        return sortMap
     }
 }
 
