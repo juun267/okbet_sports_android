@@ -91,6 +91,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
     }
 
+    //我的賽事的MatchType 要用starTime判斷
+    private fun refreshMatchType(startTime: Long): MatchType {
+       return when{
+           System.currentTimeMillis() > startTime -> MatchType.IN_PLAY
+           startTime < 60 * 60 * 1000L -> MatchType.AT_START
+           else -> MatchType.MY_EVENT
+        }
+    }
     override fun getItemCount(): Int = data.size
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
