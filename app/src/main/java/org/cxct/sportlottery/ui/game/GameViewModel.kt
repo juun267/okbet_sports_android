@@ -687,8 +687,10 @@ class GameViewModel(
         matchType: MatchType,
         isReloadDate: Boolean,
         date: String? = null,
+        leagueIdList: List<String>? = null,
         isReloadPlayCate: Boolean = false,
-        isLastSportType: Boolean = false
+        isLastSportType: Boolean = false,
+        isIncrement: Boolean = false
     ) {
 
         val nowMatchType = curChildMatchType.value ?: matchType
@@ -713,7 +715,10 @@ class GameViewModel(
         sportItem?.let { item ->
             when (nowMatchType) {
                 MatchType.IN_PLAY -> {
-                    getOddsList(item.code, nowMatchType.postValue)
+                    getOddsList(item.code,
+                        nowMatchType.postValue,
+                        leagueIdList = leagueIdList,
+                        isIncrement = isIncrement)
                 }
                 MatchType.TODAY -> {
                     getLeagueList(
@@ -745,7 +750,9 @@ class GameViewModel(
                     getOddsList(
                         item.code,
                         nowMatchType.postValue,
-                        getCurrentTimeRangeParams()
+                        getCurrentTimeRangeParams(),
+                        leagueIdList = leagueIdList,
+                        isIncrement = isIncrement
                     )
                 }
                 MatchType.EPS -> {
@@ -790,7 +797,7 @@ class GameViewModel(
         leagueIdList: List<String>,
         matchIdList: List<String>,
         isReloadPlayCate: Boolean = false,
-        isIncrement: Boolean = false,
+        isIncrement: Boolean = false
     ) {
 
         if (isReloadPlayCate && !isIncrement) {

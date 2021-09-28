@@ -1022,7 +1022,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
                         leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                            viewModel.getLeagueOddsList(args.matchType, leagueIdList, listOf(), isIncrement = true)
+                            viewModel.getGameHallList(args.matchType,
+                                isReloadDate = false,
+                                leagueIdList = leagueIdList,
+                                isIncrement = true)
                         }
                     }
                 }
