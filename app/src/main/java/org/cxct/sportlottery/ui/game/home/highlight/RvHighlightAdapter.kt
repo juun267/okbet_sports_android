@@ -46,9 +46,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")
             }
-            val odds: MutableMap<String, MutableList<Odd?>> = mutableMapOf()
+            val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
             it.oddsMap.forEach { odd ->
-                odds[odd.key] = odd.value.toMutableList()
+                odds[odd.key] = odd.value?.toMutableList()
             }
             MatchOdd(matchInfo, odds)
         } ?: listOf()
@@ -81,7 +81,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             override fun refreshOddButton(odd: Odd) {
                 notifyItemChanged(dataList.indexOf(dataList.find { matchOdd ->
                     matchOdd.oddsMap.toList()
-                        .find { map -> map.second.find { it == odd } != null } != null
+                        .find { map -> map.second?.find { it == odd } != null } != null
                 }))
             }
         }

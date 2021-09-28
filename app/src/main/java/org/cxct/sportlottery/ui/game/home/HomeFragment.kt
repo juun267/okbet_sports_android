@@ -793,7 +793,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     //mapping 要更新的賠率
                     if (!updateMatchOdd?.oddsMap.isNullOrEmpty()) {
                         updateMatchOdd?.oddsMap?.forEach oldOddList@{ oldOddMap ->
-                            oldOddMap.value.forEach { oldOdd ->
+                            oldOddMap.value?.forEach { oldOdd ->
                                 if (oldOdd == null) return@oldOddList
 
                                 oldOdd.status = BetStatus.LOCKED.code
@@ -831,7 +831,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 highlightDataList.forEachIndexed { index, updateMatchOdd ->
                     if (!updateMatchOdd.oddsMap.isNullOrEmpty()) {
                         updateMatchOdd.oddsMap.forEach { oldOddMap ->
-                            oldOddMap.value.forEach oldOddList@{ oldOdd ->
+                            oldOddMap.value?.forEach oldOddList@{ oldOdd ->
                                 if (oldOdd == null) return@oldOddList
 
                                 oldOdd.status = BetStatus.LOCKED.code
@@ -1007,7 +1007,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
             gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
                 matchOdd.oddsMap.values.forEach { oddList ->
-                    oddList.forEach { odd ->
+                    oddList?.forEach { odd ->
                         odd?.isSelected = result.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
                         }
@@ -1034,7 +1034,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         //精選賽事
         mRvHighlightAdapter.getData().forEach { matchOdd ->
             matchOdd.oddsMap.values.forEach { oddList ->
-                oddList.forEach { odd ->
+                oddList?.forEach { odd ->
                     odd?.isSelected = result.any { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == odd?.id
                     }

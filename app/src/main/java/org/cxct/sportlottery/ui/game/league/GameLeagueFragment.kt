@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -227,7 +228,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.values.forEach { oddList ->
-                            oddList.forEach { odd ->
+                            oddList?.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
@@ -270,9 +271,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun updateToolbar(oddsListData: OddsListData?) {
         when {
             (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
-                game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
+                game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else oddsListData?.sport?.name ?: ""
                 game_toolbar_sport_type.text =
-                    oddsListData?.leagueOdds?.firstOrNull()?.league?.name ?: ""
+                    oddsListData?.leagueOdds?.firstOrNull()?.league?.name?.split(" ")?.getOrNull(1) ?: ""
             }
 
             (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
@@ -281,6 +282,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     MatchType.TODAY -> getString(R.string.home_tab_today)
                     MatchType.EARLY -> getString(R.string.home_tab_early)
                     MatchType.PARLAY -> getString(R.string.home_tab_parlay)
+                    MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
                     else -> ""
                 }
             }
@@ -541,7 +543,27 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             matchOdd.matchInfo.id
                         )
                     }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        when (it.isSelected) {
+                            true -> {
+                                subscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                            false -> {
+                                unSubscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                        }
+                    }
                 }
+
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -554,6 +576,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             leagueOdd.gameType?.key,
                             PlayCate.EPS.value,
                             matchOdd.matchInfo.id
+                        )
+                    }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        unSubscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            it.code,
+                            matchOdd.matchInfo?.id
                         )
                     }
                 }

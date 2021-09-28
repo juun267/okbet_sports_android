@@ -212,7 +212,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             MatchType.TODAY -> getString(R.string.home_tab_today)
             MatchType.EARLY -> getString(R.string.home_tab_early)
             MatchType.PARLAY -> getString(R.string.home_tab_parlay)
-            MatchType.AT_START -> getString(R.string.home_tab_at_start)
+            MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
             MatchType.EPS -> getString(R.string.home_title_eps)
             else -> ""
@@ -654,7 +654,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.values.forEach { oddList ->
-                            oddList.forEach { odd ->
+                            oddList?.forEach { odd ->
                                 odd?.isSelected = it.any { betInfoListData ->
                                     betInfoListData.matchOdd.oddsId == odd?.id
                                 }
@@ -1254,7 +1254,27 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             matchOdd.matchInfo.id
                         )
                     }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        when (it.isSelected) {
+                            true -> {
+                                subscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                            false -> {
+                                unSubscribeChannelHall(
+                                    leagueOdd.gameType?.key,
+                                    it.code,
+                                    matchOdd.matchInfo?.id
+                                )
+                            }
+                        }
+                    }
                 }
+
                 false -> {
                     unSubscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -1267,6 +1287,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             leagueOdd.gameType?.key,
                             PlayCate.EPS.value,
                             matchOdd.matchInfo.id
+                        )
+                    }
+
+                    matchOdd.quickPlayCateList?.forEach {
+                        unSubscribeChannelHall(
+                            leagueOdd.gameType?.key,
+                            it.code,
+                            matchOdd.matchInfo?.id
                         )
                     }
                 }

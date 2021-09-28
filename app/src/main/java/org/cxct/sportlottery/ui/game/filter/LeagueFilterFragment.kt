@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.fragment_league_filter.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.league.League
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -69,7 +70,7 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun setupToolbar() {
-        game_toolbar_match_type.text = getString(args.matchType.resId)
+        game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else getString(args.matchType.resId)
 
         game_toolbar_sport_type.text = getString(args.gameType.string)
 
