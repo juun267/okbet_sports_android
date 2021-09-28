@@ -129,6 +129,7 @@
     <string name="conspire">串</string>
     <string name="message_no_at_start">目前没有即将开赛的赛事</string>
     <string name="message_no_in_play">目前没有滚球的赛事</string>
+    <string name="message_no_sport_game">目前没有%1$s的赛事</string>
     <string name="champion">冠军</string>
     <string name="league">联赛</string>
     <string name="monday">星期一</string>

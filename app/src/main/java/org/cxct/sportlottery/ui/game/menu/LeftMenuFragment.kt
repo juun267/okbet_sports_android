@@ -15,9 +15,9 @@ import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.menu.ChangeOddsTypeDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.util.JumpUtil
 
@@ -26,18 +26,32 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     //點擊置頂後
     private var unselectedAdapter =
         LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { gameType ->
-            viewModel.pinFavorite(
-                FavoriteType.SPORT,
-                gameType
-            )
-            setSnackBarMyFavoriteNotify( MyFavoriteNotifyType.SPORT_ADD.code)
+            when (viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    viewModel.pinFavorite(
+                        FavoriteType.SPORT,
+                        gameType
+                    )
+                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_ADD.code)
+                }
+                else -> { //遊客 //尚未登入
+                    setSnackBarMyFavoriteNotify(isLogin = false)
+                }
+            }
         }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //取消置頂
     var selectedAdapter =
         LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { gameType ->
-            viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-            setSnackBarMyFavoriteNotify( MyFavoriteNotifyType.SPORT_REMOVE.code)
+            when (viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    viewModel.pinFavorite(FavoriteType.SPORT, gameType)
+                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_REMOVE.code)
+                }
+                else -> { //遊客 //尚未登入
+                    setSnackBarMyFavoriteNotify(isLogin = false)
+                }
+            }
         }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //提示
@@ -59,7 +73,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         initButton()
     }
 
-    //TODO
     private fun initButton() {
         // 返回
         btn_close.setOnClickListener {
@@ -174,7 +187,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             GameType.FT.name -> viewModel.cardMatchTypeFT.value
             GameType.BK.name -> viewModel.cardMatchTypeBK.value
             GameType.TN.name -> viewModel.cardMatchTypeTN.value
-            GameType.VB.name -> viewModel.cardMatchTypeFT.value
+            GameType.VB.name -> viewModel.cardMatchTypeVB.value
             else -> MatchType.TODAY
         }
         val sportType = when (sport) {
@@ -184,23 +197,41 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             GameType.VB.name -> GameType.VB
             else -> GameType.FT
         }
-        matchType?.let {
-            viewModel.navSpecialEntrance(
-                it,
-                sportType
-            )
-            dismiss()
+        if (matchType != null) {
+            matchType.let {
+                viewModel.navSpecialEntrance(
+                    it,
+                    sportType
+                )
+                dismiss()
+            }
+        } else {
+            setSnackBarMyFavoriteNotify(isGameClose = true, gameType = sportType)
         }
     }
 
-    private fun setSnackBarMyFavoriteNotify(myFavoriteNotifyType:Int){
-        val title = when(myFavoriteNotifyType){
+    private fun setSnackBarMyFavoriteNotify(
+        myFavoriteNotifyType: Int? = null,
+        isGameClose: Boolean? = false,
+        gameType: GameType? = null,
+        isLogin: Boolean? = true
+    ) {
+        val title = when {
+            isLogin == false -> getString(R.string.login_notify)
+            isGameClose == true -> String.format(
+                getString(R.string.message_no_sport_game),
+                getString(gameType?.string ?: 0)
+            )
+            else -> {
+                when (myFavoriteNotifyType) {
 
-            MyFavoriteNotifyType.SPORT_ADD.code-> getString(R.string.myfavorite_notify_detail_add)
+                    MyFavoriteNotifyType.SPORT_ADD.code -> getString(R.string.myfavorite_notify_league_add)
 
-            MyFavoriteNotifyType.SPORT_REMOVE.code-> getString(R.string.myfavorite_notify_detail_remove)
+                    MyFavoriteNotifyType.SPORT_REMOVE.code -> getString(R.string.myfavorite_notify_league_remove)
 
-            else -> ""
+                    else -> ""
+                }
+            }
         }
 
         snackBarMyFavoriteNotify = activity?.let {
