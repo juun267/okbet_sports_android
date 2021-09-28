@@ -559,7 +559,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             changedLeague?.let { changedLeagueOdd ->
                                 unSubscribeLeagueChannelHall(leagueAdapter.data[targetIndex])
                                 val targetLeagueOdd = leagueAdapter.data[targetIndex]
-                                //TODO 更新的邏輯, 賠率變大變小, 狀態等等
                                 leagueAdapter.data[targetIndex] = changedLeagueOdd.apply {
                                     this.isExpand = targetLeagueOdd.isExpand
                                     this.gameType = targetLeagueOdd.gameType
@@ -567,6 +566,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 }
                                 subscribeChannelHall(leagueAdapter.data[targetIndex])
                             } ?: run {
+                                leagueAdapter.data.removeAt(targetIndex)
                                 leagueAdapter.notifyItemRemoved(targetIndex)
                             }
                         } ?: run {
@@ -1324,7 +1324,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd){
         leagueOdd.matchOdds.forEach {matchOdd ->
-            Timber.e("Dean, unSubscribe leagueOdd = $leagueOdd , matchId = ${matchOdd.matchInfo?.id}")
             unSubscribeChannelHall(
                 leagueOdd.gameType?.key,
                 getPlayCateMenuCode(),
