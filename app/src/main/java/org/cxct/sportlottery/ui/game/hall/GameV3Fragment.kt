@@ -804,7 +804,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     leagueOdd.matchOdds.toMutableList(),
                                     matchStatusChangeEvent
                                 ) &&
-                                leagueOdd.isExpand
+                                leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
                                     leagueAdapter.data.remove(leagueOdd)
@@ -831,7 +831,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                         matchClockEvent
                                     )
                                 } &&
-                                leagueOdd.isExpand) {
+                                leagueOdd.unfold == FoldState.UNFOLD.code) {
 
                                 leagueAdapter.notifyItemChanged(index)
                             }
@@ -855,7 +855,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                         context, matchOdd, oddsChangeEvent
                                     )
                                 } &&
-                                leagueOdd.isExpand
+                                leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 leagueAdapter.notifyItemChanged(index)
                             }
@@ -890,7 +890,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         leagueOdds.forEachIndexed { index, leagueOdd ->
                             if (leagueOdd.matchOdds.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
-                                } && leagueOdd.isExpand) {
+                                } && leagueOdd.unfold == FoldState.UNFOLD.code) {
                                 leagueAdapter.notifyItemChanged(index)
                             }
                         }
@@ -924,7 +924,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                         globalStopEvent
                                     )
                                 } &&
-                                leagueOdd.isExpand
+                                leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 leagueAdapter.notifyItemChanged(index)
                             }
@@ -1245,7 +1245,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.isExpand) {
+            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,

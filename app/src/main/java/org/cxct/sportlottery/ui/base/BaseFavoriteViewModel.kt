@@ -118,8 +118,6 @@ abstract class BaseFavoriteViewModel(
 
                 mFavorMatchOddList.postValue(it.updateMatchType())
             }
-
-            result?.updateLeagueExpandState(mFavorMatchOddList.value ?: listOf())
         }
     }
 
@@ -198,27 +196,6 @@ abstract class BaseFavoriteViewModel(
                     val oddsIndex = sortOrder?.indexOf(it)
                     oddsIndex
                 }.thenBy { it })
-            }
-        }
-    }
-
-    private fun MyFavoriteMatchResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
-        val isLocalExistLeague = this.rows?.any {
-            leagueOdds.map { leagueOdd ->
-                leagueOdd.league.id
-            }.contains(it.league.id)
-        }
-
-        when (isLocalExistLeague) {
-            true -> {
-                this.rows?.forEach {
-                    it.isExpand = leagueOdds.find { leagueOdd ->
-                        it.league.id == leagueOdd.league.id
-                    }?.isExpand ?: false
-                }
-            }
-            false -> {
-                this.rows?.firstOrNull()?.isExpand = true
             }
         }
     }
