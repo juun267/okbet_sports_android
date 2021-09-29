@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
@@ -643,7 +644,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 item.quickPlayCateList?.forEach {
-                    addView(RadioButton(context).apply {
+                    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
+
+                    addView(rb.apply {
                         text = it.name
 
                         id = it.hashCode()
@@ -662,14 +666,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }, LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.MATCH_PARENT
-                    ).apply {
-                        rightMargin =
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize20sp)
-                    })
+                    ))
 
                     if (it.isSelected) {
                         check(it.hashCode())
                     }
+
                 }
 
                 setOnCheckedChangeListener { _, checkedId ->
