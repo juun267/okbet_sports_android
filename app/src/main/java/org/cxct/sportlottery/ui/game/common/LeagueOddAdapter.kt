@@ -151,7 +151,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 GameType.BK.key -> setBkScoreText(matchType, item)
             }
 
-            setStatusTextColor(matchType)
+            setStatusTextColor(matchType, item)
 
             itemView.league_odd_match_play_count.apply {
                 text = item.matchInfo?.playCateNum.toString()
@@ -225,9 +225,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setStatusTextColor(matchType: MatchType) {
+        private fun setStatusTextColor(matchType: MatchType, item: MatchOdd) {
             val color =
-                if (matchType == MatchType.IN_PLAY) R.color.colorRedDark else R.color.colorGray
+                if (matchType == MatchType.IN_PLAY || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay == true)) R.color.colorRedDark else R.color.colorGray
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
