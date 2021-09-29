@@ -84,17 +84,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             it.matchInfo
         }
 
-        var detailMatchType = matchType
-        
-        if(matchType == MatchType.MY_EVENT){
-            detailMatchType = data[position].matchInfo?.startTime?.let { refreshMatchType(it) } ?: MatchType.MY_EVENT
-        }
-
         when (holder) {
             is ViewHolderHdpOu -> {
                 holder.stopTimer()
                 holder.bind(
-                    detailMatchType,
+                    matchType,
                     item,
                     leagueOddListener,
                     isTimerEnable,
@@ -102,15 +96,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     matchInfoList
                 )
             }
-        }
-    }
-
-    //我的賽事的MatchType 要用starTime判斷
-    private fun refreshMatchType(startTime: Long): MatchType {
-       return when{
-           System.currentTimeMillis() > startTime -> MatchType.IN_PLAY
-           startTime < 60 * 60 * 1000L -> MatchType.AT_START
-           else -> MatchType.MY_EVENT
         }
     }
 
