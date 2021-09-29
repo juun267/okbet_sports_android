@@ -204,7 +204,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                             leagueOdd.matchOdds.toMutableList(),
                             matchStatusChangeEvent
                         ) &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         if (leagueOdd.matchOdds.isNullOrEmpty()) {
                             leagueAdapter.data.remove(leagueOdd)
@@ -227,7 +227,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                 matchClockEvent
                             )
                         } &&
-                        leagueOdd.isExpand) {
+                        leagueOdd.unfold == FoldState.UNFOLD.code) {
 
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -252,7 +252,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                 oddsChangeEvent
                             )
                         } &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -268,7 +268,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                         } &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -287,7 +287,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                                 globalStopEvent
                             )
                         } &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -487,7 +487,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.isExpand) {
+            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -128,7 +129,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         ) {
             itemView.league_text.text = item.league.name
 
-            if (item.league.categoryIcon.isNotEmpty()){
+            if (item.league.categoryIcon.isNotEmpty()) {
                 val countryIcon = SvgUtil.getSvgDrawable(itemView.context, item.league.categoryIcon)
                 itemView.iv_country.setImageDrawable(countryIcon)
             }
@@ -163,12 +164,17 @@ class LeagueAdapter(private val matchType: MatchType) :
             matchType: MatchType,
             leagueListener: LeagueListener?
         ) {
-            itemView.league_expand.setExpanded(item.isExpand, false)
+
+            itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
             updateTimer(matchType, item.gameType)
 
             itemView.setOnClickListener {
-                item.isExpand = !item.isExpand
-                itemView.league_expand.setExpanded(item.isExpand, true)
+                item.unfold = if (item.unfold == FoldState.UNFOLD.code) {
+                    FoldState.FOLD.code
+                } else {
+                    FoldState.UNFOLD.code
+                }
+                itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, true)
                 updateTimer(matchType, item.gameType)
 
                 leagueListener?.onClickLeague(item)
