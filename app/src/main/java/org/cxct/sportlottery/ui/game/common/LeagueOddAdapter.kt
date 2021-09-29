@@ -151,7 +151,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 GameType.BK.key -> setBkScoreText(matchType, item)
             }
 
-            setStatusTextColor(matchType)
+            setStatusTextColor(matchType, item)
 
             itemView.league_odd_match_play_count.apply {
                 text = item.matchInfo?.playCateNum.toString()
@@ -225,9 +225,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setStatusTextColor(matchType: MatchType) {
-            val color =
-                if (matchType == MatchType.IN_PLAY) R.color.colorRedDark else R.color.colorGray
+        private fun setStatusTextColor(matchType: MatchType, item: MatchOdd) {
+            val color = if (matchType == MatchType.IN_PLAY || isInPlayInParlay(matchType,
+                    item)
+            ) R.color.colorRedDark else R.color.colorGray
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
@@ -288,7 +289,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 visibility = when {
                     matchType == MatchType.IN_PLAY ||
                             (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) ||
-                            (matchType == MatchType.PARLAY && item.matchInfo?.status == GameStatus.NOW_PLAYING.code) -> View.VISIBLE
+                            isInPlayInParlay(matchType, item) -> View.VISIBLE
                     else -> View.GONE
                 }
                 text = (item.matchInfo?.homeScore ?: 0).toString()
@@ -298,7 +299,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 visibility = when {
                     matchType == MatchType.IN_PLAY ||
                             (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false)||
-                            (matchType == MatchType.PARLAY && item.matchInfo?.status == GameStatus.NOW_PLAYING.code) -> View.VISIBLE
+                            isInPlayInParlay(matchType, item) -> View.VISIBLE
                     else -> View.GONE
                 }
                 text = (item.matchInfo?.awayScore ?: 0).toString()
@@ -390,8 +391,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             matchType: MatchType,
             isTimerEnable: Boolean
         ) {
-            when (matchType) {
-                MatchType.IN_PLAY -> {
+            when  {
+                matchType == MatchType.IN_PLAY || isInPlayInParlay(matchType, item) -> {
                     val socketValue = item.matchInfo?.socketMatchStatus
 
                     if (needCountStatus(socketValue)) {
@@ -419,7 +420,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                MatchType.AT_START -> {
+                matchType == MatchType.AT_START || isAtStartInParlay(matchType, item) -> {
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
                             itemView.league_odd_match_time.text = String.format(
@@ -439,7 +440,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                MatchType.MY_EVENT -> {
+                matchType == MatchType.MY_EVENT -> {
                     when {
                         item.matchInfo?.isInPlay ?: false -> {
                             item.matchInfo?.isAtStart = false
@@ -507,6 +508,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_match_remain_time_icon.apply {
                 visibility = when {
                     matchType == MatchType.AT_START -> View.VISIBLE
+                    isAtStartInParlay(matchType, item) -> View.VISIBLE
                     matchType == MatchType.TODAY -> View.VISIBLE
                     matchType == MatchType.MY_EVENT && item.matchInfo?.isAtStart == true -> View.VISIBLE
                     else -> View.INVISIBLE
@@ -542,7 +544,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         else -> TimeUtil.timeFormat(item.matchInfo?.startTime, "MM/dd")
                     }
                 }
-                matchType == MatchType.AT_START -> {
+                matchType == MatchType.AT_START || isAtStartInParlay(matchType, item)   -> {
                     itemView.league_odd_match_status.visibility = View.GONE
                     return
                 }
@@ -867,6 +869,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_quick_odd_btn_pair.visibility = View.GONE
             itemView.league_odd_quick_odd_btn_pager.visibility = View.GONE
             itemView.league_odd_quick_odd_btn_eps.visibility = View.GONE
+        }
+
+        private fun isInPlayInParlay(matchType: MatchType, item: MatchOdd): Boolean{
+            return matchType == MatchType.PARLAY && item.matchInfo?.status == GameStatus.NOW_PLAYING.code
+        }
+
+        private fun isAtStartInParlay(matchType: MatchType, item: MatchOdd): Boolean{
+            return matchType == MatchType.PARLAY && TimeUtil.isTimeAtStart(item.matchInfo?.startTime)
         }
 
         companion object {
