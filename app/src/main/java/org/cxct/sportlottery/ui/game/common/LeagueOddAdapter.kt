@@ -239,13 +239,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         //賽制(5盤3勝 or /int)
         private fun setSptText(item: MatchOdd, matchType: MatchType) {
             item.matchInfo?.spt?.let {
-                when (matchType) {
-                    MatchType.IN_PLAY -> { //除0以外顯示
+                when {
+                    matchType == MatchType.IN_PLAY || isInPlayInParlay(matchType, item) -> { //除0以外顯示
                         itemView.league_odd_spt.visibility = if (it > 0) View.VISIBLE else View.GONE
                         itemView.league_odd_spt.text = " / $it"
                     }
 
-                    MatchType.EARLY, MatchType.PARLAY, MatchType.TODAY, MatchType.AT_START -> { //TODO: 串關尚未確定顯示邏輯(是否要判斷滾球做不同顯示?)
+                    matchType == MatchType.EARLY || isAtStartInParlay(matchType, item) || matchType == MatchType.TODAY || matchType == MatchType.AT_START -> {
                         if (it == 3 || it == 5) {//除3、5以外不顯示
                             itemView.league_spt.visibility = View.VISIBLE
                             itemView.league_spt.text = when (it) {
@@ -308,7 +308,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private val isScoreTextVisible = { matchType: MatchType, item: MatchOdd ->
             when {
-                matchType == MatchType.IN_PLAY ||
+                matchType == MatchType.IN_PLAY || isInPlayInParlay(matchType, item) ||
                         (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay ?: false) -> View.VISIBLE
                 else -> View.GONE
             }
