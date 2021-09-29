@@ -177,7 +177,7 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         private fun updateTimer(matchType: MatchType, gameType: GameType?) {
             leagueOddAdapter.isTimerEnable =
-                itemView.league_expand.isExpanded && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
+                itemView.league_expand.isExpanded && (gameType == GameType.FT || gameType == GameType.BK || matchType == MatchType.PARLAY || matchType == MatchType.AT_START || matchType == MatchType.MY_EVENT)
         }
 
         companion object {
