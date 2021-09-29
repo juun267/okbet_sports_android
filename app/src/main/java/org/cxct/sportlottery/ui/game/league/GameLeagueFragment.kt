@@ -470,6 +470,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     play,
                     data.code
                 )
+                upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
