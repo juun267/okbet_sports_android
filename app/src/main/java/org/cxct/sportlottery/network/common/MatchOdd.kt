@@ -9,7 +9,7 @@ interface MatchOdd {
     val matchInfo: MatchInfo?
     val oddsMap: MutableMap<String, MutableList<Odd?>?>
     val oddsSort: String?
-    var quickPlayCateList: List<QuickPlayCate>?
+    val quickPlayCateList: MutableList<QuickPlayCate>?
     val oddsEps: Odds?
     var playCateMappingList: List<PlayCateMapItem>?
 }

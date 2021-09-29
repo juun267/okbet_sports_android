@@ -372,7 +372,8 @@ object SocketUpdateUtil {
     }
 
     private fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
-        matchOdd.quickPlayCateList = oddsChangeEvent.quickPlayCateList
+        matchOdd.quickPlayCateList?.clear()
+        matchOdd.quickPlayCateList?.addAll(oddsChangeEvent.quickPlayCateList ?: listOf())
         return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
     }
 
@@ -518,7 +519,7 @@ object SocketUpdateUtil {
         oddsChangeEvent.quickPlayCateList?.forEach { quickPlayCateSocket ->
             when (matchOdd.quickPlayCateList?.contains(quickPlayCateSocket)) {
                 false -> {
-                    matchOdd.quickPlayCateList?.toMutableList()?.add(quickPlayCateSocket)
+                    matchOdd.quickPlayCateList?.add(quickPlayCateSocket)
                     isNeedRefresh = true
                 }
             }

@@ -20,7 +20,7 @@ data class OddData(
     @Json(name = "oddsList")
     val oddsList: List<Odd>?,
     @Json(name = "quickPlayCateList")
-    override var quickPlayCateList: List<QuickPlayCate>?,
+    override val quickPlayCateList: MutableList<QuickPlayCate>?,
     @Json(name = "oddsSort")
     override val oddsSort: String? = null
 ) : MatchOdd {
