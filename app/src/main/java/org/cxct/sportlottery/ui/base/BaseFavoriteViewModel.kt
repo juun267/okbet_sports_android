@@ -90,9 +90,9 @@ abstract class BaseFavoriteViewModel(
                             matchOdd.matchInfo?.isFavorite = true
                             playCateCode?.let {
                                 matchOdd.oddsMap =
-                                    matchOdd.oddsMap.filter { odds -> odds.key == playCateCode }
-                                        .filterPlayCateSpanned(gameType).splitPlayCate()
-                                        .sortPlayCate().toMutableFormat()
+                                    matchOdd.oddsMap
+                                        .filter { odds -> odds.key == playCateCode }
+                                        .toMutableFormat()
                             }
                             matchOdd.playCateMappingList = playCateMappingList
                         }
@@ -110,9 +110,6 @@ abstract class BaseFavoriteViewModel(
                         }
 
                         matchOdd.playCateMappingList = playCateMappingList
-
-                        matchOdd.oddsMap =
-                            matchOdd.oddsMap.filterPlayCateSpanned(gameType).toMutableFormat()
                     }
                 }
 

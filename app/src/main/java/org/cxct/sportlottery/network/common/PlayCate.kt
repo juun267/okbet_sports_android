@@ -106,7 +106,7 @@ enum class PlayCate(val value: String) {
     OFFSIDE_LAST("OFFSIDE-LAST"),
     OU("O/U"),//大小
     OU_1ST("O/U-1ST"),//大/小-上半场
-    OU_1ST_OT("OU_1ST_OT"),
+    OU_1ST_OT("O/U-1ST-OT"),
     OU_2ST("O/U-2ST"),//大/小-下半场
     OU_2ST_INCL_OT("O/U-2ST-INCL-OT"),
     OU_BTS("O/U-BTS"),//大小&双方球队进球
@@ -209,7 +209,7 @@ enum class PlayCate(val value: String) {
     SINGLE_SEG4_ND("1X2-SEG4-ND"),
     SINGLE_SEG5("1X2-SEG5"),
     SINGLE_SEG5_GAMES("1X2_SEG5_GAMES"),
-    SINGLE_SEG6(" 1X2-SEG6"),
+    SINGLE_SEG6("1X2-SEG6"),
     SUBSTITUTION_FIRST("SUBSTITUTION-FIRST"),
     SUBSTITUTION_LAST("SUBSTITUTION-LAST"),
     TG("TG"),//总进球数

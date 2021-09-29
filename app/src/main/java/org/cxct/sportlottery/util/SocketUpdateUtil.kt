@@ -34,6 +34,7 @@ object SocketUpdateUtil {
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
+                    //TODO fix : ConcurrentModificationException 
                     if (matchStatusCO.status == 100) {
                         matchOddList.remove(matchOdd)
                         isNeedRefresh = true
@@ -185,39 +186,17 @@ object SocketUpdateUtil {
                     }
 
                     (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
-                        val oddsMapSocket =
-                            if (cateMenuCode == QuickPlayCate.QUICK_CORNERS.value || cateMenuCode == QuickPlayCate.QUICK_PENALTY.value || cateMenuCode == QuickPlayCate.QUICK_ADVANCE.value) {
-                                oddsChangeEvent.odds
-                                    ?.splitPlayCate()
-                                    ?.filterPlayCateSpanned(
-                                        matchOdd.matchInfo?.gameType,
-                                        matchOdd.playCateMappingList
-                                    )
-                                    ?.sortPlayCate(context)
-
-                            } else {
-                                oddsChangeEvent.odds
-                            }
-
                         updateMatchOdds(
                             matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat()
                                 ?: mutableMapOf(),
-                            oddsMapSocket,
+                            oddsChangeEvent.odds
                         )
                     }
 
                     else -> {
-                        val oddsMapSocket = oddsChangeEvent.odds
-                            ?.splitPlayCate()
-                            ?.filterPlayCateSpanned(
-                                matchOdd.matchInfo?.gameType,
-                                matchOdd.playCateMappingList
-                            )
-                            ?.sortPlayCate(context)
-
                         updateMatchOdds(
                             matchOdd.oddsMap,
-                            oddsMapSocket,
+                            oddsChangeEvent.odds,
                         )
                     }
                 }
@@ -406,7 +385,7 @@ object SocketUpdateUtil {
             when (oddsMap.keys.contains(oddsMapEntrySocket.key)) {
                 true -> {
                     oddsMap.forEach { oddTypeMap ->
-                        val oddsSocket = oddsMapSocket[oddTypeMap.key]
+                        val oddsSocket = oddsMapEntrySocket.value
                         val odds = oddTypeMap.value
 
                         oddsSocket?.forEach { oddSocket ->

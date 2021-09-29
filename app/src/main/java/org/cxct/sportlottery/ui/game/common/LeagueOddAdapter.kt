@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
@@ -227,7 +228,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setStatusTextColor(matchType: MatchType, item: MatchOdd) {
             val color = if (matchType == MatchType.IN_PLAY || isInPlayInParlay(matchType,
-                    item)
+                    item) || (matchType == MatchType.MY_EVENT && item.matchInfo?.isInPlay == true)
             ) R.color.colorRedDark else R.color.colorGray
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
@@ -240,12 +241,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         private fun setSptText(item: MatchOdd, matchType: MatchType) {
             item.matchInfo?.spt?.let {
                 when {
-                    matchType == MatchType.IN_PLAY || isInPlayInParlay(matchType, item) -> { //除0以外顯示
+                    matchType == MatchType.IN_PLAY || isInPlayInParlay(matchType,
+                        item) || (matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true) -> { //除0以外顯示
+
                         itemView.league_odd_spt.visibility = if (it > 0) View.VISIBLE else View.GONE
                         itemView.league_odd_spt.text = " / $it"
                     }
 
-                    matchType == MatchType.EARLY || isAtStartInParlay(matchType, item) || matchType == MatchType.TODAY || matchType == MatchType.AT_START -> {
+                    matchType == MatchType.EARLY || matchType == MatchType.PARLAY || matchType == MatchType.TODAY || matchType == MatchType.AT_START || (matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == false)
+                    -> { //TODO: 串關尚未確定顯示邏輯(是否要判斷滾球做不同顯示?)
                         if (it == 3 || it == 5) {//除3、5以外不顯示
                             itemView.league_spt.visibility = View.VISIBLE
                             itemView.league_spt.text = when (it) {
@@ -644,7 +648,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 item.quickPlayCateList?.forEach {
-                    addView(RadioButton(context).apply {
+                    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
+
+                    addView(rb.apply {
                         text = it.name
 
                         id = it.hashCode()
@@ -663,14 +670,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }, LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT,
                         LinearLayout.LayoutParams.MATCH_PARENT
-                    ).apply {
-                        rightMargin =
-                            itemView.context.resources.getDimensionPixelOffset(R.dimen.textSize20sp)
-                    })
+                    ))
 
                     if (it.isSelected) {
                         check(it.hashCode())
                     }
+
                 }
 
                 setOnCheckedChangeListener { _, checkedId ->
@@ -796,7 +801,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(item.matchInfo, item.playCateMappingList).apply {
 
-                    this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
+                    this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mutableMapOf()
 
                     this.oddsType = oddsType
 
