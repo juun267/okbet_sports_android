@@ -13,9 +13,10 @@ data class LeagueOdd(
     @Json(name = "matchOdds")
     val matchOdds: MutableList<MatchOdd>,
     @Json(name = "sort")
-    val sort: Int?
+    val sort: Int?,
+    @Json(name = "unfold")
+    var unfold: Int?
 ) {
-    var isExpand = false
     var searchMatchOdds = listOf<MatchOdd>()
     var gameType: GameType? = null
 }

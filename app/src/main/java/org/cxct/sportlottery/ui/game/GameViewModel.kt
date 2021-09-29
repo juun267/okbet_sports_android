@@ -792,13 +792,17 @@ class GameViewModel(
 
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
-
+    
     fun switchPlayCategory(
         matchType: MatchType,
         leagueIdList: List<String>,
         matchIdList: List<String>,
+        play: Play,
         playCateCode: String?
     ) {
+       _playList.value?.forEach {
+           it.isSelected = (it == play)
+       }
         _playCate.value = playCateCode
 
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
@@ -956,20 +960,6 @@ class GameViewModel(
                     matchOdd.updateOddStatus()
                 }
             }
-
-            result?.updateLeagueExpandState(
-                when (matchType) {
-                    MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
-                        _oddsListGameHallResult.value?.peekContent()
-                    }
-                    MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
-                        _oddsListResult.value?.peekContent()
-                    }
-                    else -> {
-                        null
-                    }
-                }?.oddsListData?.leagueOdds ?: listOf()
-            )
 
             when (matchType) {
                 MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
@@ -1625,27 +1615,6 @@ class GameViewModel(
         }
 
         return this
-    }
-
-    private fun OddsListResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
-        val isLocalExistLeague = this.oddsListData?.leagueOdds?.any {
-            leagueOdds.map { leagueOdd ->
-                leagueOdd.league.id
-            }.contains(it.league.id)
-        }
-
-        when (isLocalExistLeague) {
-            true -> {
-                this.oddsListData?.leagueOdds?.forEach {
-                    it.isExpand = leagueOdds.find { leagueOdd ->
-                        it.league.id == leagueOdd.league.id
-                    }?.isExpand ?: false
-                }
-            }
-            false -> {
-                this.oddsListData?.leagueOdds?.firstOrNull()?.isExpand = true
-            }
-        }
     }
 
     /**
