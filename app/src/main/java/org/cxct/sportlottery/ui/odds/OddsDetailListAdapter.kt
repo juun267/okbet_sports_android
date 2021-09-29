@@ -749,6 +749,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             val groupTeamName = oddsDetail.oddArrayList.groupBy {
                 it?.extInfoMap?.get(LanguageManager.getSelectLanguage(tvHomeName?.context).key)
+            }.filterNot {
+                it.key.isNullOrBlank()
             }
             return mutableListOf<String>().apply {
                 groupTeamName.forEach {
