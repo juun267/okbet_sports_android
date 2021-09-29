@@ -89,10 +89,12 @@ abstract class BaseFavoriteViewModel(
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
                             playCateCode?.let {
-                                matchOdd.oddsMap =
-                                    matchOdd.oddsMap
-                                        .filter { odds -> odds.key == playCateCode }
-                                        .toMutableFormat()
+                                val oddsMap = matchOdd.oddsMap
+                                    .filter { odds -> odds.key == playCateCode }
+                                    .toMutableFormat()
+
+                                matchOdd.oddsMap.clear()
+                                matchOdd.oddsMap.putAll(oddsMap)
                             }
                             matchOdd.playCateMappingList = playCateMappingList
                         }
@@ -189,10 +191,13 @@ abstract class BaseFavoriteViewModel(
         this.rows?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 val sortOrder = matchOdd.oddsSort?.split(",")
-                matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
+                val oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
                     val oddsIndex = sortOrder?.indexOf(it)
                     oddsIndex
                 }.thenBy { it })
+                
+                matchOdd.oddsMap.clear()
+                matchOdd.oddsMap.putAll(oddsMap)
             }
         }
     }

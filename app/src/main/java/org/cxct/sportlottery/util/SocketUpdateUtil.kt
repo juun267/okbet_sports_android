@@ -130,11 +130,13 @@ object SocketUpdateUtil {
      */
     private fun sortOdds(matchOdd: MatchOdd) {
         val sortOrder = matchOdd.oddsSort?.split(",")
-        matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
+        val oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
             val oddsIndex = sortOrder?.indexOf(it)
             oddsIndex
         }.thenBy { it })
 
+        matchOdd.oddsMap.clear()
+        matchOdd.oddsMap.putAll(oddsMap)
     }
 
     fun updateMatchOdds(oddBean: OddBean, oddsChangeEvent: OddsChangeEvent): Boolean {
