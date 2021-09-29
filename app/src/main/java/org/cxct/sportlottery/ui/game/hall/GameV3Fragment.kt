@@ -560,7 +560,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 unSubscribeLeagueChannelHall(leagueAdapter.data[targetIndex])
                                 val targetLeagueOdd = leagueAdapter.data[targetIndex]
                                 leagueAdapter.data[targetIndex] = changedLeagueOdd.apply {
-                                    this.isExpand = targetLeagueOdd.isExpand
+                                    this.unfold = targetLeagueOdd.unfold
                                     this.gameType = targetLeagueOdd.gameType
                                     this.searchMatchOdds = targetLeagueOdd.searchMatchOdds
                                 }
@@ -577,7 +577,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             val gameType = GameType.getGameType(leagueListIncrement.oddsListData.sport.code)
                             val insertLeagueOdd = changedLeagueOdd.apply {
                                 this.gameType = gameType
-                                this.isExpand = false
                             }
                             leagueAdapter.data.add(insertLeagueOdd)
                             leagueAdapter.notifyItemInserted(leagueAdapter.data.size - 1)
@@ -1081,7 +1080,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         gameTypeList.find { it.isSelected }.let { item ->
             game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
             updateSportBackground(item)
-            subscribeSportChannelHall(item.code)
+            subscribeSportChannelHall(item?.code)
         }
     }
 

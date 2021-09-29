@@ -254,7 +254,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 unSubscribeLeagueChannelHall(leagueAdapter.data[targetIndex])
                                 val targetLeagueOdd = leagueAdapter.data[targetIndex]
                                 leagueAdapter.data[targetIndex] = changedLeagueOdd.apply {
-                                    this.isExpand = targetLeagueOdd.isExpand
+                                    this.unfold = targetLeagueOdd.unfold
                                     this.gameType = targetLeagueOdd.gameType
                                     this.searchMatchOdds = targetLeagueOdd.searchMatchOdds
                                 }
