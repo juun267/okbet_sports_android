@@ -45,15 +45,40 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val args: GameLeagueFragmentArgs by navArgs()
 
     private val playCategoryAdapter by lazy {
+
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(
-                    args.matchType,
-                    args.leagueId.toList(),
-                    args.matchId.toList(),
-                    it
-                )
-                loading()
+                if (it.selectionType == SelectionType.SELECTABLE.code) { 
+                    when {
+                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
+                        !it.isSelected && it.isLocked == null -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //當前被點選的狀態
+                        it.isSelected -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //之前點選過然後離開又回來 要預設帶入
+                        !it.isSelected && it.isLocked == false -> {
+                            viewModel.switchPlay(
+                                args.matchType,
+                                args.leagueId.toList(),
+                                args.matchId.toList(),
+                                it
+                            )
+                            loading()
+                        }
+                    }
+                } else {
+                    viewModel.switchPlay(
+                        args.matchType,
+                        args.leagueId.toList(),
+                        args.matchId.toList(),
+                        it
+                    )
+                    upDateSelectPlay(it)
+                    loading()
+                }
             }
         }
     }
@@ -174,14 +199,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initObserve() {
         viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
-
-            it.find { play ->
-                play.isSelected
-            }?.let { selectedPlay ->
-                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code && selectedPlay.isLocked == false) {
-                    showPlayCateBottomSheet(selectedPlay)
-                }
-            }
         })
 
         viewModel.playCate.observe(this.viewLifecycleOwner, {
@@ -490,11 +507,24 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     args.matchType,
                     args.leagueId.toList(),
                     args.matchId.toList(),
+                    play,
                     data.code
                 )
+                upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
+    }
+
+    //更新isLocked狀態
+    private fun upDateSelectPlay(play: Play) {
+        val platData = playCategoryAdapter.data.find { it == play }
+        if (platData?.selectionType == SelectionType.SELECTABLE.code) {
+            platData.isLocked = when {
+                platData.isLocked == null || platData.isSelected -> false
+                else -> true
+            }
+        }
     }
 
     private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
