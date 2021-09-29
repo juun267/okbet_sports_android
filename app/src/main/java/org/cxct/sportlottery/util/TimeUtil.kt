@@ -395,7 +395,6 @@ object TimeUtil {
     }
 
     fun isTimeAtStart(timeStamp: Long?): Boolean{
-        Timber.e("Dean, remainTime = ${getRemainTime(timeStamp)}")
         return (getRemainTime(timeStamp) < 60 * 60 * 1000L) && getRemainTime(timeStamp) > 0
     }
 
