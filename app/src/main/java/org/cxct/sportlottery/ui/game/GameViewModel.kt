@@ -30,6 +30,7 @@ import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListRequest
 import org.cxct.sportlottery.network.odds.eps.OddsEpsListResult
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.OddsListIncrementResult
 import org.cxct.sportlottery.network.odds.list.OddsListRequest
 import org.cxct.sportlottery.network.odds.list.OddsListResult
 import org.cxct.sportlottery.network.odds.quick.QuickListData
@@ -52,13 +53,15 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class GameViewModel(
     androidContext: Application,
@@ -108,8 +111,14 @@ class GameViewModel(
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
 
+    val oddsListGameHallIncrementResult: LiveData<Event<OddsListIncrementResult?>>
+        get() = _oddsListGameHallIncrementResult
+
     val oddsListResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListResult
+
+    val oddsListIncrementResult: LiveData<Event<OddsListIncrementResult?>>
+        get() = _oddsListIncrementResult
 
     val leagueListResult: LiveData<Event<LeagueListResult?>>
         get() = _leagueListResult
@@ -175,7 +184,9 @@ class GameViewModel(
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _oddsListGameHallIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
+    private val _oddsListIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
     private val _outrightLeagueListResult = MutableLiveData<Event<OutrightLeagueListResult?>>()
     private val _outrightOddsListResult = MutableLiveData<Event<OutrightOddsListResult?>>()
@@ -688,8 +699,10 @@ class GameViewModel(
         matchType: MatchType,
         isReloadDate: Boolean,
         date: String? = null,
+        leagueIdList: List<String>? = null,
         isReloadPlayCate: Boolean = false,
-        isLastSportType: Boolean = false
+        isLastSportType: Boolean = false,
+        isIncrement: Boolean = false
     ) {
 
         val nowMatchType = curChildMatchType.value ?: matchType
@@ -714,20 +727,25 @@ class GameViewModel(
         sportItem?.let { item ->
             when (nowMatchType) {
                 MatchType.IN_PLAY -> {
-                    getOddsList(item.code, nowMatchType.postValue)
+                    getOddsList(item.code,
+                        nowMatchType.postValue,
+                        leagueIdList = leagueIdList,
+                        isIncrement = isIncrement)
                 }
                 MatchType.TODAY -> {
                     getLeagueList(
                         item.code,
                         nowMatchType.postValue,
-                        getCurrentTimeRangeParams()
+                        getCurrentTimeRangeParams(),
+                        isIncrement = isIncrement
                     )
                 }
                 MatchType.EARLY -> {
                     getLeagueList(
                         item.code,
                         nowMatchType.postValue,
-                        getCurrentTimeRangeParams()
+                        getCurrentTimeRangeParams(),
+                        isIncrement = isIncrement
                     )
                 }
                 MatchType.PARLAY -> {
@@ -735,7 +753,8 @@ class GameViewModel(
                         item.code,
                         nowMatchType.postValue,
                         getCurrentTimeRangeParams(),
-                        date
+                        date,
+                        isIncrement = isIncrement
                     )
 
                 }
@@ -746,7 +765,9 @@ class GameViewModel(
                     getOddsList(
                         item.code,
                         nowMatchType.postValue,
-                        getCurrentTimeRangeParams()
+                        getCurrentTimeRangeParams(),
+                        leagueIdList = leagueIdList,
+                        isIncrement = isIncrement
                     )
                 }
                 MatchType.EPS -> {
@@ -783,14 +804,18 @@ class GameViewModel(
         getLeagueOddsList(matchType, leagueIdList, matchIdList)
     }
 
+    /**
+     * @update by Dean, 20210927, 配合socket event: league_change 新增參數 isIncrement, 作為識別是否增量更新
+     */
     fun getLeagueOddsList(
         matchType: MatchType,
         leagueIdList: List<String>,
         matchIdList: List<String>,
-        isReloadPlayCate: Boolean = false
+        isReloadPlayCate: Boolean = false,
+        isIncrement: Boolean = false
     ) {
 
-        if (isReloadPlayCate) {
+        if (isReloadPlayCate && !isIncrement) {
             getPlayCategory(matchType)
         }
 
@@ -802,7 +827,8 @@ class GameViewModel(
                 matchType.postValue,
                 getCurrentTimeRangeParams(),
                 leagueIdList,
-                matchIdList
+                matchIdList,
+                isIncrement
             )
         }
     }
@@ -864,6 +890,7 @@ class GameViewModel(
         timeRangeParams: TimeRangeParams? = null,
         leagueIdList: List<String>? = null,
         matchIdList: List<String>? = null,
+        isIncrement: Boolean = false
     ) {
         when (matchType) {
             MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
@@ -954,11 +981,17 @@ class GameViewModel(
                             }
                     }
 
-                    _oddsListGameHallResult.postValue(Event(result))
+                    if (isIncrement)
+                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                    else
+                        _oddsListGameHallResult.postValue(Event(result))
                 }
 
                 MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
-                    _oddsListResult.postValue(Event(result))
+                    if (isIncrement)
+                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                    else
+                        _oddsListResult.postValue(Event(result))
                 }
             }
 
@@ -1010,7 +1043,8 @@ class GameViewModel(
         gameType: String,
         matchType: String,
         timeRangeParams: TimeRangeParams?,
-        date: String? = null
+        date: String? = null,
+        isIncrement: Boolean = false
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -1025,9 +1059,17 @@ class GameViewModel(
                 )
             }
 
-            _leagueListResult.value = (Event(result))
 
-            clearSelectedLeague()
+            if (isIncrement) {
+                result?.rows?.forEach { row ->
+                    row.list.forEach { league ->
+                        league.isSelected = _leagueSelectedList.value?.contains(league) == true
+                    }
+                }
+            } else
+                clearSelectedLeague()
+
+            _leagueListResult.value = (Event(result))
 
             notifyFavorite(FavoriteType.LEAGUE)
         }
