@@ -795,7 +795,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(item.matchInfo, item.playCateMappingList).apply {
 
-                    this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mapOf()
+                    this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mutableMapOf()
 
                     this.oddsType = oddsType
 
