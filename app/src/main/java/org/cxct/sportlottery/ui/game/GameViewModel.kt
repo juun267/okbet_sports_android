@@ -607,9 +607,6 @@ class GameViewModel(
                                     }
                             }
                         }
-                        oddData.oddsMap =
-                            oddData.oddsMap.filterPlayCateSpanned(row.sport?.code).splitPlayCate().sortPlayCate()
-                                .toMutableFormat()
                         oddData.playCateMappingList = playCateMappingList
                         oddData.updateOddStatus()
                     }
@@ -923,11 +920,7 @@ class GameViewModel(
                     }
 
                     matchOdd.playCateMappingList = playCateMappingList
-
-                    matchOdd.oddsMap =
-                        matchOdd.oddsMap.filterPlayCateSpanned(gameType).splitPlayCate().sortPlayCate()
-                            .toMutableFormat()
-
+                    
                     matchOdd.oddsMap.forEach { map ->
                         map.value?.updateOddSelectState()
                     }
@@ -1566,9 +1559,6 @@ class GameViewModel(
                     val quickOddsApi = when (quickPlayCate.code) {
                         QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
                             quickListData.quickOdds?.get(quickPlayCate.code)
-                                ?.filterPlayCateSpanned(matchOdd.matchInfo?.gameType)
-                                ?.splitPlayCate()
-                                ?.sortPlayCate()
                         }
                         else -> {
                             quickListData.quickOdds?.get(quickPlayCate.code)
