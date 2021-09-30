@@ -517,7 +517,7 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         oddsChangeEvent.quickPlayCateList?.forEach { quickPlayCateSocket ->
-            when (matchOdd.quickPlayCateList?.contains(quickPlayCateSocket)) {
+            when (matchOdd.quickPlayCateList?.map { it.code }?.contains(quickPlayCateSocket.code)) {
                 false -> {
                     matchOdd.quickPlayCateList?.add(quickPlayCateSocket)
                     isNeedRefresh = true
