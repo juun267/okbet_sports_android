@@ -932,7 +932,7 @@ class GameViewModel(
                         playCateMenuCode = getPlayCateSelected()?.code ?: ""
                     )
                 )
-            }
+            }?.updateMatchType()
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
@@ -987,6 +987,20 @@ class GameViewModel(
 
             notifyFavorite(FavoriteType.MATCH)
         }
+    }
+
+    private fun OddsListResult.updateMatchType(): OddsListResult{
+        this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
+
+                matchOdd.matchInfo?.isInPlay =
+                    System.currentTimeMillis() > matchOdd.matchInfo?.startTime ?: 0
+
+                matchOdd.matchInfo?.isAtStart =
+                    TimeUtil.isTimeAtStart(matchOdd.matchInfo?.startTime)
+            }
+        }
+        return this
     }
 
     fun getQuickList(matchId: String) {
