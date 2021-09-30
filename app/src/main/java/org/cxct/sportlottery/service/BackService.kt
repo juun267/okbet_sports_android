@@ -229,6 +229,7 @@ class BackService : Service() {
 
         Timber.i(">>> subscribe channel: $url")
         mStompClient?.run {
+            if (!this.isConnected) return
             this.topic(url, mHeader)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
