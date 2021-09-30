@@ -44,8 +44,8 @@ object GameConfigManager {
      *  @param gameCategory: 需轉換成小寫
      *  @param firmCode: 需轉換成小寫
      */
-    fun getThirdGameLogoIconUrl(gameCategory: String?, firmCode: String?, language: String): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/logo-${firmCode?.toLowerCase(Locale.getDefault())}.png"
+    fun getThirdGameLogoIconUrl(gameCategory: String?, firmCode: String?): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/logo-${firmCode?.toLowerCase(Locale.getDefault())}.png"
     }
 
     /**
