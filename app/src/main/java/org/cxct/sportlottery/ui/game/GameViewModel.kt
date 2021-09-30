@@ -1576,10 +1576,13 @@ class GameViewModel(
      */
     private fun MatchOdd.sortOdds() {
         val sortOrder = this.oddsSort?.split(",")
-        this.oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
+        val oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
             val oddsIndex = sortOrder?.indexOf(it)
             oddsIndex
         }.thenBy { it })
+
+        this.oddsMap.clear()
+        this.oddsMap.putAll(oddsMap)
     }
 
     private fun List<Odd?>.updateOddSelectState() {
