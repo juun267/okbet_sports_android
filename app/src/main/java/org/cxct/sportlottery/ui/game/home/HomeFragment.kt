@@ -481,16 +481,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //訂閱 推薦賽事 賠率
     private fun subscribeRecommendHallChannel() {
-        run {
-            mRecommendAdapter.getData().forEach { entity ->
-                subscribeChannelHall(
-                    entity.code,
-                    MenuCode.RECOMMEND.code,
-                    entity.matchInfo?.id
-                )
-            }
-        }.apply {
-            setDefaultRb()
+        mRecommendAdapter.getData().forEach { entity ->
+            subscribeChannelHall(
+                entity.code,
+                MenuCode.RECOMMEND.code,
+                entity.matchInfo?.id
+            )
         }
     }
 
@@ -513,6 +509,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 MenuCode.SPECIAL_MATCH_MOBILE.code,
                 matchOdd.matchInfo?.id
             )
+        }.apply {
+            setDefaultRb()
         }
     }
 
