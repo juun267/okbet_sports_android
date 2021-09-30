@@ -12,9 +12,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
+import java.util.*
 
 class RvBYAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -50,7 +53,7 @@ class RvBYAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ItemViewHolder -> {
                 val data = mDataList[position].thirdGameData
-                holder.bind(position, data)
+                holder.bind(data)
             }
         }
     }
@@ -91,9 +94,12 @@ class RvBYAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val mBtnStart: ImageView = itemView.findViewById(R.id.btn_start)
         private val mTvTitle: TextView = itemView.findViewById(R.id.tv_title)
 
-        fun bind(position: Int, data: ThirdDictValues?) {
-            val bgCode = position.toString()
-            val bgUrl = GameConfigManager.getThirdGameHallIconUrl(data?.gameCategory, bgCode)
+        fun bind(data: ThirdDictValues?) {
+            val language = when (LanguageManager.getSelectLanguage(itemView.context)) {
+                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> "cn"
+                else -> "us"
+            }
+            val bgUrl = GameConfigManager.getThirdGameHallIconUrl(data?.gameCategory, data?.firmCode, language)
             Glide.with(itemView.context)
                 .load(bgUrl)
                 .apply(mRequestOptions)
