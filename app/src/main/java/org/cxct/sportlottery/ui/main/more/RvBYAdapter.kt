@@ -113,7 +113,13 @@ class RvBYAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 mOnSelectThirdGameListener?.onClick(data)
             }
 
-            mTvTitle.text = data?.firmName
+            when (LanguageManager.getSelectLanguage(itemView.context)) {
+                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                    mTvTitle.visibility = View.VISIBLE
+                    mTvTitle.text = data?.firmName
+                }
+                else -> mTvTitle.visibility = View.INVISIBLE
+            }
         }
     }
 }
