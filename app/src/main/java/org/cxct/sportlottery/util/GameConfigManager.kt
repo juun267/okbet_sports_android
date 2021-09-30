@@ -52,8 +52,9 @@ object GameConfigManager {
      * 獲取第三方遊戲 遊戲大廳 icon 資源
      * 第三層對應 thirdDictMap
      * @param gameCategory: 需轉換成小寫
-    fun getThirdGameIconUrl(gameCategory: String?, h5ImageName: String?, language: String): String {
-        return Constants.getBaseUrl() + "/staticResource/img/gameicons/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/newimg/$h5ImageName"
+     */
+    fun getThirdGameIconUrl(gameCategory: String?, h5ImageName: String?): String {
+        return Constants.getBaseUrl() + "/staticResource/img/gameicons/${gameCategory?.toLowerCase(Locale.getDefault())}/newimg/$h5ImageName"
     }
 
 
