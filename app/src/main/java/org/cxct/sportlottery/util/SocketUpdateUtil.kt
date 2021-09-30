@@ -373,7 +373,6 @@ object SocketUpdateUtil {
     }
 
     private fun insertPlayCate(matchOdd: MatchOdd, oddsChangeEvent: OddsChangeEvent): Boolean {
-        matchOdd.quickPlayCateList?.clear()
         matchOdd.quickPlayCateList?.addAll(oddsChangeEvent.quickPlayCateList ?: listOf())
         return oddsChangeEvent.quickPlayCateList?.isNotEmpty() ?: false
     }
@@ -526,97 +525,6 @@ object SocketUpdateUtil {
             }
         }
         return isNeedRefresh
-    }
-
-    private fun Map<String, List<Odd?>?>.splitPlayCate(): Map<String, List<Odd?>?> {
-        val splitMap = mutableMapOf<String, List<Odd?>?>()
-
-        this.forEach { oddsMap ->
-            when (oddsMap.key) {
-                PlayCate.SINGLE_OU.value -> {
-
-                    splitMap[PlayCate.SINGLE_OU_O.value] =
-                        listOf(
-                            oddsMap.value?.getOrNull(0),
-                            oddsMap.value?.getOrNull(2),
-                            oddsMap.value?.getOrNull(4)
-                        )
-
-                    splitMap[PlayCate.SINGLE_OU_U.value] =
-                        listOf(
-                            oddsMap.value?.getOrNull(1),
-                            oddsMap.value?.getOrNull(3),
-                            oddsMap.value?.getOrNull(5)
-                        )
-                }
-
-                PlayCate.SINGLE_BTS.value -> {
-
-                    splitMap[PlayCate.SINGLE_BTS_Y.value] =
-                        listOf(
-                            oddsMap.value?.getOrNull(0),
-                            oddsMap.value?.getOrNull(2),
-                            oddsMap.value?.getOrNull(4)
-                        )
-
-                    splitMap[PlayCate.SINGLE_BTS_N.value] =
-                        listOf(
-                            oddsMap.value?.getOrNull(1),
-                            oddsMap.value?.getOrNull(3),
-                            oddsMap.value?.getOrNull(5)
-                        )
-                }
-
-                else -> {
-                    splitMap[oddsMap.key] = oddsMap.value
-                }
-            }
-        }
-
-        return splitMap
-    }
-
-    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
-        gameType: String?,
-        playCateMappingList: List<PlayCateMapItem>?
-    ): Map<String, List<Odd?>?> {
-        return this.mapValues { map ->
-            val playCateMapItem = playCateMappingList?.find {
-                it.gameType == gameType && it.playCateCode == map.key
-            }
-
-            map.value?.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
-            }
-        }
-    }
-
-    private fun Map<String, List<Odd?>?>.sortPlayCate(context: Context?): Map<String, List<Odd?>?> {
-        val sortMap = mutableMapOf<String, List<Odd?>?>()
-
-        this.forEach { oddsMap ->
-            if (context != null && oddsMap.key.contains(PlayCate.SINGLE.value)) {
-                val oddList = oddsMap.value?.toMutableList()
-
-                oddList?.indexOf(oddList.find {
-                    it?.nameMap?.get(LanguageManager.Language.EN.key)
-                        ?.split(context.getString(R.string.dash_no_trans))
-                        ?.getOrNull(0)?.contains(context.getString(R.string.draw_no_trans))
-                        ?: false
-                }
-                )?.let {
-                    if (it >= 0) {
-                        oddList.add(oddList.removeAt(it))
-                    }
-                }
-
-                sortMap[oddsMap.key] = oddList
-            } else {
-                sortMap[oddsMap.key] = oddsMap.value
-            }
-        }
-
-        return sortMap
     }
 
     private fun Map<String, List<Odd?>?>.toMutableFormat(): MutableMap<String, MutableList<Odd?>?> {
