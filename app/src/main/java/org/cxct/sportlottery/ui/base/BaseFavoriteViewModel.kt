@@ -210,7 +210,7 @@ abstract class BaseFavoriteViewModel(
                     System.currentTimeMillis() > matchOdd.matchInfo?.startTime ?: 0
 
                 matchOdd.matchInfo?.isAtStart =
-                    TimeUtil.getRemainTime(matchOdd.matchInfo?.startTime) < 60 * 60 * 1000L
+                    TimeUtil.isTimeAtStart(matchOdd.matchInfo?.startTime)
             }
         }
         return this
