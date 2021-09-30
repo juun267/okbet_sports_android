@@ -653,9 +653,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         LinearLayout.LayoutParams.MATCH_PARENT
                     ))
 
-                    if (it.isSelected) {
-                        check(it.hashCode())
-                    }
+                    rb.isChecked = it.isSelected
 
                 }
 
