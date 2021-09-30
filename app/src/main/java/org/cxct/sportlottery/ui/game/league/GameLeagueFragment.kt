@@ -45,15 +45,40 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private val args: GameLeagueFragmentArgs by navArgs()
 
     private val playCategoryAdapter by lazy {
+
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                viewModel.switchPlay(
-                    args.matchType,
-                    args.leagueId.toList(),
-                    args.matchId.toList(),
-                    it
-                )
-                loading()
+                if (it.selectionType == SelectionType.SELECTABLE.code) { 
+                    when {
+                        //這個是沒有點選過的狀況 第一次進來 ：開啟選單
+                        !it.isSelected && it.isLocked == null -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //當前被點選的狀態
+                        it.isSelected -> {
+                            showPlayCateBottomSheet(it)
+                        }
+                        //之前點選過然後離開又回來 要預設帶入
+                        !it.isSelected && it.isLocked == false -> {
+                            viewModel.switchPlay(
+                                args.matchType,
+                                args.leagueId.toList(),
+                                args.matchId.toList(),
+                                it
+                            )
+                            loading()
+                        }
+                    }
+                } else {
+                    viewModel.switchPlay(
+                        args.matchType,
+                        args.leagueId.toList(),
+                        args.matchId.toList(),
+                        it
+                    )
+                    upDateSelectPlay(it)
+                    loading()
+                }
             }
         }
     }
@@ -159,6 +184,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onStart() {
         super.onStart()
+        
+        subscribeSportChannelHall(args.gameType.key)
 
         viewModel.getLeagueOddsList(
             args.matchType,
@@ -172,14 +199,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun initObserve() {
         viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
-
-            it.find { play ->
-                play.isSelected
-            }?.let { selectedPlay ->
-                if (selectedPlay.selectionType == SelectionType.SELECTABLE.code && selectedPlay.isLocked == false) {
-                    showPlayCateBottomSheet(selectedPlay)
-                }
-            }
         })
 
         viewModel.playCate.observe(this.viewLifecycleOwner, {
@@ -213,6 +232,38 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
+                }
+            }
+        })
+
+        viewModel.oddsListIncrementResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { leagueListIncrementResult ->
+                val leagueListIncrement = leagueListIncrementResult.oddsListResult
+
+                leagueListIncrementResult.leagueIdList?.forEach { leagueId ->
+                    //判斷此聯賽是否已經於畫面顯示
+                    leagueAdapter.data.find { adapterLeagueOdd -> adapterLeagueOdd.league.id == leagueId }
+                        ?.let { onScreenLeague ->
+
+                            val targetIndex = leagueAdapter.data.indexOf(onScreenLeague)
+                            val changedLeague =
+                                leagueListIncrement?.oddsListData?.leagueOdds?.find { leagueOdd -> leagueOdd.league.id == onScreenLeague.league.id }
+
+                            //若api response沒有該聯賽資料則不顯示該聯賽
+                            changedLeague?.let { changedLeagueOdd ->
+                                unSubscribeLeagueChannelHall(leagueAdapter.data[targetIndex])
+                                val targetLeagueOdd = leagueAdapter.data[targetIndex]
+                                leagueAdapter.data[targetIndex] = changedLeagueOdd.apply {
+                                    this.unfold = targetLeagueOdd.unfold
+                                    this.gameType = targetLeagueOdd.gameType
+                                    this.searchMatchOdds = targetLeagueOdd.searchMatchOdds
+                                }
+                                subscribeChannelHall(leagueAdapter.data[targetIndex])
+                            } ?: run {
+                                leagueAdapter.data.removeAt(targetIndex)
+                                leagueAdapter.notifyItemRemoved(targetIndex)
+                            }
+                        }
                 }
             }
         })
@@ -300,7 +351,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             leagueOdd.matchOdds.toMutableList(),
                             matchStatusChangeEvent
                         ) &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         if (leagueOdd.matchOdds.isNullOrEmpty()) {
                             leagueAdapter.data.remove(leagueOdd)
@@ -323,7 +374,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 matchClockEvent
                             )
                         } &&
-                        leagueOdd.isExpand) {
+                        leagueOdd.unfold == FoldState.UNFOLD.code) {
 
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -343,7 +394,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 context, matchOdd, oddsChangeEvent
                             )
                         } &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -360,7 +411,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     if (leagueOdd.matchOdds.any { matchOdd ->
                             SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                         } &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -380,7 +431,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                                 globalStopEvent
                             )
                         } &&
-                        leagueOdd.isExpand
+                        leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
                         leagueAdapter.notifyItemChanged(index)
                     }
@@ -401,9 +452,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         receiver.leagueChange.observe(this.viewLifecycleOwner, {
             it?.let { leagueChangeEvent ->
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                    unSubscribeChannelHallAll()
-                    viewModel.getLeagueOddsList(args.matchType, leagueIdList, listOf())
-                    loading()
+                    leagueIdList.filter { changedLeagueId ->
+                        leagueAdapter.data.find { adapterLeague -> adapterLeague.league.id == changedLeagueId } != null
+                    }.let { onScreenLeagueIdList ->
+                        if (onScreenLeagueIdList.isNotEmpty())
+                            viewModel.getLeagueOddsList(args.matchType,
+                                onScreenLeagueIdList,
+                                listOf(),
+                                isIncrement = true)
+                    }
                 }
             }
         })
@@ -450,11 +507,24 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     args.matchType,
                     args.leagueId.toList(),
                     args.matchId.toList(),
+                    play,
                     data.code
                 )
+                upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
             })
+    }
+
+    //更新isLocked狀態
+    private fun upDateSelectPlay(play: Play) {
+        val platData = playCategoryAdapter.data.find { it == play }
+        if (platData?.selectionType == SelectionType.SELECTABLE.code) {
+            platData.isLocked = when {
+                platData.isLocked == null || platData.isSelected -> false
+                else -> true
+            }
+        }
     }
 
     private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
@@ -528,7 +598,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
-            when (leagueOdd.isExpand) {
+            when (leagueOdd.unfold == FoldState.UNFOLD.code) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
@@ -591,10 +661,29 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
+    private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd){
+        leagueOdd.matchOdds.forEach {matchOdd ->
+            unSubscribeChannelHall(
+                leagueOdd.gameType?.key,
+                getPlayCateMenuCode(),
+                matchOdd.matchInfo?.id
+            )
+
+            if (matchOdd.matchInfo?.eps == 1) {
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    PlayCate.EPS.value,
+                    matchOdd.matchInfo.id
+                )
+            }
+        }
+    }
+
     override fun onStop() {
         super.onStop()
 
         unSubscribeChannelHallAll()
+        unSubscribeChannelHallSport()
     }
 
     override fun onDestroyView() {

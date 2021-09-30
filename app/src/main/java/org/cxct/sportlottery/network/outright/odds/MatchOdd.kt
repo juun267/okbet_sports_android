@@ -19,13 +19,13 @@ data class MatchOdd(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo?,
     @Json(name = "odds")
-    override var oddsMap: MutableMap<String, MutableList<Odd?>?> = mutableMapOf(),
+    override val oddsMap: MutableMap<String, MutableList<Odd?>?> = mutableMapOf(),
     @Json(name = "dynamicMarkets")
     val dynamicMarkets: @RawValue Map<String, DynamicMarket>,
     @Json(name = "oddsList")
     val oddsList: @RawValue List<String?>? = listOf(), //TODO Cheryl : 目前回傳都是null, 待測試
     @Json(name = "quickPlayCateList")
-    override var quickPlayCateList: @RawValue List<QuickPlayCate>? = listOf(), //(新)赛事可玩的快捷玩法列表
+    override val quickPlayCateList: @RawValue MutableList<QuickPlayCate>? = mutableListOf(), //(新)赛事可玩的快捷玩法列表
     @Json(name = "oddsSort")
     override val oddsSort: String? = null
 ) : MatchOdd, Parcelable {

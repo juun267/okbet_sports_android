@@ -89,10 +89,12 @@ abstract class BaseFavoriteViewModel(
                         this.matchOdds.forEach { matchOdd ->
                             matchOdd.matchInfo?.isFavorite = true
                             playCateCode?.let {
-                                matchOdd.oddsMap =
-                                    matchOdd.oddsMap
-                                        .filter { odds -> odds.key == playCateCode }
-                                        .toMutableFormat()
+                                val oddsMap = matchOdd.oddsMap
+                                    .filter { odds -> odds.key == playCateCode }
+                                    .toMutableFormat()
+
+                                matchOdd.oddsMap.clear()
+                                matchOdd.oddsMap.putAll(oddsMap)
                             }
                             matchOdd.playCateMappingList = playCateMappingList
                         }
@@ -115,8 +117,6 @@ abstract class BaseFavoriteViewModel(
 
                 mFavorMatchOddList.postValue(it.updateMatchType())
             }
-
-            result?.updateLeagueExpandState(mFavorMatchOddList.value ?: listOf())
         }
     }
 
@@ -191,31 +191,13 @@ abstract class BaseFavoriteViewModel(
         this.rows?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
                 val sortOrder = matchOdd.oddsSort?.split(",")
-                matchOdd.oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
+                val oddsMap = matchOdd.oddsMap.toSortedMap(compareBy<String> {
                     val oddsIndex = sortOrder?.indexOf(it)
                     oddsIndex
                 }.thenBy { it })
-            }
-        }
-    }
-
-    private fun MyFavoriteMatchResult.updateLeagueExpandState(leagueOdds: List<LeagueOdd>) {
-        val isLocalExistLeague = this.rows?.any {
-            leagueOdds.map { leagueOdd ->
-                leagueOdd.league.id
-            }.contains(it.league.id)
-        }
-
-        when (isLocalExistLeague) {
-            true -> {
-                this.rows?.forEach {
-                    it.isExpand = leagueOdds.find { leagueOdd ->
-                        it.league.id == leagueOdd.league.id
-                    }?.isExpand ?: false
-                }
-            }
-            false -> {
-                this.rows?.firstOrNull()?.isExpand = true
+                
+                matchOdd.oddsMap.clear()
+                matchOdd.oddsMap.putAll(oddsMap)
             }
         }
     }
@@ -228,7 +210,7 @@ abstract class BaseFavoriteViewModel(
                     System.currentTimeMillis() > matchOdd.matchInfo?.startTime ?: 0
 
                 matchOdd.matchInfo?.isAtStart =
-                    TimeUtil.getRemainTime(matchOdd.matchInfo?.startTime) < 60 * 60 * 1000L
+                    TimeUtil.isTimeAtStart(matchOdd.matchInfo?.startTime)
             }
         }
         return this
