@@ -134,7 +134,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.SCO.ordinal
                     -> LayoutType.SCO.layout
 
-                    PlayCate.DC_OU.ordinal, PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal, PlayCate.QUALIFYING_METHOD.ordinal
+                    PlayCate.DC_OU.ordinal, PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal
                     -> LayoutType.GROUP_6.layout
 
                     PlayCate.OU_BTS.ordinal, PlayCate.OU_OE.ordinal, PlayCate.OU_TTS1ST.ordinal
@@ -408,7 +408,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.SCO.ordinal
                         -> forSCO(oddsDetail, adapterPosition)
 
-                        PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal, PlayCate.QUALIFYING_METHOD.ordinal
+                        PlayCate.SINGLE_OU.ordinal, PlayCate.SINGLE_BTS.ordinal, PlayCate.SINGLE_FLG.ordinal
                         -> group6Item(oddsDetail)
 
                         PlayCate.DC_OU.ordinal, PlayCate.DC_BTS.ordinal, PlayCate.DC_FLG.ordinal
