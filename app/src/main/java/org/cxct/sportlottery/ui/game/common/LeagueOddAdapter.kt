@@ -415,18 +415,18 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
                 }
 
-                matchType == MatchType.AT_START || isAtStartInParlay(matchType, item) -> {
+                item.matchInfo?.isAtStart == true -> {
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
                             itemView.league_odd_match_time.text = String.format(
                                 itemView.context.resources.getString(R.string.at_start_remain_minute),
                                 TimeUtil.timeFormat(timeMillis, "m")
                             )
-                            item.matchInfo?.remainTime = timeMillis
+                            item.matchInfo.remainTime = timeMillis
                         }
                     }
 
-                    item.matchInfo?.remainTime?.let { remainTime ->
+                    item.matchInfo.remainTime?.let { remainTime ->
                         updateTimer(
                             isTimerEnable,
                             (remainTime / 1000).toInt(),
@@ -502,10 +502,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.league_odd_match_remain_time_icon.apply {
                 visibility = when {
-                    matchType == MatchType.AT_START -> View.VISIBLE
-                    isAtStartInParlay(matchType, item) -> View.VISIBLE
+                    item.matchInfo?.isAtStart == true -> View.VISIBLE
                     matchType == MatchType.TODAY -> View.VISIBLE
-                    matchType == MatchType.MY_EVENT && item.matchInfo?.isAtStart == true -> View.VISIBLE
                     else -> View.INVISIBLE
                 }
             }
@@ -539,7 +537,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         else -> TimeUtil.timeFormat(item.matchInfo?.startTime, "MM/dd")
                     }
                 }
-                matchType == MatchType.AT_START || isAtStartInParlay(matchType, item)   -> {
+                item.matchInfo?.isAtStart == true   -> {
                     itemView.league_odd_match_status.visibility = View.GONE
                     return
                 }
@@ -865,10 +863,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             itemView.league_odd_quick_odd_btn_pair.visibility = View.GONE
             itemView.league_odd_quick_odd_btn_pager.visibility = View.GONE
             itemView.league_odd_quick_odd_btn_eps.visibility = View.GONE
-        }
-
-        private fun isAtStartInParlay(matchType: MatchType, item: MatchOdd): Boolean{
-            return matchType == MatchType.PARLAY && TimeUtil.isTimeAtStart(item.matchInfo?.startTime)
         }
 
         companion object {
