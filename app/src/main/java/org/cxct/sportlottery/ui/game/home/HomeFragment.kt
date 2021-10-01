@@ -320,10 +320,16 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         rb_in_play.visibility = if (inPlayCount == 0) View.GONE else View.VISIBLE
         rb_as_start.visibility = if (atStartCount == 0) View.GONE else View.VISIBLE
 
-        if (inPlayCount != 0)
+    }
+
+    private fun setDefaultRb() {
+        val inPlayCount = mInPlayResult?.matchPreloadData?.num ?: 0
+        if (inPlayCount != 0) {
             rb_in_play.performClick()
-        else
+        }
+        else {
             rb_as_start.performClick()
+        }
     }
 
     private fun refreshHighlight(result: MatchCategoryResult?) {
@@ -421,27 +427,34 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //訂閱 滾球盤 or 即將開賽 賠率
     private fun subscribeTableHallChannel(selectMatchType: MatchType) {
-        if (selectMatchType == MatchType.IN_PLAY) {
-            mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchOdds.forEach { match ->
-                    subscribeChannelHall(
-                        data.code,
-                        MenuCode.HOME_INPLAY_MOBILE.code,
-                        match.matchInfo?.id
-                    )
+            when (selectMatchType) {
+                MatchType.IN_PLAY -> {
+                    mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+                        data.matchOdds.forEach { match ->
+                            subscribeChannelHall(
+                                data.code,
+                                MenuCode.HOME_INPLAY_MOBILE.code,
+                                match.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+                MatchType.AT_START -> {
+                    mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+                        data.matchOdds.forEach { match ->
+                            subscribeChannelHall(
+                                data.code,
+                                MenuCode.HOME_ATSTART_MOBILE.code,
+                                match.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+                else -> {
+
                 }
             }
-        } else if (selectMatchType == MatchType.AT_START) {
-            mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                data.matchOdds.forEach { match ->
-                    subscribeChannelHall(
-                        data.code,
-                        MenuCode.HOME_ATSTART_MOBILE.code,
-                        match.matchInfo?.id
-                    )
-                }
-            }
-        }
+
     }
 
     private fun unsubscribeTableHallChannel() {
@@ -496,6 +509,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 MenuCode.SPECIAL_MATCH_MOBILE.code,
                 matchOdd.matchInfo?.id
             )
+        }.apply {
+            setDefaultRb()
         }
     }
 
