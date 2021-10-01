@@ -35,7 +35,12 @@ class TypeSCOAdapter(
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
+                oddsDetail.scoItem.forEach {
+                    if (it.value.any { o -> o == odd }){
+                        notifyItemChanged(keys.indexOf(it.key))
+                        return
+                    }
+                }
             }
         }
     }
@@ -59,11 +64,11 @@ class TypeSCOAdapter(
 
 
     override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            keys.lastIndex -> {
+        return when {
+            position == keys.lastIndex -> {
                 ItemType.NO_GOALS.ordinal
             }
-            keys.size -> {
+            keys.size > OVER_COUNT && position == keys.size -> {
                 ItemType.MORE.ordinal
             }
             else -> {
@@ -73,7 +78,10 @@ class TypeSCOAdapter(
     }
 
 
-    override fun getItemCount(): Int = keys.size + MORE_ITEM
+    override fun getItemCount(): Int = when {
+        keys.size > 5 -> keys.size + MORE_ITEM
+        else -> keys.size
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -180,11 +188,6 @@ class TypeSCOAdapter(
             tvExpandControl.apply {
                 setOnClickListener {
                     onMoreClickListener.click()
-                }
-                visibility = if (oddsDetail.oddArrayList.size > OVER_COUNT) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
                 }
                 text = if (oddsDetail.isMoreExpand) context.getString(R.string.odds_detail_less) else context.getString(R.string.odds_detail_more)
             }
