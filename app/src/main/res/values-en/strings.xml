@@ -314,7 +314,7 @@
     <string name="confirmed">Confirmed</string>
     <string name="bet_detail">Bets details</string>
     <string name="bet_time">Betting time</string>
-    <string name="bet_time2">Betting time</string>
+    <string name="bet_time2">Time</string>
     <string name="league_name">League Name:</string>
     <string name="game_match">Match：</string>
     <string name="play_type">Betting method</string>
@@ -600,7 +600,7 @@
     <string name="log_detail_review_time">Checking time</string>
     <string name="log_detail_reason">Remark :</string>
     <string name="finance_log_selector_until">To</string>
-    <string name="finance_list_no_record">There is no content</string>
+    <string name="finance_list_no_record">No content available at the moment</string>
     <string name="feedback_toolbar_title">Feedback</string>
     <string name="feedback_detail">Feedback details</string>
     <string name="feedback_tabName_problem">Questions and Suggestions</string>
@@ -656,11 +656,11 @@
     <string name="credit_bet_record">Rounds history</string>
     <string name="all_plat_type">All platform types</string>
     <string name="visit_first">Go around</string>
-    <string name="bet_number">Number of bets</string>
-    <string name="bet_money">amount of betting</string>
-    <string name="profit_and_loss">Profit and loss</string>
-    <string name="total_bet_number">Total bets</string>
-    <string name="total_profit_and_loss">Winning total</string>
+    <string name="bet_number">Count</string>
+    <string name="bet_money">Amount</string>
+    <string name="profit_and_loss">Result</string>
+    <string name="total_bet_number">Total bets：</string>
+    <string name="total_profit_and_loss">Winning total：</string>
     <string name="game_name">Game name</string>
     <string name="all_out_plat">All out</string>
     <string name="all_in_plat">All in</string>
