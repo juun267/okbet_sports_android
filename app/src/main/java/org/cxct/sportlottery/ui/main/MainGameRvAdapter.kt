@@ -14,6 +14,7 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
 
 class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainGameRvAdapter.ItemViewHolder>() {
 
@@ -76,7 +77,11 @@ class MainGameRvAdapter(private val spanCount: Int) : RecyclerView.Adapter<MainG
         private val mIvImage: ImageView = itemView.findViewById(R.id.iv_image)
 
         fun bind(data: ThirdDictValues?) {
-            val iconUrl = GameConfigManager.getThirdGameHomeIcon(data?.gameCategory, data?.firmCode)
+            val language = when (LanguageManager.getSelectLanguage(itemView.context)) {
+                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> "cn"
+                else -> "us"
+            }
+            val iconUrl = GameConfigManager.getThirdGameHomeIcon(data?.gameCategory, data?.firmCode, language)
             Glide.with(itemView.context)
                 .load(iconUrl)
                 .apply(mRequestOptions)

@@ -14,8 +14,8 @@ object GameConfigManager {
      *  @param gameCategory: 需轉換成小寫
      *  @param firmCode: 需轉換成小寫
      */
-    fun getThirdGameHomeIcon(gameCategory: String?, firmCode: String?): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/home-vision__${firmCode?.toLowerCase(Locale.getDefault())}.png"
+    fun getThirdGameHomeIcon(gameCategory: String?, firmCode: String?, language: String): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/home-vision__${firmCode?.toLowerCase(Locale.getDefault())}.png"
     }
 
     /**
@@ -24,8 +24,8 @@ object GameConfigManager {
      *  @param gameCategory: 需轉換成小寫
      *  @param firmCode: 需轉換成小寫
      */
-    fun getThirdGameHallIconUrl(gameCategory: String?, firmCode: String?): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/game-hall-vision__${firmCode?.toLowerCase(Locale.getDefault())}.png"
+    fun getThirdGameHallIconUrl(gameCategory: String?, firmCode: String?, language: String): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/game-hall-vision__${firmCode?.toLowerCase(Locale.getDefault())}.png"
     }
 
     /**
@@ -34,8 +34,8 @@ object GameConfigManager {
      *  @param gameCategory: 需轉換成小寫
      *  @param firmCode: 需轉換成小寫
      */
-    fun getThirdGameHallDZIconUrl(gameCategory: String?, firmCode: String?): String {
-        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/game-hall-vision__${firmCode?.toLowerCase(Locale.getDefault())}_active.png"
+    fun getThirdGameHallDZIconUrl(gameCategory: String?, firmCode: String?, language: String): String {
+        return Constants.getBaseUrl() + "/staticResource/img/game/${gameCategory?.toLowerCase(Locale.getDefault())}/${language}/game-hall-vision__${firmCode?.toLowerCase(Locale.getDefault())}_active.png"
     }
 
     /**
