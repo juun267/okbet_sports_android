@@ -460,11 +460,6 @@ class MoneyRechViewModel(
             bankId.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyBankCardNumber(
-                bankId
-            ) -> {
-                androidContext.getString(R.string.error_bank_id)
-            }
             else -> {
                 ""
             }
