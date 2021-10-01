@@ -39,7 +39,6 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
-import org.cxct.sportlottery.network.playcate.PlayCateListResult
 import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
@@ -271,10 +270,6 @@ class GameViewModel(
     private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>>()
     val oddsDetailResult: LiveData<Event<OddsDetailResult?>>
         get() = _oddsDetailResult
-
-    private val _playCateListResult = MutableLiveData<Event<PlayCateListResult?>>()
-    val playCateListResult: LiveData<Event<PlayCateListResult?>>
-        get() = _playCateListResult
 
     private val _oddsDetailList = MutableLiveData<Event<ArrayList<OddsDetailListData>>>()
     val oddsDetailList: LiveData<Event<ArrayList<OddsDetailListData>>>
@@ -1277,66 +1272,58 @@ class GameViewModel(
         _leagueSelectedList.postValue(mutableListOf())
     }
 
-    private suspend fun getOddsDetail(matchId: String) {
-        val result = doNetwork(androidContext) {
-            OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
-        }
-        _oddsDetailResult.postValue(Event(result))
-        result?.success?.let { success ->
-            val list: ArrayList<OddsDetailListData> = ArrayList()
-            if (success) {
-                result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
-                    betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
-                        value.odds.forEach { odd ->
-                            odd?.isSelected = list.any {
-                                it.matchOdd.oddsId == odd?.id
-                            }
-                        }
-                    }
-                    val filteredOddList =
-                        mutableListOf<Odd?>()
-                    value.odds.forEach { detailOdd ->
-                        //因排版問題 null也需要添加
-                        filteredOddList.add(detailOdd)
-                    }
-                    list.add(
-                        OddsDetailListData(
-                            key,
-                            TextUtil.split(value.typeCodes),
-                            value.name,
-                            filteredOddList,
-                            value.nameMap
-                        )
-                    )
-                }
-
-                result.oddsDetailData?.matchOdd?.updateOddStatus()
-
-                //因UI需求 特優賠率移到第一項
-                list.find { it.gameType == PlayCate.EPS.value }.apply {
-                    if (this != null) {
-                        list.add(0, list.removeAt(list.indexOf(this)))
-                    }
-                }
-
-                list.forEach {
-                    it.originPosition = list.indexOf(it)
-                }
-
-                _oddsDetailList.postValue(Event(list))
-
-                notifyFavorite(FavoriteType.PLAY_CATE)
-            }
-        }
-    }
-
-    fun getPlayCateListAndOddsDetail(gameType: String, matchId: String) {
+    fun getOddsDetail(matchId: String) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.playCateListService.getPlayCateList(gameType)
+                OneBoSportApi.oddsService.getOddsDetail(OddsDetailRequest(matchId))
             }
-            getOddsDetail(matchId)
-            _playCateListResult.postValue(Event(result))
+            _oddsDetailResult.postValue(Event(result))
+            result?.success?.let { success ->
+                val list: ArrayList<OddsDetailListData> = ArrayList()
+                if (success) {
+                    result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
+                        betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
+                            value.odds.forEach { odd ->
+                                odd?.isSelected = list.any {
+                                    it.matchOdd.oddsId == odd?.id
+                                }
+                            }
+                        }
+                        val filteredOddList =
+                            mutableListOf<Odd?>()
+                        value.odds.forEach { detailOdd ->
+                            //因排版問題 null也需要添加
+                            filteredOddList.add(detailOdd)
+                        }
+                        list.add(
+                            OddsDetailListData(
+                                key,
+                                TextUtil.split(value.typeCodes),
+                                value.name,
+                                filteredOddList,
+                                value.nameMap
+                            )
+                        )
+                    }
+
+                    result.oddsDetailData?.matchOdd?.updateOddStatus()
+
+                    //因UI需求 特優賠率移到第一項
+                    list.find { it.gameType == PlayCate.EPS.value }.apply {
+                        if (this != null) {
+                            list.add(0, list.removeAt(list.indexOf(this)))
+                        }
+                    }
+
+                    list.forEach {
+                        it.originPosition = list.indexOf(it)
+                    }
+
+                    _oddsDetailList.postValue(Event(list))
+
+                    notifyFavorite(FavoriteType.PLAY_CATE)
+                }
+            }
         }
     }
 
