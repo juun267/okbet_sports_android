@@ -12,6 +12,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.ui.main.entity.GameTabData
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
 
 class RvDZTabAdapter(var mSelectPosition: Int) : RecyclerView.Adapter<RvDZTabAdapter.ItemViewHolder>() {
 
@@ -52,7 +53,11 @@ class RvDZTabAdapter(var mSelectPosition: Int) : RecyclerView.Adapter<RvDZTabAda
         private val mIvImage: ImageView = itemView.findViewById(R.id.iv_image)
 
         fun bind(position: Int, data: GameTabData?) {
-            val iconUrl = GameConfigManager.getThirdGameHallDZIconUrl(data?.gameCategory?.code, data?.gameFirm?.firmCode)
+            val language = when (LanguageManager.getSelectLanguage(itemView.context)) {
+                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> "cn"
+                else -> "us"
+            }
+            val iconUrl = GameConfigManager.getThirdGameHallDZIconUrl(data?.gameCategory?.code, data?.gameFirm?.firmCode, language)
             Glide.with(itemView.context)
                 .load(iconUrl)
                 .apply(mRequestOptions)

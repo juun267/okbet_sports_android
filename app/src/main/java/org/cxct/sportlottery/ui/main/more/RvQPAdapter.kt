@@ -14,6 +14,7 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.third_game.third_games.ThirdDictValues
 import org.cxct.sportlottery.ui.main.entity.GameItemData
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
 
 class RvQPAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -88,7 +89,11 @@ class RvQPAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 mIvImage.setOnClickListener {}
 
             } else {
-                val iconUrl = GameConfigManager.getThirdGameHallIconUrl(data.gameCategory, data.firmCode)
+                val language = when (LanguageManager.getSelectLanguage(itemView.context)) {
+                    LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> "cn"
+                    else -> "us"
+                }
+                val iconUrl = GameConfigManager.getThirdGameHallIconUrl(data.gameCategory, data.firmCode, language)
                 Glide.with(itemView.context)
                     .load(iconUrl)
                     .apply(mRequestOptions)
