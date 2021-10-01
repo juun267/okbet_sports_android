@@ -156,7 +156,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         }
 
         private fun setMatchType(data: MatchOdd) {
-            matchType = if(TimeUtil.getRemainTime(data.matchInfo?.startTime) < 60 * 60 * 1000L) MatchType.AT_START else  MatchType.TODAY
+            matchType = if(TimeUtil.isTimeAtStart(data.matchInfo?.startTime)) MatchType.AT_START else  MatchType.TODAY
         }
 
         private fun setupOddList(data: MatchOdd) {
