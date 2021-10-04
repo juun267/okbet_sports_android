@@ -182,6 +182,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
             this.adapter = leagueAdapter
+
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_sport_type
+                )
+            )
         }
     }
 
