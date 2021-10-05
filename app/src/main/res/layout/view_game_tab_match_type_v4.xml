@@ -12,7 +12,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
         app:tabIndicatorHeight="0dp"
-        app:tabMaxWidth="54dp"
+        app:tabMaxWidth="100dp"
+        app:tabMinWidth="54dp"
         app:tabMode="scrollable">
 
         <com.google.android.material.tabs.TabItem

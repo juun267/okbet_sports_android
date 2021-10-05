@@ -534,7 +534,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 matchType == MatchType.MY_EVENT -> {
                     when (item.matchInfo?.isInPlay) {
                         true -> item.matchInfo.statusName
-                        else -> TimeUtil.timeFormat(item.matchInfo?.startTime, "MM/dd")
+                        else -> {
+                            if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
+                                itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
+                            else
+                                "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
+                        }
                     }
                 }
                 item.matchInfo?.isAtStart == true   -> {
