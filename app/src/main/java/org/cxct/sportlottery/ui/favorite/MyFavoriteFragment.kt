@@ -180,8 +180,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private fun setupLeagueOddList(view: View) {
         view.favorite_game_list.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-            this.adapter = leagueAdapter
         }
     }
 
@@ -359,6 +357,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, {
             hideLoading()
+            favorite_game_list.adapter = leagueAdapter
             leagueAdapter.data = it.toMutableList()
             try {
                 unSubscribeChannelHallAll()
