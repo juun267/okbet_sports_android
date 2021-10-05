@@ -57,6 +57,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var showPlatCloseWarn: Boolean = false //盤口是否被關閉
 
+    private var showReceipt: Boolean = false
+
     private val deleteAllLayoutAnimationListener by lazy {
         object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {
@@ -334,16 +336,19 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         //投注結果
         viewModel.betAddResult.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                hideLoading()
-                if (result.success) {
-                    betResultListener?.onBetResult(result.receipt, betParlayList ?: listOf())
-                    refreshAllAmount()
-                    showOddChangeWarn = false
-                    btn_bet.isOddsChanged = false
-                    showHideWarn()
-                } else {
-                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+            it.getContentIfNotHandled().let { result ->
+                showReceipt = result != null
+                result?.let { resultNotNull ->
+                    hideLoading()
+                    if (resultNotNull.success) {
+                        betResultListener?.onBetResult(resultNotNull.receipt, betParlayList ?: listOf())
+                        refreshAllAmount()
+                        showOddChangeWarn = false
+                        btn_bet.isOddsChanged = false
+                        showHideWarn()
+                    } else {
+                        showErrorPromptDialog(getString(R.string.prompt), resultNotNull.msg) {}
+                    }
                 }
             }
         })
@@ -439,11 +444,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         )
     }
 
-    private fun MutableList<BetInfoListData>.isEmptyBetList(): Boolean{
-        return if (this.isNullOrEmpty()){
+    private fun MutableList<BetInfoListData>.isEmptyBetList(): Boolean {
+        return if (this.isNullOrEmpty() && !showReceipt) {
             activity?.supportFragmentManager?.popBackStack()
             true
-        }else{
+        } else {
             false
         }
     }

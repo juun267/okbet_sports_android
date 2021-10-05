@@ -142,6 +142,17 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
     }
 
+    override fun onBackPressed() {
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+        super.onBackPressed()
+    }
+
     override fun showBetListPage() {
         val betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
