@@ -45,6 +45,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 gameType = sportCode
                 startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
                 startTimeDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "HH:mm")
+                isAtStart = TimeUtil.isTimeAtStart(it.matchInfo?.startTime)
             }
             val odds: MutableMap<String, MutableList<Odd?>?> = mutableMapOf()
             it.oddsMap.forEach { odd ->
@@ -156,7 +157,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         }
 
         private fun setMatchType(data: MatchOdd) {
-            matchType = if(TimeUtil.isTimeAtStart(data.matchInfo?.startTime)) MatchType.AT_START else  MatchType.TODAY
+            matchType = if(data.matchInfo?.isAtStart == true) MatchType.AT_START else  MatchType.TODAY
         }
 
         private fun setupOddList(data: MatchOdd) {
