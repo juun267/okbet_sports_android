@@ -487,6 +487,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         })
 
         viewModel.specialEntrance.observe(this, {
+            hideLoading()
             it?.let { _ ->
                 when (it.matchType) {
                     MatchType.IN_PLAY -> {

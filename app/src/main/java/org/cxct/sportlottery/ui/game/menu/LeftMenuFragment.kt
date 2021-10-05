@@ -183,6 +183,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     }
 
     private fun navSportEntrance(sport:String){
+        loading()
         val matchType = when (sport) {
             GameType.FT.name -> viewModel.cardMatchTypeFT.value
             GameType.BK.name -> viewModel.cardMatchTypeBK.value
@@ -207,6 +208,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             }
         } else {
             setSnackBarMyFavoriteNotify(isGameClose = true, gameType = sportType)
+            hideLoading()
         }
     }
 
