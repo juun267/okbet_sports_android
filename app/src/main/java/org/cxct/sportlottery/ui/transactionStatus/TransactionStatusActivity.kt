@@ -186,6 +186,18 @@ class TransactionStatusActivity :
             .commit()
     }
 
+    override fun onBackPressed() {
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+
+        super.onBackPressed()
+    }
+
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
             setAnchorView(R.id.sport_bottom_navigation)

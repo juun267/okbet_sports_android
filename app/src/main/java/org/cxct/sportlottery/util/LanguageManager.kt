@@ -30,15 +30,16 @@ object LanguageManager {
             else -> {
                 //若APP local 未設定過語系，就使用系統語系判斷
 //                val local = getSystemLocale(context)
-                val local = Locale.ENGLISH
+//                val local = Locale.ENGLISH
 
-                when {
-                    local.language == Locale.ENGLISH.language -> Language.EN
+//                when {
+//                    local.language == Locale.ENGLISH.language -> Language.EN
 //                    local.language == Locale("vi").language -> Language.VI
 //                    local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country -> Language.ZH
 //                    local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZHT
-                    else -> Language.ZH
-                }
+//                    else -> Language.ZH
+//                }
+                Language.EN //2021/10/04 與PM確認過，不管手機是什麼語系，都預先使用英文版本
             }
         }
     }
