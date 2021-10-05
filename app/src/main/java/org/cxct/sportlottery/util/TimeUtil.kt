@@ -394,6 +394,15 @@ object TimeUtil {
         return remainTime
     }
 
+    /**
+     * return: 時間是否為今日
+     */
+    fun isTimeToday(timeMillis: Long?): Boolean {
+        val todayTimeMillis = Calendar.getInstance().timeInMillis
+
+        return timeFormat(timeMillis ?: 0, YMD_FORMAT) == timeFormat(todayTimeMillis, YMD_FORMAT)
+    }
+
     fun isTimeAtStart(timeStamp: Long?): Boolean{
         return (getRemainTime(timeStamp) < 60 * 60 * 1000L) && getRemainTime(timeStamp) > 0
     }
