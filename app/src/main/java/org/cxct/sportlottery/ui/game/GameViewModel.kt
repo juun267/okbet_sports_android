@@ -1628,7 +1628,7 @@ class GameViewModel(
     fun getLiveInfo(matchId: String, getNewest: Boolean = false) {
         //同樣賽事已經請求過最新地址則不再請求
         val nowMatchLiveInfo = matchLiveInfo.value?.peekContent()
-        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest) return
+        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest && getNewest) return
 
         val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
 
