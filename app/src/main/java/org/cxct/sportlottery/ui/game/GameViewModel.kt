@@ -866,6 +866,7 @@ class GameViewModel(
                         oddList?.updateOddSelectState()
                     }
 
+                    matchOdd?.setupPlayCate()
                     matchOdd?.sortOdds()
                 }
             }
@@ -947,6 +948,7 @@ class GameViewModel(
                         map.value?.updateOddSelectState()
                     }
 
+                    matchOdd.setupPlayCate()
                     matchOdd.sortOdds()
 
                     if (!getPlayCateCodeList().isNullOrEmpty())
@@ -1555,6 +1557,17 @@ class GameViewModel(
                         }
                     }
                     )
+        }
+    }
+
+    /**
+     * 設置大廳所需顯示的玩法 (api未回傳的玩法需以“—”表示)
+     */
+    private fun MatchOdd.setupPlayCate() {
+        val sortOrder = this.oddsSort?.split(",")
+        sortOrder?.forEach {
+            if (!this.oddsMap.keys.contains(it))
+                this.oddsMap[it] = mutableListOf(null, null, null)
         }
     }
 

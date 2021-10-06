@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
@@ -384,7 +383,8 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         oddsMapSocket?.forEach { oddsMapEntrySocket ->
-            when (oddsMap.keys.contains(oddsMapEntrySocket.key)) {
+            //全null : 有玩法沒賠率資料
+            when (oddsMap.keys.contains(oddsMapEntrySocket.key) && oddsMap[oddsMapEntrySocket.key]?.all { it == null } == false) {
                 true -> {
                     oddsMap.forEach { oddTypeMap ->
                         val oddsSocket = oddsMapEntrySocket.value

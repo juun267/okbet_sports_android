@@ -83,10 +83,12 @@ class OddButtonPagerAdapter(
             listOf(
                 Pair(
                     data[position].getOrNull(0)?.first,
-                    data[position].getOrNull(0)?.second),
+                    data[position].getOrNull(0)?.second
+                ),
                 Pair(
                     data[position].getOrNull(1)?.first,
-                    data[position].getOrNull(1)?.second)
+                    data[position].getOrNull(1)?.second
+                )
             ),
             oddsType,
             listener
@@ -262,7 +264,7 @@ class OddButtonPagerViewHolder private constructor(
 
             oddBtnHome.apply homeButtonSettings@{
                 when {
-                    (odds.second == null) -> {
+                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
                         betStatus = BetStatus.DEACTIVATED.code
                         return@homeButtonSettings
                     }
@@ -334,7 +336,7 @@ class OddButtonPagerViewHolder private constructor(
 
             oddBtnAway.apply awayButtonSettings@{
                 when {
-                    (odds.second == null) -> {
+                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
                         betStatus = BetStatus.DEACTIVATED.code
                         return@awayButtonSettings
                     }
@@ -404,11 +406,14 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
-
             oddBtnDraw.apply drawButtonSettings@{
                 when {
                     (odds.second?.size ?: 0 < 3) -> {
                         visibility = View.GONE
+                        return@drawButtonSettings
+                    }
+                    odds.second?.all { odd -> odd == null } == true -> {
+                        betStatus = BetStatus.DEACTIVATED.code
                         return@drawButtonSettings
                     }
                     (odds.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
