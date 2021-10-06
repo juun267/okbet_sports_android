@@ -499,6 +499,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
 
             setStatusText(item, matchType)
+            setTextViewStatus(item, matchType)
 
             itemView.league_odd_match_remain_time_icon.apply {
                 visibility = when {
@@ -511,22 +512,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setStatusText(item: MatchOdd, matchType: MatchType) {
             itemView.league_odd_match_status.text = when {
-                (matchType == MatchType.IN_PLAY &&
-                        item.matchInfo?.status == 3 &&
-                        (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
-                    itemView.league_odd_spt.visibility = View.GONE
-                    itemView.league_odd_match_time.visibility = View.GONE
+                (matchType == MatchType.IN_PLAY && item.matchInfo?.status == 3 && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
                     itemView.context.getString(R.string.game_postponed)
                 }
 
                 matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
                     if (item.matchInfo?.statusName != null) {
-                        itemView.league_odd_match_status.visibility = View.VISIBLE
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
-                            6
                         item.matchInfo.statusName
                     } else {
-                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd = 0
                         return
                     }
                 }
@@ -542,16 +535,52 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                     }
                 }
-                item.matchInfo?.isAtStart == true   -> {
-                    itemView.league_odd_match_status.visibility = View.GONE
-                    return
-                }
+
                 matchType == MatchType.TODAY -> {
                     itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
                 }
 
                 else -> {
                     "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
+                }
+            }
+        }
+
+        private fun setTextViewStatus(item: MatchOdd, matchType: MatchType) {
+            when {
+                (matchType == MatchType.IN_PLAY && item.matchInfo?.status == 3 && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
+                    itemView.league_odd_spt.visibility = View.GONE
+                    itemView.league_odd_match_time.visibility = View.GONE
+                }
+
+                matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
+                    if (item.matchInfo?.statusName != null) {
+                        itemView.league_odd_match_status.visibility = View.VISIBLE
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
+                            6
+                    } else {
+                        (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
+                            0
+                    }
+                }
+
+                matchType == MatchType.MY_EVENT -> {
+                    when (item.matchInfo?.isInPlay) {
+                        true -> item.matchInfo.statusName
+                        else -> {
+                            if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
+                                itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
+                            else
+                                "${itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))} ${item.matchInfo?.startDateDisplay}"
+                        }
+                    }
+                    when (item.matchInfo?.isAtStart) {
+                        true -> itemView.league_odd_match_status.visibility = View.GONE
+                    }
+                }
+
+                item.matchInfo?.isAtStart == true -> {
+                    itemView.league_odd_match_status.visibility = View.GONE
                 }
             }
         }
