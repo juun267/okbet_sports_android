@@ -368,7 +368,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             leagueAdapter.data = it.toMutableList()
             try {
                 unSubscribeChannelHallAll()
-                it.forEach { leagueOdd ->
+                leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
             } catch (e: Exception) {
@@ -497,7 +497,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        MenuCode.MAIN.code,
+                        getPlayCateMenuCode(),
                         matchOdd.matchInfo?.id
                     )
 
