@@ -33,9 +33,13 @@ object SocketUpdateUtil {
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
-                    //TODO fix : ConcurrentModificationException 
                     if (matchStatusCO.status == 100) {
-                        matchOddList.remove(matchOdd)
+                        val matchOddIterator = matchOddList.iterator()
+                        while (matchOddIterator.hasNext()){
+                            val item = matchOddIterator.next()
+                            if (item == matchOdd)
+                                matchOddIterator.remove()
+                        }
                         isNeedRefresh = true
                     }
 
