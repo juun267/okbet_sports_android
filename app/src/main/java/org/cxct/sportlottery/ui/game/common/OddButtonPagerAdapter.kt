@@ -288,11 +288,11 @@ class OddButtonPagerViewHolder private constructor(
 
                     text = when {
                         playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> {
-                            odds.second?.getOrNull(0)?.nameMap?.get(
+                            (odds.second?.getOrNull(0)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(
                                     context
                                 ).key
-                            ) ?: odds.second?.getOrNull(0)?.name
+                            ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
                         }
                         else -> ""
                     }
@@ -360,11 +360,11 @@ class OddButtonPagerViewHolder private constructor(
 
                     text = when {
                         playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> {
-                            odds.second?.getOrNull(1)?.nameMap?.get(
+                            (odds.second?.getOrNull(1)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(
                                     context
                                 ).key
-                            ) ?: odds.second?.getOrNull(1)?.name
+                            ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
                         }
                         else -> ""
                     }
@@ -499,6 +499,13 @@ class OddButtonPagerViewHolder private constructor(
 
     private fun PlayCateMapItem.isCombination(): Boolean {
         return this.playCateCode.contains(PlayCate.SINGLE_OU.value) || this.playCateCode.contains(PlayCate.SINGLE_BTS.value)
+    }
+
+    /**
+     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
+     */
+    private fun String.abridgeOddsName(): String{
+        return this.replace("Over", "O").replace("Under", "U")
     }
 
     private fun String.updatePlayCateColor(): Spanned {
