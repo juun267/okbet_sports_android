@@ -528,6 +528,20 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         }
     }
 
+    private fun getPlayCateMenuCode(): String? {
+        val playSelected = playCategoryAdapter.data.find { it.isSelected }
+
+        return when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                playSelected.playCateList?.find { it.isSelected }?.code
+            }
+            SelectionType.UN_SELECTABLE.code -> {
+                playSelected.code
+            }
+            else -> null
+        }
+    }
+
     private fun navOddsDetail(matchId: String, matchInfoList: List<MatchInfo>) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
