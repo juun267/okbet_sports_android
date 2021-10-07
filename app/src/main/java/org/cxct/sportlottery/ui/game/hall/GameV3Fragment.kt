@@ -279,7 +279,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
-                MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
+                MatchType.IN_PLAY -> View.VISIBLE
+                MatchType.AT_START -> {
+                    if (leagueAdapter.data.isEmpty())
+                        View.GONE
+                    else
+                        View.VISIBLE
+                }
                 else -> View.GONE
             }
 
