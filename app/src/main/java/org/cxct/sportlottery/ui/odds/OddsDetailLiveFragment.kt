@@ -233,7 +233,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
-                            (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
+                            (args.gameType == GameType.TN || args.gameType == GameType.VB)
                             && tv_status_left.isVisible) {
                             tv_spt.visibility = View.VISIBLE
                             tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt)?:0}"
