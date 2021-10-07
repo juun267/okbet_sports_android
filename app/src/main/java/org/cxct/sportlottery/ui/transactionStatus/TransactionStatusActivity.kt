@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.ServiceUtil.setView
 
 class TransactionStatusActivity :
     BaseBottomNavActivity<TransactionStatusViewModel>(TransactionStatusViewModel::class) {
@@ -49,6 +50,7 @@ class TransactionStatusActivity :
         initBottomNavigation()
         initRvMarquee()
         initObserver()
+        initServiceButton()
         getAnnouncement()
     }
 
@@ -239,6 +241,10 @@ class TransactionStatusActivity :
             navigation_transaction_status.trans_number.text = it.toString()
         })
 
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun getAnnouncement() {
