@@ -534,6 +534,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             }.toMutableList()
                         }
                     }
+                    setNoDataView(leagueAdapter.data)
 
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
