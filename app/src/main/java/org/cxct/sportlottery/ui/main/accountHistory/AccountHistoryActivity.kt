@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.menu.MenuFragment
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
+import org.cxct.sportlottery.util.ServiceUtil.setView
 
 
 class AccountHistoryActivity :
@@ -53,6 +54,7 @@ class AccountHistoryActivity :
         initMenu()
         setupNoticeButton(btn_notice)
         initObserve()
+        initServiceButton()
     }
 
     override fun initBottomNavigation() {
@@ -196,6 +198,10 @@ class AccountHistoryActivity :
         viewModel.nowTransNum.observe(this, {
             navigation_transaction_status.trans_number.text = it.toString()
         })
+    }
+
+    private fun initServiceButton(){
+        btn_floating_service.setView(this)
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
