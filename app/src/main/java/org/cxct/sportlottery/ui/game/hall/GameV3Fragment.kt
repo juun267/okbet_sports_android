@@ -301,6 +301,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
             }
         }
+        view.game_toolbar_sport_type.apply {
+            visibility = when (args.matchType) {
+                MatchType.AT_START -> {
+                    if (leagueAdapter.data.isEmpty())
+                        View.GONE
+                    else
+                        View.VISIBLE
+                }
+                else -> View.VISIBLE
+            }
+        }
 
         view.game_toolbar_calendar.apply {
             visibility = when (args.matchType) {
