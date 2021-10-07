@@ -84,8 +84,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
 
+
         if (needCountStatus(curStatus)) {
-            if (timeMillis >= 0) {
+            if (timeMillis >= 1000) {
                 tv_time_bottom?.apply {
                     text = TimeUtil.timeFormat(timeMillis, "mm:ss")
                 }
@@ -150,6 +151,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onResume() {
         super.onResume()
         live_view_tool_bar.startNodeMediaPlayer()
+        getData()
         startTimer()
     }
 
@@ -235,6 +237,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                             && tv_status_left.isVisible) {
                             tv_spt.visibility = View.VISIBLE
                             tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt)?:0}"
+                        } else {
+                            tv_spt.visibility = View.GONE
                         }
 
                     }
