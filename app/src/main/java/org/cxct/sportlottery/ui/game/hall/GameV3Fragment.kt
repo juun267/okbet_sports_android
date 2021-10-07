@@ -796,6 +796,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
     }
 
+    private fun setNoDataView(data:MutableList<LeagueOdd>){
+        when {
+            data.isEmpty() -> {
+                game_play_category.isVisible = false
+                game_toolbar_champion.isVisible = false
+                game_toolbar_sport_type.isVisible = false
+            }
+            else -> {
+                game_play_category.isVisible = true
+                game_toolbar_champion.isVisible = true
+                game_toolbar_sport_type.isVisible = true
+            }
+        }
+    }
+
     private fun updateLeaguePin(leagueListPin: List<String>) {
         val leaguePinList = mutableListOf<League>()
 
