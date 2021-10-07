@@ -670,7 +670,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     View.VISIBLE
                 }
 
-                item.quickPlayCateList?.forEach {
+                item.quickPlayCateList?.sortedBy { it.sort }?.forEach {
                     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
 
