@@ -22,7 +22,7 @@ class ServiceFloatingButton @JvmOverloads constructor(
     }
 
     private fun initClickEvent(){
-        iv_service.setOnClickListener { serviceFloatingListener?.serviceClick() }
+        movable_layout.setOnClickListener { serviceFloatingListener?.serviceClick() }
     }
 
     class ServiceFloatingListener(private val buttonClick: () -> Unit) {
