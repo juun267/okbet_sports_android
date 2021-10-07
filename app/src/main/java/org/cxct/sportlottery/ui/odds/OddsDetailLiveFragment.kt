@@ -431,13 +431,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             tv_away_name.text = this.awayName ?: ""
 
-            tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
+            tv_time_bottom.text = getString(R.string.time_null)
 
             if (args.matchType != MatchType.IN_PLAY) {
+                tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             }
         }
-
     }
 
     private fun setupLiveView(liveVideo: Int?) {
