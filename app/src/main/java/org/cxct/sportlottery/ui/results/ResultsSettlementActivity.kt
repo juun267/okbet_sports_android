@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
+import org.cxct.sportlottery.util.ServiceUtil.setView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -77,6 +78,7 @@ class ResultsSettlementActivity :
         setupSpinnerGameType() //設置體育種類列表
         observeData()
         initTimeSelector()
+        initServiceButton()
     }
 
     private fun setupToolbar() {
@@ -184,6 +186,10 @@ class ResultsSettlementActivity :
                 dateSelected(date)
             }
         }
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun dateSelected(datePosition: Int) {
