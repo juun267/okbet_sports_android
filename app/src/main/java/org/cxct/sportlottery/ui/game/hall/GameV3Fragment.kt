@@ -290,7 +290,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             if (leagueAdapter.data.isEmpty()) {
-                when (game_toolbar_match_type.textSize > 3) { //字數太長 ex.即將開賽 Guideline往右多一點
+                when (view.game_toolbar_match_type.textSize > 3) { //字數太長 ex.即將開賽 Guideline往右多一點
                     true -> view.guideline2.setGuidelinePercent(0.6F)
                     else -> view.guideline2.setGuidelinePercent(0.55F)
                 }
