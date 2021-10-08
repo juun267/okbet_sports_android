@@ -279,8 +279,23 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         view.game_toolbar_champion.apply {
             visibility = when (args.matchType) {
-                MatchType.IN_PLAY, MatchType.AT_START -> View.VISIBLE
+                MatchType.IN_PLAY -> View.VISIBLE
+                MatchType.AT_START -> {
+                    if (leagueAdapter.data.isEmpty())
+                        View.GONE
+                    else
+                        View.VISIBLE
+                }
                 else -> View.GONE
+            }
+
+            if (leagueAdapter.data.isEmpty()) {
+                when (game_toolbar_match_type.textSize > 3) { //字數太長 ex.即將開賽 Guideline往右多一點
+                    true -> view.guideline2.setGuidelinePercent(0.6F)
+                    else -> view.guideline2.setGuidelinePercent(0.55F)
+                }
+            } else {
+                view.guideline2.setGuidelinePercent(0.5F)
             }
 
             setOnClickListener {
@@ -293,6 +308,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             )
                         findNavController().navigate(action)
                     }
+            }
+        }
+        view.game_toolbar_sport_type.apply {
+            visibility = when (args.matchType) {
+                MatchType.AT_START -> {
+                    if (leagueAdapter.data.isEmpty())
+                        View.GONE
+                    else
+                        View.VISIBLE
+                }
+                else -> View.VISIBLE
             }
         }
 
@@ -534,6 +560,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             }.toMutableList()
                         }
                     }
+                    setNoDataView(leagueAdapter.data)
 
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
@@ -794,6 +821,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.leagueFilterList.observe(this.viewLifecycleOwner, { leagueList ->
             game_toolbar_champion.isSelected = leagueList.isNotEmpty()
         })
+    }
+
+    private fun setNoDataView(data:MutableList<LeagueOdd>){
+        when {
+            data.isEmpty() -> {
+                game_play_category.isVisible = false
+                game_toolbar_champion.isVisible = false
+                game_toolbar_sport_type.isVisible = false
+            }
+            else -> {
+                game_play_category.isVisible = true
+                game_toolbar_champion.isVisible = true
+                game_toolbar_sport_type.isVisible = true
+            }
+        }
     }
 
     private fun updateLeaguePin(leagueListPin: List<String>) {
