@@ -1682,6 +1682,7 @@ class GameViewModel(
             VideoProvider.P2.code -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
                     response.accessToken,
+                    sConfigData?.referUrl,
                     response.streamURL
                 )
                 liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
