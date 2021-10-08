@@ -10,13 +10,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <!-- toolBar -->
-            <include layout="@layout/view_toolbar_main" />
+            <include android:id="@+id/tool_bar" layout="@layout/view_toolbar_main" />
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/main_container"
@@ -26,12 +26,26 @@
                 android:layout_weight="1"
                 android:background="@color/colorWhite1"
                 app:navGraph="@navigation/main_navigation"
-                tools:layout="@layout/fragment_main" />
+                tools:layout="@layout/fragment_main"
+                app:layout_constraintBottom_toTopOf="@id/divider_line"
+                app:layout_constraintTop_toBottomOf="@id/tool_bar"/>
+
+            <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+                android:id="@+id/btn_floating_service"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="14dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintBottom_toTopOf="@id/bottom_nav_view" />
 
             <View
+                android:id="@+id/divider_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorWhite6" />
+                android:background="@color/colorWhite6"
+                app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"
+                app:layout_constraintTop_toBottomOf="@id/main_container"/>
 
             <com.google.android.material.bottomnavigation.BottomNavigationView
                 android:id="@+id/bottom_nav_view"
@@ -45,9 +59,11 @@
                 app:itemTextAppearanceInactive="@style/bottom_nav_title_inactive"
                 app:itemTextColor="@color/selector_blue_silver"
                 app:labelVisibilityMode="labeled"
+                app:layout_constraintTop_toBottomOf="@id/divider_line"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:menu="@menu/bottom_navigation_menu" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- 側邊導覽列 -->
         <com.google.android.material.navigation.NavigationView
