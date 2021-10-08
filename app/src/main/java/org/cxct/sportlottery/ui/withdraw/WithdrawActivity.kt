@@ -4,6 +4,7 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_withdraw.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.util.ServiceUtil.setView
 
 class WithdrawActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::class) {
 
@@ -12,11 +13,16 @@ class WithdrawActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel
         setContentView(R.layout.activity_withdraw)
 
         setupBackButton()
+        setupServiceButton()
     }
 
     private fun setupBackButton() {
         btn_back.setOnClickListener {
             finish()
         }
+    }
+
+    private fun setupServiceButton() {
+        btn_floating_service.setView(this)
     }
 }
