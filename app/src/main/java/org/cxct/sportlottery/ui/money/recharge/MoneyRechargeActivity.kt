@@ -16,6 +16,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.finance.FinanceActivity
+import org.cxct.sportlottery.util.ServiceUtil.setView
 
 class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
@@ -237,6 +238,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             changePage()
             viewModel.clearnRechargeStatus()
         }
+
+        btn_floating_service.setView(this)
     }
 
     private fun initView() {
