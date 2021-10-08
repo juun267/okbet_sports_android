@@ -29,7 +29,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:maxWidth="72dp"
                 android:maxLines="1"
                 android:textColor="@color/selector_button_odd_top_text2"
                 android:textSize="@dimen/textSize13sp"
