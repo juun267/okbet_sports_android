@@ -39,6 +39,7 @@ import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.ServiceUtil.setView
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -97,6 +98,7 @@ class ProfileCenterActivity :
         setupLogout()
         setupMoreButtons()
         initBottomNav()
+        initServiceButton()
         getUserInfo()
         initObserve()
     }
@@ -273,6 +275,10 @@ class ProfileCenterActivity :
 
         //聊天室按鈕 啟用判斷
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun getUserInfo() {
