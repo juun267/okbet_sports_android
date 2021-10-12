@@ -7,7 +7,7 @@ interface MatchInfo {
 
     var awayScore: Int?
     var homeScore: Int?
-    var statusName: String?
+    var statusName18n: String?
     var leagueTime: Int?
     var socketMatchStatus: Int? //赛事阶段状态id
 

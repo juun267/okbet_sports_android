@@ -48,8 +48,8 @@ object SocketUpdateUtil {
                         isNeedRefresh = true
                     }
 
-                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName) {
-                        matchOdd.matchInfo?.statusName = matchStatusCO.statusName
+                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
+                        matchOdd.matchInfo?.statusName18n = matchStatusCO.statusName
                         isNeedRefresh = true
                     }
 

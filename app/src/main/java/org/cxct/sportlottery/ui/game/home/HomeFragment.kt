@@ -39,18 +39,17 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.highlight.RvHighlightAdapter
-import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.RvRecommendAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
@@ -668,6 +667,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val dataList = mRvGameTable4Adapter.getData()
                 val hideGameList = mutableListOf<GameEntity>()
                 var hideFirstPosition: Int? = null
+
+                val statusNameValue = when (LanguageManager.getSelectLanguage(context)) {
+                    LanguageManager.Language.ZH -> "${matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.zh}"
+                    LanguageManager.Language.EN -> matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.en
+                    LanguageManager.Language.VI -> matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.vi
+                    else -> matchStatusChangeEvent.matchStatusCO?.statusName
+                }
                 dataList.forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                         if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
@@ -682,8 +688,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 matchStatusChangeEvent.matchStatusCO?.homePoints
                             updateMatchOdd.matchInfo?.awayPoints =
                                 matchStatusChangeEvent.matchStatusCO?.awayPoints
-                            updateMatchOdd.matchInfo?.statusName =
-                                matchStatusChangeEvent.matchStatusCO?.statusName
+                            updateMatchOdd.matchInfo?.statusName18n = statusNameValue
 
                             //賽事status為100, 隱藏該賽事
                             if (matchStatusChangeEvent.matchStatusCO?.status == 100) {
