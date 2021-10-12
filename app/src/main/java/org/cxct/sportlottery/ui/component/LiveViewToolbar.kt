@@ -45,7 +45,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    private var nodeMediaManager: NodeMediaManager? = null
     private var mStreamUrl: String? = null
 
     lateinit var matchOdd: MatchOdd
@@ -62,17 +61,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
-
-    private var nodeMediaListener: NodeMediaManager.NodeMediaListener = object : NodeMediaManager.NodeMediaListener {
-        override fun streamLoading() {
-            liveLoading()
-        }
-
-        override fun isLiveShowing(isShowing: Boolean) {
-            showLiveView(isShowing)
-        }
-
-    }
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
@@ -96,7 +84,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         iv_play.setOnClickListener {
             when (expand_layout.isExpanded) {
                 true -> {
-                    nodeMediaManager?.nodeMediaReload()
                     stopPlayer()
                     startPlayer()
                 }
@@ -140,11 +127,9 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 liveToolBarListener?.onExpand()
                 if (!mStreamUrl.isNullOrEmpty()) {
                     startPlayer()
-                    nodeMediaManager?.nodeMediaStart()
                 }
             }
             false -> {
-                nodeMediaManager?.nodeMediaStop()
                 stopPlayer()
 
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
@@ -169,43 +154,31 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    @Deprecated("改用ExoPlayer")
-    fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener) {
-        nodeMediaManager = NodeMediaManager(eventListener, nodeMediaListener)
-    }
-
     fun setupPlayerControl(show: Boolean) {
         switchLiveView(show)
         iv_play.isVisible = show
         iv_arrow.isVisible = show
     }
 
+    //TODO 判斷當前ExoPlayer播放狀態顯示loading 或 無法播放的圖示
     fun liveLoading() {
-        node_player.visibility = View.GONE
         player_view.visibility = View.GONE
         iv_live_status.visibility = View.VISIBLE
         iv_live_status.setImageResource(R.drawable.img_stream_loading)
     }
 
     fun showLiveView(showLive: Boolean) {
-        node_player.isVisible = showLive
         player_view.isVisible = showLive
         iv_live_status.isVisible = !showLive
         iv_live_status.setImageResource(R.drawable.img_no_live)
     }
-
-    /*fun setupLiveUrl(streamUrl: String) {
-        mStreamUrl = streamUrl
-        nodeMediaManager?.initNodeMediaPlayer(context, node_player, streamUrl)
-        nodeMediaManager?.nodeMediaStart()
-    }*/
 
     fun setupLiveUrl(streamUrl: String?) {
         mStreamUrl = streamUrl
         startPlayer()
     }
 
-    fun loadBottomSheetUrl(matchOdd: MatchOdd) {
+    private fun loadBottomSheetUrl(matchOdd: MatchOdd) {
         bottomSheetView.bottom_sheet_web_view.loadUrl(
             sConfigData?.analysisUrl?.replace("{lang}", LanguageManager.getSelectLanguage(context).key)
                 ?.replace("{eventId}", matchOdd.matchInfo.id)
@@ -224,21 +197,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         val root: View? = webBottomSheet.delegate.findViewById(R.id.design_bottom_sheet)
         root?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
         BottomSheetBehavior.from(root as View).isDraggable = false
-    }
-
-    @Deprecated("改用ExoPlayer")
-    fun startNodeMediaPlayer() {
-        nodeMediaManager?.nodeMediaStart()
-    }
-
-    @Deprecated("改用ExoPlayer")
-    fun stopNodeMediaPlayer() {
-        nodeMediaManager?.nodeMediaStop()
-    }
-
-    @Deprecated("改用ExoPlayer")
-    fun releaseNodeMediaPlayer() {
-        nodeMediaManager?.nodeMediaRelease()
     }
 
     fun getExoPlayer(): SimpleExoPlayer? {

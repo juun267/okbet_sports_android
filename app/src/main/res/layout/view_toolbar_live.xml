@@ -29,12 +29,6 @@
                 android:scaleType="fitXY"/>
             
             <!-- Media Layout -->
-            <cn.nodemedia.NodePlayerView
-                android:visibility="gone"
-                android:id="@+id/node_player"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
             <com.google.android.exoplayer2.ui.PlayerView
                 android:id="@+id/player_view"
                 android:layout_width="match_parent"

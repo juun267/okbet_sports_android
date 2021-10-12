@@ -44,7 +44,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
-import org.cxct.sportlottery.ui.component.NodeMediaManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -111,15 +110,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private val eventListener by lazy {
-        object : NodeMediaManager.LiveEventListener {
-            override fun reRequestStreamUrl() {
-                matchId?.let { viewModel.getLiveInfo(it, true) }
-            }
-        }
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         matchId = args.matchId
@@ -154,7 +144,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onResume() {
         super.onResume()
-        live_view_tool_bar.startNodeMediaPlayer()
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
@@ -172,18 +161,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     override fun onStop() {
-        live_view_tool_bar.stopNodeMediaPlayer()
         if (Util.SDK_INT >= 24) {
             live_view_tool_bar.stopPlayer()
         }
         super.onStop()
 
         unSubscribeChannelEventAll()
-    }
-
-    override fun onDestroyView() {
-        live_view_tool_bar.releaseNodeMediaPlayer()
-        super.onDestroyView()
     }
 
     private fun initUI() {
@@ -476,7 +459,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
-        live_view_tool_bar.setupNodeMediaPlayer(eventListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
 
         matchOdd?.let {
