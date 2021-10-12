@@ -143,11 +143,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         initSocketObserver()
     }
 
-    override fun onStart() {
-        super.onStart()
-        getData()
-    }
-
     override fun onResume() {
         super.onResume()
         live_view_tool_bar.startNodeMediaPlayer()
