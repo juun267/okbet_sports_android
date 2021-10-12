@@ -237,6 +237,8 @@ class MoneyRechargeActivity : BaseSocketActivity<MoneyRechViewModel>(MoneyRechVi
             changePage()
             viewModel.clearnRechargeStatus()
         }
+
+        btn_floating_service.setView(this)
     }
 
     private fun initView() {

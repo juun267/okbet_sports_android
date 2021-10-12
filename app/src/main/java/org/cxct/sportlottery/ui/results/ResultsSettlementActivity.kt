@@ -77,6 +77,7 @@ class ResultsSettlementActivity :
         setupSpinnerGameType() //設置體育種類列表
         observeData()
         initTimeSelector()
+        initServiceButton()
     }
 
     private fun setupToolbar() {
@@ -184,6 +185,10 @@ class ResultsSettlementActivity :
                 dateSelected(date)
             }
         }
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun dateSelected(datePosition: Int) {

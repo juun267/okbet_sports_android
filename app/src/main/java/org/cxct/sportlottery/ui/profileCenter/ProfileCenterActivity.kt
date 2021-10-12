@@ -97,6 +97,7 @@ class ProfileCenterActivity :
         setupLogout()
         setupMoreButtons()
         initBottomNav()
+        initServiceButton()
         getUserInfo()
         initObserve()
     }
@@ -273,6 +274,10 @@ class ProfileCenterActivity :
 
         //聊天室按鈕 啟用判斷
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun getUserInfo() {

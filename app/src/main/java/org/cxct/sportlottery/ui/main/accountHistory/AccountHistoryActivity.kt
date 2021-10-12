@@ -53,6 +53,7 @@ class AccountHistoryActivity :
         initMenu()
         setupNoticeButton(btn_notice)
         initObserve()
+        initServiceButton()
     }
 
     override fun initBottomNavigation() {
@@ -196,6 +197,10 @@ class AccountHistoryActivity :
         viewModel.nowTransNum.observe(this, {
             navigation_transaction_status.trans_number.text = it.toString()
         })
+    }
+
+    private fun initServiceButton(){
+        btn_floating_service.setView(this)
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {
