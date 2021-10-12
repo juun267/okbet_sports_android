@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.exoplayer2.util.Util
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -145,15 +146,26 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onStart() {
         super.onStart()
         getData()
+
+        if (Util.SDK_INT >= 24) {
+            live_view_tool_bar.startPlayer()
+        }
     }
 
     override fun onResume() {
         super.onResume()
         live_view_tool_bar.startNodeMediaPlayer()
         startTimer()
+
+        if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
+            live_view_tool_bar.startPlayer()
+        }
     }
 
     override fun onPause() {
+        if (Util.SDK_INT < 24) {
+            live_view_tool_bar.stopPlayer()
+        }
         super.onPause()
 
         cancelTimer()
@@ -161,6 +173,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onStop() {
         live_view_tool_bar.stopNodeMediaPlayer()
+        if (Util.SDK_INT >= 24) {
+            live_view_tool_bar.stopPlayer()
+        }
         super.onStop()
 
         unSubscribeChannelEventAll()
@@ -195,7 +210,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(t)?.code?.let {
+                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
+                        t
+                    )?.code?.let {
                         oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
                     }
                 }
@@ -223,18 +240,39 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
                         if (args.matchType == MatchType.IN_PLAY) {
-                            tv_time_bottom?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorOrangeLight))
-                            tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorOrangeLight))
+                            tv_time_bottom?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorOrangeLight
+                                )
+                            )
+                            tv_time_top?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorOrangeLight
+                                )
+                            )
                         } else {
-                            tv_time_bottom?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
-                            tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
+                            tv_time_bottom?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorSilver
+                                )
+                            )
+                            tv_time_top?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorSilver
+                                )
+                            )
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
                             (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
-                            && tv_status_left.isVisible) {
+                            && tv_status_left.isVisible
+                        ) {
                             tv_spt.visibility = View.VISIBLE
-                            tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt)?:0}"
+                            tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt) ?: 0}"
                         }
 
                     }
@@ -453,25 +491,25 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         }
     }
 
-    private fun OddsDetailResult.setupPlayCateTab(){
-            tab_cat.removeAllTabs()
+    private fun OddsDetailResult.setupPlayCateTab() {
+        tab_cat.removeAllTabs()
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
-            if (playCateTypeList?.isNotEmpty() == true) {
-                for (row in playCateTypeList) {
-                    val customTabView =
-                        layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
-                            findViewById<TextView>(R.id.tv_tab).text = row.name
-                        }
+        if (playCateTypeList?.isNotEmpty() == true) {
+            for (row in playCateTypeList) {
+                val customTabView =
+                    layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
+                        findViewById<TextView>(R.id.tv_tab).text = row.name
+                    }
 
-                    tab_cat.addTab(
-                        tab_cat.newTab().setCustomView(customTabView),
-                        false
-                    )
-                }
-                tab_cat.getTabAt(0)?.select()
-            } else {
-                tab_cat.visibility = View.GONE
+                tab_cat.addTab(
+                    tab_cat.newTab().setCustomView(customTabView),
+                    false
+                )
             }
+            tab_cat.getTabAt(0)?.select()
+        } else {
+            tab_cat.visibility = View.GONE
+        }
     }
 
     override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
@@ -543,7 +581,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setCardText(event: MatchStatusChangeEvent) {
-        tv_home_card.isVisible = (event.matchStatusCO?.homeCards ?:0 > 0)
+        tv_home_card.isVisible = (event.matchStatusCO?.homeCards ?: 0 > 0)
         tv_home_card.text = (event.matchStatusCO?.homeCards ?: 0).toString()
 
         tv_away_card.isVisible = (event.matchStatusCO?.awayCards ?: 0 > 0)
