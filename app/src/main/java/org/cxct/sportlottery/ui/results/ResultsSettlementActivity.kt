@@ -24,7 +24,6 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.login.afterTextChanged
-import org.cxct.sportlottery.util.ServiceUtil.setView
 import java.text.SimpleDateFormat
 import java.util.*
 

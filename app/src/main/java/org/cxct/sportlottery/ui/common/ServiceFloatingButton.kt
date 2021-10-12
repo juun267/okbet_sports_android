@@ -3,9 +3,14 @@ package org.cxct.sportlottery.ui.common
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
 import kotlinx.android.synthetic.main.motion_view_service_floating.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.game.ServiceDialog
+import org.cxct.sportlottery.util.JumpUtil
 
 class ServiceFloatingButton @JvmOverloads constructor(
     context: Context,
@@ -27,5 +32,32 @@ class ServiceFloatingButton @JvmOverloads constructor(
 
     class ServiceFloatingListener(private val buttonClick: () -> Unit) {
         fun serviceClick() = buttonClick.invoke()
+    }
+
+    fun setView(activity: AppCompatActivity) {
+        if (sConfigData?.customerServiceUrl.isNullOrBlank() && sConfigData?.customerServiceUrl2.isNullOrBlank()) {
+            visibility = View.GONE
+        } else {
+            visibility = View.VISIBLE
+            setupClickEvent(activity)
+        }
+    }
+
+    private fun setupClickEvent(activity: AppCompatActivity) {
+        serviceFloatingListener = ServiceFloatingListener {
+            val serviceUrl = sConfigData?.customerServiceUrl
+            val serviceUrl2 = sConfigData?.customerServiceUrl2
+            when {
+                !serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    ServiceDialog().show(activity.supportFragmentManager, activity::class.java.simpleName)
+                }
+                serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(activity, serviceUrl)
+                }
+                !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
+                    JumpUtil.toExternalWeb(activity, serviceUrl2)
+                }
+            }
+        }
     }
 }

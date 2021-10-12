@@ -30,7 +30,6 @@ import org.cxct.sportlottery.ui.splash.SplashViewModel
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MetricsUtil
-import org.cxct.sportlottery.util.ServiceUtil.setView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
