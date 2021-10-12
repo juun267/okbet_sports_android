@@ -79,7 +79,8 @@ class OddsButton @JvmOverloads constructor(
 
     fun setupOdd(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            text = odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name
+            val extInfoStr = odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
+            text = "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
             visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
