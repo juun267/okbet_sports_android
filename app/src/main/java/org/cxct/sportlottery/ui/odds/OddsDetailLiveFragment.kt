@@ -81,8 +81,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
 
+
         if (needCountStatus(curStatus)) {
-            if (timeMillis >= 0) {
+            if (timeMillis >= 1000) {
                 tv_time_bottom?.apply {
                     text = TimeUtil.timeFormat(timeMillis, "mm:ss")
                 }
@@ -139,14 +140,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         initSocketObserver()
     }
 
-    override fun onStart() {
-        super.onStart()
-        getData()
-    }
-
     override fun onResume() {
         super.onResume()
         live_view_tool_bar.startNodeMediaPlayer()
+        getData()
         startTimer()
     }
 
@@ -243,6 +240,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         ) {
                             tv_spt.visibility = View.VISIBLE
                             tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt) ?: 0}"
+                        } else {
+                            tv_spt.visibility = View.GONE
                         }
 
                     }
@@ -435,13 +434,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             tv_away_name.text = this.awayName ?: ""
 
-            tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
+            tv_time_bottom.text = getString(R.string.time_null)
 
             if (args.matchType != MatchType.IN_PLAY) {
+                tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             }
         }
-
     }
 
     private fun setupLiveView(liveVideo: Int?) {

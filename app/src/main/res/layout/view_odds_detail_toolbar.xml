@@ -299,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorSilver"
                     android:textSize="@dimen/textSize12sp"
-                    tools:text="03:00" />
+                    android:text="@string/time_null" />
 
             </LinearLayout>
 
