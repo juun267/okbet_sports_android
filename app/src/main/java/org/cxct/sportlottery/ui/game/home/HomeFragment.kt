@@ -668,12 +668,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val hideGameList = mutableListOf<GameEntity>()
                 var hideFirstPosition: Int? = null
 
-                val statusNameValue = when (LanguageManager.getSelectLanguage(context)) {
-                    LanguageManager.Language.ZH -> "${matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.zh}"
-                    LanguageManager.Language.EN -> matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.en
-                    LanguageManager.Language.VI -> matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.vi
-                    else -> matchStatusChangeEvent.matchStatusCO?.statusName
-                }
+                val statusValue = matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatusChangeEvent.matchStatusCO?.statusName
                 dataList.forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                         if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
@@ -688,7 +683,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 matchStatusChangeEvent.matchStatusCO?.homePoints
                             updateMatchOdd.matchInfo?.awayPoints =
                                 matchStatusChangeEvent.matchStatusCO?.awayPoints
-                            updateMatchOdd.matchInfo?.statusName18n = statusNameValue
+                            updateMatchOdd.matchInfo?.statusName18n = statusValue
 
                             //賽事status為100, 隱藏該賽事
                             if (matchStatusChangeEvent.matchStatusCO?.status == 100) {

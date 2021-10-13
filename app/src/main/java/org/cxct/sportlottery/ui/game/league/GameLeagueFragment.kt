@@ -349,7 +349,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     if (SocketUpdateUtil.updateMatchStatus(
                             args.gameType.key,
                             leagueOdd.matchOdds.toMutableList(),
-                            matchStatusChangeEvent
+                            matchStatusChangeEvent,
+                            context
                         ) &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {

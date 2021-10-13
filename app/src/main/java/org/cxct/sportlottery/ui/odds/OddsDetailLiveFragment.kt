@@ -338,11 +338,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 matchStatusChangeEvent.matchStatusCO?.takeIf { ms -> ms.matchId == this.matchId }
                     ?.apply {
                         tv_time_top?.let { tv ->
-                            tv.text = when (getSelectLanguage(context)) {
-                                LanguageManager.Language.ZH -> statusNameI18n?.zh
-                                LanguageManager.Language.EN -> statusNameI18n?.en
-                                else -> statusName
-                            }
+                            val statusValue = statusNameI18n?.get(getSelectLanguage(context).key) ?: statusName
+                            tv.text = statusValue
                         }
 
                         curHomeScore = homeScore
@@ -615,11 +612,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         if (tv_status_left.tag != GameStatus.POSTPONED.code) {
             tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
-            tv_status_left.text = when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "${event.matchStatusCO?.statusNameI18n?.zh}"
-                LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
-                else -> event.matchStatusCO?.statusName
-            }
+            val statusValue = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: event.matchStatusCO?.statusName
+            tv_status_left.text = statusValue
         }
     }
 }

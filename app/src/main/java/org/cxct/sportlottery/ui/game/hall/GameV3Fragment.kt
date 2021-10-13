@@ -889,7 +889,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             if (SocketUpdateUtil.updateMatchStatus(
                                     gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code,
                                     leagueOdd.matchOdds.toMutableList(),
-                                    matchStatusChangeEvent
+                                    matchStatusChangeEvent,
+                                    context
                                 ) &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
