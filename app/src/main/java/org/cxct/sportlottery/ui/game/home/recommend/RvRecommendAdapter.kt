@@ -186,8 +186,10 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
             val dateFormat = "dd / MM"
             val todayDate = TimeUtil.timeFormat(System.currentTimeMillis(), dateFormat)
-            return TimeUtil.timeFormat(this.startTime, "$dateFormat\nHH:mm")
-                .replace(todayDate, context.getString(R.string.home_tab_today))
+            return this.startTime?.let { startTimeNotNull ->
+                TimeUtil.timeFormat(startTimeNotNull, "$dateFormat\nHH:mm")
+                    .replace(todayDate, context.getString(R.string.home_tab_today))
+            } ?: ""
         }
     }
 }
