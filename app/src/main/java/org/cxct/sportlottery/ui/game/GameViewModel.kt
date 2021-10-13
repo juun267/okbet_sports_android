@@ -405,6 +405,24 @@ class GameViewModel(
         }
     }
 
+    private fun getLeaguePlayCategory(matchType: MatchType, leagueIdList: List<String>) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getQuery(
+                    SportQueryRequest(
+                        TimeUtil.getNowTimeStamp().toString(),
+                        TimeUtil.getTodayStartTimeStamp().toString(),
+                        matchType.postValue,
+                        leagueIdList = leagueIdList
+                    )
+                )
+            }
+
+            sportQueryData = result?.sportQueryData
+            getPlayCategory(matchType)
+        }
+    }
+
     private fun checkLastSportType(matchType: MatchType, sportQueryData: SportQueryData?) {
         var isContain = false
 
@@ -815,7 +833,7 @@ class GameViewModel(
     ) {
 
         if (isReloadPlayCate && !isIncrement) {
-            getPlayCategory(matchType)
+            getLeaguePlayCategory(matchType, leagueIdList)
         }
 
         val nowMatchType = curChildMatchType.value ?: matchType

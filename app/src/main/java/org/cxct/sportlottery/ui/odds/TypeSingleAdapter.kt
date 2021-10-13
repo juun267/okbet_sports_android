@@ -35,16 +35,16 @@ class TypeSingleAdapter (
     override fun getItemCount(): Int = oddsDetail.oddArrayList.size
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsDetail.oddArrayList[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsDetail.gameType, oddsDetail.oddArrayList[position])
 
 
     inner class ViewHolder(view: View) : OddStateViewHolder(view) {
 
         private val btnOdds = itemView.findViewById<OddsButton>(R.id.button_odds)
 
-        fun bindModel(odd: Odd?) {
+        fun bindModel(gameType: String?, odd: Odd?) {
             btnOdds?.apply {
-                setupOdd(odd, oddsType)
+                setupOdd(odd, oddsType, gameType)
                 setupOddState(this, odd)
                 setOnClickListener {
                     odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
