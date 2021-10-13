@@ -1303,7 +1303,8 @@ class GameViewModel(
                                 TextUtil.split(value.typeCodes),
                                 value.name,
                                 filteredOddList,
-                                value.nameMap
+                                value.nameMap,
+                                value.rowSort
                             )
                         )
                     }
