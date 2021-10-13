@@ -49,6 +49,7 @@ class TransactionStatusActivity :
         initBottomNavigation()
         initRvMarquee()
         initObserver()
+        initServiceButton()
         getAnnouncement()
     }
 
@@ -239,6 +240,10 @@ class TransactionStatusActivity :
             navigation_transaction_status.trans_number.text = it.toString()
         })
 
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun getAnnouncement() {

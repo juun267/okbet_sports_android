@@ -60,6 +60,7 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
         initToolBar()
         initMenu()
         initBottomNav()
+        initServiceButton()
         initObserve()
 
         //若啟動頁是使用 local host 進入，到首頁要再 getHost() 一次，背景替換使用最快線路
@@ -185,6 +186,10 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
 
         //聊天室按鈕 啟用判斷
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun getMsgDialog() {
