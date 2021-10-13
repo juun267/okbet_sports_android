@@ -4,6 +4,9 @@
     android:id="@+id/button_odd_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:layout_width="wrap_content"
+    tools:layout_height="wrap_content"
+    tools:layout_gravity="center"
     android:background="@drawable/selector_button_radius_4_odds"
     tools:ignore="SpUsage,ContentDescription">
 
@@ -30,6 +33,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
+                android:maxWidth="100dp"
                 android:textColor="@color/selector_button_odd_top_text2"
                 android:textSize="@dimen/textSize13sp"
                 tools:text="义大利"
