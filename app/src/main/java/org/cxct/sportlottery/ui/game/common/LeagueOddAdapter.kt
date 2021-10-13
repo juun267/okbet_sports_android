@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
 import java.util.*
@@ -666,7 +667,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
 
                     addView(rb.apply {
-                        text = it.name
+                        text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
 
                         id = it.hashCode()
 
