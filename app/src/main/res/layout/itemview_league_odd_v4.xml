@@ -363,15 +363,16 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_live_player"
         android:visibility="gone"
+        android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
         app:layout_constraintStart_toEndOf="@+id/league_odd_match_price_boost"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription"
-        app:layout_constraintEnd_toStartOf="@id/space_icon"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_match_play_count"
         tools:visibility="visible" />
 
     <Space
-        android:id="@+id/space_icon"
+        android:id="@+id/space2"
         android:layout_width="10dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toEndOf="@id/iv_play"
@@ -388,7 +389,7 @@
         android:textStyle="bold"
         app:drawableEndCompat="@drawable/ic_arrow_dark_right_v4"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
-        app:layout_constraintStart_toEndOf="@id/space_icon"
+        app:layout_constraintStart_toEndOf="@id/space2"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:text="6" />
 
