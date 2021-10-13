@@ -10,8 +10,8 @@ import android.webkit.WebSettings
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -23,6 +23,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
+import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
 class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
@@ -46,6 +47,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
     private var mStreamUrl: String? = null
+    private var newestUrl: Boolean = false
 
     lateinit var matchOdd: MatchOdd
 
@@ -56,8 +58,57 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private var currentWindow = 0
     private var playbackPosition = 0L
 
+    private val playbackStateListener by lazy {
+        object : Player.Listener {
+            /**
+             * 會有以下四種playback狀態
+             * STATE_IDLE: 初始狀態, 播放器停止, playback failed
+             * STATE_BUFFERING: 媒體讀取中
+             * STATE_READY: 準備好可播放
+             * STATE_ENDED: 播放結束
+             */
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                when (playbackState) {
+                    ExoPlayer.STATE_IDLE -> {
+                        Timber.i("ExoPlayer.STATE_IDLE      -")
+                        //獲取過最新的直播地址後仍然無法播放進入暫停狀態
+                        if (newestUrl)
+                            showLiveView(false)
+                    }
+                    Player.STATE_BUFFERING -> {
+                        liveLoading()
+                        Timber.i("ExoPlayer.STATE_BUFFERING     -")
+                    }
+                    ExoPlayer.STATE_READY -> {
+                        Timber.i("ExoPlayer.STATE_READY -")
+                        showLiveView(true)
+                    }
+                    Player.STATE_ENDED -> {
+                        Timber.i("ExoPlayer.STATE_ENDED     -")
+                        showLiveView(false)
+                    }
+                    else -> Timber.e("UNKNOWN_STATE             -")
+                }
+            }
+
+            @SuppressLint("SwitchIntDef")
+            override fun onPlayerError(error: PlaybackException) {
+                when (val httpError = error.cause as HttpDataSource.HttpDataSourceException) {
+                    //直播地址播放連線失敗
+                    is HttpDataSource.InvalidResponseCodeException -> {
+                        Timber.e("PlayerError = $httpError")
+                        newestUrl = true
+                        //重新獲取最新的直播地址
+                        liveToolBarListener?.getLiveInfo(true)
+                    }
+                }
+            }
+        }
+    }
+
+
     interface LiveToolBarListener {
-        fun onExpand()
+        fun getLiveInfo(newestUrl: Boolean = false)
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
@@ -124,7 +175,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 iv_play.isSelected = true
                 expand_layout.expand()
-                liveToolBarListener?.onExpand()
+                liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
                     startPlayer()
                 }
@@ -160,7 +211,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         iv_arrow.isVisible = show
     }
 
-    //TODO 判斷當前ExoPlayer播放狀態顯示loading 或 無法播放的圖示
     fun liveLoading() {
         player_view.visibility = View.GONE
         iv_live_status.visibility = View.VISIBLE
@@ -214,7 +264,17 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
                     exoPlayer.playWhenReady = playWhenReady
                     exoPlayer.seekTo(currentWindow, playbackPosition)
+                    exoPlayer.addListener(playbackStateListener)
                     exoPlayer.prepare()
+                }
+            } else {
+                exoPlayer?.let { player ->
+                    val mediaItem =
+                        MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                    player.setMediaItem(mediaItem)
+                    player.playWhenReady = playWhenReady
+                    player.seekTo(currentWindow, playbackPosition)
+                    player.prepare()
                 }
             }
         }
@@ -225,6 +285,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             playbackPosition = this.currentPosition
             currentWindow = this.currentWindowIndex
             this@LiveViewToolbar.playWhenReady = this.playWhenReady
+            removeListener(playbackStateListener)
             release()
         }
         exoPlayer = null
