@@ -28,10 +28,7 @@ import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
-import org.cxct.sportlottery.network.common.FavoriteType
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
@@ -65,7 +62,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var curHomeScore: Int? = null
     private var curAwayScore: Int? = null
-    
+
     private var curStatus: Int? = null
 
     override var startTime: Long = 0
@@ -84,8 +81,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
 
+
         if (needCountStatus(curStatus)) {
-            if (timeMillis >= 0) {
+            if (timeMillis >= 1000) {
                 tv_time_bottom?.apply {
                     text = TimeUtil.timeFormat(timeMillis, "mm:ss")
                 }
@@ -135,7 +133,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onStart() {
         super.onStart()
-        getData()
 
         if (Util.SDK_INT >= 24) {
             live_view_tool_bar.startPlayer()
@@ -144,6 +141,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     override fun onResume() {
         super.onResume()
+        getData()
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
@@ -223,6 +221,16 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                                 oddsDetailListAdapter?.awayName = away
                             }
                         }
+
+                        result.oddsDetailData?.matchOdd?.matchInfo?.let { matchInfo ->
+                            if (matchInfo.status == GameStatus.POSTPONED.code
+                                && (matchInfo.gameType == GameType.FT.name || matchInfo.gameType == GameType.BK.name || matchInfo.gameType == GameType.TN.name)) {
+                                tv_status_left.text = context?.getString(R.string.game_postponed)
+                                tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorRedDark))
+                                tv_status_left.tag = GameStatus.POSTPONED.code
+                            }
+                        }
+
                         setupStartTime()
                         setupLiveView(result.oddsDetailData?.matchOdd?.matchInfo?.liveVideo)
 
@@ -261,6 +269,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         ) {
                             tv_spt.visibility = View.VISIBLE
                             tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt) ?: 0}"
+                        } else {
+                            tv_spt.visibility = View.GONE
                         }
 
                     }
@@ -453,13 +463,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             tv_away_name.text = this.awayName ?: ""
 
-            tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
+            tv_time_bottom.text = getString(R.string.time_null)
 
             if (args.matchType != MatchType.IN_PLAY) {
+                tv_time_bottom.text = TimeUtil.timeFormat(startTime, HM_FORMAT)
                 tv_time_top.text = TimeUtil.timeFormat(startTime, DM_FORMAT)
             }
         }
-
     }
 
     private fun setupLiveView(liveVideo: Int?) {
@@ -558,11 +568,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             GameType.TN -> {
                 setupPoint(event)
                 setupBackScore(event)
-                setupStatusTnVB(event)
+                setupStatusTnVb(event)
             }
             GameType.VB -> {
                 setupBackScore(event)
-                setupStatusTnVB(event)
+                setupStatusTnVb(event)
             }
         }
     }
@@ -610,7 +620,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_status_left.text = statusBuilder
     }
 
-    private fun setupStatusTnVB(event: MatchStatusChangeEvent) {
+    private fun setupStatusTnVb(event: MatchStatusChangeEvent) {
         if (event.matchStatusList?.isEmpty() == true) return
 
         val statusBuilder = SpannableStringBuilder()
@@ -631,10 +641,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         tv_status_right.text = statusBuilder
 
-        tv_status_left.text = when (getSelectLanguage(context)) {
-            LanguageManager.Language.ZH -> "${event.matchStatusCO?.statusNameI18n?.zh}"
-            LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
-            else -> event.matchStatusCO?.statusName
+        if (tv_status_left.tag != GameStatus.POSTPONED.code) {
+            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
+            tv_status_left.text = when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> "${event.matchStatusCO?.statusNameI18n?.zh}"
+                LanguageManager.Language.EN -> event.matchStatusCO?.statusNameI18n?.en
+                else -> event.matchStatusCO?.statusName
+            }
         }
     }
 }

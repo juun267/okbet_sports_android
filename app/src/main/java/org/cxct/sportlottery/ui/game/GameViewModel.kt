@@ -866,6 +866,7 @@ class GameViewModel(
                         oddList?.updateOddSelectState()
                     }
 
+                    matchOdd?.setupPlayCate()
                     matchOdd?.sortOdds()
                 }
             }
@@ -947,6 +948,7 @@ class GameViewModel(
                         map.value?.updateOddSelectState()
                     }
 
+                    matchOdd.setupPlayCate()
                     matchOdd.sortOdds()
 
                     if (!getPlayCateCodeList().isNullOrEmpty())
@@ -1559,6 +1561,17 @@ class GameViewModel(
     }
 
     /**
+     * 設置大廳所需顯示的玩法 (api未回傳的玩法需以“—”表示)
+     */
+    private fun MatchOdd.setupPlayCate() {
+        val sortOrder = this.oddsSort?.split(",")
+        sortOrder?.forEach {
+            if (!this.oddsMap.keys.contains(it))
+                this.oddsMap[it] = mutableListOf(null, null, null)
+        }
+    }
+
+    /**
      * 根據賽事的oddsSort將盤口重新排序
      */
     private fun MatchOdd.sortOdds() {
@@ -1628,7 +1641,7 @@ class GameViewModel(
     fun getLiveInfo(matchId: String, getNewest: Boolean = false) {
         //同樣賽事已經請求過最新地址則不再請求
         val nowMatchLiveInfo = matchLiveInfo.value?.peekContent()
-        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest) return
+        if (nowMatchLiveInfo?.matchId == matchId && nowMatchLiveInfo.isNewest && getNewest) return
 
         val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
 

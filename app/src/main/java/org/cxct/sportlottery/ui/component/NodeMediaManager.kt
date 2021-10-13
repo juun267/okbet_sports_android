@@ -94,7 +94,7 @@ class NodeMediaManager(liveEventListener: LiveEventListener, nodeMediaListener: 
         nodePlayer = NodePlayer(context, "M2FmZTEzMGUwMC00ZTRkNTMyMS1jbi5ub2RlbWVkaWEucWxpdmU=-OTv6MJuhXZKNyWWMkdKJWsVKmLHwWPcPfnRbbWGIIf+8t39TqL/mW2f5O5WdT/W8JJE7ePvkvKaS371xVckAZ/U00dSwPp8ShB8Yic2W1GhwCyq04DYETsrGnkOWrhARH7nzNhd3Eq6sVC1Fr74GCEUHbDSCZnCfhcEnzGU9InRiQJ2PImtHORahN3blAGlHb6LZmdnobw5odvKEeUhbkhxYf8S1Fv4VRnSpDCSS3LZ2U3Mp6MfGDA1ZXPadmgdwaJitIrnWA2zP/yqmlUHjMtTv8PzGcc73Tm5k5q+OMbKCJsPq8KSEpFthncvaGZJ2kS2GHx6V5TqYZglBrTx61g==")
         nodePlayer?.setNodePlayerDelegate(nodePlayerDelegate)
         nodePlayer?.setPlayerView(playSurface)
-        nodePlayer?.setAudioEnable(false)
+        nodePlayer?.setAudioEnable(true)
 
         /**
          * 设置播放直播视频url

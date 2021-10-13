@@ -53,14 +53,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-    enum class GameStatus(val code: Int) {
-        NOT_STARTED(0),
-        NOW_PLAYING(1),
-        ENDED(2),
-        POSTPONED(3),
-        CANCELED(4)
-    }
-
     var leagueOddListener: LeagueOddListener? = null
 
     private val oddStateRefreshListener by lazy {
@@ -512,7 +504,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setStatusText(item: MatchOdd, matchType: MatchType) {
             itemView.league_odd_match_status.text = when {
-                (matchType == MatchType.IN_PLAY && item.matchInfo?.status == 3 && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
+                (matchType == MatchType.IN_PLAY
+                        && item.matchInfo?.status == GameStatus.POSTPONED.code
+                        && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
                     itemView.context.getString(R.string.game_postponed)
                 }
 
@@ -548,7 +542,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setTextViewStatus(item: MatchOdd, matchType: MatchType) {
             when {
-                (matchType == MatchType.IN_PLAY && item.matchInfo?.status == 3 && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
+                (matchType == MatchType.IN_PLAY && item.matchInfo?.status == GameStatus.POSTPONED.code && (item.matchInfo.gameType == GameType.FT.name || item.matchInfo.gameType == GameType.BK.name || item.matchInfo.gameType == GameType.TN.name)) -> {
                     itemView.league_odd_spt.visibility = View.GONE
                     itemView.league_odd_match_time.visibility = View.GONE
                 }
@@ -670,7 +664,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     View.VISIBLE
                 }
 
-                item.quickPlayCateList?.forEach {
+                item.quickPlayCateList?.sortedBy { it.sort }?.forEach {
                     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
 

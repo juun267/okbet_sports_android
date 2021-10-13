@@ -83,10 +83,12 @@ class OddButtonPagerAdapter(
             listOf(
                 Pair(
                     data[position].getOrNull(0)?.first,
-                    data[position].getOrNull(0)?.second),
+                    data[position].getOrNull(0)?.second
+                ),
                 Pair(
                     data[position].getOrNull(1)?.first,
-                    data[position].getOrNull(1)?.second)
+                    data[position].getOrNull(1)?.second
+                )
             ),
             oddsType,
             listener
@@ -262,7 +264,7 @@ class OddButtonPagerViewHolder private constructor(
 
             oddBtnHome.apply homeButtonSettings@{
                 when {
-                    (odds.second == null) -> {
+                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
                         betStatus = BetStatus.DEACTIVATED.code
                         return@homeButtonSettings
                     }
@@ -277,7 +279,7 @@ class OddButtonPagerViewHolder private constructor(
 
                 tv_name.apply {
                     visibility = when {
-                        playCateMapItem.isOUType() -> View.VISIBLE
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> View.VISIBLE
                         else -> {
                             when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
                                 true -> View.INVISIBLE
@@ -287,12 +289,12 @@ class OddButtonPagerViewHolder private constructor(
                     }
 
                     text = when {
-                        playCateMapItem.isOUType() -> {
-                            odds.second?.getOrNull(0)?.nameMap?.get(
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> {
+                            (odds.second?.getOrNull(0)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(
                                     context
                                 ).key
-                            ) ?: odds.second?.getOrNull(0)?.name
+                            ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
                         }
                         else -> ""
                     }
@@ -334,7 +336,7 @@ class OddButtonPagerViewHolder private constructor(
 
             oddBtnAway.apply awayButtonSettings@{
                 when {
-                    (odds.second == null) -> {
+                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
                         betStatus = BetStatus.DEACTIVATED.code
                         return@awayButtonSettings
                     }
@@ -349,7 +351,7 @@ class OddButtonPagerViewHolder private constructor(
 
                 tv_name.apply {
                     visibility = when {
-                        playCateMapItem.isOUType() -> View.VISIBLE
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> View.VISIBLE
                         else -> {
                             when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
                                 true -> View.INVISIBLE
@@ -359,12 +361,12 @@ class OddButtonPagerViewHolder private constructor(
                     }
 
                     text = when {
-                        playCateMapItem.isOUType() -> {
-                            odds.second?.getOrNull(1)?.nameMap?.get(
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> {
+                            (odds.second?.getOrNull(1)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(
                                     context
                                 ).key
-                            ) ?: odds.second?.getOrNull(1)?.name
+                            ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
                         }
                         else -> ""
                     }
@@ -404,11 +406,14 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
-
             oddBtnDraw.apply drawButtonSettings@{
                 when {
                     (odds.second?.size ?: 0 < 3) -> {
                         visibility = View.GONE
+                        return@drawButtonSettings
+                    }
+                    odds.second?.all { odd -> odd == null } == true -> {
+                        betStatus = BetStatus.DEACTIVATED.code
                         return@drawButtonSettings
                     }
                     (odds.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
@@ -421,14 +426,35 @@ class OddButtonPagerViewHolder private constructor(
                 }
 
                 tv_name.apply {
-                    text = odds.second?.getOrNull(2)?.nameMap?.get(
-                        LanguageManager.getSelectLanguage(context).key
-                    ) ?: odds.second?.getOrNull(2)?.name
                     visibility = View.VISIBLE
+
+                    text = when (playCateMapItem.isCombination()) {
+                        true -> {
+                            (odds.second?.getOrNull(2)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(context).key
+                            ) ?: odds.second?.getOrNull(2)?.name)?.split("-")?.firstOrNull() ?: ""
+                        }
+                        false -> {
+                            odds.second?.getOrNull(2)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(context).key
+                            ) ?: odds.second?.getOrNull(2)?.name
+                        }
+                    }
                 }
 
                 tv_spread.apply {
-                    visibility = View.INVISIBLE
+                    visibility = when(!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()){
+                        true -> View.VISIBLE
+                        false -> {
+                            when {
+                                playCateMapItem.isOUType() -> View.INVISIBLE
+                                else -> View.GONE
+                            }
+                        }
+                    }
+
+                    text = odds.second?.getOrNull(2)?.spread ?: ""
+
                 }
 
                 tv_odds.text = when (oddsType) {
@@ -465,7 +491,26 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private fun PlayCateMapItem.isOUType(): Boolean {
-        return this.playCateCode.contains(PlayCate.OU.value)
+        return this.playCateCode.contains(PlayCate.OU.value) && !this.isCombination()
+    }
+
+    private fun PlayCateMapItem.isOEType(): Boolean {
+        return this.playCateCode.contains(PlayCate.OE.value) && !this.isCombination()
+    }
+
+    private fun PlayCateMapItem.isBTSType(): Boolean {
+        return this.playCateCode.contains(PlayCate.BTS.value) && !this.isCombination()
+    }
+
+    private fun PlayCateMapItem.isCombination(): Boolean {
+        return this.playCateCode.contains(PlayCate.SINGLE_OU.value) || this.playCateCode.contains(PlayCate.SINGLE_BTS.value)
+    }
+
+    /**
+     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
+     */
+    private fun String.abridgeOddsName(): String{
+        return this.replace("Over", "O").replace("Under", "U")
     }
 
     private fun String.updatePlayCateColor(): Spanned {
