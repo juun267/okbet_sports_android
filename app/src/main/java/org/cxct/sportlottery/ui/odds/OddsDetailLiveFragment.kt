@@ -368,14 +368,21 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             it?.let { matchOddsChangeEvent ->
                 matchOddsChangeEvent.updateOddsSelectedState()
 
-                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
-                    if (SocketUpdateUtil.updateMatchOdds(
-                            oddsDetailListData,
-                            matchOddsChangeEvent
-                        )
-                        && oddsDetailListData.isExpand
-                    ) {
-                        oddsDetailListAdapter?.notifyItemChanged(index)
+                oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
+                    SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList, matchOddsChangeEvent)
+                        ?.let { updatedDataList ->
+                            oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
+                        } ?: run {
+                        oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                            if (SocketUpdateUtil.updateMatchOdds(
+                                    oddsDetailListData,
+                                    matchOddsChangeEvent
+                                )
+                                && oddsDetailListData.isExpand
+                            ) {
+                                oddsDetailListAdapter?.notifyItemChanged(index)
+                            }
+                        }
                     }
                 }
             }

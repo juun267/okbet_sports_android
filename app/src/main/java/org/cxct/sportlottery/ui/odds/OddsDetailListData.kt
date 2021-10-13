@@ -8,7 +8,7 @@ data class OddsDetailListData(
     var name: String, //大/小
     var oddArrayList: List<Odd?>, //odds[]
     val nameMap: Map<String?, String?>?, //保存各语系name对应值的map
-    val rowSort: Int //排序
+    var rowSort: Int //排序
 ) {
     var isExpand: Boolean = true
     var isMoreExpand: Boolean = false
