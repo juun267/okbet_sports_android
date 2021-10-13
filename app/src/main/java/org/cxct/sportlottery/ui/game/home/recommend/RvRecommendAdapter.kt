@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.home_recommend_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -42,6 +43,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
+                    leagueId = row.leagueOdds.league?.id,
                     leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds.matchOdds.firstOrNull()?.matchInfo?.name else row.leagueOdds.league?.name,
                     matchInfo = oddData.matchInfo,
                     isOutright = row.isOutright,
