@@ -169,6 +169,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         unSubscribeChannelEventAll()
     }
 
+    override fun onDestroy() {
+        viewModel.clearLiveInfo()
+        super.onDestroy()
+    }
+
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
             oddsDetailListener = OddsDetailListener {
@@ -340,7 +345,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         viewModel.matchLiveInfo.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { liveStreamInfo ->
+            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
                 live_view_tool_bar.setupLiveUrl(liveStreamInfo.streamUrl)
             }
         })

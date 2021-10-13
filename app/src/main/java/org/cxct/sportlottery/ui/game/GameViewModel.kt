@@ -276,8 +276,8 @@ class GameViewModel(
         get() = _oddsDetailList
 
     //賽事直播網址
-    private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>>()
-    val matchLiveInfo: LiveData<Event<LiveStreamInfo>>
+    private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>?>()
+    val matchLiveInfo: LiveData<Event<LiveStreamInfo>?>
         get() = _matchLiveInfo
 
     //Loading
@@ -1632,7 +1632,6 @@ class GameViewModel(
 
         val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
 
-        //TODO 若視訊源為p2的話每次都要請求
         //沒有暫存網址時請求最新網址
         if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
             viewModelScope.launch {
@@ -1705,5 +1704,9 @@ class GameViewModel(
                 response.streamURL
             }
         }
+    }
+
+    fun clearLiveInfo() {
+        _matchLiveInfo.postValue(null)
     }
 }
