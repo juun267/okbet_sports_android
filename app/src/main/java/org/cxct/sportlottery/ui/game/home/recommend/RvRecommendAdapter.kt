@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.home_recommend_item.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
@@ -42,7 +43,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,
                     name = row.sport?.name,
-                    leagueName = row.leagueOdds.league?.name,
+                    leagueId = row.leagueOdds.league?.id,
+                    leagueName = if (row.isOutright == RECOMMEND_OUTRIGHT) row.leagueOdds.matchOdds.firstOrNull()?.matchInfo?.name else row.leagueOdds.league?.name,
                     matchInfo = oddData.matchInfo,
                     isOutright = row.isOutright,
                     oddBeans = beans,
@@ -186,8 +188,10 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
         private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
             val dateFormat = "dd / MM"
             val todayDate = TimeUtil.timeFormat(System.currentTimeMillis(), dateFormat)
-            return TimeUtil.timeFormat(this.startTime, "$dateFormat\nHH:mm")
-                .replace(todayDate, context.getString(R.string.home_tab_today))
+            return this.startTime?.let { startTimeNotNull ->
+                TimeUtil.timeFormat(startTimeNotNull, "$dateFormat\nHH:mm")
+                    .replace(todayDate, context.getString(R.string.home_tab_today))
+            } ?: ""
         }
     }
 }

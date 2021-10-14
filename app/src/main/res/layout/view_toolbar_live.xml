@@ -29,12 +29,13 @@
                 android:scaleType="fitXY"/>
             
             <!-- Media Layout -->
-            <cn.nodemedia.NodePlayerView
-                android:visibility="gone"
-                android:id="@+id/node_player"
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/player_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@id/v_toolbar"
+                app:use_controller="false" />
         </FrameLayout>
 
     </net.cachapa.expandablelayout.ExpandableLayout>

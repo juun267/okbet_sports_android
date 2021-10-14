@@ -71,8 +71,8 @@ class NodeMediaManager(liveEventListener: LiveEventListener, nodeMediaListener: 
 
     fun initNodeMediaPlayer(context: Context, playSurface: NodePlayerView, streamURL: String) {
 
-        val bufferTime = 500
-        val maxBufferTime = 3000
+        val bufferTime = 300
+        val maxBufferTime = 1500
         val videoScaleMode = 1
         val autoHA = true
         val rtspTransport = "udp"

@@ -142,7 +142,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                     outrightLeagueOddAdapter.data = outrightLeagueOddDataList
 
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds?.forEach { matchOdd ->
+                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.forEach { matchOdd ->
                         subscribeChannelHall(matchOdd)
                     }
                 }
