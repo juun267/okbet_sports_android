@@ -10,45 +10,108 @@ import android.webkit.WebSettings
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
+import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.upstream.HttpDataSource
+import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.LanguageManager
+import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
-class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : LinearLayout(context, attrs, defStyle) {
+class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
+    LinearLayout(context, attrs, defStyle) {
 
-    private val typedArray by lazy { context.theme.obtainStyledAttributes(attrs, R.styleable.CalendarBottomSheetStyle, 0, 0) }
-    private val bottomSheetLayout by lazy { typedArray.getResourceId(R.styleable.CalendarBottomSheetStyle_calendarLayout, R.layout.dialog_bottom_sheet_webview) }
+    private val typedArray by lazy {
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.CalendarBottomSheetStyle,
+            0,
+            0
+        )
+    }
+    private val bottomSheetLayout by lazy {
+        typedArray.getResourceId(
+            R.styleable.CalendarBottomSheetStyle_calendarLayout,
+            R.layout.dialog_bottom_sheet_webview
+        )
+    }
     private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
-    private var nodeMediaManager: NodeMediaManager? = null
-    private var mStreamUrl: String = ""
+    private var mStreamUrl: String? = null
+    private var newestUrl: Boolean = false
 
     lateinit var matchOdd: MatchOdd
 
+    //exoplayer
+    private var exoPlayer: SimpleExoPlayer? = null
+
+    private var playWhenReady = true
+    private var currentWindow = 0
+    private var playbackPosition = 0L
+
+    private val playbackStateListener by lazy {
+        object : Player.Listener {
+            /**
+             * 會有以下四種playback狀態
+             * STATE_IDLE: 初始狀態, 播放器停止, playback failed
+             * STATE_BUFFERING: 媒體讀取中
+             * STATE_READY: 準備好可播放
+             * STATE_ENDED: 播放結束
+             */
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                when (playbackState) {
+                    ExoPlayer.STATE_IDLE -> {
+                        Timber.i("ExoPlayer.STATE_IDLE      -")
+                        //獲取過最新的直播地址後仍然無法播放進入暫停狀態
+                        if (newestUrl)
+                            showLiveView(false)
+                    }
+                    Player.STATE_BUFFERING -> {
+                        liveLoading()
+                        Timber.i("ExoPlayer.STATE_BUFFERING     -")
+                    }
+                    ExoPlayer.STATE_READY -> {
+                        Timber.i("ExoPlayer.STATE_READY -")
+                        showLiveView(true)
+                    }
+                    Player.STATE_ENDED -> {
+                        Timber.i("ExoPlayer.STATE_ENDED     -")
+                        showLiveView(false)
+                    }
+                    else -> Timber.e("UNKNOWN_STATE             -")
+                }
+            }
+
+            @SuppressLint("SwitchIntDef")
+            override fun onPlayerError(error: PlaybackException) {
+                when (val httpError = error.cause as HttpDataSource.HttpDataSourceException) {
+                    //直播地址播放連線失敗
+                    is HttpDataSource.InvalidResponseCodeException -> {
+                        Timber.e("PlayerError = $httpError")
+                        newestUrl = true
+                        //重新獲取最新的直播地址
+                        liveToolBarListener?.getLiveInfo(true)
+                    }
+                }
+            }
+        }
+    }
+
+
     interface LiveToolBarListener {
-        fun onExpand()
+        fun getLiveInfo(newestUrl: Boolean = false)
     }
 
     private var liveToolBarListener: LiveToolBarListener? = null
-
-    private var nodeMediaListener: NodeMediaManager.NodeMediaListener = object : NodeMediaManager.NodeMediaListener {
-        override fun streamLoading() {
-            liveLoading()
-        }
-
-        override fun isLiveShowing(isShowing: Boolean) {
-            showLiveView(isShowing)
-        }
-
-    }
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
@@ -72,7 +135,8 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         iv_play.setOnClickListener {
             when (expand_layout.isExpanded) {
                 true -> {
-                    nodeMediaManager?.nodeMediaReload()
+                    stopPlayer()
+                    startPlayer()
                 }
                 false -> {
                     switchLiveView(true)
@@ -111,11 +175,13 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 iv_play.isSelected = true
                 expand_layout.expand()
-                liveToolBarListener?.onExpand()
-                if (mStreamUrl.isNotEmpty()) nodeMediaManager?.nodeMediaStart()
+                liveToolBarListener?.getLiveInfo()
+                if (!mStreamUrl.isNullOrEmpty()) {
+                    startPlayer()
+                }
             }
             false -> {
-                nodeMediaManager?.nodeMediaStop()
+                stopPlayer()
 
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
                 iv_play.isSelected = false
@@ -139,10 +205,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
     }
 
-    fun setupNodeMediaPlayer(eventListener: NodeMediaManager.LiveEventListener) {
-        nodeMediaManager = NodeMediaManager(eventListener, nodeMediaListener)
-    }
-
     fun setupPlayerControl(show: Boolean) {
         switchLiveView(show)
         iv_play.isVisible = show
@@ -150,24 +212,23 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun liveLoading() {
-        node_player.visibility = View.GONE
+        player_view.visibility = View.GONE
         iv_live_status.visibility = View.VISIBLE
         iv_live_status.setImageResource(R.drawable.img_stream_loading)
     }
 
     fun showLiveView(showLive: Boolean) {
-        node_player.isVisible = showLive
+        player_view.isVisible = showLive
         iv_live_status.isVisible = !showLive
         iv_live_status.setImageResource(R.drawable.img_no_live)
     }
 
-    fun setupLiveUrl(streamUrl: String) {
+    fun setupLiveUrl(streamUrl: String?) {
         mStreamUrl = streamUrl
-        nodeMediaManager?.initNodeMediaPlayer(context, node_player, streamUrl)
-        nodeMediaManager?.nodeMediaStart()
+        startPlayer()
     }
 
-    fun loadBottomSheetUrl(matchOdd: MatchOdd) {
+    private fun loadBottomSheetUrl(matchOdd: MatchOdd) {
         bottomSheetView.bottom_sheet_web_view.loadUrl(
             sConfigData?.analysisUrl?.replace("{lang}", LanguageManager.getSelectLanguage(context).key)
                 ?.replace("{eventId}", matchOdd.matchInfo.id)
@@ -188,16 +249,54 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         BottomSheetBehavior.from(root as View).isDraggable = false
     }
 
-    fun startNodeMediaPlayer() {
-        nodeMediaManager?.nodeMediaStart()
+    fun getExoPlayer(): SimpleExoPlayer? {
+        return exoPlayer
     }
 
-    fun stopNodeMediaPlayer() {
-        nodeMediaManager?.nodeMediaStop()
+    private fun initializePlayer(streamUrl: String?) {
+        streamUrl?.let {
+            if (exoPlayer == null) {
+                exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
+                    player_view.player = exoPlayer
+                    val mediaItem =
+                        MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                    exoPlayer.setMediaItem(mediaItem)
+
+                    exoPlayer.playWhenReady = playWhenReady
+                    exoPlayer.seekTo(currentWindow, playbackPosition)
+                    exoPlayer.addListener(playbackStateListener)
+                    exoPlayer.prepare()
+                }
+            } else {
+                exoPlayer?.let { player ->
+                    val mediaItem =
+                        MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                    player.setMediaItem(mediaItem)
+                    player.playWhenReady = playWhenReady
+                    player.seekTo(currentWindow, playbackPosition)
+                    player.prepare()
+                }
+            }
+        }
     }
 
-    fun releaseNodeMediaPlayer() {
-        nodeMediaManager?.nodeMediaRelease()
+    private fun releasePlayer() {
+        exoPlayer?.run {
+            playbackPosition = this.currentPosition
+            currentWindow = this.currentWindowIndex
+            this@LiveViewToolbar.playWhenReady = this.playWhenReady
+            removeListener(playbackStateListener)
+            release()
+        }
+        exoPlayer = null
+    }
+
+    fun startPlayer() {
+        initializePlayer(mStreamUrl)
+    }
+
+    fun stopPlayer() {
+        releasePlayer()
     }
 
 }

@@ -244,6 +244,12 @@ dependencies {
     //NodeMediaClient
     implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.9.16'
 
+    //ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.15.1'
+    implementation 'com.google.android.exoplayer:extension-okhttp:2.15.1'
+
     //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'
 
