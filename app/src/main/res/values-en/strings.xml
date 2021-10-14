@@ -330,7 +330,7 @@
     <string name="game_filter_row_search_hint_league">Please enter team name</string>
     <string name="date_row_league">Match</string>
     <string name="date_row_other">Other morning season</string>
-    <string name="date_row_all">All matchs</string>
+    <string name="date_row_all">All dates</string>
     <string name="date_row_live">In-Play Match</string>
     <string name="date_row_today">Matchs today</string>
     <string name="outright_row_entrance">Champion trading</string>

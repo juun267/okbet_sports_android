@@ -1184,7 +1184,7 @@ class GameViewModel(
                 androidContext.getString(R.string.date_row_all),
                 TimeUtil.getEarlyAllTimeRangeParams()
             ), Date(
-                androidContext.getString(R.string.date_row_other),
+                androidContext.getString(R.string.other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams()
             )
         )
