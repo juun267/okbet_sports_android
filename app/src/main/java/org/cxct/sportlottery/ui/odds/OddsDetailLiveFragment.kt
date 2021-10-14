@@ -596,7 +596,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         val statusBuilder = SpannableStringBuilder()
 
         tv_status_left.visibility = View.VISIBLE
-        tv_status_right.visibility = View.GONE
+        tv_spt.visibility = View.GONE
         tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
 
         event.matchStatusList?.forEachIndexed { index, it ->
@@ -642,7 +642,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         if (tv_status_left.tag != GameStatus.POSTPONED.code) {
             tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
-            tv_status_right.setTextColor(ContextCompat.getColor(tv_status_right.context, R.color.colorOrangeLight))
             val statusValue = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: event.matchStatusCO?.statusName
             tv_status_left.text = statusValue
         }
