@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.service.match_status_change.StatusNameI18n
 import java.util.*
 
 object LanguageManager {
