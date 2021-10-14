@@ -127,7 +127,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     private fun setCalendarYearTitle(position: Int) {
         val currentCalendarMonth = mDateRangeCalendarManager.getVisibleMonthDataList()[position]
         var dateText = DateFormatSymbols(locale).months[currentCalendarMonth[Calendar.MONTH]]
-        dateText = dateText.substring(0, 1).toUpperCase() + dateText.subSequence(1, dateText.length)
+        dateText = dateText.substring(0, 1).toUpperCase(Locale.getDefault()) + dateText.subSequence(1, dateText.length)
 //        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
         val yearTitle: String
         if (locale.displayLanguage == "en") {
