@@ -1663,6 +1663,7 @@ class GameViewModel(
 
         val tempLiveStreamUrl = gameLiveSharedPreferences.getString(matchId, null)
 
+        //TODO 若視訊源為p2的話每次都要請求
         //沒有暫存網址時請求最新網址
         if (getNewest || tempLiveStreamUrl.isNullOrBlank()) {
             viewModelScope.launch {
@@ -1699,6 +1700,8 @@ class GameViewModel(
         }
     }
 
+    private val p2StreamSourceList = mutableListOf("hlsmed", "hlslo", "iphonewabsec")
+
     /**
      * resource type
      * p2: 需要将返回的accessToken作为请求头，请求streamURL
@@ -1713,9 +1716,16 @@ class GameViewModel(
             VideoProvider.P2.code -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
                     response.accessToken,
+                    sConfigData?.referUrl,
                     response.streamURL
                 )
-                liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
+                val streamSource = p2StreamSourceList.firstOrNull { p2Source ->
+                    liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { launcher ->
+                        launcher.playerAlias == p2Source
+                    } != null } ?: liveUrlResponse.body()?.launchInfo?.streamLauncher?.firstOrNull()?.playerAlias
+                streamSource?.let {
+                    return liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.playerAlias == streamSource }?.launcherURL
+                }
             }
             VideoProvider.I.code, VideoProvider.S.code -> {
                 val liveUrlResponse =
