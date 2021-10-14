@@ -140,7 +140,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
         fun bind(data: Row, oddsType: OddsType) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
-                title_league_name.text = "${matchOdds.leagueName} - ${context.getString(R.string.champion)}"
+                title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.spread
