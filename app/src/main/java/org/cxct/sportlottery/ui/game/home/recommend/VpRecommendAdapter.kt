@@ -94,7 +94,7 @@ class VpRecommendAdapter(
                     holder.bind(data)
                 }
                 is ViewHolderRecOutright -> {
-                    val data = dataList.filterPlayCateSpanned(sportCode)[0]
+                    val data = dataList.first()
                     holder.bind(data, dynamicMarkets)
                 }
             }

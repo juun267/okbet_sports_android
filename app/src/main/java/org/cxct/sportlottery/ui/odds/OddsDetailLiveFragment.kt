@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.exoplayer2.util.Util
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -40,7 +41,6 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
-import org.cxct.sportlottery.ui.component.NodeMediaManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
@@ -100,22 +100,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private val liveToolBarListener by lazy {
         object : LiveViewToolbar.LiveToolBarListener {
-            override fun onExpand() {
+            override fun getLiveInfo(newestUrl: Boolean) {
                 matchId?.let {
-                    viewModel.getLiveInfo(it)
+                    viewModel.getLiveInfo(it, newestUrl)
                 }
             }
         }
     }
-
-    private val eventListener by lazy {
-        object : NodeMediaManager.LiveEventListener {
-            override fun reRequestStreamUrl() {
-                matchId?.let { viewModel.getLiveInfo(it, true) }
-            }
-        }
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -140,29 +131,45 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         initSocketObserver()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        if (Util.SDK_INT >= 24) {
+            live_view_tool_bar.startPlayer()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        live_view_tool_bar.startNodeMediaPlayer()
         getData()
         startTimer()
+
+        if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
+            live_view_tool_bar.startPlayer()
+        }
     }
 
     override fun onPause() {
+        if (Util.SDK_INT < 24) {
+            live_view_tool_bar.stopPlayer()
+        }
         super.onPause()
 
         cancelTimer()
     }
 
     override fun onStop() {
-        live_view_tool_bar.stopNodeMediaPlayer()
+        if (Util.SDK_INT >= 24) {
+            live_view_tool_bar.stopPlayer()
+        }
         super.onStop()
 
         unSubscribeChannelEventAll()
     }
 
-    override fun onDestroyView() {
-        live_view_tool_bar.releaseNodeMediaPlayer()
-        super.onDestroyView()
+    override fun onDestroy() {
+        viewModel.clearLiveInfo()
+        super.onDestroy()
     }
 
     private fun initUI() {
@@ -189,7 +196,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(t)?.code?.let {
+                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
+                        t
+                    )?.code?.let {
                         oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
                     }
                 }
@@ -227,11 +236,31 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
 
                         if (args.matchType == MatchType.IN_PLAY) {
-                            tv_time_bottom?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorOrangeLight))
-                            tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorOrangeLight))
+                            tv_time_bottom?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorOrangeLight
+                                )
+                            )
+                            tv_time_top?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorOrangeLight
+                                )
+                            )
                         } else {
-                            tv_time_bottom?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
-                            tv_time_top?.setTextColor(ContextCompat.getColor(tv_time_bottom.context, R.color.colorSilver))
+                            tv_time_bottom?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorSilver
+                                )
+                            )
+                            tv_time_top?.setTextColor(
+                                ContextCompat.getColor(
+                                    tv_time_bottom.context,
+                                    R.color.colorSilver
+                                )
+                            )
                         }
 
                         if (args.matchType == MatchType.IN_PLAY &&
@@ -326,8 +355,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         })
 
         viewModel.matchLiveInfo.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { liveStreamInfo ->
-//                live_view_tool_bar.setupLiveUrl(liveStreamInfo.streamUrl)
+            it?.getContentIfNotHandled()?.let { liveStreamInfo ->
+                live_view_tool_bar.setupLiveUrl(liveStreamInfo.streamUrl)
             }
         })
     }
@@ -442,7 +471,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
-        live_view_tool_bar.setupNodeMediaPlayer(eventListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
 
         matchOdd?.let {
@@ -568,6 +596,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         val statusBuilder = SpannableStringBuilder()
 
         tv_status_left.visibility = View.VISIBLE
+        tv_status_right.visibility = View.GONE
+        tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
 
         event.matchStatusList?.forEachIndexed { index, it ->
             val spanStatusName = SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
@@ -611,7 +641,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_status_right.text = statusBuilder
 
         if (tv_status_left.tag != GameStatus.POSTPONED.code) {
-            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
+            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_status_right.setTextColor(ContextCompat.getColor(tv_status_right.context, R.color.colorOrangeLight))
             val statusValue = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: event.matchStatusCO?.statusName
             tv_status_left.text = statusValue
         }

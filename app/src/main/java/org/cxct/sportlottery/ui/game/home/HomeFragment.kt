@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -242,8 +243,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val code = select.code
                     val matchId = select.matchInfo?.id
 
-                    //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
-                    navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    if (select.isOutright == RECOMMEND_OUTRIGHT) {
+                        navGameOutright(select.code, select.leagueId)
+                    } else {
+                        //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
+                        navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    }
                 }
             }
     }
@@ -969,6 +974,20 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         card_slot.visibility = if (isShowThirdGame && slotCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
         card_fishing.visibility =
             if (isShowThirdGame && fishingCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+    }
+
+    private fun navGameOutright(gameTypeCode: String?, matchId: String?) {
+        val gameType = GameType.getGameType(gameTypeCode)
+
+        if (gameType != null && matchId != null) {
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToGameOutrightFragment(
+                    gameType,
+                    matchId
+                )
+
+            findNavController().navigate(action)
+        }
     }
 
     private fun navOddsDetailFragment(

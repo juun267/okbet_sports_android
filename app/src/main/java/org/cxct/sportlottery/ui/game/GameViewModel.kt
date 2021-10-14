@@ -276,8 +276,8 @@ class GameViewModel(
         get() = _oddsDetailList
 
     //賽事直播網址
-    private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>>()
-    val matchLiveInfo: LiveData<Event<LiveStreamInfo>>
+    private val _matchLiveInfo = MutableLiveData<Event<LiveStreamInfo>?>()
+    val matchLiveInfo: LiveData<Event<LiveStreamInfo>?>
         get() = _matchLiveInfo
 
     //Loading
@@ -1184,7 +1184,7 @@ class GameViewModel(
                 androidContext.getString(R.string.date_row_all),
                 TimeUtil.getEarlyAllTimeRangeParams()
             ), Date(
-                androidContext.getString(R.string.other),
+                androidContext.getString(R.string.date_row_other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams()
             )
         )
@@ -1699,6 +1699,8 @@ class GameViewModel(
         }
     }
 
+    private val p2StreamSourceList = mutableListOf("hlsmed", "hlslo", "iphonewabsec")
+
     /**
      * resource type
      * p2: 需要将返回的accessToken作为请求头，请求streamURL
@@ -1713,9 +1715,16 @@ class GameViewModel(
             VideoProvider.P2.code -> {
                 val liveUrlResponse = OneBoSportApi.matchService.getLiveP2Url(
                     response.accessToken,
+                    sConfigData?.referUrl,
                     response.streamURL
                 )
-                liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.launcherURL.isNotEmpty() }?.launcherURL
+                val streamSource = p2StreamSourceList.firstOrNull { p2Source ->
+                    liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { launcher ->
+                        launcher.playerAlias == p2Source
+                    } != null } ?: liveUrlResponse.body()?.launchInfo?.streamLauncher?.firstOrNull()?.playerAlias
+                streamSource?.let {
+                    return liveUrlResponse.body()?.launchInfo?.streamLauncher?.find { it.playerAlias == streamSource }?.launcherURL
+                }
             }
             VideoProvider.I.code, VideoProvider.S.code -> {
                 val liveUrlResponse =
@@ -1726,5 +1735,9 @@ class GameViewModel(
                 response.streamURL
             }
         }
+    }
+
+    fun clearLiveInfo() {
+        _matchLiveInfo.postValue(null)
     }
 }
