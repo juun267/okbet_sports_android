@@ -8,6 +8,7 @@ import org.cxct.sportlottery.ui.common.PlayCateMapItem
 class RecommendGameEntity(
     val code: String?, //球種 code
     val name: String?, //球種名稱
+    val leagueId: String?,
     val leagueName: String?,
     val matchInfo: MatchInfo?,
     val isOutright: Int?,
