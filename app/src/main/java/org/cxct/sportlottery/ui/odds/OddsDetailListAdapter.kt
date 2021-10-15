@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,6 @@ import org.cxct.sportlottery.ui.common.IndicatorView
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
-import kotlin.collections.ArrayList
 
 
 /**
@@ -82,6 +82,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
     enum class LayoutType(val layout: Int) {
         CS(R.layout.content_odds_detail_list_cs),
+        SINGLE_2_CS(R.layout.content_odds_detail_list_single_2_cs_item),
         ONE_LIST(R.layout.content_odds_detail_list_one),
         SINGLE(R.layout.content_odds_detail_list_single),
         SINGLE_2_ITEM(R.layout.content_odds_detail_list_single_2_item),
@@ -177,8 +178,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                     PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
-                    PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
+                    PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
                     -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal -> LayoutType.SINGLE_2_CS.layout
 
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
@@ -280,7 +283,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
 
                 LayoutType.SINGLE.layout,
-                LayoutType.SINGLE_2_ITEM.layout -> {
+                LayoutType.SINGLE_2_ITEM.layout,
+                LayoutType.SINGLE_2_CS.layout -> {
                     rvBet?.apply {
                         addItemDecoration(
                             GridItemDecoration(
@@ -462,8 +466,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                         PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                         PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
-                        PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
+                        PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
                         -> forSingle(oddsDetail, 2)
+
+                        PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal -> forSingleCS(oddsDetail, 2)
 
                         PlayCate.EPS.ordinal
                         -> forEPS(oddsDetail)
@@ -508,7 +514,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
             }
 
-            if(oddsDetail.isPin){
+            if (oddsDetail.isPin) {
                 setVisibility(true)
             }
         }
@@ -566,7 +572,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     val list: MutableList<Odd?> = mutableListOf()
                     list.add(odd)
                     val od = OddsDetailListData(
-                        oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list, oddsDetail.nameMap, oddsDetail.rowSort
+                        oddsDetail.gameType,
+                        oddsDetail.typeCodes,
+                        oddsDetail.name,
+                        list,
+                        oddsDetail.nameMap,
+                        oddsDetail.rowSort
                     )
 
                     rvBet?.apply {
@@ -619,6 +630,54 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         }
 
         private fun forSingle(oddsDetail: OddsDetailListData, spanCount: Int) {
+            rvBet?.apply {
+                adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
+                layoutManager = GridLayoutManager(itemView.context, spanCount)
+            }
+        }
+
+        private fun forSingleCS(oddsDetail: OddsDetailListData, spanCount: Int) {
+            tvHomeName?.text = homeName
+            tvAwayName?.text = awayName
+
+            tvHomeName?.isVisible = oddsDetail.isExpand
+            tvAwayName?.isVisible = oddsDetail.isExpand
+
+            val homeList: MutableList<Odd> = mutableListOf()
+            val awayList: MutableList<Odd> = mutableListOf()
+
+
+
+            oddsDetail.oddArrayList.forEach {
+                it?.let { odd ->
+                    val stringArray: List<String>? =
+                        if (odd.name?.contains(" - ") == true) odd.name.split(" - ") else odd.name?.split("-")
+                    stringArray?.let { stringArrayNotNull ->
+                        if (stringArrayNotNull[0].toInt() > stringArrayNotNull[1].toInt()) {
+                            homeList.add(odd)
+                        } else {
+                            awayList.add(odd)
+                        }
+                    }
+                }
+            }
+
+            val formattedOddArray = mutableListOf<Odd?>()
+
+            homeList.sortBy { it.rowSort }
+            awayList.sortBy { it.rowSort }
+
+            for (i in 0 until homeList.size.coerceAtLeast(awayList.size)) {
+                homeList.getOrNull(i)?.let {
+                    formattedOddArray.add(it)
+                }
+                awayList.getOrNull(i)?.let {
+                    formattedOddArray.add(it)
+                }
+            }
+
+            oddsDetail.oddArrayList = formattedOddArray
+
             rvBet?.apply {
                 adapter = TypeSingleAdapter(oddsDetail, onOddClickListener, oddsType)
                 layoutManager = GridLayoutManager(itemView.context, spanCount)
