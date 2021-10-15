@@ -149,14 +149,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             GameType.BK -> {
                 when (viewType) {
-                    PlayCate.HDP_INCL_OT.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST_INCL_OT.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG4.ordinal,
+                    PlayCate.HDP_INCL_OT.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST_INCL_OT.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
                     PlayCate.OU_INCL_OT.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST_INCL_OT.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
                     PlayCate.SINGLE_INCL_OT.ordinal, PlayCate.SINGLE_1ST_ND.ordinal, PlayCate.SINGLE_2ST_INCL_OT.ordinal, PlayCate.SINGLE_SEG1_ND.ordinal, PlayCate.SINGLE_SEG2_ND.ordinal, PlayCate.SINGLE_SEG3_ND.ordinal, PlayCate.SINGLE_SEG4_ND.ordinal,
                     PlayCate.OE_INCL_OT.ordinal, PlayCate.OE_1ST.ordinal, PlayCate.OE_2ST_INCL_OT.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
                     PlayCate.SEG_POINT.ordinal, PlayCate.LS_SEG1.ordinal, PlayCate.LS_SEG2.ordinal, PlayCate.LS_SEG3.ordinal, PlayCate.LS_SEG4.ordinal, PlayCate.RTP10.ordinal, PlayCate.RTP20.ordinal, PlayCate.P_SCO_OU.ordinal,
-                    PlayCate.P_REBOUND_OU.ordinal, PlayCate.P_ASSIST_OU.ordinal, PlayCate.P_THREE_OU.ordinal, PlayCate.P_BLOCK_OU.ordinal, PlayCate.P_STEAL_OU.ordinal,
+                    PlayCate.P_REBOUND_OU.ordinal, PlayCate.P_ASSIST_OU.ordinal, PlayCate.P_THREE_OU.ordinal, PlayCate.P_BLOCK_OU.ordinal, PlayCate.P_STEAL_OU.ordinal, PlayCate.TG_OU_H_1ST.ordinal,
                     PlayCate.TG_OU_H_INCL_OT.ordinal, PlayCate.TG_OU_H_2ST_INCL_OT.ordinal, PlayCate.TG_OU_H_SEG1.ordinal, PlayCate.TG_OU_H_SEG2.ordinal, PlayCate.TG_OU_H_SEG3.ordinal, PlayCate.TG_OU_H_SEG4.ordinal,
-                    PlayCate.TG_OU_C_INCL_OT.ordinal, PlayCate.TG_OU_C_2ST_INCL_OT.ordinal, PlayCate.TG_OU_C_SEG1.ordinal, PlayCate.TG_OU_C_SEG2.ordinal, PlayCate.TG_OU_C_SEG3.ordinal, PlayCate.TG_OU_C_SEG4.ordinal
+                    PlayCate.TG_OU_C_INCL_OT.ordinal, PlayCate.TG_OU_C_1ST.ordinal, PlayCate.TG_OU_C_2ST_INCL_OT.ordinal, PlayCate.TG_OU_C_SEG1.ordinal, PlayCate.TG_OU_C_SEG2.ordinal, PlayCate.TG_OU_C_SEG3.ordinal, PlayCate.TG_OU_C_SEG4.ordinal,
+                    PlayCate.OE_SEG4.ordinal
                     -> LayoutType.SINGLE_2_ITEM.layout
 
                     PlayCate.EPS.ordinal
@@ -168,8 +169,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             GameType.TN -> {
                 when (viewType) {
-                    PlayCate.SINGLE_SEG1_GAMES.ordinal, PlayCate.SINGLE_SEG2_GAMES.ordinal, PlayCate.SINGLE_SEG3_GAMES.ordinal, PlayCate.SINGLE_SEG4_GAMES.ordinal, PlayCate.SINGLE_SEG5_GAMES.ordinal, PlayCate.SINGLE.ordinal,
-                    PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
+                    PlayCate.SINGLE_SEG1_GAMES_1.ordinal, PlayCate.SINGLE_SEG1_GAMES_2.ordinal, PlayCate.SINGLE_SEG1_GAMES_3.ordinal, PlayCate.SINGLE_SEG1_GAMES_4.ordinal, PlayCate.SINGLE_SEG1_GAMES_5.ordinal,
+                    PlayCate.SINGLE_SEG2_GAMES_1.ordinal, PlayCate.SINGLE_SEG2_GAMES_2.ordinal, PlayCate.SINGLE_SEG2_GAMES_3.ordinal, PlayCate.SINGLE_SEG2_GAMES_4.ordinal, PlayCate.SINGLE_SEG2_GAMES_5.ordinal,
+                    PlayCate.SINGLE_SEG3_GAMES_1.ordinal, PlayCate.SINGLE_SEG3_GAMES_2.ordinal, PlayCate.SINGLE_SEG3_GAMES_3.ordinal, PlayCate.SINGLE_SEG3_GAMES_4.ordinal, PlayCate.SINGLE_SEG3_GAMES_5.ordinal,
+                    PlayCate.SINGLE_SEG4_GAMES_1.ordinal, PlayCate.SINGLE_SEG4_GAMES_2.ordinal, PlayCate.SINGLE_SEG4_GAMES_3.ordinal, PlayCate.SINGLE_SEG4_GAMES_4.ordinal, PlayCate.SINGLE_SEG4_GAMES_5.ordinal,
+                    PlayCate.SINGLE_SEG5_GAMES_1.ordinal, PlayCate.SINGLE_SEG5_GAMES_2.ordinal, PlayCate.SINGLE_SEG5_GAMES_3.ordinal, PlayCate.SINGLE_SEG5_GAMES_4.ordinal, PlayCate.SINGLE_SEG5_GAMES_5.ordinal,
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                     PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                     PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
                     PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
@@ -429,14 +434,15 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 GameType.BK -> {
                     when (viewType) {
-                        PlayCate.HDP_INCL_OT.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST_INCL_OT.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG4.ordinal,
+                        PlayCate.HDP_INCL_OT.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST_INCL_OT.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
                         PlayCate.OU_INCL_OT.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST_INCL_OT.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
                         PlayCate.SINGLE_INCL_OT.ordinal, PlayCate.SINGLE_1ST_ND.ordinal, PlayCate.SINGLE_2ST_INCL_OT.ordinal, PlayCate.SINGLE_SEG1_ND.ordinal, PlayCate.SINGLE_SEG2_ND.ordinal, PlayCate.SINGLE_SEG3_ND.ordinal, PlayCate.SINGLE_SEG4_ND.ordinal,
                         PlayCate.OE_INCL_OT.ordinal, PlayCate.OE_1ST.ordinal, PlayCate.OE_2ST_INCL_OT.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
                         PlayCate.SEG_POINT.ordinal, PlayCate.LS_SEG1.ordinal, PlayCate.LS_SEG2.ordinal, PlayCate.LS_SEG3.ordinal, PlayCate.LS_SEG4.ordinal, PlayCate.RTP10.ordinal, PlayCate.RTP20.ordinal, PlayCate.P_SCO_OU.ordinal,
-                        PlayCate.P_REBOUND_OU.ordinal, PlayCate.P_ASSIST_OU.ordinal, PlayCate.P_THREE_OU.ordinal, PlayCate.P_BLOCK_OU.ordinal, PlayCate.P_STEAL_OU.ordinal,
+                        PlayCate.P_REBOUND_OU.ordinal, PlayCate.P_ASSIST_OU.ordinal, PlayCate.P_THREE_OU.ordinal, PlayCate.P_BLOCK_OU.ordinal, PlayCate.P_STEAL_OU.ordinal, PlayCate.TG_OU_H_1ST.ordinal,
                         PlayCate.TG_OU_H_INCL_OT.ordinal, PlayCate.TG_OU_H_2ST_INCL_OT.ordinal, PlayCate.TG_OU_H_SEG1.ordinal, PlayCate.TG_OU_H_SEG2.ordinal, PlayCate.TG_OU_H_SEG3.ordinal, PlayCate.TG_OU_H_SEG4.ordinal,
-                        PlayCate.TG_OU_C_INCL_OT.ordinal, PlayCate.TG_OU_C_2ST_INCL_OT.ordinal, PlayCate.TG_OU_C_SEG1.ordinal, PlayCate.TG_OU_C_SEG2.ordinal, PlayCate.TG_OU_C_SEG3.ordinal, PlayCate.TG_OU_C_SEG4.ordinal
+                        PlayCate.TG_OU_C_INCL_OT.ordinal, PlayCate.TG_OU_C_1ST.ordinal, PlayCate.TG_OU_C_2ST_INCL_OT.ordinal, PlayCate.TG_OU_C_SEG1.ordinal, PlayCate.TG_OU_C_SEG2.ordinal, PlayCate.TG_OU_C_SEG3.ordinal, PlayCate.TG_OU_C_SEG4.ordinal,
+                        PlayCate.OE_SEG4.ordinal
                         -> forSingle(oddsDetail, 2)
 
                         PlayCate.EPS.ordinal
@@ -448,8 +454,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 GameType.TN -> {
                     when (viewType) {
-                        PlayCate.SINGLE_SEG1_GAMES.ordinal, PlayCate.SINGLE_SEG2_GAMES.ordinal, PlayCate.SINGLE_SEG3_GAMES.ordinal, PlayCate.SINGLE_SEG4_GAMES.ordinal, PlayCate.SINGLE_SEG5_GAMES.ordinal, PlayCate.SINGLE.ordinal,
-                        PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
+                        PlayCate.SINGLE_SEG1_GAMES_1.ordinal, PlayCate.SINGLE_SEG1_GAMES_2.ordinal, PlayCate.SINGLE_SEG1_GAMES_3.ordinal, PlayCate.SINGLE_SEG1_GAMES_4.ordinal, PlayCate.SINGLE_SEG1_GAMES_5.ordinal,
+                        PlayCate.SINGLE_SEG2_GAMES_1.ordinal, PlayCate.SINGLE_SEG2_GAMES_2.ordinal, PlayCate.SINGLE_SEG2_GAMES_3.ordinal, PlayCate.SINGLE_SEG2_GAMES_4.ordinal, PlayCate.SINGLE_SEG2_GAMES_5.ordinal,
+                        PlayCate.SINGLE_SEG3_GAMES_1.ordinal, PlayCate.SINGLE_SEG3_GAMES_2.ordinal, PlayCate.SINGLE_SEG3_GAMES_3.ordinal, PlayCate.SINGLE_SEG3_GAMES_4.ordinal, PlayCate.SINGLE_SEG3_GAMES_5.ordinal,
+                        PlayCate.SINGLE_SEG4_GAMES_1.ordinal, PlayCate.SINGLE_SEG4_GAMES_2.ordinal, PlayCate.SINGLE_SEG4_GAMES_3.ordinal, PlayCate.SINGLE_SEG4_GAMES_4.ordinal, PlayCate.SINGLE_SEG4_GAMES_5.ordinal,
+                        PlayCate.SINGLE_SEG5_GAMES_1.ordinal, PlayCate.SINGLE_SEG5_GAMES_2.ordinal, PlayCate.SINGLE_SEG5_GAMES_3.ordinal, PlayCate.SINGLE_SEG5_GAMES_4.ordinal, PlayCate.SINGLE_SEG5_GAMES_5.ordinal,
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                         PlayCate.SET_HDP.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_SEG5.ordinal,
                         PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
                         PlayCate.CS.ordinal, PlayCate.CS_SEG1.ordinal, PlayCate.WIN_SEG1_CHAMP.ordinal, PlayCate.LOSE_SEG1_CHAMP.ordinal, PlayCate.TIE_BREAK.ordinal
