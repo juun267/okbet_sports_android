@@ -166,6 +166,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                     setOnClickListener {
                         onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
+                        btn_star.isSelected = !isSelected
                     }
                 }
 

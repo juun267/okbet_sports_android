@@ -593,7 +593,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
             }
 
-            mRvGameTable4Adapter.notifyDataSetChanged()
             mRvHighlightAdapter.notifyDataSetChanged()
         })
 
