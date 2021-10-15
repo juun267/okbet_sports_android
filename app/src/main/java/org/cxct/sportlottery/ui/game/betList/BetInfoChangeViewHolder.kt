@@ -33,6 +33,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     private lateinit var playNameSpan: SpannableString
     private lateinit var spreadSpan: SpannableString
     private lateinit var oddsSpan: SpannableString
+    private lateinit var extInfo: SpannableString //球員名稱
 
 
     fun setupOddsContent(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?) {
@@ -68,6 +69,8 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
 
         setupPlayNameSpannableString(matchOdd)
 
+        setupExtInfoSpannableString(matchOdd)
+
         setupSpreadSpannableString(textView.context, matchOdd, isSpreadChanged)
 
         setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
@@ -81,6 +84,12 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0, matchOdd.playName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
+    private fun setupExtInfoSpannableString(matchOdd: MatchOdd) {
+        matchOdd.extInfo?.let {
+            extInfo = SpannableString(matchOdd.extInfo)
+            extInfo.setSpan(StyleSpan(Typeface.BOLD), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
 
     private fun setupSpreadSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
@@ -111,6 +120,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     private fun mergeString(textView: TextView) {
         val oddContentBuilder = SpannableStringBuilder()
 
+        oddContentBuilder.append(extInfo)
         oddContentBuilder.append(playNameSpan)
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")

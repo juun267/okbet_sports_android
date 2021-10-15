@@ -271,15 +271,16 @@ class BetInfoRepository(val androidContext: Context) {
                 this.outrightMatchInfo = matchInfo
             }
 
-            if (betList.size == 0) {
-                _showBetInfoSingle.postValue(Event(true))
-            }
+
 
             betList.add(data)
             //產生串關注單
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
+            if (betList.size == 1) {
+                _showBetInfoSingle.postValue(Event(true))
+            }
         }
     }
 
