@@ -39,7 +39,7 @@ data class MatchInfo(
 
     override var homeScore: Int? = null
 
-    override var statusName: String? = null
+    override var statusName18n: String? = null
 
     override var leagueTime: Int? = null
 

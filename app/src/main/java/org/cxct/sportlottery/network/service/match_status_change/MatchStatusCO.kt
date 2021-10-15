@@ -43,7 +43,7 @@ data class MatchStatusCO(
     @Json(name = "statusName")
     val statusName: String? = "",
     @Json(name = "statusNameI18n")
-    val statusNameI18n: StatusNameI18n? = StatusNameI18n(),
+    val statusNameI18n: Map<String?, String?>? = mapOf(),
     @Json(name = "time")
     val time: String? = ""
 )

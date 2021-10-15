@@ -303,19 +303,29 @@
 
             </LinearLayout>
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.75"/>
+
             <TextView
                 android:id="@+id/tv_status_left"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/colorOrangeLight"
+                android:textColor="@color/colorSilver"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_away_name"
-                tools:text="第一節14-15  第二節15-14"
+                tools:text="第一節14-15 第二節15-14"
                 tools:visibility="visible" />
 
             <TextView
@@ -324,7 +334,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:textColor="@color/colorOrangeLight"
+                android:textColor="@color/colorSilver"
                 android:textSize="@dimen/textSize12sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"

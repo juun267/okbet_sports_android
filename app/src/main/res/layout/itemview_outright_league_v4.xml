@@ -25,6 +25,7 @@
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize16sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toTopOf="@id/outright_league_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/outright_info_block"

@@ -50,6 +50,7 @@ import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
@@ -671,6 +672,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val dataList = mRvGameTable4Adapter.getData()
                 val hideGameList = mutableListOf<GameEntity>()
                 var hideFirstPosition: Int? = null
+
+                val statusValue = matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatusChangeEvent.matchStatusCO?.statusName
                 dataList.forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                         if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
@@ -685,8 +688,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 matchStatusChangeEvent.matchStatusCO?.homePoints
                             updateMatchOdd.matchInfo?.awayPoints =
                                 matchStatusChangeEvent.matchStatusCO?.awayPoints
-                            updateMatchOdd.matchInfo?.statusName =
-                                matchStatusChangeEvent.matchStatusCO?.statusName
+                            updateMatchOdd.matchInfo?.statusName18n = statusValue
 
                             //賽事status為100, 隱藏該賽事
                             if (matchStatusChangeEvent.matchStatusCO?.status == 100) {

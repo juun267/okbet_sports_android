@@ -14,8 +14,10 @@
         android:gravity="center"
         android:textColor="@android:color/white"
         android:textSize="@dimen/textSize12sp"
+        android:maxLength="3"
+        android:textAllCaps="true"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="週二" />
+        tools:text="TUESDAY" />
 
     <TextView
         android:id="@+id/date_text_date"
@@ -24,6 +26,7 @@
         android:layout_marginTop="4dp"
         android:textColor="@color/selector_date_item_text_v4"
         android:textSize="@dimen/textSize16sp"
+        android:textAllCaps="true"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/date_text_month"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,11 +42,13 @@
         android:textColor="@color/selector_date_item_text_v4"
         android:textSize="@dimen/textSize12sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
+        android:maxLength="3"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/date_text_date"
-        tools:text="六月" />
+        tools:text="October" />
 
     <TextView
         android:id="@+id/date_text_other"
@@ -51,6 +56,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/shape_date_item_bg_other_v4"
         android:gravity="center"
+        android:textAllCaps="true"
         android:textColor="@color/selector_date_item_text_other_v4"
         android:textSize="@dimen/textSize12sp"
         tools:text="所有日期"

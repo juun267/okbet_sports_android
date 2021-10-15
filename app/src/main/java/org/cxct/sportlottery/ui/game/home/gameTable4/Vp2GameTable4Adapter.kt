@@ -199,7 +199,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             }
                             GameType.VB.key -> {
                                 tv_match_status.visibility = View.VISIBLE
-                                tv_match_status.text = "${data.matchInfo.statusName} / ${data.matchInfo.spt}" ?: ""
+
+                                tv_match_status.text = "${data.matchInfo.statusName18n} / ${data.matchInfo.spt}" ?: ""
 
                                 tv_game_score_home.visibility = View.GONE
                                 tv_game_score_away.visibility = View.GONE
@@ -221,7 +222,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             }
                             else -> {
                                 tv_match_status.visibility = View.VISIBLE
-                                tv_match_status.text = data.matchInfo?.statusName ?: ""
+                                tv_match_status.text = data.matchInfo?.statusName18n ?: ""
 
                                 tv_game_score_home.visibility = View.VISIBLE
                                 tv_game_score_away.visibility = View.VISIBLE

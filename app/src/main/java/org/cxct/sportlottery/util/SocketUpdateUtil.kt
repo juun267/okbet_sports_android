@@ -23,7 +23,8 @@ object SocketUpdateUtil {
     fun updateMatchStatus(
         gameType: String?,
         matchOddList: MutableList<MatchOdd>,
-        matchStatusChangeEvent: MatchStatusChangeEvent
+        matchStatusChangeEvent: MatchStatusChangeEvent,
+        context: Context?
     ): Boolean {
         var isNeedRefresh = false
 
@@ -48,8 +49,9 @@ object SocketUpdateUtil {
                         isNeedRefresh = true
                     }
 
-                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName) {
-                        matchOdd.matchInfo?.statusName = matchStatusCO.statusName
+                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
+                        val statusValue = matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatusCO.statusName
+                        matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
 

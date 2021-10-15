@@ -511,8 +511,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
-                    if (item.matchInfo?.statusName != null) {
-                        item.matchInfo.statusName
+                    if (item.matchInfo?.statusName18n != null) {
+                        item.matchInfo.statusName18n
                     } else {
                         return
                     }
@@ -520,7 +520,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 matchType == MatchType.MY_EVENT -> {
                     when (item.matchInfo?.isInPlay) {
-                        true -> item.matchInfo.statusName
+                        true -> item.matchInfo.statusName18n
                         else -> {
                             if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
                                 itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))
@@ -548,7 +548,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 matchType == MatchType.IN_PLAY || System.currentTimeMillis() > item.matchInfo?.startTime ?: 0 -> {
-                    if (item.matchInfo?.statusName != null) {
+                    if (item.matchInfo?.statusName18n != null) {
                         itemView.league_odd_match_status.visibility = View.VISIBLE
                         (itemView.league_odd_match_status.layoutParams as LinearLayout.LayoutParams).marginEnd =
                             6
@@ -560,7 +560,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 matchType == MatchType.MY_EVENT -> {
                     when (item.matchInfo?.isInPlay) {
-                        true -> item.matchInfo.statusName
+                        true -> item.matchInfo.statusName18n
                         else -> {
                             if (TimeUtil.isTimeToday(item.matchInfo?.startTime))
                                 itemView.context.getString(TimeUtil.setupDayOfWeekAndToday(item.matchInfo?.startTime))

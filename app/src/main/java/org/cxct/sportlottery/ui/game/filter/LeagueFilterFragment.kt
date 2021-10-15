@@ -18,6 +18,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.CountryLeagueListener
+import java.util.*
 
 
 class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -72,7 +73,7 @@ class LeagueFilterFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     private fun setupToolbar() {
         game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else getString(args.matchType.resId)
 
-        game_toolbar_sport_type.text = getString(args.gameType.string)
+        game_toolbar_sport_type.text = getString(args.gameType.string).toUpperCase(Locale.getDefault())
 
         game_toolbar_back.setOnClickListener {
             findNavController().navigateUp()
