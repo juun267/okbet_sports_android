@@ -670,7 +670,7 @@
     <string name="must_fill_this_column">This field is required</string>
     <string name="third_game_ky">KY games</string>
     <string name="choose_title">Select status</string>
-    <string name="odd_type_title">Trading type</string>
+    <string name="odd_type_title">Odds Setting</string>
     <string name="odd_type_eu">EU Odds</string>
     <string name="odd_type_hk">HK Odds</string>
     <string name="choose_method">Choose channel</string>
