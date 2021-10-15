@@ -98,9 +98,9 @@
     <string name="btn_register">Register</string>
     <string name="no_announcement">No announcement</string>
     <string name="lottery">Lottery</string>
-    <string name="poker">Casino</string>
+    <string name="poker">Jackpot</string>
     <string name="slot">Electric</string>
-    <string name="fishing">Fishing Casino</string>
+    <string name="fishing">Fishing</string>
     <string name="more">More</string>
     <string name="home_tan_main">HOME</string>
     <string name="home_tab_in_play">IN-PLAY</string>
@@ -649,7 +649,7 @@
     <string name="bottom_nav_chat">Chatting</string>
     <string name="bottom_nav_my_account">Your</string>
     <string name="sport">Sports</string>
-    <string name="live">Real</string>
+    <string name="live">Live</string>
     <string name="lottery_description">More than 100 lottery games for you to win! To provide players with a variety of game content, \ N is committed to creating a high-quality entertainment game environment, only for fair and just lottery results.</string>
     <string name="sport_bet_record">Sports betting history</string>
     <string name="my_favorite">My Events</string>

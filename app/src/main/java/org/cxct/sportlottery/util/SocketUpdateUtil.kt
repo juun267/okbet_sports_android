@@ -259,6 +259,59 @@ object SocketUpdateUtil {
         }
     }
 
+    /**
+     * 加入新增的玩法並同時更新已有玩法的資料再以rowSort排序
+     */
+    fun updateMatchOddsMap(
+        oddsDetailDataList: ArrayList<OddsDetailListData>,
+        matchOddsChangeEvent: MatchOddsChangeEvent
+    ): ArrayList<OddsDetailListData>? {
+        //若有新玩法的話需要重新setData
+        var addedNewOdds = false
+
+        //新玩法
+        val newOdds = matchOddsChangeEvent.odds?.filter { socketOdds ->
+            oddsDetailDataList.find { it.gameType == socketOdds.key } == null
+        }
+
+        val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
+        newOddsDetailDataList.addAll(oddsDetailDataList)
+
+        //加入新玩法
+        newOdds?.forEach { (key, value) ->
+            val filteredOddList =
+                mutableListOf<Odd?>()
+            value.odds?.forEach { detailOdd ->
+                //因排版問題 null也需要添加
+                filteredOddList.add(detailOdd)
+            }
+            newOddsDetailDataList.add(
+                OddsDetailListData(
+                    key,
+                    TextUtil.split(value.typeCodes),
+                    value.name,
+                    filteredOddList,
+                    value.nameMap,
+                    value.rowSort
+                )
+            )
+            addedNewOdds = true
+        }
+
+        newOddsDetailDataList.apply {
+            forEach { oddsDetailListData ->
+                updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
+            }
+            sortBy { it.rowSort }
+            //因UI需求 特優賠率移到第一項
+            find { it.gameType == PlayCate.EPS.value }?.also { oddsDetailListData ->
+                add(0, removeAt(indexOf(oddsDetailListData)))
+            }
+        }
+
+        return if (addedNewOdds) newOddsDetailDataList else null
+    }
+
     fun updateOddStatus(oddBean: OddBean, globalStopEvent: GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
@@ -510,6 +563,12 @@ object SocketUpdateUtil {
 
                 if (odd?.extInfo != oddSocket.extInfo) {
                     odd?.extInfo = oddSocket.extInfo
+
+                    isNeedRefresh = true
+                }
+
+                if (oddsDetailListData.rowSort != odds.rowSort){
+                    oddsDetailListData.rowSort = odds.rowSort
 
                     isNeedRefresh = true
                 }
