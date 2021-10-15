@@ -50,6 +50,7 @@ import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import timber.log.Timber
+import java.util.*
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -882,7 +883,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             if (SocketUpdateUtil.updateMatchStatus(
                                     gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code,
                                     leagueOdd.matchOdds.toMutableList(),
-                                    matchStatusChangeEvent
+                                    matchStatusChangeEvent,
+                                    context
                                 ) &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
@@ -1113,7 +1115,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         gameTypeAdapter.dataSport = gameTypeList
 
         gameTypeList.find { it.isSelected }.let { item ->
-            game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
+            game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string).toUpperCase(Locale.getDefault())
             updateSportBackground(item)
             subscribeSportChannelHall(item?.code)
         }

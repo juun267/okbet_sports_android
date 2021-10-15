@@ -1225,7 +1225,7 @@ class GameViewModel(
                 TimeUtil.getParlayTodayTimeRangeParams(),
                 MatchType.TODAY.postValue
             ), Date(
-                androidContext.getString(R.string.date_row_other),
+                androidContext.getString(R.string.other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams(),
                 MatchType.EARLY.postValue
             )
@@ -1321,11 +1321,13 @@ class GameViewModel(
                                 TextUtil.split(value.typeCodes),
                                 value.name,
                                 filteredOddList,
-                                value.nameMap
+                                value.nameMap,
+                                value.rowSort
                             )
                         )
                     }
 
+                    result.oddsDetailData?.matchOdd?.odds?.sortPlayCate()
                     result.oddsDetailData?.matchOdd?.updateOddStatus()
 
                     //因UI需求 特優賠率移到第一項

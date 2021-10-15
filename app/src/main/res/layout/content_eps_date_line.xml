@@ -22,11 +22,11 @@
 
         <TextView
             android:id="@+id/tv_date"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
             android:gravity="center"
             android:singleLine="true"
+            android:textAllCaps="true"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize20sp"
             android:textStyle="bold"

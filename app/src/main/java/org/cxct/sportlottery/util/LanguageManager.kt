@@ -17,7 +17,7 @@ object LanguageManager {
      * @return Locale对象
      */
     fun getSystemLocale(context: Context?): Locale {
-        return SPUtil.getInstance(context).getSystemCurrentLocal()
+        return SPUtil.getInstance(context).systemCurrentLocal
     }
 
     fun getSelectLanguage(context: Context?): Language {
@@ -67,7 +67,7 @@ object LanguageManager {
     }
 
     fun saveSystemCurrentLanguage(context: Context?) {
-        SPUtil.getInstance(context).setSystemCurrentLocal(MultiLanguage.getSystemLocal(context))
+        SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(context)
     }
 
     /**
@@ -79,7 +79,7 @@ object LanguageManager {
         context: Context?,
         newConfig: Configuration?
     ) {
-        SPUtil.getInstance(context).setSystemCurrentLocal(MultiLanguage.getSystemLocal(newConfig))
+        SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(newConfig)
     }
 
     fun saveSelectLanguage(context: Context?, select: Language) {
@@ -92,7 +92,7 @@ object SPUtil {
     private const val SP_NAME = "language_setting"
     private const val TAG_LANGUAGE = "language_select"
     private var mSharedPreferences: SharedPreferences? = null
-    private var systemCurrentLocal = Locale.ENGLISH
+    var systemCurrentLocal: Locale = Locale.ENGLISH
 
     fun getInstance(context: Context?): SPUtil {
         if (mSharedPreferences == null)
@@ -108,15 +108,6 @@ object SPUtil {
 
     fun getSelectLanguage(): String? {
         return mSharedPreferences?.getString(TAG_LANGUAGE, null)
-    }
-
-
-    fun getSystemCurrentLocal(): Locale {
-        return systemCurrentLocal
-    }
-
-    fun setSystemCurrentLocal(local: Locale) {
-        systemCurrentLocal = local
     }
 
 }

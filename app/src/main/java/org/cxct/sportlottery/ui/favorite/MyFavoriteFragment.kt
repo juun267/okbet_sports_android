@@ -207,7 +207,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     if (SocketUpdateUtil.updateMatchStatus(
                             gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code,
                             leagueOdd.matchOdds.toMutableList(),
-                            matchStatusChangeEvent
+                            matchStatusChangeEvent,
+                            context
                         ) &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
