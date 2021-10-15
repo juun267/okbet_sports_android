@@ -98,9 +98,9 @@
     <string name="btn_register">Register</string>
     <string name="no_announcement">No announcement</string>
     <string name="lottery">Lottery</string>
-    <string name="poker">Casino</string>
+    <string name="poker">Jackpot</string>
     <string name="slot">Electric</string>
-    <string name="fishing">Fishing Casino</string>
+    <string name="fishing">Fishing</string>
     <string name="more">More</string>
     <string name="home_tan_main">HOME</string>
     <string name="home_tab_in_play">IN-PLAY</string>
@@ -123,8 +123,8 @@
     <string name="return_to_top">Back to the top</string>
     <string name="versus">v</string>
     <string name="label_sport_game">Schedule</string>
-    <string name="label_account_history">Account history</string>
-    <string name="label_transaction_status">The status of the transaction</string>
+    <string name="label_account_history">Account</string>
+    <string name="label_transaction_status">Record</string>
     <string name="label_title_parlay">Comprehensive pass</string>
     <string name="conspire">Parlay</string>
     <string name="message_no_at_start">Now no Coming soon matchs</string>
@@ -152,7 +152,7 @@
     <string name="navigation_web">Web directory</string>
     <string name="other">Other</string>
     <string name="games_lobby">Game center</string>
-    <string name="sport_game">Sports events</string>
+    <string name="sport_game">Sports</string>
     <string name="cg_lottery">CG lottery</string>
     <string name="live_game">Live casino</string>
     <string name="poker_game">Jackport</string>
@@ -512,7 +512,7 @@
     <string name="text_crypto_add_success">Virtual currency</string>
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
-    <string name="bet_info_list_title">Bet order</string>
+    <string name="bet_info_list_title">Bet</string>
     <string name="bet_info_list_game_closed">Trading be closed</string>
     <string name="bet_info_list_game_odds_changed">The odds have changed</string>
     <string name="bet_info_list_bet_quota">Betting amount</string>
@@ -649,10 +649,10 @@
     <string name="bottom_nav_chat">Chatting</string>
     <string name="bottom_nav_my_account">Your</string>
     <string name="sport">Sports</string>
-    <string name="live">Real</string>
+    <string name="live">Live</string>
     <string name="lottery_description">More than 100 lottery games for you to win! To provide players with a variety of game content, \ N is committed to creating a high-quality entertainment game environment, only for fair and just lottery results.</string>
     <string name="sport_bet_record">Sports betting history</string>
-    <string name="my_favorite">Your matches</string>
+    <string name="my_favorite">My Events</string>
     <string name="other_bet_record">Other betting history</string>
     <string name="credit_bet_record">Rounds history</string>
     <string name="all_plat_type">All platform types</string>
