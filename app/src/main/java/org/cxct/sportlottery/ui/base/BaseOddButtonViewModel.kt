@@ -23,6 +23,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddError
 import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -509,6 +510,12 @@ abstract class BaseOddButtonViewModel(
                 }
             }
         }
+    }
+
+    protected fun MutableMap<String, CateDetailData>.sortPlayCate(){
+        val sorted = this.toList().sortedBy { (_, value) -> value.rowSort }.toMap()
+        this.clear()
+        this.putAll(sorted)
     }
 
     private fun getSpreadState(oldSpread: String, newSpread: String): Int =

@@ -12,5 +12,5 @@ data class MatchOdd(
     @Json(name = "playCateTypeList")
     val playCateTypeList: List<PlayCateType>,
     @Json(name = "odds")
-    val odds: Map<String, CateDetailData>
+    val odds: MutableMap<String, CateDetailData>
 )

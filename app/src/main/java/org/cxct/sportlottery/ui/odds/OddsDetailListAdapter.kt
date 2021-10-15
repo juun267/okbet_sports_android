@@ -556,7 +556,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     val list: MutableList<Odd?> = mutableListOf()
                     list.add(odd)
                     val od = OddsDetailListData(
-                        oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list, oddsDetail.nameMap
+                        oddsDetail.gameType, oddsDetail.typeCodes, oddsDetail.name, list, oddsDetail.nameMap, oddsDetail.rowSort
                     )
 
                     rvBet?.apply {
@@ -677,7 +677,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 oddsDetail.typeCodes,
                 oddsDetail.name,
                 oddArrayList,
-                oddsDetail.nameMap
+                oddsDetail.nameMap,
+                oddsDetail.rowSort
             ).apply {
                 isExpand = oddsDetail.isExpand
                 isMoreExpand = oddsDetail.isMoreExpand
@@ -819,7 +820,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 oddsDetail.typeCodes,
                 oddsDetail.name,
                 oddsDetail.oddArrayList,
-                oddsDetail.nameMap
+                oddsDetail.nameMap,
+                oddsDetail.rowSort
             ).apply {
                 isExpand = oddsDetail.isExpand
                 isMoreExpand = oddsDetail.isMoreExpand
