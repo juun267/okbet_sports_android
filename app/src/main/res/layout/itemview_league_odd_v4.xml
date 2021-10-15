@@ -361,7 +361,7 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_live_player"
+        android:src="@drawable/ic_live"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
         app:layout_constraintStart_toEndOf="@+id/league_odd_match_price_boost"

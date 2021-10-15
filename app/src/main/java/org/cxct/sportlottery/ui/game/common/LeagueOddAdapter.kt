@@ -182,7 +182,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 itemView.space_icon.visibility = it
             }
 
-            itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1
+            itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
         }
 
         private fun setFtScoreText(matchType: MatchType, item: MatchOdd) {
