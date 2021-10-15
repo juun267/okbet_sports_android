@@ -57,5 +57,6 @@ data class MatchOdd(
     var betAddError: BetAddError? = null
     var oddsHasChanged = false
     var spreadState: Int = SpreadState.SAME.state
+    var extInfo: String? = null //球員名稱
 }
 

@@ -40,7 +40,9 @@ object MatchOddUtil {
                             gameType = gameType,
                             homeScore = matchInfo.homeScore ?: 0,
                             awayScore = matchInfo.awayScore ?: 0
-                        )
+                        ).apply {
+                            extInfo = odd.extInfo
+                        }
 
                     }
                 }
