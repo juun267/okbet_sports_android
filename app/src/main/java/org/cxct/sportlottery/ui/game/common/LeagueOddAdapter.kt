@@ -179,8 +179,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
-            itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1
             itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
+            itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
+
         }
 
         private fun setFtScoreText(matchType: MatchType, item: MatchOdd) {
