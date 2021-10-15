@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.fragment_money_transfer.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
@@ -23,6 +24,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.needCountStatus
 import java.util.*
@@ -176,13 +178,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 leagueOddListener?.onClickPlayType(item.matchInfo?.id, matchInfoList)
             }
 
-            val isIconVisible = if (item.matchInfo?.eps == 1) View.VISIBLE else View.GONE
-            isIconVisible.let {
-                itemView.league_odd_match_price_boost.visibility = it
-                itemView.space_icon.visibility = it
-            }
-
+            itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1
+            itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
         }
 
         private fun setFtScoreText(matchType: MatchType, item: MatchOdd) {
@@ -669,7 +667,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
 
                     addView(rb.apply {
-                        text = it.name
+                        text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
 
                         id = it.hashCode()
 

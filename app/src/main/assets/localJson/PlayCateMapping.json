@@ -387,7 +387,7 @@
     "gameType": "TN",
     "playCateCode": "1X2-SEG1",
     "playCateName": "独赢盘\r\n第1盘",
-    "playCateName-english": "Winner\r\n1st Set",
+    "playCateName-english": "Winner\r\nFirst set",
     "playCateName-vietnamese": "Đội Vô Địch\r\nHiệp 1",
     "playCateNum": "2"
   },
@@ -419,7 +419,7 @@
     "gameType": "VB",
     "playCateCode": "HDP-SEG1",
     "playCateName": "让分-第一盘",
-    "playCateName-english": "Point Handicap - 1st Set",
+    "playCateName-english": "Point Handicap - First set",
     "playCateName-vietnamese": "Cược Chấp Điểm\r\nHiệp 1",
     "playCateNum": "2"
   },

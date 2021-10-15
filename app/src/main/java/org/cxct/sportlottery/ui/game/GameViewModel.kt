@@ -1225,7 +1225,7 @@ class GameViewModel(
                 TimeUtil.getParlayTodayTimeRangeParams(),
                 MatchType.TODAY.postValue
             ), Date(
-                androidContext.getString(R.string.date_row_other),
+                androidContext.getString(R.string.other),
                 TimeUtil.getOtherEarlyDateTimeRangeParams(),
                 MatchType.EARLY.postValue
             )
