@@ -662,6 +662,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         })
+
+        viewModel.isLogin.observe(viewLifecycleOwner,{
+            mRvGameTable4Adapter.isLogin = it
+        })
     }
 
     private fun initSocketObserver() {
