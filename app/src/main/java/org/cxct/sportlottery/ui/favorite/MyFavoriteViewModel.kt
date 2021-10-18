@@ -60,20 +60,29 @@ class MyFavoriteViewModel(
                 )
             }
 
-            result?.sportQueryData?.let {
 
+
+            result?.sportQueryData?.let { sportQueryData ->
                 _sportQueryData.postValue(Event(
-                    it.apply {
-                        it.items?.firstOrNull()?.apply {
-                            this.isSelected = true
-                            this.play?.firstOrNull()?.isSelected = true
+                    sportQueryData.apply {
+                        if (!sportQueryData.items?.filter { it.code == lastSportType.value?.code }.isNullOrEmpty() && getLastPick == true){
+                            sportQueryData.items?.find { it.code == lastSportType.value?.code }.apply {
+                                this?.isSelected = true
+                                this?.play?.firstOrNull()?.isSelected = true
+                            }
+                        }else{
+                            sportQueryData.items?.firstOrNull()?.apply {
+                                this.isSelected = true
+                                this.play?.firstOrNull()?.isSelected = true
+                            }
                         }
                     }
                 ))
 
+                val selectItem = sportQueryData.items?.find { it.isSelected }
                 getFavoriteMatch(
-                    it.items?.firstOrNull()?.code,
-                    it.items?.firstOrNull()?.play?.firstOrNull()?.code
+                    selectItem?.code,
+                    selectItem?.play?.firstOrNull()?.code
                 )
             }
         }
