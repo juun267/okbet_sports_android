@@ -14,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
-import kotlinx.android.synthetic.main.tab_quick_cate.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pair.view.*
@@ -688,8 +687,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     if (it.isSelected) {
                         if (index > 3) {
                             itemView.scroll_view_rg.post {
-                                Log.e(">>>", "${rb.layoutParams.width} > ${layoutParams.width}")
-
                                 itemView.scroll_view_rg.scrollTo(rb.left, 0)
                             }
                         }
@@ -705,73 +702,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         it.positionButtonPairTab = 0
                     }
 
-//                    val rb: RadioButton = findViewById(checkedId)
-//                    itemView.scroll_view_rg.scrollTo(rb.left, 0)
                     leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
                 }
             }
-/*
-
-            itemView.league_odd_quick_cate_tab_layout.apply {
-                removeAllTabs()
-                visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
-
-                val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                item.quickPlayCateList?.sortedBy { it.sort }?.forEachIndexed { index, it ->
-
-                    val customTabView = layoutInflater.inflate(R.layout.tab_quick_cate, null).apply {
-//                        val nameText = findViewById<TextView>(R.id.tv_tab)
-                        tv_tab.text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
-                    }
-
-//                    tab.setCustomView(R.layout.main_tab)
-//                    tab.customView?.apply {
-//                        this.iv_icon.setImageResource(tabCate.iconRes)
-//                        this.tv_title.text = tabCate.title
-//                    }
-//
-                    addTab(
-                        newTab().setCustomView(customTabView),
-                        false
-                    ).apply {
-                        tag = it.hashCode()
-
-                    }
-
-                    if (it.isSelected) getTabAt(index)?.select()
-//                        .apply { tab ->
-//                            tab.tv_title.text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
-//                        }
-//                    league_odd_quick_cate_tab_layout.getTabAt(index)
-//                    if (it.isSelected) getTabAt(index)?.select()
-                }
-
-
-                addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-                        item.quickPlayCateList?.forEachIndexed { index, it ->
-                            it.isSelected = (it.hashCode() == getTabAt(index)?.tag)
-                            it.positionButtonPage = 0
-                            it.positionButtonPairTab = 0
-                        }
-
-                        leagueOddListener?.onClickQuickCateTab(item.matchInfo?.id)
-                    }
-
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {
-                    }
-
-                    override fun onTabReselected(tab: TabLayout.Tab?) {
-                    }
-
-                })
-
-            }
-*/
 
             when (item.quickPlayCateList?.find { it.isSelected }?.code) {
                 QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value -> {
