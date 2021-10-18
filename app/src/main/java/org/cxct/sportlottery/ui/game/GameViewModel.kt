@@ -306,6 +306,10 @@ class GameViewModel(
         MatchType.EPS.postValue to null
     )
 
+    fun navDirectEntrance(matchType: MatchType, gameType: GameType?) {
+        _specialEntrance.postValue(SpecialEntrance(matchType, gameType))
+    }
+
     fun navSpecialEntrance(matchType: MatchType, gameType: GameType?) {
         _specialEntrance.postValue(getSpecEntranceFromHome(matchType, gameType))
         gameType?.let { recordSportType(matchType, it.key) }

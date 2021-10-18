@@ -79,9 +79,15 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             dismiss()
         }
         //滾球
-        ct_inplay.setOnClickListener { }
+        ct_inplay.setOnClickListener {
+            viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
+            dismiss()
+        }
         //特優賠率
-        ct_premium_odds.setOnClickListener { }
+        ct_premium_odds.setOnClickListener {
+            viewModel.navDirectEntrance(MatchType.EPS, null)
+            dismiss()
+        }
         //遊戲規則
         ct_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
