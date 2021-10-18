@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    Android越南自動轉換
     <string name="language_setting">Ngôn ngữ cài đặt</string>
-    <string name="language_cn">tiếng trung giản thể</string>
-    <string name="language_zht">tiếng trung phồn thể</string>
-    <string name="language_en">tiếng Anh</string>
-    <string name="language_vi">tiếng việt</string>
     <string name="loading">đang tải</string>
     <string name="connect_first">vui lòng kết nối mạng</string>
     <string name="error_url_fail">chuyển đổi địa chỉ bị lỗi</string>
