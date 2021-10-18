@@ -299,8 +299,10 @@ object SocketUpdateUtil {
         }
 
         newOddsDetailDataList.apply {
-            forEach { oddsDetailListData ->
-                updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
+            if (addedNewOdds){
+                forEach { oddsDetailListData ->
+                    updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
+                }
             }
             sortBy { it.rowSort }
             //因UI需求 特優賠率移到第一項
