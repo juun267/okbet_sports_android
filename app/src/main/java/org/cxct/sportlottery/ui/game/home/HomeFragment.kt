@@ -593,7 +593,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
             }
 
-            mRvGameTable4Adapter.notifyDataSetChanged()
             mRvHighlightAdapter.notifyDataSetChanged()
         })
 
@@ -662,6 +661,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.setSportClosePromptMessage(getString(GameType.VB.string))
                 }
             }
+        })
+
+        viewModel.isLogin.observe(viewLifecycleOwner,{
+            mRvGameTable4Adapter.isLogin = it
         })
     }
 

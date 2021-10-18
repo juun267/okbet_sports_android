@@ -45,6 +45,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
 
+    var isLogin: Boolean? = false
+
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
@@ -166,6 +168,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                     setOnClickListener {
                         onClickFavoriteListener?.onClickFavorite(data.matchInfo?.id)
+                        if (isLogin == true)
+                            btn_star.isSelected = !isSelected
                     }
                 }
 

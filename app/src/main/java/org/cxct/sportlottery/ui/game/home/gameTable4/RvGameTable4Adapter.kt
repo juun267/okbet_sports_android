@@ -21,6 +21,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
 
     private var mDataList = mutableListOf<GameEntity>()
     private var mMatchType: MatchType = MatchType.IN_PLAY
+    var isLogin: Boolean? = false
 
     fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
         mDataList = matchPreloadData?.datas?.map { data ->
@@ -114,6 +115,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener
                 data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                 data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
+                data.vpTableAdapter?.isLogin = isLogin
 
                 view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)
