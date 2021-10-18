@@ -626,8 +626,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun queryData() {
+        getSportList()
         getAnnouncement()
         getSportMenu()
+    }
+
+    private fun getSportList() {
+        viewModel.getSportList()
     }
 
     private fun getAnnouncement() {

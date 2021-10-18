@@ -407,7 +407,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         ?.let { updatedDataList ->
                             oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
                         } ?: run {
-                        oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                        oddsDetailListDataList.forEachIndexed { index, oddsDetailListData ->
                             if (SocketUpdateUtil.updateMatchOdds(
                                     oddsDetailListData,
                                     matchOddsChangeEvent

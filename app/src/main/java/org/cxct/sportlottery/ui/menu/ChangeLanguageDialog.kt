@@ -37,6 +37,10 @@ class ChangeLanguageDialog : BottomSheetDialogFragment() {
             btn_english?.setOnClickListener {
                 selectLanguage(LanguageManager.Language.EN)
             }
+
+            btn_vietnamese?.setOnClickListener {
+                selectLanguage(LanguageManager.Language.VI)
+            }
         }
     }
 
