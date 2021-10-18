@@ -52,10 +52,10 @@ class ServiceFloatingButton @JvmOverloads constructor(
                     ServiceDialog().show(activity.supportFragmentManager, activity::class.java.simpleName)
                 }
                 serviceUrl.isNullOrBlank() && !serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(activity, serviceUrl)
+                    JumpUtil.toExternalWeb(activity, serviceUrl2)
                 }
                 !serviceUrl.isNullOrBlank() && serviceUrl2.isNullOrBlank() -> {
-                    JumpUtil.toExternalWeb(activity, serviceUrl2)
+                    JumpUtil.toExternalWeb(activity, serviceUrl)
                 }
             }
         }
