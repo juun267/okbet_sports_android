@@ -652,7 +652,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 it?.let { odd ->
                     val stringArray: List<String>? = odd.name?.replace("\\s".toRegex(), "")?.split("-")
                     stringArray?.let { stringArrayNotNull ->
-                        if (stringArrayNotNull[0].toInt() > stringArrayNotNull[1].toInt()) {
+
+                        if ((stringArrayNotNull.getOrNull(0)?.toInt() ?: 0) > (stringArrayNotNull.getOrNull(1)?.toInt()
+                                ?: 0)
+                        ) {
                             homeList.add(odd)
                         } else {
                             awayList.add(odd)
