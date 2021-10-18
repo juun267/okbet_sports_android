@@ -41,10 +41,7 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
-import org.cxct.sportlottery.network.sport.Item
-import org.cxct.sportlottery.network.sport.SportMenu
-import org.cxct.sportlottery.network.sport.SportMenuData
-import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.*
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
@@ -230,10 +227,6 @@ class GameViewModel(
     val highlightMatchResult: LiveData<Event<MatchCategoryResult>>
         get() = _highlightMatchResult
 
-    private val _allFootballCount = MutableLiveData<Int>()
-    val allFootballCount: LiveData<Int> //全部足球比賽的數量
-        get() = _allFootballCount
-
     private val _firstMenuGame = MutableLiveData<SportMenu>()
     val firstMenuGame: LiveData<SportMenu>
         get() = _firstMenuGame
@@ -250,17 +243,13 @@ class GameViewModel(
     val allSecondGameTypeCount: LiveData<Int> //第二種球種的比賽數量
         get() = _allSecondGameTypeCount
 
-    private val _cardMatchTypeFT = MutableLiveData<MatchType?>()
-    val cardMatchTypeFT: LiveData<MatchType?> //目前有資料的足球ＭatchType
-        get() = _cardMatchTypeFT
+    private val _firstSportCard = MutableLiveData<SportCard?>()
+    val firstSportCard: LiveData<SportCard?> //目前有資料的第一種ＭatchType
+        get() = _firstSportCard
 
-    private val _allBasketballCount = MutableLiveData<Int>()
-    val allBasketballCount: LiveData<Int> //全部籃球比賽的數量
-        get() = _allBasketballCount
-
-    private val _cardMatchTypeBK = MutableLiveData<MatchType?>()
-    val cardMatchTypeBK: LiveData<MatchType?> //目前有資料的籃球ＭatchType
-        get() = _cardMatchTypeBK
+    private val _secondSportCard = MutableLiveData<SportCard?>()
+    val secondSportCard: LiveData<SportCard?> //目前有資料的第二種ＭatchType
+        get() = _secondSportCard
 
     private val _allTennisCount = MutableLiveData<Int>()
     val allTennisCount: LiveData<Int> //全部網球比賽的數量
@@ -494,35 +483,6 @@ class GameViewModel(
         )
 
         when {
-            getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult) != 0 -> {
-                _cardMatchTypeFT.postValue(MatchType.TODAY)
-            }
-            getSportCount(MatchType.EARLY, GameType.FT, sportMenuResult) != 0 -> {
-                _cardMatchTypeFT.postValue(MatchType.EARLY)
-            }
-            getSportCount(MatchType.PARLAY, GameType.FT, sportMenuResult) != 0 -> {
-                _cardMatchTypeFT.postValue(MatchType.PARLAY)
-            }
-            else -> _cardMatchTypeFT.postValue(null)
-        }
-        _allFootballCount.postValue(getSportCount(MatchType.TODAY, GameType.FT, sportMenuResult))
-
-        when {
-            getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult) != 0 -> {
-                _cardMatchTypeBK.postValue(MatchType.TODAY)
-            }
-            getSportCount(MatchType.EARLY, GameType.BK, sportMenuResult) != 0 -> {
-                _cardMatchTypeBK.postValue(MatchType.EARLY)
-            }
-            getSportCount(MatchType.PARLAY, GameType.BK, sportMenuResult) != 0 -> {
-                _cardMatchTypeBK.postValue(MatchType.PARLAY)
-            }
-            else -> _cardMatchTypeBK.postValue(null)
-        }
-        _allBasketballCount.postValue(getSportCount(MatchType.TODAY, GameType.BK, sportMenuResult))
-
-
-        when {
             getSportCount(MatchType.TODAY, GameType.TN, sportMenuResult) != 0 -> {
                 _cardMatchTypeTN.postValue(MatchType.TODAY)
             }
@@ -550,6 +510,19 @@ class GameViewModel(
         }
         _allVolleyballCount.postValue(getSportCount(MatchType.TODAY, GameType.VB, sportMenuResult))
 
+        sportMenuList?.first()?.gameType?.let { gameType ->
+            _firstSportCard.postValue(
+                SportCard(
+                    gameType,
+                    when {
+                        getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> MatchType.TODAY
+                        getSportCount(MatchType.EARLY, gameType, sportMenuResult) != 0 -> MatchType.EARLY
+                        getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> MatchType.PARLAY
+                        else -> null
+                    }
+                )
+            )
+        }
         _allFirstGameTypeCount.postValue(
             getSportCount(
                 MatchType.TODAY,
@@ -557,6 +530,20 @@ class GameViewModel(
                 sportMenuResult
             )
         )
+
+        sportMenuList?.get(1)?.gameType?.let { gameType ->
+            _secondSportCard.postValue(
+                SportCard(
+                    gameType,
+                    when {
+                        getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> MatchType.TODAY
+                        getSportCount(MatchType.EARLY, gameType, sportMenuResult) != 0 -> MatchType.EARLY
+                        getSportCount(MatchType.PARLAY, gameType, sportMenuResult) != 0 -> MatchType.PARLAY
+                        else -> null
+                    }
+                )
+            )
+        }
         _allSecondGameTypeCount.postValue(
             getSportCount(
                 MatchType.TODAY,

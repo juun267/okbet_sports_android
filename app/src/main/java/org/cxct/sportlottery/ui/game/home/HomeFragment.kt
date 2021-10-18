@@ -603,13 +603,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         //遊戲卡片
-        viewModel.cardMatchTypeFT.observe(viewLifecycleOwner, { matchType ->
+        viewModel.firstSportCard.observe(viewLifecycleOwner, { sportCard ->
             card_football.setOnClickListener {
-                if (matchType != null) {
-                    matchType.let {
+                if (sportCard?.matchType != null) {
+                    sportCard.matchType.let {
                         viewModel.navSpecialEntrance(
                             it,
-                            GameType.FT
+                            sportCard.gameType
                         )
                     }
                 } else {
@@ -618,14 +618,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-
-        viewModel.cardMatchTypeBK.observe(viewLifecycleOwner, { matchType ->
+        viewModel.secondSportCard.observe(viewLifecycleOwner, { sportCard ->
             card_basketball.setOnClickListener {
-                if (matchType != null) {
-                    matchType.let {
+                if (sportCard?.matchType != null) {
+                    sportCard.matchType.let {
                         viewModel.navSpecialEntrance(
                             it,
-                            GameType.BK
+                            sportCard.gameType
                         )
                     }
                 } else {
