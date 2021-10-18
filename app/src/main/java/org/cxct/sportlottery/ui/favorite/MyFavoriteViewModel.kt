@@ -45,6 +45,9 @@ class MyFavoriteViewModel(
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
 
     fun getSportQuery() {
+    val favoriteRepository = myFavoriteRepository
+    val lastSportType = myFavoriteRepository.lastSportType
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
