@@ -120,6 +120,7 @@ class MyFavoriteViewModel(
             )
         )
 
+        favoriteRepository.setLastSportType(item)
         getFavoriteMatch(
             item.code,
             _sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.firstOrNull()?.code
