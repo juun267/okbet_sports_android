@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd1
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd2
@@ -396,6 +397,18 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                         }
                     }
 
+                    tv_name.visibility = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> View.GONE
+                        GameType.TN.key, GameType.VB.key -> View.VISIBLE
+                        else -> View.GONE
+                    }
+
+                    //跟進h5 獨贏盤 主隊以1表示
+                    tv_name.text = when (gameType) {
+                        GameType.TN.key, GameType.VB.key -> "1"
+                        else -> ""
+                    }
+
                     setOnClickListener {
                         when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
@@ -480,6 +493,19 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             setupOdd(oddList1x2?.get(1), oddsType)
                         }
                     }
+
+                    tv_name.visibility = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> View.GONE
+                        GameType.TN.key, GameType.VB.key -> View.VISIBLE
+                        else -> View.GONE
+                    }
+
+                    //跟進h5 獨贏盤客隊以2表示
+                    tv_name.text = when (gameType) {
+                        GameType.TN.key, GameType.VB.key -> "2"
+                        else -> ""
+                    }
+
                     setOnClickListener {
                         when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
