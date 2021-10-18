@@ -133,6 +133,10 @@ class MyFavoriteRepository {
         }
     }
 
+    fun setLastSportType(item: Item){
+        _lastSportType.postValue(item)
+    }
+
     private fun List<PlayCate>.transferSaveList(gameType: String?): MutableList<String> {
         val playCateCode = this.find { it.gameType == gameType }?.code
 
