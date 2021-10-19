@@ -145,12 +145,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     }
 
 
-    override fun onStop() {
-        super.onStop()
-        unSubscribeChannelEvent(matchOdd?.matchId)
-    }
-
-
     private fun initClose() {
         iv_close.setOnClickListener {
             viewModel.removeBetInfoSingle()
@@ -252,7 +246,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun initObserve() {
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
-            it.peekContent().let { list ->
+            it.getContentIfNotHandled()?.let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list[0]
 
