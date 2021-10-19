@@ -15,6 +15,8 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
+import kotlinx.android.synthetic.main.motion_view_service_floating.*
+import kotlinx.android.synthetic.main.motion_view_service_floating.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
@@ -114,6 +116,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initRvMarquee()
         initTabLayout()
         initObserve()
+        initServiceButton()
 
         queryData()
     }
@@ -487,6 +490,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         })
 
         viewModel.specialEntrance.observe(this, {
+            hideLoading()
             it?.let { _ ->
                 when (it.matchType) {
                     MatchType.IN_PLAY -> {
@@ -557,6 +561,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         })
     }
 
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
+    }
+
     override fun updateUiWithLogin(isLogin: Boolean) {
         if (isLogin) {
             btn_login.visibility = View.GONE
@@ -618,8 +626,13 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun queryData() {
+        getSportList()
         getAnnouncement()
         getSportMenu()
+    }
+
+    private fun getSportList() {
+        viewModel.getSportList()
     }
 
     private fun getAnnouncement() {

@@ -44,7 +44,10 @@ class MyFavoriteViewModel(
         get() = _sportQueryData
     private val _sportQueryData = MutableLiveData<Event<SportQueryData?>>()
 
-    fun getSportQuery() {
+    val favoriteRepository = myFavoriteRepository
+    val lastSportType = myFavoriteRepository.lastSportType
+
+    fun getSportQuery(getLastPick:Boolean? = false) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -57,20 +60,29 @@ class MyFavoriteViewModel(
                 )
             }
 
-            result?.sportQueryData?.let {
 
+
+            result?.sportQueryData?.let { sportQueryData ->
                 _sportQueryData.postValue(Event(
-                    it.apply {
-                        it.items?.firstOrNull()?.apply {
-                            this.isSelected = true
-                            this.play?.firstOrNull()?.isSelected = true
+                    sportQueryData.apply {
+                        if (!sportQueryData.items?.filter { it.code == lastSportType.value?.code }.isNullOrEmpty() && getLastPick == true){
+                            sportQueryData.items?.find { it.code == lastSportType.value?.code }.apply {
+                                this?.isSelected = true
+                                this?.play?.firstOrNull()?.isSelected = true
+                            }
+                        }else{
+                            sportQueryData.items?.firstOrNull()?.apply {
+                                this.isSelected = true
+                                this.play?.firstOrNull()?.isSelected = true
+                            }
                         }
                     }
                 ))
 
+                val selectItem = sportQueryData.items?.find { it.isSelected }
                 getFavoriteMatch(
-                    it.items?.firstOrNull()?.code,
-                    it.items?.firstOrNull()?.play?.firstOrNull()?.code
+                    selectItem?.code,
+                    selectItem?.play?.firstOrNull()?.code
                 )
             }
         }
@@ -117,6 +129,7 @@ class MyFavoriteViewModel(
             )
         )
 
+        favoriteRepository.setLastSportType(item)
         getFavoriteMatch(
             item.code,
             _sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.play?.firstOrNull()?.code

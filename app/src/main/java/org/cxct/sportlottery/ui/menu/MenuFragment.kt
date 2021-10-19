@@ -167,8 +167,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private fun setupSelectLanguage() {
         btn_change_language.text =
             when (LanguageManager.getSelectLanguage(btn_change_language.context)) {
-                LanguageManager.Language.ZH -> getString(R.string.language_cn)
-                LanguageManager.Language.ZHT -> getString(R.string.language_zht)
+                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> getString(R.string.language_cn)
                 LanguageManager.Language.VI -> getString(R.string.language_vi)
                 LanguageManager.Language.EN -> getString(R.string.language_en)
             }

@@ -7,7 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class ThirdDebateBean(
     @Json(name = "debateList")
-    val debateList: List<Debate>,
+    val debateList: MutableList<Debate>,
     @Json(name = "userLevelId")
     val userLevelId: Int,
+    @Json(name = "userLevelName")
+    val userLevelName: String,
 )

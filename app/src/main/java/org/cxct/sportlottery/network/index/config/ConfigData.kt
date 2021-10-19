@@ -81,5 +81,6 @@ data class ConfigData(
     val zaloQR: String?,
     val sportAnimation: String?,//体育动画接口 20210812確認暫時無用處
     val liveUrl: String?,
-    val analysisUrl: String?
+    val analysisUrl: String?,
+    val referUrl: String?
 )

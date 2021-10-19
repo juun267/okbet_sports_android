@@ -50,7 +50,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     private val playCategoryAdapter by lazy {
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                if (it.selectionType == SelectionType.SELECTABLE.code) { //被鎖 或是不能下拉
+                if (it.selectionType == SelectionType.SELECTABLE.code) {
                     when {
                         //這個是沒有點選過的狀況 第一次進來 ：開啟選單
                         !it.isSelected && it.isLocked == null -> {
@@ -181,7 +181,12 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         view.favorite_game_list.apply {
             this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-            this.adapter = leagueAdapter
+            addItemDecoration(
+                SpaceItemDecoration(
+                    context,
+                    R.dimen.recyclerview_item_dec_spec_sport_type
+                )
+            )
         }
     }
 
@@ -202,7 +207,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     if (SocketUpdateUtil.updateMatchStatus(
                             gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code,
                             leagueOdd.matchOdds.toMutableList(),
-                            matchStatusChangeEvent
+                            matchStatusChangeEvent,
+                            context
                         ) &&
                         leagueOdd.unfold == FoldState.UNFOLD.code
                     ) {
@@ -329,8 +335,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     override fun onStart() {
         super.onStart()
-
-        viewModel.getSportQuery()
+        viewModel.getSportQuery(getLastPick = true)
         loading()
     }
 
@@ -359,10 +364,11 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
         viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, {
             hideLoading()
+            favorite_game_list.adapter = leagueAdapter
             leagueAdapter.data = it.toMutableList()
             try {
                 unSubscribeChannelHallAll()
-                it.forEach { leagueOdd ->
+                leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
             } catch (e: Exception) {
@@ -491,7 +497,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        MenuCode.MAIN.code,
+                        getPlayCateMenuCode(),
                         matchOdd.matchInfo?.id
                     )
 
@@ -519,6 +525,20 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 }
             }
+        }
+    }
+
+    private fun getPlayCateMenuCode(): String? {
+        val playSelected = playCategoryAdapter.data.find { it.isSelected }
+
+        return when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                playSelected.playCateList?.find { it.isSelected }?.code
+            }
+            SelectionType.UN_SELECTABLE.code -> {
+                playSelected.code
+            }
+            else -> null
         }
     }
 

@@ -58,6 +58,7 @@ class BackService : Service() {
     private val mHeader: List<StompHeader> get() = listOf(StompHeader("token", mToken))
     private val mSubscribedMap = mutableMapOf<String, Disposable?>() //Map<url, channel>
     private val mOriginalSubscribedMap = mutableMapOf<String, Disposable?>() //投注單頁面邏輯, 紀錄進入投注單前以訂閱的頻道, 離開投注單頁面時, 解除訂閱不解除此map中的頻道
+    private val mSubscribeChannelPending = mutableListOf<String>()
     private var errorFlag = false // Stomp connect錯誤
     private var reconnectionNum = 0//重新連接次數
 
@@ -229,7 +230,14 @@ class BackService : Service() {
 
         Timber.i(">>> subscribe channel: $url")
         mStompClient?.run {
-            if (!this.isConnected) return
+            //若連線尚未建立好, 將此次需訂閱的頻道儲存起來
+            if (!this.isConnected) {
+                if (!mSubscribeChannelPending.contains(url)){
+                    mSubscribeChannelPending.add(url)
+                }
+                return
+            }
+
             this.topic(url, mHeader)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -242,6 +250,12 @@ class BackService : Service() {
                 .let { newDisposable ->
                     mCompositeDisposable?.add(newDisposable)
                     mSubscribedMap[url] = newDisposable
+
+                    //訂閱完成後檢查是否有訂閱失敗的頻道
+                    mSubscribeChannelPending.remove(url)
+                    if (mSubscribeChannelPending.isNotEmpty()){
+                        subscribeChannel(mSubscribeChannelPending.first())
+                    }
                 }
         } ?: reconnect()//背景中喚醒APP會有mStompClient=null的情況 導致停止訂閱賽事
     }
@@ -292,6 +306,13 @@ class BackService : Service() {
         urlList.forEach { url ->
             if (url.contains("$URL_EVENT/"))
                 unsubscribeChannel(url)
+        }
+
+        //解除所有訂閱時, 清除pending中公共頻道以外的
+        val pendingUrlList = mSubscribeChannelPending.toList()
+        pendingUrlList.forEach { pendingUrl ->
+            if (pendingUrl.contains("$URL_EVENT/"))
+                mSubscribeChannelPending.remove(pendingUrl)
         }
     }
 

@@ -22,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.28"
+        versionName "1.0.32"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -73,7 +73,7 @@ android {
         }        
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
-            resValue "string", "app_name", "kx sport"
+            resValue "string", "app_name", "OKBET"
             applicationId "com.happysport.sl.test"
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
@@ -243,6 +243,12 @@ dependencies {
 
     //NodeMediaClient
     implementation 'com.github.NodeMedia:NodeMediaClient-Android:2.9.16'
+
+    //ExoPlayer
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.15.1'
+    implementation 'com.google.android.exoplayer:extension-okhttp:2.15.1'
 
     //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
     implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'

@@ -46,6 +46,8 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         initMenu()
 
         initObserver()
+
+        initServiceButton()
     }
 
     override fun initToolBar() {
@@ -142,6 +144,17 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         }
     }
 
+    override fun onBackPressed() {
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+        super.onBackPressed()
+    }
+
     override fun showBetListPage() {
         val betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
@@ -219,6 +232,10 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
         viewModel.nowTransNum.observe(this, {
             navigation_transaction_status.trans_number.text = it.toString()
         })
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun updateAvatar(iconUrl: String?) {

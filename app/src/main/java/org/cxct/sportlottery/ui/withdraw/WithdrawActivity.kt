@@ -12,11 +12,16 @@ class WithdrawActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel
         setContentView(R.layout.activity_withdraw)
 
         setupBackButton()
+        setupServiceButton()
     }
 
     private fun setupBackButton() {
         btn_back.setOnClickListener {
             finish()
         }
+    }
+
+    private fun setupServiceButton() {
+        btn_floating_service.setView(this)
     }
 }

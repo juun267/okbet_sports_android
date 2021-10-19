@@ -211,7 +211,7 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): NoDataViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_game_no_record, parent, false)
+                    .inflate(R.layout.view_no_record, parent, false)
 
                 return NoDataViewHolder(view)
             }

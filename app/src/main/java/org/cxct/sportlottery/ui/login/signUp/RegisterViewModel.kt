@@ -103,8 +103,8 @@ class RegisterViewModel(
         val path = when (LanguageManager.getSelectLanguage(context)) {
             LanguageManager.Language.ZH -> "agreement/register_agreement_zh.html"
             LanguageManager.Language.ZHT -> "agreement/register_agreement_zh.html"
-            LanguageManager.Language.EN -> "agreement/register_agreement_zh.html"
-            LanguageManager.Language.VI -> "agreement/register_agreement_zh.html"
+            LanguageManager.Language.EN -> "agreement/register_agreement_en.html"
+            LanguageManager.Language.VI -> "agreement/register_agreement_vi.html"
         }
 
         val assetManager = context.assets

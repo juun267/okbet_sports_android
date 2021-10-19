@@ -62,11 +62,23 @@
                                 android:alpha="0.25"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="FOOTBALL"
+                                android:text="@{gameViewModel.firstMenuGame.sportEnName.toString()}"
+                                tools:text="FOOTBALL"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize23sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
+
+                            <ImageView
+                                android:id="@+id/iv_football"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:contentDescription="@null"
+                                app:imgResource="@{gameViewModel.firstMenuGame.icon}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@drawable/ic_game_football" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -80,16 +92,6 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/label_en_ft" />
 
-                            <ImageView
-                                android:id="@+id/iv_football"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_game_football"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
                             <TextView
                                 android:id="@+id/label_football"
                                 android:layout_width="wrap_content"
@@ -97,7 +99,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginBottom="9dp"
                                 android:includeFontPadding="false"
-                                android:text="@string/soccer"
+                                android:text="@{gameViewModel.firstMenuGame.sportName}"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -109,11 +111,11 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="5dp"
                                 android:includeFontPadding="false"
-                                android:text="@{gameViewModel.allFootballCount.toString()}"
+                                android:text="@{gameViewModel.allFirstGameTypeCount.toString()}"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize22sp"
                                 app:layout_constraintBottom_toBottomOf="@id/label_football"
-                                app:layout_constraintEnd_toStartOf="@id/iv_football"
+                                app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toEndOf="@id/label_football"
                                 app:layout_constraintTop_toTopOf="@id/label_football"
                                 tools:text="644" />
@@ -122,7 +124,7 @@
 
                         <View
                             android:layout_width="6dp"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/card_basketball"
@@ -140,7 +142,8 @@
                                 android:alpha="0.25"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
-                                android:text="BASKETBALL"
+                                android:text="@{gameViewModel.secondMenuGame.sportEnName.toString()}"
+                                tools:text="BASKETBALL"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize23sp"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -148,20 +151,23 @@
 
                             <ImageView
                                 android:id="@+id/iv_basketball"
-                                android:layout_width="53dp"
+                                android:layout_width="100dp"
                                 android:layout_height="100dp"
                                 android:contentDescription="@null"
-                                android:src="@drawable/ic_basketball"
+                                app:imgResource="@{gameViewModel.secondMenuGame.icon}"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintHorizontal_bias="4"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:src="@drawable/ic_game_basketball" />
 
                             <TextView
                                 android:id="@+id/label_basketball"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:includeFontPadding="false"
-                                android:text="@string/basketball"
+                                android:text="@{gameViewModel.secondMenuGame.sportName}"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize20sp"
                                 app:layout_constraintBottom_toTopOf="@id/tv_basketball_count"
@@ -175,7 +181,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginBottom="6dp"
                                 android:includeFontPadding="false"
-                                android:text="@{gameViewModel.allBasketballCount.toString()}"
+                                android:text="@{gameViewModel.allSecondGameTypeCount.toString()}"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize20sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
@@ -516,7 +522,7 @@
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
-                    tools:listitem="@layout/home_highlight_item"/>
+                    tools:listitem="@layout/home_highlight_item" />
 
             </LinearLayout>
 

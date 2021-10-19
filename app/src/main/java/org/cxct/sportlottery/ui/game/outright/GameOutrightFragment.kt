@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import java.util.*
 
 
 class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -141,7 +142,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
                     outrightLeagueOddAdapter.data = outrightLeagueOddDataList
 
-                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.first()?.matchOdds?.forEach { matchOdd ->
+                    outrightOddsListResult.outrightOddsListData?.leagueOdds?.firstOrNull()?.matchOdds?.forEach { matchOdd ->
                         subscribeChannelHall(matchOdd)
                     }
                 }
@@ -229,7 +230,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun initView() {
-        game_toolbar_sport_type.text = getString(R.string.outright_row_entrance)
+        game_toolbar_sport_type.text = getString(R.string.outright_row_entrance).toUpperCase(Locale.getDefault())
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {

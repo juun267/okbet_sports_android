@@ -15,7 +15,6 @@ import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEv
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChangeEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
@@ -24,7 +23,8 @@ object SocketUpdateUtil {
     fun updateMatchStatus(
         gameType: String?,
         matchOddList: MutableList<MatchOdd>,
-        matchStatusChangeEvent: MatchStatusChangeEvent
+        matchStatusChangeEvent: MatchStatusChangeEvent,
+        context: Context?
     ): Boolean {
         var isNeedRefresh = false
 
@@ -34,9 +34,13 @@ object SocketUpdateUtil {
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
-                    //TODO fix : ConcurrentModificationException 
                     if (matchStatusCO.status == 100) {
-                        matchOddList.remove(matchOdd)
+                        val matchOddIterator = matchOddList.iterator()
+                        while (matchOddIterator.hasNext()){
+                            val item = matchOddIterator.next()
+                            if (item == matchOdd)
+                                matchOddIterator.remove()
+                        }
                         isNeedRefresh = true
                     }
 
@@ -45,8 +49,9 @@ object SocketUpdateUtil {
                         isNeedRefresh = true
                     }
 
-                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName) {
-                        matchOdd.matchInfo?.statusName = matchStatusCO.statusName
+                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
+                        val statusValue = matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatusCO.statusName
+                        matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
 
@@ -254,6 +259,61 @@ object SocketUpdateUtil {
         }
     }
 
+    /**
+     * 加入新增的玩法並同時更新已有玩法的資料再以rowSort排序
+     */
+    fun updateMatchOddsMap(
+        oddsDetailDataList: ArrayList<OddsDetailListData>,
+        matchOddsChangeEvent: MatchOddsChangeEvent
+    ): ArrayList<OddsDetailListData>? {
+        //若有新玩法的話需要重新setData
+        var addedNewOdds = false
+
+        //新玩法
+        val newOdds = matchOddsChangeEvent.odds?.filter { socketOdds ->
+            oddsDetailDataList.find { it.gameType == socketOdds.key } == null
+        }
+
+        val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
+        newOddsDetailDataList.addAll(oddsDetailDataList)
+
+        //加入新玩法
+        newOdds?.forEach { (key, value) ->
+            val filteredOddList =
+                mutableListOf<Odd?>()
+            value.odds?.forEach { detailOdd ->
+                //因排版問題 null也需要添加
+                filteredOddList.add(detailOdd)
+            }
+            newOddsDetailDataList.add(
+                OddsDetailListData(
+                    key,
+                    TextUtil.split(value.typeCodes),
+                    value.name,
+                    filteredOddList,
+                    value.nameMap,
+                    value.rowSort
+                )
+            )
+            addedNewOdds = true
+        }
+
+        newOddsDetailDataList.apply {
+            if (addedNewOdds){
+                forEach { oddsDetailListData ->
+                    updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
+                }
+            }
+            sortBy { it.rowSort }
+            //因UI需求 特優賠率移到第一項
+            find { it.gameType == PlayCate.EPS.value }?.also { oddsDetailListData ->
+                add(0, removeAt(indexOf(oddsDetailListData)))
+            }
+        }
+
+        return if (addedNewOdds) newOddsDetailDataList else null
+    }
+
     fun updateOddStatus(oddBean: OddBean, globalStopEvent: GlobalStopEvent): Boolean {
         var isNeedRefresh = false
 
@@ -384,7 +444,8 @@ object SocketUpdateUtil {
         var isNeedRefresh = false
 
         oddsMapSocket?.forEach { oddsMapEntrySocket ->
-            when (oddsMap.keys.contains(oddsMapEntrySocket.key)) {
+            //全null : 有玩法沒賠率資料
+            when (oddsMap.keys.contains(oddsMapEntrySocket.key) && oddsMap[oddsMapEntrySocket.key]?.all { it == null } == false) {
                 true -> {
                     oddsMap.forEach { oddTypeMap ->
                         val oddsSocket = oddsMapEntrySocket.value
@@ -504,6 +565,12 @@ object SocketUpdateUtil {
 
                 if (odd?.extInfo != oddSocket.extInfo) {
                     odd?.extInfo = oddSocket.extInfo
+
+                    isNeedRefresh = true
+                }
+
+                if (oddsDetailListData.rowSort != odds.rowSort){
+                    oddsDetailListData.rowSort = odds.rowSort
 
                     isNeedRefresh = true
                 }

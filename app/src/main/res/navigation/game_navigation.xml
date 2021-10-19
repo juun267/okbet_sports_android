@@ -63,6 +63,20 @@
         </action>
 
         <action
+            android:id="@+id/action_homeFragment_to_gameOutrightFragment"
+            app:destination="@id/gameOutrightFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right">
+            <argument
+                android:name="gameType"
+                app:argType="org.cxct.sportlottery.network.common.GameType" />
+
+            <argument
+                android:name="eventId"
+                app:argType="string" />
+        </action>
+
+        <action
             android:id="@+id/action_homeFragment_to_gameOutrightMoreFragment"
             app:destination="@id/gameOutrightMoreFragment">
 

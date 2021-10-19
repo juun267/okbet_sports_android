@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.common.MenuCode
 import org.cxct.sportlottery.network.match.MatchPreloadResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchCategoryResult
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
+import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
@@ -39,18 +40,17 @@ import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeAdapter
 import org.cxct.sportlottery.ui.game.hall.adapter.GameTypeListener
 import org.cxct.sportlottery.ui.game.home.gameTable4.*
 import org.cxct.sportlottery.ui.game.home.highlight.RvHighlightAdapter
-import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.game.home.recommend.RecommendGameEntity
 import org.cxct.sportlottery.ui.game.home.recommend.RvRecommendAdapter
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
-import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
 import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 
 
@@ -243,8 +243,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val code = select.code
                     val matchId = select.matchInfo?.id
 
-                    //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
-                    navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    if (select.isOutright == RECOMMEND_OUTRIGHT) {
+                        navGameOutright(select.code, select.leagueId)
+                    } else {
+                        //TODO simon test review 推薦賽事是不是一定是 MatchType.TODAY
+                        navOddsDetailFragment(code, matchId, MatchType.TODAY)
+                    }
                 }
             }
     }
@@ -589,7 +593,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 it.matchInfo?.isFavorite = favorMatchList.contains(it.matchInfo?.id)
             }
 
-            mRvGameTable4Adapter.notifyDataSetChanged()
             mRvHighlightAdapter.notifyDataSetChanged()
         })
 
@@ -599,13 +602,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
 
         //遊戲卡片
-        viewModel.cardMatchTypeFT.observe(viewLifecycleOwner, { matchType ->
+        viewModel.firstSportCard.observe(viewLifecycleOwner, { sportCard ->
             card_football.setOnClickListener {
-                if (matchType != null) {
-                    matchType.let {
+                if (sportCard?.matchType != null) {
+                    sportCard.matchType.let {
                         viewModel.navSpecialEntrance(
                             it,
-                            GameType.FT
+                            sportCard.gameType
                         )
                     }
                 } else {
@@ -614,14 +617,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-
-        viewModel.cardMatchTypeBK.observe(viewLifecycleOwner, { matchType ->
+        viewModel.secondSportCard.observe(viewLifecycleOwner, { sportCard ->
             card_basketball.setOnClickListener {
-                if (matchType != null) {
-                    matchType.let {
+                if (sportCard?.matchType != null) {
+                    sportCard.matchType.let {
                         viewModel.navSpecialEntrance(
                             it,
-                            GameType.BK
+                            sportCard.gameType
                         )
                     }
                 } else {
@@ -659,6 +661,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         })
+
+        viewModel.isLogin.observe(viewLifecycleOwner,{
+            mRvGameTable4Adapter.isLogin = it
+        })
     }
 
     private fun initSocketObserver() {
@@ -668,6 +674,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val dataList = mRvGameTable4Adapter.getData()
                 val hideGameList = mutableListOf<GameEntity>()
                 var hideFirstPosition: Int? = null
+
+                val statusValue = matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatusChangeEvent.matchStatusCO?.statusName
                 dataList.forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                         if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
@@ -682,8 +690,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 matchStatusChangeEvent.matchStatusCO?.homePoints
                             updateMatchOdd.matchInfo?.awayPoints =
                                 matchStatusChangeEvent.matchStatusCO?.awayPoints
-                            updateMatchOdd.matchInfo?.statusName =
-                                matchStatusChangeEvent.matchStatusCO?.statusName
+                            updateMatchOdd.matchInfo?.statusName18n = statusValue
 
                             //賽事status為100, 隱藏該賽事
                             if (matchStatusChangeEvent.matchStatusCO?.status == 100) {
@@ -969,6 +976,20 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         card_slot.visibility = if (isShowThirdGame && slotCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
         card_fishing.visibility =
             if (isShowThirdGame && fishingCount > 0 && !isCreditAccount) View.VISIBLE else View.GONE
+    }
+
+    private fun navGameOutright(gameTypeCode: String?, matchId: String?) {
+        val gameType = GameType.getGameType(gameTypeCode)
+
+        if (gameType != null && matchId != null) {
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToGameOutrightFragment(
+                    gameType,
+                    matchId
+                )
+
+            findNavController().navigate(action)
+        }
     }
 
     private fun navOddsDetailFragment(
