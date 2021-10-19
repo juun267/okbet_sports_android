@@ -1,12 +1,14 @@
 package org.cxct.sportlottery.ui.base
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
-import org.cxct.sportlottery.R
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -75,6 +77,10 @@ abstract class BaseOddButtonViewModel(
 
     val betParlaySuccess: LiveData<Boolean>
         get() = betInfoRepository.betParlaySuccess
+
+    private val deviceId by lazy {
+        androidContext.getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, null) ?: ""
+    }
 
     fun getMoney() {
         if (isLogin.value == false) return
@@ -321,7 +327,8 @@ abstract class BaseOddButtonViewModel(
                         parlayList,
                         1,
                         oddsType.code,
-                        2
+                        2,
+                        deviceId
                     )
                 )
             }
@@ -369,7 +376,8 @@ abstract class BaseOddButtonViewModel(
             listOf(Stake(parlayType ?: "", stake)),
             1,
             oddsType.value?.code ?: OddsType.EU.code,
-            2
+            2,
+            deviceId
         )
 
         viewModelScope.launch {

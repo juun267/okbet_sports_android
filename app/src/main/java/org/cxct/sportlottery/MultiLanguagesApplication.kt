@@ -52,6 +52,8 @@ import timber.log.Timber.DebugTree
 class MultiLanguagesApplication : Application() {
     companion object {
         lateinit var appContext: Context
+        const val UUID_DEVICE_CODE = "uuidDeviceCode"
+        const val UUID = "uuid"
     }
 
     private val viewModelModule = module {
@@ -146,6 +148,9 @@ class MultiLanguagesApplication : Application() {
         setupTimber()
 
         initJPush()
+
+        //生成UUID作為設備識別碼
+        setupDeviceCode()
     }
 
     private fun setupTimber() {
@@ -158,5 +163,14 @@ class MultiLanguagesApplication : Application() {
     private fun initJPush() {
         JPushInterface.setDebugMode(true) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
         JPushInterface.init(this)
+    }
+
+    private fun setupDeviceCode() {
+        val devicePreferences = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
+        if (devicePreferences.getString(UUID, null).isNullOrEmpty())
+            devicePreferences
+                .edit()
+                .putString(UUID, java.util.UUID.randomUUID().toString())
+                .apply()
     }
 }

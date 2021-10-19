@@ -9,6 +9,7 @@ data class BetAddRequest(
     val oddsChangeOption: Int,
     val oddsType: String,
     val loginSrc: Long,
+    val deviceId: String,
     override val userId: Int? = null,
     override val platformId: Int? = null
 ) : IdParams
