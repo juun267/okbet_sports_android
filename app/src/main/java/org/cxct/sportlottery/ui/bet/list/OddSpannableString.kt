@@ -137,6 +137,7 @@ object OddSpannableString {
         val oddContentBuilder = SpannableStringBuilder()
 
         oddContentBuilder.append(extInfo)
+        oddContentBuilder.append(" ")
         oddContentBuilder.append(playNameSpan)
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")

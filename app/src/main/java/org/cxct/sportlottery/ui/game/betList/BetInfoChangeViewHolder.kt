@@ -121,6 +121,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         val oddContentBuilder = SpannableStringBuilder()
 
         oddContentBuilder.append(extInfo)
+        oddContentBuilder.append(" ")
         oddContentBuilder.append(playNameSpan)
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")
