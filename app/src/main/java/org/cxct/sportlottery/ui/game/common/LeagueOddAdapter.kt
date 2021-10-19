@@ -7,13 +7,11 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.RadioButton
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.fragment_money_transfer.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
@@ -588,14 +586,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(item.matchInfo, item.playCateMappingList).apply {
 
-                    this.odds = item.oddsMap
+                        this.odds = item.oddsMap
 
-                    this.oddsType = oddsType
+                        this.oddsType = oddsType
 
-                    this.listener = OddButtonListener { matchInfo, odd, playCateName ->
-                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        this.listener = OddButtonListener { matchInfo, odd, playCateName ->
+                            leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        }
                     }
-                }
 
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageScrolled(
@@ -663,7 +661,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     View.VISIBLE
                 }
 
-                item.quickPlayCateList?.sortedBy { it.sort }?.forEach {
+                item.quickPlayCateList?.sortedBy { it.sort }?.forEachIndexed { index, it ->
                     val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
 
@@ -683,16 +681,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         setBackgroundResource(R.drawable.selector_tab)
 
-                    }, LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                    ))
+                    })
 
-                    rb.isChecked = it.isSelected
+                    if (it.isSelected) {
+                        if (index > 3) {
+                            itemView.scroll_view_rg.post {
+                                itemView.scroll_view_rg.scrollTo(rb.left, 0)
+                            }
+                        }
+                        rb.isChecked = true
+                    }
 
                 }
 
-                setOnCheckedChangeListener { _, checkedId ->
+                setOnCheckedChangeListener { group, checkedId ->
                     item.quickPlayCateList?.forEach {
                         it.isSelected = (it.hashCode() == checkedId)
                         it.positionButtonPage = 0
@@ -815,14 +817,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(item.matchInfo, item.playCateMappingList).apply {
 
-                    this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mutableMapOf()
+                        this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mutableMapOf()
 
-                    this.oddsType = oddsType
+                        this.oddsType = oddsType
 
-                    this.listener = OddButtonListener { matchInfo, odd, playCateName ->
-                        leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        this.listener = OddButtonListener { matchInfo, odd, playCateName ->
+                            leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        }
                     }
-                }
 
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                     override fun onPageScrolled(
