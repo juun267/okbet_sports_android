@@ -27,10 +27,10 @@
     <string name="find_new_version">Discover new version</string>
     <string name="version_name">Version %s</string>
     <string name="btn_pass">Skip</string>
-    <string name="login_account">Login account</string>
-    <string name="please_input_account">Please enter your member account</string>
-    <string name="please_input_password">Please enter your login password</string>
-    <string name="login_password">Login password</string>
+    <string name="login_account">Account</string>
+    <string name="please_input_account">your member account</string>
+    <string name="please_input_password">your login password</string>
+    <string name="login_password">Password</string>
     <string name="remember_password">Save this password</string>
     <string name="forget_password_question">Forgot password？</string>
     <string name="desc_forget_password">Please contact customer service</string>
