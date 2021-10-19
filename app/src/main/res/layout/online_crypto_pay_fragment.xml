@@ -39,7 +39,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:ems="5"
                     android:text="@string/title_currency"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize13sp"
@@ -48,6 +47,7 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorWhite6" />
@@ -96,7 +96,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:ems="5"
                     android:text="@string/title_recharge_account"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/textSize13sp"
@@ -105,6 +104,7 @@
                 <View
                     android:layout_width="1dp"
                     android:layout_height="14dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:background="@color/colorWhite6" />
