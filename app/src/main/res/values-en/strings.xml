@@ -580,14 +580,14 @@
     <string name="recharge_log_recharge_amount">Recharge</string>
     <string name="recharge_log_channel_type">Channel</string>
     <string name="recharge_log_order_state">Status</string>
-    <string name="withdraw_log_withdraw_amount">withdrawals</string>
+    <string name="withdraw_log_withdraw_amount">Withdraw</string>
     <string name="withdraw_log_state_processing">Being processed</string>
     <string name="withdraw_log_state_pass">Pass</string>
     <string name="withdraw_log_state_un_pass">Not pass</string>
     <string name="withdraw_log_type_all">All channel types</string>
-    <string name="withdraw_log_type_bank_trans">Bank withdrawal</string>
+    <string name="withdraw_log_type_bank_trans">Bank withdraw</string>
     <string name="withdraw_log_type_admin">Back-end deduct money</string>
-    <string name="withdraw_log_crypto_transfer">Virtual currency withdrawal</string>
+    <string name="withdraw_log_crypto_transfer">USDT withdraw</string>
     <string name="log_detail_title">Check details</string>
     <string name="log_detail_trans_num_sub">Trading number：</string>
     <string name="log_detail_trans_num_sub2">Trading number</string>
