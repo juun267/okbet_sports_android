@@ -271,8 +271,8 @@
     <string name="install">Install</string>
     <string name="inbox">Inbox (%1$d)</string>
     <string name="unread_letters">Unread email (%1$d)</string>
-    <string name="index">Sequence Numbers</string>
-    <string name="title">Hint</string>
+    <string name="index">Numbers</string>
+    <string name="title">Headline</string>
     <string name="time">Time</string>
     <string name="choose_bet_state">Select bets status</string>
     <string name="champion_play">Champion gamepaly</string>
