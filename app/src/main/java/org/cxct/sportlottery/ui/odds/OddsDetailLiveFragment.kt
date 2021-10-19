@@ -228,8 +228,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                                 tv_status_left.text = context?.getString(R.string.game_postponed)
                                 tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorRedDark))
                                 tv_status_left.tag = GameStatus.POSTPONED.code
-                            } else {
-                                tv_status_left.tag = null
                             }
                         }
 
@@ -268,7 +266,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                         if (args.matchType == MatchType.IN_PLAY &&
                             (args.gameType == GameType.BK || args.gameType == GameType.TN || args.gameType == GameType.VB)
                             && tv_status_left.isVisible
-                            && (it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt != null)
                         ) {
                             tv_spt.visibility = View.VISIBLE
                             tv_spt.text = " / ${(it.peekContent()?.oddsDetailData?.matchOdd?.matchInfo?.spt) ?: 0}"
@@ -630,6 +627,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun setupStatusTnVb(event: MatchStatusChangeEvent) {
+        if (event.matchStatusList?.isEmpty() == true) return
 
         val statusBuilder = SpannableStringBuilder()
 
