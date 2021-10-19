@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd1
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd2
@@ -347,10 +348,10 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 btn_match_odd1.apply {
                     isSelected = when (gameType) {
                         GameType.FT.key, GameType.BK.key -> {
-                            oddListHDP?.get(0)?.isSelected ?: false
+                            oddListHDP?.getOrNull(0)?.isSelected ?: false
                         }
                         GameType.TN.key, GameType.VB.key -> {
-                            oddList1x2?.get(0)?.isSelected ?: false
+                            oddList1x2?.getOrNull(0)?.isSelected ?: false
                         }
                         else -> {
                             false
@@ -362,14 +363,14 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
-                                oddListHDP?.get(0)?.status ?: BetStatus.LOCKED.code
+                                oddListHDP?.getOrNull(0)?.status ?: BetStatus.LOCKED.code
                             }
                         }
                         GameType.TN.key, GameType.VB.key -> {
                             if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
-                                oddList1x2?.get(0)?.status ?: BetStatus.LOCKED.code
+                                oddList1x2?.getOrNull(0)?.status ?: BetStatus.LOCKED.code
                             }
                         }
                         else -> {
@@ -380,10 +381,10 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     this@ViewHolderHdpOu.setupOddState(
                         this, when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
-                                oddListHDP?.get(0)
+                                oddListHDP?.getOrNull(0)
                             }
                             GameType.TN.key, GameType.VB.key -> {
-                                oddList1x2?.get(0)
+                                oddList1x2?.getOrNull(0)
                             }
                             else -> {
                                 null
@@ -393,18 +394,30 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(0), oddsType)
+                            setupOdd(oddListHDP?.getOrNull(0), oddsType)
                         }
                         oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(0), oddsType)
+                            setupOdd(oddList1x2?.getOrNull(0), oddsType)
                         }
+                    }
+
+                    tv_name.visibility = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> View.GONE
+                        GameType.TN.key, GameType.VB.key -> View.VISIBLE
+                        else -> View.GONE
+                    }
+
+                    //跟進h5 獨贏盤 主隊以1表示
+                    tv_name.text = when (gameType) {
+                        GameType.TN.key, GameType.VB.key -> "1"
+                        else -> ""
                     }
 
                     setOnClickListener {
                         when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
                                 if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
-                                    oddListHDP?.get(0)?.let { odd ->
+                                    oddListHDP?.getOrNull(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -416,7 +429,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                             GameType.TN.key, GameType.VB.key -> {
                                 if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
-                                    oddList1x2?.get(0)?.let { odd ->
+                                    oddList1x2?.getOrNull(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -432,10 +445,10 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 btn_match_odd2.apply {
                     isSelected = when (gameType) {
                         GameType.FT.key, GameType.BK.key -> {
-                            oddListHDP?.get(1)?.isSelected ?: false
+                            oddListHDP?.getOrNull(1)?.isSelected ?: false
                         }
                         GameType.TN.key, GameType.VB.key -> {
-                            oddList1x2?.get(1)?.isSelected ?: false
+                            oddList1x2?.getOrNull(1)?.isSelected ?: false
                         }
                         else -> {
                             false
@@ -447,14 +460,14 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
-                                oddListHDP?.get(1)?.status ?: BetStatus.LOCKED.code
+                                oddListHDP?.getOrNull(1)?.status ?: BetStatus.LOCKED.code
                             }
                         }
                         GameType.TN.key, GameType.VB.key -> {
                             if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
                                 BetStatus.LOCKED.code
                             } else {
-                                oddList1x2?.get(1)?.status ?: BetStatus.LOCKED.code
+                                oddList1x2?.getOrNull(1)?.status ?: BetStatus.LOCKED.code
                             }
                         }
                         else -> {
@@ -465,10 +478,10 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     this@ViewHolderHdpOu.setupOddState(
                         this, when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
-                                oddListHDP?.get(1)
+                                oddListHDP?.getOrNull(1)
                             }
                             GameType.TN.key, GameType.VB.key -> {
-                                oddList1x2?.get(1)
+                                oddList1x2?.getOrNull(1)
                             }
                             else -> {
                                 null
@@ -477,18 +490,31 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     )
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(1), oddsType)
+                            setupOdd(oddListHDP?.getOrNull(1), oddsType)
                         }
 
                         oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(1), oddsType)
+                            setupOdd(oddList1x2?.getOrNull(1), oddsType)
                         }
                     }
+
+                    tv_name.visibility = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> View.GONE
+                        GameType.TN.key, GameType.VB.key -> View.VISIBLE
+                        else -> View.GONE
+                    }
+
+                    //跟進h5 獨贏盤客隊以2表示
+                    tv_name.text = when (gameType) {
+                        GameType.TN.key, GameType.VB.key -> "2"
+                        else -> ""
+                    }
+
                     setOnClickListener {
                         when (gameType) {
                             GameType.FT.key, GameType.BK.key -> {
                                 if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
-                                    oddListHDP?.get(1)?.let { odd ->
+                                    oddListHDP?.getOrNull(1)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
@@ -500,7 +526,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                             GameType.TN.key, GameType.VB.key -> {
                                 if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
-                                    oddList1x2?.get(1)?.let { odd ->
+                                    oddList1x2?.getOrNull(1)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
