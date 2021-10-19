@@ -373,12 +373,12 @@
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">姓名须与银行户口一致</string>
-    <string name="edt_hint_check_real_name">中文长度2–20字</string>
-    <string name="edt_hint_nick_name">中英文长度2–6字</string>
+    <string name="edt_hint_check_real_name">请输入认证姓名</string>
+    <string name="edt_hint_nick_name">请输入个人昵称</string>
     <string name="title_wx_id">微信号</string>
-    <string name="edt_hint_wx_id">请输入微信ID</string>
+    <string name="edt_hint_wx_id">请输入微信号</string>
     <string name="title_bank_account">银行卡号</string>
-    <string name="edt_hint_bank_account">12–19位数内的银行卡号</string>
+    <string name="edt_hint_bank_account">请输入银行卡号</string>
     <string name="title_recharge_time">充值时间</string>
     <string name="title_current_money">当前余额</string>
     <string name="btn_submit">提交</string>
