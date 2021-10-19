@@ -94,7 +94,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             @SuppressLint("SwitchIntDef")
             override fun onPlayerError(error: PlaybackException) {
                 if (error.cause is HttpDataSource.HttpDataSourceException){
-                    when (val httpError = error.cause as HttpDataSource.HttpDataSourceException) {
+                    when (val httpError = error.cause) {
                         //直播地址播放連線失敗
                         is HttpDataSource.InvalidResponseCodeException -> {
                             Timber.e("PlayerError = $httpError")
