@@ -176,8 +176,8 @@
     <string name="unlimited">Unlimited</string>
     <string name="select_plat">Select platform</string>
     <string name="daily_bet_range">Daily valid code interval valued</string>
-    <string name="title_rebates_rate">Return %</string>
-    <string name="daily_rebates">Maximum return amount in one day</string>
+    <string name="title_rebates_rate">Rebate %</string>
+    <string name="daily_rebates">Maximum rebate amount in one day</string>
     <string name="hint_recharge_growth">Top-up 1 Yuan lulfilling %1$s to level up</string>
     <string name="hint_bet_growth">Bet 1 Yuan lulfilling %1$s to level up</string>
     <string name="contact_us">Contact us</string>
@@ -244,17 +244,17 @@
     <string name="take_a_picture">Take a photo</string>
     <string name="save_avatar_success">Upload profile successfully</string>
     <string name="change_nickname">Change nickname</string>
-    <string name="hint_nickname"><![CDATA[Chinese & English text must be 2–6 characters]]></string>
+    <string name="hint_nickname">characters</string>
     <string name="error_nickname"><![CDATA[Nickname must be 6–20 characters long and contain English & Chinese letter]]></string>
     <string name="setting_password">Setting password</string>
-    <string name="withdrawal_password">withdrawal password</string>
+    <string name="withdrawal_password">Withdrawal Password</string>
     <string name="current_login_password">Current login password</string>
     <string name="current_withdrawal_password">Current withdrawal password</string>
-    <string name="hint_current_login_password">Please enter login password</string>
+    <string name="hint_current_login_password">Password</string>
     <string name="hint_current_withdrawal_password">Please enter withdrawal password</string>
     <string name="new_password">New password</string>
     <string name="hint_withdrawal_new_password">only be 4 characters</string>
-    <string name="hint_confirm_new_password">Please confirm password</string>
+    <string name="hint_confirm_new_password">Confirm Password</string>
     <string name="error_password_cannot_be_same">New password must different from old password</string>
     <string name="update_login_pwd">Your account password have been successfully changed，please use the new password at next login</string>
     <string name="update_withdrawal_pwd">Successfully changed your withdrawal password</string>
@@ -744,4 +744,5 @@
     <string name="game_postponed">Game postponed</string>
     <string name="money_recharge_hint1">Please submit the deposit information after the money is successfully transferred.</string>
     <string name="money_recharge_hint2">Please refresh the page for each deposit to get the latest receiving account. Please avoid to transfer the money to expired account, or there will be no compensation.</string>
+    <string name="no_setting">No set</string>
 </resources>
