@@ -389,9 +389,6 @@ class WithdrawViewModel(
     fun checkCreateName(createName: String) {
         _createNameErrorMsg.value = when {
             createName.isEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyCreateName(createName) -> {
-                androidContext.getString(R.string.error_create_name)
-            }
             else -> ""
         }
     }
@@ -399,9 +396,6 @@ class WithdrawViewModel(
     fun checkBankCardNumber(bankCardNumber: String) {
         _bankCardNumberMsg.value = when {
             bankCardNumber.isEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyBankCardNumber(bankCardNumber) -> {
-                androidContext.getString(R.string.error_bank_card_number)
-            }
             else -> ""
         }
     }
@@ -409,9 +403,6 @@ class WithdrawViewModel(
     fun checkNetWorkPoint(networkPoint: String) {
         _networkPointMsg.value = when {
             networkPoint.isEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyNetworkPoint(networkPoint) -> {
-                androidContext.getString(R.string.error_network_point)
-            }
             else -> ""
         }
     }
