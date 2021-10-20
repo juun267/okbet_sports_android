@@ -706,11 +706,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
 
             when (item.quickPlayCateList?.find { it.isSelected }?.code) {
-                QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value -> {
+                QuickPlayCate.QUICK_OU.value, QuickPlayCate.QUICK_HDP.value, QuickPlayCate.QUICK_ADVANCE.value -> {
                     setupQuickOddButtonPair(item, oddsType, leagueOddListener)
                 }
 
-                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value, QuickPlayCate.QUICK_ADVANCE.value -> {
+                QuickPlayCate.QUICK_CORNERS.value, QuickPlayCate.QUICK_PENALTY.value -> {
                     setupQuickOddButtonPager(item, oddsType, leagueOddListener)
                 }
 
@@ -792,8 +792,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                     }
                 }
+            }
 
-                check(
+            if (quickOdds.keys.any {
+                    it == PlayCate.ADVANCE.value
+                } && !(quickOdds[PlayCate.ADVANCE.value].isNullOrEmpty())){
+                adapter.odds = quickOdds[PlayCate.ADVANCE.value] ?: listOf()
+            }else {
+                itemView.quick_odd_pair_tab.check(
                     when {
                         (itemView.quick_odd_pair_tab_2.isVisible && item.quickPlayCateList?.find { it.isSelected }?.positionButtonPairTab == 1) -> R.id.quick_odd_pair_tab_2
                         else -> R.id.quick_odd_pair_tab_1
