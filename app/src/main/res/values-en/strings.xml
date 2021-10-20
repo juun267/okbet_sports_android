@@ -43,7 +43,7 @@
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
     <string name="desc_register_checking_account">Checking account</string>
     <string name="error_register_id_exist">Username already exists</string>
-    <string name="hint_register_password">![CDATA[6-20 (English &amp; numbers)]]</string>
+    <string name="hint_register_password"><![CDATA[6–20 (English & numbers)]]></string>
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>
     <string name="error_password_format">The password must be a combination of numbers, letters</string>
     <string name="confirm_password">Confirm Password</string>
