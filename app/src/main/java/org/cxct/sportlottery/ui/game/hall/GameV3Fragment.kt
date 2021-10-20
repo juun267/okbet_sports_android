@@ -321,17 +321,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun refreshToolBarUI(view: View?){
         if (view != null) {
             if (leagueAdapter.data.isEmpty()) {
-                /*when (view.game_toolbar_match_type.text.length > 3) { //字數太長 ex.即將開賽 Guideline往右多一點
-                    true -> view.guideline2.setGuidelinePercent(0.6F)
-                    else -> view.guideline2.setGuidelinePercent(0.55F)
-                }*/
                 if (args.matchType == MatchType.AT_START)
                     game_toolbar_champion.isVisible = false
             } else {
                 if(args.matchType == MatchType.AT_START)
                     game_toolbar_champion.isVisible = true
-
-//                view.guideline2.setGuidelinePercent(0.5F)
             }
         }
     }
