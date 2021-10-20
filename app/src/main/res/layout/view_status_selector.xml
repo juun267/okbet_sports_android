@@ -11,16 +11,17 @@
 
     <TextView
         android:id="@+id/tv_selected"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/colorGrayDark"
         android:textSize="@dimen/textSize14sp"
-        app:autoSizeMaxTextSize="@dimen/textSize12sp"
+        app:autoSizeMaxTextSize="@dimen/textSize14sp"
         app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toStartOf="@id/img_arrow"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/all_order_status" />
 
