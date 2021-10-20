@@ -372,12 +372,12 @@
     <string name="title_real_name">Verified name</string>
     <string name="title_nick_name">Your nickname</string>
     <string name="edt_hint_real_name">The account name must match the bank account name</string>
-    <string name="edt_hint_check_real_name">Chinese text must be 2–20 characters long</string>
-    <string name="edt_hint_nick_name"><![CDATA[Chinese & English text must be 2–6 characters]]></string>
+    <string name="edt_hint_check_real_name">Please enter your verified name</string>
+    <string name="edt_hint_nick_name"><![CDATA[Please enter your nickname]]></string>
     <string name="title_wx_id">Wechat ID</string>
     <string name="edt_hint_wx_id">Please enter Wechat ID</string>
     <string name="title_bank_account">Bank card number</string>
-    <string name="edt_hint_bank_account">12 to19- digit bank card number</string>
+    <string name="edt_hint_bank_account">Please enter the bank card number</string>
     <string name="title_recharge_time">Top-up time</string>
     <string name="title_current_money">current balance</string>
     <string name="btn_submit">Submit</string>
