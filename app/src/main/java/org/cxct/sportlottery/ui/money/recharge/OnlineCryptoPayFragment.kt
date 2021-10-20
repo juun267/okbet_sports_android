@@ -34,7 +34,7 @@ import kotlin.math.abs
 
 class OnlineCryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
-    private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
+    private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
     private var mSelectRechCfgs: RechCfg? = null //選擇的入款帳號
 

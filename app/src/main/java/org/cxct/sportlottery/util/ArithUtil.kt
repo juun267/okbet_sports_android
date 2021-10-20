@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import java.util.*
 
 object ArithUtil {
     /**
@@ -20,8 +21,8 @@ object ArithUtil {
             }
         }
 
-        val decimalFormat: DecimalFormat?
-        decimalFormat = if (scale == 0) {
+        Locale.setDefault(Locale.US)
+        val decimalFormat: DecimalFormat = if (scale == 0) {
             DecimalFormat("0")
         } else {
             DecimalFormat("0.${zeroScale}") // 不足位數 補0

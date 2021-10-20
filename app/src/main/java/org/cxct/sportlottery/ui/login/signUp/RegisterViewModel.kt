@@ -166,7 +166,6 @@ class RegisterViewModel(
     fun checkFullName(fullName: String?) {
         _fullNameMsg.value = when {
             fullName.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName) -> androidContext.getString(R.string.error_incompatible_format)
             else -> null
         }
         focusChangeCheckAllInputComplete()
@@ -211,7 +210,6 @@ class RegisterViewModel(
     fun checkWeChat(weChat: String?) {
         _weChatMsg.value = when {
             weChat.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyWeChat(weChat) -> androidContext.getString(R.string.error_we_chat_number)
             else -> null
         }
         focusChangeCheckAllInputComplete()

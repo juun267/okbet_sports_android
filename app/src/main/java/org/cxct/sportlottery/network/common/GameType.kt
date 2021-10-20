@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.network.common
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import org.cxct.sportlottery.R
 

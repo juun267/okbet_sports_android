@@ -5,8 +5,8 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MoneyPayWayData(
-    @Json(name = "title")
-    var title: String,
+    @Json(name = "titleNameMap")
+    var titleNameMap: Map<String, String>,
     @Json(name = "subtitle")
     var subtitle: String,
     @Json(name = "image")

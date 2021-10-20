@@ -175,7 +175,6 @@ class ModifyProfileInfoViewModel(
     private fun checkNickname(context: Context, nickname: String?) {
         _nickNameErrorMsg.value = when {
             nickname.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyNickname(nickname) -> context.getString(R.string.error_nickname)
             else -> ""
         }
     }
@@ -183,7 +182,6 @@ class ModifyProfileInfoViewModel(
     private fun checkFullName(context: Context, fullName: String?) {
         _fullNameErrorMsg.value = when {
             fullName.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyFullName(fullName) -> context.getString(R.string.error_create_name)
             else -> ""
         }
     }
@@ -207,7 +205,6 @@ class ModifyProfileInfoViewModel(
     private fun checkWeChat(context: Context, wechat: String?) {
         _weChatErrorMsg.value = when {
             wechat.isNullOrBlank() -> context.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyWeChat(wechat) -> context.getString(R.string.error_we_chat_number)
             else -> ""
         }
     }
