@@ -225,19 +225,22 @@ class BackService : Service() {
         mSubscribedMap.clear()
     }
 
+    /**
+     * @Date 2021/10/20
+     * mStompClient?.isConnected 可能實際上不代表Client連線成功
+     * */
     private fun subscribeChannel(url: String) {
         if (mSubscribedMap.containsKey(url)) return
 
-        Timber.i(">>> subscribe channel: $url")
-        mStompClient?.run {
-            //若連線尚未建立好, 將此次需訂閱的頻道儲存起來
-            if (!this.isConnected) {
-                if (!mSubscribeChannelPending.contains(url)){
-                    mSubscribeChannelPending.add(url)
-                }
-                return
+        if (mStompClient?.isConnected != true ) {
+            if (!mSubscribeChannelPending.contains(url)){
+                mSubscribeChannelPending.add(url)
             }
+        }
+        
+        Timber.i(">>> subscribe channel: $url")
 
+        mStompClient?.run {
             this.topic(url, mHeader)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
