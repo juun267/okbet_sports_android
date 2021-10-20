@@ -120,6 +120,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     private fun mergeString(matchOdd: MatchOdd, textView: TextView) {
         val oddContentBuilder = SpannableStringBuilder()
 
+
         if (!matchOdd.extInfo.isNullOrEmpty()) {
             oddContentBuilder.append(extInfo)
         }
