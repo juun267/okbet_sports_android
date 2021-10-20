@@ -151,10 +151,10 @@ class VipViewModel(
             thirdDebateBeans.debateList.forEachIndexed { index, debate ->
                 //處理是否為該層級的第一筆或最後一筆反水資料
                 if (thirdDebateBeans.debateList.lastIndex == index) {
-                    if (debate.debate == null)
-                        debate.isLevelTail = true
-                    else
+                    if (debate.id == 0.0)
                         debate.isNullTail = true
+                    else
+                        debate.isLevelTail = true
                 }
                 debate.levelIndex = index
 
