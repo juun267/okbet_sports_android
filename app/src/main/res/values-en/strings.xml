@@ -43,7 +43,7 @@
     <string name="error_member_account">Username must be 4–16 characters and contain letter and numbers</string>
     <string name="desc_register_checking_account">Checking account</string>
     <string name="error_register_id_exist">Username already exists</string>
-    <string name="hint_register_password">Must be between 6–20 characters long and contain English numbers\',</string>
+    <string name="hint_register_password">6-20 (English &amp; numbers)</string>
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>
     <string name="error_password_format">The password must be a combination of numbers, letters</string>
     <string name="confirm_password">Confirm password</string>
@@ -250,11 +250,11 @@
     <string name="withdrawal_password">withdrawal password</string>
     <string name="current_login_password">Current login password</string>
     <string name="current_withdrawal_password">Current withdrawal password</string>
-    <string name="hint_current_login_password">Please enter login password</string>
-    <string name="hint_current_withdrawal_password">Please enter withdrawal password</string>
+    <string name="hint_current_login_password">Password</string>
+    <string name="hint_current_withdrawal_password">Password</string>
     <string name="new_password">New password</string>
     <string name="hint_withdrawal_new_password">4 digit password</string>
-    <string name="hint_confirm_new_password">Please confirm password</string>
+    <string name="hint_confirm_new_password">Confirm password</string>
     <string name="error_password_cannot_be_same">New password must different from old password</string>
     <string name="update_login_pwd">Your account password have been successfully changed，please use the new password at next login</string>
     <string name="update_withdrawal_pwd">Successfully changed your withdrawal password</string>
