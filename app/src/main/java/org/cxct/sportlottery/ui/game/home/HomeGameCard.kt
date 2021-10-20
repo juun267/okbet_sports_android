@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import kotlinx.android.synthetic.main.home_game_card.view.*
 import org.cxct.sportlottery.R
 
@@ -32,5 +33,13 @@ class HomeGameCard @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     fun setCount(count: String?) {
         tv_count.text = count
+    }
+
+    fun setIcon(@DrawableRes drawableRes: Int){
+        iv_icon.setImageResource(drawableRes)
+    }
+
+    fun setCount(num: Int){
+        tv_count.text = num.toString()
     }
 }
