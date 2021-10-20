@@ -747,4 +747,7 @@
     <string name="saturday2">Thứ 7</string>
     <string name="sunday2">Chủ nhật</string>
     <string name="no_setting">Không có cài đặt</string>
+    <string name="service_1">CSKH1</string>
+    <string name="service_2">CSKH2</string>
+    <string name="service_connect">Liên hệ</string>
 </resources>

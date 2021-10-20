@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -7,6 +8,8 @@ import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -23,6 +26,7 @@ import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
+import java.util.*
 
 
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
@@ -120,8 +124,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val password = et_password.getText()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = et_verification_code.getText()
-        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
-        Timber.d("極光推播: RegistrationID = $deviceSn")
+//        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+        val deviceSn = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
+        Timber.d("UUID = $deviceSn")
 
         val loginRequest = LoginRequest(
             account = account,

@@ -410,9 +410,6 @@ class MoneyRechViewModel(
             wxID.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyWeChat(wxID) -> {
-                androidContext.getString(R.string.error_wx_incompatible_format)
-            }
             else -> {
                 ""
             }
@@ -425,12 +422,6 @@ class MoneyRechViewModel(
             userName.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
             }
-            !VerifyConstUtil.verifyFullName(userName) -> {
-                when (moneyType) {
-                    MoneyType.ALI_TYPE.code -> androidContext.getString(R.string.error_create_name)
-                    else -> androidContext.getString(R.string.error_name)
-                }
-            }
             else -> {
                 ""
             }
@@ -442,11 +433,6 @@ class MoneyRechViewModel(
         _nickNameErrorMsg.value = when {
             userName.isEmpty() -> {
                 androidContext.getString(R.string.error_input_empty)
-            }
-            !VerifyConstUtil.verifyNickname(
-                userName
-            ) -> {
-                androidContext.getString(R.string.error_nickname)
             }
             else -> {
                 ""
