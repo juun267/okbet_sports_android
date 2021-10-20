@@ -462,5 +462,181 @@
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "EPS",
+    "playCateName": "特优赔率",
+    "playCateName-english": "Price Boosts",
+    "playCateName-vietnamese": "CƯỢC ĐẶC BIỆT",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "HDP",
+  "playCateName": "让球",
+  "playCateName-english": "Handicap",
+  "playCateName-vietnamese": "Cược Chấp",
+  "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "HDP-1ST",
+    "playCateName": "让球\r\n上半场",
+    "playCateName-english": "Handicap\r\n1st Half",
+    "playCateName-vietnamese": "Cược Chấp\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "O/U",
+    "playCateName": "进球 大/小",
+    "playCateName-english": "Goals O/U",
+    "playCateName-vietnamese": "Bàn Thắng Trên / Dưới",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "O/U-1ST",
+    "playCateName": "进球 大/小\r\n上半场",
+    "playCateName-english": "Goals O/U\r\n1st Half",
+    "playCateName-vietnamese": "Bàn Thắng Trên / Dưới\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-HDP",
+    "playCateName": "角球 让球",
+    "playCateName-english": "Corners Handicap",
+    "playCateName-vietnamese": "Phạt Góc Cược Chấp",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-O/U",
+    "playCateName": "角球 大/小",
+    "playCateName-english": "Corners O/U",
+    "playCateName-vietnamese": "Phạt Góc Trên/Dưới",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-1X2",
+    "playCateName": "角球 独赢",
+    "playCateName-english": "Corners 1X2",
+    "playCateName-vietnamese": "Phạt Góc 1X2",
+    "playCateNum": "3"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-OE",
+    "playCateName": "角球 单/双",
+    "playCateName-english": "Corners O/E",
+    "playCateName-vietnamese": "Phạt Góc Chẵn / Lẻ",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-1ST-HDP",
+    "playCateName": "角球 让球\r\n上半场",
+    "playCateName-english": "Corners Handicap\r\n1st Half",
+    "playCateName-vietnamese": "Phạt Góc Cược Chấp\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-1ST-O/U",
+    "playCateName": "角球 大/小\r\n上半场",
+    "playCateName-english": "Corners O/U\r\n1st Half",
+    "playCateName-vietnamese": "Phạt Góc Trên/Dưới\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-1ST-1X2",
+    "playCateName": "角球 独赢\r\n上半场",
+    "playCateName-english": "Corners 1X2\r\n1st Half",
+    "playCateName-vietnamese": "Phạt Góc 1X2\r\nHiệp 1",
+    "playCateNum": "3"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "CORNER-1ST-OE",
+    "playCateName": "角球 单/双\r\n上半场",
+    "playCateName-english": "Corners O/E\r\n1st Half",
+    "playCateName-vietnamese": "Phạt Góc Chẵn / Lẻ\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-HDP",
+    "playCateName": "罚牌数 让球",
+    "playCateName-english": "Bookings Handicap",
+    "playCateName-vietnamese": "Thẻ Phạt Cược Chấp",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-O/U",
+    "playCateName": "罚牌数 大/小",
+    "playCateName-english": "Bookings O/U",
+    "playCateName-vietnamese": "Thẻ Phạt Trên/Dưới",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-1X2",
+    "playCateName": "罚牌数 独赢",
+    "playCateName-english": "Bookings 1X2 ",
+    "playCateName-vietnamese": "Thẻ Phạt 1X2",
+    "playCateNum": "3"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-OE",
+    "playCateName": "罚牌数 单/双",
+    "playCateName-english": "Bookings O/E",
+    "playCateName-vietnamese": "Thẻ Phạt Chẵn / Lẻ",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-1ST-HDP",
+    "playCateName": "罚牌数 让球\r\n上半场",
+    "playCateName-english": "Bookings Handicap\r\n1st Half",
+    "playCateName-vietnamese": "Thẻ Phạt Cược Chấp\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-1ST-O/U",
+    "playCateName": "罚牌数 大/小\r\n上半场",
+    "playCateName-english": "Bookings O/U\r\n1st Half",
+    "playCateName-vietnamese": "Thẻ Phạt Trên/Dưới\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-1ST-1X2",
+    "playCateName": "罚牌数 独赢\r\n上半场",
+    "playCateName-english": "Bookings 1X2 \r\n1st Half",
+    "playCateName-vietnamese": "Thẻ Phạt 1X2\r\nHiệp 1",
+    "playCateNum": "3"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "PENALTY-1ST-OE",
+    "playCateName": "罚牌数 单/双\r\n上半场",
+    "playCateName-english": "Bookings O/E\r\n1st Half",
+    "playCateName-vietnamese": "Thẻ Phạt Chẵn / Lẻ\r\nHiệp 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "FT",
+    "playCateCode": "ADVANCE",
+    "playCateName": "会晋级",
+    "playCateName-english": "To Qualify",
+    "playCateName-vietnamese": "sẽ tăng cấp",
+    "playCateNum": "2"
   }
 ]
