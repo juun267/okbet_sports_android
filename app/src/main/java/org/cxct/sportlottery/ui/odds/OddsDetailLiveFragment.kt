@@ -85,7 +85,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         if (needCountStatus(curStatus)) {
             if (timeMillis >= 1000) {
                 tv_time_bottom?.apply {
-                    text = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                    text = TimeUtil.longToMmSs(timeMillis)
                 }
                 startTime = timeMillis / 1000L
             }

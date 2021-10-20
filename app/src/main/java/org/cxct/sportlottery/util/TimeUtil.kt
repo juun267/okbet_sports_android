@@ -43,6 +43,41 @@ object TimeUtil {
         return stampToDateHMSTimeZone(time.time)
     }
 
+    /**
+     * 時間(TimeInMillis) 轉換成 mm:ss 格式
+     * @param time: TimeInMillis
+     * @return :String
+     */
+    fun longToMmSs(time: Long?): String {
+        return try {
+            if (time == null) {
+                "--:--"
+            } else {
+                val min = time / 1000 / 60
+                val sec = time / 1000 % 60
+                String.format("%02d:%02d", min, sec)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "--:--"
+        }
+    }
+
+    /**
+     * 時間(TimeInMillis) 轉換成 minute 格式
+     * @param time: TimeInMillis
+     * @return :String
+     */
+    fun longToMinute(time: Long): String {
+        return try {
+            val min = time / 1000 / 60
+            String.format("%02d", min)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "--:--"
+        }
+    }
+
     fun timeFormat(
         time: Long?,
         format: String,

@@ -133,7 +133,7 @@ class OddsGameCardAdapter(
                             itemView.txv_time.text = context?.getString(R.string.time_null).toString()
                         } else {
                             itemView.txv_time.text =
-                                TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
+                                TimeUtil.longToMmSs(matchClockCO.matchTime?.times(1000L))
 
                             timer = Timer()
                             timer?.schedule(object : TimerTask() {
@@ -168,7 +168,7 @@ class OddsGameCardAdapter(
                     }
                     GameType.FT.key -> {
                         itemView.txv_time.text =
-                            TimeUtil.timeFormat(matchClockCO.matchTime?.times(1000L), "mm:ss")
+                            TimeUtil.longToMmSs(matchClockCO.matchTime?.times(1000L))
                     }
                     else -> {}
                 }
