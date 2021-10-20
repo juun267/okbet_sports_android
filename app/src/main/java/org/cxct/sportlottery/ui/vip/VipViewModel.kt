@@ -80,7 +80,7 @@ class VipViewModel(
                         Level.values()[index].apply {
                             levelRequirement.growthRequirement = config.growthThreshold
                             levelRequirement.levelId = config.id
-                            levelRequirement.levelName = config.name
+                            levelRequirement.levelName = config.name //TODO Bill 請後端回傳多語系
                         }
                     }
                     Level.values().forEach {
