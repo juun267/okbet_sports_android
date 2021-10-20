@@ -161,7 +161,10 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
                 R.id.promotion_page -> {
                     JumpUtil.toInternalWeb(
                         this,
-                        Constants.getPromotionUrl(viewModel.token),
+                        Constants.getPromotionUrl(
+                            viewModel.token,
+                            LanguageManager.getSelectLanguage(this@MainActivity)
+                        ),
                         getString(R.string.promotion)
                     )
                     false
