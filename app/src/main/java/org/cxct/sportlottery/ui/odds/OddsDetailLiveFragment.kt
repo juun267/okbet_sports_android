@@ -490,8 +490,9 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun getData() {
         matchId?.let { matchId ->
-            viewModel.getOddsDetail(matchId)
-            subscribeChannelEvent(matchId)
+            viewModel.getOddsDetail(matchId).run {
+                subscribeChannelEvent(matchId)
+            }
         }
     }
 
