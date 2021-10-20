@@ -424,8 +424,8 @@
     <string name="hint_transaction_id">Please enter your block chain trading ID</string>
     <string name="hint_fee_rate">・Service charge：%1$s</string>
     <string name="hint_fee_amount">・Service charge：%1$s RMB</string>
-    <string name="hint_feeback_rate">Rebate rate</string>
-    <string name="hint_feeback_amount">Rebate rate amount：%1$s RMB</string>
+    <string name="hint_feeback_rate">・Rebate rate：%1$s</string>
+    <string name="hint_feeback_amount">・Rebate rate amount：%1$s RMB</string>
     <string name="txv_recharge_money">・Top-up amount：%1$s RMB</string>
     <string name="title_recharge_account">USDT recharge account</string>
     <string name="title_choose_recharge_account">Select recharge account</string>
@@ -478,7 +478,7 @@
     <string name="withdraw_crypto_amount_hint">・Withdraw：%1$s RMB</string>
     <string name="withdraw_crypto_fee_hint">・Withdraw service fee：%1$s RMB</string>
     <string name="hint_please_enter_withdraw_amount">Limit%1$s~%2$s RMB</string>
-    <string name="hint_four_number_password">Please enter withdrawal password</string>
+    <string name="hint_four_number_password">Withdrawal password</string>
     <string name="hint_please_enter_withdraw_password">withdrawal password</string>
     <string name="add_new">Add</string>
     <string name="add_credit_card">Adding Bank card</string>
