@@ -61,6 +61,8 @@ enum class PlayCate(val value: String) {
     FREE_KICK_LAST("FREE-KICK-LAST"),
     FS_LD_C("FS-LD-C"),
     FS_LD_H("FS-LD-H"),
+    DOUBLE_D_P("DOUBLE-D-P"),
+    TRIPLE_D_P("TRIPLE-D-P"),
     FSM("FSM"),
     GOAL_KICK_FIRST("GOAL-KICK-FIRST"),
     GOAL_KICK_LAST("GOAL-KICK-LAST"),

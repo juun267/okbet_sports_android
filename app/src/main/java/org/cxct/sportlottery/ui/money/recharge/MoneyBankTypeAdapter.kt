@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MoneyManager
 
 class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
@@ -50,7 +51,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
 
         fun bind(item: MoneyPayWayData) {
             icBank.setImageResource(MoneyManager.getBankIcon(item.image))
-            tvType.text = item.title
+            tvType.text = item.titleNameMap[LanguageManager.getSelectLanguage(itemView.context).key]
         }
 
         companion object {

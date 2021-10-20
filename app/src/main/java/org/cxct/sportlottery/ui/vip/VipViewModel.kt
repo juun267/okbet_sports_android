@@ -80,7 +80,7 @@ class VipViewModel(
                         Level.values()[index].apply {
                             levelRequirement.growthRequirement = config.growthThreshold
                             levelRequirement.levelId = config.id
-                            levelRequirement.levelName = config.name
+                            levelRequirement.levelName = config.name //TODO Bill 請後端回傳多語系
                         }
                     }
                     Level.values().forEach {
@@ -151,10 +151,10 @@ class VipViewModel(
             thirdDebateBeans.debateList.forEachIndexed { index, debate ->
                 //處理是否為該層級的第一筆或最後一筆反水資料
                 if (thirdDebateBeans.debateList.lastIndex == index) {
-                    if (debate.debate == null)
-                        debate.isLevelTail = true
-                    else
+                    if (debate.id == 0.0)
                         debate.isNullTail = true
+                    else
+                        debate.isLevelTail = true
                 }
                 debate.levelIndex = index
 

@@ -9,4 +9,7 @@ data class SportMenu(
     val sportName: String,
     val sportEnName: String?,
     @DrawableRes val icon: Int?
-)
+){
+    var gameCount: Int = 0
+    var entranceType: MatchType? = null
+}

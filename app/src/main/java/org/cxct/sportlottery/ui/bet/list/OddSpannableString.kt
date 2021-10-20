@@ -91,7 +91,7 @@ object OddSpannableString {
 
         setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
 
-        mergeString(textView)
+        mergeString(matchOdd, textView)
     }
 
 
@@ -102,7 +102,7 @@ object OddSpannableString {
 
     private fun setupExtInfoSpannableString(matchOdd: MatchOdd) {
         matchOdd.extInfo?.let {
-            extInfo = SpannableString(matchOdd.extInfo)
+            extInfo = SpannableString(matchOdd.extInfo + " ")
             extInfo?.setSpan(StyleSpan(Typeface.BOLD), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
@@ -133,10 +133,10 @@ object OddSpannableString {
     }
 
 
-    private fun mergeString(textView: TextView) {
+    private fun mergeString(matchOdd: MatchOdd, textView: TextView) {
         val oddContentBuilder = SpannableStringBuilder()
 
-        extInfo?.let {
+        if (!matchOdd.extInfo.isNullOrEmpty()) {
             oddContentBuilder.append(extInfo)
         }
         oddContentBuilder.append(playNameSpan)

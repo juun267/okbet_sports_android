@@ -260,7 +260,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
                 tvLevel?.text = getString(cardInfo.level)
                 ivLevel?.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, cardInfo.levelIcon))
-                tvLevelName?.text = cardInfo.levelName
+                tvLevelName?.text = cardInfo.levelName //TODO Bill 這裡要請API改成多語系
                 tvGrowthRequirement?.text = getGrowthRequirementTips(cardInfo.levelId, cardInfo.growthRequirement)
             }
             bannerCurrentItem = userVipLevel?.ordinal?.plus(1) ?: 0

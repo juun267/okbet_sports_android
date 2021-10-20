@@ -33,9 +33,9 @@ object Constants {
     }
 
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionUrl(token: String?): String? {
+    fun getPromotionUrl(token: String?, language: LanguageManager.Language): String? {
         return try {
-            "${getBaseUrl()}/activity/mobile/#/useractilist?token=${
+            "${getBaseUrl()}/activity/mobile/#/useractilist?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"

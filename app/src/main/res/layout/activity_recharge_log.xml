@@ -25,9 +25,9 @@
             android:layout_width="0dp"
             android:layout_height="44dp"
             android:layout_weight="1"
-            app:defaultStatusText="@string/all_order_status"
-            app:defaultBottomSheetTitleText="@string/choose_order"
             app:arrowAtEnd="true"
+            app:defaultBottomSheetTitleText="@string/choose_order"
+            app:defaultStatusText="@string/all_order_status"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
         <View
@@ -42,88 +42,72 @@
             android:layout_width="0dp"
             android:layout_height="44dp"
             android:layout_weight="1"
-            app:defaultStatusText="@string/recharge_channel_all"
-            app:defaultBottomSheetTitleText="@string/choose_method"
             app:arrowAtEnd="true"
+            app:defaultBottomSheetTitleText="@string/choose_method"
+            app:defaultStatusText="@string/recharge_channel_all"
             app:layout_constraintTop_toBottomOf="@id/date_range_selector" />
 
     </LinearLayout>
 
-    <View
+    <LinearLayout
         android:id="@+id/rech_log_column"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="@color/colorWhite3"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@id/linearLayout">
 
-    <TextView
-        android:id="@+id/rech_log_order_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:gravity="center"
-        android:maxLines="1"
-        android:minWidth="68dp"
-        android:text="@string/recharge_log_order_time"
-        android:textColor="@color/colorBlackLight"
-        app:autoSizeMaxTextSize="@dimen/textSize12sp"
-        app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
-        app:layout_constraintEnd_toStartOf="@id/rech_log_recharge_amount"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
+        <TextView
+            android:id="@+id/rech_log_order_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/recharge_log_order_time"
+            android:textColor="@color/colorBlackLight"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
-    <TextView
-        android:id="@+id/rech_log_recharge_amount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:gravity="center"
-        android:maxLines="1"
-        android:minWidth="72dp"
-        android:text="@string/recharge_log_recharge_amount"
-        android:textColor="@color/colorBlackLight"
-        app:autoSizeMaxTextSize="@dimen/textSize12sp"
-        app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
-        app:layout_constraintEnd_toStartOf="@id/recg_log_channel_type"
-        app:layout_constraintStart_toEndOf="@id/rech_log_order_time"
-        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
+        <TextView
+            android:id="@+id/rech_log_recharge_amount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/recharge_log_recharge_amount"
+            android:textColor="@color/colorBlackLight"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
-    <TextView
-        android:id="@+id/recg_log_channel_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:gravity="center"
-        android:maxLines="1"
-        android:minWidth="60dp"
-        android:text="@string/recharge_log_channel_type"
-        android:textColor="@color/colorBlackLight"
-        app:autoSizeMaxTextSize="@dimen/textSize12sp"
-        app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
-        app:layout_constraintEnd_toStartOf="@id/rech_log_order_state"
-        app:layout_constraintStart_toEndOf="@id/rech_log_recharge_amount"
-        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
+        <TextView
+            android:id="@+id/recg_log_channel_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/recharge_log_channel_type"
+            android:textColor="@color/colorBlackLight"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
-    <TextView
-        android:id="@+id/rech_log_order_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="14dp"
-        android:gravity="center"
-        android:maxLines="1"
-        android:minWidth="52dp"
-        android:text="@string/recharge_log_order_state"
-        android:textColor="@color/colorBlackLight"
-        app:autoSizeMaxTextSize="@dimen/textSize12sp"
-        app:autoSizeMinTextSize="@dimen/textSize8sp"
-        app:layout_constraintBottom_toBottomOf="@id/rech_log_column"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/recg_log_channel_type"
-        app:layout_constraintTop_toTopOf="@id/rech_log_column" />
+        <TextView
+            android:id="@+id/rech_log_order_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/recharge_log_order_state"
+            android:textColor="@color/colorBlackLight"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+    </LinearLayout>
 
     <com.scwang.smart.refresh.layout.SmartRefreshLayout
         android:id="@+id/list_swipe_refresh_layout"

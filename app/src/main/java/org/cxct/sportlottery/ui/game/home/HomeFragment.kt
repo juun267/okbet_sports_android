@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +30,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -330,8 +332,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         val inPlayCount = mInPlayResult?.matchPreloadData?.num ?: 0
         if (inPlayCount != 0) {
             rb_in_play.performClick()
-        }
-        else {
+        } else {
             rb_as_start.performClick()
         }
     }
@@ -362,34 +363,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initEvent() {
-        card_football.setOnClickListener {
-            viewModel.navSpecialEntrance(
-                MatchType.TODAY,
-                GameType.FT
-            )
-        }
-
-        card_basketball.setOnClickListener {
-            viewModel.navSpecialEntrance(
-                MatchType.TODAY,
-                GameType.BK
-            )
-        }
-
-        card_tennis.setOnClickListener {
-            viewModel.navSpecialEntrance(
-                MatchType.TODAY,
-                GameType.TN
-            )
-        }
-
-        card_volleyball.setOnClickListener {
-            viewModel.navSpecialEntrance(
-                MatchType.TODAY,
-                GameType.VB
-            )
-        }
-
         card_game_soon.setOnClickListener {
             viewModel.navSpecialEntrance(MatchType.AT_START, null)
         }
@@ -431,33 +404,33 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //訂閱 滾球盤 or 即將開賽 賠率
     private fun subscribeTableHallChannel(selectMatchType: MatchType) {
-            when (selectMatchType) {
-                MatchType.IN_PLAY -> {
-                    mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
-                        data.matchOdds.forEach { match ->
-                            subscribeChannelHall(
-                                data.code,
-                                MenuCode.HOME_INPLAY_MOBILE.code,
-                                match.matchInfo?.id
-                            )
-                        }
+        when (selectMatchType) {
+            MatchType.IN_PLAY -> {
+                mInPlayResult?.matchPreloadData?.datas?.forEach { data ->
+                    data.matchOdds.forEach { match ->
+                        subscribeChannelHall(
+                            data.code,
+                            MenuCode.HOME_INPLAY_MOBILE.code,
+                            match.matchInfo?.id
+                        )
                     }
-                }
-                MatchType.AT_START -> {
-                    mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
-                        data.matchOdds.forEach { match ->
-                            subscribeChannelHall(
-                                data.code,
-                                MenuCode.HOME_ATSTART_MOBILE.code,
-                                match.matchInfo?.id
-                            )
-                        }
-                    }
-                }
-                else -> {
-
                 }
             }
+            MatchType.AT_START -> {
+                mAtStartResult?.matchPreloadData?.datas?.forEach { data ->
+                    data.matchOdds.forEach { match ->
+                        subscribeChannelHall(
+                            data.code,
+                            MenuCode.HOME_ATSTART_MOBILE.code,
+                            match.matchInfo?.id
+                        )
+                    }
+                }
+            }
+            else -> {
+
+            }
+        }
 
     }
 
@@ -530,6 +503,44 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.sportMenuList.observe(viewLifecycleOwner, {
+            it.peekContent().let { list ->
+                if (block_game.size != list.size) {
+                    block_game.removeAllViews()
+
+                    list.forEachIndexed { index, sportMenu ->
+                        when (index) {
+                            0 -> {
+                                setupFirstGame(sportMenu)
+                            }
+                            1 -> {
+                                setupSecondGame(sportMenu)
+                            }
+                            else -> {
+                                block_game.addView(HomeGameCard(context ?: requireContext()).apply {
+                                    setupHomeCard(this, sportMenu)
+                                })
+                            }
+                        }
+                    }
+                } else {
+                    list.forEachIndexed { index, sportMenu ->
+                        when (index) {
+                            0 -> {
+                                setupFirstGame(sportMenu)
+                            }
+                            1 -> {
+                                setupSecondGame(sportMenu)
+                            }
+                            else -> {
+                                setupHomeCard((block_game.getChildAt(index) as HomeGameCard), sportMenu)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
         //第三方遊戲清單
         viewModel.gameCateDataList.observe(viewLifecycleOwner, {
             updateInPlayUI(it)
@@ -601,70 +612,70 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             updateThirdGameCard()
         })
 
-        //遊戲卡片
-        viewModel.firstSportCard.observe(viewLifecycleOwner, { sportCard ->
-            card_football.setOnClickListener {
-                if (sportCard?.matchType != null) {
-                    sportCard.matchType.let {
-                        viewModel.navSpecialEntrance(
-                            it,
-                            sportCard.gameType
-                        )
-                    }
-                } else {
-                    viewModel.setSportClosePromptMessage(getString(GameType.FT.string))
-                }
-            }
+        viewModel.isLogin.observe(viewLifecycleOwner, {
+            mRvGameTable4Adapter.isLogin = it
         })
+    }
 
-        viewModel.secondSportCard.observe(viewLifecycleOwner, { sportCard ->
-            card_basketball.setOnClickListener {
-                if (sportCard?.matchType != null) {
-                    sportCard.matchType.let {
-                        viewModel.navSpecialEntrance(
-                            it,
-                            sportCard.gameType
-                        )
-                    }
-                } else {
-                    viewModel.setSportClosePromptMessage(getString(GameType.BK.string))
+    private fun setupFirstGame(sportMenu: SportMenu) {
+        label_en_first_game.text = sportMenu.sportEnName
+        label_first_game.text = sportMenu.sportName
+        sportMenu.icon?.let { iv_first_game.setImageResource(sportMenu.icon) }
+        tv_first_game_count.text = sportMenu.gameCount.toString()
+
+        card_first_game.setOnClickListener {
+            if (sportMenu.entranceType != null) {
+                sportMenu.entranceType?.let {
+                    viewModel.navSpecialEntrance(
+                        it,
+                        sportMenu.gameType
+                    )
                 }
+            } else {
+                viewModel.setSportClosePromptMessage(getString(GameType.TN.string))
             }
-        })
+        }
+    }
 
-        viewModel.cardMatchTypeTN.observe(viewLifecycleOwner, { matchType ->
-            card_tennis.setOnClickListener {
-                if (matchType != null) {
-                    matchType.let {
+    private fun setupSecondGame(sportMenu: SportMenu) {
+        label_en_second_game.text = sportMenu.sportEnName
+        label_second_game.text = sportMenu.sportName
+        sportMenu.icon?.let { iv_second_game.setImageResource(sportMenu.icon) }
+        tv_second_game_count.text = sportMenu.gameCount.toString()
+
+        card_second_game.setOnClickListener {
+            if (sportMenu.entranceType != null) {
+                sportMenu.entranceType?.let {
+                    viewModel.navSpecialEntrance(
+                        it,
+                        sportMenu.gameType
+                    )
+                }
+            } else {
+                viewModel.setSportClosePromptMessage(getString(GameType.TN.string))
+            }
+        }
+    }
+
+    private fun setupHomeCard(homeGameCard: HomeGameCard, sportMenu: SportMenu) {
+        homeGameCard.apply {
+            setTitle(sportMenu.sportName)
+            sportMenu.icon?.let { setIcon(sportMenu.icon) }
+            setCount(sportMenu.gameCount)
+
+            setOnClickListener {
+                if (sportMenu.entranceType != null) {
+                    sportMenu.entranceType?.let {
                         viewModel.navSpecialEntrance(
                             it,
-                            GameType.TN
+                            sportMenu.gameType
                         )
                     }
                 } else {
                     viewModel.setSportClosePromptMessage(getString(GameType.TN.string))
                 }
             }
-        })
-
-        viewModel.cardMatchTypeVB.observe(viewLifecycleOwner, { matchType ->
-            card_volleyball.setOnClickListener {
-                if (matchType != null) {
-                    matchType.let {
-                        viewModel.navSpecialEntrance(
-                            it,
-                            GameType.VB
-                        )
-                    }
-                } else {
-                    viewModel.setSportClosePromptMessage(getString(GameType.VB.string))
-                }
-            }
-        })
-
-        viewModel.isLogin.observe(viewLifecycleOwner,{
-            mRvGameTable4Adapter.isLogin = it
-        })
+        }
     }
 
     private fun initSocketObserver() {
@@ -675,11 +686,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val hideGameList = mutableListOf<GameEntity>()
                 var hideFirstPosition: Int? = null
 
-                val statusValue = matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatusChangeEvent.matchStatusCO?.statusName
+                val statusValue =
+                    matchStatusChangeEvent.matchStatusCO?.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
+                        ?: matchStatusChangeEvent.matchStatusCO?.statusName
                 dataList.forEachIndexed { index, gameEntity ->
                     gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
                         if (updateMatchOdd.matchInfo?.id == matchStatusChangeEvent.matchStatusCO?.matchId) {
-                            updateMatchOdd.matchInfo?.homeTotalScore = matchStatusChangeEvent.matchStatusCO?.homeTotalScore
+                            updateMatchOdd.matchInfo?.homeTotalScore =
+                                matchStatusChangeEvent.matchStatusCO?.homeTotalScore
                             updateMatchOdd.matchInfo?.awayTotalScore =
                                 matchStatusChangeEvent.matchStatusCO?.awayTotalScore
                             updateMatchOdd.matchInfo?.homeScore =
