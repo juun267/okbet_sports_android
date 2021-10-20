@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
@@ -77,9 +78,17 @@ class OddsButton @JvmOverloads constructor(
         }
     }
 
-    fun setupOdd(odd: Odd?, oddsType: OddsType) {
+    fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null) {
         tv_name.apply {
-            text = odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name
+            val extInfoStr = odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
+            text = if (gameType == PlayCate.DOUBLE_D.value || gameType == PlayCate.TRIPLE_D.value || gameType == PlayCate.DOUBLE_D_P.value || gameType == PlayCate.TRIPLE_D_P.value) {
+                odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key)
+            } else {
+                if (extInfoStr.isNullOrEmpty())
+                    "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+                else
+                    "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
+            }
             visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 

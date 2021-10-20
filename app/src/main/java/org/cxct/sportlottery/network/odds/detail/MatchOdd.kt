@@ -9,6 +9,8 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 data class MatchOdd(
     @Json(name = "matchInfo")
     val matchInfo: MatchInfo,
+    @Json(name = "playCateTypeList")
+    val playCateTypeList: List<PlayCateType>,
     @Json(name = "odds")
-    val odds: Map<String, CateDetailData>
+    val odds: MutableMap<String, CateDetailData>
 )

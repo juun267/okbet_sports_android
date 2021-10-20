@@ -32,8 +32,7 @@
             android:text="@string/daily_bet_range"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
-            android:textStyle="bold"
-            tools:backgroundTint="@color/colorWhite7" />
+            android:textStyle="bold" />
 
         <View
             android:layout_width="1dp"
@@ -45,15 +44,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/white"
+            android:background="@color/colorWhite7"
             android:gravity="center"
             android:paddingTop="6dp"
             android:paddingBottom="6dp"
             android:text="@string/title_rebates_rate"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
-            android:textStyle="bold"
-            tools:backgroundTint="@color/colorWhite7" />
+            android:textStyle="bold" />
 
         <View
             android:layout_width="1dp"
@@ -72,8 +70,7 @@
             android:text="@string/daily_rebates"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
-            android:textStyle="bold"
-            tools:backgroundTint="@color/colorWhite7" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <View

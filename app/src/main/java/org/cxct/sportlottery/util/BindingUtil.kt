@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.util
 
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.ui.game.home.HomeGameCard
 
@@ -19,5 +21,11 @@ object BindingUtil {
     @BindingAdapter("cvCount")
     fun setCount(view: HomeGameCard, count: String?) {
         view.setCount(count)
+    }
+
+    @JvmStatic
+    @BindingAdapter("imgResource")
+    fun ImageView.setImgResource(@DrawableRes imgResource: Int){
+        this.setImageResource(imgResource)
     }
 }

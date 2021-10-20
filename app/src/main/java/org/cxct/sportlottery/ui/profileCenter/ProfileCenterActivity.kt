@@ -35,10 +35,10 @@ import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
 import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
 import org.cxct.sportlottery.ui.profileCenter.profile.AvatarSelectorDialog
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
-import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
@@ -97,6 +97,7 @@ class ProfileCenterActivity :
         setupLogout()
         setupMoreButtons()
         initBottomNav()
+        initServiceButton()
         getUserInfo()
         initObserve()
     }
@@ -214,7 +215,10 @@ class ProfileCenterActivity :
             if (testFlag == TestFlag.NORMAL.index)
                 JumpUtil.toInternalWeb(
                     this,
-                    Constants.getPromotionUrl(viewModel.token),
+                    Constants.getPromotionUrl(
+                        viewModel.token,
+                        LanguageManager.getSelectLanguage(this@ProfileCenterActivity)
+                    ),
                     getString(R.string.promotion)
                 )
             else
@@ -248,7 +252,10 @@ class ProfileCenterActivity :
                 R.id.promotion_page -> {
                     JumpUtil.toInternalWeb(
                         this,
-                        Constants.getPromotionUrl(viewModel.token),
+                        Constants.getPromotionUrl(
+                            viewModel.token,
+                            LanguageManager.getSelectLanguage(this@ProfileCenterActivity)
+                        ),
                         getString(R.string.promotion)
                     )
                     false
@@ -273,6 +280,10 @@ class ProfileCenterActivity :
 
         //聊天室按鈕 啟用判斷
         bottom_nav_view.menu.findItem(R.id.chat_page).isVisible = sConfigData?.chatOpen == FLAG_OPEN
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun getUserInfo() {

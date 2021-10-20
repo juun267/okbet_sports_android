@@ -80,7 +80,7 @@ class VipViewModel(
                         Level.values()[index].apply {
                             levelRequirement.growthRequirement = config.growthThreshold
                             levelRequirement.levelId = config.id
-                            levelRequirement.levelName = config.name
+                            levelRequirement.levelName = config.name //TODO Bill 請後端回傳多語系
                         }
                     }
                     Level.values().forEach {
@@ -139,16 +139,30 @@ class VipViewModel(
     private fun reorganizeThirdRebatesData(thirdRebatesResult: ThirdRebatesResult): List<Debate> {
         val reformattedDataList = mutableListOf<Debate>()
         thirdRebatesResult.thirdRebates?.thirdDebateBeans?.forEach { thirdDebateBeans ->
+            if (thirdDebateBeans.debateList.isEmpty()) {
+                thirdDebateBeans.apply {
+                    val emptyItem = Debate(null, 0.0, null, null, null, userLevelId, userLevelName).apply {
+                        isNullTail = true
+                    }
+                    reformattedDataList.add(emptyItem)
+                }
+            }
+
             thirdDebateBeans.debateList.forEachIndexed { index, debate ->
                 //處理是否為該層級的第一筆或最後一筆反水資料
-                if (index == 0)
-                    debate.isTitle = true
-                if (thirdDebateBeans.debateList.lastIndex == index)
-                    debate.isLevelTail = true
+                if (thirdDebateBeans.debateList.lastIndex == index) {
+                    if (debate.id == 0.0)
+                        debate.isNullTail = true
+                    else
+                        debate.isLevelTail = true
+                }
                 debate.levelIndex = index
+
                 reformattedDataList.add(debate)
             }
+
         }
+
         return reformattedDataList
     }
 }

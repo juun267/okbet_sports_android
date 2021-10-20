@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="language_setting">语系设定</string>
-    <string name="language_cn">简体中文</string>
-    <string name="language_zht">繁體中文</string>
-    <string name="language_en">英文</string>
-    <string name="language_vi">越南文</string>
     <string name="loading">加载中</string>
     <string name="connect_first">请先连上网路</string>
     <string name="error_url_fail">跳转地址错误</string>
@@ -377,12 +373,12 @@
     <string name="title_real_name">认证姓名</string>
     <string name="title_nick_name">个人昵称</string>
     <string name="edt_hint_real_name">姓名须与银行户口一致</string>
-    <string name="edt_hint_check_real_name">中文长度2–20字</string>
-    <string name="edt_hint_nick_name">中英文长度2–6字</string>
+    <string name="edt_hint_check_real_name">请输入认证姓名</string>
+    <string name="edt_hint_nick_name">请输入个人昵称</string>
     <string name="title_wx_id">微信号</string>
-    <string name="edt_hint_wx_id">请输入微信ID</string>
+    <string name="edt_hint_wx_id">请输入微信号</string>
     <string name="title_bank_account">银行卡号</string>
-    <string name="edt_hint_bank_account">12–19位数内的银行卡号</string>
+    <string name="edt_hint_bank_account">请输入银行卡号</string>
     <string name="title_recharge_time">充值时间</string>
     <string name="title_current_money">当前余额</string>
     <string name="btn_submit">提交</string>
@@ -749,4 +745,8 @@
     <string name="game_postponed">比赛延期</string>
     <string name="money_recharge_hint1"><font color="#ff4b2c">请先转账成功后再提交充值信息。</font></string>
     <string name="money_recharge_hint2"><font color="#ff4b2c">每次入款请刷新页面，获取最新的收款账户，避免入款到过期账号，入错无法赔偿。</font></string>
+    <string name="no_setting">无设定</string>
+    <string name="service_1">客服1</string>
+    <string name="service_2">客服2</string>
+    <string name="service_connect">联系</string>
 </resources>

@@ -30,6 +30,7 @@ class VpRecommendAdapter(
     val dataList: List<OddBean>,
     private val isOutright: Int?,
     val matchOdd: MatchOdd,
+    val playCateMappingList: List<PlayCateMapItem>?,
     val dynamicMarkets: Map<String, DynamicMarket>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -85,15 +86,15 @@ class VpRecommendAdapter(
         try {
             when (holder) {
                 is ViewHolderHdpOu -> {
-                    val data = dataList[position]
+                    val data = dataList.filterPlayCateSpanned(sportCode)[position]
                     holder.bind(data)
                 }
                 is ViewHolderEPS -> {
-                    val data = dataList[position]
+                    val data = dataList.filterPlayCateSpanned(sportCode)[position]
                     holder.bind(data)
                 }
                 is ViewHolderRecOutright -> {
-                    val data = dataList[0]
+                    val data = dataList.first()
                     holder.bind(data, dynamicMarkets)
                 }
             }
@@ -103,6 +104,20 @@ class VpRecommendAdapter(
     }
 
     override fun getItemCount(): Int = dataList.size
+
+    private fun List<OddBean>.filterPlayCateSpanned(gameType: String?): List<OddBean> {
+        val spannedList = mutableListOf<OddBean>()
+        this.forEach { oddBean ->
+            val playCateMapItem = playCateMappingList?.find {
+                it.gameType == gameType && it.playCateCode == oddBean.playTypeCode
+            }
+
+            spannedList.add(OddBean(oddBean.playTypeCode, oddBean.oddList.filterIndexed { index, _ ->
+                index < playCateMapItem?.playCateNum ?: 0
+            }))
+        }
+        return spannedList
+    }
 
     inner class ViewHolderHdpOu(
         itemView: View,

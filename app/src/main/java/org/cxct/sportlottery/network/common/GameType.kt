@@ -19,5 +19,25 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 else -> null
             }
         }
+
+        fun getGameTypeEnName(gameType: GameType): String?{
+            return when(gameType){
+                FT -> "FOOTBALL"
+                BK -> "BASKETBALL"
+                TN -> "TENNIS"
+                VB -> "VOLLEYBALL"
+                else -> null
+            }
+        }
+
+        fun getGameTypeMenuIcon(gameType: GameType): Int?{
+            return when(gameType){
+                FT -> R.drawable.ic_game_football
+                BK -> R.drawable.ic_game_basketball
+                TN -> R.drawable.ic_game_tennis
+                VB -> R.drawable.ic_game_volleyball
+                else -> null
+            }
+        }
     }
 }

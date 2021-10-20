@@ -33,9 +33,9 @@ object Constants {
     }
 
     //優惠活動 url: 須傳入當前 user 登入的 token，獲取 encode token 的 URL
-    fun getPromotionUrl(token: String?): String? {
+    fun getPromotionUrl(token: String?, language: LanguageManager.Language): String? {
         return try {
-            "${getBaseUrl()}/activity/mobile/#/useractilist?token=${
+            "${getBaseUrl()}/activity/mobile/#/useractilist?lang=${language.key}&token=${
                 URLEncoder.encode(
                     token,
                     "utf-8"
@@ -52,8 +52,9 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sportsapi.cxsport.net/sports-rule/"
-                else -> "https://sportsapi.cxsport.net/sports-rule/us"
+                LanguageManager.Language.ZH -> "https://cxisport.com/sports-rule/#/"
+                LanguageManager.Language.VI -> "https://cxisport.com/sports-rule/#/vi"
+                else -> "https://cxisport.com/sports-rule/#/us"
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -132,6 +133,7 @@ object Constants {
     const val MATCH_ODDS_QUICK_LIST = "/api/front/match/odds/quick/list"
 
     //sport
+    const val SPORT_LIST = "/api/front/sport/list"
     const val SPORT_MENU = "/api/front/sport/mobile/menu"
     const val SPORT_QUERY = "/api/front/sport/query"
     const val SPORT_COUPON_MENU = "/api/front/sport/coupon/menu"

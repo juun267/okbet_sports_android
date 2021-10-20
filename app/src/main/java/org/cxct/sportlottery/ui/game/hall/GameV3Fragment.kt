@@ -50,6 +50,7 @@ import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import timber.log.Timber
+import java.util.*
 
 
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
@@ -317,6 +318,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun refreshToolBarUI(view: View?){
+        if (view != null) {
+            if (leagueAdapter.data.isEmpty()) {
+                if (args.matchType == MatchType.AT_START)
+                    game_toolbar_champion.isVisible = false
+            } else {
+                if(args.matchType == MatchType.AT_START)
+                    game_toolbar_champion.isVisible = true
+            }
+        }
+    }
+
     private fun setupOddTab(view: View) {
         view.game_tabs.apply {
             addOnTabSelectedListener(onTabSelectedListener)
@@ -534,11 +547,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             }.toMutableList()
                         }
                     }
+                    setNoDataView(leagueAdapter.data)
 
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
                     }
                 }
+                refreshToolBarUI(this.view)
             }
         })
 
@@ -796,6 +811,21 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         })
     }
 
+    private fun setNoDataView(data:MutableList<LeagueOdd>){
+        when {
+            data.isEmpty() -> {
+                game_play_category.isVisible = false
+                game_toolbar_champion.isVisible = false
+                game_toolbar_sport_type.isVisible = false
+            }
+            else -> {
+                game_play_category.isVisible = true
+                game_toolbar_champion.isVisible = true
+                game_toolbar_sport_type.isVisible = true
+            }
+        }
+    }
+
     private fun updateLeaguePin(leagueListPin: List<String>) {
         val leaguePinList = mutableListOf<League>()
 
@@ -847,7 +877,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             if (SocketUpdateUtil.updateMatchStatus(
                                     gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code,
                                     leagueOdd.matchOdds.toMutableList(),
-                                    matchStatusChangeEvent
+                                    matchStatusChangeEvent,
+                                    context
                                 ) &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
@@ -1078,7 +1109,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         gameTypeAdapter.dataSport = gameTypeList
 
         gameTypeList.find { it.isSelected }.let { item ->
-            game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
+            game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string).toUpperCase(Locale.getDefault())
             updateSportBackground(item)
             subscribeSportChannelHall(item?.code)
         }

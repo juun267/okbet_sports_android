@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.stx.xhb.androidx.transformers.Transformer
 import kotlinx.android.synthetic.main.activity_vip.*
@@ -37,7 +38,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
         )
     }
 
-    private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter() }
+    private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter2() }
 
     private val thirdGameAdapter by lazy {
         ThirdGameAdapter(OnSelectThirdGames {
@@ -259,7 +260,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
 
                 tvLevel?.text = getString(cardInfo.level)
                 ivLevel?.setImageDrawable(ContextCompat.getDrawable(this@VipActivity, cardInfo.levelIcon))
-                tvLevelName?.text = cardInfo.levelName
+                tvLevelName?.text = cardInfo.levelName //TODO Bill 這裡要請API改成多語系
                 tvGrowthRequirement?.text = getGrowthRequirementTips(cardInfo.levelId, cardInfo.growthRequirement)
             }
             bannerCurrentItem = userVipLevel?.ordinal?.plus(1) ?: 0

@@ -49,6 +49,7 @@ class TransactionStatusActivity :
         initBottomNavigation()
         initRvMarquee()
         initObserver()
+        initServiceButton()
         getAnnouncement()
     }
 
@@ -186,6 +187,18 @@ class TransactionStatusActivity :
             .commit()
     }
 
+    override fun onBackPressed() {
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+
+        super.onBackPressed()
+    }
+
     override fun showLoginNotify() {
         snackBarLoginNotify.apply {
             setAnchorView(R.id.sport_bottom_navigation)
@@ -227,6 +240,10 @@ class TransactionStatusActivity :
             navigation_transaction_status.trans_number.text = it.toString()
         })
 
+    }
+
+    private fun initServiceButton() {
+        btn_floating_service.setView(this)
     }
 
     private fun getAnnouncement() {

@@ -61,8 +61,8 @@ class OddButtonPagerAdapter(
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(data.indexOf(data.find {
-                    it.any {
+                notifyItemChanged(data.indexOf(data.find { item ->
+                    item.any { it ->
                         it.second?.any {
                             it == odd
                         } ?: false
@@ -83,10 +83,12 @@ class OddButtonPagerAdapter(
             listOf(
                 Pair(
                     data[position].getOrNull(0)?.first,
-                    data[position].getOrNull(0)?.second),
+                    data[position].getOrNull(0)?.second
+                ),
                 Pair(
                     data[position].getOrNull(1)?.first,
-                    data[position].getOrNull(1)?.second)
+                    data[position].getOrNull(1)?.second
+                )
             ),
             oddsType,
             listener
@@ -97,8 +99,8 @@ class OddButtonPagerAdapter(
         return data.size
     }
 
-    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.splitPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
-        val splitMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+    private fun Map<String, List<Odd?>?>.splitPlayCate(): Map<String, List<Odd?>?> {
+        val splitMap = mutableMapOf<String, List<Odd?>?>()
 
         this.forEach { oddsMap ->
             when (oddsMap.key) {
@@ -145,9 +147,9 @@ class OddButtonPagerAdapter(
         return splitMap
     }
 
-    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
+    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
         gameType: String?
-    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+    ): Map<String, List<Odd?>?> {
         return this.mapValues { map ->
             val playCateMapItem = playCateMappingList?.find {
                 it.gameType == gameType && it.playCateCode == map.key
@@ -159,8 +161,8 @@ class OddButtonPagerAdapter(
         }
     }
 
-    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.sortPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
-        val sortMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+    private fun Map<String, List<Odd?>?>.sortPlayCate(): Map<String, List<Odd?>?> {
+        val sortMap = mutableMapOf<String, List<Odd?>?>()
 
         this.forEach { oddsMap ->
             if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
@@ -246,6 +248,14 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
+        if (matchInfo.status == null || matchInfo.status == 2) {
+            oddBtnType.text = "-"
+            oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
+            oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
+            oddBtnDraw.betStatus = BetStatus.DEACTIVATED.code
+            return
+        }
+
         playCateMappingList.find {
             it.gameType == matchInfo.gameType && it.playCateCode == odds.first
         }?.let { playCateMapItem ->
@@ -262,7 +272,7 @@ class OddButtonPagerViewHolder private constructor(
 
             oddBtnHome.apply homeButtonSettings@{
                 when {
-                    (odds.second == null) -> {
+                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
                         betStatus = BetStatus.DEACTIVATED.code
                         return@homeButtonSettings
                     }
@@ -277,7 +287,7 @@ class OddButtonPagerViewHolder private constructor(
 
                 tv_name.apply {
                     visibility = when {
-                        playCateMapItem.isOUType() -> View.VISIBLE
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> View.VISIBLE
                         else -> {
                             when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
                                 true -> View.INVISIBLE
@@ -287,12 +297,12 @@ class OddButtonPagerViewHolder private constructor(
                     }
 
                     text = when {
-                        playCateMapItem.isOUType() -> {
-                            odds.second?.getOrNull(0)?.nameMap?.get(
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> {
+                            (odds.second?.getOrNull(0)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(
                                     context
                                 ).key
-                            ) ?: odds.second?.getOrNull(0)?.name
+                            ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
                         }
                         else -> ""
                     }
@@ -334,7 +344,7 @@ class OddButtonPagerViewHolder private constructor(
 
             oddBtnAway.apply awayButtonSettings@{
                 when {
-                    (odds.second == null) -> {
+                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
                         betStatus = BetStatus.DEACTIVATED.code
                         return@awayButtonSettings
                     }
@@ -349,7 +359,7 @@ class OddButtonPagerViewHolder private constructor(
 
                 tv_name.apply {
                     visibility = when {
-                        playCateMapItem.isOUType() -> View.VISIBLE
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> View.VISIBLE
                         else -> {
                             when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
                                 true -> View.INVISIBLE
@@ -359,12 +369,12 @@ class OddButtonPagerViewHolder private constructor(
                     }
 
                     text = when {
-                        playCateMapItem.isOUType() -> {
-                            odds.second?.getOrNull(1)?.nameMap?.get(
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> {
+                            (odds.second?.getOrNull(1)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(
                                     context
                                 ).key
-                            ) ?: odds.second?.getOrNull(1)?.name
+                            ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
                         }
                         else -> ""
                     }
@@ -404,11 +414,14 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
 
-
             oddBtnDraw.apply drawButtonSettings@{
                 when {
                     (odds.second?.size ?: 0 < 3) -> {
                         visibility = View.GONE
+                        return@drawButtonSettings
+                    }
+                    odds.second?.all { odd -> odd == null } == true -> {
+                        betStatus = BetStatus.DEACTIVATED.code
                         return@drawButtonSettings
                     }
                     (odds.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
@@ -421,14 +434,35 @@ class OddButtonPagerViewHolder private constructor(
                 }
 
                 tv_name.apply {
-                    text = odds.second?.getOrNull(2)?.nameMap?.get(
-                        LanguageManager.getSelectLanguage(context).key
-                    ) ?: odds.second?.getOrNull(2)?.name
                     visibility = View.VISIBLE
+
+                    text = when (playCateMapItem.isCombination()) {
+                        true -> {
+                            (odds.second?.getOrNull(2)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(context).key
+                            ) ?: odds.second?.getOrNull(2)?.name)?.split("-")?.firstOrNull() ?: ""
+                        }
+                        false -> {
+                            odds.second?.getOrNull(2)?.nameMap?.get(
+                                LanguageManager.getSelectLanguage(context).key
+                            ) ?: odds.second?.getOrNull(2)?.name
+                        }
+                    }
                 }
 
                 tv_spread.apply {
-                    visibility = View.INVISIBLE
+                    visibility = when(!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()){
+                        true -> View.VISIBLE
+                        false -> {
+                            when {
+                                playCateMapItem.isOUType() -> View.INVISIBLE
+                                else -> View.GONE
+                            }
+                        }
+                    }
+
+                    text = odds.second?.getOrNull(2)?.spread ?: ""
+
                 }
 
                 tv_odds.text = when (oddsType) {
@@ -465,7 +499,26 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private fun PlayCateMapItem.isOUType(): Boolean {
-        return this.playCateCode.contains(PlayCate.OU.value)
+        return this.playCateCode.contains(PlayCate.OU.value) && !this.isCombination()
+    }
+
+    private fun PlayCateMapItem.isOEType(): Boolean {
+        return this.playCateCode.contains(PlayCate.OE.value) && !this.isCombination()
+    }
+
+    private fun PlayCateMapItem.isBTSType(): Boolean {
+        return this.playCateCode.contains(PlayCate.BTS.value) && !this.isCombination()
+    }
+
+    private fun PlayCateMapItem.isCombination(): Boolean {
+        return this.playCateCode.contains(PlayCate.SINGLE_OU.value) || this.playCateCode.contains(PlayCate.SINGLE_BTS.value)
+    }
+
+    /**
+     * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
+     */
+    private fun String.abridgeOddsName(): String{
+        return this.replace("Over", "O").replace("Under", "U")
     }
 
     private fun String.updatePlayCateColor(): Spanned {

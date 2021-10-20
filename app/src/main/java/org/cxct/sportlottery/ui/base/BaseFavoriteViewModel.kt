@@ -103,7 +103,7 @@ abstract class BaseFavoriteViewModel(
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
-                                TimeUtil.timeFormat(matchInfo.startTime, "MM/dd")
+                                TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
 
                             matchOdd.matchInfo.startTimeDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")

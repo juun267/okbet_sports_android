@@ -28,6 +28,7 @@ interface MatchService {
     @GET
     suspend fun getLiveP2Url(
         @Header("Authorization") accessToken: String?,
+        @Header("Referer") referer: String?,
         @Url url: String?
     ): Response<P2UrlResponse>
 

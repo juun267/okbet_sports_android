@@ -29,6 +29,15 @@
             app:navGraph="@navigation/my_favorite_navigation"
             tools:layout="@layout/fragment_my_favorite" />
 
+        <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+            android:id="@+id/btn_floating_service"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="14dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintBottom_toTopOf="@id/my_favorite_bottom_navigation" />
+
         <include
             android:id="@+id/my_favorite_bottom_navigation"
             layout="@layout/view_bottom_navigation_sport"

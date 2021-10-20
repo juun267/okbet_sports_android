@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signUp
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_register.*
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
@@ -251,8 +254,8 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             val smsCode = et_sms_valid_code.getText()
             val validCode = et_verification_code.getText()
             val agreementChecked = cb_agreement.isChecked
-            val deviceSn = JPushInterface.getRegistrationID(applicationContext) //極光推播
-            Timber.d("極光推播: RegistrationID = $deviceSn")
+            val deviceSn = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
+            Timber.d("UUID = $deviceSn")
 
             viewModel.registerSubmit(
                 inviteCode,

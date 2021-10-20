@@ -111,7 +111,8 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 iv_bank_icon.setImageResource(MoneyManager.getBankIconByBankName(data.bankName))
                 tv_bank_name.text = data.bankName
                 tv_name.text = TextUtil.maskFullName(fullName)
-                tv_tail_number.text = data.cardNo.substring(data.cardNo.length - 4) //尾號四碼
+                tv_tail_number.text =
+                    if (data.cardNo.length > 4) data.cardNo.substring(data.cardNo.length - 4) else data.cardNo //尾號四碼
                 tv_bind_time.text = stampToDateHMS(data.updateTime.toLong())
                 if (sConfigData?.enableModifyBank == "1" && bankOpen) {
                     img_edit_bank.apply {

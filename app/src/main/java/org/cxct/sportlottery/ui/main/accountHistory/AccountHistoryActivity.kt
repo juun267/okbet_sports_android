@@ -53,6 +53,7 @@ class AccountHistoryActivity :
         initMenu()
         setupNoticeButton(btn_notice)
         initObserve()
+        initServiceButton()
     }
 
     override fun initBottomNavigation() {
@@ -152,6 +153,14 @@ class AccountHistoryActivity :
     }
 
     override fun onBackPressed() {
+        //返回鍵優先關閉投注單fragment
+        if (supportFragmentManager.backStackEntryCount != 0) {
+            for (i in 0 until supportFragmentManager.backStackEntryCount) {
+                supportFragmentManager.popBackStack()
+            }
+            return
+        }
+
         when (navController.currentDestination?.id) {
             R.id.accountHistoryNextFragment -> {
                 navController.navigateUp()
@@ -188,6 +197,10 @@ class AccountHistoryActivity :
         viewModel.nowTransNum.observe(this, {
             navigation_transaction_status.trans_number.text = it.toString()
         })
+    }
+
+    private fun initServiceButton(){
+        btn_floating_service.setView(this)
     }
 
     private fun updateUiWithResult(messageListResult: MessageListResult?) {

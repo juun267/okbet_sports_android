@@ -79,9 +79,15 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             dismiss()
         }
         //滾球
-        ct_inplay.setOnClickListener { }
+        ct_inplay.setOnClickListener {
+            viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
+            dismiss()
+        }
         //特優賠率
-        ct_premium_odds.setOnClickListener { }
+        ct_premium_odds.setOnClickListener {
+            viewModel.navDirectEntrance(MatchType.EPS, null)
+            dismiss()
+        }
         //遊戲規則
         ct_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
@@ -184,13 +190,8 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
 
     private fun navSportEntrance(sport:String){
         loading()
-        val matchType = when (sport) {
-            GameType.FT.name -> viewModel.cardMatchTypeFT.value
-            GameType.BK.name -> viewModel.cardMatchTypeBK.value
-            GameType.TN.name -> viewModel.cardMatchTypeTN.value
-            GameType.VB.name -> viewModel.cardMatchTypeVB.value
-            else -> MatchType.TODAY
-        }
+        val matchType = viewModel.sportMenuList.value?.peekContent()?.find { it.gameType.key == sport }?.entranceType
+
         val sportType = when (sport) {
             GameType.FT.name -> GameType.FT
             GameType.BK.name -> GameType.BK

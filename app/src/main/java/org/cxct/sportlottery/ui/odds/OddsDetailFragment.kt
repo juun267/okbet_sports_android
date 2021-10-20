@@ -24,14 +24,14 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.detail.MatchOdd
+import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -108,7 +108,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    viewModel.playCateListResult.value?.peekContent()?.rows?.get(t)?.code?.let {
+                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(t)?.code?.let {
                         oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
                     }
                 }
@@ -119,35 +119,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.playCateListResult.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                result.success.let { success ->
-                    if (success) {
-                        tab_cat.removeAllTabs()
-                        if (result.rows.isNotEmpty()) {
-                            for (row in result.rows) {
-                                val customTabView = layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
-                                    findViewById<TextView>(R.id.tv_tab).text = row.name
-                                }
-
-                                tab_cat.addTab(
-                                    tab_cat.newTab().setCustomView(customTabView),
-                                    false
-                                )
-                            }
-                            tab_cat.getTabAt(0)?.select()
-                        } else {
-                            tab_cat.visibility = View.GONE
-                        }
-                    }
-                }
-            }
-        })
-
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
                     true -> {
+                        result.setupPlayCateTab()
+
                         matchOdd = result.oddsDetailData?.matchOdd
                         result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
                             result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
@@ -296,11 +273,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun getData() {
-        args.gameType.let { gameType ->
-            matchId?.let { matchId ->
-                viewModel.getPlayCateListAndOddsDetail(gameType.key, matchId)
-                subscribeChannelEvent(matchId)
-            }
+        matchId?.let { matchId ->
+            viewModel.getOddsDetail(matchId)
+            subscribeChannelEvent(matchId)
         }
     }
 
@@ -309,6 +284,25 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         findNavController().navigate(OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY))
     }
 
+    private fun OddsDetailResult.setupPlayCateTab(){
+        tab_cat.removeAllTabs()
+        val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
+        if (playCateTypeList?.isNotEmpty() == true) {
+            for (row in playCateTypeList) {
+                val customTabView = layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
+                    findViewById<TextView>(R.id.tv_tab).text = row.name
+                }
+
+                tab_cat.addTab(
+                    tab_cat.newTab().setCustomView(customTabView),
+                    false
+                )
+            }
+            tab_cat.getTabAt(0)?.select()
+        } else {
+            tab_cat.visibility = View.GONE
+        }
+    }
 
     private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {

@@ -50,7 +50,7 @@ data class MatchInfo(
     var isInPlay: Boolean? = false
     override var awayScore: Int? = null //客队分数
     override var homeScore: Int? = null //主队分数
-    override var statusName: String? = null //状态名称
+    override var statusName18n: String? = null //状态名称
     override var leagueTime: Int? = null
     override var socketMatchStatus: Int? = null //赛事阶段状态id
 

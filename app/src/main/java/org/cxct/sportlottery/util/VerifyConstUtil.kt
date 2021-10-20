@@ -61,21 +61,6 @@ object VerifyConstUtil {
 //                || Pattern.matches("[\\s.$ENGLISH_WORD]{2,50}", fullName)
     }
 
-    //持卡人姓名 //中文2-20
-    fun verifyCreateName(createName: CharSequence): Boolean {
-        return Pattern.matches("[\\s.$CHINESE_WORD]{2,20}", createName)
-    }
-
-    //銀行卡號 //數字12-19
-    fun verifyBankCardNumber(bankCardNumber: CharSequence): Boolean {
-        return Pattern.matches("[$NUMBER]{12,19}", bankCardNumber)
-    }
-
-    //開戶網點 //中文1-25
-    fun verifyNetworkPoint(networkPoint: CharSequence): Boolean {
-        return Pattern.matches("[\\s.$CHINESE_WORD]{1,25}", networkPoint)
-    }
-
     //提款密碼 //數字4
     fun verifyWithdrawPassword(withdrawPassword: CharSequence): Boolean {
         return Pattern.matches("[$NUMBER]{4}", withdrawPassword)
