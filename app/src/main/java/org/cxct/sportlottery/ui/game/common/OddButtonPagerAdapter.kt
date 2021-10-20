@@ -239,8 +239,16 @@ class OddButtonPagerViewHolder private constructor(
     ) {
         if (matchInfo == null ||
             playCateMappingList.isNullOrEmpty() ||
-            odds == null || odds.first == null || odds.second.isNullOrEmpty() || matchInfo.status == null || matchInfo.status == 2
+            odds == null || odds.first == null || odds.second.isNullOrEmpty()
         ) {
+            oddBtnType.visibility = View.GONE
+            oddBtnHome.visibility = View.GONE
+            oddBtnAway.visibility = View.GONE
+            oddBtnDraw.visibility = View.GONE
+            return
+        }
+
+        if (matchInfo.status == null || matchInfo.status == 2) {
             oddBtnType.text = "-"
             oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
             oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
