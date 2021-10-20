@@ -48,7 +48,7 @@ object OddSpannableString {
     private lateinit var playNameSpan: SpannableString
     private lateinit var spreadSpan: SpannableString
     private lateinit var oddsSpan: SpannableString
-    private lateinit var extInfo: SpannableString //球員名稱
+    private var extInfo: SpannableString? = null
 
 
 
@@ -103,7 +103,7 @@ object OddSpannableString {
     private fun setupExtInfoSpannableString(matchOdd: MatchOdd) {
         matchOdd.extInfo?.let {
             extInfo = SpannableString(matchOdd.extInfo)
-            extInfo.setSpan(StyleSpan(Typeface.BOLD), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            extInfo?.setSpan(StyleSpan(Typeface.BOLD), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
 
@@ -136,7 +136,9 @@ object OddSpannableString {
     private fun mergeString(textView: TextView) {
         val oddContentBuilder = SpannableStringBuilder()
 
-        oddContentBuilder.append(extInfo)
+        extInfo?.let {
+            oddContentBuilder.append(extInfo)
+        }
         oddContentBuilder.append(playNameSpan)
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")
