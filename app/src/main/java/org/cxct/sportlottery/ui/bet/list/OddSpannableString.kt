@@ -102,7 +102,7 @@ object OddSpannableString {
 
     private fun setupExtInfoSpannableString(matchOdd: MatchOdd) {
         matchOdd.extInfo?.let {
-            extInfo = SpannableString(matchOdd.extInfo)
+            extInfo = SpannableString(matchOdd.extInfo + " ")
             extInfo.setSpan(StyleSpan(Typeface.BOLD), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
@@ -137,7 +137,6 @@ object OddSpannableString {
         val oddContentBuilder = SpannableStringBuilder()
 
         oddContentBuilder.append(extInfo)
-        oddContentBuilder.append(" ")
         oddContentBuilder.append(playNameSpan)
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")
