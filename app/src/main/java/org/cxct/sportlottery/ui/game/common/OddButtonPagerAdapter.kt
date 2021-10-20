@@ -61,8 +61,8 @@ class OddButtonPagerAdapter(
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(data.indexOf(data.find {
-                    it.any {
+                notifyItemChanged(data.indexOf(data.find { item ->
+                    item.any { it ->
                         it.second?.any {
                             it == odd
                         } ?: false
@@ -99,8 +99,8 @@ class OddButtonPagerAdapter(
         return data.size
     }
 
-    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.splitPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
-        val splitMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+    private fun Map<String, List<Odd?>?>.splitPlayCate(): Map<String, List<Odd?>?> {
+        val splitMap = mutableMapOf<String, List<Odd?>?>()
 
         this.forEach { oddsMap ->
             when (oddsMap.key) {
@@ -147,9 +147,9 @@ class OddButtonPagerAdapter(
         return splitMap
     }
 
-    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.filterPlayCateSpanned(
+    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
         gameType: String?
-    ): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
+    ): Map<String, List<Odd?>?> {
         return this.mapValues { map ->
             val playCateMapItem = playCateMappingList?.find {
                 it.gameType == gameType && it.playCateCode == map.key
@@ -161,8 +161,8 @@ class OddButtonPagerAdapter(
         }
     }
 
-    private fun Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?>.sortPlayCate(): Map<String, List<org.cxct.sportlottery.network.odds.Odd?>?> {
-        val sortMap = mutableMapOf<String, List<org.cxct.sportlottery.network.odds.Odd?>?>()
+    private fun Map<String, List<Odd?>?>.sortPlayCate(): Map<String, List<Odd?>?> {
+        val sortMap = mutableMapOf<String, List<Odd?>?>()
 
         this.forEach { oddsMap ->
             if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
@@ -245,6 +245,14 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnHome.visibility = View.GONE
             oddBtnAway.visibility = View.GONE
             oddBtnDraw.visibility = View.GONE
+            return
+        }
+
+        if (matchInfo.status == null || matchInfo.status == 2) {
+            oddBtnType.text = "-"
+            oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
+            oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
+            oddBtnDraw.betStatus = BetStatus.DEACTIVATED.code
             return
         }
 
