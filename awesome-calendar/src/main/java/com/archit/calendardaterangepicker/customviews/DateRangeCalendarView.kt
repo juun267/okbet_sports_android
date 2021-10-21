@@ -8,17 +8,17 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.archit.calendardaterangepicker.R
 import com.archit.calendardaterangepicker.R.layout
+import com.archit.calendardaterangepicker.manager.LanguageManager
+import com.archit.calendardaterangepicker.manager.LanguageManager.Language
 import com.archit.calendardaterangepicker.models.CalendarStyleAttrImpl
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes
 import java.text.DateFormatSymbols
-import java.util.Calendar
-import java.util.Locale
+import java.util.*
 
 class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     private lateinit var tvYearTitle: CustomTextView
@@ -26,6 +26,7 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     private lateinit var imgVNavRight: AppCompatImageView
     private lateinit var adapterEventCalendarMonths: AdapterEventCalendarMonths
     private lateinit var locale: Locale
+    private val selectedLocale: Language? by lazy { LanguageManager.getSelectLanguage(context) }
     private lateinit var vpCalendar: ViewPager
     private lateinit var calendarStyleAttr: CalendarStyleAttributes
     private lateinit var mDateRangeCalendarManager: CalendarDateRangeManagerImpl
@@ -43,8 +44,12 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     }
 
     private fun initViews(context: Context, attrs: AttributeSet?) {
-
-        locale = Locale.getDefault()
+        locale = when (selectedLocale) {
+            Language.ZH, Language.ZHT -> Locale.CHINESE
+            Language.VI -> Locale("vi")
+            null -> Locale.getDefault()
+            else -> Locale.US
+        }
         calendarStyleAttr = CalendarStyleAttrImpl(context, attrs)
         val layoutInflater = LayoutInflater.from(context)
         layoutInflater.inflate(layout.layout_calendar_container, this, true)
@@ -129,11 +134,24 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
         var dateText = DateFormatSymbols(locale).months[currentCalendarMonth[Calendar.MONTH]]
         dateText = dateText.substring(0, 1).toUpperCase(Locale.getDefault()) + dateText.subSequence(1, dateText.length)
 //        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
-        val yearTitle: String
-        if (locale.displayLanguage == "en") {
-            yearTitle = "${currentCalendarMonth[Calendar.YEAR]} $dateText"
-        } else {
-            yearTitle = "${currentCalendarMonth[Calendar.YEAR]}年 ${currentCalendarMonth[Calendar.MONTH] + 1}月"
+        val yearTitle: String = when (selectedLocale) {
+            Language.ZH, Language.ZHT -> {
+                "${currentCalendarMonth[Calendar.YEAR]}${context.getString(R.string.year_zh)} ${currentCalendarMonth[Calendar.MONTH] + 1}${
+                    context.getString(
+                        R.string.month_zh
+                    )
+                }"
+            }
+            Language.VI -> {
+                "${context.getString(R.string.month_vi)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
+                    context.getString(
+                        R.string.year_vi
+                    )
+                } ${currentCalendarMonth[Calendar.YEAR]}"
+            }
+            else -> {
+                "$dateText ${currentCalendarMonth[Calendar.YEAR]}"
+            }
         }
         tvYearTitle.text = yearTitle
         tvYearTitle.setTextColor(calendarStyleAttr.titleColor)

@@ -1,11 +1,29 @@
 <resources>
-    <string name="cdrp_mon">一</string>
-    <string name="cdrp_tue">二</string>
-    <string name="cdrp_wed">三</string>
-    <string name="cdrp_thu">四</string>
-    <string name="cdrp_fri">五</string>
-    <string name="cdrp_sat">六</string>
-    <string name="cdrp_sun">日</string>
+    <string name="cdrp_mon_zh">一</string>
+    <string name="cdrp_tue_zh">二</string>
+    <string name="cdrp_wed_zh">三</string>
+    <string name="cdrp_thu_zh">四</string>
+    <string name="cdrp_fri_zh">五</string>
+    <string name="cdrp_sat_zh">六</string>
+    <string name="cdrp_sun_zh">日</string>
+
+    <string-array name="week_sun_sat_zh">
+        <item>@string/cdrp_sun_zh</item>
+        <item>@string/cdrp_mon_zh</item>
+        <item>@string/cdrp_tue_zh</item>
+        <item>@string/cdrp_wed_zh</item>
+        <item>@string/cdrp_thu_zh</item>
+        <item>@string/cdrp_fri_zh</item>
+        <item>@string/cdrp_sat_zh</item>
+    </string-array>
+
+    <string name="cdrp_mon">Mon</string>
+    <string name="cdrp_tue">Tue</string>
+    <string name="cdrp_wed">Wed</string>
+    <string name="cdrp_thu">Thu</string>
+    <string name="cdrp_fri">Fri</string>
+    <string name="cdrp_sat">Sat</string>
+    <string name="cdrp_sun">Sun</string>
 
     <string-array name="week_sun_sat">
         <item>@string/cdrp_sun</item>
@@ -17,9 +35,35 @@
         <item>@string/cdrp_sat</item>
     </string-array>
 
-    <string name="cancel">取消</string>
-    <string name="done">完成</string>
-    <string name="title_time_picker">選擇時間</string>
-    <string name="select_time">選擇一個時間</string>
+    <string name="cdrp_mon_vi">T2</string>
+    <string name="cdrp_tue_vi">T3</string>
+    <string name="cdrp_wed_vi">T4</string>
+    <string name="cdrp_thu_vi">T5</string>
+    <string name="cdrp_fri_vi">T6</string>
+    <string name="cdrp_sat_vi">T7</string>
+    <string name="cdrp_sun_vi">CN</string>
+
+    <string-array name="week_sun_sat_vi">
+        <item>@string/cdrp_sun_vi</item>
+        <item>@string/cdrp_mon_vi</item>
+        <item>@string/cdrp_tue_vi</item>
+        <item>@string/cdrp_wed_vi</item>
+        <item>@string/cdrp_thu_vi</item>
+        <item>@string/cdrp_fri_vi</item>
+        <item>@string/cdrp_sat_vi</item>
+    </string-array>
+
+
+
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="title_time_picker">Select Time</string>
+    <string name="select_time">Select a Time</string>
+
+    <string name="year_zh">年</string>
+    <string name="month_zh">月</string>
+
+    <string name="year_vi">năm</string>
+    <string name="month_vi">tháng</string>
 
 </resources>
