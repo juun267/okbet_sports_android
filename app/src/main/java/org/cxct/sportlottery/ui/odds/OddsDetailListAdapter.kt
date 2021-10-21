@@ -8,6 +8,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
@@ -573,7 +574,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val stWordSpan = SpannableString(statusWord?.last()?:"")
             statusWord?.last()?.length?.let {
                 stWordSpan.setSpan(StyleSpan(Typeface.NORMAL), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                stWordSpan.setSpan(textColor, 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                stWordSpan.setSpan(ForegroundColorSpan(textColor), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 stWordSpan.setSpan(AbsoluteSizeSpan(14,true), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
             }
             val playNameSpan = SpannableString("$playName ")
