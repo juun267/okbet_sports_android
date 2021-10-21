@@ -238,7 +238,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
                                 val timeStr = String.format(
                                     itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    TimeUtil.timeFormat(timeMillis, "m")
+                                    TimeUtil.longToMinute(timeMillis)
                                 )
                                 tv_match_time.text = timeStr
 
