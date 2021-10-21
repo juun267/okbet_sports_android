@@ -27,6 +27,7 @@ import com.archit.calendardaterangepicker.customviews.DateView.DateState.MIDDLE
 import com.archit.calendardaterangepicker.customviews.DateView.DateState.SELECTABLE
 import com.archit.calendardaterangepicker.customviews.DateView.DateState.START
 import com.archit.calendardaterangepicker.customviews.DateView.OnDateClickListener
+import com.archit.calendardaterangepicker.manager.LanguageManager
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSelectionMode.FIXED_RANGE
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSelectionMode.FREE_RANGE
@@ -185,7 +186,15 @@ internal class DateRangeMonthView : LinearLayout {
         currentCalendarMonth = month.clone() as Calendar
         currentCalendarMonth[Calendar.DATE] = 1
         resetTime(currentCalendarMonth, NONE)
-        val weekTitle = context.resources.getStringArray(array.week_sun_sat)
+        val weekTitle = when(LanguageManager.getSelectLanguage(context)){
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                context.resources.getStringArray(array.week_sun_sat_zh)
+            }
+            LanguageManager.Language.VI -> {
+                context.resources.getStringArray(array.week_sun_sat_vi)
+            }
+            else -> context.resources.getStringArray(array.week_sun_sat)
+        }
 
         //To set week day title as per offset
         for (i in 0..6) {

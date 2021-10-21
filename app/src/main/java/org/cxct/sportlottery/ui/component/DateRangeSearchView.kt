@@ -2,17 +2,14 @@ package org.cxct.sportlottery.ui.component
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.archit.calendardaterangepicker.customviews.CalendarListener
 import com.archit.calendardaterangepicker.customviews.DateSelectedType
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.component_date_range_selector.view.*
-import kotlinx.android.synthetic.main.content_rv_bank_list_new.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_calendar.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.finance.data.RechargeTime
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import java.util.*
