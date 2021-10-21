@@ -3,6 +3,12 @@ package org.cxct.sportlottery.ui.odds
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -519,6 +525,26 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
+        private fun getTitle(context: Context, oddsDetail: OddsDetailListData): SpannableStringBuilder {
+            val textColor = ContextCompat.getColor(context, R.color.colorGray)
+            val gameTitleContentBuilder = SpannableStringBuilder()
+            val statusWord =  oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.split("-")
+            val playName = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.replace(statusWord?.last()?:"","")?.replace("-","")
+            val stWordSpan = SpannableString(statusWord?.last())
+            statusWord?.last()?.length?.let {
+                stWordSpan.setSpan(StyleSpan(Typeface.NORMAL), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                stWordSpan.setSpan(textColor, 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                stWordSpan.setSpan(AbsoluteSizeSpan(14,true), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            val playNameSpan = SpannableString("$playName ")
+            playName?.length?.let {
+                playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0,
+                    it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            gameTitleContentBuilder.append(playNameSpan).append(stWordSpan)
+
+            return gameTitleContentBuilder
+        }
         private fun forEPS(oddsDetail: OddsDetailListData) {
             val vpEps = itemView.findViewById<ViewPager2>(R.id.vp_eps)
 
