@@ -36,7 +36,7 @@ object SocketUpdateUtil {
 
                     if (matchStatusCO.status == 100) {
                         val matchOddIterator = matchOddList.iterator()
-                        while (matchOddIterator.hasNext()){
+                        while (matchOddIterator.hasNext()) {
                             val item = matchOddIterator.next()
                             if (item == matchOdd)
                                 matchOddIterator.remove()
@@ -50,7 +50,9 @@ object SocketUpdateUtil {
                     }
 
                     if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
-                        val statusValue = matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key) ?: matchStatusCO.statusName
+                        val statusValue =
+                            matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
+                                ?: matchStatusCO.statusName
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
@@ -269,16 +271,39 @@ object SocketUpdateUtil {
         //若有新玩法的話需要重新setData
         var addedNewOdds = false
 
-        //新玩法
-        val newOdds = matchOddsChangeEvent.odds?.filter { socketOdds ->
-            oddsDetailDataList.find { it.gameType == socketOdds.key } == null
-        }
-
         val newOddsDetailDataList: ArrayList<OddsDetailListData> = ArrayList()
         newOddsDetailDataList.addAll(oddsDetailDataList)
 
+        //有新賠率盤口
+        matchOddsChangeEvent.odds?.forEach { (key, value) ->
+            oddsDetailDataList.filter { it.gameType == key }.forEach {
+                val dataOddsList = it.oddArrayList
+                val socketOddsList = value.odds
+
+                //賠率id list
+                val dataGroupByList = dataOddsList.map { odd -> odd?.id }
+                val socketGroupByList = socketOddsList?.map { odd -> odd?.id } ?: listOf()
+
+                //比對id
+                val dataHasOddsId = dataGroupByList.containsAll(socketGroupByList)
+                val socketHasOddsId = socketGroupByList.containsAll(dataGroupByList)
+
+                if ((dataOddsList.size != socketOddsList?.size) || !dataHasOddsId || !socketHasOddsId) {
+                    value.odds?.let { newOdds ->
+                        it.oddArrayList = newOdds.toList()
+                        addedNewOdds = true
+                    }
+                }
+            }
+        }
+
+        //新玩法
+        val newPlay = matchOddsChangeEvent.odds?.filter { socketOdds ->
+            oddsDetailDataList.find { it.gameType == socketOdds.key } == null
+        }
+
         //加入新玩法
-        newOdds?.forEach { (key, value) ->
+        newPlay?.forEach { (key, value) ->
             val filteredOddList =
                 mutableListOf<Odd?>()
             value.odds?.forEach { detailOdd ->
@@ -299,7 +324,7 @@ object SocketUpdateUtil {
         }
 
         newOddsDetailDataList.apply {
-            if (addedNewOdds){
+            if (addedNewOdds) {
                 forEach { oddsDetailListData ->
                     updateMatchOdds(oddsDetailListData, matchOddsChangeEvent)
                 }
@@ -569,7 +594,7 @@ object SocketUpdateUtil {
                     isNeedRefresh = true
                 }
 
-                if (oddsDetailListData.rowSort != odds.rowSort){
+                if (oddsDetailListData.rowSort != odds.rowSort) {
                     oddsDetailListData.rowSort = odds.rowSort
 
                     isNeedRefresh = true
@@ -647,7 +672,7 @@ object SocketUpdateUtil {
         }
 
         this.quickPlayCateList?.forEach { quickPlayCate ->
-            quickPlayCate.quickOdds?.forEach {
+            quickPlayCate.quickOdds.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
                     it.value?.let { oddList ->
                         odd.status = when {
