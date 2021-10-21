@@ -545,6 +545,19 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             return gameTitleContentBuilder
         }
+
+        private fun getTitleNormal(oddsDetail: OddsDetailListData): SpannableStringBuilder {
+            val gameTitleContentBuilder = SpannableStringBuilder()
+            val title = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+            val playNameSpan = SpannableString(title)
+            title?.length?.let {
+                playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+            gameTitleContentBuilder.append(playNameSpan)
+
+            return gameTitleContentBuilder
+        }
+
         private fun forEPS(oddsDetail: OddsDetailListData) {
             val vpEps = itemView.findViewById<ViewPager2>(R.id.vp_eps)
 
