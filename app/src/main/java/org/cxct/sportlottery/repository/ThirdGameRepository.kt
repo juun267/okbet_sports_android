@@ -77,7 +77,6 @@ class ThirdGameRepository {
         val homeGameList = mutableListOf<GameCateData>()
         gameCatList.forEach { category ->
             val homeGame = GameCateData(ThirdGameCategory.getCategory(category.code))
-            homeGame.categoryThird.title = category.typeName //類別名稱
             homeGame.isShowTabLayout = true
 
             //2. 第二層 tab 按鈕
