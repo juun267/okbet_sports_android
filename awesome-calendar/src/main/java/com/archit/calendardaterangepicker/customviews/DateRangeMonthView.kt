@@ -186,15 +186,7 @@ internal class DateRangeMonthView : LinearLayout {
         currentCalendarMonth = month.clone() as Calendar
         currentCalendarMonth[Calendar.DATE] = 1
         resetTime(currentCalendarMonth, NONE)
-        val weekTitle = when(LanguageManager.getSelectLanguage(context)){
-            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
-                context.resources.getStringArray(array.week_sun_sat_zh)
-            }
-            LanguageManager.Language.VI -> {
-                context.resources.getStringArray(array.week_sun_sat_vi)
-            }
-            else -> context.resources.getStringArray(array.week_sun_sat)
-        }
+        val weekTitle = context.resources.getStringArray(array.week_sun_sat)
 
         //To set week day title as per offset
         for (i in 0..6) {

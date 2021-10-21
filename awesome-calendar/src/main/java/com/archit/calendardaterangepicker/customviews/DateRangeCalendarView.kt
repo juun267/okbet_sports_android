@@ -32,14 +32,17 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     private lateinit var mDateRangeCalendarManager: CalendarDateRangeManagerImpl
 
     constructor(context: Context) : super(context) {
+        setupLocale()
         initViews(context, null)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        setupLocale()
         initViews(context, attrs)
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        setupLocale()
         initViews(context, attrs)
     }
 
@@ -71,6 +74,38 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
         vpCalendar.currentItem = TOTAL_ALLOWED_MONTHS
         setCalendarYearTitle(TOTAL_ALLOWED_MONTHS)
         setListeners()
+    }
+
+    private fun setupLocale() {
+        val res = context.resources
+        val dm = res.displayMetrics
+        val config = res.configuration
+
+        Locale.setDefault(
+            when (selectedLocale) {
+                Language.ZH, Language.ZHT -> Locale.CHINESE
+                Language.VI -> Locale("vi")
+                null -> Locale.getDefault()
+                else -> Locale.US
+            }
+        )
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.setLocale(
+                when (selectedLocale) {
+                    Language.ZH, Language.ZHT -> Locale.CHINESE
+                    Language.VI -> Locale("vi")
+                    null -> Locale.getDefault()
+                    else -> Locale.US
+                }
+            )
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            context.createConfigurationContext(config)
+        } else {
+            res.updateConfiguration(config, dm)
+        }
     }
 
     private fun setListeners() {
@@ -136,16 +171,16 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
 //        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
         val yearTitle: String = when (selectedLocale) {
             Language.ZH, Language.ZHT -> {
-                "${currentCalendarMonth[Calendar.YEAR]}${context.getString(R.string.year_zh)} ${currentCalendarMonth[Calendar.MONTH] + 1}${
+                "${currentCalendarMonth[Calendar.YEAR]}${context.getString(R.string.year)} ${currentCalendarMonth[Calendar.MONTH] + 1}${
                     context.getString(
-                        R.string.month_zh
+                        R.string.month
                     )
                 }"
             }
             Language.VI -> {
-                "${context.getString(R.string.month_vi)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
+                "${context.getString(R.string.month)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
                     context.getString(
-                        R.string.year_vi
+                        R.string.year
                     )
                 } ${currentCalendarMonth[Calendar.YEAR]}"
             }
