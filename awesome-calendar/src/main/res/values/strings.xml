@@ -1,4 +1,5 @@
 <resources>
+<!--  TODO: include的library套用語系設定  -->
     <string name="cdrp_mon_zh">一</string>
     <string name="cdrp_tue_zh">二</string>
     <string name="cdrp_wed_zh">三</string>
