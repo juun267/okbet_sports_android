@@ -687,6 +687,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.isNoHistory.observe(this.viewLifecycleOwner, {
             if (it) {
                 hideLoading()
+                setNoDataView(leagueAdapter.data)
             }
 
             game_no_record.apply {
