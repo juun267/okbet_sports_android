@@ -367,7 +367,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         fun bindModel(oddsDetail: OddsDetailListData) {
 
-            tvGameName?.text = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+            tvGameName?.text = when {
+                oddsDetail.gameType.contains("-SEG") || oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains(
+                    "-2ST"
+                ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+                else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+            }
 
             oddsDetailPin?.apply {
                 isActivated = oddsDetail.isPin
