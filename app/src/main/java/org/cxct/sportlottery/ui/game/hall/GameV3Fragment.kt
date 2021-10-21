@@ -49,7 +49,6 @@ import org.cxct.sportlottery.ui.statistics.KEY_MATCH_ID
 import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
-import timber.log.Timber
 import java.util.*
 
 

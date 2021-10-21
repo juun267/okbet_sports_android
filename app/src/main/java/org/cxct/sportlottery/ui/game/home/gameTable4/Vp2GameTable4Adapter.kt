@@ -285,7 +285,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             GameType.FT.key -> { //足球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, false) { timeMillis ->
-                                        val timeStr = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr = TimeUtil.longToMmSs(timeMillis)
                                         tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }
@@ -294,7 +294,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             GameType.BK.key -> { //籃球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, true) { timeMillis ->
-                                        val timeStr = TimeUtil.timeFormat(timeMillis, "mm:ss")
+                                        val timeStr = TimeUtil.longToMmSs(timeMillis)
                                         tv_match_time.text = timeStr
                                         data.leagueTime = (timeMillis / 1000).toInt()
                                     }
@@ -317,7 +317,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
                                 val timeStr = statusName + String.format(
                                     itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    TimeUtil.timeFormat(timeMillis, "mm")
+                                    TimeUtil.longToMinute(timeMillis)
                                 )
                                 tv_match_time.text = timeStr
 
