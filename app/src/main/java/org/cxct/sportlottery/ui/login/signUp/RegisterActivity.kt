@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_register.*
@@ -24,6 +25,7 @@ import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.BitmapUtil
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
 import java.util.*
@@ -53,7 +55,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupTelegram()
         setupValidCode()
         setupSmsValidCode()
-        setupAgreementButton()
+        setupAgreement()
         setupRegisterAgreementButton()
         setupRegisterButton()
         setupGoToLoginButton()
@@ -221,7 +223,12 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         }
     }
 
-    private fun setupAgreementButton() {
+    private fun setupAgreement() {
+        when (LanguageManager.getSelectLanguage(this@RegisterActivity)) {
+            LanguageManager.Language.ZH -> ll_agreement.orientation = LinearLayout.HORIZONTAL
+            else -> ll_agreement.orientation = LinearLayout.VERTICAL
+        }
+
         cb_agreement.setOnClickListener {
             cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
             cb_agreement.buttonTintList = null
