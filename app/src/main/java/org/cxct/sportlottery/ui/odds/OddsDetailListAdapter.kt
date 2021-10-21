@@ -366,13 +366,48 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
         private val tvAwayName: TextView? = itemView.findViewById(R.id.tv_away_name)
 
         fun bindModel(oddsDetail: OddsDetailListData) {
+            /**
+             * tvGameName比賽狀態顯示細體的規則：
+             * 籃球：玩法有 -SEG("第N盤") -1ST("上半場") -2ST("下半場")
+             * 足球：玩法有 -1ST("上半場") -2ST("下半場")，-SEG會是時間
+             * 網球：玩法有 -SEG("第N盤") -1ST("上半場") -2ST("下半場")，如果有 -SEG要判斷不能有CHAMP,CS-SEG1(第1盘正确比分)也是例外
+             * 排球：玩法有 -SEG("第N盤")
+             * */
 
-            tvGameName?.text = when {
-                oddsDetail.gameType.contains("-SEG") || oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains(
-                    "-2ST"
-                ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
-                else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+            when (sportCode) {
+                GameType.BK -> {
+                    tvGameName?.text = when {
+                        oddsDetail.gameType.contains("-SEG") || oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains(
+                            "-2ST"
+                        ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+                        else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+                    }
+                }
+                GameType.FT -> {
+                    tvGameName?.text = when {
+                        oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains("-2ST")
+                        -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+                        else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+                    }
+                }
+                GameType.TN -> {
+                    tvGameName?.text = when {
+                        ( oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains("CHAMP") && !oddsDetail.gameType.contains("CS-SEG"))|| oddsDetail.gameType.contains("-1ST") || oddsDetail.gameType.contains(
+                            "-2ST"
+                        ) -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+                        else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+                    }
+                }
+                GameType.VB -> {
+                    tvGameName?.text = when {
+                        oddsDetail.gameType.contains("-SEG") -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+                        else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
+                    }
+                }
+
             }
+
+
 
             oddsDetailPin?.apply {
                 isActivated = oddsDetail.isPin
@@ -534,8 +569,8 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             val textColor = ContextCompat.getColor(context, R.color.colorGray)
             val gameTitleContentBuilder = SpannableStringBuilder()
             val statusWord =  oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.split("-")
-            val playName = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.replace(statusWord?.last()?:"","")?.replace("-","")
-            val stWordSpan = SpannableString(statusWord?.last())
+            val playName = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.replace("-${statusWord?.last()?:""}","")
+            val stWordSpan = SpannableString(statusWord?.last()?:"")
             statusWord?.last()?.length?.let {
                 stWordSpan.setSpan(StyleSpan(Typeface.NORMAL), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
                 stWordSpan.setSpan(textColor, 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
