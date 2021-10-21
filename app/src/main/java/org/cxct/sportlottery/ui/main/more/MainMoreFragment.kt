@@ -51,7 +51,6 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
         //預設第一個類別添加 體育遊戲
         val spCate = ThirdGameCategory.LOCAL_SP
-        spCate.title = getString(R.string.sport)
         gameCateFilterList.add(0, GameCateData(spCate))
 
         val gameFragList = createGameFragList(gameCateFilterList)
@@ -79,7 +78,7 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
                 tab.setCustomView(R.layout.main_tab)
                 tab.customView?.apply {
                     this.iv_icon.setImageResource(tabCate.iconRes)
-                    this.tv_title.text = tabCate.title
+                    tabCate.title?.let { this.tv_title.text = getString(it) }
                 }
 
                 tab_layout.post {
