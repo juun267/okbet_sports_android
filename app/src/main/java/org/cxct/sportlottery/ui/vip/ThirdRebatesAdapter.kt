@@ -165,15 +165,15 @@ class LastContentViewHolder private constructor(itemView: View) : RecyclerView.V
 
             val backgroundColor =
                 if (itemData.levelIndex % 2 == 0) {
-                    ContextCompat.getColorStateList(context, R.color.colorWhite3)
+                    R.color.colorWhite3
                 } else {
-                    ContextCompat.getColorStateList(context, R.color.colorWhite1)
+                    R.color.colorWhite1
                 }
 
             backgroundColor.let {
-                ll_bet_range2.backgroundTintList = it
-                tv_rebates_rate2.backgroundTintList = it
-                tv_rebates2.backgroundTintList = it
+                ll_bet_range2.backgroundTintList = ContextCompat.getColorStateList(context, it)
+                tv_rebates_rate2.setBackgroundColor(ContextCompat.getColor(context, it))
+                tv_rebates2.backgroundTintList = ContextCompat.getColorStateList(context, it)
             }
         }
     }

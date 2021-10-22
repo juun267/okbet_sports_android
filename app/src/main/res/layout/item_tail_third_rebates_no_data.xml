@@ -13,7 +13,7 @@
         android:id="@+id/tv_rebates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/corner_bottom_right_rectangle"
+        android:background="@drawable/corner_bottom_rectangle"
         android:gravity="center"
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
