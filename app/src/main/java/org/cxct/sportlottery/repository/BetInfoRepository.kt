@@ -233,6 +233,7 @@ class BetInfoRepository(val androidContext: Context) {
     fun addInBetInfo(
         matchType: MatchType,
         gameType: GameType,
+        playCateCode: String,
         playCateName: String,
         playName: String,
         matchInfo: MatchInfo,
@@ -254,6 +255,7 @@ class BetInfoRepository(val androidContext: Context) {
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
             gameType = gameType.key,
+            playCateCode = playCateCode,
             playCateName = playCateName,
             playName = playName,
             matchInfo = matchInfo,

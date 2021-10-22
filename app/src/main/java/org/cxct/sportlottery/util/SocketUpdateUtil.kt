@@ -487,6 +487,12 @@ object SocketUpdateUtil {
                                         isNeedRefresh = true
                                     }
 
+                                    if (odd?.spread != oddSocket?.spread) {
+                                        odd?.spread = oddSocket?.spread
+
+                                        isNeedRefresh = true
+                                    }
+
                                     if (odd?.extInfo != oddSocket?.extInfo) {
                                         odd?.extInfo = oddSocket?.extInfo
 
@@ -559,6 +565,12 @@ object SocketUpdateUtil {
 
                 if (odd?.status != oddSocket.status) {
                     odd?.status = oddSocket.status
+
+                    isNeedRefresh = true
+                }
+
+                if (odd?.spread != oddSocket.spread){
+                    odd?.spread = oddSocket.spread
 
                     isNeedRefresh = true
                 }

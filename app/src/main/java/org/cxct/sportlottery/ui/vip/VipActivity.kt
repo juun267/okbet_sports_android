@@ -38,7 +38,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
         )
     }
 
-    private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter2() }
+    private val thirdRebatesAdapter by lazy { ThirdRebatesAdapter() }
 
     private val thirdGameAdapter by lazy {
         ThirdGameAdapter(OnSelectThirdGames {
