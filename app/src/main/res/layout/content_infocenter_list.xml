@@ -26,7 +26,7 @@
             android:id="@+id/txv_index"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
             android:gravity="center"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
