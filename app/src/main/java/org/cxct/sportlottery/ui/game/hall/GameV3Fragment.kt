@@ -101,6 +101,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         //之前點選過然後離開又回來 要預設帶入
                         !it.isSelected && it.isLocked == false -> {
+                            leagueAdapter.data.forEach {
+                                unSubscribeLeagueChannelHall(it)
+                            }
+
                             viewModel.switchPlay(args.matchType, it)
                             loading()
                         }
@@ -1173,6 +1177,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, playCate ->
+                leagueAdapter.data.forEach {
+                    unSubscribeLeagueChannelHall(it)
+                }
                 viewModel.switchPlayCategory(args.matchType,play,playCate.code)
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
