@@ -89,7 +89,7 @@ class OddButtonPairViewHolder private constructor(
 
             setOnClickListener {
                 oddPair.getOrNull(0)?.value?.let { odd ->
-                    oddButtonListener?.onClickBet(matchInfo, odd)
+                    oddButtonListener?.onClickBet(matchInfo, odd, odd.playCode ?: "")
                 }
             }
         }
@@ -103,7 +103,7 @@ class OddButtonPairViewHolder private constructor(
 
             setOnClickListener {
                 oddPair.getOrNull(1)?.value?.let { odd ->
-                    oddButtonListener?.onClickBet(matchInfo, odd)
+                    oddButtonListener?.onClickBet(matchInfo, odd, odd.playCode ?: "")
                 }
             }
         }

@@ -9,6 +9,7 @@ object MatchOddUtil {
     fun transfer(
         matchType: MatchType,
         gameType: String,
+        playCateCode: String,
         playCateName: String,
         playName: String?,
         matchInfo: MatchInfo,
@@ -30,7 +31,7 @@ object MatchOddUtil {
                             oddsId = oddsId,
                             playCateId = 0,
                             playCateName = playCateName,
-                            playCode = "",
+                            playCode = playCateCode,
                             playId = 0,
                             playName = playName ?: "",
                             producerId = odd.producerId ?: 0,

@@ -164,8 +164,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchInfo, odd, playCateName ->
-                    addOddsDialog(matchInfo, odd, playCateName)
+                { matchInfo, odd, playCateCode, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateCode, playCateName)
                 },
                 { matchId ->
                     matchId?.let {
@@ -196,6 +196,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 addOddsDialog(
                     betMatchInfo,
                     odd,
+                    PlayCate.EPS.value,
                     getString(R.string.game_tab_price_boosts_odd)
                 )
             }, { matchInfo ->
@@ -1287,6 +1288,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun addOddsDialog(
         matchInfo: MatchInfo?,
         odd: Odd,
+        playCateCode: String,
         playCateName: String
     ) {
         val gameType =
@@ -1297,6 +1299,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 viewModel.updateMatchBetList(
                     args.matchType,
                     gameType,
+                    playCateCode,
                     playCateName,
                     matchInfo,
                     odd,
