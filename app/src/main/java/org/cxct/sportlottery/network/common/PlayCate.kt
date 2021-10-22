@@ -95,6 +95,7 @@ enum class PlayCate(val value: String) {
     NGOAL_OT("NGOAL-OT"),
     NPENALTY("NPENALTY"),
     OE("O/E"),//单/双
+    Q_OE("-OE"),//快捷玩法的单/双
     OE_1ST("O/E-1ST"),
     OE_2ST_INCL_OT("O/E-2ST-INCL-OT"),
     OE_INCL_OT("O/E-INCL-OT"),
