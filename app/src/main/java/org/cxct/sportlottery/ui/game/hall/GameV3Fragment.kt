@@ -924,6 +924,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
+                oddsChangeEvent.odds?.entries?.retainAll { oddMap -> oddMap.key == getPlayCateMenuCode() }
 
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
