@@ -503,7 +503,7 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private fun PlayCateMapItem.isOEType(): Boolean {
-        return this.playCateCode.contains(PlayCate.OE.value) && !this.isCombination()
+        return (this.playCateCode.contains(PlayCate.OE.value) || this.playCateCode.contains(PlayCate.Q_OE.value)) && !this.isCombination()
     }
 
     private fun PlayCateMapItem.isBTSType(): Boolean {
