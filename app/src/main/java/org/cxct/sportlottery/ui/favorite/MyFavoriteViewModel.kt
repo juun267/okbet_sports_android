@@ -6,10 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
-import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.MenuCode
-import org.cxct.sportlottery.network.common.QuickPlayCate
-import org.cxct.sportlottery.network.common.SelectionType
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.quick.QuickListData
 import org.cxct.sportlottery.network.odds.quick.QuickListRequest
