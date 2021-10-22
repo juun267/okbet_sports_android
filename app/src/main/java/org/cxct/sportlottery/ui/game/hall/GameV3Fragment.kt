@@ -1339,7 +1339,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlayCateMenuCode(),
+                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
@@ -1402,7 +1402,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         leagueOdd.matchOdds.forEach {matchOdd ->
             unSubscribeChannelHall(
                 leagueOdd.gameType?.key,
-                getPlayCateMenuCode(),
+                getPlaySelectedCode(),
                 matchOdd.matchInfo?.id
             )
 
