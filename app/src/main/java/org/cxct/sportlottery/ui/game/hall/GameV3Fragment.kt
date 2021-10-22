@@ -1314,6 +1314,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun getPlaySelectedCode(): String? {
+        return playCategoryAdapter.data.find { it.isSelected }?.code
+    }
+
     private fun getPlayCateMenuCode(): String? {
         val playSelected = playCategoryAdapter.data.find { it.isSelected }
 
