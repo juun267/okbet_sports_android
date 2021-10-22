@@ -111,6 +111,7 @@ abstract class BaseOddButtonViewModel(
     fun updateMatchBetList(
         matchType: MatchType,
         gameType: GameType,
+        playCateCode: String,
         playCateName: String,
         matchInfo: MatchInfo,
         odd: org.cxct.sportlottery.network.odds.Odd,
@@ -125,6 +126,7 @@ abstract class BaseOddButtonViewModel(
                 betInfoRepository.addInBetInfo(
                     matchType = matchType,
                     gameType = gameType,
+                    playCateCode =playCateCode,
                     playCateName = playCateName,
                     playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
                     matchInfo = matchInfo,
@@ -141,6 +143,7 @@ abstract class BaseOddButtonViewModel(
     fun updateMatchBetListForOutRight(
         matchType: MatchType,
         gameType: GameType,
+        playCateCode: String,
         matchOdd: org.cxct.sportlottery.network.outright.odds.MatchOdd,
         odd: org.cxct.sportlottery.network.odds.Odd
     ) {
@@ -163,6 +166,7 @@ abstract class BaseOddButtonViewModel(
                 betInfoRepository.addInBetInfo(
                     matchType = matchType,
                     gameType = gameType,
+                    playCateCode = playCateCode,
                     playCateName = outrightCateName
                         ?: "",
                     playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",

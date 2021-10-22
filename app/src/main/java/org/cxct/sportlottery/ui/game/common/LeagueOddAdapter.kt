@@ -967,7 +967,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
 class LeagueOddListener(
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit,
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String) -> Unit,
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
@@ -979,8 +979,9 @@ class LeagueOddListener(
     fun onClickBet(
         matchInfo: MatchInfo?,
         odd: Odd,
+        playCateCode: String,
         playCateName: String = "",
-    ) = clickListenerBet(matchInfo, odd, playCateName)
+    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName)
 
     fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCateTab(matchId)
 

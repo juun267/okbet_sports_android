@@ -73,7 +73,7 @@ class OutrightOddMoreAdapter :
                 tv_spread.text = ""
                 this@OddViewHolder.setupOddState(this, item)
                 setOnClickListener {
-                    item?.let { it1 -> outrightOddListener?.onClickBet(matchOdd, it1) }
+                    item?.let { it1 -> outrightOddListener?.onClickBet(matchOdd, it1, item.outrightCateKey ?: "") }
                 }
             }
         }

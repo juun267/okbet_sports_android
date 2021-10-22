@@ -80,9 +80,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         override fun onClickBet(
             matchOdd: MatchOdd,
             odd: Odd,
+            playCateCode: String,
             playCateName: String?
         ) {
-            addOddsDialog(matchOdd, odd, playCateName)
+            addOddsDialog(matchOdd, odd, playCateCode, playCateName)
         }
     }
 
@@ -145,9 +146,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             override fun onClickBet(
                 matchOdd: MatchOdd,
                 odd: Odd,
+                playCateCode: String,
                 playCateName: String?
             ) {
-                addOddsDialog(matchOdd, odd, playCateName)
+                addOddsDialog(matchOdd, odd, playCateCode, playCateName)
             }
         }
         mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
@@ -200,6 +202,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             override fun onClickBet(
                 matchOdd: MatchOdd,
                 odd: Odd,
+                playCateCode: String,
                 playCateName: String?
             ) {
                 GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
@@ -207,6 +210,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.updateMatchBetListForOutRight(
                         matchType = MatchType.OUTRIGHT,
                         gameType = gameType,
+                        playCateCode = playCateCode,
                         matchOdd = org.cxct.sportlottery.network.outright.odds.MatchOdd(
                             matchInfo = matchOdd.matchInfo,
                             oddsMap = matchOdd.oddsMap,
@@ -345,6 +349,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun addOddsDialog(
         matchOdd: MatchOdd,
         odd: Odd,
+        playCateCode: String,
         playCateName: String?
     ) {
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
@@ -352,6 +357,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 viewModel.updateMatchBetList(
                     mSelectMatchType,
                     gameType,
+                    playCateCode,
                     playCateName ?: "",
                     matchInfo,
                     odd,

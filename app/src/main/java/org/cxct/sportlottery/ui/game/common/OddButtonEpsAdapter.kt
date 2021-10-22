@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_odd_btn_eps.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -75,7 +76,7 @@ class OddButtonEpsViewHolder private constructor(
             this@OddButtonEpsViewHolder.setupOddState(this, odd)
 
             setOnClickListener {
-                oddButtonListener?.onClickBet(matchInfo, odd)
+                oddButtonListener?.onClickBet(matchInfo, odd, PlayCate.EPS.value)
             }
         }
     }
