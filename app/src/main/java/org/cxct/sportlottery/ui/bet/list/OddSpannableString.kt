@@ -115,7 +115,7 @@ object OddSpannableString {
         val backgroundColor =
             ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
-        if (matchOdd.spread.isEmpty() || needShowSpread(matchOdd.spread)
+        if (matchOdd.spread.isEmpty() || !needShowSpread(matchOdd.playCode)
         ) {
             spreadSpan = SpannableString("")
         } else {
