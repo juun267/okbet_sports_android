@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
 import kotlinx.android.synthetic.main.item_match_receipt.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.view.*
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.*
@@ -44,6 +46,8 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                     tv_spread.text = spread
                     tv_team_away.text = awayName
                     tv_match_type.text = playCateName
+
+                    tv_spread.isVisible = needShowSpread(playCateCode)
                 }
 
                 view.view_match_receipt.setBetReceiptBackground(status)
