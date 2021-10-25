@@ -81,20 +81,18 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
 
-
-        if (needCountStatus(curStatus)) {
-            if (timeMillis >= 1000) {
-                tv_time_bottom?.apply {
+        tv_time_bottom?.apply {
+            if (needCountStatus(curStatus)) {
+                if (timeMillis >= 1000) {
                     text = TimeUtil.longToMmSs(timeMillis)
+                    startTime = timeMillis / 1000L
+                } else {
+                    text = this.context.getString(R.string.time_null)
                 }
-                startTime = timeMillis / 1000L
-            }
-        } else {
-            tv_time_bottom?.apply {
+            } else {
                 text = this.context.getString(R.string.time_null)
             }
         }
-
         return@Handler false
     }
 
