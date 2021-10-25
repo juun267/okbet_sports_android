@@ -101,11 +101,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         //之前點選過然後離開又回來 要預設帶入
                         !it.isSelected && it.isLocked == false -> {
+                            unSubscribeChannelSwitchPlayCate()
+
                             viewModel.switchPlay(args.matchType, it)
                             loading()
                         }
                     }
                 } else {
+                    unSubscribeChannelSwitchPlayCate()
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
                     loading()
@@ -921,6 +924,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
+                oddsChangeEvent.filterMenuPlayCate()
 
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
@@ -1079,6 +1083,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         return this
     }
 
+    /**
+     * 只有有下拉篩選玩法的才需要過濾odds
+     */
+    private fun OddsChangeEvent.filterMenuPlayCate() {
+        val playSelected = playCategoryAdapter.data.find { it.isSelected }
+
+        when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
+                this.odds?.entries?.retainAll { oddMap -> oddMap.key == playCateMenuCode }
+            }
+        }
+    }
+
     private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
             val contentView: ViewGroup? =
@@ -1174,6 +1192,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, playCate ->
+                unSubscribeChannelSwitchPlayCate()
                 viewModel.switchPlayCategory(args.matchType,play,playCate.code)
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
@@ -1310,6 +1329,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    private fun getPlaySelectedCode(): String? {
+        return playCategoryAdapter.data.find { it.isSelected }?.code
+    }
+
     private fun getPlayCateMenuCode(): String? {
         val playSelected = playCategoryAdapter.data.find { it.isSelected }
 
@@ -1330,7 +1353,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlayCateMenuCode(),
+                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
@@ -1389,11 +1412,34 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    /**
+     * 切換playCateMenu時, 先將原本訂閱的類別解除訂閱
+     */
+    private fun unSubscribeChannelSwitchPlayCate() {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach {matchOdd ->
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    getPlaySelectedCode(),
+                    matchOdd.matchInfo?.id
+                )
+
+                if (matchOdd.matchInfo?.eps == 1) {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOdd.matchInfo.id
+                    )
+                }
+            }
+        }
+    }
+
     private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd){
         leagueOdd.matchOdds.forEach {matchOdd ->
             unSubscribeChannelHall(
                 leagueOdd.gameType?.key,
-                getPlayCateMenuCode(),
+                getPlaySelectedCode(),
                 matchOdd.matchInfo?.id
             )
 
