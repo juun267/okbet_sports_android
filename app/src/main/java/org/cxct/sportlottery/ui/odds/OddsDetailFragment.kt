@@ -317,6 +317,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             viewModel.updateMatchBetList(
                 matchType = args.matchType,
                 gameType = args.gameType,
+                playCateCode = oddsDetail.gameType,
                 playCateName = oddsDetail.name,
                 matchInfo = matchOdd.matchInfo,
                 odd = odd,

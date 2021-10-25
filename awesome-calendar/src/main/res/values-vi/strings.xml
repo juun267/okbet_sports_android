@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="cdrp_mon">Mon</string>
-    <string name="cdrp_tue">Tue</string>
-    <string name="cdrp_wed">Wed</string>
-    <string name="cdrp_thu">Thu</string>
-    <string name="cdrp_fri">Fri</string>
-    <string name="cdrp_sat">Sat</string>
-    <string name="cdrp_sun">Sun</string>
+    <string name="cdrp_mon">T2</string>
+    <string name="cdrp_tue">T3</string>
+    <string name="cdrp_wed">T4</string>
+    <string name="cdrp_thu">T5</string>
+    <string name="cdrp_fri">T6</string>
+    <string name="cdrp_sat">T7</string>
+    <string name="cdrp_sun">CN</string>
 
     <string-array name="week_sun_sat">
         <item>@string/cdrp_sun</item>
@@ -18,6 +18,7 @@
         <item>@string/cdrp_sat</item>
     </string-array>
 
-    <string name="year">year</string>
-    <string name="month">month</string>
+
+    <string name="year">năm</string>
+    <string name="month">tháng</string>
 </resources>

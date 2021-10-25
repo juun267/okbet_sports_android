@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.TestFlag
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -69,8 +70,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         dialog?.window?.setWindowAnimations(R.style.LeftMenu)
         initObserve()
         initRecyclerView()
-        initData()
         initButton()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getSportList()
     }
 
     private fun initButton() {
@@ -99,35 +104,54 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun initData() {
-        unselectedAdapter.data = ArrayList(
-            listOf(
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_ft_v4,
-                    getString(R.string.soccer),
-                    GameType.FT.key,
-                    0
-                ),
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_bk_v4,
-                    getString(R.string.basketball),
-                    GameType.BK.key,
-                    0
-                ),
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_tn_v4,
-                    getString(R.string.tennis),
-                    GameType.TN.key,
-                    0
-                ),
-                MenuItemData(
-                    R.drawable.selector_sport_type_item_img_vb_v4,
-                    getString(R.string.volleyball),
-                    GameType.VB.key,
-                    0
-                )
-            )
-        )
+    private fun initData(list: List<SportMenu>) {
+        val unselectedArray = mutableListOf<MenuItemData>()
+
+        list.forEach {
+            when (it.gameType) {
+                GameType.VB -> {
+                    unselectedArray.add(
+                        MenuItemData(
+                            R.drawable.selector_sport_type_item_img_vb_v4,
+                            getString(R.string.volleyball),
+                            GameType.VB.key,
+                            0
+                        )
+                    )
+                }
+                GameType.TN -> {
+                    unselectedArray.add(
+                        MenuItemData(
+                            R.drawable.selector_sport_type_item_img_tn_v4,
+                            getString(R.string.tennis),
+                            GameType.TN.key,
+                            0
+                        )
+                    )
+                }
+                GameType.BK -> {
+                    unselectedArray.add(
+                        MenuItemData(
+                            R.drawable.selector_sport_type_item_img_bk_v4,
+                            getString(R.string.basketball),
+                            GameType.BK.key,
+                            0
+                        )
+                    )
+                }
+                GameType.FT -> {
+                    unselectedArray.add(
+                        MenuItemData(
+                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            getString(R.string.soccer),
+                            GameType.FT.key,
+                            0
+                        )
+                    )
+                }
+            }
+        }
+        unselectedAdapter.data = unselectedArray
 
         viewModel.notifyFavorite(FavoriteType.SPORT)
     }
@@ -143,6 +167,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 loading()
             else
                 hideLoading()
+        })
+
+        viewModel.sportMenuList.observe(viewLifecycleOwner, {
+            it.peekContent().let { list ->
+                initData(list)
+            }
         })
     }
 

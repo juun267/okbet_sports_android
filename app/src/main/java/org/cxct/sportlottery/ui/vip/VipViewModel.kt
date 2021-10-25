@@ -146,6 +146,13 @@ class VipViewModel(
                     }
                     reformattedDataList.add(emptyItem)
                 }
+            } else {
+                thirdDebateBeans.apply {
+                    val emptyItem = Debate(null, 0.0, null, null, null, userLevelId, userLevelName).apply {
+                        isTitle = true
+                    }
+                    reformattedDataList.add(emptyItem)
+                }
             }
 
             thirdDebateBeans.debateList.forEachIndexed { index, debate ->
@@ -154,9 +161,9 @@ class VipViewModel(
                     if (debate.id == 0.0)
                         debate.isNullTail = true
                     else
-                        debate.isLevelTail = true
+                        debate.isLastContent = true
                 }
-                debate.levelIndex = index
+                debate.levelIndex = index - 1
 
                 reformattedDataList.add(debate)
             }

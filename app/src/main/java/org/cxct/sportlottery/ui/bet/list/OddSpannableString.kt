@@ -17,6 +17,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -111,13 +112,21 @@ object OddSpannableString {
 
     private fun setupSpreadSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
-        val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
+        val backgroundColor =
+            ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
-        val spreadEnd = matchOdd.spread.length + 1
-        spreadSpan = SpannableString(" ${matchOdd.spread}")
-        spreadSpan.setSpan(ForegroundColorSpan(textColor), 1, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spreadSpan.setSpan(StyleSpan(Typeface.BOLD), 1, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spreadSpan.setSpan(BackgroundColorSpan(backgroundColor), 1, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if (matchOdd.spread.isEmpty() || matchOdd.playCode == PlayCate.DOUBLE_D_P.value
+            || matchOdd.playCode == PlayCate.TRIPLE_D_P.value || matchOdd.playCode == PlayCate.DOUBLE_D.value
+            || matchOdd.playCode == PlayCate.TRIPLE_D.value
+        ) {
+            spreadSpan = SpannableString("")
+        } else {
+            val spreadEnd = matchOdd.spread.length + 1
+            spreadSpan = SpannableString(" ${matchOdd.spread}")
+            spreadSpan.setSpan(ForegroundColorSpan(textColor), 1, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spreadSpan.setSpan(StyleSpan(Typeface.BOLD), 1, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spreadSpan.setSpan(BackgroundColorSpan(backgroundColor), 1, spreadEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
     }
 
 

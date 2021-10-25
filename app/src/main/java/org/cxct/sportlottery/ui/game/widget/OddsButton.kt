@@ -81,20 +81,19 @@ class OddsButton @JvmOverloads constructor(
     fun setupOdd(odd: Odd?, oddsType: OddsType, gameType: String? = null) {
         tv_name.apply {
             val extInfoStr = odd?.extInfoMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.extInfo
-            text = if (gameType == PlayCate.DOUBLE_D.value || gameType == PlayCate.TRIPLE_D.value || gameType == PlayCate.DOUBLE_D_P.value || gameType == PlayCate.TRIPLE_D_P.value) {
-                odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key)
-            } else {
+            text =
                 if (extInfoStr.isNullOrEmpty())
                     "${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
                 else
                     "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
-            }
+
             visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
         }
 
         tv_spread.apply {
             text = odd?.spread
-            visibility = if (odd?.spread.isNullOrEmpty()) View.GONE else View.VISIBLE
+            visibility =
+                if (odd?.spread.isNullOrEmpty() || odd?.playCode == PlayCate.DOUBLE_D_P.value || odd?.playCode == PlayCate.TRIPLE_D_P.value) View.GONE else View.VISIBLE
         }
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
