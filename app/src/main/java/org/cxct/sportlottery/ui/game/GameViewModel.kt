@@ -41,7 +41,10 @@ import org.cxct.sportlottery.network.outright.odds.OutrightOddsListRequest
 import org.cxct.sportlottery.network.outright.odds.OutrightOddsListResult
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListRequest
 import org.cxct.sportlottery.network.outright.season.OutrightLeagueListResult
-import org.cxct.sportlottery.network.sport.*
+import org.cxct.sportlottery.network.sport.Item
+import org.cxct.sportlottery.network.sport.SportMenu
+import org.cxct.sportlottery.network.sport.SportMenuData
+import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
@@ -998,6 +1001,7 @@ class GameViewModel(
             }
 
             result?.quickListData?.let {
+
                 _oddsListGameHallResult.postValue(
                     Event(
                         _oddsListGameHallResult.value?.peekContent()
@@ -1599,6 +1603,11 @@ class GameViewModel(
                         else -> {
                             quickListData.quickOdds?.get(quickPlayCate.code)
                         }
+                    }?.apply {
+                        quickPlayCate.code?.let {
+                            setupQuickPlayCate(quickPlayCate.code)
+                            sortQuickPlayCate(quickPlayCate.code)
+                        }
                     }
 
                     quickPlayCate.isSelected =
@@ -1611,6 +1620,33 @@ class GameViewModel(
             }
         }
         return this
+    }
+
+    /**
+     * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)
+     * 2021.10.25 發現可能會回傳但是是傳null, 故新增邏輯, 該玩法odd為null時也做處理
+     */
+    private fun MutableMap<String, List<Odd?>>.setupQuickPlayCate(playCate: String) {
+        val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
+
+        playCateSort?.forEach {
+            if (!this.keys.contains(it) || this[it] == null)
+                this[it] = mutableListOf(null, null, null)
+        }
+    }
+
+    /**
+     * 根據QuickPlayCate的rowSort將盤口重新排序
+     */
+    private fun MutableMap<String, List<Odd?>>.sortQuickPlayCate(playCate: String) {
+        val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
+        val sortedList = this.toSortedMap(compareBy<String> {
+            val oddsIndex = playCateSort?.indexOf(it)
+            oddsIndex
+        }.thenBy { it })
+
+        this.clear()
+        this.putAll(sortedList)
     }
 
     private fun OddsListResult.clearQuickPlayCateSelected(): OddsListResult {
