@@ -92,6 +92,17 @@
   },
   {
     "titleNameMap": {
+      "zh": "在线支付",
+      "en": "online payment",
+      "vi": "thanh toán trực tuyến"
+    },
+    "subtitle": "",
+    "image": "",
+    "rechType": "onlinePayment",
+    "onlineType": "101"
+  },
+  {
+    "titleNameMap": {
       "zh": "财付通转账",
       "en": "Tenpay",
       "vi": "Chuyển khoản Tenpay"
