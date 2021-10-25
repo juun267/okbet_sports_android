@@ -101,15 +101,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         //之前點選過然後離開又回來 要預設帶入
                         !it.isSelected && it.isLocked == false -> {
-                            leagueAdapter.data.forEach {
-                                unSubscribeLeagueChannelHall(it)
-                            }
+                            unSubscribeChannelSwitchPlayCate()
 
                             viewModel.switchPlay(args.matchType, it)
                             loading()
                         }
                     }
                 } else {
+                    unSubscribeChannelSwitchPlayCate()
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
                     loading()
@@ -1179,9 +1178,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, playCate ->
-                leagueAdapter.data.forEach {
-                    unSubscribeLeagueChannelHall(it)
-                }
+                unSubscribeChannelSwitchPlayCate()
                 viewModel.switchPlayCategory(args.matchType,play,playCate.code)
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
@@ -1396,6 +1393,29 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             matchOdd.matchInfo?.id
                         )
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * 切換playCateMenu時, 先將原本訂閱的類別解除訂閱
+     */
+    private fun unSubscribeChannelSwitchPlayCate() {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach {matchOdd ->
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    getPlaySelectedCode(),
+                    matchOdd.matchInfo?.id
+                )
+
+                if (matchOdd.matchInfo?.eps == 1) {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOdd.matchInfo.id
+                    )
                 }
             }
         }
