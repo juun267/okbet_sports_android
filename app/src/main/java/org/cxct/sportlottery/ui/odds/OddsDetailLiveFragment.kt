@@ -65,36 +65,37 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var curStatus: Int? = null
 
+    private var isGamePause = false
     override var startTime: Long = 0
     override var timer: Timer = Timer()
     override var timerHandler: Handler = Handler {
         var timeMillis = startTime * 1000L
 
-        when (args.gameType) {
-            GameType.FT -> {
-                timeMillis += 1000
-            }
-            GameType.BK -> {
-                timeMillis -= 1000
-            }
-            else -> {
-            }
-        }
-
-
-        if (needCountStatus(curStatus)) {
-            if (timeMillis >= 1000) {
-                tv_time_bottom?.apply {
-                    text = TimeUtil.longToMmSs(timeMillis)
+        if (!isGamePause) {
+            when (args.gameType) {
+                GameType.FT -> {
+                    timeMillis += 1000
                 }
-                startTime = timeMillis / 1000L
+                GameType.BK -> {
+                    timeMillis -= 1000
+                }
+                else -> {
+                }
             }
-        } else {
-            tv_time_bottom?.apply {
+
+        }
+        tv_time_bottom?.apply {
+            if (needCountStatus(curStatus)) {
+                if (timeMillis >= 1000) {
+                    text = TimeUtil.longToMmSs(timeMillis)
+                    startTime = timeMillis / 1000L
+                } else {
+                    text = this.context.getString(R.string.time_null)
+                }
+            } else {
                 text = this.context.getString(R.string.time_null)
             }
         }
-
         return@Handler false
     }
 
@@ -394,6 +395,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                     else -> null
                 }
+
+                isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
 
                 updateTime?.let {
                     startTime = updateTime.toLong()
