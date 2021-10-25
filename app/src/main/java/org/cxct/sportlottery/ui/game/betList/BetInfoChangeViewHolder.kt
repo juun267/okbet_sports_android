@@ -18,7 +18,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -98,9 +98,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
-        if (matchOdd.spread.isEmpty() || matchOdd.playCode == PlayCate.DOUBLE_D_P.value
-            || matchOdd.playCode == PlayCate.TRIPLE_D_P.value || matchOdd.playCode == PlayCate.DOUBLE_D.value
-            || matchOdd.playCode == PlayCate.TRIPLE_D.value
+        if (matchOdd.spread.isEmpty() || needShowSpread(matchOdd.spread)
         ) {
             spreadSpan = SpannableString("")
         }else {
