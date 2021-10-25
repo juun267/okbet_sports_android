@@ -65,22 +65,25 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private var curStatus: Int? = null
 
+    private var isGamePause = false
     override var startTime: Long = 0
     override var timer: Timer = Timer()
     override var timerHandler: Handler = Handler {
         var timeMillis = startTime * 1000L
 
-        when (args.gameType) {
-            GameType.FT -> {
-                timeMillis += 1000
+        if (!isGamePause) {
+            when (args.gameType) {
+                GameType.FT -> {
+                    timeMillis += 1000
+                }
+                GameType.BK -> {
+                    timeMillis -= 1000
+                }
+                else -> {
+                }
             }
-            GameType.BK -> {
-                timeMillis -= 1000
-            }
-            else -> {
-            }
-        }
 
+        }
         tv_time_bottom?.apply {
             if (needCountStatus(curStatus)) {
                 if (timeMillis >= 1000) {
@@ -392,6 +395,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     }
                     else -> null
                 }
+
+                isGamePause = (matchClockEvent.matchClockCO?.stopped == 1)
 
                 updateTime?.let {
                     startTime = updateTime.toLong()
