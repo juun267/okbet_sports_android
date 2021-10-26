@@ -441,6 +441,7 @@
     <string name="title_cft">财付通</string>
     <string name="title_weixin">微信</string>
     <string name="online_bank">在线网银</string>
+    <string name="online_juan">JuanCash</string>
     <string name="online_alipay">在线支付宝</string>
     <string name="online_weixin">在线微信</string>
     <string name="online_qq">在线QQ</string>

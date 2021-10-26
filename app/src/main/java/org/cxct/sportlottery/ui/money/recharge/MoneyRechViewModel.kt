@@ -550,7 +550,7 @@ class MoneyRechViewModel(
             OnlineType.WX.type -> androidContext.resources.getString(R.string.online_weixin)
             OnlineType.QQ.type -> androidContext.resources.getString(R.string.online_qq)
             OnlineType.XYK.type -> androidContext.resources.getString(R.string.online_credit_card)
-            OnlineType.JUAN.type -> androidContext.resources.getString(R.string.online_bank)
+            OnlineType.JUAN.type -> androidContext.resources.getString(R.string.online_juan)
             else -> ""
         }
     }
