@@ -482,6 +482,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             StatusSheetAdapter.ItemCheckedListener { _, data ->
                 unSubscribePlayCateChannel()
                 viewModel.switchPlayCategory(play,data.code)
+                loading()
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
             })
