@@ -18,7 +18,6 @@ import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
 import org.cxct.sportlottery.util.TextUtil
-import java.math.RoundingMode
 import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
@@ -84,7 +83,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         }
 
         tv_pay_gap_subtitle.text =
-            if (mMoneyPayWay?.onlineType == OnlineType.ONLINE.type) getString(R.string.title_pay_channel)
+            if (mMoneyPayWay?.onlineType == OnlineType.WY.type) getString(R.string.title_pay_channel)
             else getString(R.string.title_pay_gap)
 
         et_recharge_online_amount.setHint(getAmountLimitHint())
@@ -119,9 +118,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
         mMoneyPayWay = moneyPayWay
         typeIcon = when (mMoneyPayWay?.onlineType) {
-            1 -> R.drawable.ic_online_pay_type
-            2 -> R.drawable.ic_alipay_type
-            3 -> R.drawable.ic_wechat_pay_type
+            OnlineType.WY.type  -> R.drawable.ic_online_pay_type
+            OnlineType.ZFB.type  -> R.drawable.ic_alipay_type
+            OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
+            OnlineType.JUAN.type -> R.drawable.ic_juancash
             else -> R.drawable.ic_online_pay_type
         }
         return this
@@ -241,7 +241,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
                 rv_bank_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
                 rv_bank_item.adapter = payGapAdapter
 
-                if (mMoneyPayWay?.onlineType == OnlineType.ONLINE.type)
+                if (mMoneyPayWay?.onlineType == OnlineType.WY.type)
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
                 else
                     tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_gap))

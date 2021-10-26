@@ -440,6 +440,7 @@
     <string name="title_cft">Tenpay</string>
     <string name="title_weixin">Wechat</string>
     <string name="online_bank">Banking</string>
+    <string name="online_juan">JuanCash</string>
     <string name="online_alipay">Alipay</string>
     <string name="online_weixin">Wechat</string>
     <string name="online_qq">QQ</string>

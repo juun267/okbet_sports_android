@@ -57,6 +57,7 @@ object MoneyManager {
             MoneyType.CTF.code -> R.drawable.ic_tenpay
             MoneyType.ONLINE.code -> R.drawable.ic_online_pay
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
+            MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -68,6 +69,7 @@ object MoneyManager {
             MoneyType.CTF_TYPE.code -> R.drawable.ic_tenpay_type
             MoneyType.ONLINE_TYPE.code -> R.drawable.ic_online_pay_type
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
+            MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -104,6 +106,6 @@ object MoneyManager {
         PINGAN("平安银行", R.drawable.ic_bank_pingan),
         BCCB("北京银行", R.drawable.ic_bank_bccb),
         BRCB("北京农商", R.drawable.ic_bank_brcb),
-        BOS("上海银行", R.drawable.ic_bank_shcc)
+        BOS("上海银行", R.drawable.ic_bank_shcc),
     }
 }
