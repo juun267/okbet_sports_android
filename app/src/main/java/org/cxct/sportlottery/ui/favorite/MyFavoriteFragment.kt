@@ -358,7 +358,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private fun initObserver() {
         viewModel.sportQueryData.observe(this.viewLifecycleOwner, {
-            hideLoading()
             it?.getContentIfNotHandled()?.let { sportQueryData ->
 
                 updateGameTypeList(sportQueryData.items?.map { item ->
