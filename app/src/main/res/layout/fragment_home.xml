@@ -50,7 +50,7 @@
                             android:id="@+id/card_first_game"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="233"
+                            android:layout_weight="222"
                             android:background="@drawable/fillet_4dp_home_game_item">
 
                             <TextView
@@ -84,7 +84,7 @@
                                 android:layout_marginStart="10dp"
                                 android:alpha="0.25"
                                 android:maxLines="1"
-                                android:text="世界顶级赛事"
+                                android:text="@string/top_game"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize12sp"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -126,7 +126,7 @@
                             android:id="@+id/card_second_game"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="112"
+                            android:layout_weight="158"
                             android:background="@drawable/fillet_4dp_home_game_item">
 
                             <TextView
@@ -151,7 +151,7 @@
                                 android:contentDescription="@null"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="4"
+                                app:layout_constraintHorizontal_bias="2"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:src="@drawable/ic_game_basketball" />

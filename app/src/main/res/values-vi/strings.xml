@@ -82,7 +82,7 @@
     <string name="verification_code_by_sms">Mã xác nhận SMS</string>
     <string name="hint_verification_code">vui lòng nhập mã xác nhận</string>
     <string name="error_verification_code">Mã xác nhận đăng ký không đúng</string>
-    <string name="hint_verification_code_by_sms">Vui lòng nhập mã xác nhận SMS</string>
+    <string name="hint_verification_code_by_sms">SMS</string>
     <string name="error_verification_code_by_sms">Mã xác nhận không đúng</string>
     <string name="get_verification_code">Gửi mã xác nhận</string>
     <string name="send_timer">Tên tài khoản này đã tồn tại</string>
@@ -751,4 +751,5 @@
     <string name="service_1">CSKH1</string>
     <string name="service_2">CSKH2</string>
     <string name="service_connect">Liên hệ</string>
+    <string name="top_game">Sự kiện hàng đầu thế giới</string>
 </resources>

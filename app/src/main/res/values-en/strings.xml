@@ -82,7 +82,7 @@
     <string name="verification_code_by_sms">SMS verify code</string>
     <string name="hint_verification_code">Verify Code</string>
     <string name="error_verification_code">Verify code incorrectly</string>
-    <string name="hint_verification_code_by_sms">SMS verify code</string>
+    <string name="hint_verification_code_by_sms">SMS</string>
     <string name="error_verification_code_by_sms">SMS verification code incorrectly</string>
     <string name="get_verification_code">SEND</string>
     <string name="send_timer">Sent</string>
@@ -371,13 +371,13 @@
     <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>
     <string name="title_real_name">Verified name</string>
     <string name="title_nick_name">Your nickname</string>
-    <string name="edt_hint_real_name">The account name must match the bank account name</string>
+    <string name="edt_hint_real_name">match the bank account name</string>
     <string name="edt_hint_check_real_name">Please enter your verified name</string>
     <string name="edt_hint_nick_name"><![CDATA[Please enter your nickname]]></string>
     <string name="title_wx_id">Wechat ID</string>
     <string name="edt_hint_wx_id">Please enter Wechat ID</string>
     <string name="title_bank_account">Bank card number</string>
-    <string name="edt_hint_bank_account">Please enter the bank card number</string>
+    <string name="edt_hint_bank_account">Enter the bank card number</string>
     <string name="title_recharge_time">Top-up time</string>
     <string name="title_current_money">Current balance</string>
     <string name="btn_submit">Submit</string>
@@ -421,7 +421,7 @@
     <string name="edt_hint_crypto_pay_count">Limit %1$s ~ %2$s</string>
     <string name="hint_rate">・Exchange rate：%1$s</string>
     <string name="title_transaction_id">Block chain trading ID</string>
-    <string name="hint_transaction_id">Please enter your block chain trading ID</string>
+    <string name="hint_transaction_id">Your block chain trading ID</string>
     <string name="hint_fee_rate">・Service charge：%1$s</string>
     <string name="hint_fee_amount">・Service charge：%1$s RMB</string>
     <string name="hint_feeback_rate">・Rebate rate：%1$s</string>
@@ -749,4 +749,5 @@
     <string name="service_1">Customer1</string>
     <string name="service_2">Customer2</string>
     <string name="service_connect">Connect</string>
+    <string name="top_game">World\'s top events</string>
 </resources>

@@ -62,6 +62,9 @@
             android:layout_weight="1"
             android:autofillHints="no"
             android:background="@null"
+            android:maxLines="1"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:inputType="text"
             android:textColor="@color/colorBlackLight"
             android:textColorHint="@color/colorSilverLight"
@@ -126,7 +129,7 @@
 
     <TextView
         android:id="@+id/tv_error"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:drawablePadding="5dp"
@@ -137,6 +140,7 @@
         app:drawableStartCompat="@drawable/ic_error_tip"
         app:layout_constraintStart_toStartOf="@id/block_editText"
         app:layout_constraintTop_toBottomOf="@id/block_editText"
+        app:layout_constraintEnd_toEndOf="@id/block_editText"
         tools:text="@string/please_input_account"
         tools:visibility="visible" />
 
