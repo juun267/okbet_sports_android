@@ -608,6 +608,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 })
 
                 setCurrentItem(item.positionButtonPage, false)
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER
             }
 
             itemView.league_odd_btn_indicator_main.apply {
