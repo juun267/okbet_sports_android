@@ -171,7 +171,7 @@ class MyFavoriteViewModel(
     fun switchPlayCategory(play: Play,playCateCode: String?) {
         getFavoriteMatch(
             sportQueryData.value?.peekContent()?.items?.find { it.isSelected }?.code,
-            MenuCode.MAIN.code,
+            play.code,
             playCateCode
         )
         _sportQueryData.postValue(
