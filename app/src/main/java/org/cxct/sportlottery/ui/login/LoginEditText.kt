@@ -75,7 +75,12 @@ class LoginEditText @JvmOverloads constructor(context: Context, attrs: Attribute
             view.block_verification_code.visibility = if (typedArray.getBoolean(R.styleable.CustomView_cvEnableVerificationCode, false)) View.VISIBLE else View.GONE
 
             inputType = typedArray.getInt(R.styleable.CustomView_cvInputType, 0x00000001)
-            view.et_input.inputType = inputType
+             if (inputType == 0x00000081) {
+                view.et_input.transformationMethod = PasswordTransformationMethod()
+            }else {
+                 view.et_input.inputType = inputType
+            }
+
 
             view.et_input.isEnabled = typedArray.getBoolean(R.styleable.CustomView_cvEnable, true).apply {
                 if (this)
