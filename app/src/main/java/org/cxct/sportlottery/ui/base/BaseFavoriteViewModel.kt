@@ -13,6 +13,7 @@ import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -41,6 +42,10 @@ abstract class BaseFavoriteViewModel(
         get() = mFavorMatchOddList
     protected val mFavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
 
+    val myFavoriteLoading: LiveData<Event<Boolean>>
+        get() = mMyFavoriteLoading
+    private val mMyFavoriteLoading = MutableLiveData<Event<Boolean>>()
+
     val favorSportList = myFavoriteRepository.favorSportList
 
     val favorLeagueList = myFavoriteRepository.favorLeagueList
@@ -67,10 +72,12 @@ abstract class BaseFavoriteViewModel(
     fun getFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String? = null) {
         if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
+            mMyFavoriteLoading.postValue(Event(false))
             return
         }
 
         if (gameType == null || playCateMenu == null) {
+            mMyFavoriteLoading.postValue(Event(false))
             return
         }
 
