@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.fragment_main_more.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
@@ -608,6 +609,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 })
 
                 setCurrentItem(item.positionButtonPage, false)
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
             }
 
             itemView.league_odd_btn_indicator_main.apply {
@@ -617,7 +619,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 } else {
                     View.GONE
                 }
-
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)
             }
         }
@@ -691,7 +692,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                         rb.isChecked = true
                     }
-
                 }
 
                 setOnCheckedChangeListener { group, checkedId ->
@@ -848,6 +848,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setCurrentItem(
                     item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage ?: 0, false
                 )
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
             }
 
             itemView.quick_odd_btn_indicator_other.apply {
@@ -857,7 +858,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     } else {
                         View.GONE
                     }
-
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
                 setupWithViewPager2(itemView.quick_odd_btn_pager_other)
             }
         }

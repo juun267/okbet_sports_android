@@ -365,6 +365,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun setupMatchCategoryPager(view: View) {
         view.match_category_pager.adapter = matchCategoryPagerAdapter
+        view.match_category_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
         view.game_match_category_pager.visibility =
             if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {

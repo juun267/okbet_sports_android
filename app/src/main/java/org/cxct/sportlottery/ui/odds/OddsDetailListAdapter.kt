@@ -608,6 +608,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     onOddClickListener,
                     oddsType
                 )
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
             }
 
             itemView.findViewById<IndicatorView>(R.id.idv_eps).setupWithViewPager2(vpEps)
