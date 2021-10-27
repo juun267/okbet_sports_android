@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
@@ -158,7 +159,10 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             itemView.apply {
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
-                        parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
+                        parlayType?.let { parlayTypeCode ->
+                            tv_play_name_parlay.text =
+                                getParlayStringRes(parlayTypeCode)?.let { context.getString(it) } ?: ""
+                        }
                     }
 
                     tv_match_at.visibility = if (firstItem) View.VISIBLE else View.GONE
