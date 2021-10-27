@@ -510,10 +510,13 @@
     <string name="text_bank_card_modify_success">Edit bank card successfully</string>
     <string name="text_crypto_modify_success">Edit virtual coin successfully</string>
     <string name="bet_info_list_title">Bet</string>
+    <string name="bet_list_title">BET SLIP</string>
     <string name="bet_info_list_game_closed">Trading be closed</string>
     <string name="bet_info_list_game_odds_changed">The odds have changed</string>
     <string name="bet_info_list_bet_quota">Betting amount: </string>
+    <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">Winning amount: </string>
+    <string name="bet_list_win_quota">Est. Winnings：</string>
     <string name="bet_info_list_rmb">RMB</string>
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Bet</string>
@@ -540,7 +543,7 @@
     <string name="bet_info_add_to_bet_info">Add to betslip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds，concede points or score has changed</string>
     <string name="bet_info_current_rmb">%s RMB</string>
-    <string name="bet_info_all_bet">All Bet</string>
+    <string name="bet_info_all_bet">Total Bets</string>
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Single bet</string>
@@ -554,10 +557,10 @@
     <string name="parlay_rule_ncm">The %1$S string %2$s is a %2$s bet made up of %1$S different races</string>
     <string name="parlay_rule_list_nc1">%1$S a %2$s string</string>
     <string name="parlay_rule_and">And</string>
-    <string name="bet_list_receipt">Bets receipt</string>
+    <string name="bet_list_receipt">RECEIPT OF BET SLIP</string>
     <string name="already_bet_complete">You have been successful bets</string>
     <string name="complete">Completed</string>
-    <string name="winnable_amount_colon">Winning amount:</string>
+    <string name="winnable_amount_colon">To Win：</string>
     <string name="finance">Fund details</string>
     <string name="record_recharge">Recharge record</string>
     <string name="record_withdrawal">Withdrawal record</string>
