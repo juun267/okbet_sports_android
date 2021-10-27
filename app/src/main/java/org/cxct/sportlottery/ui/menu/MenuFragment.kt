@@ -55,7 +55,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         setupCloseBtn()
         initObserve()
         initEvent()
-        setupSelectLanguage()
         setupVersion()
         getOddsType()
     }
@@ -155,22 +154,6 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
             }
             mDownMenuListener?.onClick(btn_sign_out)
         }
-
-        //語系設置
-        btn_change_language.setOnClickListener {
-            ChangeLanguageDialog().show(parentFragmentManager, null)
-            mDownMenuListener?.onClick(btn_change_language)
-        }
-
-    }
-
-    private fun setupSelectLanguage() {
-        btn_change_language.text =
-            when (LanguageManager.getSelectLanguage(btn_change_language.context)) {
-                LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> getString(R.string.language_cn)
-                LanguageManager.Language.VI -> getString(R.string.language_vi)
-                LanguageManager.Language.EN -> getString(R.string.language_en)
-            }
     }
 
     private fun setupVersion() {
