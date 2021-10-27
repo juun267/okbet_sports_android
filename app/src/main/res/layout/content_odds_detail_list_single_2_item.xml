@@ -14,6 +14,7 @@
         android:id="@+id/rv_bet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         android:nestedScrollingEnabled="false"
         android:padding="@dimen/activity_vertical_margin"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

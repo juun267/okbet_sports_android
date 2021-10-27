@@ -73,6 +73,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_bet_receipt"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/cl_total_info"

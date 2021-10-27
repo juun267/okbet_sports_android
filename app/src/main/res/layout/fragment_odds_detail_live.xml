@@ -75,6 +75,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
                     android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
                     app:layout_constraintTop_toBottomOf="@id/tab_cat"
                     tools:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
                     tools:layout_constraintBottom_toBottomOf="parent"

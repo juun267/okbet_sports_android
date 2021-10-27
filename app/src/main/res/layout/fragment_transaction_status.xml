@@ -12,6 +12,7 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:overScrollMode="never"
         android:background="@color/colorBackground"
         android:fillViewport="true">
 
@@ -83,6 +84,7 @@
                 android:id="@+id/rv_record"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:overScrollMode="never"
                 tools:listitem="@layout/content_parlay_record"
                 tools:itemCount="1"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

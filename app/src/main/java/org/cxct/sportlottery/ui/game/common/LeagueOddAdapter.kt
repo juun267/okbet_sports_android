@@ -619,7 +619,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 } else {
                     View.GONE
                 }
-
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)
             }
         }
@@ -859,7 +858,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     } else {
                         View.GONE
                     }
-
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
                 setupWithViewPager2(itemView.quick_odd_btn_pager_other)
             }
         }

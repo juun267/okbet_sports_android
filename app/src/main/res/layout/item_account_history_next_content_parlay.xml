@@ -63,6 +63,7 @@
             android:id="@+id/rv_parlay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:overScrollMode="never"
             tools:itemCount="3"
             tools:listitem="@layout/item_account_history_next_content_parlay_item" />
 
