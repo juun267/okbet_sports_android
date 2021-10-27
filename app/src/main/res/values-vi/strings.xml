@@ -502,10 +502,13 @@
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
     <string name="bet_info_list_title">Đơn cược</string>
+    <string name="bet_list_title">ĐƠN CƯỢC</string>
     <string name="bet_info_list_game_closed">Kèo chấp đã đóng</string>
     <string name="bet_info_list_game_odds_changed">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_info_list_bet_quota">Số tiền cược</string>
-    <string name="bet_info_list_win_quota">số tiền có thể thắng</string>
+    <string name="bet_receipt_bet_quota">Số tiền cược：</string>
+    <string name="bet_info_list_win_quota">Số tiền có thể thắng</string>
+    <string name="bet_list_win_quota">Số tiền có thể thắng：</string>
     <string name="bet_info_list_rmb">RMB</string>
     <string name="bet_info_list_add_more">Thêm nhiều lựa chọn</string>
     <string name="bet_info_list_bet">đặt cược</string>

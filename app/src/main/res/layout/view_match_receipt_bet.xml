@@ -9,7 +9,7 @@
         android:id="@+id/tv_bet_amount_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bet_info_list_bet_quota"
+        android:text="@string/bet_receipt_bet_quota"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize13sp"
         app:layout_constraintStart_toStartOf="parent"
