@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 
 /**
@@ -497,7 +498,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setCancelable(false)
             setCanceledOnTouchOutside(false)
             view.apply {
-                tv_parlay_type.text = TextUtil.replaceParlayByC(parlayType)
+                tv_parlay_type.text = getParlayStringRes(parlayType)?.let { context.getString(it) } ?: ""
                 tv_parlay_rule.text = parlayRule
             }
             btn_close.setOnClickListener {
