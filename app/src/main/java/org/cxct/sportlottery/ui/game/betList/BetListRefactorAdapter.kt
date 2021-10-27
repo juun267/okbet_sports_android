@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import timber.log.Timber
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -296,7 +297,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         itemData.matchOdd.homeScore.toString(),
                         itemData.matchOdd.awayScore.toString()
                     )
-                } else itemData.matchOdd.playCateName
+                } else itemData.matchOdd.playCode
 
                 if (itemData.betAmount > 0) {
                     et_bet.setText(TextUtil.formatInputMoney(itemData.betAmount))

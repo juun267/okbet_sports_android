@@ -36,6 +36,7 @@ import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import timber.log.Timber
 
 
 /**
@@ -377,7 +378,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 matchOdd.homeScore.toString(),
                 matchOdd.awayScore.toString()
             )
-        } else nameOneLine(matchOdd.playCateName)
+        } else nameOneLine(matchOdd.playCode)
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
             cl_item_background.setBackgroundColor(
