@@ -329,7 +329,7 @@ class BetInfoRepository(val androidContext: Context) {
             oddsList.indexOf(it)
         }
 
-        val parlayComList = ParlayLimitUtil.getCom(androidContext, oddsIndexList.toIntArray())
+        val parlayComList = ParlayLimitUtil.getCom(oddsIndexList.toIntArray())
 
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
             oddsList,
@@ -337,12 +337,6 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.max?.toBigDecimal(),
             playQuota?.min?.toBigDecimal()
         )
-
-        //串關規則Map
-        val parlayRuleMap: MutableMap<String, String?> = mutableMapOf()
-        for (parlayCom in parlayComList) {
-            parlayRuleMap[parlayCom.parlayType] = parlayCom.rule
-        }
 
         return parlayBetLimitMap.map {
             ParlayOdd(
@@ -352,9 +346,7 @@ class BetInfoRepository(val androidContext: Context) {
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
-            ).apply {
-                parlayRule = parlayRuleMap[it.key]
-            }
+            )
         }
     }
 

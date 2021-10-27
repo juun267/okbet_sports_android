@@ -29,6 +29,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -615,7 +617,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
 
                 itemData?.let { data ->
-                    tv_parlay_type.text = TextUtil.replaceParlayByC(data.parlayType)
+                    tv_parlay_type.text = getParlayName(data.parlayType)
 
                     tv_parlay_odd.apply {
                         if (firstItem && !hasBetClosed) {
@@ -639,6 +641,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 }
             }
+        }
+
+        private fun getParlayName(parlayType: String): String {
+            return getParlayStringRes(parlayType)?.let {
+                itemView.context.getString(it)
+            } ?: ""
         }
 
         private fun setupItemEnable(hasBetClosed: Boolean) {
@@ -826,7 +834,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupParlayRuleButton(data: ParlayOdd, onItemClickListener: OnItemClickListener) {
             itemView.btn_rule.setOnClickListener {
-                onItemClickListener.showParlayRule(data.parlayType, data.parlayRule ?: "")
+                onItemClickListener.showParlayRule(
+                    data.parlayType,
+                    getParlayRuleStringRes(data.parlayType)?.let { ruleRes -> itemView.context.getString(ruleRes) }
+                        ?: "")
             }
         }
     }
