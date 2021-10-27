@@ -26,11 +26,6 @@ public class ParlayCom {
         return parlayType;
     }
 
-    /**
-     * 組合規則
-     */
-    private String rule;
-
     public void setParlayType(String parlayType) {
         this.parlayType = parlayType;
     }
@@ -49,14 +44,6 @@ public class ParlayCom {
 
     public void setComList(List<int[]> comList) {
         this.comList = comList;
-    }
-
-    public String getRule() {
-        return rule;
-    }
-
-    public void setRule(String rule) {
-        this.rule = rule;
     }
 
     @Override

@@ -1,9 +1,6 @@
 package org.cxct.sportlottery.util.parlaylimit
 
 import android.annotation.SuppressLint
-import android.content.Context
-import org.cxct.sportlottery.R
-import org.cxct.sportlottery.repository.BET_INFO_MAX_COUNT
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -100,11 +97,7 @@ object ParlayLimitUtil {
      * @return
      */
     @SuppressLint("NewApi")
-    fun getCom(context: Context, matchIdArray: IntArray): List<ParlayCom> {
-        val atLeastRuleString = context.getString(R.string.parlay_rule_at_least)
-
-        val cantParlayWarn = context.getString(R.string.parlay_rule_cant_warn)
-
+    fun getCom(matchIdArray: IntArray): List<ParlayCom> {
         val parlayComSOList: MutableList<ParlayCom> = ArrayList()
         if (matchIdArray.size == 1) {
             val parlayCom = ParlayCom()
@@ -141,19 +134,12 @@ object ParlayLimitUtil {
         //Fix bug no.13421 目前OPPO R9s發現此問題,其餘手機正常
         val keyList: List<Int> = map.keys.sorted()
 
-        val nC1RuleList: MutableList<String> = mutableListOf()
         for (key in keyList) {
             val list: List<IntArray> = map[key]!!
             val parlayCom = ParlayCom()
             parlayCom.num = list.size
             parlayCom.parlayType = list[0].size.toString() + "C1"
 
-            //串關舉例時, 不舉例超過投注數上限的例子, 例如: 投注上限10, 就不會舉例十一場賽事串的例子
-            val parlayComRule = String.format(context.getString(R.string.parlay_rule_nc1), list[0].size)
-            val parlayRuleExample = if (key == BET_INFO_MAX_COUNT) "" else "${String.format(context.getString(R.string.parlay_rule_nc1_ex), list[0].size, list[0].size + 1)}\n"
-            parlayCom.rule = "$parlayComRule\n$parlayRuleExample$cantParlayWarn"
-
-            nC1RuleList.add(String.format(context.getString(R.string.parlay_rule_list_nc1), list.size, list[0].size.toString()))
             parlayCom.setComList(list)
             parlayComSOList.add(parlayCom)
         }
@@ -172,21 +158,6 @@ object ParlayLimitUtil {
             nParlayM.num = all.size
             nParlayM.setComList(all)
             nParlayM.parlayType = matchIdArray.size.toString() + "C" + all.size
-            nParlayM.rule = "${
-                String.format(
-                    context.getString(R.string.parlay_rule_ncm),
-                    matchIdArray.size.toString(),
-                    all.size
-                )
-            }\n" +
-                    nC1RuleList.joinToString (""){
-                        when (it) {
-                            nC1RuleList.first() -> it
-                            nC1RuleList.last() -> "${context.getString(R.string.parlay_rule_and)}$it"
-                            else -> "，$it"
-                        }
-                    } +
-                    "\n$atLeastRuleString\n$cantParlayWarn"
             parlayComSOList.add(nParlayM)
         }
 
