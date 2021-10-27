@@ -10,12 +10,14 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -38,6 +40,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -366,6 +369,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun setupMatchCategoryPager(view: View) {
         view.match_category_pager.adapter = matchCategoryPagerAdapter
         view.match_category_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+        OverScrollDecoratorHelper.setUpOverScroll(view.match_category_pager.getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
         view.game_match_category_pager.visibility =
             if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {

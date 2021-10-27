@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -179,6 +180,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
                 view_pager.adapter = data.vpRecommendAdapter
                 view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+                OverScrollDecoratorHelper.setUpOverScroll(view_pager.getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
                 indicator_view.setupWithViewPager2(view_pager)
                 indicator_view.apply {
                     visibility = if (data.isOutright == 1 || data.oddBeans.size <= 1) {
