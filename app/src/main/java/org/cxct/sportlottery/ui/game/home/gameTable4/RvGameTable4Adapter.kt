@@ -126,6 +126,8 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHol
                         View.VISIBLE
                     }
                 }
+
+                view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
             }
         }
     }
