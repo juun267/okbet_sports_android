@@ -751,4 +751,21 @@
     <string name="service_2">客服2</string>
     <string name="service_connect">联系</string>
     <string name="top_game">世界顶级赛事</string>
+    <string name="parlay_10_fold">10串1</string>
+    <string name="parlay_10_block">10串1013</string>
+    <string name="parlay_2_fold">2串1</string>
+    <string name="parlay_3_fold">3串1</string>
+    <string name="parlay_3_block">3串4</string>
+    <string name="parlay_4_fold">4串1</string>
+    <string name="parlay_4_block">4串11</string>
+    <string name="parlay_5_fold">5串1</string>
+    <string name="parlay_5_block">5串26</string>
+    <string name="parlay_6_fold">6串1</string>
+    <string name="parlay_6_block">6串57</string>
+    <string name="parlay_7_fold">7串1</string>
+    <string name="parlay_7_block">7串120</string>
+    <string name="parlay_8_fold">8串1</string>
+    <string name="parlay_8_block">8串247</string>
+    <string name="parlay_9_fold">9串1</string>
+    <string name="parlay_9_block">9串502</string>
 </resources>

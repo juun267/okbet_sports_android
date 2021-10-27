@@ -750,4 +750,21 @@
     <string name="service_2">Customer2</string>
     <string name="service_connect">Connect</string>
     <string name="top_game">World\'s top events</string>
+    <string name="parlay_10_fold">10-Fold</string>
+    <string name="parlay_10_block">Block (10)</string>
+    <string name="parlay_2_fold">Double</string>
+    <string name="parlay_3_fold">Treble</string>
+    <string name="parlay_3_block">Trixie</string>
+    <string name="parlay_4_fold">4-Fold</string>
+    <string name="parlay_4_block">Yankee</string>
+    <string name="parlay_5_fold">5-Fold</string>
+    <string name="parlay_5_block">Super Yankee</string>
+    <string name="parlay_6_fold">6-Fold</string>
+    <string name="parlay_6_block">Heinz</string>
+    <string name="parlay_7_fold">7-Fold</string>
+    <string name="parlay_7_block">Super Heinz</string>
+    <string name="parlay_8_fold">8-Fold</string>
+    <string name="parlay_8_block">Goliath</string>
+    <string name="parlay_9_fold">9-Fold</string>
+    <string name="parlay_9_block">Block (9)</string>
 </resources>
