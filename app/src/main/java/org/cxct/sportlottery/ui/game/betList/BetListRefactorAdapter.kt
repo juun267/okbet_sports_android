@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -833,7 +834,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupParlayRuleButton(data: ParlayOdd, onItemClickListener: OnItemClickListener) {
             itemView.btn_rule.setOnClickListener {
-                onItemClickListener.showParlayRule(data.parlayType, data.parlayRule ?: "")
+                onItemClickListener.showParlayRule(
+                    data.parlayType,
+                    getParlayRuleStringRes(data.parlayType)?.let { ruleRes -> itemView.context.getString(ruleRes) }
+                        ?: "")
             }
         }
     }
