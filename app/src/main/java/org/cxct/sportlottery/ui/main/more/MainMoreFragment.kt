@@ -56,7 +56,7 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameFragList = createGameFragList(gameCateFilterList)
         view_pager.adapter = Vp2FragmentAdapter(gameFragList, this)
         view_pager.isUserInputEnabled = false //關閉 viewPager2 左右滑動功能
-
+        view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
         //選中字體加粗
         tab_layout.clearOnTabSelectedListeners()
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

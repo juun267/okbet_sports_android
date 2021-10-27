@@ -178,6 +178,7 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 data.vpRecommendAdapter?.onClickMoreListener = onClickMoreListener
 
                 view_pager.adapter = data.vpRecommendAdapter
+                view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
                 indicator_view.setupWithViewPager2(view_pager)
                 indicator_view.apply {
                     visibility = if (data.isOutright == 1 || data.oddBeans.size <= 1) {
@@ -186,7 +187,6 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         View.VISIBLE
                     }
                 }
-                view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
             }
         }
         private fun org.cxct.sportlottery.network.matchCategory.result.MatchInfo.getStartTime(context: Context): String {
