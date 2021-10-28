@@ -246,7 +246,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun initObserve() {
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { list ->
+            it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list[0]
 
