@@ -377,7 +377,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 matchOdd.homeScore.toString(),
                 matchOdd.awayScore.toString()
             )
-        } else nameOneLine(matchOdd.playCode)
+        } else nameOneLine(matchOdd.playCateName)
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
             cl_item_background.setBackgroundColor(

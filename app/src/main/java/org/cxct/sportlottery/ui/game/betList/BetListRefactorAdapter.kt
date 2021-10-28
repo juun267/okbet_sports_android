@@ -298,7 +298,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         itemData.matchOdd.homeScore.toString(),
                         itemData.matchOdd.awayScore.toString()
                     )
-                } else itemData.matchOdd.playCode
+                } else itemData.matchOdd.playCateName
 
                 if (itemData.betAmount > 0) {
                     et_bet.setText(TextUtil.formatInputMoney(itemData.betAmount))
