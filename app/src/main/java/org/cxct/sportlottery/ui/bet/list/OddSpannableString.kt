@@ -154,6 +154,9 @@ object OddSpannableString {
         oddContentBuilder.append(oddsSpan)
 
         textView.text = oddContentBuilder
+
+        //需清除暫存字串, extInfo有可能會為null而被跳過, 顯示字串處理完畢後需清空
+        extInfo = null
     }
 
 
