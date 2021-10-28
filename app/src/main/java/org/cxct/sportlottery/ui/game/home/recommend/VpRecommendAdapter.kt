@@ -377,6 +377,9 @@ class VpRecommendAdapter(
             LanguageManager.Language.EN -> {
                 this.playCateNameEn
             }
+            LanguageManager.Language.VI -> {
+                this.playCateNameVi
+            }
             else -> {
                 this.playCateName
             }

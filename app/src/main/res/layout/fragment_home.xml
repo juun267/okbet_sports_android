@@ -353,6 +353,7 @@
                         android:layout_height="28dp"
                         android:paddingHorizontal="16dp"
                         android:text="@string/label_match_recommend"
+                        android:textAllCaps="true"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/textSize20sp"
                         android:textStyle="bold" />

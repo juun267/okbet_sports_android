@@ -16,6 +16,7 @@
         android:textColor="@color/selector_odd_category_text_v4"
         android:textSize="@dimen/textSize12sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toTopOf="@id/play_category_name"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
