@@ -192,6 +192,26 @@ object SocketUpdateUtil {
                         )
                     }
 
+                    (cateMenuCode == PlayCate.OUTRIGHT.value) -> {
+                        var updated = false
+                        oddsChangeEvent.odds?.forEach { (key, value) ->
+                            if (matchOdd.oddsMap.containsKey(key)) {
+                                if (updateMatchOdds(
+                                        mutableMapOf(
+                                            Pair(
+                                                key, matchOdd.oddsMap[key]
+                                            )
+                                        ), mutableMapOf(Pair(key, value))
+                                    )
+                                ) updated = true
+                            } else {
+                                matchOdd.oddsMap[key] = value.toMutableList()
+                                updated = true
+                            }
+                        }
+                        updated
+                    }
+
                     (QuickPlayCate.values().map { it.value }.contains(cateMenuCode)) -> {
                         updateMatchOdds(
                             matchOdd.quickPlayCateList?.find { it.isSelected }?.quickOdds?.toMutableFormat()
