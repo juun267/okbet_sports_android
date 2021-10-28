@@ -593,8 +593,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         this.oddsType = oddsType
 
-                        this.listener = OddButtonListener { matchInfo, odd, playCateName ->
-                            leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                            leagueOddListener?.onClickBet(matchInfo, odd, playCateCode, playCateName)
                         }
                     }
 
@@ -738,10 +738,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 OddButtonPairAdapter(item.matchInfo).apply {
                     this.oddsType = oddsType
 
-                    listener = OddButtonListener { matchInfo, odd, playCateName ->
+                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
                             odd,
+                            playCateCode,
                             item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
                         )
                     }
@@ -832,8 +833,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         this.oddsType = oddsType
 
-                        this.listener = OddButtonListener { matchInfo, odd, playCateName ->
-                            leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                            leagueOddListener?.onClickBet(matchInfo, odd, playCateCode, playCateName)
                         }
                     }
 
@@ -877,10 +878,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 OddButtonEpsAdapter(item.matchInfo).apply {
                     this.oddsType = oddsType
 
-                    listener = OddButtonListener { matchInfo, odd, playCateName ->
+                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
                             odd,
+                            playCateCode,
                             item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
                         )
                     }
