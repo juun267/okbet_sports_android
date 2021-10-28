@@ -164,7 +164,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             et_nickname.setError(it)
         })
         viewModel.userMoney.observe(viewLifecycleOwner,  {
-            txv_wallet_money.text = (ArithUtil.toMoneyFormat(it)) + " RMB"
+            txv_wallet_money.text = String.format(getString(R.string.finance_rmb), ArithUtil.toMoneyFormat(it))
         })
 
         viewModel.transferPayResult.observe(viewLifecycleOwner,  {
