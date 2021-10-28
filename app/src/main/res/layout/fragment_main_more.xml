@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
         android:layout_marginEnd="14dp"
+        android:overScrollMode="never"
         android:minHeight="84dp"
         android:visibility="gone"
         app:tabIndicatorHeight="0dp"

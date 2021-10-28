@@ -52,6 +52,7 @@
                     android:id="@+id/tab_cat"
                     android:layout_width="match_parent"
                     android:layout_height="62dp"
+                    android:overScrollMode="never"
                     android:background="@color/colorWhite"
                     android:clipToPadding="false"
                     android:paddingHorizontal="10dp"
