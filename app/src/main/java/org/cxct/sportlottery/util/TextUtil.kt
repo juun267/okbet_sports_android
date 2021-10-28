@@ -1,9 +1,12 @@
 package org.cxct.sportlottery.util
 
 import java.math.RoundingMode
-import java.text.DecimalFormat
 
-object TextUtil {
+/**
+ * 需要使用DecimalFormat轉換格式時, 需配合doNumberFormat()
+ * @see DecimalFormatUtil.doNumberFormat
+ */
+object TextUtil : DecimalFormatUtil() {
     fun split(str: String?): MutableList<String> {
         if (str.isNullOrEmpty()) {
             return mutableListOf()
@@ -12,48 +15,39 @@ object TextUtil {
     }
 
     fun format(any: Any): String {
-        val df = DecimalFormat("###,###,###,##0.000")
-        return df.format(any)
+        return doNumberFormat(any, "###,###,###,##0.000")
     }
 
     fun formatInputMoney(any: Any): String {
-        val df = DecimalFormat("0.###")
-        return df.format(any)
+        return doNumberFormat(any, "0.###")
     }
 
     fun formatMoney(double: Double): String {
-        val df = DecimalFormat("###,###,###,##0.000")
-        return df.format(ArithUtil.toMoneyFormat(double).toDouble())
+        return doNumberFormat(ArithUtil.toMoneyFormat(double).toDouble(), "###,###,###,##0.000")
     }
 
     fun formatMoney(int: Int): String {
-        val df = DecimalFormat("###,###,###,##0.000")
-        return df.format(ArithUtil.toMoneyFormat(int.toDouble()).toDouble())
+        return doNumberFormat(ArithUtil.toMoneyFormat(int.toDouble()).toDouble(), "###,###,###,##0.000")
     }
 
     fun formatMoneyNoDecimal(int: Int): String {
-        val df = DecimalFormat("###,###,###,##0")
-        return df.format(int)
+        return doNumberFormat(int, "###,###,###,##0")
     }
 
     fun formatForOdd(any: Any): String {
-        val df = DecimalFormat("###,###,###,##0.00")
-        return df.format(any)
+        return doNumberFormat(any, "###,###,###,##0.00")
     }
 
     fun formatBetQuota(any: Any): String {
-        val df = DecimalFormat("###,###,###,###")
-        return df.format(any)
+        return doNumberFormat(any, "###,###,###,###")
     }
 
     fun formatForVipRebates(any: Any): String {
-        val df = DecimalFormat("#.# %").apply { roundingMode = RoundingMode.HALF_UP }
-        return df.format(any)
+        return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatForBetHint(any: Any): String {
-        val df = DecimalFormat("###,###,###,###")
-        return df.format(any)
+        return doNumberFormat(any, "###,###,###,###")
     }
 
     //TODO 應以resource代入, 配合多國語
