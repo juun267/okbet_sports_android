@@ -149,7 +149,7 @@ class BetInfoRepository(val androidContext: Context) {
 
             if (!hasPointMark) {
                 val newParlayList = updateParlayOddOrder(
-                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
+                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, true).toMutableList()
                 )
                 if (!_parlayList.value.isNullOrEmpty() && _parlayList.value?.size == newParlayList.size) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
@@ -286,15 +286,18 @@ class BetInfoRepository(val androidContext: Context) {
         }
     }
 
-
+    /**
+     * @param isParlayBet 2021/10/29新增, gameType為GameType.PARLAY時不代表該投注為串關投注, 僅由組合後產生的投注才是PARLAY
+     */
     fun getParlayOdd(
         matchType: MatchType,
         gameType: GameType,
-        matchOddList: MutableList<MatchOdd>
+        matchOddList: MutableList<MatchOdd>,
+        isParlayBet: Boolean = false
     ): List<ParlayOdd> {
 
-        val playQuota: PlayQuota? = when (matchType) {
-            MatchType.OUTRIGHT -> {
+        val playQuota: PlayQuota? = when {
+            matchType == MatchType.OUTRIGHT -> {
                 when (gameType) {
                     GameType.FT -> playQuotaComData?.oUTRIGHTFT
                     GameType.BK -> playQuotaComData?.oUTRIGHTBK
@@ -303,7 +306,7 @@ class BetInfoRepository(val androidContext: Context) {
                 }
             }
 
-            MatchType.PARLAY -> {
+            isParlayBet -> {
                 when (gameType) {
                     GameType.FT -> playQuotaComData?.pARLAYFT
                     GameType.BK -> playQuotaComData?.pARLAYBK
