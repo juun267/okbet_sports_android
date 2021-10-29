@@ -411,8 +411,9 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             button_bet.isOddsChanged = true
         }
 
-        if (betInfoListData?.matchType == MatchType.OUTRIGHT) matchOdd.spread = ""
-        OddSpannableString.setupOddsContent(matchOdd, oddsType, tv_odds_content)
+        betInfoListData?.let { betInfoData ->
+            OddSpannableString.setupOddsContent(betInfoData, oddsType, tv_odds_content)
+        }
     }
 
     fun addToBetInfoList() {
