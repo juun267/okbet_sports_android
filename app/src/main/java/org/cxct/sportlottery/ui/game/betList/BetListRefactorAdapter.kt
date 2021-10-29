@@ -219,6 +219,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupOddInfo(itemData, oddsType)
                 setupMinimumLimitMessage(itemData)
+                onItemClickListener.refreshBetInfoTotal()
 
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
@@ -712,6 +713,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     setupOddInfo(data, oddsType)
                     setupMinimumLimitMessage(data)
+                    onItemClickListener.refreshBetInfoTotal()
 
                     /* set listener */
                     val tw: TextWatcher?
