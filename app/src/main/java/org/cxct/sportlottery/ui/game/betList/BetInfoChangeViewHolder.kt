@@ -18,8 +18,9 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
-import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
+import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -38,42 +39,45 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     private var extInfo: SpannableString? = null
 
 
-    fun setupOddsContent(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?) {
+    fun setupOddsContent(betInfoData: BetInfoListData, oddsType: OddsType, textView: TextView?) {
         if (textView == null) return
+
+        val matchType = betInfoData.matchType
+        val matchOdd = betInfoData.matchOdd
 
         when{
             matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState == OddState.SAME.state -> {
                 matchOdd.runnable?.let {
                     return
-                }?:run { setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false) }
+                }?:run { setupMergeString(matchType, matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false) }
             }
 
             matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState == OddState.SAME.state -> {
-                setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = false)
-                resetRunnable(matchOdd, oddsType, textView)
+                setupMergeString(betInfoData.matchType,matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = false)
+                resetRunnable(matchType, matchOdd, oddsType, textView)
             }
 
             matchOdd.spreadState == SpreadState.SAME.state && matchOdd.oddState != OddState.SAME.state -> {
-                setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = true)
-                resetRunnable(matchOdd, oddsType, textView)
+                setupMergeString(betInfoData.matchType,matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = true)
+                resetRunnable(matchType, matchOdd, oddsType, textView)
             }
 
             matchOdd.spreadState != SpreadState.SAME.state && matchOdd.oddState != OddState.SAME.state -> {
-                setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = true)
-                resetRunnable(matchOdd, oddsType, textView)
+                setupMergeString(betInfoData.matchType,matchOdd, oddsType, textView, isSpreadChanged = true, isOddsChanged = true)
+                resetRunnable(matchType, matchOdd, oddsType, textView)
             }
         }
     }
 
 
-    private fun setupMergeString(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?, isSpreadChanged: Boolean, isOddsChanged: Boolean) {
+    private fun setupMergeString(matchType: MatchType?, matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?, isSpreadChanged: Boolean, isOddsChanged: Boolean) {
         if (textView == null) return
 
         setupPlayNameSpannableString(matchOdd)
 
-        setupExtInfoSpannableString(matchOdd)
+        setupExtInfoSpannableString(matchType, matchOdd)
 
-        setupSpreadSpannableString(textView.context, matchOdd, isSpreadChanged)
+        setupSpreadSpannableString(textView.context, matchType, matchOdd, isSpreadChanged)
 
         setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
 
@@ -86,8 +90,8 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0, matchOdd.playName.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
-    private fun setupExtInfoSpannableString(matchOdd: MatchOdd) {
-        if(!matchOdd.extInfo.isNullOrEmpty() && matchOdd.playCode != PlayCate.EPS.value){
+    private fun setupExtInfoSpannableString(matchType: MatchType?, matchOdd: MatchOdd) {
+        if(!matchOdd.extInfo.isNullOrEmpty() && matchType != MatchType.EPS){
             matchOdd.extInfo?.let {
                 extInfo = SpannableString(matchOdd.extInfo + " ")
                 extInfo?.setSpan(StyleSpan(Typeface.BOLD), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -95,11 +99,11 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         }
     }
 
-    private fun setupSpreadSpannableString(context: Context, matchOdd: MatchOdd, isChanged: Boolean) {
+    private fun setupSpreadSpannableString(context: Context, matchType: MatchType?, matchOdd: MatchOdd, isChanged: Boolean) {
         val textColor = ContextCompat.getColor(context, if (isChanged) R.color.colorWhite else R.color.colorRedDark)
         val backgroundColor = ContextCompat.getColor(context, if (isChanged) R.color.colorBronze else R.color.transparent)
 
-        if (matchOdd.spread.isEmpty() || !needShowSpread(matchOdd.playCode)
+        if (matchOdd.spread.isEmpty() || !needShowSpread(matchOdd.playCode) || matchType == MatchType.OUTRIGHT
         ) {
             spreadSpan = SpannableString("")
         }else {
@@ -141,9 +145,9 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     }
 
 
-    private fun highLightRunnable(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?): Runnable {
+    private fun highLightRunnable(matchType: MatchType?, matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?): Runnable {
         return Runnable {
-            setupMergeString(matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false)
+            setupMergeString(matchType, matchOdd, oddsType, textView, isSpreadChanged = false, isOddsChanged = false)
             matchOdd.oddState = OddState.SAME.state
             matchOdd.spreadState = SpreadState.SAME.state
             matchOdd.runnable = null
@@ -151,11 +155,11 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     }
 
 
-    private fun resetRunnable(matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?){
+    private fun resetRunnable(matchType: MatchType?, matchOdd: MatchOdd, oddsType: OddsType, textView: TextView?){
         matchOdd.runnable?.let {
             mHandler.removeCallbacks(it)
         }
-        val runnable = highLightRunnable(matchOdd, oddsType, textView)
+        val runnable = highLightRunnable(matchType, matchOdd, oddsType, textView)
         matchOdd.runnable = runnable
         mHandler.postDelayed(runnable, HIGH_LIGHT_TIME)
     }

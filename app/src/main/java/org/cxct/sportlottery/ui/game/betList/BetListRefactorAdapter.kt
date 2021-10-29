@@ -286,8 +286,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
-                if (itemData.matchType == MatchType.OUTRIGHT) itemData.matchOdd.spread = ""
-                setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
+                setupOddsContent(itemData, oddsType = oddsType, tv_odds_content)
                 tv_match.text = if (itemData.matchType == MatchType.OUTRIGHT) itemData.outrightMatchInfo?.name
                 else "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
 
