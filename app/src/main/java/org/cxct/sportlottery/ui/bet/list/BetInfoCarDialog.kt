@@ -240,6 +240,26 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
                 button_bet.isOddsChanged = false //輸入金額行為, 視為接受當前賠率
             }
+
+            checkMinQuota(if (it.isEmpty()) 0.0 else it.toDouble())
+        }
+    }
+
+
+    private fun checkMinQuota(quota: Double) {
+        betInfoListData?.parlayOdds?.min?.let { min ->
+            if (quota < min) {
+                tv_error_message.text = String.format(
+                    (context ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
+                    min,
+                    context?.getString(R.string.currency)
+                )
+                tv_error_message.visibility = View.VISIBLE
+                button_bet.amountCanBet = false
+            } else {
+                tv_error_message.visibility = View.GONE
+                button_bet.amountCanBet = true
+            }
         }
     }
 
