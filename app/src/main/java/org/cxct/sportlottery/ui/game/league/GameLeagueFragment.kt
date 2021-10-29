@@ -49,7 +49,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         PlayCategoryAdapter().apply {
             playCategoryListener = PlayCategoryListener {
-                if (it.selectionType == SelectionType.SELECTABLE.code) { 
+                if (it.selectionType == SelectionType.SELECTABLE.code) {
                     when {
                         //這個是沒有點選過的狀況 第一次進來 ：開啟選單
                         !it.isSelected && it.isLocked == null -> {
@@ -185,7 +185,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     override fun onStart() {
         super.onStart()
-        
+
         subscribeSportChannelHall(args.gameType.key)
 
         viewModel.getLeagueOddsList(
@@ -324,13 +324,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         when {
             (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
                 game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else oddsListData?.sport?.name ?: ""
-                game_toolbar_sport_type.text =
+                game_toolbar_sport_type.text = args.matchCategoryName ?:
                     (oddsListData?.leagueOdds?.firstOrNull()?.league?.name?.split(" ")?.getOrNull(1) ?: "").toUpperCase(Locale.getDefault())
             }
 
             (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
                 game_toolbar_match_type.text = oddsListData?.sport?.name ?: ""
-                game_toolbar_sport_type.text = when (args.matchType) {
+                game_toolbar_sport_type.text = args.matchCategoryName ?: when (args.matchType) {
                     MatchType.TODAY -> getString(R.string.home_tab_today).toUpperCase(Locale.getDefault())
                     MatchType.EARLY -> getString(R.string.home_tab_early).toUpperCase(Locale.getDefault())
                     MatchType.PARLAY -> getString(R.string.home_tab_parlay).toUpperCase(Locale.getDefault())
