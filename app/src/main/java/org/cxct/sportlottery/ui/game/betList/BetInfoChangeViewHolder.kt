@@ -18,6 +18,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
@@ -86,7 +87,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     }
 
     private fun setupExtInfoSpannableString(matchOdd: MatchOdd) {
-        if(!matchOdd.extInfo.isNullOrEmpty()){
+        if(!matchOdd.extInfo.isNullOrEmpty() && matchOdd.playCode != PlayCate.EPS.value){
             matchOdd.extInfo?.let {
                 extInfo = SpannableString(matchOdd.extInfo + " ")
                 extInfo?.setSpan(StyleSpan(Typeface.BOLD), 0, it.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
