@@ -170,7 +170,7 @@
     <string name="daily_bet_range">cược hiệu lực cần đạt mỗi ngày</string>
     <string name="title_rebates_rate">Tổng số hoàn trả %</string>
     <string name="daily_rebates">Đơn hoàn trả tối đa trong một ngày</string>
-    <string name="hint_recharge_growth">Nạp tiền vào {unit} để nhận được {growth} tăng điểm</string>
+    <string name="hint_recharge_growth">Nạp tiền vào %d để nhận được %d tăng điểm</string>
     <string name="hint_bet_growth">Cá cược %d nhân dân tệ để nhận %d điểm</string>
     <string name="contact_us">liên hệ chúng tôi</string>
     <string name="game_rule">Luật trò chơi</string>

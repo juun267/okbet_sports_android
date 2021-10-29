@@ -178,8 +178,8 @@
     <string name="daily_bet_range">Daily valid code interval valued</string>
     <string name="title_rebates_rate">Rebate %</string>
     <string name="daily_rebates">Maximum rebate amount in one day</string>
-    <string name="hint_recharge_growth">Top-up 1 Yuan lulfilling %1$s to level up</string>
-    <string name="hint_bet_growth">Bet 1 Yuan lulfilling %1$s to level up</string>
+    <string name="hint_recharge_growth">Top-up %d PHP lulfilling %d to level up</string>
+    <string name="hint_bet_growth">Bet %d PHP lulfilling %d to level up</string>
     <string name="contact_us">Contact us</string>
     <string name="game_rule">Game Rules</string>
     <string name="sport_bet_rule">Sports betting rules</string>
