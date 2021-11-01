@@ -20,6 +20,7 @@
             android:text="@string/bet_info_list_bet"
             android:textColor="@color/selector_gray_white"
             android:textSize="@dimen/textSize13sp"
+            android:textAllCaps="true"
             app:layout_constraintBottom_toTopOf="@+id/tv_quota"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

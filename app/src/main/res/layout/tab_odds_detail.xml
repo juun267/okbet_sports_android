@@ -14,6 +14,7 @@
         android:gravity="center"
         android:textColor="@color/selector_odd_category_text_v4"
         android:textSize="@dimen/textSize12sp"
+        android:textAllCaps="true"
         tools:ignore="SpUsage"
         tools:text="受歡迎的" />
 

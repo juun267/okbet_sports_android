@@ -31,6 +31,7 @@
             android:overScrollMode="never">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -42,11 +43,11 @@
 
                 <org.cxct.sportlottery.ui.component.LiveViewToolbar
                     android:id="@+id/live_view_tool_bar"
-                    tools:layout_height="140dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    app:layout_constraintTop_toBottomOf="@id/v_toolbar" />
+                    app:layout_constraintTop_toBottomOf="@id/v_toolbar"
+                    tools:layout_height="140dp" />
 
                 <View
                     android:id="@+id/v_divider"
@@ -57,12 +58,14 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_cat"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="62dp"
-                    android:overScrollMode="never"
                     android:background="@color/colorWhite"
                     android:clipToPadding="false"
+                    android:overScrollMode="never"
                     android:paddingHorizontal="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/v_divider"
                     app:tabIndicatorHeight="0dp"
                     app:tabMode="scrollable"
@@ -78,8 +81,8 @@
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
                     app:layout_constraintTop_toBottomOf="@id/tab_cat"
-                    tools:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
                     tools:layout_constraintBottom_toBottomOf="parent"
+                    tools:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
