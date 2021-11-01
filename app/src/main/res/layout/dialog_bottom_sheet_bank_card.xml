@@ -30,6 +30,7 @@
             android:id="@+id/btn_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAllCaps="true"
             android:text="@string/bottom_sheet_close"
             android:textColor="@color/colorGrayLight"
             android:textSize="@dimen/textSize14sp"
