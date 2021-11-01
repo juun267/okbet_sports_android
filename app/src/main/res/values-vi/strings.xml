@@ -90,7 +90,7 @@
     <string name="desc_agreement">Tôi đã đủ tuổi hợp pháp và hoàn toàn đồng ý</string>
     <string name="btn_agreement">Thỏa thuận mở tài khoản</string>
     <string name="have_account">đã đăng ký tài khoản ?</string>
-    <string name="btn_login">đăng nhập</string>
+    <string name="btn_login">Đăng nhập</string>
     <string name="btn_register">Đăng ký</string>
     <string name="no_announcement">Không có thông báo</string>
     <string name="lottery">Xổ số</string>
@@ -118,8 +118,8 @@
     <string name="return_to_top">Quay lại đầu trang</string>
     <string name="versus">v</string>
     <string name="label_sport_game">quá trình trận đấu</string>
-    <string name="label_account_history">Lịch sử tài khoản</string>
-    <string name="label_transaction_status">Trạng thái giao dịch</string>
+    <string name="label_account_history">Lịch sử</string>
+    <string name="label_transaction_status">đã cược</string>
     <string name="label_title_parlay">Cược xiên tổng hợp</string>
     <string name="conspire">Xiên</string>
     <string name="message_no_at_start">Hiện tại không có sự kiện sắp tới</string>
@@ -140,7 +140,7 @@
     <string name="navigation_web">Mạng điều hướng</string>
     <string name="other">Khác</string>
     <string name="games_lobby">Sảnh trò chơi</string>
-    <string name="sport_game">trận đấu thể thao</string>
+    <string name="sport_game">Sport</string>
     <string name="cg_lottery">Xổ số CG</string>
     <string name="live_game">Live casino</string>
     <string name="poker_game">Games bài</string>
@@ -645,7 +645,7 @@
     <string name="live">Live</string>
     <string name="lottery_description">Có hơn trăm cách chơi xổ số để bạn trúng thưởng! Chúng tôi cung cấp cho người chơi nhiều nội dung trò chơi phong phú khác nhau, \ n cam kết tạo ra một môi trường trò chơi giải trí chất lượng cao, mang lại kết quả công bằng và mở thưởng công khai minh bạch nhất</string>
     <string name="sport_bet_record">lịch sử đặt cược thể thao</string>
-    <string name="my_favorite">Sự kiện của tôi</string>
+    <string name="my_favorite">Ưu thích</string>
     <string name="other_bet_record">lịch sử đặt cược khác</string>
     <string name="credit_bet_record">Lịch sử chu kỳ</string>
     <string name="all_plat_type">Tất cả các loại kênh</string>
