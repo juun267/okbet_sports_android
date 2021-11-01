@@ -637,8 +637,8 @@
     <string name="sorry_website_is_now_maintenance">Xin lỗi trang web hiện đang được bảo trì !</string>
     <string name="if_there_is_any_question_please_consult">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng đi đến tư vấn</string>
     <string name="bottom_nav_home">trang chủ</string>
-    <string name="bottom_nav_game">trận đấu</string>
-    <string name="bottom_nav_promotion">hoạt động</string>
+    <string name="bottom_nav_game">Sự kiện</string>
+    <string name="bottom_nav_promotion">Khuyến mãi</string>
     <string name="bottom_nav_chat">trò truyện</string>
     <string name="bottom_nav_my_account">của tôi</string>
     <string name="sport">thể thao</string>
