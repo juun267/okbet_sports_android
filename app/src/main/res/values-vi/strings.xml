@@ -671,8 +671,8 @@
     <string name="submit_time">thời gian gửi</string>
     <string name="feedback_time">Thời gian phản hồi</string>
     <string name="not_reply_yet">Chưa có phản hồi</string>
-    <string name="main_footer_desc">Được cấp giấy phép hợp pháp bởi Cơ quan quản lý trò chơi Malta Châu Âu (MGA), Ủy ban giám sát GC của Anh (Gambling Commission) và Ủy ban trò chơi của chính phủ Philippines (PAGCOR).
-    Đăng ký tại Quần đảo Virgin thuộc Anh, là một công ty cá cược hợp pháp được Hiệp hội cá cược Quốc tế công nhận. Trước khi tiến hành đăng ký và đặt cược, vui lòng đảm bảo rằng bạn đủ 18 tuổi trở lên!</string>
+    <string name="main_footer_desc">Giấy phép hợp pháp do cơ quan quản lý trò chơi Malta Châu Âu (MGA), ủy ban giám sát GC của Anh ( Gambling Commission ) và ủy ban trò chơi của chính phủ Philippines (PAGCOR) cấp./n
+    Được đăng ký tại Quần đảo Virgin thuộc Anh, đây là một công ty trò chơi hợp pháp được Hiệp hội Trò chơi Quốc tế công nhận. Trước khi đăng ký tài khoản giải trí vui lòng đảm bảo bạn đã đủ 18 tuổi trở lên!</string>
     <string name="match_not_exist"></string>
     <string name="odds_not_exist">Tỷ lệ trò chơi không tồn tại</string>
     <string name="match_invalid_status">Trận đấu không thể đặt cược</string>
