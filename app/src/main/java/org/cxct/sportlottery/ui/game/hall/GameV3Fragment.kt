@@ -85,7 +85,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val matchCategoryPagerAdapter by lazy {
         MatchCategoryViewPagerAdapter(OnItemClickListener {
-            navGameLeague(matchIdList = it.matchList)
+            navGameLeague(matchIdList = it.matchList, matchCategoryName = it.categoryDesc)
         })
     }
 
@@ -1224,7 +1224,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun navGameLeague(
         leagueIdList: List<String> = listOf(),
-        matchIdList: List<String> = listOf()
+        matchIdList: List<String> = listOf(),
+        matchCategoryName: String ?= null
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -1241,7 +1242,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 matchType ?: args.matchType,
                 gameType,
                 leagueIdList.toTypedArray(),
-                matchIdList.toTypedArray()
+                matchIdList.toTypedArray(),
+                matchCategoryName
             )
 
             findNavController().navigate(action)

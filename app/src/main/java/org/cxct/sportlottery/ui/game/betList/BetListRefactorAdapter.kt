@@ -219,6 +219,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupOddInfo(itemData, oddsType)
                 setupMinimumLimitMessage(itemData)
+                onItemClickListener.refreshBetInfoTotal()
 
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
@@ -286,8 +287,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
-                if (itemData.matchType == MatchType.OUTRIGHT) itemData.matchOdd.spread = ""
-                setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
+                setupOddsContent(itemData, oddsType = oddsType, tv_odds_content)
                 tv_match.text = if (itemData.matchType == MatchType.OUTRIGHT) itemData.outrightMatchInfo?.name
                 else "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
 
@@ -298,7 +298,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         itemData.matchOdd.homeScore.toString(),
                         itemData.matchOdd.awayScore.toString()
                     )
-                } else itemData.matchOdd.playCode
+                } else itemData.matchOdd.playCateName
 
                 if (itemData.betAmount > 0) {
                     et_bet.setText(TextUtil.formatInputMoney(itemData.betAmount))
@@ -713,6 +713,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     setupOddInfo(data, oddsType)
                     setupMinimumLimitMessage(data)
+                    onItemClickListener.refreshBetInfoTotal()
 
                     /* set listener */
                     val tw: TextWatcher?

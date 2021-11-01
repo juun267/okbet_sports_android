@@ -80,7 +80,7 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
         })
 
         viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
-            tv_money.text = "￥" + money?.let { it -> TextUtil.formatMoney(it) }
+            tv_money.text = "₱" + money?.let { it -> TextUtil.formatMoney(it) }
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {

@@ -563,7 +563,7 @@ class OddButtonPagerViewHolder private constructor(
 }
 
 class OddButtonListener(
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd,playCateCode: String, playCateName: String) -> Unit
 ) {
 
     fun onClickBet(
@@ -571,5 +571,5 @@ class OddButtonListener(
         odd: Odd,
         playCateCode: String,
         playCateName: String = ""
-    ) = clickListenerBet(matchInfo, odd, playCateName)
+    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName)
 }

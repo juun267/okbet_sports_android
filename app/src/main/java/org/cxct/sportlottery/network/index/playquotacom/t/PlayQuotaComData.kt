@@ -7,8 +7,6 @@ import com.squareup.moshi.JsonClass
 data class PlayQuotaComData(
     @Json(name = "OUTRIGHT@BK")
     val oUTRIGHTBK: OutrightBK,
-    @Json(name = "OUTRIGHT@BM")
-    val oUTRIGHTBM: OutrightBM,
     @Json(name = "OUTRIGHT@FT")
     val oUTRIGHTFT: OutrightFT,
     @Json(name = "OUTRIGHT@TN")
@@ -17,8 +15,6 @@ data class PlayQuotaComData(
     val oUTRIGHTVB: OutrightVB,
     @Json(name = "PARLAY@BK")
     val pARLAYBK: ParlayBK,
-    @Json(name = "PARLAY@BM")
-    val pARLAYBM: ParlayBM,
     @Json(name = "PARLAY@FT")
     val pARLAYFT: ParlayFT,
     @Json(name = "PARLAY@TN")
@@ -27,8 +23,6 @@ data class PlayQuotaComData(
     val pARLAYVB: ParlayVB,
     @Json(name = "SINGLE@BK")
     val sINGLEBK: SingleBK,
-    @Json(name = "SINGLE@BM")
-    val sINGLEBM: SingleBM,
     @Json(name = "SINGLE@FT")
     val sINGLEFT: SingleFT,
     @Json(name = "SINGLE@TN")
