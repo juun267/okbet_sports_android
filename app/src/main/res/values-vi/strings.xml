@@ -229,8 +229,8 @@
     <string name="need_improve">Cần được hoàn thiện</string>
     <string name="profile_info">Thông tin cá nhân</string>
     <string name="avatar">Ảnh đại diện</string>
-    <string name="nickname">Biệt hiệu</string>
-    <string name="password_setting">Thiết lập mật khẩu</string>
+    <string name="nickname">Tên</string>
+    <string name="password_setting">cài đặt mật khẩu</string>
     <string name="modify_avatar">sửa đổi ảnh đại diện</string>
     <string name="choose_a_photo_from_the_album">chọn ảnh từ album</string>
     <string name="take_a_picture">Chụp ảnh</string>
