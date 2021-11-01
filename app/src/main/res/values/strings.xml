@@ -275,6 +275,7 @@
     <string name="index">序号</string>
     <string name="title">标题</string>
     <string name="time">时间</string>
+    <string name="record_time">时间</string>
     <string name="choose_bet_state">选择注单状态</string>
     <string name="champion_play">冠军玩法</string>
     <string name="inquire">查询</string>

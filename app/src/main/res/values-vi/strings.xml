@@ -266,6 +266,7 @@
     <string name="index">số thứ tự</string>
     <string name="title">tiêu đề</string>
     <string name="time">thời gian</string>
+    <string name="record_time">Thời gian chuyển đổi</string>
     <string name="choose_bet_state">Chọn trạng thái đơn cược</string>
     <string name="champion_play">Trò chơi vô địch</string>
     <string name="inquire">Tra cứu</string>

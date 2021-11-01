@@ -274,6 +274,7 @@
     <string name="index">Numbers</string>
     <string name="title">Headline</string>
     <string name="time">Time</string>
+    <string name="record_time">Time</string>
     <string name="choose_bet_state">Select bets status</string>
     <string name="champion_play">Champion gamepaly</string>
     <string name="inquire">Search</string>
