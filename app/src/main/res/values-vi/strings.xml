@@ -166,7 +166,7 @@
     <string name="next_level_tips">Cần tăng giá trị lên khoảng %1$s điểm</string>
     <string name="level_max">Đã ở cấp cao nhất</string>
     <string name="unlimited">không giới hạn</string>
-    <string name="select_plat">Chọn kênh</string>
+    <string name="select_plat">Vui lòng chọn kênh</string>
     <string name="daily_bet_range">cược hiệu lực cần đạt mỗi ngày</string>
     <string name="title_rebates_rate">Tổng số hoàn trả %</string>
     <string name="daily_rebates">Đơn hoàn trả tối đa trong một ngày</string>
@@ -269,7 +269,7 @@
     <string name="record_time">Thời gian chuyển đổi</string>
     <string name="choose_bet_state">Chọn trạng thái đơn cược</string>
     <string name="champion_play">Trò chơi vô địch</string>
-    <string name="inquire">Tra cứu</string>
+    <string name="inquire">Kiểm tra</string>
     <string name="order_number">Mã số đặt cược</string>
     <string name="order_number_colon">mã đặt cược</string>
     <string name="bet_type">Cách đặt cược</string>
@@ -649,13 +649,13 @@
     <string name="my_favorite">Sự kiện của tôi</string>
     <string name="other_bet_record">Các lịch sử cá cược khác</string>
     <string name="credit_bet_record">Lịch sử chu kỳ</string>
-    <string name="all_plat_type">Tất cả các loại kênh</string>
+    <string name="all_plat_type">Tất cả các loại nền tảng</string>
     <string name="visit_first">Hãy đến và đi lang thang</string>
     <string name="bet_number">Số lượt đặt cược</string>
     <string name="bet_money">Số tiền đặt cược</string>
     <string name="profit_and_loss">Lãi và lỗ</string>
-    <string name="total_bet_number">Tổng đơn giao dịch</string>
-    <string name="total_profit_and_loss">Tổng lãi lỗ</string>
+    <string name="total_bet_number">Tổng số bàn：</string>
+    <string name="total_profit_and_loss">Tổng lãi và lỗ：</string>
     <string name="game_name">Tên trò chơi</string>
     <string name="all_out_plat">Tất cả chuyển ra</string>
     <string name="all_in_plat">Tất cả chuyển vào</string>
