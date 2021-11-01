@@ -495,6 +495,9 @@ class OddButtonPagerViewHolder private constructor(
             LanguageManager.Language.EN -> {
                 this.playCateNameEn
             }
+            LanguageManager.Language.VI -> {
+                this.playCateNameVi
+            }
             else -> {
                 this.playCateName
             }
