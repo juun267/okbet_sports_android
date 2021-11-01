@@ -261,11 +261,11 @@
     <string name="update">Cập nhật</string>
     <string name="update_now">cập nhật ngay lập tức</string>
     <string name="install">cài đặt</string>
-    <string name="inbox">Hộp thư đến(%1$d)</string>
-    <string name="unread_letters">Tin nhắn chưa đọc(%1$d)</string>
-    <string name="index">số thứ tự</string>
-    <string name="title">tiêu đề</string>
-    <string name="time">thời gian</string>
+    <string name="inbox">Hộp thư đến (%1$d)</string>
+    <string name="unread_letters">Thư chưa đọc (%1$d)</string>
+    <string name="index">Số thứ tự</string>
+    <string name="title">Tiêu đề</string>
+    <string name="time">Thời gian</string>
     <string name="record_time">Thời gian chuyển đổi</string>
     <string name="choose_bet_state">Chọn trạng thái đơn cược</string>
     <string name="champion_play">Trò chơi vô địch</string>

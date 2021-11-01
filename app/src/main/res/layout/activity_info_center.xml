@@ -65,7 +65,7 @@
                     android:background="@drawable/effect_select_bg_white_transparent"
                     android:button="@null"
                     android:gravity="center"
-                    android:text="@string/withdrawal_password"
+                    android:text="@string/unread_letters"
                     android:textColor="@color/color_select_primary_white"
                     android:textSize="@dimen/textSize16sp"
                     tools:text="@string/unread_letters" />
