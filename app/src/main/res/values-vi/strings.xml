@@ -93,10 +93,10 @@
     <string name="btn_login">đăng nhập</string>
     <string name="btn_register">Đăng ký</string>
     <string name="no_announcement">Không có thông báo</string>
-    <string name="lottery">xổ số</string>
-    <string name="poker">Game bài</string>
-    <string name="slot">điện tử</string>
-    <string name="fishing">bắn cá</string>
+    <string name="lottery">Xổ số</string>
+    <string name="poker">Cờ vua</string>
+    <string name="slot">GAME</string>
+    <string name="fishing">Bắn cá</string>
     <string name="more">Thêm</string>
     <string name="home_tan_main">Trang chủ</string>
     <string name="home_tab_in_play">trận bóng đang diễn ra</string>
@@ -641,7 +641,7 @@
     <string name="bottom_nav_promotion">Khuyến mãi</string>
     <string name="bottom_nav_chat">trò truyện</string>
     <string name="bottom_nav_my_account">của tôi</string>
-    <string name="sport">thể thao</string>
+    <string name="sport">Thể thao</string>
     <string name="live">Live</string>
     <string name="lottery_description">Có hơn trăm cách chơi xổ số để bạn trúng thưởng! Chúng tôi cung cấp cho người chơi nhiều nội dung trò chơi phong phú khác nhau, \ n cam kết tạo ra một môi trường trò chơi giải trí chất lượng cao, mang lại kết quả công bằng và mở thưởng công khai minh bạch nhất</string>
     <string name="sport_bet_record">lịch sử đặt cược thể thao</string>
