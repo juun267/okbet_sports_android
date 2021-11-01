@@ -744,7 +744,7 @@
     <string name="parlay_rule_nc1_ex">Khi có nhiều tùy chọn sự kiện hơn,%1$s chuỗi 1 có thể được kết hợp thành nhiều chuỗi. Ví dụ: các kết quả khớp%2$s có thể được hoán vị và kết hợp để tạo thành%2$s %1$s chuỗi 1</string>
     <string name="bet_list_cant_parlay_warn">Nhắc nhở rằng nếu cùng một sự kiện các loại bóng khác nhau không cùng hạng mục, nhà vô địch không thể tiến hành cược xiên</string>
     <string name="home_tab_at_start_2">trận đấu sắp bắt đầu</string>
-    <string name="message_no_sport_game">hiện tại không có%@trận đấu</string>
+    <string name="message_no_sport_game">hiện tại không có %1$s trận đấu</string>
     <string name="monday2">Thứ 2</string>
     <string name="tuesday2">Thứ 3</string>
     <string name="wednesday2">Thứ 4</string>
