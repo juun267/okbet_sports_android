@@ -104,7 +104,6 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:maxLines="1"
             android:text="@string/transfer_platform"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
