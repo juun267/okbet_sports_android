@@ -73,10 +73,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         initButton()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.getSportList()
-    }
 
     private fun initButton() {
         // 返回
