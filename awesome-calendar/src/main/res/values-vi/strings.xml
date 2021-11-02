@@ -18,6 +18,8 @@
         <item>@string/cdrp_sat</item>
     </string-array>
 
+    <string name="picker_cancel">Hủy bỏ</string>
+    <string name="picker_submit">Xác nhận</string>
 
     <string name="year">năm</string>
     <string name="month">tháng</string>

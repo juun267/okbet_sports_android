@@ -191,7 +191,7 @@
                         tools:text="备注 : " />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:orientation="horizontal">
@@ -201,7 +201,6 @@
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:maxWidth="76dp"
                             android:layout_height="28dp"
                             android:background="@drawable/bg_3dp_radius_button"
                             android:gravity="center"
@@ -213,7 +212,6 @@
                             android:id="@+id/btn_qr_recharge"
                             android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:maxWidth="76dp"
                             android:layout_height="28dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="20dp"
@@ -285,10 +283,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
-                    android:autoSizeMaxTextSize="13dp"
-                    android:autoSizeMinTextSize="6dp"
-                    android:autoSizeTextType="uniform"
-                    android:ems="4"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
@@ -312,9 +306,12 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="start|center_vertical"
+                    android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
+                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                    app:autoSizeMinTextSize="@dimen/textSize8sp"
                     tools:text="2020-13-25 19:35:35 (GMT+8)" />
 
                 <ImageView
