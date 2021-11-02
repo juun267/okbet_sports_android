@@ -43,7 +43,7 @@
     <string name="error_member_account">Tài khoản từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="desc_register_checking_account">Đang kiểm tra tài khoản</string>
     <string name="error_register_id_exist">Tên tài khoản đã tồn tại</string>
-    <string name="hint_register_password">Độ dài từ 6-20 ký tự bao gồm cả chữ và số</string>
+    <string name="hint_register_password">4–16 ký tự gồm chữ cái và số</string>
     <string name="error_register_password">Mật khẩu từ 4-16 ký tự bao gồm chữ và số</string>
     <string name="error_password_format">Mật khẩu cần phải chữ và số</string>
     <string name="confirm_password">Xác nhận mật khẩu</string>
@@ -236,14 +236,14 @@
     <string name="take_a_picture">Chụp ảnh</string>
     <string name="save_avatar_success">Ảnh đại diện tải lên thành công</string>
     <string name="change_nickname">Thay đổi iBệt hiệu</string>
-    <string name="hint_nickname">độ dài từ 2-6 ký tự gồm chữ cái trung hoặc anh</string>
+    <string name="hint_nickname">Độ dài tiếng Trung và tiếng Anh từ 2–6 từ</string>
     <string name="error_nickname">Biệt hiệu từ 2~6 ký tự bao gồm trung và anh</string>
     <string name="setting_password">Thiết lập mật khẩu</string>
     <string name="withdrawal_password">Mật khẩu rút tiền</string>
-    <string name="current_login_password">Mật khẩu đăng nhập hiện tại</string>
-    <string name="current_withdrawal_password">Mật khẩu thanh toán hiện tại</string>
-    <string name="hint_current_login_password">Vui lòng nhập mật khẩu của bạn</string>
-    <string name="hint_current_withdrawal_password">Vui lòng nhập mật khẩu rút tiền</string>
+    <string name="current_login_password">Hiện tạiĐăng nhập mật khẩu</string>
+    <string name="current_withdrawal_password">Hiện tạiMật khẩu rút tiền</string>
+    <string name="hint_current_login_password">Đăng nhập mật khẩu</string>
+    <string name="hint_current_withdrawal_password">Mật khẩu rút tiền </string>
     <string name="new_password">Mật khẩu mới</string>
     <string name="hint_withdrawal_new_password">Mật khẩu gồm 4 chữ số</string>
     <string name="hint_confirm_new_password">Vui lòng nhập lại mật khẩu</string>
@@ -364,7 +364,7 @@
     <string name="edt_hint_deposit_money">số tiền giới hạn %1$s～%2$s PHP</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
-    <string name="edt_hint_real_name">Họ tên phải đồng nhất với tài khoản ngân hàng</string>
+    <string name="edt_hint_real_name">Họ tên phải khớp với tài khoản ngân hàng</string>
     <string name="edt_hint_check_real_name">Vui lòng nhập Xác nhận họ tên</string>
     <string name="edt_hint_nick_name">Vui lòng nhập Tên</string>
     <string name="title_wx_id">ID WeChat</string>
