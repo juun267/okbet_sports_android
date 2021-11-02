@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_left_menu.*
+import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
@@ -263,6 +264,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             }
         }
 
+        val layout =
+            if (isLogin == true) R.layout.snackbar_my_favorite_notify else R.layout.snackbar_login_notify
+
         snackBarMyFavoriteNotify = activity?.let {
             Snackbar.make(
                 this@LeftMenuFragment.requireView(),
@@ -270,11 +274,14 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 Snackbar.LENGTH_LONG
             ).apply {
                 val snackView: View = layoutInflater.inflate(
-                    R.layout.snackbar_my_favorite_notify,
+                    layout,
                     activity?.findViewById(android.R.id.content),
                     false
                 )
-                snackView.txv_title.text = title
+                if (isLogin == true)
+                    snackView.txv_title.text = title
+                else snackView.tv_notify.text = title
+                
                 (this.view as Snackbar.SnackbarLayout).apply {
                     findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                         visibility = View.INVISIBLE
