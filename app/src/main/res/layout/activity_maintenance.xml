@@ -27,6 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:gravity="center"
         android:text="@string/sorry_website_is_now_maintenance"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize22sp"
@@ -48,27 +49,16 @@
         tools:text="维护时间：00:00 - 23:59" />
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/if_there_is_any_question_please_consult"
-        android:textColor="@color/colorBlackLight"
-        android:textSize="@dimen/textSize14sp"
-        app:layout_constraintEnd_toStartOf="@id/tv_customer_service"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_maintenance_time" />
-
-    <TextView
         android:id="@+id/tv_customer_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="web"
+        android:gravity="center"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_maintenance_time"
-        tools:text="https://upload.cxct.org" />
+        tools:text="@string/if_there_is_any_question_please_consult" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
