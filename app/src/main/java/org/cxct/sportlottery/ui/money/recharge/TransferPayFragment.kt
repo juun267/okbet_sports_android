@@ -281,15 +281,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     e.printStackTrace()
                 }
             })
+            .setLabel("", "", "", "", "", "")
             .setRangDate(yesterday, tomorrow)
             .setDate(Calendar.getInstance())
-            .setTimeSelectChangeListener {  }
-            .setType(booleanArrayOf(true, true, true, true, true, false))
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(true, true, true, true, true, true))
             .setTitleText(resources.getString(R.string.title_recharge_time))
-            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context,R.color.colorGrayLight))
-            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context,R.color.colorGrayLight))
+            .setCancelText(getString(R.string.picker_cancel))
+            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
+            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
             .isDialog(true)
-            .addOnCancelClickListener { }
             .build() as TimePickerView
 
         val params = FrameLayout.LayoutParams(

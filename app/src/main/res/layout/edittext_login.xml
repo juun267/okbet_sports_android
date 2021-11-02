@@ -63,6 +63,7 @@
             android:autofillHints="no"
             android:background="@null"
             android:maxLines="1"
+            android:scrollHorizontally="true"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp"
             android:inputType="text"
