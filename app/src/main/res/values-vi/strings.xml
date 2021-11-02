@@ -473,7 +473,7 @@
     <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s PHP</string>
     <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s PHP</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
-    <string name="hint_please_enter_withdraw_password">Vui lòng nhập mật khẩu rút tiền</string>
+    <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_new">Thêm mới</string>
     <string name="add_credit_card">Thêm mới thẻ ngân hàng</string>
     <string name="add_crypto_card">Thêm mới tiền ảo</string>
@@ -489,7 +489,7 @@
     <string name="please_enter_wallet_address">Vui lòng nhập địa chỉ ví</string>
     <string name="network_point">Địa điểm mở tài khoản</string>
     <string name="please_enter_network_point">Địa điểm mở tài khoản</string>
-    <string name="delete_bank_card">Xóa thẻ ngân hàng thất bại</string>
+    <string name="delete_bank_card">xóa bỏ</string>
     <string name="select_currency_protocol">Chọn thỏa thuận / Loại tiền</string>
     <string name="error_create_name">Họ và tên từ 2-20 ký tự gồm trung anh</string>
     <string name="error_bank_card_number">Số thẻ khoản ngân hàng không đúng</string>

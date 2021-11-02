@@ -249,6 +249,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:layout_weight="1"
+                android:textAllCaps="true"
                 android:background="@drawable/bg_radius_20_button_hollow"
                 android:gravity="center"
                 android:letterSpacing="0.1"
