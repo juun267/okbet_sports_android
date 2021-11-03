@@ -120,11 +120,13 @@
                     <Button
                         android:id="@+id/btn_name_copy"
                         style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="45dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="26dp"
                         android:layout_marginEnd="12dp"
                         android:background="@drawable/bg_3dp_radius_button"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="4dp"
                         android:text="@string/btn_copy"
                         android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
@@ -158,11 +160,13 @@
                     <Button
                         android:id="@+id/btn_account_copy"
                         style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="45dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="26dp"
                         android:layout_marginEnd="12dp"
                         android:background="@drawable/bg_3dp_radius_button"
                         android:gravity="center"
+                        android:minWidth="0dp"
+                        android:paddingHorizontal="4dp"
                         android:text="@string/btn_copy"
                         android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
@@ -393,7 +397,6 @@
                     android:autoSizeMaxTextSize="13dp"
                     android:autoSizeMinTextSize="6dp"
                     android:autoSizeTextType="uniform"
-                    android:ems="4"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/title_recharge_time"
@@ -418,9 +421,12 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="start|center_vertical"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
+                    app:autoSizeMaxTextSize="@dimen/textSize12sp"
+                    app:autoSizeMinTextSize="@dimen/textSize8sp"
+                    app:autoSizeTextType="uniform"
                     tools:text="2020-13-25 19:35:35 (GMT+8)" />
 
                 <ImageView

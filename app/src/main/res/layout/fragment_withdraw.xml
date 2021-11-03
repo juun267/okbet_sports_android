@@ -167,7 +167,6 @@
                 android:id="@+id/tv_channel_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="4"
                 android:gravity="start|center_vertical"
                 android:text="@string/select_bank"
                 android:textStyle="bold"

@@ -125,6 +125,7 @@
     <string name="conspire">Parlay</string>
     <string name="message_no_at_start">Now no Coming soon Matches</string>
     <string name="message_no_in_play">Now no Coming soon Matches</string>
+    <string name="message_no_sport_game">There are currently no events for %1$s</string>
     <string name="champion">OUTRIGHTS</string>
     <string name="league">League</string>
     <string name="monday">Mon</string>
@@ -274,6 +275,7 @@
     <string name="index">Numbers</string>
     <string name="title">Headline</string>
     <string name="time">Time</string>
+    <string name="record_time">Time</string>
     <string name="choose_bet_state">Select bets status</string>
     <string name="champion_play">Champion gamepaly</string>
     <string name="inquire">Search</string>
@@ -605,7 +607,6 @@
     <string name="log_detail_reason">Remark：</string>
     <string name="finance_log_selector_until">To</string>
     <string name="finance_list_no_record">No content available at the moment</string>
-    <string name="feedback_toolbar_title">Feedback</string>
     <string name="feedback_detail">Feedback details</string>
     <string name="feedback_tabName_problem">Questions and Suggestions</string>
     <string name="feedback_tabName_record">Feedback history</string>
@@ -645,7 +646,7 @@
     <string name="remark">Remark：</string>
     <string name="transfer_info">Transfer information</string>
     <string name="sorry_website_is_now_maintenance">I\'m sorry, the website is under maintenance</string>
-    <string name="if_there_is_any_question_please_consult">If you have any questions, please contact:</string>
+    <string name="if_there_is_any_question_please_consult">If you have any questions, please contact：%1$s</string>
     <string name="bottom_nav_home">Home page</string>
     <string name="bottom_nav_game">Match</string>
     <string name="bottom_nav_promotion">Activity</string>

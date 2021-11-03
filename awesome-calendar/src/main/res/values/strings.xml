@@ -18,7 +18,8 @@
         <item>@string/cdrp_sat</item>
     </string-array>
 
-
+    <string name="picker_cancel">取消</string>
+    <string name="picker_submit">确认</string>
 
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
