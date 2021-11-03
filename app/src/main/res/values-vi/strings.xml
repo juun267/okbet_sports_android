@@ -147,8 +147,8 @@
     <string name="slot_game">Games</string>
     <string name="fish_game">Trò trời bắn cá</string>
     <string name="price">giá bán</string>
-    <string name="menu">Menu</string>
-    <string name="premium_odds">Tỷ lệ cược cao</string>
+    <string name="menu">Danh sách</string>
+    <string name="premium_odds">CƯỢC ĐẶC BIỆT</string>
     <string name="infomation_center">Trung tâm thông tin</string>
     <string name="left_menu_odds_type_setting">Cài đặt kèo chấp</string>
     <string name="profile_center">Trung tâm cá nhân</string>
@@ -188,11 +188,11 @@
     <string name="game_result">Kết quả</string>
     <string name="game_yellow_card">Thẻ phạt</string>
     <string name="game_corner_kick">Phạt góc</string>
-    <string name="soccer">bóng đá</string>
-    <string name="basketball">bóng rổ</string>
-    <string name="tennis">quần vợt</string>
+    <string name="soccer">Bóng Đá</string>
+    <string name="basketball">Bóng Rổ</string>
+    <string name="tennis">Quần Vợt</string>
     <string name="badminton">Cầu lông</string>
-    <string name="volleyball">bóng chuyền</string>
+    <string name="volleyball">Bóng Chuyền</string>
     <string name="section">Hiệp</string>
     <string name="total_score_over_time">tổng điểm số /n gồm hiệp phụ</string>
     <string name="plat">Kèo</string>
@@ -311,7 +311,7 @@
     <string name="game_odds">tỷ lệ kèo</string>
     <string name="match_names">(đội nhà) %s vs %s (đội khách)</string>
     <string name="bet_item">Mục đặt cược</string>
-    <string name="match_type_row_in_play">trận bóng đang diễn ra</string>
+    <string name="match_type_row_in_play">TRONG TRẬN</string>
     <string name="match_type_row_at_start">trận đấu sắp bắt đầu</string>
     <string name="at_start_remain_minute">%s phút</string>
     <string name="match_type_row_btn_bs">kèo chấp &amp; tài xỉu</string>
