@@ -284,13 +284,18 @@ object SocketUpdateUtil {
                 val dataGroupByList = dataOddsList.map { odd -> odd?.id }
                 val socketGroupByList = socketOddsList?.map { odd -> odd?.id } ?: listOf()
 
-                //比對id
-                val dataHasOddsId = dataGroupByList.containsAll(socketGroupByList)
-                val socketHasOddsId = socketGroupByList.containsAll(dataGroupByList)
+                //新的Odd
+                val newOddsId = socketGroupByList.filter { socketId ->
+                    !dataGroupByList.contains(socketId)
+                }
 
-                if ((dataOddsList.size != socketOddsList?.size) || !dataHasOddsId || !socketHasOddsId) {
-                    value.odds?.let { newOdds ->
-                        it.oddArrayList = newOdds.toList()
+                newOddsId.forEach { newOddId ->
+                    socketOddsList?.find { socketOdd ->
+                        socketOdd?.let { socketOddNotNull ->
+                            socketOddNotNull.id == newOddId
+                        } ?: false
+                    }?.let { newOdd ->
+                        it.oddArrayList.add(newOdd)
                         addedNewOdds = true
                     }
                 }
@@ -452,7 +457,7 @@ object SocketUpdateUtil {
             it == oddsDetailListData.gameType
         })
 
-        oddsDetailListData.oddArrayList = odds?.odds ?: listOf()
+        oddsDetailListData.oddArrayList = odds?.odds ?: mutableListOf()
 
         return odds?.odds?.isNotEmpty() ?: false
     }
