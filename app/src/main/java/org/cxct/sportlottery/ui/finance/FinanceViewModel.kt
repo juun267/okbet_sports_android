@@ -49,9 +49,6 @@ class FinanceViewModel(
     val userWithdrawListResult: LiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>
         get() = _userWithdrawResult
 
-    val recordList: LiveData<List<Pair<String, Int>>>
-        get() = _recordList
-
     val recordType: LiveData<String>
         get() = _recordType
 
@@ -68,7 +65,6 @@ class FinanceViewModel(
     private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
     private val _userWithdrawResult = MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
 
-    private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
 
     private val _withdrawLogDetail = MutableLiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>()
@@ -80,22 +76,6 @@ class FinanceViewModel(
 
     fun setRecordType(recordType: String) {
         _recordType.postValue(recordType)
-    }
-
-    fun getRecordList() {
-        val recordStrList = androidContext.resources.getStringArray(R.array.finance_array)
-        val recordHideStrList = androidContext.resources.getStringArray(R.array.finance_hide_array)
-        val recordImgList = androidContext.resources.obtainTypedArray(R.array.finance_img_array)
-
-        val recordList = recordStrList.filter {
-            if (sConfigData?.thirdOpen == FLAG_OPEN) true else {
-                !recordHideStrList.contains(it)
-            }
-        }.map {
-            it to recordImgList.getResourceId(recordStrList.indexOf(it), -1)
-        }
-        recordImgList.recycle()
-        _recordList.postValue(recordList)
     }
 
     private fun loading() {
