@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import timber.log.Timber
 
@@ -93,7 +94,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
             @SuppressLint("SwitchIntDef")
             override fun onPlayerError(error: PlaybackException) {
-                if (error.cause is HttpDataSource.HttpDataSourceException){
+                if (error.cause is HttpDataSource.HttpDataSourceException) {
                     when (val httpError = error.cause) {
                         //直播地址播放連線失敗
                         is HttpDataSource.InvalidResponseCodeException -> {
@@ -247,9 +248,16 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     private fun setupBottomSheetBehaviour() {
-        val root: View? = webBottomSheet.delegate.findViewById(R.id.design_bottom_sheet)
-        root?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
-        BottomSheetBehavior.from(root as View).isDraggable = false
+
+        val bottomSheet = webBottomSheet.findViewById<View>(R.id.design_bottom_sheet)
+        bottomSheet?.let {
+            setBackgroundResource(android.R.color.transparent)
+            layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
+            val behavior = BottomSheetBehavior.from<View>(bottomSheet)
+            behavior.peekHeight = resources.displayMetrics.heightPixels - 50.dp //減去最上方工具列高度
+
+        }
+
     }
 
     fun getExoPlayer(): SimpleExoPlayer? {
