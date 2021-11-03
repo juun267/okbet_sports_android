@@ -235,6 +235,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             sConfigData?.analysisUrl?.replace("{lang}", LanguageManager.getSelectLanguage(context).key)
                 ?.replace("{eventId}", matchOdd.matchInfo.id)
         )
+        webBottomSheet.show()
     }
 
     fun setTitle(title: String) {
