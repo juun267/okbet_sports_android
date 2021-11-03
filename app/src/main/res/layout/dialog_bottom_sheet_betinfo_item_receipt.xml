@@ -48,7 +48,8 @@
         android:gravity="center"
         android:paddingVertical="14dp"
         android:textSize="@dimen/textSize13sp"
-        android:text="@string/done"
+        android:text="@string/complete"
+        android:textAllCaps="true"
         android:textColor="@color/colorWhite" />
 
 </LinearLayout>

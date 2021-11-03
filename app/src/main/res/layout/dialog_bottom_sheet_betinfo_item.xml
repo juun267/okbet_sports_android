@@ -87,6 +87,7 @@
                 android:background="@color/colorWhite4"
                 android:gravity="center"
                 android:text="@string/bet_info_add_to_bet_info"
+                android:textAllCaps="true"
                 android:textColor="@color/colorGray"
                 android:onClick="@{() -> dialog.addToBetInfoList()}"
                 android:textSize="@dimen/textSize14sp" />

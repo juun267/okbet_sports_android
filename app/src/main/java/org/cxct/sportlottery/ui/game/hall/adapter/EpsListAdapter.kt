@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.eps.EpsOdds
 import org.cxct.sportlottery.network.odds.eps.MatchOddsItem
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -53,7 +54,10 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                 params.setMargins(0,14,0,0)
                 itemView.ll_content.layoutParams = params
             }
-            itemView.tv_date.text = "${TimeUtil.stampToMD(item.date)}  ${itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))}"
+            itemView.tv_date.text = when (LanguageManager.getSelectLanguage(itemView.context)) {
+                LanguageManager.Language.VI -> "${itemView.context.getString(TimeUtil.setupDayOfWeekVi(item.date))} ${TimeUtil.stampToViMD(item.date)}"
+                else -> "${TimeUtil.stampToMD(item.date)}  ${itemView.context.getString(TimeUtil.setupDayOfWeek(item.date))}"
+            }
         }
     }
 

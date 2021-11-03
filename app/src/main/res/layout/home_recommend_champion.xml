@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:text="@string/display_more"
+            android:textAllCaps="true"
             android:textSize="@dimen/textSize14sp"
             android:textStyle="bold"
             app:drawableRightCompat="@drawable/ic_arrow_gray_right" />
