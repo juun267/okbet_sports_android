@@ -11,5 +11,7 @@ data class DynamicMarket(
     @Json(name = "en")
     val en: String?,
     @Json(name = "zh")
-    val zh: String?
+    val zh: String?,
+    @Json(name = "vi")
+    val vi: String?
 ) : Parcelable

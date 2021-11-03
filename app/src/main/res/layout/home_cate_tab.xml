@@ -16,6 +16,7 @@
         android:textColor="@color/color_select_blue_black"
         android:textSize="@dimen/textSize15sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:autoSizeMaxTextSize="15dp"
         app:autoSizeMinTextSize="2dp"
         app:autoSizeTextType="uniform"

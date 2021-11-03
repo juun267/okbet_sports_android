@@ -15,6 +15,7 @@
         android:text="@string/display_more"
         android:textSize="@dimen/textSize14sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:drawableRightCompat="@drawable/ic_arrow_gray_right"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

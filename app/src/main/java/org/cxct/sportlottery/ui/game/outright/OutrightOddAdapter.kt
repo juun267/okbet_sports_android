@@ -169,6 +169,9 @@ class OutrightOddAdapter :
                     LanguageManager.Language.ZH -> {
                         it.zh
                     }
+                    LanguageManager.Language.VI -> {
+                        it.vi
+                    }
                     else -> {
                         it.en
                     }
