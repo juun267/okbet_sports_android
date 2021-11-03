@@ -135,7 +135,7 @@ class VipActivity : BaseSocketActivity<VipViewModel>(VipViewModel::class) {
     }
 
     private fun setRebatesFormGame(gameFirmValues: GameFirmValues) {
-        sv_third_games.selectedText = gameFirmValues.firmName
+        sv_third_games.selectedText = gameFirmValues.firmShowName
         viewModel.getThirdRebates(gameFirmValues.firmCode ?: "", gameFirmValues.firmType ?: "")
     }
 
@@ -331,7 +331,7 @@ class ThirdGameAdapter(private val selectedListener: OnSelectThirdGames) :
             val data = dataList[position]
             val itemChecked = dataCheckedList[position]
             itemView.apply {
-                checkbox_item.text = data.firmName
+                checkbox_item.text = data.firmShowName
                 checkbox_item.background = if (itemChecked) ContextCompat.getDrawable(context,
                     R.color.colorWhite6) else ContextCompat.getDrawable(context, android.R.color.white)
                 checkbox_item.setOnClickListener {
