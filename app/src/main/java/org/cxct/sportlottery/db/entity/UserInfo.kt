@@ -63,5 +63,8 @@ data class UserInfo(
     val creditAccount: Int? = null,
 
     @ColumnInfo(name = "credit_status")
-    val creditStatus: Int? = null
+    val creditStatus: Int? = null,
+
+    @ColumnInfo(name = "discount")
+    val discount: Float? = null
 )

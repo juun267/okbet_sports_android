@@ -43,5 +43,7 @@ data class LoginData(
     @Json(name = "creditAccount")
     val creditAccount: Int?,
     @Json(name = "creditStatus")
-    val creditStatus: Int?
+    val creditStatus: Int?,
+    @Json(name = "discount")
+    val discount: Float?
 )

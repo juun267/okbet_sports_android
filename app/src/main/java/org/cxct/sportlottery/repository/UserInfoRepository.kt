@@ -39,7 +39,7 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
     suspend fun updateUserInfo(userInfoData: UserInfoData?) {
         userInfoData?.let {
             val userInfo = transform(it)
-
+            if (OLD_DISCOUNT == null) OLD_DISCOUNT = it.discount
             withContext(Dispatchers.IO) {
                 userInfoDao.upsert(userInfo)
             }
@@ -101,6 +101,13 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updateDiscount(userId: Long, discount: Float) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateDiscount(userId, discount)
+        }
+        OLD_DISCOUNT = discount
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
@@ -121,6 +128,8 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             setted = userInfoData.setted,
             userRebateList = userInfoData.userRebateList,
             creditAccount = userInfoData.creditAccount,
-            creditStatus = userInfoData.creditStatus
+            creditStatus = userInfoData.creditStatus,
+            discount = userInfoData.discount
         )
+
 }

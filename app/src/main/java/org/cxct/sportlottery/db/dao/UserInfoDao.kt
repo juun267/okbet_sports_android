@@ -46,6 +46,9 @@ interface UserInfoDao {
     @Query("UPDATE user_info_table SET setted=:setted WHERE user_id=:userId")
     suspend fun updateSetted(userId: Long, setted: Int)
 
+    @Query("UPDATE user_info_table SET discount=:discount WHERE user_id=:userId")
+    suspend fun updateDiscount(userId: Long, discount: Float)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userInfo: UserInfo)
 

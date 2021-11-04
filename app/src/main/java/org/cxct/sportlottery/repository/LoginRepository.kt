@@ -34,8 +34,10 @@ const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 const val KEY_ODDS_TYPE = "oddsType"
 const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
-
+const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
+
+var OLD_DISCOUNT: Float? = null
 
 class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
     private val sharedPref: SharedPreferences by lazy {
@@ -133,6 +135,15 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         set(value) {
             with(sharedPref.edit()) {
                 putString(KEY_ODDS_TYPE, value)
+                commit()
+            }
+        }
+
+    var discount
+        get() = sharedPref.getFloat(KEY_DISCOUNT, 1f)
+        set(value) {
+            with(sharedPref.edit()) {
+                putFloat(KEY_DISCOUNT, value)
                 commit()
             }
         }
@@ -275,6 +286,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
             putBoolean(KEY_IS_CREDIT_ACCOUNT, loginData?.creditAccount == 1)
+            putFloat(KEY_DISCOUNT, loginData?.discount?: 1f)
             apply()
         }
     }
@@ -320,6 +332,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             userType = loginData.userType,
             userRebateList = loginData.userRebateList,
             creditAccount = loginData.creditAccount,
-            creditStatus = loginData.creditStatus
+            creditStatus = loginData.creditStatus,
+            discount = loginData.discount
         )
 }
