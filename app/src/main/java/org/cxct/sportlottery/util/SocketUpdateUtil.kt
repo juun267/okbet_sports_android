@@ -266,7 +266,8 @@ object SocketUpdateUtil {
      */
     fun updateMatchOddsMap(
         oddsDetailDataList: ArrayList<OddsDetailListData>,
-        matchOddsChangeEvent: MatchOddsChangeEvent
+        matchOddsChangeEvent: MatchOddsChangeEvent,
+        playCate: org.cxct.sportlottery.network.myfavorite.PlayCate?
     ): ArrayList<OddsDetailListData>? {
         //若有新玩法的話需要重新setData
         var addedNewOdds = false
@@ -339,9 +340,39 @@ object SocketUpdateUtil {
             find { it.gameType == PlayCate.EPS.value }?.also { oddsDetailListData ->
                 add(0, removeAt(indexOf(oddsDetailListData)))
             }
+            setupPinList(playCate)
         }
 
         return if (addedNewOdds) newOddsDetailDataList else null
+    }
+
+    /**
+     * 重新配置已錠選的玩法位置
+     */
+    private fun ArrayList<OddsDetailListData>.setupPinList(playCate: org.cxct.sportlottery.network.myfavorite.PlayCate?) {
+        val playCateCodeList = playCate?.code?.let { playCateString ->
+            if (playCateString.isNotEmpty()) {
+                TextUtil.split(playCateString).toList()
+            } else {
+                listOf()
+            }
+        }
+
+        val pinList = this.filter { playCateCodeList?.contains(it.gameType) ?: false }
+            .sortedByDescending { oddsDetailListData -> playCateCodeList?.indexOf(oddsDetailListData.gameType) }
+
+        val epsSize = this.groupBy {
+            it.gameType == PlayCate.EPS.value
+        }[true]?.size ?: 0
+
+        this.sortBy { it.originPosition }
+        this.forEach { it.isPin = false }
+
+        pinList.forEach { pinOddsDetailData ->
+            pinOddsDetailData.isPin = true
+
+            add(epsSize, this.removeAt(this.indexOf(pinOddsDetailData)))
+        }
     }
 
     fun updateOddStatus(oddBean: OddBean, globalStopEvent: GlobalStopEvent): Boolean {
