@@ -507,7 +507,7 @@
     <string name="bet_info_list_game_closed">Kèo chấp đã đóng</string>
     <string name="bet_info_list_game_odds_changed">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_info_list_bet_quota">Số tiền cược : </string>
-    <string name="bet_receipt_bet_quota">Số tiền cược : </string>
+    <string name="bet_receipt_bet_quota">Số tiền đặt cược : </string>
     <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
     <string name="bet_list_win_quota">Số tiền có thể thắng:</string>
 <!--    <string name="bet_info_list_rmb">RMB</string>-->
@@ -530,7 +530,7 @@
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_different_game_type">không cùng loại bóng không thể tiến hành cược xiên</string>
     <string name="bet_info_input_quota">Nhập số tiền</string>
-    <string name="bet_info_check_maximum_limit">Số tiền đặt cược</string>
+    <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
