@@ -29,6 +29,8 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -217,6 +219,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 setupOddInfo(itemData, oddsType)
                 setupMinimumLimitMessage(itemData)
+                onItemClickListener.refreshBetInfoTotal()
 
                 val tw: TextWatcher?
                 tw = object : TextWatcher {
@@ -284,8 +287,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
-                if (itemData.matchType == MatchType.OUTRIGHT) itemData.matchOdd.spread = ""
-                setupOddsContent(itemData.matchOdd, oddsType = oddsType, tv_odds_content)
+                setupOddsContent(itemData, oddsType = oddsType, tv_odds_content)
                 tv_match.text = if (itemData.matchType == MatchType.OUTRIGHT) itemData.outrightMatchInfo?.name
                 else "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
 
@@ -615,7 +617,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
 
                 itemData?.let { data ->
-                    tv_parlay_type.text = TextUtil.replaceParlayByC(data.parlayType)
+                    tv_parlay_type.text = getParlayName(data.parlayType)
 
                     tv_parlay_odd.apply {
                         if (firstItem && !hasBetClosed) {
@@ -639,6 +641,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 }
             }
+        }
+
+        private fun getParlayName(parlayType: String): String {
+            return getParlayStringRes(parlayType)?.let {
+                itemView.context.getString(it)
+            } ?: ""
         }
 
         private fun setupItemEnable(hasBetClosed: Boolean) {
@@ -705,6 +713,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     setupOddInfo(data, oddsType)
                     setupMinimumLimitMessage(data)
+                    onItemClickListener.refreshBetInfoTotal()
 
                     /* set listener */
                     val tw: TextWatcher?
@@ -826,7 +835,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupParlayRuleButton(data: ParlayOdd, onItemClickListener: OnItemClickListener) {
             itemView.btn_rule.setOnClickListener {
-                onItemClickListener.showParlayRule(data.parlayType, data.parlayRule ?: "")
+                onItemClickListener.showParlayRule(
+                    data.parlayType,
+                    getParlayRuleStringRes(data.parlayType)?.let { ruleRes -> itemView.context.getString(ruleRes) }
+                        ?: "")
             }
         }
     }

@@ -13,4 +13,5 @@ enum class MoneyType(val code: String) {
     CTF_TYPE("cft"),
     ONLINE_TYPE("ic_online_pay"),
     CRYPTO_TYPE("cryptoPay"),
+    JUAN_ONLINE_TYPE("ic_juancash") // 菲律賓在線網銀 JuanCash
 }

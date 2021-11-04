@@ -22,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.33"
+        versionName "1.0.39"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -82,11 +82,23 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
+        demo {
+            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
+            resValue "string", "app_name", "OKBET"
+            applicationId "com.okbetinc.sltest"
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
     }
 
     sourceSets {
         fastlane.res.srcDirs  = ["${fastlane_res_src_dir}"]        
         forqa.res.srcDirs = ['src/platform/spplat1/res']
+        demo.res.srcDirs = ['src/platform/spplat1/res']
     }
 
     compileOptions {

@@ -95,6 +95,7 @@ enum class PlayCate(val value: String) {
     NGOAL_OT("NGOAL-OT"),
     NPENALTY("NPENALTY"),
     OE("O/E"),//单/双
+    Q_OE("-OE"),//快捷玩法的单/双
     OE_1ST("O/E-1ST"),
     OE_2ST_INCL_OT("O/E-2ST-INCL-OT"),
     OE_INCL_OT("O/E-INCL-OT"),
@@ -279,6 +280,16 @@ enum class PlayCate(val value: String) {
     WM3_SD_OT("WM3-SD-OT");
 
     companion object {
+        /**
+         * 判斷是否需要顯示spread欄位
+         */
+        fun needShowSpread(code: String?): Boolean {
+            return when (code) {
+                DOUBLE_D.value, TRIPLE_D.value, DOUBLE_D_P.value, TRIPLE_D_P.value -> false
+                else -> true
+            }
+        }
+
         fun getPlayCate(code: String?): PlayCate {
             return when (code) {
                 ADVANCE.value -> ADVANCE

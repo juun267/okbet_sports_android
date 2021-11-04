@@ -134,7 +134,7 @@ class OutrightOddAdapter :
                     tv_spread.text = ""
                     this@OddViewHolder.setupOddState(this, item)
                     setOnClickListener {
-                        outrightOddListener?.onClickBet(matchOdd, item)
+                        outrightOddListener?.onClickBet(matchOdd, item, item.outrightCateKey ?: "")
                     }
                 }
             }
@@ -168,6 +168,9 @@ class OutrightOddAdapter :
                 when (LanguageManager.getSelectLanguage(itemView.context)) {
                     LanguageManager.Language.ZH -> {
                         it.zh
+                    }
+                    LanguageManager.Language.VI -> {
+                        it.vi
                     }
                     else -> {
                         it.en
@@ -216,11 +219,11 @@ class OutrightOddAdapter :
 }
 
 class OutrightOddListener(
-    val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd) -> Unit,
+    val clickListenerBet: (matchOdd: MatchOdd?, odd: Odd, playCateCode: String) -> Unit,
     val clickListenerMore: (oddsKey: String, matchOdd: MatchOdd) -> Unit,
     val clickExpand: (matchOdd: MatchOdd?, oddsKey: String) -> Unit
 ) {
-    fun onClickBet(matchOdd: MatchOdd?, odd: Odd) = clickListenerBet(matchOdd, odd)
+    fun onClickBet(matchOdd: MatchOdd?, odd: Odd, playCateCode: String) = clickListenerBet(matchOdd, odd, playCateCode)
     fun onClickMore(oddsKey: String, matchOdd: MatchOdd) = clickListenerMore(oddsKey, matchOdd)
     fun onClickExpand(matchOdd: MatchOdd?,oddsKey: String) = clickExpand(matchOdd, oddsKey)
 }

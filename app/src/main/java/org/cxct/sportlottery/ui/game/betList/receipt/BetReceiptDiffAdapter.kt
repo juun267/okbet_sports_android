@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.betList.receipt
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +19,9 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.*
 
 class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(BetReceiptCallback()) {
@@ -120,6 +123,8 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                         tv_spread.text = spread
                         tv_team_away.text = awayName
                         tv_match_type.text = playCateName
+
+                        tv_spread.isVisible = needShowSpread(playCateCode)
                     }
 
                     itemView.setBetReceiptBackground(status)
@@ -154,7 +159,10 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
             itemView.apply {
                 itemData.apply {
                     matchOdds?.firstOrNull()?.apply {
-                        parlayType?.let { tv_play_name_parlay.text = TextUtil.replaceParlayByC(it) }
+                        parlayType?.let { parlayTypeCode ->
+                            tv_play_name_parlay.text =
+                                getParlayStringRes(parlayTypeCode)?.let { context.getString(it) } ?: ""
+                        }
                     }
 
                     tv_match_at.visibility = if (firstItem) View.VISIBLE else View.GONE

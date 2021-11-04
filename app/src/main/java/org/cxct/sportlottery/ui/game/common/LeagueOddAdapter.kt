@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import kotlinx.android.synthetic.main.fragment_main_more.*
+import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.itemview_league_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_eps.view.*
 import kotlinx.android.synthetic.main.view_quick_odd_btn_pager.view.*
@@ -21,6 +23,7 @@ import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
@@ -590,8 +593,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         this.oddsType = oddsType
 
-                        this.listener = OddButtonListener { matchInfo, odd, playCateName ->
-                            leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                            leagueOddListener?.onClickBet(matchInfo, odd, playCateCode, playCateName)
                         }
                     }
 
@@ -608,7 +611,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 })
 
                 setCurrentItem(item.positionButtonPage, false)
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+                OverScrollDecoratorHelper.setUpOverScroll(getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
             }
+            OverScrollDecoratorHelper.setUpOverScroll(itemView.league_odd_btn_pager_main)
 
             itemView.league_odd_btn_indicator_main.apply {
 
@@ -691,7 +697,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         }
                         rb.isChecked = true
                     }
-
                 }
 
                 setOnCheckedChangeListener { group, checkedId ->
@@ -733,10 +738,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 OddButtonPairAdapter(item.matchInfo).apply {
                     this.oddsType = oddsType
 
-                    listener = OddButtonListener { matchInfo, odd, playCateName ->
+                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
                             odd,
+                            playCateCode,
                             item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
                         )
                     }
@@ -827,8 +833,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         this.oddsType = oddsType
 
-                        this.listener = OddButtonListener { matchInfo, odd, playCateName ->
-                            leagueOddListener?.onClickBet(matchInfo, odd, playCateName)
+                        this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                            leagueOddListener?.onClickBet(matchInfo, odd, playCateCode, playCateName)
                         }
                     }
 
@@ -848,6 +854,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 setCurrentItem(
                     item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage ?: 0, false
                 )
+                getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+                OverScrollDecoratorHelper.setUpOverScroll(getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
             }
 
             itemView.quick_odd_btn_indicator_other.apply {
@@ -857,7 +865,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     } else {
                         View.GONE
                     }
-
                 setupWithViewPager2(itemView.quick_odd_btn_pager_other)
             }
         }
@@ -871,10 +878,11 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 OddButtonEpsAdapter(item.matchInfo).apply {
                     this.oddsType = oddsType
 
-                    listener = OddButtonListener { matchInfo, odd, playCateName ->
+                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
                             odd,
+                            playCateCode,
                             item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
                         )
                     }
@@ -967,7 +975,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
 class LeagueOddListener(
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit,
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String) -> Unit,
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
@@ -979,8 +987,9 @@ class LeagueOddListener(
     fun onClickBet(
         matchInfo: MatchInfo?,
         odd: Odd,
+        playCateCode: String,
         playCateName: String = "",
-    ) = clickListenerBet(matchInfo, odd, playCateName)
+    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName)
 
     fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCateTab(matchId)
 

@@ -192,7 +192,6 @@ class RegisterViewModel(
     fun checkPhone(phone: String?) {
         _phoneMsg.value = when {
             phone.isNullOrEmpty() -> androidContext.getString(R.string.error_input_empty)
-            !VerifyConstUtil.verifyPhone(phone) -> androidContext.getString(R.string.error_phone_number)
             else -> null
         }
         focusChangeCheckAllInputComplete()

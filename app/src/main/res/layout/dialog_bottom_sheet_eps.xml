@@ -76,6 +76,7 @@
         android:layout_marginBottom="100dp"
         android:divider="@null"
         android:dividerHeight="0dp"
+        android:overScrollMode="never"
         tools:itemCount="5"
         tools:listitem="@layout/content_eps_more_odds_info" />
 

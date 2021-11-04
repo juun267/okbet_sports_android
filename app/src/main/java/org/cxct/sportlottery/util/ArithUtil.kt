@@ -2,10 +2,12 @@ package org.cxct.sportlottery.util
 
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.DecimalFormat
-import java.util.*
 
-object ArithUtil {
+/**
+ * 需要使用DecimalFormat轉換格式時, 需配合doNumberFormat()
+ * @see DecimalFormatUtil.doNumberFormat
+ */
+object ArithUtil : DecimalFormatUtil() {
     /**
      * @param value 数字
      * @param scale 小数点后保留几位
@@ -21,17 +23,16 @@ object ArithUtil {
             }
         }
 
-        Locale.setDefault(Locale.US)
-        val decimalFormat: DecimalFormat = if (scale == 0) {
-            DecimalFormat("0")
+        val formatPattern = if (scale == 0) {
+            "0"
         } else {
-            DecimalFormat("0.${zeroScale}") // 不足位數 補0
+            "0.${zeroScale}" // 不足位數 補0
         }
 
-        decimalFormat.roundingMode = roundingMode
-        decimalFormat.isGroupingUsed = false
-
-        return decimalFormat.format(value)
+        return doNumberFormat(value ?: 0, formatPattern) { decimalFormat ->
+            decimalFormat.roundingMode = roundingMode
+            decimalFormat.isGroupingUsed = false
+        }
     }
 
     /**

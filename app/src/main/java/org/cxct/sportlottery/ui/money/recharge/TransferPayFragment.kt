@@ -164,7 +164,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
             et_nickname.setError(it)
         })
         viewModel.userMoney.observe(viewLifecycleOwner,  {
-            txv_wallet_money.text = (ArithUtil.toMoneyFormat(it)) + " RMB"
+            txv_wallet_money.text = String.format(getString(R.string.finance_rmb), ArithUtil.toMoneyFormat(it))
         })
 
         viewModel.transferPayResult.observe(viewLifecycleOwner,  {
@@ -281,15 +281,17 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     e.printStackTrace()
                 }
             })
+            .setLabel("", "", "", "", "", "")
             .setRangDate(yesterday, tomorrow)
             .setDate(Calendar.getInstance())
-            .setTimeSelectChangeListener {  }
-            .setType(booleanArrayOf(true, true, true, true, true, false))
+            .setTimeSelectChangeListener { }
+            .setType(booleanArrayOf(true, true, true, true, true, true))
             .setTitleText(resources.getString(R.string.title_recharge_time))
-            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context,R.color.colorGrayLight))
-            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context,R.color.colorGrayLight))
+            .setCancelText(getString(R.string.picker_cancel))
+            .setSubmitText(getString(R.string.picker_submit))
+            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
+            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
             .isDialog(true)
-            .addOnCancelClickListener { }
             .build() as TimePickerView
 
         val params = FrameLayout.LayoutParams(

@@ -10,6 +10,7 @@
         android:id="@+id/iv_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:scaleType="fitStart"
         android:contentDescription="@null"
         android:src="@drawable/ic_main_label_sport"
         app:layout_constraintStart_toStartOf="parent" />

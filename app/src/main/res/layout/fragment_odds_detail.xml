@@ -32,6 +32,7 @@
             android:overScrollMode="never">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -50,8 +51,11 @@
 
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tab_cat"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_height="62dp"
+                    android:overScrollMode="never"
                     android:background="@color/colorWhite"
                     android:clipToPadding="false"
                     android:paddingHorizontal="10dp"
@@ -67,6 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
+                    android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
                     app:layout_constraintTop_toBottomOf="@id/tab_cat"
                     tools:listitem="@layout/content_odds_detail_list_item" />

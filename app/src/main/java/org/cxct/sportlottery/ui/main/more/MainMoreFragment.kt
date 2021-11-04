@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_main_more.*
@@ -18,6 +19,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.common.Vp2FragmentAdapter
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.main.entity.GameCateData
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -56,7 +58,8 @@ class MainMoreFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         val gameFragList = createGameFragList(gameCateFilterList)
         view_pager.adapter = Vp2FragmentAdapter(gameFragList, this)
         view_pager.isUserInputEnabled = false //關閉 viewPager2 左右滑動功能
-
+        view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+        OverScrollDecoratorHelper.setUpOverScroll(view_pager.getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
         //選中字體加粗
         tab_layout.clearOnTabSelectedListeners()
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

@@ -42,7 +42,7 @@ class FeedbackMainActivity : BaseSocketActivity<FeedbackViewModel>(FeedbackViewM
     }
 
     private fun initToolbar() {
-        tv_toolbar_title.text = getString(R.string.feedback_toolbar_title)
+        tv_toolbar_title.text = getString(R.string.feedback)
         btn_toolbar_back.setOnClickListener {
             onBackPressed()
         }

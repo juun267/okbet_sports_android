@@ -149,7 +149,7 @@ class BetInfoRepository(val androidContext: Context) {
 
             if (!hasPointMark) {
                 val newParlayList = updateParlayOddOrder(
-                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList).toMutableList()
+                    getParlayOdd(MatchType.PARLAY, it, parlayMatchOddList, true).toMutableList()
                 )
                 if (!_parlayList.value.isNullOrEmpty() && _parlayList.value?.size == newParlayList.size) {
                     _parlayList.value?.forEachIndexed { index, parlayOdd ->
@@ -233,6 +233,7 @@ class BetInfoRepository(val androidContext: Context) {
     fun addInBetInfo(
         matchType: MatchType,
         gameType: GameType,
+        playCateCode: String,
         playCateName: String,
         playName: String,
         matchInfo: MatchInfo,
@@ -254,6 +255,7 @@ class BetInfoRepository(val androidContext: Context) {
         val betInfoMatchOdd = MatchOddUtil.transfer(
             matchType = matchType,
             gameType = gameType.key,
+            playCateCode = playCateCode,
             playCateName = playCateName,
             playName = playName,
             matchInfo = matchInfo,
@@ -284,15 +286,18 @@ class BetInfoRepository(val androidContext: Context) {
         }
     }
 
-
+    /**
+     * @param isParlayBet 2021/10/29新增, gameType為GameType.PARLAY時不代表該投注為串關投注, 僅由組合後產生的投注才是PARLAY
+     */
     fun getParlayOdd(
         matchType: MatchType,
         gameType: GameType,
-        matchOddList: MutableList<MatchOdd>
+        matchOddList: MutableList<MatchOdd>,
+        isParlayBet: Boolean = false
     ): List<ParlayOdd> {
 
-        val playQuota: PlayQuota? = when (matchType) {
-            MatchType.OUTRIGHT -> {
+        val playQuota: PlayQuota? = when {
+            matchType == MatchType.OUTRIGHT -> {
                 when (gameType) {
                     GameType.FT -> playQuotaComData?.oUTRIGHTFT
                     GameType.BK -> playQuotaComData?.oUTRIGHTBK
@@ -301,7 +306,7 @@ class BetInfoRepository(val androidContext: Context) {
                 }
             }
 
-            MatchType.PARLAY -> {
+            isParlayBet -> {
                 when (gameType) {
                     GameType.FT -> playQuotaComData?.pARLAYFT
                     GameType.BK -> playQuotaComData?.pARLAYBK
@@ -327,7 +332,7 @@ class BetInfoRepository(val androidContext: Context) {
             oddsList.indexOf(it)
         }
 
-        val parlayComList = ParlayLimitUtil.getCom(androidContext, oddsIndexList.toIntArray())
+        val parlayComList = ParlayLimitUtil.getCom(oddsIndexList.toIntArray())
 
         val parlayBetLimitMap = ParlayLimitUtil.getParlayLimit(
             oddsList,
@@ -335,12 +340,6 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.max?.toBigDecimal(),
             playQuota?.min?.toBigDecimal()
         )
-
-        //串關規則Map
-        val parlayRuleMap: MutableMap<String, String?> = mutableMapOf()
-        for (parlayCom in parlayComList) {
-            parlayRuleMap[parlayCom.parlayType] = parlayCom.rule
-        }
 
         return parlayBetLimitMap.map {
             ParlayOdd(
@@ -350,9 +349,7 @@ class BetInfoRepository(val androidContext: Context) {
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
-            ).apply {
-                parlayRule = parlayRuleMap[it.key]
-            }
+            )
         }
     }
 

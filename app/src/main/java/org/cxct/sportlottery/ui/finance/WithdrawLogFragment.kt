@@ -142,6 +142,8 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
         })
 
         viewModel.withdrawLogDetail.observe(this.viewLifecycleOwner,  {
+            if (it.getContentIfNotHandled() == null) return@observe
+
             if (logDetailDialog.dialog?.isShowing != true) {
                 logDetailDialog.show(parentFragmentManager, WithdrawLogFragment::class.java.simpleName)
             }

@@ -14,6 +14,8 @@ data class PlayCateMapItem(
     val playCateName: String,
     @Json(name = "playCateName-english")
     val playCateNameEn: String,
+    @Json(name = "playCateName-vietnamese")
+    val playCateNameVi: String,
     @Json(name = "playCateNum")
     val playCateNum: Int
 )

@@ -128,6 +128,10 @@
                 android:name="matchId"
                 app:argType="string[]" />
 
+            <argument
+                android:name="matchCategoryName"
+                app:argType="string"
+                app:nullable="true"/>
         </action>
 
         <action
@@ -218,6 +222,11 @@
         <argument
             android:name="matchId"
             app:argType="string[]" />
+
+        <argument
+            android:name="matchCategoryName"
+            app:argType="string"
+            app:nullable="true"/>
 
         <action
             android:id="@+id/action_gameLeagueFragment_to_oddsDetailFragment"

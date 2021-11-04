@@ -132,7 +132,7 @@ class VpRecommendAdapter(
                             it.gameType == sportCode && it.playCateCode == data.playTypeCode
                         }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
-                        setupOddsButton(btn_odd_eps, data.oddList[0])
+                        setupOddsButton(btn_odd_eps, data.playTypeCode, data.oddList[0])
                     }
                 }
                 else -> {
@@ -145,21 +145,21 @@ class VpRecommendAdapter(
 
                         if (data.oddList.isNotEmpty()) {
                             odd_btn_home.visibility = View.VISIBLE
-                            setupOddsButton(odd_btn_home, data.oddList[0])
+                            setupOddsButton(odd_btn_home, data.playTypeCode, data.oddList[0])
                         } else {
                             odd_btn_home.visibility = View.GONE
                         }
 
                         if (data.oddList.size > 1) {
                             odd_btn_away.visibility = View.VISIBLE
-                            setupOddsButton(odd_btn_away, data.oddList[1])
+                            setupOddsButton(odd_btn_away, data.playTypeCode, data.oddList[1])
                         } else {
                             odd_btn_away.visibility = View.GONE
                         }
 
                         if (data.oddList.size > 2) {
                             odd_btn_draw.visibility = View.VISIBLE
-                            setupOddsButton(odd_btn_draw, data.oddList[2])
+                            setupOddsButton(odd_btn_draw, data.playTypeCode, data.oddList[2])
                         } else {
                             odd_btn_draw.visibility = View.GONE
                         }
@@ -169,7 +169,7 @@ class VpRecommendAdapter(
 
         }
 
-        private fun setupOddsButton(oddsButton: OddsButton, odd: Odd?) {
+        private fun setupOddsButton(oddsButton: OddsButton, playCateCode: String, odd: Odd?) {
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
                 this@ViewHolderHdpOu.setupOddState(oddsButton, odd)
@@ -179,7 +179,7 @@ class VpRecommendAdapter(
                     odd?.let {
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
-                        }, odd, playCateName)
+                        }, odd, playCateCode, playCateName)
                     }
                 }
             }
@@ -220,7 +220,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(0)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd)
+                            }, odd, data.playTypeCode)
                         }
                     }
                 }
@@ -248,7 +248,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(1)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd)
+                            }, odd, data.playTypeCode)
                         }
                     }
                 }
@@ -276,7 +276,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(2)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd)
+                            }, odd, data.playTypeCode)
                         }
                     }
                 }
@@ -304,7 +304,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(3)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd)
+                            }, odd, data.playTypeCode)
                         }
                     }
                 }
@@ -376,6 +376,9 @@ class VpRecommendAdapter(
         return when (l) {
             LanguageManager.Language.EN -> {
                 this.playCateNameEn
+            }
+            LanguageManager.Language.VI -> {
+                this.playCateNameVi
             }
             else -> {
                 this.playCateName

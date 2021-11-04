@@ -73,6 +73,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_bet_receipt"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/cl_total_info"
@@ -141,7 +142,7 @@
             android:id="@+id/title_winnable_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/bet_info_list_win_quota"
+            android:text="@string/bet_list_win_quota"
             android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"

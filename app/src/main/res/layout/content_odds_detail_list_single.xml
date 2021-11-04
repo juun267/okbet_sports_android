@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"
         android:padding="@dimen/activity_vertical_margin"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         tools:itemCount="3"

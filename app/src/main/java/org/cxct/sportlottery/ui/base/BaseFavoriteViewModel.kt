@@ -11,7 +11,9 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -40,6 +42,10 @@ abstract class BaseFavoriteViewModel(
         get() = mFavorMatchOddList
     protected val mFavorMatchOddList = MutableLiveData<List<LeagueOdd>>()
 
+    val myFavoriteLoading: LiveData<Event<Boolean>>
+        get() = mMyFavoriteLoading
+    private val mMyFavoriteLoading = MutableLiveData<Event<Boolean>>()
+
     val favorSportList = myFavoriteRepository.favorSportList
 
     val favorLeagueList = myFavoriteRepository.favorLeagueList
@@ -66,10 +72,12 @@ abstract class BaseFavoriteViewModel(
     fun getFavoriteMatch(gameType: String?, playCateMenu: String?, playCateCode: String? = null) {
         if (isLogin.value != true) {
             mNotifyLogin.postValue(true)
+            mMyFavoriteLoading.postValue(Event(false))
             return
         }
 
         if (gameType == null || playCateMenu == null) {
+            mMyFavoriteLoading.postValue(Event(false))
             return
         }
 
@@ -101,6 +109,8 @@ abstract class BaseFavoriteViewModel(
                     }
 
                     leagueOdd.matchOdds.forEach { matchOdd ->
+                        matchOdd.setupPlayCate()
+                        matchOdd.sortOdd()
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
@@ -119,6 +129,29 @@ abstract class BaseFavoriteViewModel(
             }
         }
     }
+
+    /**
+     * 設置大廳所需顯示的玩法 (api未回傳的玩法需以“—”表示)
+     */
+    private fun MatchOdd.setupPlayCate() {
+        val sortOrder = this.oddsSort?.split(",")
+        sortOrder?.forEach {
+            if (!this.oddsMap.keys.contains(it))
+                this.oddsMap[it] = mutableListOf(null, null, null)
+        }
+    }
+
+    private fun MatchOdd.sortOdd() {
+        val sortOrder = this.oddsSort?.split(",")
+        val oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
+            val oddsIndex = sortOrder?.indexOf(it)
+            oddsIndex
+        }.thenBy { it })
+
+        this.oddsMap.clear()
+        this.oddsMap.putAll(oddsMap)
+    }
+
 
     fun clearFavorite() {
         myFavoriteRepository.clearFavorite()

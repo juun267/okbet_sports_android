@@ -65,7 +65,7 @@
                     android:background="@drawable/effect_select_bg_white_transparent"
                     android:button="@null"
                     android:gravity="center"
-                    android:text="@string/withdrawal_password"
+                    android:text="@string/unread_letters"
                     android:textColor="@color/color_select_primary_white"
                     android:textSize="@dimen/textSize16sp"
                     tools:text="@string/unread_letters" />
@@ -92,7 +92,11 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="1.2"
+            android:maxLines="1"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="8dp"
             android:gravity="center"
             android:text="@string/index"
             android:textColor="@color/colorBlackLight"

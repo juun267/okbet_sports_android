@@ -336,6 +336,7 @@ class OddButtonPagerViewHolder private constructor(
                         oddButtonListener?.onClickBet(
                             matchInfo,
                             odd,
+                            odds.first ?: "",
                             playCateName
                         )
                     }
@@ -408,6 +409,7 @@ class OddButtonPagerViewHolder private constructor(
                         oddButtonListener?.onClickBet(
                             matchInfo,
                             odd,
+                            odds.first ?: "",
                             playCateName
                         )
                     }
@@ -479,6 +481,7 @@ class OddButtonPagerViewHolder private constructor(
                         oddButtonListener?.onClickBet(
                             matchInfo,
                             odd,
+                            odds.first ?: "",
                             playCateName,
                         )
                     }
@@ -492,6 +495,9 @@ class OddButtonPagerViewHolder private constructor(
             LanguageManager.Language.EN -> {
                 this.playCateNameEn
             }
+            LanguageManager.Language.VI -> {
+                this.playCateNameVi
+            }
             else -> {
                 this.playCateName
             }
@@ -503,7 +509,7 @@ class OddButtonPagerViewHolder private constructor(
     }
 
     private fun PlayCateMapItem.isOEType(): Boolean {
-        return this.playCateCode.contains(PlayCate.OE.value) && !this.isCombination()
+        return (this.playCateCode.contains(PlayCate.OE.value) || this.playCateCode.contains(PlayCate.Q_OE.value)) && !this.isCombination()
     }
 
     private fun PlayCateMapItem.isBTSType(): Boolean {
@@ -557,12 +563,13 @@ class OddButtonPagerViewHolder private constructor(
 }
 
 class OddButtonListener(
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateName: String) -> Unit
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd,playCateCode: String, playCateName: String) -> Unit
 ) {
 
     fun onClickBet(
         matchInfo: MatchInfo?,
         odd: Odd,
+        playCateCode: String,
         playCateName: String = ""
-    ) = clickListenerBet(matchInfo, odd, playCateName)
+    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName)
 }

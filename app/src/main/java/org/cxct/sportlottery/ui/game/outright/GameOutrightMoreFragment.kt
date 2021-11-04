@@ -34,9 +34,9 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private val outrightOddAdapter by lazy {
         OutrightOddMoreAdapter().apply {
             outrightOddListener = OutrightOddListener(
-                { matchOdd, odd ->
+                { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
-                        addOddsDialog(matchOdd, odd)
+                        addOddsDialog(matchOdd, odd, playCateCode)
                     }
                 }, { _, _ -> },{ _, _ -> }
             )
@@ -260,13 +260,15 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     private fun addOddsDialog(
         matchOdd: MatchOdd,
         odd: Odd,
+        playCateCode: String
     ) {
         GameType.getGameType(args.matchOdd.matchInfo?.gameType)?.let { gameType ->
             viewModel.updateMatchBetListForOutRight(
                 matchType = MatchType.OUTRIGHT,
                 gameType = gameType,
                 matchOdd = matchOdd,
-                odd = odd
+                odd = odd,
+                playCateCode = playCateCode
             )
         }
     }

@@ -15,6 +15,7 @@ object TimeUtil {
     const val DMY_FORMAT = "dd / MM / yyyy"
     const val MD_FORMAT = "MM-dd"
     const val MD_FORMAT_2 = "M-dd"
+    const val VI_MD_FORMAT = "dd 'TH.'M"
     const val DM_FORMAT = "dd / MM"
     const val HM_FORMAT = "HH:mm"
     const val MD_HMS_FORMAT = "MM-dd HH:mm:ss"
@@ -142,6 +143,22 @@ object TimeUtil {
             Calendar.FRIDAY -> R.string.friday
             Calendar.SATURDAY -> R.string.saturday
             else -> R.string.sunday
+        }
+    }
+
+    fun setupDayOfWeekVi(todayMillis: Long?): Int {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = todayMillis ?:0
+
+        return when (calendar.get(Calendar.DAY_OF_WEEK)) {
+            Calendar.SUNDAY -> R.string.sunday2
+            Calendar.MONDAY -> R.string.monday2
+            Calendar.TUESDAY -> R.string.tuesday2
+            Calendar.WEDNESDAY -> R.string.wednesday2
+            Calendar.THURSDAY -> R.string.thursday2
+            Calendar.FRIDAY -> R.string.friday2
+            Calendar.SATURDAY -> R.string.saturday2
+            else -> R.string.sunday2
         }
     }
 
@@ -448,6 +465,10 @@ object TimeUtil {
 
     fun stampToMD(time: Long): String {
         return timeFormat(time, MD_FORMAT_2)
+    }
+
+    fun stampToViMD(time: Long): String {
+        return timeFormat(time, VI_MD_FORMAT)
     }
 
 }

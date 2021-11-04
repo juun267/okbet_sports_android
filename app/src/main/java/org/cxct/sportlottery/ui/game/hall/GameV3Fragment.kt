@@ -10,12 +10,14 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -38,6 +40,7 @@ import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.common.LeagueListener
@@ -82,7 +85,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val matchCategoryPagerAdapter by lazy {
         MatchCategoryViewPagerAdapter(OnItemClickListener {
-            navGameLeague(matchIdList = it.matchList)
+            navGameLeague(matchIdList = it.matchList, matchCategoryName = it.categoryDesc)
         })
     }
 
@@ -101,11 +104,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                         //之前點選過然後離開又回來 要預設帶入
                         !it.isSelected && it.isLocked == false -> {
+                            unSubscribeChannelSwitchPlayCate()
+
                             viewModel.switchPlay(args.matchType, it)
                             loading()
                         }
                     }
                 } else {
+                    unSubscribeChannelSwitchPlayCate()
                     viewModel.switchPlay(args.matchType, it)
                     upDateSelectPlay(it)
                     loading()
@@ -164,8 +170,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchInfo, odd, playCateName ->
-                    addOddsDialog(matchInfo, odd, playCateName)
+                { matchInfo, odd, playCateCode, playCateName ->
+                    addOddsDialog(matchInfo, odd, playCateCode, playCateName)
                 },
                 { matchId ->
                     matchId?.let {
@@ -196,6 +202,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 addOddsDialog(
                     betMatchInfo,
                     odd,
+                    PlayCate.EPS.value,
                     getString(R.string.game_tab_price_boosts_odd)
                 )
             }, { matchInfo ->
@@ -361,6 +368,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun setupMatchCategoryPager(view: View) {
         view.match_category_pager.adapter = matchCategoryPagerAdapter
+        view.match_category_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+        OverScrollDecoratorHelper.setUpOverScroll(view.match_category_pager.getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
         view.game_match_category_pager.visibility =
             if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
@@ -920,6 +929,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
+                oddsChangeEvent.filterMenuPlayCate()
 
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
@@ -1078,6 +1088,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         return this
     }
 
+    /**
+     * 只有有下拉篩選玩法的才需要過濾odds
+     */
+    private fun OddsChangeEvent.filterMenuPlayCate() {
+        val playSelected = playCategoryAdapter.data.find { it.isSelected }
+
+        when (playSelected?.selectionType) {
+            SelectionType.SELECTABLE.code -> {
+                val playCateMenuCode = playSelected.playCateList?.find { it.isSelected }?.code
+                this.odds?.entries?.retainAll { oddMap -> oddMap.key == playCateMenuCode }
+            }
+        }
+    }
+
     private fun setEpsBottomSheet(matchInfo: MatchInfo) {
         try {
             val contentView: ViewGroup? =
@@ -1173,6 +1197,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 (play.playCateList?.find { it.isSelected } ?: play.playCateList?.first())?.name
             ),
             StatusSheetAdapter.ItemCheckedListener { _, playCate ->
+                unSubscribeChannelSwitchPlayCate()
                 viewModel.switchPlayCategory(args.matchType,play,playCate.code)
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
@@ -1199,7 +1224,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun navGameLeague(
         leagueIdList: List<String> = listOf(),
-        matchIdList: List<String> = listOf()
+        matchIdList: List<String> = listOf(),
+        matchCategoryName: String ?= null
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -1216,7 +1242,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 matchType ?: args.matchType,
                 gameType,
                 leagueIdList.toTypedArray(),
-                matchIdList.toTypedArray()
+                matchIdList.toTypedArray(),
+                matchCategoryName
             )
 
             findNavController().navigate(action)
@@ -1287,6 +1314,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun addOddsDialog(
         matchInfo: MatchInfo?,
         odd: Odd,
+        playCateCode: String,
         playCateName: String
     ) {
         val gameType =
@@ -1297,6 +1325,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 viewModel.updateMatchBetList(
                     args.matchType,
                     gameType,
+                    playCateCode,
                     playCateName,
                     matchInfo,
                     odd,
@@ -1305,6 +1334,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 )
             }
         }
+    }
+
+    private fun getPlaySelectedCode(): String? {
+        return playCategoryAdapter.data.find { it.isSelected }?.code
     }
 
     private fun getPlayCateMenuCode(): String? {
@@ -1327,7 +1360,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 true -> {
                     subscribeChannelHall(
                         leagueOdd.gameType?.key,
-                        getPlayCateMenuCode(),
+                        getPlaySelectedCode(),
                         matchOdd.matchInfo?.id
                     )
 
@@ -1386,11 +1419,34 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+    /**
+     * 切換playCateMenu時, 先將原本訂閱的類別解除訂閱
+     */
+    private fun unSubscribeChannelSwitchPlayCate() {
+        leagueAdapter.data.forEach { leagueOdd ->
+            leagueOdd.matchOdds.forEach {matchOdd ->
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    getPlaySelectedCode(),
+                    matchOdd.matchInfo?.id
+                )
+
+                if (matchOdd.matchInfo?.eps == 1) {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOdd.matchInfo.id
+                    )
+                }
+            }
+        }
+    }
+
     private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd){
         leagueOdd.matchOdds.forEach {matchOdd ->
             unSubscribeChannelHall(
                 leagueOdd.gameType?.key,
-                getPlayCateMenuCode(),
+                getPlaySelectedCode(),
                 matchOdd.matchInfo?.id
             )
 
