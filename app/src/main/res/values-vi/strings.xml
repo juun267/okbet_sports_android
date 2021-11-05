@@ -10,7 +10,7 @@
     <string name="message_socket_connect">Kết nối mạng vượt quá thời gian chờ, vui lòng kết nối lại</string>
     <string name="message_network_no_connect">vui lòng kiểm tra kết nối mạng rồi thử lại</string>
     <string name="message_network_timeout">kết nối mạng vượt quá thời gian, vui lòng thử lại</string>
-    <string name="error">bị lỗi</string>
+    <string name="error">Nhắc nhở</string>
     <string name="error_input_empty">Trường hợp bắt buộc cần điền</string>
     <string name="error_incompatible_format">Các ký tự bạn đã nhập không phù hợp</string>
     <string name="error_wx_incompatible_format">lỗi định dạng Wechat ID không hợp lệ</string>
