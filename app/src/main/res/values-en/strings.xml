@@ -62,6 +62,7 @@
     <string name="hint_e_mail">Email</string>
     <string name="error_e_mail">Email formatted incorrectly</string>
     <string name="we_chat">Wechat</string>
+    <string name="identity">Verification Identity</string>
     <string name="hint_we_chat_number">Wechat ID</string>
     <string name="error_we_chat_number">Wechat ID formatted incorrectly</string>
     <string name="zalo">Zalo</string>
