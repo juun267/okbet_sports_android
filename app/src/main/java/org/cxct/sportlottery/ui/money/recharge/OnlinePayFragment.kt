@@ -114,7 +114,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             bankBottomSheet.show()
         }
     }
-
+//TODO Bill 等UI出圖
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
         mMoneyPayWay = moneyPayWay
         typeIcon = when (mMoneyPayWay?.onlineType) {
@@ -122,6 +122,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.ZFB.type  -> R.drawable.ic_alipay_type
             OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
             OnlineType.JUAN.type -> R.drawable.ic_juancash
+            OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash
+            OnlineType.ONLINEBANK.type -> R.drawable.ic_juancash
+            OnlineType.GCASH.type -> R.drawable.ic_juancash
+            OnlineType.GRABPAY.type -> R.drawable.ic_juancash
+            OnlineType.PAYMAYA.type -> R.drawable.ic_juancash
             else -> R.drawable.ic_online_pay_type
         }
         return this
