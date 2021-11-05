@@ -7,8 +7,12 @@ import android.os.IBinder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -81,6 +85,15 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         receiver.userNotice.observe(this, Observer {
             it?.userNoticeList?.let { list ->
                 viewModel.setUserNoticeList(list)
+            }
+        })
+
+        receiver.dataSourceChange.observe(this, {
+            this.run {
+                if (sConfigData?.thirdOpen == FLAG_OPEN)
+                    MainActivity.reStart(this)
+                else
+                    GameActivity.reStart(this)
             }
         })
     }
