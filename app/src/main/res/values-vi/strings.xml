@@ -507,7 +507,7 @@
     <string name="bet_info_list_game_closed">Kèo chấp đã đóng</string>
     <string name="bet_info_list_game_odds_changed">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_info_list_bet_quota">Số tiền cược : </string>
-    <string name="bet_receipt_bet_quota">Số tiền cược : </string>
+    <string name="bet_receipt_bet_quota">Số tiền đặt cược : </string>
     <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
     <string name="bet_list_win_quota">Số tiền có thể thắng:</string>
 <!--    <string name="bet_info_list_rmb">RMB</string>-->
@@ -530,7 +530,7 @@
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_different_game_type">không cùng loại bóng không thể tiến hành cược xiên</string>
     <string name="bet_info_input_quota">Nhập số tiền</string>
-    <string name="bet_info_check_maximum_limit">Số tiền đặt cược</string>
+    <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
@@ -757,4 +757,83 @@
     <string name="service_2">CSKH2</string>
     <string name="service_connect">Liên hệ</string>
     <string name="top_game">Sự kiện hàng đầu thế giới</string>
+    <string name="parlay_10_fold">10 xiên 1</string>
+    <string name="parlay_10_block">10 xiên 1013</string>
+    <string name="parlay_2_fold">2 xiên 1</string>
+    <string name="parlay_3_fold">3 xiên 1</string>
+    <string name="parlay_3_block">3 xiên 4</string>
+    <string name="parlay_4_fold">4 xiên 1</string>
+    <string name="parlay_4_block">4 xiên 11</string>
+    <string name="parlay_5_fold">5 xiên 1</string>
+    <string name="parlay_5_block">5 xiên 26</string>
+    <string name="parlay_6_fold">6 xiên 1</string>
+    <string name="parlay_6_block">6 xiên 57</string>
+    <string name="parlay_7_fold">7 xiên 1</string>
+    <string name="parlay_7_block">7 xiên 120</string>
+    <string name="parlay_8_fold">8 xiên 1</string>
+    <string name="parlay_8_block">8 xiên 247</string>
+    <string name="parlay_9_fold">9 xiên 1</string>
+    <string name="parlay_9_block">9 xiên 502</string>
+    <string name="parlay_2_fold_rule">Xâu 2 là sự kết hợp của hai lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 2 có thể kết hợp. Ví dụ Xâu 2 (x3) từ 3 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_3_fold_rule">Xâu 3 là sự kết hợp của ba lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 3 có thể kết hợp. Ví dụ Xâu 3 (x4) từ 4 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_3_block_rule">Liên Hoàn 3 là kết hợp 3 lựa chọn riêng biệt gồm tổng cộng 4 xâu nhỏ
+    3 cược Xâu 2x1 và 1 cược Xâu 3x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_4_fold_rule">Xâu 4 là sự kết hợp của bốn lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 4 có thể kết hợp. Ví dụ Xâu 4 (x5) từ 5 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_4_block_rule">Liên Hoàn 4 là kết hợp 4 lựa chọn riêng biệt gồm tổng cộng 11 xâu nhỏ
+    6 Xâu 2x1, 4 Xâu 3x1 và một Xâu 4x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_5_fold_rule">Xâu 5 là sự kết hợp của năm lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 5 có thể kết hợp. Ví dụ Xâu 5 (x6) từ 6 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_5_block_rule">Liên Hoàn 5 là kết hợp 5 lựa chọn riêng biệt gồm tổng cộng 26 xâu nhỏ
+    10 Xâu 2x1, 10 Xâu 3x1, 5 Xâu 4x1 và 1 Xâu 5x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_6_fold_rule">Xâu 6 là sự kết hợp của sáu lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 6 có thể kết hợp. Ví dụ Xâu 6 (x7) từ 7 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_6_block_rule">Liên Hoàn 6 là kết hợp 6 lựa chọn riêng biệt gồm tổng cộng 57 xâu nhỏ
+    15 Xâu 2x1, 20 Xâu 3x1, 15 Xâu 4x1, 6 Xâu 5x1 và 1 Xâu 6x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_7_fold_rule">Xâu 7 là sự kết hợp của bảy lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 7 có thể kết hợp. Ví dụ Xâu 7 (x8) từ 8 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_7_block_rule">Liên Hoàn 7 là kết hợp 7 lựa chọn riêng biệt gồm tổng cộng 120 xâu nhỏ
+    21 Xâu 2x1, 35 Xâu 3x1, 35 Xâu 4x1, 21 Xâu 5x1, 7 Xâu 6x1 và 1 Xâu 7x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_8_fold_rule">Xâu 8 là sự kết hợp của tám lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 8 có thể kết hợp. Ví dụ Xâu 8 (x9) từ 9 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_8_block_rule">Liên Hoàn 8 là kết hợp 8 lựa chọn riêng biệt gồm tổng cộng 247 xâu nhỏ
+    28 Xâu 2x1, 56 Xâu 3x1, 70 Xâu 4x1, 56 Xâu 5x1, 28 Xâu 6x1, 8 Xâu 7x1 và 1 Xâu 8x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_9_fold_rule">Xâu 9 là sự kết hợp của chín lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 9 có thể kết hợp. Ví dụ Xâu 9 (x10) từ 10 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_9_block_rule">Liên Hoàn 9 là kết hợp 9 lựa chọn riêng biệt gồm tổng cộng 502 xâu nhỏ.
+    36 Xâu 2x1, 84 Xâu 3x1, 126 Xâu 4x1, 126 Xâu 5x1, 84 Xâu 6x1, 36 Xâu 7x1, 9 Xâu 8x1 và 1 Xâu 9x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_10_fold_rule">1 xiên 10 là một cược đơn bao gồm 10 lựa chọn, cần phải thắng tất cả các mục chọn để được hoàn tiền, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên</string>
+    <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
 </resources>
