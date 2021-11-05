@@ -319,7 +319,7 @@
     <string name="game_filter_row_search_hint_league">Vui lòng nhập tên đội</string>
     <string name="date_row_league">trận đấu</string>
     <string name="date_row_other">Các kèo khác</string>
-    <string name="date_row_all">Tất cả các trận đấu</string>
+    <string name="date_row_all">TẤT CẢ</string>
     <string name="date_row_live">trận đấu đang diễn ra</string>
     <string name="date_row_today">trận đấu hôm nay</string>
     <string name="outright_row_entrance">Cược chấp ở giải vô địch</string>
