@@ -409,7 +409,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 matchOddsChangeEvent.updateOddsSelectedState()
 
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
-                    SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList, matchOddsChangeEvent)
+                    SocketUpdateUtil.updateMatchOddsMap(
+                        oddsDetailListDataList,
+                        matchOddsChangeEvent,
+                        viewModel.favorPlayCateList.value?.find { playCate ->
+                            playCate.gameType == args.gameType.key
+                        }
+                    )
                         ?.let { updatedDataList ->
                             oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
                         } ?: run {
