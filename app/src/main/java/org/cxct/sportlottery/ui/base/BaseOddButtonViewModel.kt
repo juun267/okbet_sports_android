@@ -32,6 +32,7 @@ import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.repository.BetInfoRepository
 import org.cxct.sportlottery.repository.InfoCenterRepository
 import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.OLD_DISCOUNT
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -126,7 +127,7 @@ abstract class BaseOddButtonViewModel(
                 betInfoRepository.addInBetInfo(
                     matchType = matchType,
                     gameType = gameType,
-                    playCateCode =playCateCode,
+                    playCateCode = playCateCode,
                     playCateName = playCateName,
                     playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
                     matchInfo = matchInfo,
@@ -357,7 +358,7 @@ abstract class BaseOddButtonViewModel(
     }
 
     //更新交易狀況數量
-    private fun updateTransNum () {
+    private fun updateTransNum() {
         viewModelScope.launch {
             doNetwork(androidContext) {
                 loginRepository.getTransNum()
@@ -457,6 +458,31 @@ abstract class BaseOddButtonViewModel(
         }.toMutableMap()
     }
 
+    protected fun MatchOdd.addOddDiscount() {
+        this.oddsMap.forEach {
+            it.value?.filterNotNull()?.forEach { odd ->
+                odd.odds = odd.odds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
+                odd.hkOdds = odd.hkOdds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
+            }
+        }
+
+        this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
+            odd.odds = odd.odds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
+            odd.hkOdds = odd.hkOdds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
+        }
+
+        this.quickPlayCateList?.forEach { quickPlayCate ->
+            quickPlayCate.quickOdds.forEach {
+                it.value?.filterNotNull()?.forEach { odd ->
+                    odd.odds = odd.odds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
+                    odd.hkOdds = odd.hkOdds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
+                }
+            }
+        }
+
+//        OLD_DISCOUNT = loginRepository.discount
+    }
+
     protected fun MatchOdd.updateOddStatus() {
         this.oddsMap.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
@@ -524,7 +550,7 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    protected fun MutableMap<String, CateDetailData>.sortPlayCate(){
+    protected fun MutableMap<String, CateDetailData>.sortPlayCate() {
         val sorted = this.toList().sortedBy { (_, value) -> value.rowSort }.toMap()
         this.clear()
         this.putAll(sorted)

@@ -39,7 +39,7 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
     suspend fun updateUserInfo(userInfoData: UserInfoData?) {
         userInfoData?.let {
             val userInfo = transform(it)
-            if (OLD_DISCOUNT == null) OLD_DISCOUNT = it.discount
+//            OLD_DISCOUNT = it.discount ?: 1f
             withContext(Dispatchers.IO) {
                 userInfoDao.upsert(userInfo)
             }

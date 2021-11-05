@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
@@ -25,6 +26,7 @@ import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
+import org.cxct.sportlottery.util.addOddDiscount
 import org.json.JSONArray
 import timber.log.Timber
 
@@ -179,6 +181,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                             channel = channelStr
                         }
+                        data?.addOddDiscount(MultiLanguagesApplication.appContext)
                         _oddsChange.value = data
                     }
                     EventType.LEAGUE_CHANGE -> {

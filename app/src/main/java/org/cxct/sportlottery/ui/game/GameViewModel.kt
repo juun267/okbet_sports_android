@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import androidx.core.math.MathUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -55,10 +56,7 @@ import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -520,6 +518,7 @@ class GameViewModel(
                                     }
                             }
                         }
+                        matchOdd.addOddDiscount()
                         matchOdd.updateOddStatus()
                     }
                 }
@@ -560,6 +559,7 @@ class GameViewModel(
                                     }
                             }
                         }
+                        matchOdd.addOddDiscount()
                         matchOdd.updateOddStatus()
                     }
                 }
@@ -604,6 +604,7 @@ class GameViewModel(
                             }
                         }
                         oddData.playCateMappingList = playCateMappingList
+                        oddData.addOddDiscount()
                         oddData.updateOddStatus()
                     }
                 }
@@ -635,7 +636,17 @@ class GameViewModel(
                                 }
                         }
                     }
+
+                    oddData.addOddDiscount()
                     oddData.updateOddStatus()
+
+/*
+                    oddData.oddsMap.forEach {
+                        it.value?.filterNotNull()?.forEach { odd ->
+                            Log.e(">>>>>>", ">>>>> ${odd.name}, odd?.odds = ${odd?.odds}")
+                        }
+                    }
+                    */
                 }
 
                 _highlightMatchResult.postValue(Event(result))
@@ -858,6 +869,7 @@ class GameViewModel(
                         oddList?.updateOddSelectState()
                     }
 
+                    matchOdd?.addOddDiscount()
                     matchOdd?.setupPlayCate()
                     matchOdd?.sortOdds()
                 }
@@ -869,6 +881,7 @@ class GameViewModel(
                 matchOdd.startDate = TimeUtil.timeFormat(it.matchInfo?.endTime, DMY_FORMAT)
                 matchOdd.startTime = TimeUtil.timeFormat(it.matchInfo?.endTime, HM_FORMAT)
                 matchOdd.playCateMappingList = playCateMappingList
+
                 matchOdd.updateOddStatus()
             }
 
@@ -946,6 +959,7 @@ class GameViewModel(
                     if (!getPlayCateCodeList().isNullOrEmpty())
                         matchOdd.oddsMap.entries.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
 
+                    matchOdd.addOddDiscount()
                     matchOdd.updateOddStatus()
                 }
             }
@@ -1103,6 +1117,7 @@ class GameViewModel(
                 it.leagueOdd.forEach { leagueOdds ->
                     leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.playCateMappingList = playCateMappingList
+                        matchOddsItem.addOddDiscount()
                         matchOddsItem.updateOddStatus()
                     }
                 }

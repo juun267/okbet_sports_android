@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -12,10 +13,18 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.repository.KEY_DISCOUNT
+import org.cxct.sportlottery.repository.NAME_LOGIN
+import org.cxct.sportlottery.repository.OLD_DISCOUNT
+import org.cxct.sportlottery.util.ArithUtil.round
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
+import java.math.RoundingMode
+import java.text.DecimalFormat
+import kotlin.math.pow
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
@@ -105,6 +114,7 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
         else -> itemData.stake?.let { TextUtil.formatBetQuota(it) }
     }
 }
+
 
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
@@ -245,6 +255,9 @@ fun TextView.setRecordStatusColor(status: Int?) {
     }
 }
 
+fun Double.roundToSecond(): Double {
+    return DecimalFormatUtil().doNumberFormatToDouble(this, "#.##", RoundingMode.CEILING)
+}
 
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Double?) {
@@ -364,4 +377,19 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
             }
         }
     })
+}
+
+fun OddsChangeEvent.addOddDiscount(context: Context?): OddsChangeEvent {
+    val discount = context?.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)?.getFloat(KEY_DISCOUNT, 1f) ?: 1f
+    this.odds?.let { oddTypeSocketMap ->
+        oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+            oddTypeSocketMapEntry.value.onEach { odd ->
+                odd?.odds = odd?.odds?.div(OLD_DISCOUNT)?.times(discount.toDouble())?.roundToSecond()
+                odd?.hkOdds = odd?.hkOdds?.div(OLD_DISCOUNT)?.times(discount.toDouble())?.roundToSecond()
+            }
+        }
+    }
+
+//    OLD_DISCOUNT = discount
+    return this
 }
