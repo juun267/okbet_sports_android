@@ -661,9 +661,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_status_right.text = statusBuilder
 
         if (tv_status_left.tag != GameStatus.POSTPONED.code) {
-            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
+            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
             val statusValue = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: event.matchStatusCO?.statusName
             tv_status_left.text = statusValue
+        } else {
+            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
         }
     }
 }
