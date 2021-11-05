@@ -48,7 +48,7 @@ object MoneyManager {
         }
         return mMoneyPayWayList
     }
-
+//TODO Bill 等UI補Icon
     fun getBankIcon(bankName: String): Int {
         return when (bankName) {
             MoneyType.BANK.code -> R.drawable.ic_bank_atm

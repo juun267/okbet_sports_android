@@ -434,6 +434,11 @@
     <string name="title_weixin">Wechat</string>
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
+    <string name="online_dispenshing">出款</string>
+    <string name="online_online_bank">網銀</string>
+    <string name="online_gcash">Gcash</string>
+    <string name="online_grab">GrabPay</string>
+    <string name="online_maya">PayMaya</string>
     <string name="online_alipay">Alipay trực tuyến</string>
     <string name="online_weixin">WeChat trực tuyến</string>
     <string name="online_qq">QQ trực tuyến</string>
