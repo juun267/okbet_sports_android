@@ -58,6 +58,12 @@ object MoneyManager {
             MoneyType.ONLINE.code -> R.drawable.ic_online_pay
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
+            MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//TODO Bill 待補圖
+            MoneyType.ONLINEBANK.code -> R.drawable.ic_juancash
+            MoneyType.GCASH.code -> R.drawable.ic_g_cash
+            MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay
+            MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
+
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -70,6 +76,11 @@ object MoneyManager {
             MoneyType.ONLINE_TYPE.code -> R.drawable.ic_online_pay_type
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
+            MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//TODO Bill 待補圖
+            MoneyType.ONLINEBANK.code -> R.drawable.ic_juancash
+            MoneyType.GCASH.code -> R.drawable.ic_g_cash_type
+            MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay_type
+            MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya_type
             else -> R.drawable.ic_bank_atm
         }
     }
