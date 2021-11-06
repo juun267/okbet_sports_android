@@ -797,5 +797,9 @@
     <string name="parlay_9_block_rule">A Block (9) is all the multiple combinations of 9 separate selections, consisting of 502 bets.\n36 x Doubles, 84 x Trebles, 126 x 4-Folds, 126 x 5-Folds, 84 x 6-Folds, 36 x 7-Folds, 9 x 8-Folds and 1 x 9-Fold.\nA minimum of 2 selections must win to ensure a return,Different ball types and championship game methods cannot be used for cross betting</string>
     <string name="parlay_10_fold_rule">10-Folds are a single bet (x1) combining 10 separate selections.\nAll selections must win to ensure a return,Different ball types and championship game methods cannot be used for cross betting</string>
     <string name="parlay_10_block_rule">A Block (10) is all the multiple combinations of 10 separate selections, consisting of 1013 bets.\n45 x Doubles, 120 x Trebles, 210 x 4-Folds, 252 x 5-Folds, 210 x 6-Folds, 120 x 7-Folds, 45 x 8-Folds, 10 x 9-Folds and 1 x 10-Fold.\nA minimum of 2 selections must win to ensure a return,Different ball types and championship game methods cannot be used for cross betting</string>
-
+    <string name="upload_title">Valid ID</string>
+    <string name="upload_tips">・Please upload valid ID that can be prove your identity.</string>
+    <string name="upload_photo_title">Selfie</string>
+    <string name="upload_photo_tips">・Maximum upload file size: 2MB.</string>
+    <string name="upload_media_reset">Retake</string>
 </resources>

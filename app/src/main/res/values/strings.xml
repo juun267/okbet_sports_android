@@ -525,7 +525,7 @@
     <string name="bet_receipt_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
     <string name="bet_list_win_quota">可赢金额：</string>
-<!--    <string name="bet_info_list_rmb">RMB</string>-->
+    <!--    <string name="bet_info_list_rmb">RMB</string>-->
     <string name="bet_info_list_rmb">PHP</string>
     <string name="bet_info_list_add_more">更多选择</string>
     <string name="bet_info_list_bet">投注</string>
@@ -552,7 +552,7 @@
     <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_current_rmb">%s PHP</string>
-<!--    <string name="bet_info_current_rmb">%s RMB</string>-->
+    <!--    <string name="bet_info_current_rmb">%s RMB</string>-->
     <string name="bet_info_all_bet">所有投注</string>
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
@@ -796,4 +796,10 @@
     <string name="parlay_9_block_rule">9串502是由9个不同的赛事组成的502个不同的投注，36个2串1，84个3串1，126个4串1，126个5串1，84个6串1，36个7串1，9个8串1以及1个9串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_10_fold_rule">10串1是10个选项组成的单一投注，必须赢得所有选项方可获得返还，不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_10_block_rule">10串1013是由10个不同的赛事组成的1013个不同的投注，45个2串1，120个3串1，210个4串1，252个5串1，210个6串1，120个7串1，45个8串1，10个9串1以及1个10串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="upload_title">身份证明文件</string>
+    <string name="upload_tips">・请上传能够证明您身份的文件</string>
+    <string name="upload_photo_title">自拍照</string>
+    <string name="upload_photo_tips">・照片档案大小上限: 2MB</string>
+    <string name="upload_media_reset">重拍</string>
 </resources>
