@@ -76,7 +76,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initView() {
-        if (mMoneyPayWay?.image != "ic_online_pay") {
+        if (mMoneyPayWay?.onlineType != OnlineType.WX.type
+            && mMoneyPayWay?.onlineType != OnlineType.GCASH.type
+            && mMoneyPayWay?.onlineType != OnlineType.GRABPAY.type
+            && mMoneyPayWay?.onlineType != OnlineType.PAYMAYA.type) {
             cv_pay_bank.visibility = View.GONE
         } else {
             cv_pay_bank.visibility = View.VISIBLE
