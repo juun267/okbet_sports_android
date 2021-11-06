@@ -1,13 +1,14 @@
 package org.cxct.sportlottery
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_credentials_detail.*
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 
-class CredentialsDetailFragment : Fragment() {
+class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +20,8 @@ class CredentialsDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_submit.setOnClickListener { activity?.finish() }
+        btn_submit.setOnClickListener {
+            showPromptDialog(getString(R.string.prompt), "完成") { activity?.finish() }
+        }
     }
 }
