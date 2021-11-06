@@ -208,5 +208,38 @@
     "image": "ic_pay_maya",
     "rechType": "onlinePayment",
     "onlineType": "206"
+  },
+  {
+    "titleNameMap": {
+      "zh": "Gcash",
+      "en": "Gcash",
+      "vi": "Gcash"
+    },
+    "subtitle": "Gcash转账支付",
+    "image": "ic_wechat_pay",
+    "rechType": "ic_g_cash",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "GrabPay",
+      "en": "GrabPay",
+      "vi": "GrabPay"
+    },
+    "subtitle": "GrabPay转账支付",
+    "image": "ic_grab_pay",
+    "rechType": "grabPay",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "PayMaya",
+      "en": "PayMaya",
+      "vi": "PayMaya"
+    },
+    "subtitle": "微信转账支付",
+    "image": "ic_pay_maya",
+    "rechType": "payMaya",
+    "onlineType": "0"
   }
 ]
