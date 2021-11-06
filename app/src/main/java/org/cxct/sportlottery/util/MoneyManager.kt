@@ -118,5 +118,16 @@ object MoneyManager {
         BCCB("北京银行", R.drawable.ic_bank_bccb),
         BRCB("北京农商", R.drawable.ic_bank_brcb),
         BOS("上海银行", R.drawable.ic_bank_shcc),
+        BPI("BPI",  R.drawable.ic_bank_bpi),
+        BDO("BDO",  R.drawable.ic_bank_bdo),
+        METROPOLITAN("metropolitan",  R.drawable.ic_bank_metropolitan),
+        LAND("land",  R.drawable.ic_bank_land),
+        SECURITY("security",  R.drawable.ic_bank_security),
+        UB("UB",  R.drawable.ic_bank_ub),
+        UCPB("UCPB",  R.drawable.ic_bank_ucpb),
+        RCBC("RCBC",  R.drawable.ic_bank_rcbc),
+        EASTWEST("Eastwest",  R.drawable.ic_bank_eastwest),
+        CHINABANK("ChinaBank",  R.drawable.ic_bank_china_bank),
+        PNB("PNB",  R.drawable.ic_bank_pnb)
     }
 }
