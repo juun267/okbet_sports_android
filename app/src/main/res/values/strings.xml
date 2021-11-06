@@ -802,4 +802,5 @@
     <string name="upload_photo_title">自拍照</string>
     <string name="upload_photo_tips">・照片档案大小上限: 2MB</string>
     <string name="upload_media_reset">重拍</string>
+    <string name="upload_fail">上传失败</string>
 </resources>
