@@ -21,8 +21,20 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         super.onViewCreated(view, savedInstanceState)
         initFakeData()
 
+    private fun initObserve() {
+        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                if (result.success) {
+                    showPromptDialog(getString(R.string.prompt), "完成") { activity?.finish() }
+                } else {
+                    showErrorPromptDialog(getString(R.string.promotion), result.msg) {}
+                }
+            }
+        })
+    }
         btn_submit.setOnClickListener {
-            showPromptDialog(getString(R.string.prompt), "完成") { activity?.finish() }
+            viewModel.uploadIdentityDoc()
+        }
         }
     }
 
