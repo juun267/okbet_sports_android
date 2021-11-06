@@ -91,18 +91,14 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
 
     private fun selectedDocImg(file: File) {
         docFile = file
-        view_identity_doc.apply {
-            imgUploaded(true)
-            iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
-        }
+        setupDocFile()
+        checkSubmitStatus()
     }
 
     private fun selectedPhotoImg(file: File) {
         photoFile = file
-        view_identity_photo.apply {
-            imgUploaded(true)
-            iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
-        }
+        setupPhotoFile()
+        checkSubmitStatus()
     }
 
     override fun onCreateView(
@@ -120,12 +116,19 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         setupUploadView()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        setupDocFile()
+        setupPhotoFile()
+        checkSubmitStatus()
+    }
+
     private fun initObserve() {
         viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
                 if (result.success) {
-                    clearMediaFile()
                     val action = CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment()
                     findNavController().navigate(action)
                 } else {
@@ -155,6 +158,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
             clearMediaFile()
             view_identity_doc.imgUploaded(false)
             view_identity_photo.imgUploaded(false)
+            checkSubmitStatus()
         }
     }
 
@@ -184,6 +188,28 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 }
             }
         }
+    }
+
+    private fun setupDocFile() {
+        docFile?.let { file ->
+            view_identity_doc.apply {
+                imgUploaded(true)
+                iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+            }
+        }
+    }
+
+    private fun setupPhotoFile() {
+        photoFile?.let { file ->
+            view_identity_photo.apply {
+                imgUploaded(true)
+                iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+            }
+        }
+    }
+
+    private fun checkSubmitStatus() {
+        btn_submit.isEnabled = docFile != null && photoFile != null
     }
 
     private fun clearMediaFile() {
