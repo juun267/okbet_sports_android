@@ -475,7 +475,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     MoneyType.CTF_TYPE.code -> {
                         checkUserName(MoneyType.CTF_TYPE.code, it)
                     }
-                    MoneyType.ALI_TYPE.code -> {
+                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code-> {
                         checkUserName(MoneyType.ALI_TYPE.code, it)
                     }
                 }
@@ -502,7 +502,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     MoneyType.CTF_TYPE.code -> {
                         checkUserName(MoneyType.CTF_TYPE.code, it)
                     }
-                    MoneyType.ALI_TYPE.code -> {
+                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code-> {
                         checkUserName(MoneyType.ALI_TYPE.code, it)
                     }
                 }
