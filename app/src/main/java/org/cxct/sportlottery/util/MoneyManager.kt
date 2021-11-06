@@ -74,6 +74,9 @@ object MoneyManager {
             MoneyType.WX_TYPE.code -> R.drawable.ic_wechat_pay_type
             MoneyType.CTF_TYPE.code -> R.drawable.ic_tenpay_type
             MoneyType.ONLINE_TYPE.code -> R.drawable.ic_online_pay_type
+            MoneyType.GCASH_TYPE.code -> R.drawable.ic_g_cash_type
+            MoneyType.GRABPAY_TYPE.code -> R.drawable.ic_grab_pay_type
+            MoneyType.PAYMAYA_TYPE.code -> R.drawable.ic_pay_maya_type
             MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
             MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
             MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//TODO Bill 待補圖
