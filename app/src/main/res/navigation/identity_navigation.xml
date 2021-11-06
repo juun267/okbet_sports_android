@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/identity_navigation"
+    app:startDestination="@id/credentialsFragment">
+
+    <fragment
+        android:id="@+id/credentialsFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.CredentialsFragment"
+        android:label="fragment_credentials"
+        tools:layout="@layout/fragment_credentials">
+        <action android:id="@+id/action_credentialsFragment_to_credentialsDetailFragment"
+            app:destination="@id/credentialsDetailFragment"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/credentialsDetailFragment"
+        android:name="org.cxct.sportlottery.CredentialsDetailFragment"
+        android:label="fragment_credentials_detail"
+        tools:layout="@layout/fragment_credentials_detail" />
+</navigation>

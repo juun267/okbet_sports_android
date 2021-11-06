@@ -21,6 +21,7 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.identity.IdentityActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoActivity.Companion.MODIFY_INFO
 import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyType
@@ -113,6 +114,9 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_phone_number.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.PhoneNumber) }
         //微信
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
+        //實名制
+        //TODO 實名制頁面
+        ll_identity.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {

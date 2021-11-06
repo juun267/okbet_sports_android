@@ -32,6 +32,9 @@ enum class EventType(val value: String) {
     SYS_MAINTENANCE("SYS_MAINTENANCE"), //系统维护状态
     PLAY_QUOTA_CHANGE("PLAY_QUOTA_CHANGE"), //所有体育玩法限额变更
 
+    /*公共 /ws/notify/platform/$mPlatformId */
+    DATA_SOURCE_CHANGE_EVENT("DATA_SOURCE_CHANGE_EVENT"), //所有体育玩法限额变更
+
     /*未被定義的頻道*/
     UNKNOWN("UNKNOWN");
 
