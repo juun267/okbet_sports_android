@@ -11,6 +11,9 @@ enum class MoneyType(val code: String) {
     ALI_TYPE("alipay"),
     WX_TYPE("weixin"),
     CTF_TYPE("cft"),
+    GCASH_TYPE("gcash"),
+    GRABPAY_TYPE("grabPay"),
+    PAYMAYA_TYPE("payMaya"),
     ONLINE_TYPE("ic_online_pay"),
     CRYPTO_TYPE("cryptoPay"),
     JUAN_ONLINE_TYPE("ic_juancash"), // 菲律賓在線網銀 JuanCash
