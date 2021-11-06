@@ -153,5 +153,60 @@
     "image": "ic_crypto_pay",
     "rechType": "cryptoPay",
     "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "出款",
+      "en": "出款",
+      "vi": "出款"
+    },
+    "subtitle": "菲律賓在線網銀",
+    "image": "ic_juancash",
+    "rechType": "onlinePayment",
+    "onlineType": "202"
+  },
+  {
+    "titleNameMap": {
+      "zh": "網銀",
+      "en": "網銀",
+      "vi": "網銀"
+    },
+    "subtitle": "菲律賓在線網銀",
+    "image": "ic_juancash",
+    "rechType": "onlinePayment",
+    "onlineType": "203"
+  },
+  {
+    "titleNameMap": {
+      "zh": "Gcash",
+      "en": "Gcash",
+      "vi": "Gcash"
+    },
+    "subtitle": "菲律賓在線網銀 Gcash",
+    "image": "ic_g_cash",
+    "rechType": "onlinePayment",
+    "onlineType": "204"
+  },
+  {
+    "titleNameMap": {
+      "zh": "GrabPay",
+      "en": "GrabPay",
+      "vi": "GrabPay"
+    },
+    "subtitle": "菲律賓在線網銀 GrabPay",
+    "image": "ic_grab_pay",
+    "rechType": "onlinePayment",
+    "onlineType": "205"
+  },
+  {
+    "titleNameMap": {
+      "zh": "PayMaya",
+      "en": "PayMaya",
+      "vi": "PayMaya"
+    },
+    "subtitle": "菲律賓在線網銀 PayMaya",
+    "image": "ic_pay_maya",
+    "rechType": "onlinePayment",
+    "onlineType": "206"
   }
 ]
