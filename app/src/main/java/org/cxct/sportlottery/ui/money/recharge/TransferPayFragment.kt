@@ -379,6 +379,30 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
 
                 tv_hint1.text = getString(R.string.ali_recharge_hint)
             }
+            MoneyType.GCASH_TYPE.code -> {
+                hideEditText()
+                ll_qr.visibility = View.VISIBLE
+                et_nickname.visibility = View.VISIBLE
+                et_name.visibility = View.VISIBLE
+
+                tv_hint1.text = getString(R.string.gcash_recharge_hint)
+            }
+            MoneyType.GRABPAY_TYPE.code -> {
+                hideEditText()
+                ll_qr.visibility = View.VISIBLE
+                et_nickname.visibility = View.VISIBLE
+                et_name.visibility = View.VISIBLE
+
+                tv_hint1.text = getString(R.string.grabpay_recharge_hint)
+            }
+            MoneyType.PAYMAYA_TYPE.code -> {
+                hideEditText()
+                ll_qr.visibility = View.VISIBLE
+                et_nickname.visibility = View.VISIBLE
+                et_name.visibility = View.VISIBLE
+
+                tv_hint1.text = getString(R.string.paymaya_recharge_hint)
+            }
         }
 
         //反利、手續費
@@ -451,7 +475,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     MoneyType.CTF_TYPE.code -> {
                         checkUserName(MoneyType.CTF_TYPE.code, it)
                     }
-                    MoneyType.ALI_TYPE.code -> {
+                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code-> {
                         checkUserName(MoneyType.ALI_TYPE.code, it)
                     }
                 }
@@ -478,7 +502,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     MoneyType.CTF_TYPE.code -> {
                         checkUserName(MoneyType.CTF_TYPE.code, it)
                     }
-                    MoneyType.ALI_TYPE.code -> {
+                    MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code-> {
                         checkUserName(MoneyType.ALI_TYPE.code, it)
                     }
                 }
@@ -548,7 +572,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
                     depositDate = depositDate.time
                 )
             }
-            MoneyType.ALI_TYPE.code -> {
+            MoneyType.ALI_TYPE.code, MoneyType.GCASH_TYPE.code, MoneyType.GRABPAY_TYPE.code, MoneyType.PAYMAYA_TYPE.code -> {
                 MoneyAddRequest(
                     rechCfgId = mSelectRechCfgs?.id ?: 0,
                     bankCode = null,

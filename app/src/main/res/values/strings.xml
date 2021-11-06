@@ -396,6 +396,9 @@
     <string name="wx_recharge_hint">请每次入款前登录会员核对微信账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="ali_recharge_hint">请每次入款前登录会员核对支付宝账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="cft_recharge_hint">请每次入款前登录会员核对财付通账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="gcash_recharge_hint">请每次入款前登录会员核对Gcash账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="grabpay_recharge_hint">请每次入款前登录会员核对GrabPay账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="paymaya_recharge_hint">请每次入款前登录会员核对PayMaya账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
     <string name="title_choose_pay_channel">选择支付渠道</string>
     <string name="title_pay_gap">支付账户</string>
@@ -455,6 +458,7 @@
     <string name="online_credit_card">在线信用卡</string>
     <string name="bank_card">银行卡</string>
     <string name="crypto">虚拟币</string>
+    <string name="ewallet">eWallet</string>
     <string name="currency_protocol">协议/币种</string>
     <string name="select_crypto_address">选择地址</string>
     <string name="withdraw_number">提款个数</string>

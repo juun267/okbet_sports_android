@@ -102,6 +102,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         }
 
+        tab_wallet.setOnClickListener {
+            if (!it.isSelected) {
+                selectDealType(TransferType.BANK)
+                clearEvent()
+            }
+        }
+
         ll_select_bank.setOnClickListener {
             bankCardBottomSheet.show()
         }

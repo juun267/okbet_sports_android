@@ -386,6 +386,9 @@
     <string name="wx_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Wechat có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="ali_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Alipay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="cft_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Tenpay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
+    <string name="gcash_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Gcash có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
+    <string name="grabpay_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản GrabPay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
+    <string name="paymaya_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản PayMaya có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="title_pay_channel">Phương thức thanh toán</string>
     <string name="title_choose_pay_channel">Chọn phương thức thanh toán</string>
     <string name="title_pay_gap">Tài khoản thanh toán</string>
@@ -445,6 +448,7 @@
     <string name="online_credit_card">Thẻ tín dụng trực tuyến</string>
     <string name="bank_card">Thẻ ngân hàng</string>
     <string name="crypto">Tiền ảo</string>
+    <string name="ewallet">eWallet</string>
     <string name="currency_protocol">Thoả thuận / Loại tiền</string>
     <string name="select_crypto_address">Chọn địa chỉ</string>
     <string name="withdraw_number">Số tiền rút</string>
