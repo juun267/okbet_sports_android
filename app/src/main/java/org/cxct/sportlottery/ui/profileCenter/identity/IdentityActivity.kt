@@ -23,7 +23,10 @@ class IdentityActivity : BaseSocketActivity<ProfileCenterViewModel>(ProfileCente
     private fun initToolbar() {
         tv_toolbar_title.text = getString(R.string.identity)
             btn_toolbar_back.setOnClickListener{
-                mNavController.popBackStack()
+                if (mNavController.previousBackStackEntry == null)
+                    finish()
+                else
+                    mNavController.popBackStack()
             }
     }
 }

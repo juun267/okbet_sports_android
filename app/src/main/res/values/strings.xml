@@ -803,4 +803,13 @@
     <string name="upload_photo_tips">・照片档案大小上限: 2MB</string>
     <string name="upload_media_reset">重拍</string>
     <string name="upload_fail">上传失败</string>
+    <string name="identity_id">ID 号码</string>
+    <string name="identity_last_name">姓</string>
+    <string name="identity_first_name">名</string>
+    <string name="identity_other_name">別名</string>
+    <string name="identity_country">國家地區</string>
+    <string name="identity_birth">生日</string>
+    <string name="identity_marital_status">婚姻狀態</string>
+    <string name="identity_sex">性別</string>
+    <string name="identity_work">工作</string>
 </resources>

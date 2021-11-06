@@ -123,7 +123,9 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
     private fun initObserve() {
         viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
+                hideLoading()
                 if (result.success) {
+                    clearMediaFile()
                     val action = CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment()
                     findNavController().navigate(action)
                 } else {
@@ -142,13 +144,15 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 photoFile == null -> {
                     showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
                 }
-                else -> viewModel.uploadVerifyPhoto(docFile!!, photoFile!!)
+                else -> {
+                    loading()
+                    viewModel.uploadVerifyPhoto(docFile!!, photoFile!!)
+                }
             }
         }
 
         btn_reset.setOnClickListener {
-            docFile = null
-            photoFile = null
+            clearMediaFile()
             view_identity_doc.imgUploaded(false)
             view_identity_photo.imgUploaded(false)
         }
@@ -180,6 +184,11 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 }
             }
         }
+    }
+
+    private fun clearMediaFile() {
+        docFile = null
+        photoFile = null
     }
 
     private fun UploadImageView.imgUploaded(uploaded: Boolean) {
