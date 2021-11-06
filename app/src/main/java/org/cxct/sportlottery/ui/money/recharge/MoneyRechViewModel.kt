@@ -573,6 +573,15 @@ class MoneyRechViewModel(
             org.cxct.sportlottery.network.common.RechType.CFT.code -> androidContext.resources.getString(
                 R.string.title_cft
             )
+            org.cxct.sportlottery.network.common.RechType.GCASH.code -> androidContext.resources.getString(
+                R.string.online_gcash
+            )
+            org.cxct.sportlottery.network.common.RechType.GRABPAY.code -> androidContext.resources.getString(
+                R.string.online_grab
+            )
+            org.cxct.sportlottery.network.common.RechType.PAYMAYA.code -> androidContext.resources.getString(
+                R.string.online_maya
+            )
             else -> ""
         }
     }
