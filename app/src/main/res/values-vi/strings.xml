@@ -445,6 +445,7 @@
     <string name="online_credit_card">Thẻ tín dụng trực tuyến</string>
     <string name="bank_card">Thẻ ngân hàng</string>
     <string name="crypto">Tiền ảo</string>
+    <string name="ewallet">eWallet</string>
     <string name="currency_protocol">Thoả thuận / Loại tiền</string>
     <string name="select_crypto_address">Chọn địa chỉ</string>
     <string name="withdraw_number">Số tiền rút</string>

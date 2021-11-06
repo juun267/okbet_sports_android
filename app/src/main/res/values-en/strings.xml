@@ -455,6 +455,7 @@
     <string name="online_credit_card">Online Credit card</string>
     <string name="bank_card">Bank card</string>
     <string name="crypto">USDT</string>
+    <string name="ewallet">eWallet</string>
     <string name="currency_protocol">agreement/currency</string>
     <string name="select_crypto_address">Address</string>
     <string name="withdraw_number">Withdraw</string>
