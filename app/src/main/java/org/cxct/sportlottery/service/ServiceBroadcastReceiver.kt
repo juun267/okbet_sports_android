@@ -78,6 +78,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val matchOddsLock: LiveData<MatchOddsLockEvent?>
         get() = _matchOddsLock
 
+    val dataSourceChange: LiveData<Boolean?>
+        get() = _dataSourceChange
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -94,6 +97,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
+    private val _dataSourceChange = MutableLiveData<Boolean?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -146,6 +150,11 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     EventType.PLAY_QUOTA_CHANGE -> {
                         val data = ServiceMessage.getPlayQuotaChange(jObjStr)
                         _playQuotaChange.value = data
+                    }
+
+                    //公共频道
+                    EventType.DATA_SOURCE_CHANGE_EVENT -> {
+                        _dataSourceChange.value = true
                     }
 
                     //用户私人频道
