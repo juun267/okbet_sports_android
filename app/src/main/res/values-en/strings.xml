@@ -809,7 +809,7 @@
     <string name="upload_fail">Upload fail</string>
     <string name="identity_id">ID Number</string>
     <string name="identity_last_name">Surname</string>
-    <string name="identity_first_name">Give Name</string>
+    <string name="identity_first_name">Given Name</string>
     <string name="identity_other_name">Other Name</string>
     <string name="identity_country">Citizenship</string>
     <string name="identity_birth">Date of Birth</string>
