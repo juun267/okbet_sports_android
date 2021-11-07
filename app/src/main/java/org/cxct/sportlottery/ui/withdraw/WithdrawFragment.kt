@@ -302,6 +302,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 val cardIcon = when (it.transferType) {
                     TransferType.BANK -> getBankIconByBankName(it.bankName)
                     TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+                    TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
                 }
                 view.iv_bank_card_icon.setImageResource(cardIcon)
 
@@ -368,6 +369,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
             val cardIcon = when (data.transferType) {
                 TransferType.BANK -> getBankIconByBankName(data.bankName)
                 TransferType.CRYPTO -> getCryptoIconByCryptoName(data.transferType.type)
+                TransferType.E_WALLET -> getBankIconByBankName(data.bankName)
             }
             ivBankIcon?.setImageResource(cardIcon)
             if (position == selectedPosition)

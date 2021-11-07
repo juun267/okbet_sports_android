@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
@@ -90,12 +89,14 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 when (transferType) {
                     TransferType.BANK -> (activity as BankActivity).changeTitle(getString(R.string.edit_bank_card))
                     TransferType.CRYPTO -> (activity as BankActivity).changeTitle(getString(R.string.edit_crypto_card))
+                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(getString(R.string.edit_e_wallet))
                 }
             }
             false -> {
                 when (transferType) {
                     TransferType.BANK -> (activity as BankActivity).changeTitle(getString(R.string.add_credit_card))
                     TransferType.CRYPTO -> (activity as BankActivity).changeTitle(getString(R.string.add_crypto_card))
+                    TransferType.E_WALLET -> (activity as BankActivity).changeTitle(getString(R.string.add_e_wallet))
                 }
             }
         }
@@ -108,6 +109,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
+
+        btn_delete_bank.text = when (transferType) {
+            TransferType.BANK -> getString(R.string.delete_bank_card)
+            TransferType.CRYPTO -> getString(R.string.delete_crypto)
+            TransferType.E_WALLET -> getString(R.string.delete_e_wallet)
+        }
+
     }
 
     private fun showHideTab() {
@@ -117,9 +125,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             block_transfer_type.visibility = View.VISIBLE
         }
 
+
         mAddSwitch?.apply {
+
             tab_bank_card.visibility = if (bankTransfer) View.VISIBLE else View.GONE
             tab_crypto.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
+            tab_e_wallet.visibility = if (bankTransfer) View.VISIBLE else View.GONE
             block_transfer_type.visibility = if (!(bankTransfer && cryptoTransfer)) View.GONE else View.VISIBLE
         }
     }
@@ -225,6 +236,17 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             uwType = transferType.type,
                         )
                     }
+                    TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
+                        addBankCard(
+                            bankName = tv_bank_name.text.toString(),
+                            subAddress = et_network_point.getText(),
+                            cardNo = et_bank_card_number.getText(),
+                            fundPwd = et_withdrawal_password.getText(),
+                            id = args.editBankCard?.id?.toString(),
+                            uwType = transferType.type,
+                            bankCode = args.editBankCard?.bankCode.toString()
+                        )
+                    }
                 }
 
             }
@@ -251,6 +273,11 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             tab_crypto.setOnClickListener {
                 transferType = TransferType.CRYPTO
                 clearCryptoInputFiled()
+                changeTransferType(transferType)
+            }
+            tab_e_wallet.setOnClickListener {//eWallet暫時寫死 與綁定銀行卡相同
+                transferType = TransferType.E_WALLET
+                clearBankInputFiled()
                 changeTransferType(transferType)
             }
         }
@@ -281,10 +308,17 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             TransferType.BANK -> {
                 tab_bank_card.isSelected = true
                 tab_crypto.isSelected = false
+                tab_e_wallet.isSelected = false
             }
             TransferType.CRYPTO -> {
                 tab_bank_card.isSelected = false
                 tab_crypto.isSelected = true
+                tab_e_wallet.isSelected = false
+            }
+            TransferType.E_WALLET -> {
+                tab_bank_card.isSelected = false
+                tab_crypto.isSelected = false
+                tab_e_wallet.isSelected = true
             }
         }
     }
@@ -298,6 +332,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             TransferType.CRYPTO -> {
                 block_bank_card_input.visibility = View.GONE
                 block_crypto_input.visibility = View.VISIBLE
+            }
+            TransferType.E_WALLET -> { //eWallet暫時寫死 與綁定銀行卡相同
+                block_bank_card_input.visibility = View.VISIBLE
+                block_crypto_input.visibility = View.GONE
             }
         }
     }
@@ -345,6 +383,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     val promptMessage = when (transferType) {
                         TransferType.BANK -> getString(R.string.text_bank_card_modify_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_modify_success)
+                        TransferType.E_WALLET -> getString(R.string.text_e_wallet_modify_success)
                     }
                     ToastUtil.showToast(context, promptMessage)
                     mNavController.popBackStack()
@@ -353,6 +392,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     val promptMessage = when (transferType) {
                         TransferType.BANK -> getString(R.string.text_bank_card_add_success)
                         TransferType.CRYPTO -> getString(R.string.text_crypto_add_success)
+                        TransferType.E_WALLET -> getString(R.string.text_e_wallet_add_success)
                     }
                     showPromptDialog(getString(R.string.prompt), promptMessage) {
                         mNavController.popBackStack()
@@ -368,6 +408,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 val promptMessage = when (transferType) {
                     TransferType.BANK -> getString(R.string.text_bank_card_delete_success)
                     TransferType.CRYPTO -> getString(R.string.text_crypto_delete_success)
+                    TransferType.E_WALLET -> getString(R.string.text_e_wallet_delete_success)
                 }
                 showPromptDialog(getString(R.string.prompt), promptMessage) { mNavController.popBackStack() } //刪除銀行卡成功後回至銀行卡列表bank card list
             } else {

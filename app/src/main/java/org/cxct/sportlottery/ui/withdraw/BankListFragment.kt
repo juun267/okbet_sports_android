@@ -93,7 +93,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 when {
                     cryptoTransfer && bankTransfer -> getString(R.string.bind_credit_card_not_yet)
                     cryptoTransfer -> getString(R.string.add_crypto_card)
-                    bankTransfer -> getString(R.string.add_credit_card)
+                    bankTransfer -> getString(R.string.add_credit_or_e_wallet)
                     else -> getString(R.string.add_new)
                 }
             }
