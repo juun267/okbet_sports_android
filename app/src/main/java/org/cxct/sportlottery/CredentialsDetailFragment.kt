@@ -40,7 +40,7 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 if (result.success) {
-                    showPromptDialog(getString(R.string.prompt), "完成") { activity?.finish() }
+                    showPromptDialog(getString(R.string.prompt), resources.getString(R.string.complete)) { activity?.finish() }
                 } else {
                     showErrorPromptDialog(getString(R.string.promotion), result.msg) {}
                 }
