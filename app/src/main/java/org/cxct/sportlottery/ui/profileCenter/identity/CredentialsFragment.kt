@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.luck.picture.lib.entity.LocalMedia
 import com.luck.picture.lib.listener.OnResultCallbackListener
 import kotlinx.android.synthetic.main.fragment_credentials.*
@@ -203,7 +204,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         docFile?.let { file ->
             view_identity_doc.apply {
                 imgUploaded(true)
-                iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+                Glide.with(iv_selected_media.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.iv_selected_media)
             }
         }
     }
@@ -212,7 +213,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         photoFile?.let { file ->
             view_identity_photo.apply {
                 imgUploaded(true)
-                iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+                Glide.with(iv_selected_media.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.iv_selected_media)
             }
         }
     }
