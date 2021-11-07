@@ -444,6 +444,7 @@ class WithdrawViewModel(
                 when (dealType) {
                     TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
                     TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
+                    TransferType.E_WALLET -> androidContext.getString(R.string.error_withdraw_amount_bank)
                 }
             }
             else -> {
@@ -487,6 +488,7 @@ class WithdrawViewModel(
                 ArithUtil.minus((userMoney.value), (cardConfig?.feeVal?.times(cardConfig?.exchangeRate ?: 0.0))),
                 cardConfig?.exchangeRate ?: 1.0, 3, RoundingMode.FLOOR
             )
+            TransferType.E_WALLET -> ArithUtil.div((userMoney.value ?: 0.0), ((cardConfig?.feeRate?.plus(1) ?: 1.0)), 0, RoundingMode.FLOOR)
         }
     }
 
@@ -535,6 +537,9 @@ class WithdrawViewModel(
             }
             TransferType.CRYPTO -> {
                 rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == withdrawCard.bankName }
+            }
+            TransferType.E_WALLET -> {
+                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.BANK.type }?.detailList?.first()
             }
         }
     }

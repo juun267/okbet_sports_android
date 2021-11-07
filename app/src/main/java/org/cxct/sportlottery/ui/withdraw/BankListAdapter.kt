@@ -80,6 +80,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                 when (bankList[position].transferType) {
                     TransferType.BANK -> CardType.EDIT.ordinal
                     TransferType.CRYPTO -> CardType.CRYPTO_EDIT.ordinal
+                    TransferType.E_WALLET -> CardType.EDIT.ordinal
                 }
             }
         }
