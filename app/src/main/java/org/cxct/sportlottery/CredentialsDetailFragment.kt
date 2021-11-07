@@ -22,7 +22,7 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         initFakeData()
 
         btn_submit.setOnClickListener {
-            showPromptDialog(getString(R.string.prompt), "完成") { activity?.finish() }
+            showPromptDialog(getString(R.string.prompt), resources.getString(R.string.complete)) { activity?.finish() }
         }
     }
 
