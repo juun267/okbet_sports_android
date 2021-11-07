@@ -210,6 +210,7 @@ class FinanceViewModel(
                     UWType.ADMIN_SUB_MONEY.type -> androidContext.getString(R.string.withdraw_log_type_admin)
                     UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
                     UWType.CRYPTO.type -> androidContext.getString(R.string.withdraw_log_crypto_transfer)
+                    UWType.E_WALLET.type -> androidContext.getString(R.string.ewallet)
                     else -> ""
                 }
 
