@@ -473,6 +473,7 @@
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_complete_profile_info">完善个人资料</string>
     <string name="please_setting_bank_card">请先设置银行卡</string>
+    <string name="please_setting_ewallet">请先设置eWallet</string>
     <string name="please_setting_crypto">请先设置虚拟币</string>
     <string name="please_setting_money_card">请先设置银行卡/虚拟币</string>
     <string name="go_to_setting">前往设置</string>

@@ -463,6 +463,7 @@
     <string name="please_setting_withdraw_password">Vui lòng thiết mật khẩu rút tiền</string>
     <string name="please_complete_profile_info">thông tin cá nhân đã được hoàn thiện</string>
     <string name="please_setting_bank_card">Vui lòng thiết lập thẻ ngân hàng</string>
+    <string name="please_setting_ewallet">Vui lòng thiết lập eWallet</string>
     <string name="please_setting_crypto">Vui lòng thiết lập tiền ảo</string>
     <string name="please_setting_money_card">Vui lòng thiết lập thẻ ngân hàng / tiền ảo</string>
     <string name="go_to_setting">Đi tới cài đặt</string>
