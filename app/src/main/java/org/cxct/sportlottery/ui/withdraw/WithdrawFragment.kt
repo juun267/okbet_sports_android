@@ -104,7 +104,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
         tab_wallet.setOnClickListener {
             if (!it.isSelected) {
-                selectDealType(TransferType.BANK)
+                selectDealType(TransferType.E_WALLET)
                 clearEvent()
             }
         }
@@ -275,13 +275,16 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
      */
     private fun jumpToMoneyCardSetting(assignType: Boolean = false, transferType: TransferType? = null) {
         val content = when (transferType) {
-                TransferType.CRYPTO -> {
-                    getString(R.string.please_setting_crypto)
-                }
-                else -> {
-                    getString(R.string.please_setting_bank_card)
-                }
+            TransferType.CRYPTO -> {
+                getString(R.string.please_setting_crypto)
             }
+            TransferType.E_WALLET -> {
+                getString(R.string.please_setting_ewallet)
+            }
+            else -> {
+                getString(R.string.please_setting_bank_card)
+            }
+        }
         showPromptDialog(getString(R.string.withdraw_setting),  content) {
             this@WithdrawFragment.activity?.finish()
             startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
