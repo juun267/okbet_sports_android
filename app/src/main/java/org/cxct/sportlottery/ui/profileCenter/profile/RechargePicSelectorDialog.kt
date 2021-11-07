@@ -61,7 +61,6 @@ class RechargePicSelectorDialog(
             .circleDimmedLayer(false) // 是否圆形裁剪 true or false
             .showCropFrame(true) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
             .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
             .minimumCompressSize(100) // 小于100kb的图片不压缩
             .forResult(mSelectListener)
     }
@@ -78,7 +77,6 @@ class RechargePicSelectorDialog(
             .circleDimmedLayer(false) // 是否圆形裁剪 true or false
             .showCropFrame(true) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
             .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
             .minimumCompressSize(100) // 小于100kb的图片不压缩
             .forResult(mSelectListener)
     }

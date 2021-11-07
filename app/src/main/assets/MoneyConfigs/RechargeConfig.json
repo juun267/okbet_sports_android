@@ -216,8 +216,8 @@
       "vi": "Gcash"
     },
     "subtitle": "Gcash转账支付",
-    "image": "ic_wechat_pay",
-    "rechType": "ic_g_cash",
+    "image": "ic_g_cash",
+    "rechType": "gcash",
     "onlineType": "0"
   },
   {

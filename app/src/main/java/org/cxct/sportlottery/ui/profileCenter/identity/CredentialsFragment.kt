@@ -91,18 +91,14 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
 
     private fun selectedDocImg(file: File) {
         docFile = file
-        view_identity_doc.apply {
-            imgUploaded(true)
-            iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
-        }
+        setupDocFile()
+        checkSubmitStatus()
     }
 
     private fun selectedPhotoImg(file: File) {
         photoFile = file
-        view_identity_photo.apply {
-            imgUploaded(true)
-            iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
-        }
+        setupPhotoFile()
+        checkSubmitStatus()
     }
 
     override fun onCreateView(
@@ -120,16 +116,32 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
         setupUploadView()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        setupDocFile()
+        setupPhotoFile()
+        checkSubmitStatus()
+    }
+
     private fun initObserve() {
-        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, {
+        viewModel.docUrlResult.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                if (!result.success) {
+                    hideLoading()
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                }
+            }
+        })
+
+        viewModel.photoUrlResult.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
                 hideLoading()
-                if (result.success) {
-                    clearMediaFile()
+                if (!result.success)
+                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
+                else {
                     val action = CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment()
                     findNavController().navigate(action)
-                } else {
-                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                 }
             }
         })
@@ -155,6 +167,7 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
             clearMediaFile()
             view_identity_doc.imgUploaded(false)
             view_identity_photo.imgUploaded(false)
+            checkSubmitStatus()
         }
     }
 
@@ -184,6 +197,28 @@ class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCe
                 }
             }
         }
+    }
+
+    private fun setupDocFile() {
+        docFile?.let { file ->
+            view_identity_doc.apply {
+                imgUploaded(true)
+                iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+            }
+        }
+    }
+
+    private fun setupPhotoFile() {
+        photoFile?.let { file ->
+            view_identity_photo.apply {
+                imgUploaded(true)
+                iv_selected_media.setImageBitmap(BitmapFactory.decodeFile(file.absolutePath))
+            }
+        }
+    }
+
+    private fun checkSubmitStatus() {
+        btn_submit.isEnabled = docFile != null && photoFile != null
     }
 
     private fun clearMediaFile() {
