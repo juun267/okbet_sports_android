@@ -487,7 +487,9 @@
     <string name="add_credit_card">Thêm mới thẻ ngân hàng</string>
     <string name="add_crypto_card">Thêm mới tiền ảo</string>
     <string name="add_e_wallet">Thêm mới eWallet</string>
-    <string name="add_credit_or_virtual">Thêm mới thẻ ngân hàng / tiền ảo mới</string>
+    <string name="add_credit_or_virtual">Thêm mới thẻ ngân hàng / tiền ảo / eWallet</string>
+    <string name="add_credit_or_e_wallet">Thêm mới thẻ ngân hàng / eWallet</string>
+
     <string name="create_bank">Tài khoản ngân hàng</string>
     <string name="create_name">Họ tên chủ thẻ</string>
     <string name="hint_please_enter_create_name">Vui lòng nhập họ và tên thẻ ngân hàng của bạn</string>
@@ -501,6 +503,8 @@
     <string name="network_point">Địa điểm mở tài khoản</string>
     <string name="please_enter_network_point">Địa điểm mở tài khoản</string>
     <string name="delete_bank_card">xóa bỏ</string>
+    <string name="delete_crypto">xóa bỏ</string>
+    <string name="delete_e_wallet">xóa bỏ</string>
     <string name="select_currency_protocol">Chọn thỏa thuận / Loại tiền</string>
     <string name="error_create_name">Họ và tên từ 2-20 ký tự gồm trung anh</string>
     <string name="error_bank_card_number">Số thẻ khoản ngân hàng không đúng</string>

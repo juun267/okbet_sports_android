@@ -497,7 +497,8 @@
     <string name="add_credit_card">新增银行卡</string>
     <string name="add_crypto_card">新增虚拟币</string>
     <string name="add_e_wallet">新增eWallet</string>
-    <string name="add_credit_or_virtual">新增银行卡/虚拟币/eWallet</string>
+    <string name="add_credit_or_virtual">新增银行卡 / 虚拟币 / eWallet</string>
+    <string name="add_credit_or_e_wallet">新增银行卡 / eWallet</string>
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
     <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
@@ -511,6 +512,8 @@
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
+    <string name="delete_crypto">刪除虚拟币</string>
+    <string name="delete_e_wallet">刪除eWallet</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_create_name">姓名为2–20个中文组合</string>
     <string name="error_bank_card_number">银行卡号格式有错误</string>

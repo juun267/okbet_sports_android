@@ -171,8 +171,15 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     class LastViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(transferAddSwitch: TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
             itemView.apply {
-                tv_add_more_card.text = context.getString(R.string.add_credit_or_virtual)
 
+                tv_add_more_card.text = transferAddSwitch.run {
+                    when {
+                        cryptoTransfer && bankTransfer -> context.getString(R.string.add_credit_or_virtual)
+                        cryptoTransfer -> context.getString(R.string.add_crypto_card)
+                        bankTransfer -> context.getString(R.string.add_credit_or_e_wallet)
+                        else -> context.getString(R.string.add_new)
+                    }
+                }
                 cv_add.setOnClickListener {
                     mBankListClickListener.onAdd(transferAddSwitch)
                 }
@@ -196,7 +203,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
                     when {
                         cryptoTransfer && bankTransfer -> context.getString(R.string.add_credit_or_virtual)
                         cryptoTransfer -> context.getString(R.string.add_crypto_card)
-                        bankTransfer -> context.getString(R.string.add_credit_card)
+                        bankTransfer -> context.getString(R.string.add_credit_or_e_wallet)
                         else -> context.getString(R.string.add_new)
                     }
                 }

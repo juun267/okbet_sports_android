@@ -109,6 +109,13 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         initEditTextStatus(et_create_name)
         initEditTextStatus(et_bank_card_number)
         initEditTextStatus(et_network_point)
+
+        btn_delete_bank.text = when (transferType) {
+            TransferType.BANK -> getString(R.string.delete_bank_card)
+            TransferType.CRYPTO -> getString(R.string.delete_crypto)
+            TransferType.E_WALLET -> getString(R.string.delete_e_wallet)
+        }
+
     }
 
     private fun showHideTab() {
@@ -118,9 +125,12 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             block_transfer_type.visibility = View.VISIBLE
         }
 
+
         mAddSwitch?.apply {
+
             tab_bank_card.visibility = if (bankTransfer) View.VISIBLE else View.GONE
             tab_crypto.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
+            tab_e_wallet.visibility = if (bankTransfer) View.VISIBLE else View.GONE
             block_transfer_type.visibility = if (!(bankTransfer && cryptoTransfer)) View.GONE else View.VISIBLE
         }
     }
@@ -233,7 +243,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                             cardNo = et_bank_card_number.getText(),
                             fundPwd = et_withdrawal_password.getText(),
                             id = args.editBankCard?.id?.toString(),
-                            uwType = TransferType.BANK.type,
+                            uwType = transferType.type,
                             bankCode = args.editBankCard?.bankCode.toString()
                         )
                     }
@@ -265,7 +275,7 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                 clearCryptoInputFiled()
                 changeTransferType(transferType)
             }
-            tab_wallet.setOnClickListener {//eWallet暫時寫死 與綁定銀行卡相同
+            tab_e_wallet.setOnClickListener {//eWallet暫時寫死 與綁定銀行卡相同
                 transferType = TransferType.E_WALLET
                 clearBankInputFiled()
                 changeTransferType(transferType)
@@ -298,17 +308,17 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
             TransferType.BANK -> {
                 tab_bank_card.isSelected = true
                 tab_crypto.isSelected = false
-                tab_wallet.isSelected = false
+                tab_e_wallet.isSelected = false
             }
             TransferType.CRYPTO -> {
                 tab_bank_card.isSelected = false
                 tab_crypto.isSelected = true
-                tab_wallet.isSelected = false
+                tab_e_wallet.isSelected = false
             }
             TransferType.E_WALLET -> {
                 tab_bank_card.isSelected = false
                 tab_crypto.isSelected = false
-                tab_wallet.isSelected = true
+                tab_e_wallet.isSelected = true
             }
         }
     }

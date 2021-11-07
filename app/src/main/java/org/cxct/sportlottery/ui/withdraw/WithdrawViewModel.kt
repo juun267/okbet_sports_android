@@ -275,6 +275,13 @@ class WithdrawViewModel(
                 checkWithdrawPassword(withdrawPassword)
                 checkCryptoCardData()
             }
+            TransferType.E_WALLET.type -> {
+                checkCreateName(fullName ?: "")
+                checkBankCardNumber(cardNo)
+                checkNetWorkPoint(subAddress ?: "")
+                checkWithdrawPassword(withdrawPassword)
+                checkBankCardData()
+            }
             else -> false
         }
     }
@@ -573,9 +580,9 @@ class WithdrawViewModel(
         val cryptoOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
 
         val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
-        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK }
+        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK || it.transferType == TransferType.E_WALLET }
         //銀行卡是否可以被提款或新增卡片
-        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type || it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
 
         val cryptoCardLimitList = checkCryptoCanBind()
 
