@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
+import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
 import java.util.*
 
@@ -35,7 +36,7 @@ object LanguageManager {
                     local.language == Locale("vi").language -> Language.VI
                     (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
                             || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
-                    else -> Language.EN
+                    else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE } ?: Language.EN
                 }
 //                Language.EN //2021/10/04 與PM確認過，不管手機是什麼語系，都預先使用英文版本
             }
