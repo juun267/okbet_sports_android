@@ -44,6 +44,9 @@
         <item>@string/recharge_channel_alipay</item>
         <item>@string/recharge_channel_cft</item>
         <item>@string/recharge_channel_crypto</item>
+        <item>@string/recharge_channel_gcash</item>
+        <item>@string/recharge_channel_grabpay</item>
+        <item>@string/recharge_channel_paymaya</item>
         <item>@string/recharge_channel_admin</item>
     </string-array>
 

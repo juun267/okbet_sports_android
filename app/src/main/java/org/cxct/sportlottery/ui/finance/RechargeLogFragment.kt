@@ -176,6 +176,15 @@ class RechargeLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
             getString(R.string.recharge_channel_crypto) -> {
                 StatusSheetData(RechType.CRYPTO.type, it)
             }
+            getString(R.string.recharge_channel_gcash) -> {
+                StatusSheetData(RechType.GCASH.type, it)
+            }
+            getString(R.string.recharge_channel_grabpay) -> {
+                StatusSheetData(RechType.GRABPAY.type, it)
+            }
+            getString(R.string.recharge_channel_paymaya) -> {
+                StatusSheetData(RechType.PAYMAYA.type, it)
+            }
             else -> {
                 StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
             }

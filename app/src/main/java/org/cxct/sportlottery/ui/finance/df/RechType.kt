@@ -8,4 +8,7 @@ enum class RechType(val type: String) {
     CFT("cft"),
     ADMIN_ADD_MONEY("adminAddMoney"),
     CRYPTO("cryptoPay"), //虛擬幣轉帳
+    GCASH("gcash"),
+    GRABPAY("grabPay"),
+    PAYMAYA("payMaya")
 }

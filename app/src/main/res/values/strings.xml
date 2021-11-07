@@ -599,6 +599,9 @@
     <string name="recharge_channel_weixin">微信转账</string>
     <string name="recharge_channel_cft">财付通转账</string>
     <string name="recharge_channel_crypto">虚拟币转账</string>
+    <string name="recharge_channel_gcash">Gcash</string>
+    <string name="recharge_channel_grabpay">GrabPay</string>
+    <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">系统加钱</string>
     <string name="recharge_log_order_time">订单时间</string>
     <string name="recharge_log_recharge_amount">充值金额</string>
