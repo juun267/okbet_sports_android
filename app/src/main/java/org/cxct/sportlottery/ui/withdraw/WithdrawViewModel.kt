@@ -501,7 +501,7 @@ class WithdrawViewModel(
 
     fun getWithdrawRate(withdrawCard: BankCardList?, withdrawAmount: Double? = 0.0) {
         when (dealType) {
-            TransferType.BANK -> {
+            TransferType.BANK, TransferType.E_WALLET -> {
                 _withdrawCryptoAmountHint.value = ""
                 _withdrawCryptoFeeHint.value = ""
                 _withdrawRateHint.value = String.format(
@@ -546,7 +546,7 @@ class WithdrawViewModel(
                 rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == withdrawCard.bankName }
             }
             TransferType.E_WALLET -> {
-                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.BANK.type }?.detailList?.first()
+                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.E_WALLET.type }?.detailList?.first()
             }
         }
     }
