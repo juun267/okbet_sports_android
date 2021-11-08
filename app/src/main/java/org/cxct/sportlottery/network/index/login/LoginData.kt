@@ -45,5 +45,5 @@ data class LoginData(
     @Json(name = "creditStatus")
     val creditStatus: Int?,
     @Json(name = "discount")
-    val discount: Float?
+    var discount: Float? //後台維修 暫時修改做測試 要改回val
 )

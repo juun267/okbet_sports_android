@@ -13,6 +13,9 @@ interface UserInfoDao {
     @Query("SELECT * FROM user_info_table WHERE user_id = :userId")
     fun getUserInfo(userId: Long): Flow<UserInfo?>
 
+    @Query("SELECT discount FROM user_info_table WHERE user_id = :userId")
+    fun getDiscount(userId: Long): Float
+
     @Query("DELETE FROM user_info_table")
     suspend fun deleteAll()
 

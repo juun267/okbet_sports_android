@@ -10,21 +10,17 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.db.SportRoomDatabase
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.repository.KEY_DISCOUNT
-import org.cxct.sportlottery.repository.NAME_LOGIN
 import org.cxct.sportlottery.repository.OLD_DISCOUNT
-import org.cxct.sportlottery.util.ArithUtil.round
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
 import java.math.RoundingMode
-import java.text.DecimalFormat
-import kotlin.math.pow
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
@@ -118,9 +114,9 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
 
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
-        else -> if(parlayNum == 1){
+        else -> if (parlayNum == 1) {
             itemData.stake?.let { TextUtil.formatBetQuota(it) }
-        }else{
+        } else {
             itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * $parlayNum" }
         }
     }
@@ -379,17 +375,19 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
     })
 }
 
-fun OddsChangeEvent.addOddDiscount(context: Context?): OddsChangeEvent {
-    val discount = context?.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)?.getFloat(KEY_DISCOUNT, 1f) ?: 1f
-    this.odds?.let { oddTypeSocketMap ->
-        oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-            oddTypeSocketMapEntry.value.onEach { odd ->
-                odd?.odds = odd?.odds?.div(OLD_DISCOUNT)?.times(discount.toDouble())?.roundToSecond()
-                odd?.hkOdds = odd?.hkOdds?.div(OLD_DISCOUNT)?.times(discount.toDouble())?.roundToSecond()
+fun OddsChangeEvent.addOddDiscount(context: Context, userId: Long?): OddsChangeEvent {
+    userId?.let {
+        val discount = SportRoomDatabase.getDatabase(context).userInfoDao().getDiscount(userId)
+
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.onEach { odd ->
+                    odd?.odds = odd?.odds?.times(discount.toDouble())?.roundToSecond()
+                    odd?.hkOdds = odd?.hkOdds?.times(discount.toDouble())?.roundToSecond()
+                }
             }
         }
     }
 
-//    OLD_DISCOUNT = discount
     return this
 }

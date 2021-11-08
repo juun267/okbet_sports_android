@@ -3,7 +3,6 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -139,14 +138,8 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             }
         }
 
-    var discount
-        get() = sharedPref.getFloat(KEY_DISCOUNT, 1f)
-        set(value) {
-            with(sharedPref.edit()) {
-                putFloat(KEY_DISCOUNT, value)
-                commit()
-            }
-        }
+    val discount
+        get() = userInfoDao.getDiscount(userId)
 
     var isCheckToken = false
 
@@ -286,7 +279,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
             putBoolean(KEY_IS_CREDIT_ACCOUNT, loginData?.creditAccount == 1)
-            putFloat(KEY_DISCOUNT, loginData?.discount?: 1f)
+            putFloat(KEY_DISCOUNT, loginData?.discount ?: 1f)
             apply()
         }
     }
