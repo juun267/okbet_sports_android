@@ -16,6 +16,8 @@ import retrofit2.Response
 
 class UserInfoRepository(private val userInfoDao: UserInfoDao) {
 
+    var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
+
     val userInfo: Flow<UserInfo?>
         get() = userInfoDao.getUserInfo().map {
             if (it.isNotEmpty()) {
@@ -31,6 +33,8 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             userInfoResponse.body()?.let {
                 updateUserInfo(it.userInfoData)
             }
+            if (!checkedUserInfo)
+                checkedUserInfo = true
         }
         return userInfoResponse
     }
