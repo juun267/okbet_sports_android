@@ -81,6 +81,7 @@ import org.cxct.sportlottery.network.bet.settledList.BetSettledListResult
 import org.cxct.sportlottery.network.feedback.FeedBackBaseResult
 import org.cxct.sportlottery.network.feedback.FeedbackListResult
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
+import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.logout.LogoutResult
@@ -158,7 +159,7 @@ object ErrorUtils {
                         INDEX_CHECK_TOKEN
                     )) -> {
                         @Suppress("UNCHECKED_CAST")
-                        return LoginResult(it.code, it.msg, it.success, null) as T
+                        return CheckTokenResult(it.code, it.msg, it.success) as T
                     }
                     (url.contains(INDEX_LOGOUT)) -> {
                         @Suppress("UNCHECKED_CAST")

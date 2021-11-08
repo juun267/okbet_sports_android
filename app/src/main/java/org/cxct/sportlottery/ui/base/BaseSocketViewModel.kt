@@ -36,6 +36,10 @@ abstract class BaseSocketViewModel(
         if (!loginRepository.isCheckToken) {
             viewModelScope.launch {
                 loginRepository.checkToken()
+
+                if (!userInfoRepository.checkedUserInfo && isLogin.value == true) {
+                    userInfoRepository.getUserInfo()
+                }
             }
         }
     }
