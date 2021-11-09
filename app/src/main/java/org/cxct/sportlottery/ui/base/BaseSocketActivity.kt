@@ -83,6 +83,10 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 viewModel.setUserNoticeList(list)
             }
         })
+
+        receiver.userDiscountChange.observe(this, {
+            viewModel.updateDiscount(it?.discount)
+        })
     }
 
     fun subscribeSportChannelHall(gameTypeCode: String?){

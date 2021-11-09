@@ -756,10 +756,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
-        receiver.userDiscountChange.observe(this.viewLifecycleOwner, {
-            viewModel.updateDiscount(it?.discount)
-        })
-
         receiver.oddsChange.observe(this.viewLifecycleOwner, {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()

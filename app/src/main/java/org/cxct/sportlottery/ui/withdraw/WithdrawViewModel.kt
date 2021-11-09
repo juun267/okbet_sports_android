@@ -34,7 +34,7 @@ import kotlin.math.min
 class WithdrawViewModel(
     androidContext: Application,
     private val moneyRepository: MoneyRepository,
-    private val userInfoRepository: UserInfoRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,

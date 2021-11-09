@@ -12,7 +12,7 @@ import org.cxct.sportlottery.util.Event
 
 class ProfileCenterViewModel(
     androidContext: Application,
-    private val userInfoRepository: UserInfoRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     private val avatarRepository: AvatarRepository,

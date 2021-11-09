@@ -14,7 +14,7 @@ import org.cxct.sportlottery.util.Event
 
 abstract class BaseSocketViewModel(
     androidContext: Application,
-    userInfoRepository: UserInfoRepository,
+    protected val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
@@ -58,6 +58,18 @@ abstract class BaseSocketViewModel(
                 Status.WIN.code, Status.WIN_HALF.code, Status.CANCEL.code -> {
                     _settlementNotificationMsg.value = Event(it)
                 }
+            }
+        }
+    }
+
+    fun updateDiscount(discount: Double?) {
+        viewModelScope.launch {
+            if (discount == null) {
+                viewModelScope.launch {
+                    doNetwork(androidContext) { userInfoRepository.getUserInfo() }
+                }
+            } else {
+                userInfo.value?.userId?.let { userInfoRepository.updateDiscount(it, discount.toFloat()) }
             }
         }
     }
