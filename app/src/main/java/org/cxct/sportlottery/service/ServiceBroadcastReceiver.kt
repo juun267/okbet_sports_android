@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
@@ -81,6 +82,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val matchOddsLock: LiveData<MatchOddsLockEvent?>
         get() = _matchOddsLock
 
+    val userDiscountChange: LiveData<UserDiscountChangeEvent?>
+        get() = _userDiscountChange
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -97,6 +101,7 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
+    private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -200,6 +205,13 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         val data = ServiceMessage.getMatchOddsChange(jObjStr)
                         _matchOddsChange.value = data
                     }
+
+                    //賠率折扣
+                    EventType.USER_DISCOUNT_CHANGE -> {
+                        val data = ServiceMessage.getUserDiscountChange(jObjStr)
+                        _userDiscountChange.value = data
+                    }
+
                     EventType.UNKNOWN -> {
                         Timber.i("Receive UnKnown EventType : ${eventType.value}")
                     }

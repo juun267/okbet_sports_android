@@ -32,6 +32,12 @@ enum class EventType(val value: String) {
     SYS_MAINTENANCE("SYS_MAINTENANCE"), //系统维护状态
     PLAY_QUOTA_CHANGE("PLAY_QUOTA_CHANGE"), //所有体育玩法限额变更
 
+    /*
+    会收到此事件的频道共两个:/ws/notify/user,/ws/notify/all，
+    从/ws/notify/all收到的事件discount为null
+    */
+    USER_DISCOUNT_CHANGE("USER_DISCOUNT_CHANGE"),
+
     /*未被定義的頻道*/
     UNKNOWN("UNKNOWN");
 

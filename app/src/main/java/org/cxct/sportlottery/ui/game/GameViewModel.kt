@@ -65,7 +65,7 @@ import kotlin.collections.ArrayList
 
 class GameViewModel(
     androidContext: Application,
-    userInfoRepository: UserInfoRepository,
+    private val userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
@@ -436,6 +436,18 @@ class GameViewModel(
         }
         if (!isContain)
             lastSportTypeHashMap[matchType.postValue] = sportQueryData?.items?.firstOrNull()?.code
+    }
+
+    private fun getUserInfo() = viewModelScope.launch { userInfoRepository.getUserInfo() }
+
+    fun updateDiscount(discount: Double?) {
+        viewModelScope.launch {
+            if (discount == null) {
+                getUserInfo()
+            } else {
+                userInfo.value?.userId?.let { userInfoRepository.updateDiscount(it, discount.toFloat()) }
+            }
+        }
     }
 
     private fun postHomeCardCount(sportMenuResult: SportMenuResult?) {
