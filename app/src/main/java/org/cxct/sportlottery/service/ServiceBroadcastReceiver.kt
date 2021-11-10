@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -24,15 +23,15 @@ import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEv
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
-import org.cxct.sportlottery.service.BackService.Companion.mUserId
 import org.cxct.sportlottery.util.addOddDiscount
 import org.json.JSONArray
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver : BroadcastReceiver() {
+open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) : BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
