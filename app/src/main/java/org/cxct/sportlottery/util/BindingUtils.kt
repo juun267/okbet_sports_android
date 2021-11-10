@@ -375,16 +375,12 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
     })
 }
 
-fun OddsChangeEvent.addOddDiscount(context: Context, userId: Long?): OddsChangeEvent {
-    userId?.let {
-        val discount = SportRoomDatabase.getDatabase(context).userInfoDao().getDiscount(userId)
-
-        this.odds?.let { oddTypeSocketMap ->
-            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
-                    odd?.odds = odd?.odds?.times(discount.toDouble())?.roundToSecond()
-                    odd?.hkOdds = odd?.hkOdds?.times(discount.toDouble())?.roundToSecond()
-                }
+fun OddsChangeEvent.addOddDiscount(discount: Float): OddsChangeEvent {
+    this.odds?.let { oddTypeSocketMap ->
+        oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+            oddTypeSocketMapEntry.value.onEach { odd ->
+                odd?.odds = odd?.odds?.times(discount)?.roundToSecond()
+                odd?.hkOdds = odd?.hkOdds?.times(discount)?.roundToSecond()
             }
         }
     }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -186,7 +187,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                         val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                             channel = channelStr
                         }
-                        data?.addOddDiscount(MultiLanguagesApplication.appContext, mUserId)
+                        data?.addOddDiscount(userInfoRepository.userInfo.asLiveData().value?.discount ?: 1.0F)
                         _oddsChange.value = data
                     }
                     EventType.LEAGUE_CHANGE -> {
