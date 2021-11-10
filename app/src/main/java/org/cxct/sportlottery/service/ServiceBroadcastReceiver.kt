@@ -28,7 +28,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
-import org.cxct.sportlottery.util.addOddDiscount
+import org.cxct.sportlottery.util.setupOddDiscount
 import org.json.JSONArray
 import timber.log.Timber
 
@@ -187,7 +187,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                         val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                             channel = channelStr
                         }
-                        data?.addOddDiscount(userInfoRepository.userInfo.asLiveData().value?.discount ?: 1.0F)
+                        data?.setupOddDiscount(userInfoRepository.userInfo.asLiveData().value?.discount ?: 1.0F)
                         _oddsChange.value = data
                     }
                     EventType.LEAGUE_CHANGE -> {

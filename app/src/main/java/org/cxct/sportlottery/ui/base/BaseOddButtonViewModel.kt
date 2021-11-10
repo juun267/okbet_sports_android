@@ -4,11 +4,13 @@ import android.app.Application
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
+import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -29,10 +31,7 @@ import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.OLD_DISCOUNT
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -42,6 +41,7 @@ import org.cxct.sportlottery.util.*
 abstract class BaseOddButtonViewModel(
     val androidContext: Application,
     loginRepository: LoginRepository,
+    userInfoRepository: UserInfoRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
@@ -54,6 +54,7 @@ abstract class BaseOddButtonViewModel(
         json.fromJson<List<PlayCateMapItem>>() ?: listOf()
     }
 
+    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
 
     val showBetInfoSingle = betInfoRepository.showBetInfoSingle
 
@@ -456,6 +457,31 @@ abstract class BaseOddButtonViewModel(
         return this.mapValues { map ->
             map.value?.toMutableList() ?: mutableListOf()
         }.toMutableMap()
+    }
+
+    protected fun MatchOdd.setupOddDiscount() {
+        val discount = userInfo.value?.discount ?: 1F
+        this.oddsMap.forEach {
+            it.value?.filterNotNull()?.forEach { odd ->
+
+                odd.odds = odd.odds?.times(discount)?.roundToSecond()
+                odd.hkOdds = odd.hkOdds?.times(discount)?.roundToSecond()
+            }
+        }
+
+        this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
+            odd.odds = odd.odds?.times(discount)?.roundToSecond()
+            odd.hkOdds = odd.hkOdds?.times(discount)?.roundToSecond()
+        }
+
+        this.quickPlayCateList?.forEach { quickPlayCate ->
+            quickPlayCate.quickOdds.forEach {
+                it.value?.filterNotNull()?.forEach { odd ->
+                    odd.odds = odd.odds?.times(discount)?.roundToSecond()
+                    odd.hkOdds = odd.hkOdds?.times(discount)?.roundToSecond()
+                }
+            }
+        }
     }
 
     protected fun MatchOdd.updateOddStatus() {

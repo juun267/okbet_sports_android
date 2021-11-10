@@ -19,11 +19,10 @@ abstract class BaseNoticeViewModel(
 ) : BaseOddButtonViewModel(
     androidContext,
     loginRepository,
+    userInfoRepository,
     betInfoRepository,
     infoCenterRepository
 ) {
-    val userInfo: LiveData<UserInfo?> = userInfoRepository.userInfo.asLiveData()
-
     fun setUserNoticeList(userNoticeList: List<UserNotice>) {
         infoCenterRepository.setUserNoticeList(userNoticeList)
     }

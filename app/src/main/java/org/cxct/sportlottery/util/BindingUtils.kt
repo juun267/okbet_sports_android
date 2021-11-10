@@ -372,7 +372,7 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
     })
 }
 
-fun OddsChangeEvent.addOddDiscount(discount: Float): OddsChangeEvent {
+fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
     this.odds?.let { oddTypeSocketMap ->
         oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
             oddTypeSocketMapEntry.value.onEach { odd ->

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import androidx.core.math.MathUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -518,7 +517,7 @@ class GameViewModel(
                                     }
                             }
                         }
-                        matchOdd.addOddDiscount()
+                        matchOdd.setupOddDiscount()
                         matchOdd.updateOddStatus()
                     }
                 }
@@ -559,7 +558,7 @@ class GameViewModel(
                                     }
                             }
                         }
-                        matchOdd.addOddDiscount()
+                        matchOdd.setupOddDiscount()
                         matchOdd.updateOddStatus()
                     }
                 }
@@ -604,7 +603,7 @@ class GameViewModel(
                             }
                         }
                         oddData.playCateMappingList = playCateMappingList
-                        oddData.addOddDiscount()
+                        oddData.setupOddDiscount()
                         oddData.updateOddStatus()
                     }
                 }
@@ -637,7 +636,7 @@ class GameViewModel(
                         }
                     }
 
-                    oddData.addOddDiscount()
+                    oddData.setupOddDiscount()
                     oddData.updateOddStatus()
 
 /*
@@ -869,7 +868,7 @@ class GameViewModel(
                         oddList?.updateOddSelectState()
                     }
 
-                    matchOdd?.addOddDiscount()
+                    matchOdd?.setupOddDiscount()
                     matchOdd?.setupPlayCate()
                     matchOdd?.sortOdds()
                 }
@@ -959,7 +958,7 @@ class GameViewModel(
                     if (!getPlayCateCodeList().isNullOrEmpty())
                         matchOdd.oddsMap.entries.retainAll { getPlayCateCodeList()?.contains(it.key) == true }
 
-                    matchOdd.addOddDiscount()
+                    matchOdd.setupOddDiscount()
                     matchOdd.updateOddStatus()
                 }
             }
@@ -1117,7 +1116,7 @@ class GameViewModel(
                 it.leagueOdd.forEach { leagueOdds ->
                     leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.playCateMappingList = playCateMappingList
-                        matchOddsItem.addOddDiscount()
+                        matchOddsItem.setupOddDiscount()
                         matchOddsItem.updateOddStatus()
                     }
                 }
