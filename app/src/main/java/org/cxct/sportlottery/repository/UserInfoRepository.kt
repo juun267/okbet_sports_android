@@ -109,7 +109,6 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         withContext(Dispatchers.IO) {
             userInfoDao.updateDiscount(userId, discount)
         }
-        OLD_DISCOUNT = discount
     }
 
     private fun transform(userInfoData: UserInfoData) =

@@ -458,33 +458,6 @@ abstract class BaseOddButtonViewModel(
         }.toMutableMap()
     }
 
-    protected fun MatchOdd.addOddDiscount() {
-        run {
-            this.oddsMap.forEach {
-                it.value?.filterNotNull()?.forEach { odd ->
-                    odd.odds = odd.odds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
-                    odd.hkOdds = odd.hkOdds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
-                }
-            }
-
-            this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
-                odd.odds = odd.odds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
-                odd.hkOdds = odd.hkOdds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
-            }
-
-            this.quickPlayCateList?.forEach { quickPlayCate ->
-                quickPlayCate.quickOdds.forEach {
-                    it.value?.filterNotNull()?.forEach { odd ->
-                        odd.odds = odd.odds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
-                        odd.hkOdds = odd.hkOdds?.div(OLD_DISCOUNT)?.times(loginRepository.discount)?.roundToSecond()
-                    }
-                }
-            }
-        }.let {
-            OLD_DISCOUNT = loginRepository.discount
-        }
-    }
-
     protected fun MatchOdd.updateOddStatus() {
         this.oddsMap.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
