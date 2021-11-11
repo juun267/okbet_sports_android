@@ -46,6 +46,15 @@ interface UserInfoDao {
     @Query("UPDATE user_info_table SET setted=:setted WHERE user_id=:userId")
     suspend fun updateSetted(userId: Long, setted: Int)
 
+    @Query("UPDATE user_info_table SET maxBetMoney=:maxBetMoney WHERE user_id=:userId")
+    suspend fun updateMaxBetMoney(userId: Long, maxBetMoney: Int)
+
+    @Query("UPDATE user_info_table SET maxParlayBetMoney=:maxParlayBetMoney WHERE user_id=:userId")
+    suspend fun updateMaxParlayBetMoney(userId: Long, maxParlayBetMoney: Int)
+
+    @Query("UPDATE user_info_table SET maxCpBetMoney=:maxCpBetMoney WHERE user_id=:userId")
+    suspend fun updateMaxCpBetMoney(userId: Long, maxCpBetMoney: Int)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userInfo: UserInfo)
 
