@@ -101,6 +101,24 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updateMaxBetMoney(userId: Long, maxBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxBetMoney(userId, maxBetMoney)
+        }
+    }
+
+    suspend fun updateMaxParlayBetMoney(userId: Long, maxParlayBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxParlayBetMoney(userId, maxParlayBetMoney)
+        }
+    }
+
+    suspend fun updateMaxCpBetMoney(userId: Long, maxCpBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxCpBetMoney(userId, maxCpBetMoney)
+        }
+    }
+
     private fun transform(userInfoData: UserInfoData) =
         UserInfo(
             userInfoData.userId,
