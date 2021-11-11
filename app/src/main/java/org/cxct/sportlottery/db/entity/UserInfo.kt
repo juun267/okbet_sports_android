@@ -63,5 +63,14 @@ data class UserInfo(
     val creditAccount: Int? = null,
 
     @ColumnInfo(name = "credit_status")
-    val creditStatus: Int? = null
+    val creditStatus: Int? = null,
+
+    @ColumnInfo(name = "maxBetMoney")//会员对应vip层级的单注最大下注额
+    val maxBetMoney: Int? = null,
+
+    @ColumnInfo(name = "maxParlayBetMoney")//会员对应vip层级的串关最大下注额
+    val maxParlayBetMoney: Int? = null,
+
+    @ColumnInfo(name = "maxCpBetMoney")//会员对应vip层级的单注冠军最大下注额
+    val maxCpBetMoney: Int? = null
 )
