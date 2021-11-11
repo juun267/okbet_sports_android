@@ -31,11 +31,16 @@ import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
 import org.cxct.sportlottery.network.service.match_odds_lock.MatchOddsLockEvent
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
-import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.repository.BetInfoRepository
+import org.cxct.sportlottery.repository.InfoCenterRepository
+import org.cxct.sportlottery.repository.LoginRepository
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.common.PlayCateMapItem
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 
 
 abstract class BaseOddButtonViewModel(
@@ -463,25 +468,26 @@ abstract class BaseOddButtonViewModel(
         val discount = userInfo.value?.discount ?: 1F
         this.oddsMap.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
-
-                odd.odds = odd.odds?.times(discount)?.roundToSecond()
-                odd.hkOdds = odd.hkOdds?.times(discount)?.roundToSecond()
+                odd.setupDiscount(discount)
             }
         }
 
         this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
-            odd.odds = odd.odds?.times(discount)?.roundToSecond()
-            odd.hkOdds = odd.hkOdds?.times(discount)?.roundToSecond()
+            odd.setupDiscount(discount)
         }
 
         this.quickPlayCateList?.forEach { quickPlayCate ->
             quickPlayCate.quickOdds.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
-                    odd.odds = odd.odds?.times(discount)?.roundToSecond()
-                    odd.hkOdds = odd.hkOdds?.times(discount)?.roundToSecond()
+                    odd.setupDiscount(discount)
                 }
             }
         }
+    }
+
+    private fun org.cxct.sportlottery.network.odds.Odd.setupDiscount(discount: Float) {
+        this.odds = this.odds?.applyDiscount(discount)
+        this.hkOdds = this.hkOdds?.applyHKDiscount(discount)
     }
 
     protected fun MatchOdd.updateOddStatus() {
