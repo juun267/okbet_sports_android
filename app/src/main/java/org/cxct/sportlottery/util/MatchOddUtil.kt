@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.eps.Odds
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 
 object MatchOddUtil {
@@ -51,5 +52,46 @@ object MatchOddUtil {
 
         }
         return null
+    }
+
+    fun MutableMap<String, MutableList<Odd?>?>.updateOddsDiscount(discount: Float, newDiscount: Float) {
+        this.forEach { (_, value) ->
+            value?.forEach { odd ->
+                odd?.odds = odd?.odds?.updateDiscount(discount, newDiscount)
+                odd?.hkOdds = odd?.hkOdds?.updateHKDiscount(discount, newDiscount)
+            }
+        }
+    }
+
+    fun Odds.updateEpsDiscount(discount: Float, newDiscount: Float) {
+        this.eps?.forEach { odd ->
+            odd?.odds = odd?.odds?.updateDiscount(discount, newDiscount)
+            odd?.hkOdds = odd?.hkOdds?.updateHKDiscount(discount, newDiscount)
+            odd?.extInfo = odd?.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
+        }
+    }
+
+    fun Double.applyDiscount(discount: Float): Double {
+        return (this - 1).times(discount) + 1
+    }
+
+    fun Double.applyHKDiscount(discount: Float): Double {
+        return this.times(discount)
+    }
+
+    private fun Double.applyReverselyDiscount(discount: Float): Double {
+        return (this - 1).div(discount) + 1
+    }
+
+    private fun Double.applyReverselyHKDiscount(discount: Float): Double {
+        return this.div(discount)
+    }
+
+    private fun Double.updateDiscount(discount: Float, newDiscount: Float): Double {
+        return this.applyReverselyDiscount(discount).applyDiscount(newDiscount)
+    }
+
+    private fun Double.updateHKDiscount(discount: Float, newDiscount: Float): Double {
+        return this.applyReverselyHKDiscount(discount).applyHKDiscount(newDiscount)
     }
 }
