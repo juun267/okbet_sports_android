@@ -12,12 +12,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_HMS_FORMAT
-import java.math.RoundingMode
 
 @BindingAdapter("dateTime")
 fun TextView.setDateTime(timeStamp: Long?) {
@@ -248,10 +246,6 @@ fun TextView.setRecordStatusColor(status: Int?) {
     }
 }
 
-fun Double.roundToSecond(): Double {
-    return DecimalFormatUtil().doNumberFormatToDouble(this, "#.##", RoundingMode.CEILING)
-}
-
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Double?) {
     text = if (money == null) "-" else TextUtil.formatMoney(money)
@@ -370,17 +364,4 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
             }
         }
     })
-}
-
-fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
-    this.odds?.let { oddTypeSocketMap ->
-        oddTypeSocketMap.forEach { (_, value) ->
-            value.forEach { odd ->
-                odd?.odds = odd?.odds?.applyDiscount(discount)
-                odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
-            }
-        }
-    }
-
-    return this
 }

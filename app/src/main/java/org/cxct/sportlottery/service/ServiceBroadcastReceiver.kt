@@ -28,7 +28,8 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
-import org.cxct.sportlottery.util.setupOddDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.json.JSONArray
 import timber.log.Timber
 
@@ -218,5 +219,18 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                 }
             }
         }
+    }
+
+    private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.forEach { (_, value) ->
+                value.forEach { odd ->
+                    odd?.odds = odd?.odds?.applyDiscount(discount)
+                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+                }
+            }
+        }
+
+        return this
     }
 }
