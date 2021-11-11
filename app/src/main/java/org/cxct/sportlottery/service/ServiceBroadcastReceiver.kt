@@ -7,6 +7,9 @@ import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -188,8 +191,18 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                         val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                             channel = channelStr
                         }
-                        data?.setupOddDiscount(userInfoRepository.userInfo.asLiveData().value?.discount ?: 1.0F)
-                        _oddsChange.value = data
+
+                        //collect為耗時任務不能在主線程, LiveData需在主線程更新
+                        GlobalScope.launch(Dispatchers.Main) {
+                            withContext(Dispatchers.IO) {
+                                userInfoRepository.userInfo.collect {
+                                    data?.setupOddDiscount(it?.discount ?: 1.0F)
+                                    withContext(Dispatchers.Main) {
+                                        _oddsChange.value = data
+                                    }
+                                }
+                            }
+                        }
                     }
                     EventType.LEAGUE_CHANGE -> {
                         val data = ServiceMessage.getLeagueChange(jObjStr)
