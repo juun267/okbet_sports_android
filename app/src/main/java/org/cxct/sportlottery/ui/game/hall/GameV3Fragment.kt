@@ -149,6 +149,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
             leagueListener = LeagueListener {
                 subscribeChannelHall(it)
             }
