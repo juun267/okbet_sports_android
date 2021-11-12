@@ -537,6 +537,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         })
 
+        viewModel.userInfo.observe(this.viewLifecycleOwner, { userInfo ->
+            when (game_list.adapter) {
+                is LeagueAdapter -> {
+                    leagueAdapter.discount = userInfo?.discount ?: 1.0F
+                }
+
+                is EpsListAdapter -> {
+                    epsListAdapter.discount = userInfo?.discount ?: 1.0F
+                }
+            }
+        })
+
         viewModel.oddsListGameHallResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { oddsListResult ->
                 hideLoading()
