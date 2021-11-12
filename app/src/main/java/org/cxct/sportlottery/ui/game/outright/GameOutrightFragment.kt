@@ -31,6 +31,8 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
 
     private val outrightLeagueOddAdapter by lazy {
         OutrightLeagueOddAdapter().apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
@@ -108,6 +110,10 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
     }
 
     private fun initObserve() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+            outrightLeagueOddAdapter.discount = it?.discount ?: 1.0F
+        })
+
         viewModel.outrightOddsListResult.observe(this.viewLifecycleOwner, {
             hideLoading()
 
