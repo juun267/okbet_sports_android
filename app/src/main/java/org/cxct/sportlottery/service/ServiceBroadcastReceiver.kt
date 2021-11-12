@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -221,7 +222,20 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                     //具体赛事/赛季频道
                     EventType.MATCH_ODDS_CHANGE -> {
                         val data = ServiceMessage.getMatchOddsChange(jObjStr)
-                        _matchOddsChange.value = data
+                        //query為耗時任務不能在主線程, LiveData需在主線程更新
+                        GlobalScope.launch(Dispatchers.Main) {
+                            withContext(Dispatchers.IO) {
+                                mUserId?.let { userId ->
+                                    val discount = userInfoRepository.getDiscount(userId)
+                                    data?.setupOddDiscount(discount)
+                                    withContext(Dispatchers.Main) {
+                                        _matchOddsChange.value = data
+                                    }
+                                } ?: run {
+                                    _matchOddsChange.value = data
+                                }
+                            }
+                        }
                     }
 
                     //賠率折扣
@@ -248,6 +262,22 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
             }
         }
 
+        return this
+    }
+
+    private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
+        this.odds?.let { oddsMap ->
+            oddsMap.forEach { (key, value) ->
+                value.odds?.forEach { odd ->
+                    odd?.odds = odd?.odds?.applyDiscount(discount)
+                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                    if (key == PlayCate.EPS.value) {
+                        odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                    }
+                }
+            }
+        }
         return this
     }
 }
