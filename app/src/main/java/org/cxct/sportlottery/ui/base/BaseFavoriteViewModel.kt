@@ -111,6 +111,7 @@ abstract class BaseFavoriteViewModel(
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.setupPlayCate()
                         matchOdd.sortOdd()
+                        matchOdd.setupOddDiscount()
                         matchOdd.matchInfo?.let { matchInfo ->
                             matchInfo.startDateDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
@@ -126,6 +127,15 @@ abstract class BaseFavoriteViewModel(
                 }
 
                 mFavorMatchOddList.postValue(it.updateMatchType())
+            }
+        }
+    }
+
+    private fun MatchOdd.setupOddDiscount() {
+        val discount = userInfo.value?.discount ?: 1.0F
+        this.oddsMap.forEach { (_, value) ->
+            value?.forEach { odd ->
+                odd?.setupDiscount(discount)
             }
         }
     }

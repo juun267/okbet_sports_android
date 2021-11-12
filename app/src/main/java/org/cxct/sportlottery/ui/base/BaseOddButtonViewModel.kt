@@ -485,7 +485,7 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
-    private fun org.cxct.sportlottery.network.odds.Odd.setupDiscount(discount: Float) {
+    fun org.cxct.sportlottery.network.odds.Odd.setupDiscount(discount: Float) {
         this.odds = this.odds?.applyDiscount(discount)
         this.hkOdds = this.hkOdds?.applyHKDiscount(discount)
     }
