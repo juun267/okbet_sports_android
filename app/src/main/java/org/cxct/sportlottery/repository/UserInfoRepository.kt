@@ -48,6 +48,12 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun getDiscount(userId: Long): Float {
+        return withContext(Dispatchers.IO) {
+            userInfoDao.getDiscount(userId) ?: 1.0F
+        }
+    }
+
     suspend fun updatePayPwFlag(userId: Long) {
         withContext(Dispatchers.IO) {
             userInfoDao.updatePayPw(userId, 0)

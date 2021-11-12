@@ -16,6 +16,9 @@ interface UserInfoDao {
     @Query("DELETE FROM user_info_table")
     suspend fun deleteAll()
 
+    @Query("SELECT discount FROM user_info_table WHERE user_id = :userId")
+    fun getDiscount(userId: Long): Float?
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(vararg userInfo: UserInfo)
 
