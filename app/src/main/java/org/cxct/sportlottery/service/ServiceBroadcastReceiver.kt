@@ -6,10 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
 import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
@@ -31,6 +31,7 @@ import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
+import org.cxct.sportlottery.service.BackService.Companion.mUserId
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.json.JSONArray
@@ -192,14 +193,17 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                             channel = channelStr
                         }
 
-                        //collect為耗時任務不能在主線程, LiveData需在主線程更新
+                        //query為耗時任務不能在主線程, LiveData需在主線程更新
                         GlobalScope.launch(Dispatchers.Main) {
                             withContext(Dispatchers.IO) {
-                                userInfoRepository.userInfo.collect {
-                                    data?.setupOddDiscount(it?.discount ?: 1.0F)
+                                mUserId?.let { userId ->
+                                    val discount = userInfoRepository.getDiscount(userId)
+                                    data?.setupOddDiscount(discount)
                                     withContext(Dispatchers.Main) {
                                         _oddsChange.value = data
                                     }
+                                } ?: run {
+                                    _oddsChange.value = data
                                 }
                             }
                         }
