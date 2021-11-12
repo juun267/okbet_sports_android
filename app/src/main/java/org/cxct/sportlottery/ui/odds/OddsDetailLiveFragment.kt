@@ -175,6 +175,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun initUI() {
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
             oddsDetailListener = OddsDetailListener {
                 viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, args.gameType.key)
             }

@@ -557,6 +557,19 @@ abstract class BaseOddButtonViewModel(
         }
     }
 
+    protected fun org.cxct.sportlottery.network.odds.detail.MatchOdd.setupOddDiscount() {
+        val discount = userInfo.value?.discount ?: 1F
+        this.odds.forEach { (key, value) ->
+            value.odds.forEach { odd ->
+                odd?.setupDiscount(discount)
+
+                if (key == PlayCate.EPS.value) {
+                    odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                }
+            }
+        }
+    }
+
     protected fun MutableMap<String, CateDetailData>.sortPlayCate() {
         val sorted = this.toList().sortedBy { (_, value) -> value.rowSort }.toMap()
         this.clear()

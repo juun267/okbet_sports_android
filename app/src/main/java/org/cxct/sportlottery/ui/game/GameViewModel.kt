@@ -1317,6 +1317,7 @@ class GameViewModel(
                     }
 
                     result.oddsDetailData?.matchOdd?.odds?.sortPlayCate()
+                    result.oddsDetailData?.matchOdd?.setupOddDiscount()
                     result.oddsDetailData?.matchOdd?.updateOddStatus()
 
                     //因UI需求 特優賠率移到第一項

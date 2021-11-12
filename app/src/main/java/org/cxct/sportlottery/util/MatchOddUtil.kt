@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.Odds
 import org.cxct.sportlottery.ui.bet.list.INPLAY
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 
 object MatchOddUtil {
     fun transfer(
@@ -69,6 +70,17 @@ object MatchOddUtil {
             odd?.hkOdds = odd?.hkOdds?.updateHKDiscount(discount, newDiscount)
             odd?.extInfo = odd?.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
         }
+    }
+
+    fun Odd.updateDiscount(discount: Float, newDiscount: Float) {
+        this.odds = this.odds?.updateDiscount(discount, newDiscount)
+        this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
+    }
+
+    fun Odd.updateEPSDiscount(discount: Float, newDiscount: Float) {
+        this.odds = this.odds?.updateDiscount(discount, newDiscount)
+        this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
+        this.extInfo = this.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
     }
 
     fun Double.applyDiscount(discount: Float): Double {
