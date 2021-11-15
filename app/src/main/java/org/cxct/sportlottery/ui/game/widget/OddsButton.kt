@@ -106,7 +106,7 @@ class OddsButton @JvmOverloads constructor(
 
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
-            text = odd?.extInfo//特優賠率較低賠率會返回在extInfo
+            text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) } ?: odd?.extInfo //低賠率會返回在extInfo
             paint?.flags = Paint.STRIKE_THRU_TEXT_FLAG or Paint.ANTI_ALIAS_FLAG //設置中間線
         }
 

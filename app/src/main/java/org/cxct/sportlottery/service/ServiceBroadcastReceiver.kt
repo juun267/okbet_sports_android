@@ -254,10 +254,14 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
 
     private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
         this.odds?.let { oddTypeSocketMap ->
-            oddTypeSocketMap.forEach { (_, value) ->
+            oddTypeSocketMap.forEach { (key, value) ->
                 value.forEach { odd ->
                     odd?.odds = odd?.odds?.applyDiscount(discount)
                     odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                    if (key == PlayCate.EPS.value){
+                        odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                    }
                 }
             }
         }

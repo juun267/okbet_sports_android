@@ -470,17 +470,22 @@ abstract class BaseOddButtonViewModel(
         this.oddsMap.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
                 odd.setupDiscount(discount)
+                if (it.key == PlayCate.EPS.value)
+                    odd.setupEPSDiscount(discount)
             }
         }
 
         this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
             odd.setupDiscount(discount)
+            odd.setupEPSDiscount(discount)
         }
 
         this.quickPlayCateList?.forEach { quickPlayCate ->
             quickPlayCate.quickOdds.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
                     odd.setupDiscount(discount)
+                    if (it.key == PlayCate.EPS.value)
+                        odd.setupEPSDiscount(discount)
                 }
             }
         }
@@ -489,6 +494,10 @@ abstract class BaseOddButtonViewModel(
     fun org.cxct.sportlottery.network.odds.Odd.setupDiscount(discount: Float) {
         this.odds = this.odds?.applyDiscount(discount)
         this.hkOdds = this.hkOdds?.applyHKDiscount(discount)
+    }
+
+    fun org.cxct.sportlottery.network.odds.Odd.setupEPSDiscount(discount: Float) {
+        this.extInfo = this.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
     }
 
     protected fun MatchOdd.updateOddStatus() {
