@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.repository.HostRepository
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
@@ -109,6 +110,10 @@ class MultiLanguagesApplication : Application() {
         single { get<SportRoomDatabase>().userInfoDao() }
     }
 
+    private val serviceModule = module {
+        factory { ServiceBroadcastReceiver(get()) }
+    }
+
     override fun attachBaseContext(base: Context) {
         //第一次进入app时保存系统选择语言(为了选择随系统语言时使用，如果不保存，切换语言后就拿不到了）
         LanguageManager.saveSystemCurrentLanguage(base)
@@ -138,7 +143,8 @@ class MultiLanguagesApplication : Application() {
                 listOf(
                     viewModelModule,
                     repoModule,
-                    dbModule
+                    dbModule,
+                    serviceModule
                 )
             )
         }

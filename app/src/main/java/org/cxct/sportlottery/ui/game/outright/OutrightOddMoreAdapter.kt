@@ -12,6 +12,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 
 class OutrightOddMoreAdapter :
     RecyclerView.Adapter<OutrightOddMoreAdapter.OddViewHolder>() {
@@ -24,6 +25,16 @@ class OutrightOddMoreAdapter :
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var discount: Float = 1.0F
+        set(value) {
+            data?.first?.forEach { odd: Odd? ->
+                odd?.updateDiscount(field, value)
+            }
+
             field = value
             notifyDataSetChanged()
         }

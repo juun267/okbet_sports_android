@@ -91,6 +91,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
     private val leagueAdapter by lazy {
         LeagueAdapter(MatchType.MY_EVENT).apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
             leagueListener = LeagueListener {
                 subscribeChannelHall(it)
             }
@@ -357,6 +359,10 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun initObserver() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+            leagueAdapter.discount = it?.discount ?: 1.0F
+        })
+
         viewModel.myFavoriteLoading.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { show ->
                 if (show) loading() else hideLoading()

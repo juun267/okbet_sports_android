@@ -44,6 +44,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private var oddsType: OddsType = OddsType.EU
 
+    private var discount = 1.0F
+
     private var keyboard: KeyBoardUtil? = null
 
     private var betListRefactorAdapter: BetListRefactorAdapter? = null
@@ -90,6 +92,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initDiscount()
         initView()
         initObserver()
         initSocketObserver()
@@ -107,6 +110,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     override fun onDestroyView() {
         super.onDestroyView()
         rv_bet_list.adapter = null
+    }
+
+    private fun initDiscount () {
+        discount = viewModel.userInfo.value?.discount ?: 1.0F
     }
 
     private fun initView() {
@@ -304,6 +311,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
             betListRefactorAdapter?.oddsType = it
+        })
+
+        viewModel.userInfo.observe(viewLifecycleOwner, {
+            it?.discount?.let { newDiscount ->
+                if (discount == newDiscount) return@observe
+
+                viewModel.updateBetInfoDiscount(discount, newDiscount)
+                discount = newDiscount
+            }
         })
 
         viewModel.betInfoList.observe(viewLifecycleOwner, {

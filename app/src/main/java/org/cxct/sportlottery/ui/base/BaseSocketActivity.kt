@@ -14,15 +14,14 @@ import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     BaseFavoriteActivity<T>(clazz) {
 
-    val receiver by lazy {
-        ServiceBroadcastReceiver()
-    }
+    val receiver: ServiceBroadcastReceiver by inject()
 
     private lateinit var backService: BackService
     private var isServiceBound = false
@@ -88,6 +87,9 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             }
         })
 
+        receiver.userDiscountChange.observe(this, {
+            viewModel.updateDiscount(it?.discount)
+        })
         receiver.dataSourceChange.observe(this, {
             this.run {
                 if (sConfigData?.thirdOpen == FLAG_OPEN)

@@ -3,7 +3,6 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
-import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +13,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.bet.list.BetListRequest
 import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -34,7 +34,7 @@ const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
 const val KEY_ODDS_TYPE = "oddsType"
 const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
-
+const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
 
 class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
@@ -233,21 +233,17 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         }
     }
 
-    suspend fun checkToken(): Response<LoginResult> {
+    suspend fun checkToken(): Response<CheckTokenResult> {
         val checkTokenResponse = OneBoSportApi.indexService.checkToken()
 
         if (checkTokenResponse.isSuccessful) {
             checkTokenResponse.body()?.let {
                 isCheckToken = true
-                _isLogin.postValue(true)
-                _isCreditAccount.postValue(it.loginData?.creditAccount == 1)
-
-                updateLoginData(it.loginData)
-                updateUserInfo(it.loginData)
+                _isLogin.value = true
             }
         } else {
             isCheckToken = false
-            _isLogin.postValue(false)
+            _isLogin.value = false
             _isCreditAccount.postValue(false)
 
             clear()
@@ -275,6 +271,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
             putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
             putBoolean(KEY_IS_CREDIT_ACCOUNT, loginData?.creditAccount == 1)
+            putFloat(KEY_DISCOUNT, loginData?.discount ?: 1f)
             apply()
         }
     }
@@ -320,6 +317,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             userType = loginData.userType,
             userRebateList = loginData.userRebateList,
             creditAccount = loginData.creditAccount,
-            creditStatus = loginData.creditStatus
+            creditStatus = loginData.creditStatus,
+            discount = loginData.discount
         )
 }

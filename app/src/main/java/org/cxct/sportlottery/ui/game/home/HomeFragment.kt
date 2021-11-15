@@ -112,7 +112,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         try {
-
+            initDiscount()
             initTable()
             initRecommend()
             initHighlight()
@@ -137,6 +137,13 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         unSubscribeChannelHallAll()
         mRvGameTable4Adapter.stopAllTimer()
         mRvHighlightAdapter.stopAllTimer()
+    }
+
+    private fun initDiscount() {
+        val discount = viewModel.userInfo.value?.discount ?: 1.0F
+        mRvGameTable4Adapter.discount = discount
+        mRecommendAdapter.discount = discount
+        mRvHighlightAdapter.discount = discount
     }
 
     private fun initTable() {
@@ -509,6 +516,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.userInfo.observe(viewLifecycleOwner, {
+            it?.discount?.let { newDiscount ->
+                mRvGameTable4Adapter.discount = newDiscount
+                mRecommendAdapter.discount = newDiscount
+                mRvHighlightAdapter.discount = newDiscount
+            }
+        })
+
         viewModel.sportMenuList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 if (block_game.size != list.size) {

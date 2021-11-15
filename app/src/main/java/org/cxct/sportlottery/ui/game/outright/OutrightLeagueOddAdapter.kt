@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.itemview_outright_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 
 class OutrightLeagueOddAdapter :
     RecyclerView.Adapter<OutrightLeagueOddAdapter.LeagueOddViewHolder>() {
@@ -20,6 +21,16 @@ class OutrightLeagueOddAdapter :
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var discount: Float = 1.0F
+        set(value) {
+            data.forEach { matchOdd ->
+                matchOdd?.oddsMap?.updateOddsDiscount(field, value)
+            }
+
             field = value
             notifyDataSetChanged()
         }

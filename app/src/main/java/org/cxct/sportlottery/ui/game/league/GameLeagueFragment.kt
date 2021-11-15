@@ -86,6 +86,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
             leagueListener = LeagueListener {
                 subscribeChannelHall(it)
             }
@@ -198,6 +200,10 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initObserve() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+            leagueAdapter.discount = it?.discount ?: 1.0F
+        })
+
         viewModel.playList.observe(this.viewLifecycleOwner, {
             playCategoryAdapter.data = it
         })
