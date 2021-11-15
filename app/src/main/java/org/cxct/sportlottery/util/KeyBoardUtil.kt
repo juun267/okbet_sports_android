@@ -24,6 +24,17 @@ class KeyBoardUtil(
         this.keyboardView.keyboard = Keyboard(keyboardView.context, R.xml.keyboard)
         this.keyboardView.isEnabled = true
         this.keyboardView.isPreviewEnabled = false
+
+    }
+
+    private fun setPresetBetAmount(keys: MutableList<Keyboard.Key>) {
+       keys.forEach {
+           when(it.codes[0]){
+               KeyBoardCode.PLUS_10.code -> it.label = presetBetAmount[0].toString()
+               KeyBoardCode.PLUS_50.code -> it.label = presetBetAmount[1].toString()
+               KeyBoardCode.PLUS_100.code -> it.label = presetBetAmount[2].toString()
+           }
+       }
     }
 
 
