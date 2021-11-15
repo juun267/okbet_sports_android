@@ -106,11 +106,12 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
     }
 }
 
+
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
-        else -> if(parlayNum == 1){
+        else -> if (parlayNum == 1) {
             itemData.stake?.let { TextUtil.formatBetQuota(it) }
-        }else{
+        } else {
             itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * $parlayNum" }
         }
     }
@@ -244,7 +245,6 @@ fun TextView.setRecordStatusColor(status: Int?) {
         this.setTextColor(ContextCompat.getColor(context, color))
     }
 }
-
 
 @BindingAdapter("moneyFormat")
 fun TextView.setMoneyFormat(money: Double?) {

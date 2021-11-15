@@ -33,6 +33,8 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
 
     private val outrightOddAdapter by lazy {
         OutrightOddMoreAdapter().apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
             outrightOddListener = OutrightOddListener(
                 { matchOdd, odd, playCateCode ->
                     matchOdd?.let {
@@ -125,6 +127,10 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
     }
 
     private fun initObserver() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+            outrightOddAdapter.discount = it?.discount ?: 1.0F
+        })
+
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { betInfoList ->
                 outrightOddAdapter.data?.first?.forEach { odd ->

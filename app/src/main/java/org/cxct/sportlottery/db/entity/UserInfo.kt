@@ -72,5 +72,8 @@ data class UserInfo(
     val maxParlayBetMoney: Int? = null,
 
     @ColumnInfo(name = "maxCpBetMoney")//会员对应vip层级的单注冠军最大下注额
-    val maxCpBetMoney: Int? = null
+    val maxCpBetMoney: Int? = null,
+
+    @ColumnInfo(name = "discount")
+    val discount: Float? = null
 )

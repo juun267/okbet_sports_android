@@ -18,7 +18,7 @@ import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 
 class VipViewModel(
     androidContext: Application,
-    private val userInfoRepository: UserInfoRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,

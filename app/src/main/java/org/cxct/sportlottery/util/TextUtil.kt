@@ -35,7 +35,7 @@ object TextUtil : DecimalFormatUtil() {
     }
 
     fun formatForOdd(any: Any): String {
-        return doNumberFormat(any, "###,###,###,##0.00")
+        return doNumberFormat(any, "###,###,###,##0.00") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
 
     fun formatBetQuota(any: Any): String {

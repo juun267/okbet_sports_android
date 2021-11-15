@@ -38,7 +38,7 @@ class BackService : Service() {
 
         private const val SPORT_HALL_CHANNEL_LENGTH = 6
 
-        private var mUserId: Long? = null
+        internal var mUserId: Long? = null
         private var mPlatformId: Long? = null
 
         const val URL_USER = "/user/self"

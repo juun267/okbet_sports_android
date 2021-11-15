@@ -16,6 +16,9 @@ interface UserInfoDao {
     @Query("DELETE FROM user_info_table")
     suspend fun deleteAll()
 
+    @Query("SELECT discount FROM user_info_table WHERE user_id = :userId")
+    fun getDiscount(userId: Long): Float?
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(vararg userInfo: UserInfo)
 
@@ -54,6 +57,9 @@ interface UserInfoDao {
 
     @Query("UPDATE user_info_table SET maxCpBetMoney=:maxCpBetMoney WHERE user_id=:userId")
     suspend fun updateMaxCpBetMoney(userId: Long, maxCpBetMoney: Int)
+
+    @Query("UPDATE user_info_table SET discount=:discount WHERE user_id=:userId")
+    suspend fun updateDiscount(userId: Long, discount: Float)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(userInfo: UserInfo)

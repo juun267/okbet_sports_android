@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
 
@@ -16,5 +17,12 @@ open class DecimalFormatUtil {
         Locale.setDefault(Locale.US)
         val df = DecimalFormat(pattern).apply { applyFun?.invoke(this) }
         return df.format(number)
+    }
+
+    fun doNumberFormatToDouble(number: Double, pattern: String, format: RoundingMode? = null): Double {
+        Locale.setDefault(Locale.US)
+        val df = DecimalFormat(pattern)
+        format?.let { df.roundingMode = it }
+        return df.format(number).toDouble()
     }
 }

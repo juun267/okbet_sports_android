@@ -84,5 +84,7 @@ data class UserInfoData(
     @Json(name = "maxCpBetMoney")
     val maxCpBetMoney: Int?,
     @Json(name = "maxParlayBetMoney")
-    val maxParlayBetMoney: Int?
+    val maxParlayBetMoney: Int?,
+    @Json(name = "discount")
+    val discount: Float?
 )

@@ -15,6 +15,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
@@ -26,6 +27,20 @@ class LeagueAdapter(private val matchType: MatchType) :
 
     var data = mutableListOf<LeagueOdd>()
         set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var discount: Float = 1.0F
+        set (value) {
+            if (field == value) return
+
+            data.forEach { leagueOdd ->
+                leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.oddsMap.updateOddsDiscount(field, value)
+                }
+            }
+
             field = value
             notifyDataSetChanged()
         }

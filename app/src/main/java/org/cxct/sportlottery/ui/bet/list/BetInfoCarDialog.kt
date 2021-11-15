@@ -51,6 +51,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private lateinit var binding: DialogBottomSheetBetinfoItemBinding
 
+    private var discount = 1.0F
 
     private var betInfoListData: BetInfoListData? = null
         set(value) {
@@ -128,6 +129,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initDiscount()
         initClose()
         initKeyBoard()
         initBetButton()
@@ -144,6 +146,9 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         OddSpannableString.clearHandler()
     }
 
+    private fun initDiscount () {
+        discount = viewModel.userInfo.value?.discount ?: 1.0F
+    }
 
     private fun initClose() {
         iv_close.setOnClickListener {
@@ -265,6 +270,15 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun initObserve() {
+        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+            it?.discount?.let { newDiscount ->
+                if (discount == newDiscount) return@observe
+
+                viewModel.updateBetInfoDiscount(discount, newDiscount)
+                discount = newDiscount
+            }
+        })
+
         viewModel.betInfoList.observe(this.viewLifecycleOwner, {
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {

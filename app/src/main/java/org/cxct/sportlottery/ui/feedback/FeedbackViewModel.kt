@@ -15,7 +15,7 @@ import org.cxct.sportlottery.util.TimeUtil
 class FeedbackViewModel(
     androidContext: Application,
     private val feedbackRepository: FeedbackRepository,
-    private val userInfoRepository: UserInfoRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,
