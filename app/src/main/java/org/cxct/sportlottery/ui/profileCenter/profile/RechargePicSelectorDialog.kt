@@ -18,8 +18,14 @@ import org.cxct.sportlottery.util.LanguageManager
 
 class RechargePicSelectorDialog(
     val activity: Activity,
-    private val mSelectListener: OnResultCallbackListener<LocalMedia>
+    private val mSelectListener: OnResultCallbackListener<LocalMedia>,
+    val cropType: CropType
 ) : BottomSheetDialogFragment() {
+
+    enum class CropType(val code: MutableList<Int>) {
+        SQUARE(mutableListOf<Int>(1, 1)),
+        RECTANGLE(mutableListOf<Int>(16, 9))
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_avatar_selector, container, false)
@@ -56,12 +62,12 @@ class RechargePicSelectorDialog(
             .isCamera(false) // 是否显示拍照按钮 true or false
             .selectionMode(PictureConfig.SINGLE) // 多选 or 单选 PictureConfig.MULTIPLE or PictureConfig.SINGLE
             .isEnableCrop(true) // 是否裁剪 true or false
+            .withAspectRatio(cropType.code[0],cropType.code[1])
             .isCompress(true) // 是否压缩 true or false
             .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
             .circleDimmedLayer(false) // 是否圆形裁剪 true or false
             .showCropFrame(true) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
             .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
             .minimumCompressSize(100) // 小于100kb的图片不压缩
             .forResult(mSelectListener)
     }
@@ -74,11 +80,11 @@ class RechargePicSelectorDialog(
             .setLanguage(getLanguage()) // 设置语言，默认中文
             .isEnableCrop(true) // 是否裁剪 true or false
             .isCompress(true) // 是否压缩 true or false
+            .withAspectRatio(cropType.code[0],cropType.code[1])
             .rotateEnabled(true) // 裁剪是否可旋转图片 true or false
             .circleDimmedLayer(false) // 是否圆形裁剪 true or false
             .showCropFrame(true) // 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
             .showCropGrid(false) // 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
-            .withAspectRatio(1, 1) // int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
             .minimumCompressSize(100) // 小于100kb的图片不压缩
             .forResult(mSelectListener)
     }

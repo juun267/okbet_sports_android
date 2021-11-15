@@ -76,6 +76,9 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 RechType.ALIPAY.type -> itemView.context.getString(R.string.recharge_channel_alipay)
                 RechType.BANK_TRANSFER.type -> itemView.context.getString(R.string.recharge_channel_bank)
                 RechType.CRYPTO.type -> itemView.context.getString(R.string.recharge_channel_crypto)
+                RechType.GCASH.type -> itemView.context.getString(R.string.recharge_channel_gcash)
+                RechType.GRABPAY.type -> itemView.context.getString(R.string.recharge_channel_grabpay)
+                RechType.PAYMAYA.type -> itemView.context.getString(R.string.recharge_channel_paymaya)
                 else -> ""
             }
             itemView.rech_log_state.text = item.rechState

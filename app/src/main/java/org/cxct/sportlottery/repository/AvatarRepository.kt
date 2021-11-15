@@ -28,7 +28,16 @@ class AvatarRepository(private val androidContext: Context, private val userInfo
         if (response.isSuccessful) {
             val result = response.body()
             when {
-                result == null -> _editIconUrlResult.postValue(Event(IconUrlResult(-1, androidContext.getString(R.string.unknown_error), false, null)))
+                result == null -> _editIconUrlResult.postValue(
+                    Event(
+                        IconUrlResult(
+                            -1,
+                            androidContext.getString(R.string.unknown_error),
+                            false,
+                            null
+                        )
+                    )
+                )
                 result.success -> {
                     val userId = uploadImgRequest.userId.toLong()
                     val path = result.imgData?.path ?: ""
@@ -59,7 +68,16 @@ class AvatarRepository(private val androidContext: Context, private val userInfo
         if (response.isSuccessful) {
             val result = response.body()
             when {
-                result == null -> _editIconUrlResult.postValue(Event(IconUrlResult(-1, androidContext.getString(R.string.unknown_error), false, null)))
+                result == null -> _editIconUrlResult.postValue(
+                    Event(
+                        IconUrlResult(
+                            -1,
+                            androidContext.getString(R.string.unknown_error),
+                            false,
+                            null
+                        )
+                    )
+                )
                 result.success -> {
                     val path = result.imgData?.path ?: ""
                     val iconUrl = sConfigData?.resServerHost + path

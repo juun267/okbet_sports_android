@@ -62,6 +62,7 @@
     <string name="hint_e_mail">请输入邮箱</string>
     <string name="error_e_mail">邮箱格式错误</string>
     <string name="we_chat">微信</string>
+    <string name="identity">实名验证</string>
     <string name="hint_we_chat_number">请输入微信ID</string>
     <string name="error_we_chat_number">微信ID格式错误</string>
     <string name="zalo">Zalo</string>
@@ -395,6 +396,9 @@
     <string name="wx_recharge_hint">请每次入款前登录会员核对微信账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="ali_recharge_hint">请每次入款前登录会员核对支付宝账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="cft_recharge_hint">请每次入款前登录会员核对财付通账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="gcash_recharge_hint">请每次入款前登录会员核对Gcash账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="grabpay_recharge_hint">请每次入款前登录会员核对GrabPay账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
+    <string name="paymaya_recharge_hint">请每次入款前登录会员核对PayMaya账号是否使用。入款至已过期账号，公司无法查收，恕不负责！</string>
     <string name="title_pay_channel">支付渠道</string>
     <string name="title_choose_pay_channel">选择支付渠道</string>
     <string name="title_pay_gap">支付账户</string>
@@ -443,12 +447,18 @@
     <string name="title_weixin">微信</string>
     <string name="online_bank">在线网银</string>
     <string name="online_juan">JuanCash</string>
+    <string name="online_dispenshing">出款</string>
+    <string name="online_online_bank">網銀</string>
+    <string name="online_gcash">Gcash</string>
+    <string name="online_grab">GrabPay</string>
+    <string name="online_maya">PayMaya</string>
     <string name="online_alipay">在线支付宝</string>
     <string name="online_weixin">在线微信</string>
     <string name="online_qq">在线QQ</string>
     <string name="online_credit_card">在线信用卡</string>
     <string name="bank_card">银行卡</string>
     <string name="crypto">虚拟币</string>
+    <string name="ewallet">eWallet</string>
     <string name="currency_protocol">协议/币种</string>
     <string name="select_crypto_address">选择地址</string>
     <string name="withdraw_number">提款个数</string>
@@ -463,6 +473,7 @@
     <string name="please_setting_withdraw_password">请设置提款密码</string>
     <string name="please_complete_profile_info">完善个人资料</string>
     <string name="please_setting_bank_card">请先设置银行卡</string>
+    <string name="please_setting_ewallet">请先设置eWallet</string>
     <string name="please_setting_crypto">请先设置虚拟币</string>
     <string name="please_setting_money_card">请先设置银行卡/虚拟币</string>
     <string name="go_to_setting">前往设置</string>
@@ -486,12 +497,15 @@
     <string name="add_new">新增</string>
     <string name="add_credit_card">新增银行卡</string>
     <string name="add_crypto_card">新增虚拟币</string>
-    <string name="add_credit_or_virtual">新增银行卡/虚拟币</string>
+    <string name="add_e_wallet">新增eWallet</string>
+    <string name="add_credit_or_virtual">新增银行卡 / 虚拟币 / eWallet</string>
+    <string name="add_credit_or_e_wallet">新增银行卡 / eWallet</string>
     <string name="create_bank">开户银行</string>
     <string name="create_name">持卡人姓名</string>
     <string name="hint_please_enter_create_name">请输入您的银行卡姓名</string>
     <string name="edit_bank_card">编辑银行卡</string>
     <string name="edit_crypto_card">编辑虚拟币</string>
+    <string name="edit_e_wallet">编辑eWallet</string>
     <string name="bank_card_number">银行卡号</string>
     <string name="wallet_address">钱包地址</string>
     <string name="please_enter_bank_card_rule">请输入银行卡卡号</string>
@@ -499,6 +513,8 @@
     <string name="network_point">开户网点</string>
     <string name="please_enter_network_point">请输入开户网点</string>
     <string name="delete_bank_card">刪除銀行卡</string>
+    <string name="delete_crypto">刪除虚拟币</string>
+    <string name="delete_e_wallet">刪除eWallet</string>
     <string name="select_currency_protocol">选择 协议/币种</string>
     <string name="error_create_name">姓名为2–20个中文组合</string>
     <string name="error_bank_card_number">银行卡号格式有错误</string>
@@ -507,9 +523,12 @@
     <string name="error_wallet_address">您输入的地址格式错误</string>
     <string name="text_bank_card_delete_success">银行卡删除成功</string>
     <string name="text_crypto_delete_success">虚拟币删除成功</string>
+    <string name="text_e_wallet_delete_success">eWallet删除成功</string>
     <string name="text_bank_card_add_success">银行卡绑定成功</string>
+    <string name="text_e_wallet_add_success">eWallet绑定成功</string>
     <string name="text_crypto_add_success">虚拟币绑定成功</string>
     <string name="text_bank_card_modify_success">编辑银行卡成功</string>
+    <string name="text_e_wallet_modify_success">编辑eWallet成功</string>
     <string name="text_crypto_modify_success">编辑虚拟币成功</string>
     <string name="bet_info_list_title">投注单</string>
     <string name="bet_list_title">投注单</string>
@@ -519,7 +538,7 @@
     <string name="bet_receipt_bet_quota">投注金额：</string>
     <string name="bet_info_list_win_quota">可赢金额：</string>
     <string name="bet_list_win_quota">可赢金额：</string>
-<!--    <string name="bet_info_list_rmb">RMB</string>-->
+    <!--    <string name="bet_info_list_rmb">RMB</string>-->
     <string name="bet_info_list_rmb">PHP</string>
     <string name="bet_info_list_add_more">更多选择</string>
     <string name="bet_info_list_bet">投注</string>
@@ -546,7 +565,7 @@
     <string name="bet_info_add_to_bet_info">加入投注单</string>
     <string name="bet_info_odd_content_changed">一个或多个选项的赔率，让球数或比分已更改</string>
     <string name="bet_info_current_rmb">%s PHP</string>
-<!--    <string name="bet_info_current_rmb">%s RMB</string>-->
+    <!--    <string name="bet_info_current_rmb">%s RMB</string>-->
     <string name="bet_info_all_bet">所有投注</string>
     <string name="bet_list_delete_all">全删除</string>
     <string name="bet_list_single_warn">(可用相同的投注额填充所有单项选择)</string>
@@ -580,6 +599,9 @@
     <string name="recharge_channel_weixin">微信转账</string>
     <string name="recharge_channel_cft">财付通转账</string>
     <string name="recharge_channel_crypto">虚拟币转账</string>
+    <string name="recharge_channel_gcash">Gcash</string>
+    <string name="recharge_channel_grabpay">GrabPay</string>
+    <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">系统加钱</string>
     <string name="recharge_log_order_time">订单时间</string>
     <string name="recharge_log_recharge_amount">充值金额</string>
@@ -790,4 +812,20 @@
     <string name="parlay_9_block_rule">9串502是由9个不同的赛事组成的502个不同的投注，36个2串1，84个3串1，126个4串1，126个5串1，84个6串1，36个7串1，9个8串1以及1个9串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_10_fold_rule">10串1是10个选项组成的单一投注，必须赢得所有选项方可获得返还，不同球种及冠军玩法不能进行串关投注</string>
     <string name="parlay_10_block_rule">10串1013是由10个不同的赛事组成的1013个不同的投注，45个2串1，120个3串1，210个4串1，252个5串1，210个6串1，120个7串1，45个8串1，10个9串1以及1个10串1，至少2个选项获胜以确保派彩，不同球种及冠军玩法不能进行串关投注</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="upload_title">身份证明文件</string>
+    <string name="upload_tips">・请上传能够证明您身份的文件</string>
+    <string name="upload_photo_title">自拍照</string>
+    <string name="upload_photo_tips">・照片档案大小上限: 2MB</string>
+    <string name="upload_media_reset">重拍</string>
+    <string name="upload_fail">上传失败</string>
+    <string name="identity_id">ID 号码</string>
+    <string name="identity_last_name">姓</string>
+    <string name="identity_first_name">名</string>
+    <string name="identity_other_name">別名</string>
+    <string name="identity_country">國家地區</string>
+    <string name="identity_birth">生日</string>
+    <string name="identity_marital_status">婚姻狀態</string>
+    <string name="identity_sex">性別</string>
+    <string name="identity_work">工作</string>
 </resources>

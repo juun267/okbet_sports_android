@@ -411,7 +411,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 matchOddsChangeEvent.updateOddsSelectedState()
 
                 oddsDetailListAdapter?.oddsDetailDataList?.let { oddsDetailListDataList ->
-                    SocketUpdateUtil.updateMatchOddsMap(oddsDetailListDataList, matchOddsChangeEvent)
+                    SocketUpdateUtil.updateMatchOddsMap(
+                        oddsDetailListDataList,
+                        matchOddsChangeEvent,
+                        viewModel.favorPlayCateList.value?.find { playCate ->
+                            playCate.gameType == args.gameType.key
+                        }
+                    )
                         ?.let { updatedDataList ->
                             oddsDetailListAdapter?.oddsDetailDataList = updatedDataList
                         } ?: run {
@@ -657,9 +663,13 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_status_right.text = statusBuilder
 
         if (tv_status_left.tag != GameStatus.POSTPONED.code) {
-            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
+            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
             val statusValue = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: event.matchStatusCO?.statusName
             tv_status_left.text = statusValue
+        } else {
+            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
         }
     }
 }

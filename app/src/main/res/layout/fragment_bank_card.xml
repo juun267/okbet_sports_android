@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite1"
     android:orientation="vertical"
     tools:context="org.cxct.sportlottery.ui.withdraw.BankCardFragment">
@@ -14,36 +14,80 @@
         android:layout_height="wrap_content"
         android:background="@color/colorBlueLight"
         android:orientation="horizontal"
-        android:paddingStart="10dp"
-        android:paddingTop="6dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="6dp">
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp">
 
-        <TextView
-            android:id="@+id/tab_bank_card"
-            android:layout_width="0dp"
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/bg_select_money_tab_left"
-            android:gravity="center"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:text="@string/bank_card"
-            android:textColor="@color/color_select_money_tab_text"
-            android:textSize="@dimen/textSize14sp" />
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp">
 
-        <TextView
-            android:id="@+id/tab_crypto"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/bg_select_money_tab_right"
-            android:gravity="center"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:text="@string/crypto"
-            android:textColor="@color/color_select_money_tab_text"
-            android:textSize="@dimen/textSize14sp" />
+            <RadioGroup
+                android:id="@+id/rg_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/frame_4dp_white"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/tab_bank_card"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="@string/bank_card"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite" />
+
+                <RadioButton
+                    android:id="@+id/tab_crypto"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/crypto"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize14sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite" />
+
+                <RadioButton
+                    android:id="@+id/tab_e_wallet"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/ewallet"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize14sp" />
+
+            </RadioGroup>
+
+        </androidx.cardview.widget.CardView>
+
     </LinearLayout>
 
     <LinearLayout
@@ -237,8 +281,8 @@
                 android:letterSpacing="0.1"
                 android:paddingTop="9dp"
                 android:paddingBottom="9dp"
-                android:textAllCaps="true"
                 android:text="@string/submit"
+                android:textAllCaps="true"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize16sp"
                 android:textStyle="bold" />
@@ -249,13 +293,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="11dp"
                 android:layout_weight="1"
-                android:textAllCaps="true"
                 android:background="@drawable/bg_radius_20_button_hollow"
                 android:gravity="center"
                 android:letterSpacing="0.1"
                 android:paddingTop="11dp"
                 android:paddingBottom="11dp"
                 android:text="@string/delete_bank_card"
+                android:textAllCaps="true"
                 android:textColor="@color/colorBlue"
                 android:textSize="@dimen/textSize14sp"
                 android:textStyle="bold" />

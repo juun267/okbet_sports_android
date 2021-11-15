@@ -63,7 +63,6 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                     val sortOrder = oddData.oddsSort?.split(",")
                     sortOrder?.indexOf(it)
                 }.thenBy { it }).map {
-                if (it.key == PlayCate.EPS.value && oddData.matchInfo?.id == "5441538")
                     OddBean(it.key, it.value?.toList() ?: listOf()) }
 
                 val entity = RecommendGameEntity(

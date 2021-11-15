@@ -38,6 +38,9 @@ enum class EventType(val value: String) {
     */
     USER_DISCOUNT_CHANGE("USER_DISCOUNT_CHANGE"),
 
+    /*公共 /ws/notify/platform/$mPlatformId */
+    DATA_SOURCE_CHANGE_EVENT("DATA_SOURCE_CHANGE_EVENT"), //所有体育玩法限额变更
+
     /*未被定義的頻道*/
     UNKNOWN("UNKNOWN");
 

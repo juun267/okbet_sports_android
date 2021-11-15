@@ -275,6 +275,13 @@ class WithdrawViewModel(
                 checkWithdrawPassword(withdrawPassword)
                 checkCryptoCardData()
             }
+            TransferType.E_WALLET.type -> {
+                checkCreateName(fullName ?: "")
+                checkBankCardNumber(cardNo)
+                checkNetWorkPoint(subAddress ?: "")
+                checkWithdrawPassword(withdrawPassword)
+                checkBankCardData()
+            }
             else -> false
         }
     }
@@ -444,6 +451,7 @@ class WithdrawViewModel(
                 when (dealType) {
                     TransferType.BANK -> androidContext.getString(R.string.error_withdraw_amount_bank)
                     TransferType.CRYPTO -> androidContext.getString(R.string.error_withdraw_amount_crypto)
+                    TransferType.E_WALLET -> androidContext.getString(R.string.error_withdraw_amount_bank)
                 }
             }
             else -> {
@@ -487,12 +495,13 @@ class WithdrawViewModel(
                 ArithUtil.minus((userMoney.value), (cardConfig?.feeVal?.times(cardConfig?.exchangeRate ?: 0.0))),
                 cardConfig?.exchangeRate ?: 1.0, 3, RoundingMode.FLOOR
             )
+            TransferType.E_WALLET -> ArithUtil.div((userMoney.value ?: 0.0), ((cardConfig?.feeRate?.plus(1) ?: 1.0)), 0, RoundingMode.FLOOR)
         }
     }
 
     fun getWithdrawRate(withdrawCard: BankCardList?, withdrawAmount: Double? = 0.0) {
         when (dealType) {
-            TransferType.BANK -> {
+            TransferType.BANK, TransferType.E_WALLET -> {
                 _withdrawCryptoAmountHint.value = ""
                 _withdrawCryptoFeeHint.value = ""
                 _withdrawRateHint.value = String.format(
@@ -536,6 +545,9 @@ class WithdrawViewModel(
             TransferType.CRYPTO -> {
                 rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.detailList?.find { it.contract == withdrawCard.bankName }
             }
+            TransferType.E_WALLET -> {
+                rechargeConfigs.value?.uwTypes?.find { config -> config.type == TransferType.E_WALLET.type }?.detailList?.first()
+            }
         }
     }
 
@@ -568,9 +580,9 @@ class WithdrawViewModel(
         val cryptoOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
 
         val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
-        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK }
+        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK || it.transferType == TransferType.E_WALLET }
         //銀行卡是否可以被提款或新增卡片
-        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type }?.open == MoneyRechCfg.Switch.ON.code
+        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type || it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
 
         val cryptoCardLimitList = checkCryptoCanBind()
 

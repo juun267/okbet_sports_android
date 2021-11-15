@@ -2,13 +2,17 @@ package org.cxct.sportlottery.ui.profileCenter
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import org.cxct.sportlottery.network.uploadImg.UploadImgRequest
+import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.uploadImg.*
 import org.cxct.sportlottery.network.user.iconUrl.IconUrlResult
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.util.Event
+import java.io.File
 
 class ProfileCenterViewModel(
     androidContext: Application,
@@ -48,6 +52,18 @@ class ProfileCenterViewModel(
     val editIconUrlResult: LiveData<Event<IconUrlResult?>> = avatarRepository.editIconUrlResult
 
     val isCreditAccount: LiveData<Boolean> = loginRepository.isCreditAccount
+
+    val docUrlResult: LiveData<Event<UploadImgResult>>
+        get() = _docUrlResult
+    private val _docUrlResult = MutableLiveData<Event<UploadImgResult>>()
+
+    val photoUrlResult: LiveData<Event<UploadImgResult>>
+        get() = _photoUrlResult
+    private val _photoUrlResult = MutableLiveData<Event<UploadImgResult>>()
+
+    val uploadVerifyPhotoResult: LiveData<Event<UploadVerifyPhotoResult?>>
+        get() = _uploadVerifyPhotoResult
+    private val _uploadVerifyPhotoResult = MutableLiveData<Event<UploadVerifyPhotoResult?>>()
 
 
     fun getUserInfo() {
@@ -103,6 +119,109 @@ class ProfileCenterViewModel(
         viewModelScope.launch {
             doNetwork(androidContext) {
                 avatarRepository.uploadImage(uploadImgRequest)
+            }
+        }
+    }
+
+    fun uploadVerifyPhoto(docFile: File, photoFile: File) {
+        viewModelScope.launch {
+            val docResponse = doNetwork(androidContext) {
+                OneBoSportApi.uploadImgService.uploadImg(
+                    UploadVerifyDocRequest(
+                        userInfo.value?.userId.toString(),
+                        docFile
+                    ).toPars()
+                )
+            }
+            when {
+                docResponse == null -> _docUrlResult.postValue(
+                    Event(
+                        UploadImgResult(
+                            -1,
+                            androidContext.getString(R.string.unknown_error),
+                            false,
+                            null
+                        )
+                    )
+                )
+                docResponse.success -> {
+                    _docUrlResult.postValue(Event(docResponse))
+
+                    val photoResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadImg(
+                            UploadVerifyDocRequest(
+                                userInfo.value?.userId.toString(),
+                                photoFile
+                            ).toPars()
+                        )
+                    }
+                    when {
+                        photoResponse == null -> _photoUrlResult.postValue(
+                            Event(
+                                UploadImgResult(
+                                    -1,
+                                    androidContext.getString(R.string.unknown_error),
+                                    false,
+                                    null
+                                )
+                            )
+                        )
+                        photoResponse.success -> {
+                            _photoUrlResult.postValue(Event(photoResponse))
+                        }
+                        else -> {
+                            val error =
+                                UploadImgResult(photoResponse.code, photoResponse.msg, photoResponse.success, null)
+                            _photoUrlResult.postValue(Event(error))
+                        }
+                    }
+                }
+                else -> {
+                    val error = UploadImgResult(
+                        docResponse.code, docResponse.msg, docResponse.success, null
+                    )
+                    _docUrlResult.postValue(Event(error))
+                }
+            }
+        }
+    }
+
+    fun uploadIdentityDoc() {
+        val docPathUrl = _docUrlResult.value?.peekContent()?.imgData?.path
+        val photoPathUrl = _photoUrlResult.value?.peekContent()?.imgData?.path
+        when {
+            docPathUrl == null -> {
+                _uploadVerifyPhotoResult.postValue(
+                    Event(
+                        UploadVerifyPhotoResult(
+                            -1,
+                            androidContext.getString(R.string.upload_fail),
+                            false,
+                            null
+                        )
+                    )
+                )
+            }
+            photoPathUrl == null -> {
+                UploadVerifyPhotoResult(
+                    -1,
+                    androidContext.getString(R.string.upload_fail),
+                    false,
+                    null
+                )
+            }
+            else -> {
+                viewModelScope.launch {
+                    val verifyPhotoResponse = doNetwork(androidContext) {
+                        OneBoSportApi.uploadImgService.uploadVerifyPhoto(
+                            UploadVerifyPhotoRequest(
+                                docPathUrl,
+                                photoPathUrl
+                            )
+                        )
+                    }
+                    _uploadVerifyPhotoResult.postValue(Event(verifyPhotoResponse))
+                }
             }
         }
     }

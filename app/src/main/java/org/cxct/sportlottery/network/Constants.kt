@@ -180,6 +180,7 @@ object Constants {
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
+    const val UPLOAD_VERIFY_PHOTO = "/api/front/user/uploadVerifyPhoto" //上傳實名制文件
 
     //bank
     const val BANK_MY = "/api/front/user/bank/my"

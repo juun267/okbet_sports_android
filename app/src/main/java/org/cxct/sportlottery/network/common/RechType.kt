@@ -6,5 +6,8 @@ enum class RechType(val code: String) {
     CRYPTOPAY("cryptoPay"),
     ALIPAY("alipay"),
     WX("weixin"),
-    CFT("cft")
+    CFT("cft"),
+    GCASH("gcash"),
+    GRABPAY("grabPay"),
+    PAYMAYA("payMaya"),
 }

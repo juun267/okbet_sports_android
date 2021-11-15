@@ -22,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.39"
+        versionName "1.0.44"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -75,6 +75,7 @@ android {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             resValue "string", "app_name", "OKBET"
             applicationId "com.happysport.sl.test"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
@@ -86,6 +87,7 @@ android {
             buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
             resValue "string", "app_name", "OKBET"
             applicationId "com.okbetinc.sltest"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.

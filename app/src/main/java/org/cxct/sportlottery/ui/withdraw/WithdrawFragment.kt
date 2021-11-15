@@ -102,6 +102,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             }
         }
 
+        tab_wallet.setOnClickListener {
+            if (!it.isSelected) {
+                selectDealType(TransferType.E_WALLET)
+                clearEvent()
+            }
+        }
+
         ll_select_bank.setOnClickListener {
             bankCardBottomSheet.show()
         }
@@ -268,13 +275,16 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
      */
     private fun jumpToMoneyCardSetting(assignType: Boolean = false, transferType: TransferType? = null) {
         val content = when (transferType) {
-                TransferType.CRYPTO -> {
-                    getString(R.string.please_setting_crypto)
-                }
-                else -> {
-                    getString(R.string.please_setting_bank_card)
-                }
+            TransferType.CRYPTO -> {
+                getString(R.string.please_setting_crypto)
             }
+            TransferType.E_WALLET -> {
+                getString(R.string.please_setting_ewallet)
+            }
+            else -> {
+                getString(R.string.please_setting_bank_card)
+            }
+        }
         showPromptDialog(getString(R.string.withdraw_setting),  content) {
             this@WithdrawFragment.activity?.finish()
             startActivity(Intent(requireContext(), BankActivity::class.java).apply { if (assignType) putExtra(ModifyBankTypeKey, transferType) })
@@ -295,6 +305,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 val cardIcon = when (it.transferType) {
                     TransferType.BANK -> getBankIconByBankName(it.bankName)
                     TransferType.CRYPTO -> getCryptoIconByCryptoName(it.transferType.type)
+                    TransferType.E_WALLET -> getBankIconByBankName(it.bankName)
                 }
                 view.iv_bank_card_icon.setImageResource(cardIcon)
 
@@ -361,6 +372,7 @@ class BankCardAdapter(private val context: Context, private val dataList: Mutabl
             val cardIcon = when (data.transferType) {
                 TransferType.BANK -> getBankIconByBankName(data.bankName)
                 TransferType.CRYPTO -> getCryptoIconByCryptoName(data.transferType.type)
+                TransferType.E_WALLET -> getBankIconByBankName(data.bankName)
             }
             ivBankIcon?.setImageResource(cardIcon)
             if (position == selectedPosition)

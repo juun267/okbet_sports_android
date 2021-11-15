@@ -76,7 +76,10 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
     }
 
     private fun initView() {
-        if (mMoneyPayWay?.image != "ic_online_pay") {
+        if (mMoneyPayWay?.onlineType != OnlineType.WX.type
+            && mMoneyPayWay?.onlineType != OnlineType.GCASH.type
+            && mMoneyPayWay?.onlineType != OnlineType.GRABPAY.type
+            && mMoneyPayWay?.onlineType != OnlineType.PAYMAYA.type) {
             cv_pay_bank.visibility = View.GONE
         } else {
             cv_pay_bank.visibility = View.VISIBLE
@@ -114,7 +117,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             bankBottomSheet.show()
         }
     }
-
+//TODO Bill 等UI出圖
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
         mMoneyPayWay = moneyPayWay
         typeIcon = when (mMoneyPayWay?.onlineType) {
@@ -122,6 +125,11 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
             OnlineType.ZFB.type  -> R.drawable.ic_alipay_type
             OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
             OnlineType.JUAN.type -> R.drawable.ic_juancash
+            OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash
+            OnlineType.ONLINEBANK.type -> R.drawable.ic_juancash
+            OnlineType.GCASH.type -> R.drawable.ic_grab_pay_type
+            OnlineType.GRABPAY.type -> R.drawable.ic_grab_pay_type
+            OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type
             else -> R.drawable.ic_online_pay_type
         }
         return this
