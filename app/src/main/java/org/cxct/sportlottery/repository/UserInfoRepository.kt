@@ -154,6 +154,9 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             userRebateList = userInfoData.userRebateList,
             creditAccount = userInfoData.creditAccount,
             creditStatus = userInfoData.creditStatus,
+            maxBetMoney = userInfoData.maxBetMoney,
+            maxCpBetMoney = userInfoData.maxCpBetMoney,
+            maxParlayBetMoney = userInfoData.maxParlayBetMoney,
             discount = userInfoData.discount
         )
 
