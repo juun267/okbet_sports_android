@@ -1154,6 +1154,12 @@ class GameViewModel(
     }
 
     private fun getDateRowEarly(): List<Date> {
+        val locale = when(LanguageManager.getSelectLanguage(androidContext)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                Locale.CHINA
+            }
+            else -> Locale.getDefault()
+        }
         val dateRow = mutableListOf(
             Date(
                 androidContext.getString(R.string.date_row_all),
@@ -1175,7 +1181,7 @@ class GameViewModel(
                 }
             }
         ).map {
-            Date(it, TimeUtil.getDayDateTimeRangeParams(it), isDateFormat = true)
+            Date(it, TimeUtil.getDayDateTimeRangeParams(it, locale), isDateFormat = true)
         })
 
         return dateRow
