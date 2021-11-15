@@ -25,6 +25,7 @@ class KeyBoardUtil(
         this.keyboardView.isEnabled = true
         this.keyboardView.isPreviewEnabled = false
 
+        setPresetBetAmount(this.keyboardView.keyboard.keys)
     }
 
     private fun setPresetBetAmount(keys: MutableList<Keyboard.Key>) {
