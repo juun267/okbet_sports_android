@@ -469,23 +469,24 @@ abstract class BaseOddButtonViewModel(
         val discount = userInfo.value?.discount ?: 1F
         this.oddsMap.forEach {
             it.value?.filterNotNull()?.forEach { odd ->
-                odd.setupDiscount(discount)
                 if (it.key == PlayCate.EPS.value)
                     odd.setupEPSDiscount(discount)
+                else
+                    odd.setupDiscount(discount)
             }
         }
 
         this.oddsEps?.eps?.filterNotNull()?.forEach { odd ->
-            odd.setupDiscount(discount)
             odd.setupEPSDiscount(discount)
         }
 
         this.quickPlayCateList?.forEach { quickPlayCate ->
             quickPlayCate.quickOdds.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
-                    odd.setupDiscount(discount)
                     if (it.key == PlayCate.EPS.value)
                         odd.setupEPSDiscount(discount)
+                    else
+                        odd.setupDiscount(discount)
                 }
             }
         }
@@ -496,7 +497,8 @@ abstract class BaseOddButtonViewModel(
         this.hkOdds = this.hkOdds?.applyHKDiscount(discount)
     }
 
-    fun org.cxct.sportlottery.network.odds.Odd.setupEPSDiscount(discount: Float) {
+    protected fun org.cxct.sportlottery.network.odds.Odd.setupEPSDiscount(discount: Float) {
+        this.setupDiscount(discount)
         this.extInfo = this.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
     }
 

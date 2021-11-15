@@ -8,6 +8,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.Odds
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 
 object MatchOddUtil {
     fun transfer(
@@ -60,17 +61,14 @@ object MatchOddUtil {
     fun MutableMap<String, MutableList<Odd?>?>.updateOddsDiscount(discount: Float, newDiscount: Float) {
         this.forEach { (_, value) ->
             value?.forEach { odd ->
-                odd?.odds = odd?.odds?.updateDiscount(discount, newDiscount)
-                odd?.hkOdds = odd?.hkOdds?.updateHKDiscount(discount, newDiscount)
+                odd?.updateDiscount(discount, newDiscount)
             }
         }
     }
 
     fun Odds.updateEpsDiscount(discount: Float, newDiscount: Float) {
         this.eps?.forEach { odd ->
-            odd?.odds = odd?.odds?.updateDiscount(discount, newDiscount)
-            odd?.hkOdds = odd?.hkOdds?.updateHKDiscount(discount, newDiscount)
-            odd?.extInfo = odd?.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
+            odd?.updateEPSDiscount(discount, newDiscount)
         }
     }
 
@@ -80,8 +78,7 @@ object MatchOddUtil {
     }
 
     fun Odd.updateEPSDiscount(discount: Float, newDiscount: Float) {
-        this.odds = this.odds?.updateDiscount(discount, newDiscount)
-        this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
+        this.updateDiscount(discount, newDiscount)
         this.extInfo = this.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
     }
 

@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
@@ -133,9 +134,12 @@ abstract class BaseFavoriteViewModel(
 
     private fun MatchOdd.setupOddDiscount() {
         val discount = userInfo.value?.discount ?: 1.0F
-        this.oddsMap.forEach { (_, value) ->
+        this.oddsMap.forEach { (key, value) ->
             value?.forEach { odd ->
-                odd?.setupDiscount(discount)
+                if (key == PlayCate.EPS.value)
+                    odd?.setupEPSDiscount(discount)
+                else
+                    odd?.setupDiscount(discount)
             }
         }
     }
