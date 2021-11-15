@@ -12,8 +12,11 @@ import org.cxct.sportlottery.ui.common.KeyBoardCode
 
 
 @Suppress("DEPRECATION")
-class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val parent: View?) :
-    OnKeyboardActionListener {
+class KeyBoardUtil(
+    private val keyboardView: CustomKeyBoardView,
+    private val parent: View?,
+    private val presetBetAmount: List<Int>
+) : OnKeyboardActionListener {
 
 
     init {
