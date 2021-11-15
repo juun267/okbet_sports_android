@@ -828,4 +828,5 @@
     <string name="identity_marital_status">婚姻狀態</string>
     <string name="identity_sex">性別</string>
     <string name="identity_work">工作</string>
+    <string name="message_source_change">系统收到最新赛事数据,将立即自动回到首页</string>
 </resources>
