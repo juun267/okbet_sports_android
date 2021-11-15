@@ -41,6 +41,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 
 
 abstract class BaseOddButtonViewModel(
@@ -749,6 +750,14 @@ abstract class BaseOddButtonViewModel(
                 e.printStackTrace()
             }
         }
+    }
+
+    fun updateBetInfoDiscount(discount: Float, newDiscount: Float) {
+        betInfoList.value?.peekContent()?.forEach { betInfoListData ->
+            betInfoListData.matchOdd.updateDiscount(discount, newDiscount)
+        }
+
+        betInfoRepository.notifyBetInfoChanged()
     }
 
     private suspend fun getBetApi(

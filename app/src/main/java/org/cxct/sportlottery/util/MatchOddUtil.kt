@@ -1,6 +1,8 @@
 package org.cxct.sportlottery.util
 
+import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.Odds
@@ -81,6 +83,15 @@ object MatchOddUtil {
         this.odds = this.odds?.updateDiscount(discount, newDiscount)
         this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
         this.extInfo = this.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
+    }
+
+    fun MatchOdd.updateDiscount(discount: Float, newDiscount: Float) {
+        this.odds = this.odds.updateDiscount(discount, newDiscount)
+        this.hkOdds = this.hkOdds.updateHKDiscount(discount, newDiscount)
+
+        if (this.playCode == PlayCate.EPS.value) {
+            this.extInfo = this.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
+        }
     }
 
     fun Double.applyDiscount(discount: Float): Double {
