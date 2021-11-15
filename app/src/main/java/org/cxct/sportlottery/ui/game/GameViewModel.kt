@@ -56,6 +56,8 @@ import org.cxct.sportlottery.ui.game.data.Date
 import org.cxct.sportlottery.ui.game.data.SpecialEntrance
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
@@ -1014,6 +1016,19 @@ class GameViewModel(
             }
 
             result?.quickListData?.let {
+                val discount = userInfo.value?.discount ?: 1.0F
+                it.quickOdds?.forEach { (_, quickOddsValue) ->
+                    quickOddsValue.forEach { (key, value) ->
+                        value?.forEach { odd ->
+                            odd?.odds = odd?.odds?.applyDiscount(discount)
+                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                            if (key == QuickPlayCate.QUICK_EPS.value) {
+                                odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                            }
+                        }
+                    }
+                }
 
                 _oddsListGameHallResult.postValue(
                     Event(
@@ -1641,7 +1656,7 @@ class GameViewModel(
      * 設置大廳所需顯示的快捷玩法 (api未回傳的玩法需以“—”表示)
      * 2021.10.25 發現可能會回傳但是是傳null, 故新增邏輯, 該玩法odd為null時也做處理
      */
-    private fun MutableMap<String, List<Odd?>>.setupQuickPlayCate(playCate: String) {
+    private fun MutableMap<String, List<Odd?>?>.setupQuickPlayCate(playCate: String) {
         val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
 
         playCateSort?.forEach {
@@ -1653,7 +1668,7 @@ class GameViewModel(
     /**
      * 根據QuickPlayCate的rowSort將盤口重新排序
      */
-    private fun MutableMap<String, List<Odd?>>.sortQuickPlayCate(playCate: String) {
+    private fun MutableMap<String, List<Odd?>?>.sortQuickPlayCate(playCate: String) {
         val playCateSort = QuickPlayCate.values().find { it.value == playCate }?.rowSort?.split(",")
         val sortedList = this.toSortedMap(compareBy<String> {
             val oddsIndex = playCateSort?.indexOf(it)

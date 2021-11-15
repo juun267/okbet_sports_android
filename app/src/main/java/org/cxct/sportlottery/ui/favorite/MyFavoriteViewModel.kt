@@ -17,6 +17,8 @@ import org.cxct.sportlottery.network.sport.query.SportQueryRequest
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseBottomNavViewModel
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil
 
 
@@ -96,6 +98,20 @@ class MyFavoriteViewModel(
             }
 
             result?.quickListData?.let { quickListData ->
+                val discount = userInfo.value?.discount ?: 1.0F
+                quickListData.quickOdds?.forEach { (_, quickOddsValue) ->
+                    quickOddsValue.forEach { (key, value) ->
+                        value?.forEach { odd ->
+                            odd?.odds = odd?.odds?.applyDiscount(discount)
+                            odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                            if (key == QuickPlayCate.QUICK_EPS.value) {
+                                odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                            }
+                        }
+                    }
+                }
+
                 mFavorMatchOddList.postValue(
                     mFavorMatchOddList.value?.updatePlayCate(matchId, quickListData)
                 )
