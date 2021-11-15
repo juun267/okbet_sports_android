@@ -93,11 +93,11 @@ class KeyBoardUtil(
                 hideKeyboard()
             }
 
-            KeyBoardCode.PLUS_10.code -> plus(KeyBoardCode.PLUS_10.value.toLong())
+            KeyBoardCode.PLUS_10.code -> plus(presetBetAmount[0].toLong())
 
-            KeyBoardCode.PLUS_50.code -> plus(KeyBoardCode.PLUS_50.value.toLong())
+            KeyBoardCode.PLUS_50.code -> plus(presetBetAmount[1].toLong())
 
-            KeyBoardCode.PLUS_100.code -> plus(KeyBoardCode.PLUS_100.value.toLong())
+            KeyBoardCode.PLUS_100.code -> plus(presetBetAmount[2].toLong())
 
             KeyBoardCode.INSERT_0.code -> {
                 if (editable.isNotEmpty()) {
