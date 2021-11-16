@@ -166,7 +166,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                     }
 
                     //公共频道
-                    EventType.DATA_SOURCE_CHANGE_EVENT -> {
+                    EventType.DATA_SOURCE_CHANGE -> {
                         _dataSourceChange.value = true
                     }
 
