@@ -7,19 +7,23 @@ import android.os.IBinder
 import androidx.lifecycle.Observer
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
-import org.cxct.sportlottery.repository.FLAG_OPEN
-import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.service.BackService
 import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.maintenance.MaintenanceActivity
+import org.cxct.sportlottery.util.GameConfigManager
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
     BaseFavoriteActivity<T>(clazz) {
+
+    private val sharedPref: SharedPreferences by lazy {
+        this.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
 
     val receiver: ServiceBroadcastReceiver by inject()
 
@@ -90,12 +94,21 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         receiver.userDiscountChange.observe(this, {
             viewModel.updateDiscount(it?.discount)
         })
+
         receiver.dataSourceChange.observe(this, {
             this.run {
                 if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
                 else
                     GameActivity.reStart(this)
+            }
+        })
+
+        receiver.userMaxBetMoneyChange.observe(this, {
+            if(viewModel.isLogin.value == true && sharedPref.getInt(KEY_USER_LEVEL_ID,-1) == it?.userLevelConfigList?.firstOrNull()?.id){
+                GameConfigManager.maxBetMoney = it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 99999
+                GameConfigManager.maxParlayBetMoney = it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
+                GameConfigManager.maxCpBetMoney = it.userLevelConfigList.firstOrNull()?.maxCpBetMoney ?: 99999
             }
         })
     }
