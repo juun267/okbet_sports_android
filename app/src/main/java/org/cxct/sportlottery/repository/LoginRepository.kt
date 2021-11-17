@@ -37,6 +37,8 @@ const val KEY_ODDS_TYPE = "oddsType"
 const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
 const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
+const val KEY_USER_LEVEL_ID = "user_Level_Id"
+
 
 class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
     private val sharedPref: SharedPreferences by lazy {
