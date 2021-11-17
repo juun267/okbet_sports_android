@@ -4,6 +4,7 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -341,10 +342,28 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.min?.toBigDecimal()
         )
 
+        var parlayBetLimit = 9999
+        parlayBetLimitMap.map {
+            parlayBetLimit = it.value.max.toInt()
+        }
+
+        var maxBet = 9999
+        val maxBetMoney = GameConfigManager.maxBetMoney
+        val maxCpBetMoney = GameConfigManager.maxCpBetMoney
+        val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney
+
+        maxBet = when (matchType) {
+            MatchType.PARLAY -> if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit
+
+            MatchType.OUTRIGHT -> if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit
+
+            else -> if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+        }
+
         return parlayBetLimitMap.map {
             ParlayOdd(
                 parlayType = it.key,
-                max = it.value.max.toInt(),
+                max = maxBet,
                 min = it.value.min.toInt(),
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
