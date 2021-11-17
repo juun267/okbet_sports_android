@@ -354,11 +354,14 @@ class BetInfoRepository(val androidContext: Context) {
         val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney
 
         maxBet = when (matchType) {
-            MatchType.PARLAY -> if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit
+            MatchType.PARLAY -> maxParlayBetMoney?.let { if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
 
-            MatchType.OUTRIGHT -> if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit
+            MatchType.OUTRIGHT -> maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
 
-            else -> if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+            else -> maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
         }
 
         return parlayBetLimitMap.map {
