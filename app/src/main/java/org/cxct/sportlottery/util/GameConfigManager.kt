@@ -8,11 +8,11 @@ import java.util.*
 
 object GameConfigManager {
 
-    var maxBetMoney: Int = 9999//会员对应vip层级的单注最大下注额
+    var maxBetMoney: Int? = null //会员对应vip层级的单注最大下注额
 
-    var maxParlayBetMoney: Int = 9999//会员对应vip层级的串关最大下注额
+    var maxParlayBetMoney: Int? = null//会员对应vip层级的串关最大下注额
 
-    var maxCpBetMoney: Int = 9999//会员对应vip层级的单注冠军最大下注额
+    var maxCpBetMoney: Int? = null//会员对应vip层级的单注冠军最大下注额
 
     /**
      * 獲取第三方遊戲 首頁 icon 資源
