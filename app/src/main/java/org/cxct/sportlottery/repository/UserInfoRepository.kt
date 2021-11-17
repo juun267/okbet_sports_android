@@ -10,6 +10,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
 class UserInfoRepository(private val userInfoDao: UserInfoDao) {
@@ -44,6 +45,9 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
 //            OLD_DISCOUNT = it.discount ?: 1f
             withContext(Dispatchers.IO) {
                 userInfoDao.upsert(userInfo)
+                GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999
+                GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
+                GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
             }
         }
     }
