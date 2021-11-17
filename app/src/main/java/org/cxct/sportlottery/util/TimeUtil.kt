@@ -104,10 +104,11 @@ object TimeUtil {
     fun dateToTimeStamp(
         date: String?,
         timeType: TimeType = TimeType.START_OF_DAY,
-        dateFormatPattern: String = YMD_HMS_FORMAT
+        dateFormatPattern: String = YMD_HMS_FORMAT,
+        locale: Locale = Locale.getDefault()
     ): Long? {
         if (date.isNullOrEmpty()) return null
-        val formatter = SimpleDateFormat("$dateFormatPattern S", Locale.getDefault())
+        val formatter = SimpleDateFormat("$dateFormatPattern S", locale)
         val startTimeStamp = formatter.parse("$date 00:00:00 000")?.time
         val endTimeStamp = formatter.parse("$date 23:59:59 999")?.time
         return if (timeType == TimeType.START_OF_DAY) startTimeStamp else endTimeStamp
@@ -313,7 +314,7 @@ object TimeUtil {
         return Pair(minusDaysCalendar, todayCalendar)
     }
 
-    fun getDayDateTimeRangeParams(date: String): TimeRangeParams {
+    fun getDayDateTimeRangeParams(date: String, locale: Locale = Locale.getDefault()): TimeRangeParams {
         //指定日期 00:00:00 ~ 23:59:59:59
         //date : yyyy-MM-dd
         return object : TimeRangeParams {
@@ -321,13 +322,15 @@ object TimeUtil {
                 get() = dateToTimeStamp(
                     date,
                     TimeType.START_OF_DAY,
-                    dateFormatPattern = YMDE_HMS_FORMAT
+                    dateFormatPattern = YMDE_HMS_FORMAT,
+                    locale = locale
                 ).toString()
             override val endTime: String
                 get() = dateToTimeStamp(
                     date,
                     TimeType.END_OF_DAY,
-                    dateFormatPattern = YMDE_HMS_FORMAT
+                    dateFormatPattern = YMDE_HMS_FORMAT,
+                    locale = locale
                 ).toString()
         }
     }

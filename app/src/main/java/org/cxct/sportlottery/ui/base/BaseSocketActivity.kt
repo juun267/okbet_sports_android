@@ -97,10 +97,14 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
 
         receiver.dataSourceChange.observe(this, {
             this.run {
-                if (sConfigData?.thirdOpen == FLAG_OPEN)
+                fun reStart() = if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
                 else
                     GameActivity.reStart(this)
+                showErrorPromptDialog(
+                    title = getString(R.string.prompt),
+                    message = getString(R.string.message_source_change)
+                ) { reStart() }
             }
         })
 

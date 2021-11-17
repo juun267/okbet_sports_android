@@ -39,7 +39,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.json.JSONArray
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) : BroadcastReceiver() {
+open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? = null) : BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
@@ -172,7 +172,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                     }
 
                     //公共频道
-                    EventType.DATA_SOURCE_CHANGE_EVENT -> {
+                    EventType.DATA_SOURCE_CHANGE -> {
                         _dataSourceChange.value = true
                     }
 
@@ -212,8 +212,8 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                         GlobalScope.launch(Dispatchers.Main) {
                             withContext(Dispatchers.IO) {
                                 mUserId?.let { userId ->
-                                    val discount = userInfoRepository.getDiscount(userId)
-                                    data?.setupOddDiscount(discount)
+                                    val discount = userInfoRepository?.getDiscount(userId)
+                                    data?.setupOddDiscount(discount ?: 1.0F)
                                     withContext(Dispatchers.Main) {
                                         _oddsChange.value = data
                                     }
@@ -240,8 +240,8 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                         GlobalScope.launch(Dispatchers.Main) {
                             withContext(Dispatchers.IO) {
                                 mUserId?.let { userId ->
-                                    val discount = userInfoRepository.getDiscount(userId)
-                                    data?.setupOddDiscount(discount)
+                                    val discount = userInfoRepository?.getDiscount(userId)
+                                    data?.setupOddDiscount(discount ?: 1.0F)
                                     withContext(Dispatchers.Main) {
                                         _matchOddsChange.value = data
                                     }

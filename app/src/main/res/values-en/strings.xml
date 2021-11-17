@@ -828,4 +828,5 @@
     <string name="identity_marital_status">Civil Status</string>
     <string name="identity_sex">Sex</string>
     <string name="identity_work">Occupation</string>
+    <string name="message_source_change">The system receives the latest event data and will automatically return to the homepage immediately</string>
 </resources>
