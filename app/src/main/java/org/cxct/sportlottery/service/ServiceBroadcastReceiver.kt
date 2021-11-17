@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
+import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
@@ -90,6 +91,10 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
 
     val userDiscountChange: LiveData<UserDiscountChangeEvent?>
         get() = _userDiscountChange
+
+    val userMaxBetMoneyChange: LiveData<UserLevelConfigListEvent?>
+        get() = _userMaxBetMoneyChange
+
     val dataSourceChange: LiveData<Boolean?>
         get() = _dataSourceChange
 
@@ -110,6 +115,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
     private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
+    private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
     private val _dataSourceChange = MutableLiveData<Boolean?>()
 
 
@@ -250,6 +256,12 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository) 
                     EventType.USER_DISCOUNT_CHANGE -> {
                         val data = ServiceMessage.getUserDiscountChange(jObjStr)
                         _userDiscountChange.value = data
+                    }
+
+                    //特定VIP层级的最新设定内容(會影響最大下注金額)
+                    EventType.USER_LEVEL_CONFIG_CHANGE -> {
+                        val data = ServiceMessage.getUserMaxBetMoney(jObjStr)
+                        _userMaxBetMoneyChange.value = data
                     }
 
                     EventType.UNKNOWN -> {
