@@ -89,7 +89,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val repoModule = module {
-        single { UserInfoRepository(get()) }
+        single { UserInfoRepository(get(), get()) }
         single { LoginRepository(get(), get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
