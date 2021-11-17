@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
+import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
@@ -260,10 +261,13 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             clear()
         }
     }
-
     private fun updateLoginData(loginData: LoginData?) {
         _isLogin.postValue(loginData != null)
         _isCreditAccount.postValue(loginData?.creditAccount == 1)
+
+        GameConfigManager.maxBetMoney = loginData?.maxBetMoney ?: 9999
+        GameConfigManager.maxCpBetMoney = loginData?.maxCpBetMoney ?: 9999
+        GameConfigManager.maxParlayBetMoney = loginData?.maxParlayBetMoney ?: 9999
 
         with(sharedPref.edit()) {
             /*putBoolean(KEY_IS_LOGIN, loginData != null)*/
