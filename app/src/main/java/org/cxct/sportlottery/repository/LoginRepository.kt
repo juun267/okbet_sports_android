@@ -304,6 +304,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private suspend fun clearUserInfo() {
         withContext(Dispatchers.IO) {
             userInfoDao.deleteAll()
+            GameConfigManager.maxBetMoney = 9999
+            GameConfigManager.maxCpBetMoney = 9999
+            GameConfigManager.maxParlayBetMoney = 9999
         }
     }
 
