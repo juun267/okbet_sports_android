@@ -12,8 +12,11 @@ import org.cxct.sportlottery.ui.common.KeyBoardCode
 
 
 @Suppress("DEPRECATION")
-class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val parent: View?) :
-    OnKeyboardActionListener {
+class KeyBoardUtil(
+    private val keyboardView: CustomKeyBoardView,
+    private val parent: View?,
+    private val presetBetAmount: List<Int>
+) : OnKeyboardActionListener {
 
 
     init {
@@ -21,6 +24,18 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
         this.keyboardView.keyboard = Keyboard(keyboardView.context, R.xml.keyboard)
         this.keyboardView.isEnabled = true
         this.keyboardView.isPreviewEnabled = false
+
+        setPresetBetAmount(this.keyboardView.keyboard.keys)
+    }
+
+    private fun setPresetBetAmount(keys: MutableList<Keyboard.Key>) {
+       keys.forEach {
+           when(it.codes[0]){
+               KeyBoardCode.PLUS_10.code -> it.label = presetBetAmount[0].toString()
+               KeyBoardCode.PLUS_50.code -> it.label = presetBetAmount[1].toString()
+               KeyBoardCode.PLUS_100.code -> it.label = presetBetAmount[2].toString()
+           }
+       }
     }
 
 
@@ -78,11 +93,11 @@ class KeyBoardUtil(private val keyboardView: CustomKeyBoardView, private val par
                 hideKeyboard()
             }
 
-            KeyBoardCode.PLUS_10.code -> plus(KeyBoardCode.PLUS_10.value.toLong())
+            KeyBoardCode.PLUS_10.code -> plus(presetBetAmount[0].toLong())
 
-            KeyBoardCode.PLUS_50.code -> plus(KeyBoardCode.PLUS_50.value.toLong())
+            KeyBoardCode.PLUS_50.code -> plus(presetBetAmount[1].toLong())
 
-            KeyBoardCode.PLUS_100.code -> plus(KeyBoardCode.PLUS_100.value.toLong())
+            KeyBoardCode.PLUS_100.code -> plus(presetBetAmount[2].toLong())
 
             KeyBoardCode.INSERT_0.code -> {
                 if (editable.isNotEmpty()) {

@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.repository
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -10,9 +12,14 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
-class UserInfoRepository(private val userInfoDao: UserInfoDao) {
+class UserInfoRepository(private val userInfoDao: UserInfoDao,private val androidContext: Context) {
+
+    private val sharedPref: SharedPreferences by lazy {
+        androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
 
     var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
 
@@ -42,9 +49,16 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         userInfoData?.let {
             val userInfo = transform(it)
 //            OLD_DISCOUNT = it.discount ?: 1f
-            withContext(Dispatchers.IO) {
                 userInfoDao.upsert(userInfo)
-            }
+                GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999
+                GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
+                GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
+
+                with(sharedPref.edit()){
+                    putInt(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
+                    apply()
+                }
+            
         }
     }
 
@@ -109,6 +123,24 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updateMaxBetMoney(userId: Long, maxBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxBetMoney(userId, maxBetMoney)
+        }
+    }
+
+    suspend fun updateMaxParlayBetMoney(userId: Long, maxParlayBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxParlayBetMoney(userId, maxParlayBetMoney)
+        }
+    }
+
+    suspend fun updateMaxCpBetMoney(userId: Long, maxCpBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxCpBetMoney(userId, maxCpBetMoney)
+        }
+    }
+
     suspend fun updateDiscount(userId: Long, discount: Float) {
         withContext(Dispatchers.IO) {
             userInfoDao.updateDiscount(userId, discount)
@@ -136,6 +168,9 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             userRebateList = userInfoData.userRebateList,
             creditAccount = userInfoData.creditAccount,
             creditStatus = userInfoData.creditStatus,
+            maxBetMoney = userInfoData.maxBetMoney,
+            maxCpBetMoney = userInfoData.maxCpBetMoney,
+            maxParlayBetMoney = userInfoData.maxParlayBetMoney,
             discount = userInfoData.discount
         )
 

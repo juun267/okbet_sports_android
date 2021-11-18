@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.index.register.RegisterRequest
 import org.cxct.sportlottery.ui.game.BetRecordType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
+import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
@@ -36,6 +37,8 @@ const val KEY_ODDS_TYPE = "oddsType"
 const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
 const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
+const val KEY_USER_LEVEL_ID = "user_Level_Id"
+
 
 class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
     private val sharedPref: SharedPreferences by lazy {
@@ -260,10 +263,13 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             clear()
         }
     }
-
     private fun updateLoginData(loginData: LoginData?) {
         _isLogin.postValue(loginData != null)
         _isCreditAccount.postValue(loginData?.creditAccount == 1)
+
+        GameConfigManager.maxBetMoney = loginData?.maxBetMoney ?: 9999
+        GameConfigManager.maxCpBetMoney = loginData?.maxCpBetMoney ?: 9999
+        GameConfigManager.maxParlayBetMoney = loginData?.maxParlayBetMoney ?: 9999
 
         with(sharedPref.edit()) {
             /*putBoolean(KEY_IS_LOGIN, loginData != null)*/
@@ -300,6 +306,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private suspend fun clearUserInfo() {
         withContext(Dispatchers.IO) {
             userInfoDao.deleteAll()
+            GameConfigManager.maxBetMoney = 9999
+            GameConfigManager.maxCpBetMoney = 9999
+            GameConfigManager.maxParlayBetMoney = 9999
         }
     }
 

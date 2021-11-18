@@ -4,6 +4,7 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.*
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -17,6 +18,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 
@@ -340,10 +342,32 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.max?.toBigDecimal(),
             playQuota?.min?.toBigDecimal()
         )
+        var parlayBetLimit = 9999
+        parlayBetLimitMap.map {
+            parlayBetLimit = it.value.max.toInt()
+        }
+
+        var maxBet = 9999
+        val maxBetMoney = GameConfigManager.maxBetMoney
+        val maxCpBetMoney = GameConfigManager.maxCpBetMoney
+        val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney
+
+        maxBet = when (matchType) {
+            MatchType.PARLAY -> maxParlayBetMoney?.let { if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
+
+            MatchType.OUTRIGHT -> maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
+
+            else -> maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
+        }
+
+
         return parlayBetLimitMap.map {
             ParlayOdd(
                 parlayType = it.key,
-                max = it.value.max.toInt(),
+                max = maxBet,
                 min = it.value.min.toInt(),
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),

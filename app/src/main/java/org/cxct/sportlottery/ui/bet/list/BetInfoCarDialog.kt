@@ -29,6 +29,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddErrorParser
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
@@ -110,7 +111,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private val keyboard: KeyBoardUtil by lazy {
-        KeyBoardUtil(kv_keyboard, null)
+        KeyBoardUtil(kv_keyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
     }
 
     override fun onCreateView(

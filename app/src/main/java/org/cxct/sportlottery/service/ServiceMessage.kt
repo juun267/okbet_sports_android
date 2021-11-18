@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
+import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_money.UserMoneyEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
 
@@ -103,4 +104,10 @@ object ServiceMessage {
         val adapter = moshi.adapter(UserDiscountChangeEvent::class.java)
         return adapter.fromJson(messageStr)
     }
+
+    fun getUserMaxBetMoney(messageStr: String): UserLevelConfigListEvent? {
+        val adapter = moshi.adapter(UserLevelConfigListEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
 }
