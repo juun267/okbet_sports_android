@@ -17,6 +17,10 @@ data class MatchOdd(
     val extInfo: String?,
     @Json(name = "hkOdds")
     val hkOdds: Double?,
+    @Json(name = "malayOdds")
+    var malayOdds: Double,
+    @Json(name = "indoOdds")
+    var indoOdds: Double,
     @Json(name = "homeId")
     val homeId: String,
     @Json(name = "homeName")

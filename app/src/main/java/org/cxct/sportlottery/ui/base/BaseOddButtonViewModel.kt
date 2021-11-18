@@ -111,6 +111,8 @@ abstract class BaseOddButtonViewModel(
             when (loginRepository.sOddsType) {
                 OddsType.EU.code -> OddsType.EU
                 OddsType.HK.code -> OddsType.HK
+                OddsType.MYS.code -> OddsType.MYS
+                OddsType.IDN.code -> OddsType.IDN
                 else -> OddsType.EU
             }
         )

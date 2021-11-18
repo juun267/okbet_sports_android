@@ -33,6 +33,9 @@ object MatchOddUtil {
                             matchId = matchId,
                             odds = odds,
                             hkOdds = hkOdds,
+                            //Martin
+                            malayOdds = odd.malayOdds!!,
+                            indoOdds = odd.indoOdds!!,
                             oddsId = oddsId,
                             playCateId = 0,
                             playCateName = playCateName,

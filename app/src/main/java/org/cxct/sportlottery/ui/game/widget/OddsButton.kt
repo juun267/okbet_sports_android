@@ -99,9 +99,10 @@ class OddsButton @JvmOverloads constructor(
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
 
         isSelected = odd?.isSelected ?: false
+        //[Martin]馬來盤＆印尼盤會有負數的賠率
+        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        betStatus =
-            if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
@@ -123,9 +124,10 @@ class OddsButton @JvmOverloads constructor(
         }
 
         isSelected = odd?.isSelected ?: false
+        //[Martin]馬來盤＆印尼盤會有負數的賠率
+        //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
+        betStatus = if (odd == null) BetStatus.LOCKED.code else odd.status
 
-        betStatus =
-            if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
     }
 
     //常駐顯示按鈕 依狀態隱藏鎖頭

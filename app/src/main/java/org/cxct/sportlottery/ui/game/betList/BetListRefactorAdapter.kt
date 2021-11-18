@@ -75,7 +75,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         num = -1,
                         odds = 0.0,
                         hkOdds = 0.0,
-                        parlayType = ""
+                        parlayType = "",
+                        //Martin
+                        malayOdds = 0.0,
+                        indoOdds = 0.0
                     )
                 )
             } else {

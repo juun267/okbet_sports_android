@@ -340,7 +340,6 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.max?.toBigDecimal(),
             playQuota?.min?.toBigDecimal()
         )
-
         return parlayBetLimitMap.map {
             ParlayOdd(
                 parlayType = it.key,
@@ -349,6 +348,9 @@ class BetInfoRepository(val androidContext: Context) {
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
+                //Martin
+                malayOdds = if(oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].malayOdds,
+                indoOdds = if(oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].indoOdds
             )
         }
     }

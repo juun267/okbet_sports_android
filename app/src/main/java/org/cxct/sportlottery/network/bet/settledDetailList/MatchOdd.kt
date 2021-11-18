@@ -34,6 +34,10 @@ data class MatchOdd(
     val odds: Double?,
     @Json(name = "hkOdds")
     val hkOdds: Double?,
+    @Json(name = "malayOdds")
+    var malayOdds: Double,
+    @Json(name = "indoOdds")
+    var indoOdds: Double,
     @Json(name = "leagueName")
     val leagueName: String?,
     @Json(name = "playId")

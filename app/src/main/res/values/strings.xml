@@ -698,6 +698,8 @@
     <string name="odd_type_title">盘口类型</string>
     <string name="odd_type_eu">欧洲盘</string>
     <string name="odd_type_hk">香港盘</string>
+    <string name="odd_type_mys">马来盘</string>
+    <string name="odd_type_idn">印尼盘</string>
     <string name="choose_method">选择渠道</string>
     <string name="choose_order">选择订单</string>
     <string name="submit_time">提交时间:</string>
