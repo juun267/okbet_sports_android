@@ -1181,11 +1181,14 @@ class GameViewModel(
             dateRow.updateDateSelectedState(it)
         }
     }
-
+    
     private fun getDateRowEarly(): List<Date> {
         val locale = when(LanguageManager.getSelectLanguage(androidContext)) {
             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
                 Locale.CHINA
+            }
+            LanguageManager.Language.VI -> {
+                Locale("vi")
             }
             else -> Locale.getDefault()
         }
@@ -1204,6 +1207,9 @@ class GameViewModel(
             when (LanguageManager.getSelectLanguage(androidContext)) {
                 LanguageManager.Language.ZH -> {
                     Locale.CHINA
+                }
+                LanguageManager.Language.VI -> {
+                    Locale("vi")
                 }
                 else -> {
                     Locale.getDefault()
