@@ -105,6 +105,8 @@
         android:background="@drawable/bg_radius_5_button_dusk"
         android:text="@string/inquire"
         android:textColor="@color/colorWhite"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ll_end_date" />
