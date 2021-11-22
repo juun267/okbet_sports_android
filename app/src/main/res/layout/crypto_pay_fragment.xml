@@ -218,6 +218,8 @@
                             android:background="@drawable/bg_frame_4dp_blue"
                             android:text="@string/btn_recharge"
                             android:textColor="@color/colorBlue"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:textSize="@dimen/textSize12sp" />
 
                     </LinearLayout>
