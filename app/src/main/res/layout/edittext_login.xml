@@ -47,7 +47,6 @@
             app:autoSizeMaxTextSize="13dp"
             app:autoSizeMinTextSize="6dp"
             app:autoSizeTextType="uniform"
-            android:ellipsize="end"
             tools:text="@string/login_account" />
 
         <View
