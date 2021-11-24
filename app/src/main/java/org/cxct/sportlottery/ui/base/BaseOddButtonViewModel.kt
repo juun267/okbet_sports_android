@@ -332,6 +332,13 @@ abstract class BaseOddButtonViewModel(
                 parlayList.add(Stake(TextUtil.replaceCByParlay(it.parlayType), it.betAmount))
             }
         }
+        //調整盤口
+        var currentOddsTypes = oddsType
+        currentOddsTypes = if(normalBetList.size == 1){
+            normalBetList[0].singleBetOddsType
+        }else{
+            OddsType.EU
+        }
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -340,7 +347,7 @@ abstract class BaseOddButtonViewModel(
                         matchList,
                         parlayList,
                         1,
-                        oddsType.code,
+                        currentOddsTypes.code,
                         2,
                         deviceId
                     )
@@ -383,13 +390,13 @@ abstract class BaseOddButtonViewModel(
             listOf(
                 Odd(
                     betInfoListData.matchOdd.oddsId,
-                    getOdds(betInfoListData.matchOdd, oddsType.value ?: OddsType.EU),
+                    getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
                     stake
                 )
             ),
             listOf(Stake(parlayType ?: "", stake)),
             1,
-            oddsType.value?.code ?: OddsType.EU.code,
+            betInfoListData.singleBetOddsType?.code,
             2,
             deviceId
         )

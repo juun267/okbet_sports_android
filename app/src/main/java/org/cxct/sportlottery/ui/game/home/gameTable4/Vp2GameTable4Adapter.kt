@@ -133,7 +133,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
                 gameType = data.matchInfo?.gameType
-
                 oddListHDP = when (gameType) {
                     GameType.TN.key -> {
                         data.oddsMap[PlayCate.SET_HDP.value]
@@ -392,6 +391,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                         }
                     )
 
+
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
                             setupOdd(oddListHDP?.getOrNull(0), oddsType)
@@ -421,7 +421,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            itemView.tv_play_type.text.toString(),
+                                            PlayCate.HDP.value,
+                                            itemView.tv_play_type.text.toString()
                                         )
                                     }
                                 }
@@ -433,7 +434,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            itemView.tv_play_type.text.toString(),
+                                            PlayCate.SINGLE.value,
+                                            itemView.tv_play_type.text.toString()
                                         )
                                     }
                                 }
@@ -518,7 +520,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            itemView.tv_play_type.text.toString(),
+                                            PlayCate.HDP.value,
+                                            itemView.tv_play_type.text.toString()
                                         )
                                     }
                                 }
@@ -530,7 +533,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            itemView.tv_play_type.text.toString(),
+                                            PlayCate.SINGLE.value,
+                                            itemView.tv_play_type.text.toString()
                                         )
                                     }
                                 }

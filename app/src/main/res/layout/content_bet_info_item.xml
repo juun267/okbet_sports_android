@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="@+id/tv_odds_content" />
 
 
-        <!--playName + spread + @ + odds-->
+        <!--playName + spread + @ + odds + (oddsType)-->
         <TextView
             android:id="@+id/tv_odds_content"
             android:layout_width="0dp"

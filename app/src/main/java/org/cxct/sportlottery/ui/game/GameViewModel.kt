@@ -509,6 +509,7 @@ class GameViewModel(
                 )
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
+                //Martin
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.forEach { map ->

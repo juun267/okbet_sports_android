@@ -5,6 +5,7 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.menu.OddsType
 
 class BetInfoListData(
     var matchOdd: MatchOdd,
@@ -19,5 +20,7 @@ class BetInfoListData(
     var subscribeChannelType: ChannelType = ChannelType.EVENT //給投注單訂閱頻道使用
     var playCateMenuCode: String? = null //HallChannel訂閱需要
     var outrightMatchInfo: MatchInfo? = null
+    //新增此項是因應加入馬來盤&印尼盤後,有可能會下注時盤口會與使用者預選的盤口不同,所以每次都要記錄(預設是 EU)
+    var singleBetOddsType:OddsType = OddsType.EU
 }
 

@@ -65,8 +65,8 @@ fun getOdds(parlayOdd: ParlayOdd, oddsType: OddsType): Double {
         OddsType.EU -> parlayOdd.odds
         OddsType.HK -> parlayOdd.hkOdds ?: 0.0
         //Martin
-        OddsType.MYS -> parlayOdd?.malayOdds
-        OddsType.IDN -> parlayOdd?.indoOdds
+        OddsType.MYS -> parlayOdd.malayOdds?: 0.0
+        OddsType.IDN -> parlayOdd.indoOdds?: 0.0
     }
 }
 

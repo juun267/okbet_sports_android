@@ -38,6 +38,7 @@ import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
 import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
 import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
+import org.cxct.sportlottery.util.AppManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -130,7 +131,7 @@ class MultiLanguagesApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = applicationContext
-
+        AppManager.init(this)
         MultiLanguage.init { context ->
             //返回自己本地保存选择的语言设置
             return@init LanguageManager.getSetLanguageLocale(context)

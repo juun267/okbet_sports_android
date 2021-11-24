@@ -245,7 +245,7 @@ class BackService : Service() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ topicMessage ->
-                    Timber.d("[$url] 訂閱接收訊息: ${topicMessage.payload}")
+                    Timber.v("[$url] 訂閱接收訊息: ${topicMessage.payload}")
                     sendMessageToActivity(url, topicMessage.payload)
                 }, { throwable ->
                     Timber.e("[$url] 訂閱通道失敗: $throwable")
