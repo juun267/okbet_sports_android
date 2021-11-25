@@ -318,11 +318,17 @@ abstract class BaseOddButtonViewModel(
         parlayBetList: List<ParlayOdd>,
         oddsType: OddsType
     ) {
-
+        //調整盤口
+        var currentOddsTypes = oddsType
+        currentOddsTypes = if(normalBetList.size == 1){
+            normalBetList[0].singleBetOddsType
+        }else{
+            OddsType.EU
+        }
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
+            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount,currentOddsTypes.code))
         }
 
         //串關注單
@@ -332,13 +338,7 @@ abstract class BaseOddButtonViewModel(
                 parlayList.add(Stake(TextUtil.replaceCByParlay(it.parlayType), it.betAmount))
             }
         }
-        //調整盤口
-        var currentOddsTypes = oddsType
-        currentOddsTypes = if(normalBetList.size == 1){
-            normalBetList[0].singleBetOddsType
-        }else{
-            OddsType.EU
-        }
+
 
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -347,7 +347,6 @@ abstract class BaseOddButtonViewModel(
                         matchList,
                         parlayList,
                         1,
-                        currentOddsTypes.code,
                         2,
                         deviceId
                     )
@@ -385,18 +384,17 @@ abstract class BaseOddButtonViewModel(
     fun addBetSingle(stake: Double, betInfoListData: BetInfoListData) {
         val parlayType =
             if (betInfoListData.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else betInfoListData.parlayOdds?.parlayType
-
         val request = BetAddRequest(
             listOf(
                 Odd(
                     betInfoListData.matchOdd.oddsId,
                     getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
-                    stake
-                )
+                    stake,
+                    betInfoListData.singleBetOddsType?.code
+                    )
             ),
             listOf(Stake(parlayType ?: "", stake)),
             1,
-            betInfoListData.singleBetOddsType?.code,
             2,
             deviceId
         )
