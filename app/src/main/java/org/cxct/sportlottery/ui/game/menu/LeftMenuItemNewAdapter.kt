@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.menu
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
 import org.cxct.sportlottery.R
 
-class LeftMenuItemSelectedAdapter(
+class LeftMenuItemNewAdapter(
     private val clickListener: ItemClickListener,
     private val sportClickListener: LeftMenuItemAdapter.SportClickListener,
     private val inPlayClickListener: InPlayClickListener,
@@ -24,12 +23,6 @@ class LeftMenuItemSelectedAdapter(
             field = value
             notifyDataSetChanged()
         }
-
-    fun addData(list: MutableList<MenuItemData>) {
-        data.addAll(list)
-        Log.e(">>>","list size = ${list.size}, data size = ${data.size}")
-        notifyDataSetChanged()
-    }
 
     enum class ItemType {
         ITEM, HEADER
@@ -45,7 +38,7 @@ class LeftMenuItemSelectedAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
+        return when(viewType) {
             ItemType.HEADER.ordinal -> HeaderViewHolder.from(parent)
             else -> ItemViewHolder.from(parent)
         }
@@ -156,5 +149,4 @@ class LeftMenuItemSelectedAdapter(
     class InPlayClickListener(private val clickListener: () -> Unit) {
         fun onClick() = clickListener()
     }
-
 }

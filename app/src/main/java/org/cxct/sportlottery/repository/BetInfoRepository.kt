@@ -303,6 +303,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.BK -> playQuotaComData?.oUTRIGHTBK
                     GameType.TN -> playQuotaComData?.oUTRIGHTTN
                     GameType.VB -> playQuotaComData?.oUTRIGHTVB
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
 
@@ -312,6 +313,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.BK -> playQuotaComData?.pARLAYBK
                     GameType.TN -> playQuotaComData?.pARLAYTN
                     GameType.VB -> playQuotaComData?.pARLAYVB
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
             else -> {
@@ -320,6 +322,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.BK -> playQuotaComData?.sINGLEBK
                     GameType.TN -> playQuotaComData?.sINGLETN
                     GameType.VB -> playQuotaComData?.sINGLEVB
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
         }
