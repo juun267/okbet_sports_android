@@ -8,11 +8,17 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     BK("BK", R.string.basketball),
     TN("TN", R.string.tennis),
     VB("VB", R.string.volleyball),
-    BM("BM",R.string.badminton),
-    TT("TT",R.string.pingpong),
-    IH("IH",R.string.puck);
-
-
+    BM("BM",R.string.BM),
+    TT("TT",R.string.TT),
+    IH("IH",R.string.IH),
+    BX("BX",R.string.BX),
+    CB("CB",R.string.CB),
+    CK("CK",R.string.CK),
+    BB("BB",R.string.BB),
+    RB("RB",R.string.RB),
+    AFT("AFT",R.string.AFT),
+    MR("MR",R.string.MR),
+    GF("GF",R.string.GF);
 
     companion object {
         fun getGameType(code: String?): GameType? {
