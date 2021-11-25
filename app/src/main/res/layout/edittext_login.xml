@@ -62,7 +62,7 @@
             android:layout_weight="1"
             android:autofillHints="no"
             android:background="@null"
-            android:maxLines="1"
+            android:singleLine="true"
             android:scrollHorizontally="true"
             app:autoSizeMaxTextSize="@dimen/textSize12sp"
             app:autoSizeMinTextSize="@dimen/textSize8sp"
@@ -70,6 +70,7 @@
             android:textColor="@color/colorBlackLight"
             android:textColorHint="@color/colorSilverLight"
             android:textSize="@dimen/textSize12sp"
+            android:ellipsize="end"
             tools:hint="@string/please_input_account" />
 
 

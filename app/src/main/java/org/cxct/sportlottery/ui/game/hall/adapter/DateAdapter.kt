@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_date_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.game.data.Date
+import org.cxct.sportlottery.util.LanguageManager
 
 class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
@@ -45,10 +46,21 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
 
         private fun setupCalendarView(item: Date) {
             itemView.date_text_other.visibility = View.GONE
-            itemView.date_text_month.text = item.display.split("-")[1]
             itemView.date_text_date.text = item.display.split("-")[2]
-            itemView.date_text_week.text = item.display.split("-")[3]
+
+            when(LanguageManager.getSelectLanguage(itemView.date_text_month.context)){
+                LanguageManager.Language.VI -> {
+                    itemView.date_text_month.text = item.display.split("-")[1].replace("tháng","TH.").replace(" ","")
+                    itemView.date_text_week.text = item.display.split("-")[3].replace("Th","Thứ").replace("CN","Chủ nhật")
+                }
+                else -> {
+                    itemView.date_text_month.text = item.display.split("-")[1]
+                    itemView.date_text_week.text = item.display.split("-")[3]
+                }
+            }
         }
+
+
 
         private fun setupOtherView(item: Date) {
             itemView.date_text_other.visibility = View.VISIBLE

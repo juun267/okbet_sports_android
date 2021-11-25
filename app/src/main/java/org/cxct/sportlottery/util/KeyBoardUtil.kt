@@ -31,9 +31,9 @@ class KeyBoardUtil(
     private fun setPresetBetAmount(keys: MutableList<Keyboard.Key>) {
        keys.forEach {
            when(it.codes[0]){
-               KeyBoardCode.PLUS_10.code -> it.label = presetBetAmount[0].toString()
-               KeyBoardCode.PLUS_50.code -> it.label = presetBetAmount[1].toString()
-               KeyBoardCode.PLUS_100.code -> it.label = presetBetAmount[2].toString()
+               KeyBoardCode.PLUS_10.code -> it.label = "+ ${presetBetAmount[0]}"
+               KeyBoardCode.PLUS_50.code -> it.label = "+ ${presetBetAmount[1]}"
+               KeyBoardCode.PLUS_100.code -> it.label = "+ ${presetBetAmount[2]}"
            }
        }
     }

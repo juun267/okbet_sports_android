@@ -10,6 +10,8 @@
         <item name="android:colorControlHighlight">@android:color/transparent</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+
+        <item name="fontFamily">@font/helvetica</item>
     </style>
 
     <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->
