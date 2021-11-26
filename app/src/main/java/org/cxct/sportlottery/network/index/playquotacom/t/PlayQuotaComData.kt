@@ -41,6 +41,28 @@ data class PlayQuotaComData(
     val pARLAYTN: ParlayTN,
     @Json(name = "PARLAY@VB")
     val pARLAYVB: ParlayVB,
+    @Json(name = "PARLAY@BM")
+    val pARLAYBM: ParlayGame,
+    @Json(name = "PARLAY@TT")
+    val pARLAYTT: ParlayGame,
+    @Json(name = "PARLAY@IH")
+    val pARLAYIH: ParlayGame,
+    @Json(name = "PARLAY@BX")
+    val pARLAYBX: ParlayGame,
+    @Json(name = "PARLAY@CB")
+    val pARLAYCB: ParlayGame,
+    @Json(name = "PARLAY@CK")
+    val pARLAYCK: ParlayGame,
+    @Json(name = "PARLAY@BB")
+    val pARLAYBB: ParlayGame,
+    @Json(name = "PARLAY@RB")
+    val pARLAYRB: ParlayGame,
+    @Json(name = "PARLAY@AFT")
+    val pARLAYAFT: ParlayGame,
+    @Json(name = "PARLAY@MR")
+    val pARLAYMR: ParlayGame,
+    @Json(name = "PARLAY@GF")
+    val pARLAYGF: ParlayGame,
     @Json(name = "SINGLE@BK")
     val sINGLEBK: SingleBK,
     @Json(name = "SINGLE@FT")
