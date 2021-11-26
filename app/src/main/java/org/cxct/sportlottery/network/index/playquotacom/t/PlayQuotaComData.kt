@@ -13,6 +13,26 @@ data class PlayQuotaComData(
     val oUTRIGHTTN: OutrightTN,
     @Json(name = "OUTRIGHT@VB")
     val oUTRIGHTVB: OutrightVB,
+    @Json(name = "OUTRIGHT@TT")
+    val oUTRIGHTTT: OutrightGame,
+    @Json(name = "OUTRIGHT@IH")
+    val oUTRIGHTIH: OutrightGame,
+    @Json(name = "OUTRIGHT@BX")
+    val oUTRIGHTBX: OutrightGame,
+    @Json(name = "OUTRIGHT@CB")
+    val oUTRIGHTCB: OutrightGame,
+    @Json(name = "OUTRIGHT@CK")
+    val oUTRIGHTCK: OutrightGame,
+    @Json(name = "OUTRIGHT@BB")
+    val oUTRIGHTBB: OutrightGame,
+    @Json(name = "OUTRIGHT@RB")
+    val oUTRIGHTRB: OutrightGame,
+    @Json(name = "OUTRIGHT@AFT")
+    val oUTRIGHTAFT: OutrightGame,
+    @Json(name = "OUTRIGHT@MR")
+    val oUTRIGHTMR: OutrightGame,
+    @Json(name = "OUTRIGHT@GF")
+    val oUTRIGHTGF: OutrightGame,
     @Json(name = "PARLAY@BK")
     val pARLAYBK: ParlayBK,
     @Json(name = "PARLAY@FT")
