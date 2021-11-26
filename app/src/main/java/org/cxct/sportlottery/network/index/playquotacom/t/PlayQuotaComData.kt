@@ -13,6 +13,8 @@ data class PlayQuotaComData(
     val oUTRIGHTTN: OutrightTN,
     @Json(name = "OUTRIGHT@VB")
     val oUTRIGHTVB: OutrightVB,
+    @Json(name = "OUTRIGHT@BM")
+    val oUTRIGHTBM: OutrightGame,
     @Json(name = "OUTRIGHT@TT")
     val oUTRIGHTTT: OutrightGame,
     @Json(name = "OUTRIGHT@IH")
