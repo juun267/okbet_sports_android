@@ -8,7 +8,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     BK("BK", R.string.basketball),
     TN("TN", R.string.tennis),
     VB("VB", R.string.volleyball),
-    BM("BM",R.string.BM),
+    BM("BM",R.string.badminton),
     TT("TT",R.string.TT),
     IH("IH",R.string.IH),
     BX("BX",R.string.BX),
