@@ -70,5 +70,28 @@ data class PlayQuotaComData(
     @Json(name = "SINGLE@TN")
     val sINGLETN: SingleTN,
     @Json(name = "SINGLE@VB")
-    val sINGLEVB: SingleVB
+    val sINGLEVB: SingleVB,
+    @Json(name = "SINGLE@BM")
+    val sINGLEBM: SingleGame,
+    @Json(name = "SINGLE@TT")
+    val sINGLETT: SingleGame,
+    @Json(name = "SINGLE@IH")
+    val sINGLEIH: SingleGame,
+    @Json(name = "SINGLE@BX")
+    val sINGLEBX: SingleGame,
+    @Json(name = "SINGLE@CB")
+    val sINGLECB: SingleGame,
+    @Json(name = "SINGLE@CK")
+    val sINGLECK: SingleGame,
+    @Json(name = "SINGLE@BB")
+    val sINGLEBB: SingleGame,
+    @Json(name = "SINGLE@RB")
+    val sINGLERB: SingleGame,
+    @Json(name = "SINGLE@AFT")
+    val sINGLEAFT: SingleGame,
+    @Json(name = "SINGLE@MR")
+    val sINGLEMR: SingleGame,
+    @Json(name = "SINGLE@GF")
+    val sINGLEGF: SingleGame
+
 )
