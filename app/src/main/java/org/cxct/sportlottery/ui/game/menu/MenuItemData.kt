@@ -6,5 +6,5 @@ data class MenuItemData(
     val gameType: String,
     var isSelected: Int //0:沒被置頂 ; 1:置頂
 ) {
-    var selectedSortNum = 0
+    var isHeaderOrFooter = false
 }

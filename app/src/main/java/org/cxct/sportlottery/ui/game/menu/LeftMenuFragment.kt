@@ -15,6 +15,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.TestFlag
@@ -25,20 +26,43 @@ import org.cxct.sportlottery.util.JumpUtil
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     private var newAdapter =
-        LeftMenuItemNewAdapter(LeftMenuItemNewAdapter.ItemSelectedListener { gameType, addOrRemove ->
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    viewModel.pinFavorite(
-                        FavoriteType.SPORT,
-                        gameType
-                    )
-                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
+        LeftMenuItemNewAdapter(
+            LeftMenuItemNewAdapter.ItemSelectedListener { gameType, addOrRemove ->
+                when (viewModel.userInfo.value?.testFlag) {
+                    TestFlag.NORMAL.index -> {
+                        viewModel.pinFavorite(
+                            FavoriteType.SPORT,
+                            gameType
+                        )
+                        setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
+                    }
+                    else -> { //遊客 //尚未登入
+                        setSnackBarMyFavoriteNotify(isLogin = false)
+                    }
                 }
-                else -> { //遊客 //尚未登入
-                    setSnackBarMyFavoriteNotify(isLogin = false)
-                }
-            }
-        }, LeftMenuItemNewAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
+            },
+            LeftMenuItemNewAdapter.SportClickListener { sportType ->
+                navSportEntrance(sportType)
+            },
+            LeftMenuItemNewAdapter.InPlayClickListener {
+                viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
+                dismiss()
+            },
+            LeftMenuItemNewAdapter.PremiumOddsClickListener {
+                viewModel.navDirectEntrance(MatchType.EPS, null)
+                dismiss()
+            },
+            LeftMenuItemNewAdapter.GameRuleClickListener {
+                JumpUtil.toInternalWeb(
+                    requireContext(),
+                    Constants.getGameRuleUrl(requireContext()),
+                    getString(R.string.game_rule)
+                )
+                dismiss()
+            },
+            LeftMenuItemNewAdapter.OddTypeClickListener {
+                ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
+            })
 
     //提示
     private var snackBarMyFavoriteNotify: Snackbar? = null
@@ -63,19 +87,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         // 返回
         btn_close.setOnClickListener {
             dismiss()
-        }
-        //遊戲規則
-        ct_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(
-                requireContext(),
-                Constants.getGameRuleUrl(requireContext()),
-                getString(R.string.game_rule)
-            )
-            dismiss()
-        }
-        //盤口設定
-        tv_odds_type.setOnClickListener {
-            ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
         }
     }
 
@@ -259,16 +270,17 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     }
 
     private fun updateFavorSport(favorSportTypeList: List<String>) {
-        val selectedList = unselectedList.sortedBy {
+        val selectedList = unselectedList.filter {
+            !it.isHeaderOrFooter
+        }.sortedBy {
             favorSportTypeList.indexOf(it.gameType)
         }.sortedByDescending {
             it.isSelected == 1
-        }
-
+        }.toMutableList()
         newAdapter.addFooterAndSubmitList(selectedList)
 
-        line_pin.visibility =
-            if (selectedList.isNotEmpty() && selectedList.size < 13) View.VISIBLE else View.GONE
+//        line_pin.visibility =
+//            if (selectedList.isNotEmpty() && selectedList.size < 13) View.VISIBLE else View.GONE
     }
 
     private fun navSportEntrance(sport: String) {
