@@ -24,47 +24,6 @@ import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.util.JumpUtil
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
-/*
-
-    //點擊置頂後
-    private var unselectedAdapter =
-        LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { gameType ->
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    viewModel.pinFavorite(
-                        FavoriteType.SPORT,
-                        gameType
-                    )
-                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_ADD.code)
-                }
-                else -> { //遊客 //尚未登入
-                    setSnackBarMyFavoriteNotify(isLogin = false)
-                }
-            }
-        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
-
-    //取消置頂
-    private var selectedAdapter =
-        LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { gameType ->
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_REMOVE.code)
-                }
-                else -> { //遊客 //尚未登入
-                    setSnackBarMyFavoriteNotify(isLogin = false)
-                }
-            }
-        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) }
-            , LeftMenuItemSelectedAdapter.InPlayClickListener {
-                viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
-                dismiss()
-            }, LeftMenuItemSelectedAdapter.PremiumOddsClickListener {
-                viewModel.navDirectEntrance(MatchType.EPS, null)
-                dismiss()
-            })
-*/
-
     private var newAdapter =
         LeftMenuItemNewAdapter(LeftMenuItemNewAdapter.ItemSelectedListener { gameType, addOrRemove ->
             when (viewModel.userInfo.value?.testFlag) {
@@ -259,11 +218,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 }
             }
         }
-//        unselectedAdapter.data = unselectedArray
-
-        Log.e(">>>", "initData unselectedList = $unselectedList")
-//        newAdapter.addFooterAndSubmitList(unselectedList)
-
         viewModel.notifyFavorite(FavoriteType.SPORT)
     }
 
@@ -288,21 +242,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initRecyclerView() {
-/*
-        rv_unselect.apply {
-            setHasFixedSize(false)
-            layoutManager =
-                LinearLayoutManager(rv_unselect.context, LinearLayoutManager.VERTICAL, false)
-            adapter = unselectedAdapter
-        }
-
-        rv_selected.apply {
-            setHasFixedSize(false)
-            layoutManager =
-                LinearLayoutManager(rv_selected.context, LinearLayoutManager.VERTICAL, false)
-            adapter = selectedAdapter
-        }
-*/
 
         rv_menu.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -315,30 +254,17 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             menuSport.isSelected =
                 if (favorSportTypeList.isNotEmpty() && favorSportTypeList.contains(menuSport.gameType)) 1 else 0
         }
-//        unselectedAdapter.notifyDataSetChanged()
 
-        Log.e(">>>", "updateMenuSport = $unselectedList")
         newAdapter.addFooterAndSubmitList(unselectedList)
     }
 
     private fun updateFavorSport(favorSportTypeList: List<String>) {
-        /*
-        val selectedList: MutableList<MenuItemData> = unselectedList.filter {
-            favorSportTypeList.contains(it.gameType)
-        }.sortedBy {
-            favorSportTypeList.indexOf(it.gameType)
-        }.toMutableList()
-*/
         val selectedList = unselectedList.sortedBy {
             favorSportTypeList.indexOf(it.gameType)
         }.sortedByDescending {
             it.isSelected == 1
         }
 
-//        selectedList.add(0, MenuItemData(0, "123", "123", 0)) //add header
-//        selectedAdapter.data = selectedList
-//        Log.e(">>>", "https://youtu.be/FR91CB5SBWU")
-        Log.e(">>>", "selectedList = $selectedList")
         newAdapter.addFooterAndSubmitList(selectedList)
 
         line_pin.visibility =
