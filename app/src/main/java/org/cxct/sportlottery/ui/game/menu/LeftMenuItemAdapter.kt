@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.menu
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +16,17 @@ class LeftMenuItemAdapter(
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var data = listOf<MenuItemData>()
+    var data = mutableListOf<MenuItemData>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
+    fun addData(list: MutableList<MenuItemData>) {
+        data.addAll(list)
+        Log.e(">>>","list size = ${list.size}, data size = ${data.size}")
+        notifyDataSetChanged()
+    }
 
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

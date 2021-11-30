@@ -15,7 +15,6 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.common.FavoriteType
 import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.TestFlag
@@ -25,6 +24,7 @@ import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
 import org.cxct.sportlottery.util.JumpUtil
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
+/*
 
     //點擊置頂後
     private var unselectedAdapter =
@@ -55,18 +55,34 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     setSnackBarMyFavoriteNotify(isLogin = false)
                 }
             }
-        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) },
-            LeftMenuItemSelectedAdapter.InPlayClickListener {
+        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) }
+            , LeftMenuItemSelectedAdapter.InPlayClickListener {
                 viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
                 dismiss()
-            },
-            LeftMenuItemSelectedAdapter.PremiumOddsClickListener {
+            }, LeftMenuItemSelectedAdapter.PremiumOddsClickListener {
                 viewModel.navDirectEntrance(MatchType.EPS, null)
                 dismiss()
             })
+*/
+
+    private var newAdapter =
+        LeftMenuItemNewAdapter(LeftMenuItemNewAdapter.ItemSelectedListener { gameType, addOrRemove ->
+            when (viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    viewModel.pinFavorite(
+                        FavoriteType.SPORT,
+                        gameType
+                    )
+                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
+                }
+                else -> { //遊客 //尚未登入
+                    setSnackBarMyFavoriteNotify(isLogin = false)
+                }
+            }
+        }, LeftMenuItemNewAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
 
     //提示
-    var snackBarMyFavoriteNotify: Snackbar? = null
+    private var snackBarMyFavoriteNotify: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -89,18 +105,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         btn_close.setOnClickListener {
             dismiss()
         }
-        /*
-        //滾球
-        ct_inplay.setOnClickListener {
-            viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
-            dismiss()
-        }
-        //特優賠率
-        ct_premium_odds.setOnClickListener {
-            viewModel.navDirectEntrance(MatchType.EPS, null)
-            dismiss()
-        }
-        */
         //遊戲規則
         ct_game_rule.setOnClickListener {
             JumpUtil.toInternalWeb(
@@ -116,13 +120,14 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun initData(list: List<SportMenu>) {
-        val unselectedArray = mutableListOf<MenuItemData>()
+    private val unselectedList = mutableListOf<MenuItemData>()
 
+    private fun initData(list: List<SportMenu>) {
+        unselectedList.clear()
         list.forEach {
             when (it.gameType) {
                 GameType.VB -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_vb_v4,
                             getString(R.string.volleyball),
@@ -132,7 +137,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.TN -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_tn_v4,
                             getString(R.string.tennis),
@@ -142,7 +147,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.BK -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_bk_v4,
                             getString(R.string.basketball),
@@ -152,7 +157,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.FT -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.soccer),
@@ -163,7 +168,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 }
 
                 GameType.BM -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.badminton),
@@ -172,7 +177,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.PP -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.ping_pong),
@@ -181,7 +186,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.IH -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.ice_hockey),
@@ -190,7 +195,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.BX -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.boxing),
@@ -199,7 +204,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.CB -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.cue_ball),
@@ -208,7 +213,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.CK -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.cricket),
@@ -217,7 +222,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.BB -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.baseball),
@@ -226,7 +231,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.RB -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.rugby_football),
@@ -235,7 +240,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.MR -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.motor_racing),
@@ -244,7 +249,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.GF -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_sport_type_item_img_ft_v4,
                             getString(R.string.golf),
@@ -254,8 +259,10 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 }
             }
         }
-        unselectedAdapter.data = unselectedArray
-//        selectedAdapter.addData(unselectedArray)
+//        unselectedAdapter.data = unselectedArray
+
+        Log.e(">>>", "initData unselectedList = $unselectedList")
+//        newAdapter.addFooterAndSubmitList(unselectedList)
 
         viewModel.notifyFavorite(FavoriteType.SPORT)
     }
@@ -281,7 +288,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initRecyclerView() {
-
+/*
         rv_unselect.apply {
             setHasFixedSize(false)
             layoutManager =
@@ -295,25 +302,45 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 LinearLayoutManager(rv_selected.context, LinearLayoutManager.VERTICAL, false)
             adapter = selectedAdapter
         }
+*/
+
+        rv_menu.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = newAdapter
+        }
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {
-        unselectedAdapter.data.forEach { menuSport ->
+        unselectedList.forEach { menuSport ->
             menuSport.isSelected =
                 if (favorSportTypeList.isNotEmpty() && favorSportTypeList.contains(menuSport.gameType)) 1 else 0
         }
-        unselectedAdapter.notifyDataSetChanged()
+//        unselectedAdapter.notifyDataSetChanged()
+
+        Log.e(">>>", "updateMenuSport = $unselectedList")
+        newAdapter.addFooterAndSubmitList(unselectedList)
     }
 
     private fun updateFavorSport(favorSportTypeList: List<String>) {
-        val selectedList: MutableList<MenuItemData> = unselectedAdapter.data.filter {
+        /*
+        val selectedList: MutableList<MenuItemData> = unselectedList.filter {
             favorSportTypeList.contains(it.gameType)
         }.sortedBy {
             favorSportTypeList.indexOf(it.gameType)
         }.toMutableList()
+*/
+        val selectedList = unselectedList.sortedBy {
+            favorSportTypeList.indexOf(it.gameType)
+        }.sortedByDescending {
+            it.isSelected == 1
+        }
 
-        selectedList.add(0, MenuItemData(0, "123", "123", 0)) //add header
-        selectedAdapter.data = selectedList
+//        selectedList.add(0, MenuItemData(0, "123", "123", 0)) //add header
+//        selectedAdapter.data = selectedList
+//        Log.e(">>>", "https://youtu.be/FR91CB5SBWU")
+        Log.e(">>>", "selectedList = $selectedList")
+        newAdapter.addFooterAndSubmitList(selectedList)
+
         line_pin.visibility =
             if (selectedList.isNotEmpty() && selectedList.size < 13) View.VISIBLE else View.GONE
     }

@@ -80,12 +80,12 @@ class LeftMenuItemSelectedAdapter(
             sportClickListener: LeftMenuItemAdapter.SportClickListener
         ) {
             itemView.apply {
-                when (item.isSelected) {
-                    0 -> {
-                        cl_content.visibility = View.GONE
-                        setVisibility(false)
-                    }
-                    1 -> {
+//                when (item.isSelected) {
+//                    0 -> {
+//                        cl_content.visibility = View.GONE
+//                        setVisibility(false)
+//                    }
+//                    1 -> {
                         cl_content.apply {
                             setOnClickListener {
                                 sportClickListener.onClickSport(item.gameType)
@@ -99,8 +99,8 @@ class LeftMenuItemSelectedAdapter(
                             clickListener.onClick(item.gameType)
                         }
                         setVisibility(true)
-                    }
-                }
+//                    }
+//                }
             }
         }
 
