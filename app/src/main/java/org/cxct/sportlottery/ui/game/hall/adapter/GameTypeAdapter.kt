@@ -95,7 +95,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_sport_type_v4, parent, false)
+                    .inflate(R.layout.itemview_sport_type_v5, parent, false)
 
                 return ViewHolderSport(view)
             }
