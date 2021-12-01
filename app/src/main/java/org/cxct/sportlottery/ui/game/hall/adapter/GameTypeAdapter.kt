@@ -88,6 +88,9 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 GameType.VB.key -> {
                     itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_vb_v5)
                 }
+                GameType.BM.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bm_v5)
+                }
             }
         }
 
