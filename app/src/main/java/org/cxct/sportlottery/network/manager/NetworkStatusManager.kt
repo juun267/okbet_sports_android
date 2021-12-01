@@ -1,18 +1,17 @@
 package org.cxct.sportlottery.network.manager
 
-import android.content.Context
+import android.app.Application
 import org.cxct.sportlottery.util.NetworkUtil
 
 
-class NetworkStatusManager private constructor(val context: Context) {
+class NetworkStatusManager private constructor(val context: Application) {
 
     companion object {
-
         private var instance: NetworkStatusManager? = null
-        private var context: Context? = null
+        private var context: Application? = null
 
-        fun init(c: Context) {
-            context = c
+        fun init(context: Application) {
+            this.context = context
         }
 
         fun getInstance(): NetworkStatusManager {
@@ -24,11 +23,9 @@ class NetworkStatusManager private constructor(val context: Context) {
             }
             return instance!!
         }
-
     }
 
     fun isUnavailable(): Boolean {
         return !NetworkUtil.isAvailable(context)
     }
-
 }

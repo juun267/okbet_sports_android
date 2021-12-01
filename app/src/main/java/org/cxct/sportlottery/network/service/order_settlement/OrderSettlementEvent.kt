@@ -8,13 +8,13 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true)
 data class OrderSettlementEvent(
     @Json(name = "eventType")
-    override val eventType: String = EventType.ORDER_SETTLEMENT.value,
+    override val eventType: String? = EventType.ORDER_SETTLEMENT.value,
     @Json(name = "sportBet")
     val sportBet: SportBet? //返回消息，正常消息： pong, 已过期： timeout
-): ServiceEventType
+) : ServiceEventType
 
 
-data class SportBet (
+data class SportBet(
     val uniqNo: String?,
     val orderNo: String?,
     val userId: Int?,
@@ -44,7 +44,7 @@ data class SportBet (
     val isChampionship: Int?, //0：普通投注，1：冠军投注
 )
 
-data class MatchOdds (
+data class MatchOdds(
     val oddsId: String?,
     val matchId: String?,
     val leagueName: String?,
@@ -56,6 +56,7 @@ data class MatchOdds (
     val playCode: String?,
     val playName: String?,
     val odds: Double?,
+    val hkOdds: Double?,
     val oddsType: String?,
     val playCateId: Int?,
     val playCateName: String?,
@@ -64,3 +65,9 @@ data class MatchOdds (
     val status: Int?, //状态 0：未确认，1：未结算，2：赢，3：赢半，4：输，5：输半，6：和，7：已取消 //statusNameMap
     val mtsSelections: String?,
 )
+
+enum class Status(val code: Int) {
+    WIN(2), //赢
+    WIN_HALF(3),//赢半
+    CANCEL(7)//已取消
+}

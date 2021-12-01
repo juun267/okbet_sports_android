@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    tools:context=".ui.game.hall.adapter.EpsListAdapter">
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="31dp"
+            android:layout_weight="1"
+            android:background="@color/colorSilverLight" />
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textAllCaps="true"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize20sp"
+            android:textStyle="bold"
+            tools:text="6-28 星期一" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="31dp"
+            android:layout_weight="1"
+            android:background="@color/colorSilverLight" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -7,12 +7,11 @@
     tools:context="org.cxct.sportlottery.ui.splash.SplashActivity">
 
     <ImageView
-        android:id="@+id/iv_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@mipmap/bg_test" />
+        android:src="@mipmap/splash_bg" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/block_progress"
@@ -48,11 +47,21 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/loading_get_config"
-                android:textColor="@color/gray4" />
+                android:textColor="@color/colorBlack" />
 
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+    
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.92"/>
 
     <TextView
         android:id="@+id/tv_version_info"

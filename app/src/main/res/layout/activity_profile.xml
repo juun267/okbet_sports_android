@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray11"
+    android:background="@color/colorWhite1"
     android:orientation="vertical"
     tools:context=".ui.profileCenter.profile.ProfileActivity">
 
@@ -12,42 +12,44 @@
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tool_bar_height"
-        android:background="@drawable/bg_gradient_dark">
+        android:background="@color/colorBlue">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/tool_bar_height"
+            android:layout_height="@dimen/tool_bar_height"
             android:layout_centerVertical="true"
-            android:background="@drawable/effect_ripple_circle_blue_light"
             android:contentDescription="@null"
-            android:src="@drawable/ic_back_main" />
+            android:background="@null"
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/profile_info"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp" />
 
     </RelativeLayout>
 
     <ScrollView
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
+            android:background="@color/colorWhite"
+            android:divider="@drawable/divider_straight"
+            android:showDividers="middle|end"
             android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/btn_head"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
@@ -66,7 +68,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="@string/avatar"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp" />
 
                 <com.makeramen.roundedimageview.RoundedImageView
@@ -75,7 +77,9 @@
                     android:layout_height="26dp"
                     android:layout_marginEnd="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_head"
+                    android:src="@drawable/img_avatar_default"
+                    app:riv_border_color="@color/colorBlue"
+                    app:riv_border_width="1dp"
                     app:riv_oval="true" />
 
                 <ImageView
@@ -87,16 +91,10 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
-
             <LinearLayout
                 android:id="@+id/btn_nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
@@ -114,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/nickname"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
@@ -126,7 +124,7 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ia***18" />
 
@@ -134,22 +132,20 @@
                     android:id="@+id/icon_arrow_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_arrow_right_gray" />
 
-            </LinearLayout>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/btn_pwd_setting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/effect_ripple_rectangle_blue_light"
                 android:gravity="center"
                 android:minHeight="44dp"
                 android:orientation="horizontal">
@@ -168,7 +164,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="@string/password_setting"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp" />
 
                 <ImageView
@@ -179,11 +175,6 @@
                     android:src="@drawable/ic_arrow_right_gray" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -205,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/member_account"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
@@ -217,16 +208,11 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee0518" />
 
             </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -248,7 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/id"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
@@ -260,19 +246,14 @@
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="235291" />
 
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
-
-
             <LinearLayout
+                android:id="@+id/ll_real_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -292,28 +273,308 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:text="@string/real_name"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tv_real_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="end"
                     android:maxLines="1"
-                    android:textColor="@color/textColorDark"
+                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize12sp"
                     tools:text="ianlee051**" />
 
+                <ImageView
+                    android:id="@+id/icon_real_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_arrow_right_gray" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
-            <View
+            <!--  QQ號碼  -->
+            <LinearLayout
+                android:id="@+id/ll_qq_number"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_qq" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/qq_number"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_qq_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="1022423383" />
+
+                    <ImageView
+                        android:id="@+id/icon_qq_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                
+            </LinearLayout>
+
+            <!--  郵箱  -->
+            <LinearLayout
+                android:id="@+id/ll_e_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_email" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/e_mail"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_e_mail"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="ianlee051＠gmail.com" />
+
+                    <ImageView
+                        android:id="@+id/icon_e_mail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                
+            </LinearLayout>
+
+            <!--  手機號碼  -->
+            <LinearLayout
+                android:id="@+id/ll_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_mobile" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/phone_number"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_phone_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="1022423383" />
+
+                    <ImageView
+                        android:id="@+id/icon_phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                
+            </LinearLayout>
+
+            <!--  微信  -->
+            <LinearLayout
+                android:id="@+id/ll_wechat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:minHeight="44dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_personal_info_wechat" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:text="@string/we_chat"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_we_chat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:maxLines="1"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp"
+                        tools:text="2443875459" />
+
+                    <ImageView
+                        android:id="@+id/icon_wechat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--  實名制  -->
+            <LinearLayout
+                android:id="@+id/ll_identity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="44dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_identity" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/identity"
+                        android:textColor="@color/colorBlackLight"
+                        android:textSize="@dimen/textSize12sp" />
+
+                    <ImageView
+                        android:id="@+id/icon_identity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_arrow_right_gray" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"/>
+            </LinearLayout>
 
         </LinearLayout>
 

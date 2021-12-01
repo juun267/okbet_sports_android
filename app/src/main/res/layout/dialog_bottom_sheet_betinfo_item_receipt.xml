@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlSymmetry,SpUsage"
+    android:orientation="vertical"
+    tools:context="org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog">
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:background="@drawable/bg_gradient_bottom_sheet_shadow" />
+
+    <TextView
+        android:id="@+id/tv_current_money"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@color/colorBlackLight"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
+        android:textColor="@color/colorWhite6"
+        android:textSize="@dimen/textSize12sp"
+        tools:text="9,875,241.000 RMB" />
+
+    <include
+        android:id="@+id/view_match_receipt"
+        layout="@layout/item_match_receipt"/>
+
+    <TextView
+        android:id="@+id/tv_receipt_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/colorWhite"
+        android:paddingVertical="12dp"
+        android:text="@string/bet_succeeded"
+        android:textSize="@dimen/textSize13sp"
+        android:textColor="@color/colorBlue" />
+
+    <TextView
+        android:id="@+id/btn_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBlue"
+        android:gravity="center"
+        android:paddingVertical="14dp"
+        android:textSize="@dimen/textSize13sp"
+        android:text="@string/complete"
+        android:textAllCaps="true"
+        android:textColor="@color/colorWhite" />
+
+</LinearLayout>

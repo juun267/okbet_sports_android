@@ -7,7 +7,7 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyAddResult
-import org.cxct.sportlottery.network.money.MoneyRechCfgResult
+import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import retrofit2.Response
 
 class MoneyRepository(private val userInfoDao: UserInfoDao) {
@@ -26,10 +26,6 @@ class MoneyRepository(private val userInfoDao: UserInfoDao) {
 
     suspend fun rechargeAdd(moneyAddRequest: MoneyAddRequest): Response<MoneyAddResult> {
         return OneBoSportApi.moneyService.rechargeAdd(moneyAddRequest)
-    }
-
-    suspend fun rechargeOnlinePay(moneyAddRequest: MoneyAddRequest): Response<MoneyAddResult> {
-        return OneBoSportApi.moneyService.rechargeOnlinePay(moneyAddRequest)
     }
 
 }

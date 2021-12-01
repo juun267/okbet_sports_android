@@ -9,7 +9,7 @@ import org.cxct.sportlottery.network.service.ServiceEventType
 @JsonClass(generateAdapter = true)
 data class MatchClockEvent(
     @Json(name = "eventType")
-    override val eventType: String = EventType.MATCH_CLOCK.value,
+    override val eventType: String? = EventType.MATCH_CLOCK.value,
     @Json(name = "matchClockCO")
     val matchClockCO: MatchClockCO?
-): ServiceEventType
+) : ServiceEventType

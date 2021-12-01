@@ -2,9 +2,12 @@ package org.cxct.sportlottery.util
 
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.DecimalFormat
 
-object ArithUtil {
+/**
+ * 需要使用DecimalFormat轉換格式時, 需配合doNumberFormat()
+ * @see DecimalFormatUtil.doNumberFormat
+ */
+object ArithUtil : DecimalFormatUtil() {
     /**
      * @param value 数字
      * @param scale 小数点后保留几位
@@ -20,24 +23,31 @@ object ArithUtil {
             }
         }
 
-        val decimalFormat: DecimalFormat?
-        decimalFormat = if (scale == 0) {
-            DecimalFormat("0")
+        val formatPattern = if (scale == 0) {
+            "0"
         } else {
-            DecimalFormat("0.${zeroScale}") // 不足位數 補0
+            "0.${zeroScale}" // 不足位數 補0
         }
 
-        decimalFormat.roundingMode = roundingMode
-        decimalFormat.isGroupingUsed = false
-
-        return decimalFormat.format(value)
+        return doNumberFormat(value ?: 0, formatPattern) { decimalFormat ->
+            decimalFormat.roundingMode = roundingMode
+            decimalFormat.isGroupingUsed = false
+        }
     }
 
     /**
      * 20201015金額全部統一，無條件捨去、保留小數點後兩位
+     * 20210112體育數值金額統一改成小數點後第三位
      */
     fun toMoneyFormat(value: Double?): String {
-        return round(value ?: 0.0, 2, RoundingMode.DOWN)
+        return round(value ?: 0.0, 3, RoundingMode.HALF_UP)
+    }
+
+    /**
+     * 20210220 輸入欄位內提示之金額不顯示小數點
+     */
+    fun toMoneyFormatForHint(value: Double?): String {
+        return round(value ?: 0.0, 0, RoundingMode.HALF_UP)
     }
 
     /**
@@ -52,7 +62,14 @@ object ArithUtil {
      * 20201124 贈送金額四捨五入到小數點第二位
      * */
     fun toBonusMoneyFormat(value: Double?): String {
-        return round(value?:0.0, 2, RoundingMode.HALF_UP)
+        return round(value ?: 0.0, 2, RoundingMode.HALF_UP)
+    }
+
+    /**
+     * 提款金額取整數
+     */
+    fun moneyToLong(value: String?): String {
+        return (value?.toDouble()?.toLong() ?: 0).toString()
     }
 
 
@@ -72,4 +89,24 @@ object ArithUtil {
         return b1.divide(b2, scale, roundMode).toDouble()
     }
 
+    /**
+     * 小數運算
+     */
+    fun minus(paramsS: Double?, paramsO: Double?): Double {
+        val decimalSubject = BigDecimal(paramsS ?: 0.0)
+        val decimalObject = BigDecimal(paramsO ?: 0.0)
+        return round((decimalSubject - decimalObject).toDouble(), 3, RoundingMode.FLOOR).toDouble()
+    }
+
+    /**
+     * 提供精确的乘法运算。
+     * @param v1 被乘数
+     * @param v2 乘数
+     * @return 两个参数的积
+     */
+    fun mul(v1: Double, v2: Double): Double {
+        val b1 = BigDecimal(java.lang.Double.toString(v1))
+        val b2 = BigDecimal(java.lang.Double.toString(v2))
+        return b1.multiply(b2).toDouble()
+    }
 }

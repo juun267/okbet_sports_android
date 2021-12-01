@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.list.Row
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
+import org.cxct.sportlottery.util.Event
 
 class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -53,7 +54,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bind(item, withdrawLogListener)
             }
             is NoDataViewHolder -> {
-                holder.bind(isFinalPage)
+                holder.bind(isFinalPage, data.isNotEmpty())
             }
         }
     }
@@ -63,14 +64,17 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class ViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: Row, withdrawLogListener: WithdrawLogListener?) {
-            itemView.rech_log_date.text = item.withdrawDate
-            itemView.rech_log_time.text = item.withdrawTime
-            itemView.rech_log_amount.text = item.displayMoney
-            itemView.rech_log_type.text = item.withdrawType
-            itemView.rech_log_state.text = item.withdrawState
+
+            itemView.apply {
+                rech_log_date.text = item.withdrawDate
+                rech_log_time.text = item.withdrawTime
+                rech_log_amount.text = item.displayMoney
+                rech_log_type.text = item.withdrawType
+                rech_log_state.text = item.withdrawState
+            }
 
             itemView.setOnClickListener {
-                withdrawLogListener?.onClick(item)
+                withdrawLogListener?.onClick(Event(item))
             }
 
             setupStateTextColor(item)
@@ -79,29 +83,14 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun setupStateTextColor(item: Row) {
             when (item.checkStatus) {
                 CheckStatus.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.textGray
-                        )
-                    )
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorGray))
                 }
                 CheckStatus.PASS.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.green_blue
-                        )
-                    )
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorGreen))
                 }
 
                 CheckStatus.UN_PASS.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.orangeRed
-                        )
-                    )
+                    itemView.rech_log_state.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorRed))
                 }
             }
         }
@@ -109,8 +98,7 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.view_item_recharge_log, parent, false)
+                val view = layoutInflater.inflate(R.layout.view_item_recharge_log, parent, false)
 
                 return ViewHolder(view)
             }
@@ -119,8 +107,8 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(isFinalPage: Boolean) {
-            itemView.visibility = if (isFinalPage) {
+        fun bind(isFinalPage: Boolean, hasData: Boolean) {
+            itemView.visibility = if (isFinalPage && hasData) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -128,15 +116,11 @@ class WithdrawLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         companion object {
-            fun from(parent: ViewGroup) =
-                NoDataViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_finance_no_data, parent, false)
-                )
+            fun from(parent: ViewGroup) = NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_footer_no_data, parent, false))
         }
     }
 }
 
-class WithdrawLogListener(val clickListener: (row: Row) -> Unit) {
-    fun onClick(row: Row) = clickListener(row)
+class WithdrawLogListener(val clickListener: (row: Event<Row>) -> Unit) {
+    fun onClick(row: Event<Row>) = clickListener(row)
 }

@@ -2,45 +2,74 @@ package org.cxct.sportlottery.repository
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bet.list.BetListRequest
+import org.cxct.sportlottery.network.bet.list.BetListResult
+import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.login.LoginData
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
+import org.cxct.sportlottery.ui.game.BetRecordType
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.AesCryptoUtil
+import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
 const val NAME_LOGIN = "login"
-const val KEY_IS_LOGIN = "is_login"
 const val KEY_TOKEN = "token"
 const val KEY_ACCOUNT = "account"
 const val KEY_PWD = "pwd"
+const val KEY_PLATFORM_ID = "platformId"
 const val KEY_REMEMBER_PWD = "remember_pwd"
-
+const val KEY_ODDS_TYPE = "oddsType"
+const val KEY_IS_CREDIT_ACCOUNT = "is_credit_account"
+const val KEY_DISCOUNT = "discount"
 const val KEY_USER_ID = "user_id"
+const val KEY_USER_LEVEL_ID = "user_Level_Id"
+
 
 class LoginRepository(private val androidContext: Context, private val userInfoDao: UserInfoDao) {
     private val sharedPref: SharedPreferences by lazy {
         androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
     }
 
+    val mOddsType = MutableLiveData<OddsType>()
+
     val isLogin: LiveData<Boolean>
         get() = _isLogin
 
-    private val _isLogin = MutableLiveData<Boolean>().apply {
-        value = sharedPref.getBoolean(KEY_IS_LOGIN, false) && isCheckToken
+    val transNum: LiveData<Int?> //交易狀況數量
+        get() = _transNum
+
+    val isCreditAccount: LiveData<Boolean>
+        get() = _isCreditAccount
+
+    private val _isLogin = MutableLiveData<Boolean>()
+    private val _transNum = MutableLiveData<Int?>()
+    private val _isCreditAccount = MutableLiveData<Boolean>().apply {
+        value = sharedPref.getBoolean(KEY_IS_CREDIT_ACCOUNT, false)
     }
+
+    var platformId
+        get() = sharedPref.getLong(KEY_PLATFORM_ID, -1)
+        set(value) {
+            with(sharedPref.edit()) {
+                putLong(KEY_PLATFORM_ID, value)
+                apply()
+            }
+        }
 
     var token
         get() = sharedPref.getString(KEY_TOKEN, "")
@@ -102,6 +131,15 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             }
         }
 
+    var sOddsType
+        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.EU.code)
+        set(value) {
+            with(sharedPref.edit()) {
+                putString(KEY_ODDS_TYPE, value)
+                commit()
+            }
+        }
+
     var isCheckToken = false
 
     suspend fun register(registerRequest: RegisterRequest): Response<LoginResult> {
@@ -109,6 +147,10 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
 
         if (loginResponse.isSuccessful) {
             loginResponse.body()?.let {
+
+                //於遊客帳號添加投注項目至注單內後直接註冊正式帳號 因不會走登出流程 所以直接先清出local user info
+                clear()
+
                 isCheckToken = true
                 account = registerRequest.userName //預設存帳號
                 updateLoginData(it.loginData)
@@ -133,17 +175,80 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         return loginResponse
     }
 
-    suspend fun checkToken(): Response<LoginResult> {
+    suspend fun loginForGuest(): Response<LoginResult> {
+
+        val loginForGuestResponse = OneBoSportApi.indexService.loginForGuest(LoginForGuestRequest(deviceSn = getDeviceName()))
+
+        if (loginForGuestResponse.isSuccessful) {
+            loginForGuestResponse.body()?.let {
+                isCheckToken = true
+                updateLoginData(it.loginData)
+                updateUserInfo(it.loginData)
+            }
+        }
+
+        return loginForGuestResponse
+    }
+
+    suspend fun getTransNum(): Response<BetListResult> {
+
+        val betListRequest = BetListRequest(
+            championOnly = 0,
+            BetRecordType.UNSETTLEMENT.code,
+            page = 1,
+            pageSize = 20
+        )
+
+        val response = OneBoSportApi.betService.getBetList(betListRequest)
+
+        if (response.isSuccessful) {
+            response.body()?.total?.let {
+                _transNum.value = it
+            }
+        }
+
+        return response
+    }
+
+    fun updateTransNum(transNum: Int) {
+        _transNum.postValue(transNum)
+    }
+
+    private fun getDeviceName(): String {
+        val manufacturer: String = Build.MANUFACTURER
+        val model: String = Build.MODEL
+        return if (model.startsWith(manufacturer)) {
+            capitalize(model)
+        } else {
+            capitalize(manufacturer) + " " + model
+        }
+    }
+
+    private fun capitalize(s: String?): String {
+        if (s == null || s.isEmpty()) {
+            return ""
+        }
+        val first = s[0]
+        return if (Character.isUpperCase(first)) {
+            s
+        } else {
+            Character.toUpperCase(first).toString() + s.substring(1)
+        }
+    }
+
+    suspend fun checkToken(): Response<CheckTokenResult> {
         val checkTokenResponse = OneBoSportApi.indexService.checkToken()
 
         if (checkTokenResponse.isSuccessful) {
             checkTokenResponse.body()?.let {
                 isCheckToken = true
-                updateLoginData(it.loginData)
-                updateUserInfo(it.loginData)
+                _isLogin.value = true
             }
         } else {
             isCheckToken = false
+            _isLogin.value = false
+            _isCreditAccount.postValue(false)
+
             clear()
         }
 
@@ -151,30 +256,38 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     }
 
     suspend fun logout(): Response<LogoutResult> {
-        _isLogin.postValue(false)
+        _isLogin.value = false
+        _isCreditAccount.value = false
 
-        return OneBoSportApi.indexService.logout(LogoutRequest())
+        return OneBoSportApi.indexService.logout(LogoutRequest()).apply {
+            clear()
+        }
     }
-
     private fun updateLoginData(loginData: LoginData?) {
-
         _isLogin.postValue(loginData != null)
+        _isCreditAccount.postValue(loginData?.creditAccount == 1)
+
+        GameConfigManager.maxBetMoney = loginData?.maxBetMoney ?: 9999
+        GameConfigManager.maxCpBetMoney = loginData?.maxCpBetMoney ?: 9999
+        GameConfigManager.maxParlayBetMoney = loginData?.maxParlayBetMoney ?: 9999
 
         with(sharedPref.edit()) {
-            putBoolean(KEY_IS_LOGIN, loginData != null)
+            /*putBoolean(KEY_IS_LOGIN, loginData != null)*/
             putString(KEY_TOKEN, loginData?.token)
             putLong(KEY_USER_ID, loginData?.userId ?: -1)
+            putLong(KEY_PLATFORM_ID, loginData?.platformId ?: -1)
+            putBoolean(KEY_IS_CREDIT_ACCOUNT, loginData?.creditAccount == 1)
+            putFloat(KEY_DISCOUNT, loginData?.discount ?: 1f)
             apply()
         }
     }
 
     suspend fun clear() {
         with(sharedPref.edit()) {
-            remove(KEY_IS_LOGIN)
             remove(KEY_TOKEN)
+            remove(KEY_ODDS_TYPE)
             apply()
         }
-
         clearUserInfo()
     }
 
@@ -193,6 +306,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     private suspend fun clearUserInfo() {
         withContext(Dispatchers.IO) {
             userInfoDao.deleteAll()
+            GameConfigManager.maxBetMoney = 9999
+            GameConfigManager.maxCpBetMoney = 9999
+            GameConfigManager.maxParlayBetMoney = 9999
         }
     }
 
@@ -208,6 +324,9 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             testFlag = loginData.testFlag,
             userName = loginData.userName,
             userType = loginData.userType,
-            userRebateList = loginData.userRebateList
+            userRebateList = loginData.userRebateList,
+            creditAccount = loginData.creditAccount,
+            creditStatus = loginData.creditStatus,
+            discount = loginData.discount
         )
 }

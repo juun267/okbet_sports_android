@@ -1,86 +1,245 @@
 [
   {
-    "title": "网银在线支付",
+    "titleNameMap": {
+      "zh": "在线网银",
+      "en": "Banking",
+      "vi": "Internet banking"
+    },
     "subtitle": "支持多家银行，转账更便捷",
     "image": "ic_online_pay",
     "rechType": "onlinePayment",
     "onlineType": "1"
   },
   {
-    "title": "在线信用卡支付",
+    "titleNameMap": {
+      "zh": "在线信用卡"
+    },
     "subtitle": "支持多家银行，转账更便捷",
     "image": "money_xyk_online_pay",
     "rechType": "onlinePayment",
     "onlineType": "6"
   },
   {
-    "title": "银行卡转账",
-    "subtitle": "线下入款，您的首选",
-    "image": "ic_bank_atm",
-    "rechType": "bankTransfer",
-    "onlineType": "0"
-  },
-  {
-    "title": "支付宝在线支付",
+    "titleNameMap": {
+      "zh": "在线支付宝",
+      "en": "Alipay",
+      "vi": "Alipay trực tuyến"
+    },
     "subtitle": "支付宝在线支付",
     "image": "ic_alipay",
     "rechType": "onlinePayment",
     "onlineType": "2"
   },
   {
-    "title": "微信在线支付",
+    "titleNameMap": {
+      "zh": "在线微信",
+      "en": "Wechat",
+      "vi": "WeChat trực tuyến"
+    },
     "subtitle": "微信在线支付",
     "image": "ic_wechat_pay",
     "rechType": "onlinePayment",
     "onlineType": "3"
   },
   {
-    "title": "QQ在线支付",
+    "titleNameMap": {
+      "zh": "虚拟币",
+      "en": "USDT transaction",
+      "vi": "Tiền ảo"
+    },
+    "subtitle": "在线虚拟币支付",
+    "image": "ic_crypto_pay",
+    "rechType": "onlinePayment",
+    "onlineType": "11"
+  },
+  {
+    "titleNameMap": {
+      "zh": "在线QQ"
+    },
     "subtitle": "QQ在线支付",
     "image": "money_qqpay_icon",
     "rechType": "onlinePayment",
     "onlineType": "4"
   },
   {
-    "title": "银联快捷(扫码)",
+    "titleNameMap": {
+      "zh": "银联快捷(扫码)"
+    },
     "subtitle": "银联扫码在线支付",
     "image": "ic_online_pay",
     "rechType": "onlinePayment",
     "onlineType": "9"
   },
   {
-    "title": "京东钱包",
+    "titleNameMap": {
+      "zh": "京东钱包"
+    },
     "subtitle": "京东支付",
     "image": "money_online_pay_jd",
     "rechType": "onlinePayment",
     "onlineType": "8"
   },
   {
-    "title": "支付宝转账",
+    "titleNameMap": {
+      "zh": "银行卡转账",
+      "en": "Bank card",
+      "vi": "Chuyển khoản thẻ ngân hàng"
+    },
+    "subtitle": "线下入款，您的首选",
+    "image": "ic_bank_atm",
+    "rechType": "bankTransfer",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "JuanCash",
+      "en": "JuanCash",
+      "vi": "JuanCash"
+    },
+    "subtitle": "菲律賓在線網銀 JuanCash",
+    "image": "ic_juancash",
+    "rechType": "onlinePayment",
+    "onlineType": "201"
+  },
+  {
+    "titleNameMap": {
+      "zh": "财付通转账",
+      "en": "Tenpay",
+      "vi": "Chuyển khoản Tenpay"
+    },
+    "subtitle": "财付通转账支付",
+    "image": "ic_tenpay",
+    "rechType": "cft",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "支付宝转账",
+      "en": "Alipay",
+      "vi": "Chuyển khoản Alipay"
+    },
     "subtitle": "支付宝转账支付",
     "image": "ic_alipay",
     "rechType": "alipay",
     "onlineType": "0"
   },
   {
-    "title": "支付宝自动支付",
-    "subtitle": "支付宝转账，自动审核，快速受理。",
-    "image": "money_zfb_icon",
-    "rechType": "alipayAuto",
-    "onlineType": "0"
-  },
-  {
-    "title": "微信转账",
+    "titleNameMap": {
+      "zh": "微信转账",
+      "en": "Wechat",
+      "vi": "Chuyển khoản WeChat"
+    },
     "subtitle": "微信转账支付",
     "image": "ic_wechat_pay",
     "rechType": "weixin",
     "onlineType": "0"
   },
   {
-    "title": "财付通转账",
-    "subtitle": "财付通转账支付",
-    "image": "ic_tenpay",
-    "rechType": "cft",
+    "titleNameMap": {
+      "zh": "支付宝自动支付"
+    },
+    "subtitle": "支付宝转账，自动审核，快速受理。",
+    "image": "money_zfb_icon",
+    "rechType": "alipayAuto",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "虚拟币转账",
+      "en": "USDT transaction",
+      "vi": "Chuyển khoản tiền ảo"
+    },
+    "subtitle": "虚拟币支付",
+    "image": "ic_crypto_pay",
+    "rechType": "cryptoPay",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "出款",
+      "en": "出款",
+      "vi": "出款"
+    },
+    "subtitle": "菲律賓在線網銀",
+    "image": "ic_juancash",
+    "rechType": "onlinePayment",
+    "onlineType": "202"
+  },
+  {
+    "titleNameMap": {
+      "zh": "網銀",
+      "en": "網銀",
+      "vi": "網銀"
+    },
+    "subtitle": "菲律賓在線網銀",
+    "image": "ic_juancash",
+    "rechType": "onlinePayment",
+    "onlineType": "203"
+  },
+  {
+    "titleNameMap": {
+      "zh": "Gcash",
+      "en": "Gcash",
+      "vi": "Gcash"
+    },
+    "subtitle": "菲律賓在線網銀 Gcash",
+    "image": "ic_g_cash",
+    "rechType": "onlinePayment",
+    "onlineType": "204"
+  },
+  {
+    "titleNameMap": {
+      "zh": "GrabPay",
+      "en": "GrabPay",
+      "vi": "GrabPay"
+    },
+    "subtitle": "菲律賓在線網銀 GrabPay",
+    "image": "ic_grab_pay",
+    "rechType": "onlinePayment",
+    "onlineType": "205"
+  },
+  {
+    "titleNameMap": {
+      "zh": "PayMaya",
+      "en": "PayMaya",
+      "vi": "PayMaya"
+    },
+    "subtitle": "菲律賓在線網銀 PayMaya",
+    "image": "ic_pay_maya",
+    "rechType": "onlinePayment",
+    "onlineType": "206"
+  },
+  {
+    "titleNameMap": {
+      "zh": "Gcash",
+      "en": "Gcash",
+      "vi": "Gcash"
+    },
+    "subtitle": "Gcash转账支付",
+    "image": "ic_g_cash",
+    "rechType": "gcash",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "GrabPay",
+      "en": "GrabPay",
+      "vi": "GrabPay"
+    },
+    "subtitle": "GrabPay转账支付",
+    "image": "ic_grab_pay",
+    "rechType": "grabPay",
+    "onlineType": "0"
+  },
+  {
+    "titleNameMap": {
+      "zh": "PayMaya",
+      "en": "PayMaya",
+      "vi": "PayMaya"
+    },
+    "subtitle": "微信转账支付",
+    "image": "ic_pay_maya",
+    "rechType": "payMaya",
     "onlineType": "0"
   }
 ]

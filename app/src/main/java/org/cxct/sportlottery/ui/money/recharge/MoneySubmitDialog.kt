@@ -1,23 +1,29 @@
 package org.cxct.sportlottery.ui.money.recharge
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_money_submit.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.MoneyAddRequest
-import org.cxct.sportlottery.ui.base.BaseDialog
+import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.TextUtil
 
-class MoneySubmitDialog(payWay: String, payMoney: String) : BaseDialog<MoneyRechViewModel>(MoneyRechViewModel::class) {
-    val _payWay = payWay
-    val _payMoney = payMoney
+class MoneySubmitDialog(
+    private val payWay: String,
+    private val payMoney: String,
+    private val dialogListener: MoneySubmitDialogListener
+) : DialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        dialog?.setCanceledOnTouchOutside(true)
         return inflater.inflate(R.layout.dialog_money_submit, container, false)
     }
 
@@ -27,13 +33,31 @@ class MoneySubmitDialog(payWay: String, payMoney: String) : BaseDialog<MoneyRech
         initButton()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView() {
-        txv_pay_way.text = _payWay
-        txv_pay_money.text = _payMoney
+        txv_pay_way.text = payWay
+        txv_pay_money.text =
+            "${TextUtil.formatMoney(ArithUtil.toMoneyFormat(payMoney.toDouble()).toDouble())} ${getString(R.string.currency)}"
     }
-    fun initButton(){
-        img_close.setOnClickListener {
+
+    fun initButton() {
+        tv_view_log.setOnClickListener { dialogListener.viewLog() }
+        tv_service.setOnClickListener {
+            dialogListener.contactService()
             dismiss()
+        }
+    }
+
+    class MoneySubmitDialogListener(
+        private val viewLogEvent: () -> Unit,
+        private val contactServiceEvent: () -> Unit
+    ) {
+        fun viewLog() {
+            viewLogEvent.invoke()
+        }
+
+        fun contactService() {
+            contactServiceEvent.invoke()
         }
     }
 }

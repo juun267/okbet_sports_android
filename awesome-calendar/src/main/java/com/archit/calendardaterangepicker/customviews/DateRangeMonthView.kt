@@ -27,6 +27,7 @@ import com.archit.calendardaterangepicker.customviews.DateView.DateState.MIDDLE
 import com.archit.calendardaterangepicker.customviews.DateView.DateState.SELECTABLE
 import com.archit.calendardaterangepicker.customviews.DateView.DateState.START
 import com.archit.calendardaterangepicker.customviews.DateView.OnDateClickListener
+import com.archit.calendardaterangepicker.manager.LanguageManager
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSelectionMode.FIXED_RANGE
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes.DateSelectionMode.FREE_RANGE
@@ -62,8 +63,10 @@ internal class DateRangeMonthView : LinearLayout {
     }
 
     @TargetApi(VERSION_CODES.LOLLIPOP)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int,
-                defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes) {
+    constructor(
+        context: Context, attrs: AttributeSet?, defStyleAttr: Int,
+        defStyleRes: Int
+    ) : super(context, attrs, defStyleAttr, defStyleRes) {
         initView(context, attrs)
     }
 
@@ -90,17 +93,17 @@ internal class DateRangeMonthView : LinearLayout {
             if (calendarStyleAttr.isEditable) {
                 if (calendarStyleAttr.isShouldEnabledTime) {
                     val awesomeTimePickerDialog = AwesomeTimePickerDialog(context,
-                            context.getString(string.select_time), object : TimePickerCallback {
-                        override fun onTimeSelected(hours: Int, mins: Int) {
-                            selectedDate[Calendar.HOUR] = hours
-                            selectedDate[Calendar.MINUTE] = mins
-                            setSelectedDate(selectedDate)
-                        }
+                        context.getString(string.select_time), object : TimePickerCallback {
+                            override fun onTimeSelected(hours: Int, mins: Int) {
+                                selectedDate[Calendar.HOUR] = hours
+                                selectedDate[Calendar.MINUTE] = mins
+                                setSelectedDate(selectedDate)
+                            }
 
-                        override fun onCancel() {
-                            resetAllSelectedViews()
-                        }
-                    })
+                            override fun onCancel() {
+                                resetAllSelectedViews()
+                            }
+                        })
                     awesomeTimePickerDialog.showDialog()
                 } else {
                     setSelectedDate(selectedDate)
@@ -114,11 +117,20 @@ internal class DateRangeMonthView : LinearLayout {
         val selectionMode = calendarStyleAttr.dateSelectionMode
         var minSelectedDate = dateRangeCalendarManager.getMinSelectedDate()
         var maxSelectedDate = dateRangeCalendarManager.getMaxSelectedDate()
+        val dateSelectedType = dateRangeCalendarManager.getDateSelectedType()
 
         when (selectionMode) {
             FREE_RANGE -> {
-                if (minSelectedDate != null && maxSelectedDate == null) {
-                    maxSelectedDate = selectedDate
+                when (dateSelectedType) {
+                    DateSelectedType.END -> {
+                        maxSelectedDate = selectedDate
+                    }
+                    else -> {
+                        minSelectedDate = selectedDate
+                    }
+                }
+
+                if (minSelectedDate != null && maxSelectedDate != null) {
                     val startDateKey = getContainerKey(minSelectedDate)
                     val lastDateKey = getContainerKey(maxSelectedDate)
                     if (startDateKey == lastDateKey) {
@@ -128,12 +140,6 @@ internal class DateRangeMonthView : LinearLayout {
                         minSelectedDate = maxSelectedDate
                         maxSelectedDate = temp
                     }
-                } else if (maxSelectedDate == null) {
-                    //This will call one time only
-                    minSelectedDate = selectedDate
-                } else {
-                    minSelectedDate = selectedDate
-                    maxSelectedDate = null
                 }
             }
             SINGLE -> {
@@ -146,14 +152,13 @@ internal class DateRangeMonthView : LinearLayout {
                 maxSelectedDate.add(Calendar.DATE, calendarStyleAttr.fixedDaysSelectionNumber)
             }
         }
-
         dateRangeCalendarManager.setSelectedDateRange(minSelectedDate, maxSelectedDate)
         drawCalendarForMonth(currentCalendarMonth)
         Log.i(LOG_TAG, "Time: " + selectedDate.time.toString())
-        if (maxSelectedDate != null) {
-            calendarListener!!.onDateRangeSelected(minSelectedDate, maxSelectedDate)
+        if (minSelectedDate != null && maxSelectedDate != null) {
+            calendarListener!!.onDateRangeSelected(dateSelectedType, minSelectedDate, maxSelectedDate)
         } else {
-            calendarListener!!.onFirstDateSelected(minSelectedDate)
+            calendarListener!!.onFirstDateSelected(dateSelectedType, selectedDate)
         }
     }
 

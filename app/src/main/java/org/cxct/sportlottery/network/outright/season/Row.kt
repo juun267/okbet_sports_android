@@ -6,14 +6,17 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class Row(
-    @Json(name = "code")
-    val code: String,
     @Json(name = "list")
-    val list: List<Season>,
+    val list: List<Season> = listOf(),
     @Json(name = "name")
-    val name: String,
+    val name: String?,
+    @Json(name = "sort")
+    val sort: Int?,
     @Json(name = "num")
-    val num: Int
+    val num: Int?,
+    @Json(name= "icon")
+    val icon: String
 ) {
-    var isExpand = false
+    var isExpand = true
+    var searchList = listOf<Season>()
 }

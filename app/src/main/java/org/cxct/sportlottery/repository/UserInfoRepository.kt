@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.repository
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -10,9 +12,16 @@ import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.user.info.UserInfoData
 import org.cxct.sportlottery.network.user.info.UserInfoResult
+import org.cxct.sportlottery.util.GameConfigManager
 import retrofit2.Response
 
-class UserInfoRepository(private val userInfoDao: UserInfoDao) {
+class UserInfoRepository(private val userInfoDao: UserInfoDao,private val androidContext: Context) {
+
+    private val sharedPref: SharedPreferences by lazy {
+        androidContext.getSharedPreferences(NAME_LOGIN, Context.MODE_PRIVATE)
+    }
+
+    var checkedUserInfo = false //紀錄checkToken後是否獲取過UserInfo
 
     val userInfo: Flow<UserInfo?>
         get() = userInfoDao.getUserInfo().map {
@@ -29,6 +38,8 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             userInfoResponse.body()?.let {
                 updateUserInfo(it.userInfoData)
             }
+            if (!checkedUserInfo)
+                checkedUserInfo = true
         }
         return userInfoResponse
     }
@@ -37,10 +48,23 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
     suspend fun updateUserInfo(userInfoData: UserInfoData?) {
         userInfoData?.let {
             val userInfo = transform(it)
-
-            withContext(Dispatchers.IO) {
+//            OLD_DISCOUNT = it.discount ?: 1f
                 userInfoDao.upsert(userInfo)
-            }
+                GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999
+                GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
+                GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
+
+                with(sharedPref.edit()){
+                    putInt(KEY_USER_LEVEL_ID, userInfoData.userLevelId)
+                    apply()
+                }
+            
+        }
+    }
+
+    suspend fun getDiscount(userId: Long): Float {
+        return withContext(Dispatchers.IO) {
+            userInfoDao.getDiscount(userId) ?: 1.0F
         }
     }
 
@@ -62,10 +86,64 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
         }
     }
 
+    suspend fun updateFullName(userId: Long, fullName: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateFullName(userId, fullName)
+        }
+    }
+
+    suspend fun updateQQ(userId: Long, qq: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateQQ(userId, qq)
+        }
+    }
+
+    suspend fun updateEmail(userId: Long, email: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateEmail(userId, email)
+        }
+    }
+
+    suspend fun updatePhone(userId: Long, phone: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updatePhone(userId, phone)
+        }
+    }
+
+    suspend fun updateWeChat(userId: Long, wechat: String){
+        withContext(Dispatchers.IO){
+            userInfoDao.updateWeChat(userId, wechat)
+        }
+    }
+
     //是否设置过昵称 0单标未设置过 1代表设置过
     suspend fun updateSetted(userId: Long, setted: Int) {
         withContext(Dispatchers.IO) {
             userInfoDao.updateSetted(userId, setted)
+        }
+    }
+
+    suspend fun updateMaxBetMoney(userId: Long, maxBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxBetMoney(userId, maxBetMoney)
+        }
+    }
+
+    suspend fun updateMaxParlayBetMoney(userId: Long, maxParlayBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxParlayBetMoney(userId, maxParlayBetMoney)
+        }
+    }
+
+    suspend fun updateMaxCpBetMoney(userId: Long, maxCpBetMoney: Int) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateMaxCpBetMoney(userId, maxCpBetMoney)
+        }
+    }
+
+    suspend fun updateDiscount(userId: Long, discount: Float) {
+        withContext(Dispatchers.IO) {
+            userInfoDao.updateDiscount(userId, discount)
         }
     }
 
@@ -87,6 +165,13 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao) {
             wechat = userInfoData.wechat,
             updatePayPw = userInfoData.updatePayPw,
             setted = userInfoData.setted,
-            userRebateList = userInfoData.userRebateList
+            userRebateList = userInfoData.userRebateList,
+            creditAccount = userInfoData.creditAccount,
+            creditStatus = userInfoData.creditStatus,
+            maxBetMoney = userInfoData.maxBetMoney,
+            maxCpBetMoney = userInfoData.maxCpBetMoney,
+            maxParlayBetMoney = userInfoData.maxParlayBetMoney,
+            discount = userInfoData.discount
         )
+
 }

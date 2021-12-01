@@ -11,6 +11,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.infoCenter.InfoCenterData
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterAdapter
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MoneyManager
 
 class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
@@ -32,6 +33,7 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
         val item = data[position]
         holder.bind(item)
         holder.rootItem.isSelected = mSelectedPosition == position //選中改變背景
+        holder.imgTri.visibility = if (mSelectedPosition == position) View.VISIBLE else View.GONE
         holder.rootItem.setOnClickListener {
             mSelectedPosition = position
             notifyDataSetChanged()
@@ -45,10 +47,11 @@ class MoneyBankTypeAdapter(private val clickListener: ItemClickListener) :
         private val icBank: ImageView = itemView.findViewById(R.id.ic_bank)
         private val tvType: TextView = itemView.findViewById(R.id.tv_type)
         val rootItem: ConstraintLayout = itemView.findViewById(R.id.rootItem)
+        val imgTri: ImageView = itemView.findViewById(R.id.img_tri)
 
         fun bind(item: MoneyPayWayData) {
             icBank.setImageResource(MoneyManager.getBankIcon(item.image))
-            tvType.text = item.title
+            tvType.text = item.titleNameMap[LanguageManager.getSelectLanguage(itemView.context).key]
         }
 
         companion object {

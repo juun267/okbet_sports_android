@@ -18,9 +18,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorBlackLight"
             android:text="@{item.homeName}"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,15 +28,15 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:text="VS"
-            android:textColor="@color/textColorDark"
-            android:textSize="14sp" />
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/textColorDark"
+            android:textColor="@color/colorBlackLight"
             android:text="@{item.awayName}"
-            android:textSize="14sp" />
+            android:textSize="@dimen/textSize14sp" />
 
 
     </LinearLayout>

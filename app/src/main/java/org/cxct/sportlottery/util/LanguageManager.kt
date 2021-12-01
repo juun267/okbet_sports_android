@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.github.jokar.multilanguages.library.MultiLanguage
+import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.R
 import java.util.*
 
 object LanguageManager {
@@ -16,14 +18,14 @@ object LanguageManager {
      * @return Locale对象
      */
     fun getSystemLocale(context: Context?): Locale {
-        return SPUtil.getInstance(context).getSystemCurrentLocal()
+        return SPUtil.getInstance(context).systemCurrentLocal
     }
 
     fun getSelectLanguage(context: Context?): Language {
+        //TODO 20210217 Simon 紀錄：目前只有 簡體中文、英文 選項，且預設是簡體中文，待之後 review
         return when (SPUtil.getInstance(context).getSelectLanguage()) {
-            Language.ZH.key -> Language.ZH
-            Language.ZHT.key -> Language.ZHT
-            Language.EN.key ->  Language.EN
+            Language.ZH.key, Language.ZHT.key -> Language.ZH
+            Language.EN.key -> Language.EN
             Language.VI.key -> Language.VI
             else -> {
                 //若APP local 未設定過語系，就使用系統語系判斷
@@ -32,11 +34,20 @@ object LanguageManager {
                 when {
                     local.language == Locale.ENGLISH.language -> Language.EN
                     local.language == Locale("vi").language -> Language.VI
-                    local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country -> Language.ZH
-                    local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZHT
-                    else -> Language.EN
+                    (local.language == Locale.SIMPLIFIED_CHINESE.language && local.country == Locale.SIMPLIFIED_CHINESE.country)
+                            || local.language == Locale.TRADITIONAL_CHINESE.language -> Language.ZH
+                    else -> Language.values().find { it.key == BuildConfig.DEFAULT_LANGUAGE } ?: Language.EN
                 }
+//                Language.EN //2021/10/04 與PM確認過，不管手機是什麼語系，都預先使用英文版本
             }
+        }
+    }
+
+    fun getLanguageFlag(context: Context?): Int {
+        return when (getSelectLanguage(context)) {
+            Language.ZH -> R.drawable.ic_flag_cn
+            Language.VI -> R.drawable.ic_flag_vi
+            else -> R.drawable.ic_flag_en
         }
     }
 
@@ -48,15 +59,14 @@ object LanguageManager {
      */
     fun getSetLanguageLocale(context: Context?): Locale {
         return when (getSelectLanguage(context)) {
-            Language.ZH -> Locale.SIMPLIFIED_CHINESE
-            Language.ZHT -> Locale.TRADITIONAL_CHINESE
+            Language.ZH, Language.ZHT -> Locale.SIMPLIFIED_CHINESE
             Language.EN -> Locale.ENGLISH
             Language.VI -> Locale("vi")
         }
     }
 
     fun saveSystemCurrentLanguage(context: Context?) {
-        SPUtil.getInstance(context).setSystemCurrentLocal(MultiLanguage.getSystemLocal(context))
+        SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(context)
     }
 
     /**
@@ -68,7 +78,7 @@ object LanguageManager {
         context: Context?,
         newConfig: Configuration?
     ) {
-        SPUtil.getInstance(context).setSystemCurrentLocal(MultiLanguage.getSystemLocal(newConfig))
+        SPUtil.getInstance(context).systemCurrentLocal = MultiLanguage.getSystemLocal(newConfig)
     }
 
     fun saveSelectLanguage(context: Context?, select: Language) {
@@ -81,7 +91,7 @@ object SPUtil {
     private const val SP_NAME = "language_setting"
     private const val TAG_LANGUAGE = "language_select"
     private var mSharedPreferences: SharedPreferences? = null
-    private var systemCurrentLocal = Locale.ENGLISH
+    var systemCurrentLocal: Locale = Locale.ENGLISH
 
     fun getInstance(context: Context?): SPUtil {
         if (mSharedPreferences == null)
@@ -90,22 +100,13 @@ object SPUtil {
     }
 
     fun saveLanguage(select: String?) {
-         mSharedPreferences?.edit()
-             ?.putString(TAG_LANGUAGE, select)
-             ?.apply()
+        mSharedPreferences?.edit()
+            ?.putString(TAG_LANGUAGE, select)
+            ?.apply()
     }
 
     fun getSelectLanguage(): String? {
         return mSharedPreferences?.getString(TAG_LANGUAGE, null)
-    }
-
-
-    fun getSystemCurrentLocal(): Locale {
-        return systemCurrentLocal
-    }
-
-    fun setSystemCurrentLocal(local: Locale) {
-        systemCurrentLocal = local
     }
 
 }

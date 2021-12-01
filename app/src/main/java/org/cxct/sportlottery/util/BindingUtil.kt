@@ -1,7 +1,9 @@
 package org.cxct.sportlottery.util
 
+import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import androidx.databinding.BindingAdapter
-import org.cxct.sportlottery.ui.home.HomeGameCard
+import org.cxct.sportlottery.ui.game.home.HomeGameCard
 
 /**
  * 自定義物件的屬性，要使用 data binding 給值，要在此添加方法
@@ -19,5 +21,11 @@ object BindingUtil {
     @BindingAdapter("cvCount")
     fun setCount(view: HomeGameCard, count: String?) {
         view.setCount(count)
+    }
+
+    @JvmStatic
+    @BindingAdapter("imgResource")
+    fun ImageView.setImgResource(@DrawableRes imgResource: Int){
+        this.setImageResource(imgResource)
     }
 }

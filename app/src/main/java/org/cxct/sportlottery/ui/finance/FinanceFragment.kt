@@ -11,12 +11,13 @@ import kotlinx.android.synthetic.main.fragment_finance.view.*
 import kotlinx.android.synthetic.main.view_account_balance.*
 import kotlinx.android.synthetic.main.view_account_balance.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.util.ArithUtil
-import timber.log.Timber
 
 
-class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) {
+class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::class) {
     private val recordAdapter by lazy {
         FinanceRecordAdapter().apply {
             financeRecordListener = FinanceRecordListener {
@@ -61,16 +62,36 @@ class FinanceFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::class) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getRecordList()
+
         viewModel.userMoney.observe(this.viewLifecycleOwner, Observer {
             hideLoading()
             tv_balance.text = ArithUtil.toMoneyFormat(it)
         })
+    }
 
-        viewModel.recordList.observe(this.viewLifecycleOwner, Observer {
-            recordAdapter.data = it
-        })
+    private fun getRecordList() {
+        val recordStrList = context?.resources?.getStringArray(R.array.finance_array)
+        val recordHideStrList = context?.resources?.getStringArray(R.array.finance_hide_array)
+        val recordImgList = context?.resources?.obtainTypedArray(R.array.finance_img_array)
+
+        val recordList = recordStrList?.filter {
+            if (sConfigData?.thirdOpen == FLAG_OPEN)
+                true
+            else
+                recordHideStrList?.contains(it) == false
+        }?.map {
+            it to (recordImgList?.getResourceId(recordStrList.indexOf(it), -1) ?: -1)
+        } ?: listOf()
+
+        recordImgList?.recycle()
+
+        recordAdapter.data = recordList
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         viewModel.getMoney()
-        viewModel.getRecordList()
     }
 }

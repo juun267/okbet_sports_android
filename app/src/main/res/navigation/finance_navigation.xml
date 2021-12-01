@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_financeFragment_to_withdrawLogFragment"
             app:destination="@id/withdrawLogFragment" />
+        <action
+            android:id="@+id/action_financeFragment_to_moneyTransferRecordFragment"
+            app:destination="@id/moneyTransferRecordFragment" />
 
     </fragment>
 
@@ -32,5 +35,11 @@
         android:name="org.cxct.sportlottery.ui.finance.WithdrawLogFragment"
         android:label="fragment_withdraw_log"
         tools:layout="@layout/activity_recharge_log" />
+
+    <fragment
+        android:id="@+id/moneyTransferRecordFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.money_transfer.record.MoneyTransferRecordFragment"
+        android:label="MoneyTransferRecordFragment"
+        tools:layout="@layout/fragment_money_transfer_record" />
 
 </navigation>

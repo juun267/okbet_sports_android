@@ -2,12 +2,13 @@ package org.cxct.sportlottery.util
 
 import android.content.Context
 import android.content.res.AssetManager
+import androidx.annotation.DrawableRes
 import com.squareup.moshi.Types
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MoneyType
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.config.TransferType
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -43,23 +44,11 @@ object MoneyManager {
     private var mMoneyPayWayList: List<MoneyPayWayData>? = null
     fun getMoneyPayWayList(): List<MoneyPayWayData>? {
         if (mMoneyPayWayList == null) {
-            //TODO Bill 降低耦合度
-            mMoneyPayWayList = MoshiUtil.fromJson<List<MoneyPayWayData>>(getRechargeConfig(mContext), Types.newParameterizedType(MutableList::class.java, MoneyPayWayData::class.java))
+            mMoneyPayWayList = getRechargeConfig(mContext).fromJson<List<MoneyPayWayData>>()
         }
         return mMoneyPayWayList
     }
-
-    //獲取最大充值金額，沒有值就取 default local value
-    fun getMaxMoney(rechConfig: MoneyRechCfg.RechConfig): Double {
-        return rechConfig.maxMoney ?: 9999999.0
-    }
-
-    //獲取最小充值金額，沒有值就取 config.json value
-//    fun getMinMoney(rechConfig: MoneyRechCfg.RechConfig?): Double { //TODO Bill 等AppConfigManager做好去裡面撈最小充值金額(每個使用者不一樣)
-//        return rechConfig?.minMoney ?: AppConfigManager.getAppConfig().minRechMoney!!.toDouble()
-//    }
-
-
+//TODO Bill 等UI補Icon
     fun getBankIcon(bankName: String): Int {
         return when (bankName) {
             MoneyType.BANK.code -> R.drawable.ic_bank_atm
@@ -67,16 +56,34 @@ object MoneyManager {
             MoneyType.WX.code -> R.drawable.ic_wechat_pay
             MoneyType.CTF.code -> R.drawable.ic_tenpay
             MoneyType.ONLINE.code -> R.drawable.ic_online_pay
+            MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
+            MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
+            MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//TODO Bill 待補圖
+            MoneyType.ONLINEBANK.code -> R.drawable.ic_juancash
+            MoneyType.GCASH.code -> R.drawable.ic_g_cash
+            MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay
+            MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya
+
             else -> R.drawable.ic_bank_atm
         }
     }
 
-    fun getBankAccountIcon(rechType:String):Int{
+    fun getBankAccountIcon(rechType: String): Int {
         return when (rechType) {
             MoneyType.ALI_TYPE.code -> R.drawable.ic_alipay_type
             MoneyType.WX_TYPE.code -> R.drawable.ic_wechat_pay_type
             MoneyType.CTF_TYPE.code -> R.drawable.ic_tenpay_type
             MoneyType.ONLINE_TYPE.code -> R.drawable.ic_online_pay_type
+            MoneyType.GCASH_TYPE.code -> R.drawable.ic_g_cash_type
+            MoneyType.GRABPAY_TYPE.code -> R.drawable.ic_grab_pay_type
+            MoneyType.PAYMAYA_TYPE.code -> R.drawable.ic_pay_maya_type
+            MoneyType.CRYPTO.code -> R.drawable.ic_crypto_pay
+            MoneyType.JUAN_ONLINE_TYPE.code -> R.drawable.ic_juancash
+            MoneyType.DISPENSHIN.code -> R.drawable.ic_juancash//TODO Bill 待補圖
+            MoneyType.ONLINEBANK.code -> R.drawable.ic_juancash
+            MoneyType.GCASH.code -> R.drawable.ic_g_cash_type
+            MoneyType.GRABPAY.code -> R.drawable.ic_grab_pay_type
+            MoneyType.PAYMAYA.code -> R.drawable.ic_pay_maya_type
             else -> R.drawable.ic_bank_atm
         }
     }
@@ -86,7 +93,16 @@ object MoneyManager {
         return R.drawable.ic_bank_default
     }
 
-    enum class BankKey(val bankName: String, val iconId: Int) {
+    fun getCryptoIconByCryptoName(cryptoName: String): Int {
+        CryptoIcon.values().map { if (it.cryptoName == cryptoName) return it.iconId }
+        return R.drawable.ic_crypto
+    }
+
+    enum class CryptoIcon(val cryptoName: String, @DrawableRes val iconId: Int) {
+        CRYPTO(TransferType.CRYPTO.type, R.drawable.ic_crypto)
+    }
+
+    enum class BankKey(val bankName: String, @DrawableRes val iconId: Int) {
         ABC("农业银行", R.drawable.ic_bank_abc),
         CCB("建设银行", R.drawable.ic_bank_ccb),
         ICBC("工商银行", R.drawable.ic_bank_icbc),
@@ -104,6 +120,17 @@ object MoneyManager {
         PINGAN("平安银行", R.drawable.ic_bank_pingan),
         BCCB("北京银行", R.drawable.ic_bank_bccb),
         BRCB("北京农商", R.drawable.ic_bank_brcb),
-        BOS("上海银行", R.drawable.ic_bank_shcc)
+        BOS("上海银行", R.drawable.ic_bank_shcc),
+        BPI("BPI",  R.drawable.ic_bank_bpi),
+        BDO("BDO",  R.drawable.ic_bank_bdo),
+        METROPOLITAN("metropolitan",  R.drawable.ic_bank_metropolitan),
+        LAND("land",  R.drawable.ic_bank_land),
+        SECURITY("security",  R.drawable.ic_bank_security),
+        UB("UB",  R.drawable.ic_bank_ub),
+        UCPB("UCPB",  R.drawable.ic_bank_ucpb),
+        RCBC("RCBC",  R.drawable.ic_bank_rcbc),
+        EASTWEST("Eastwest",  R.drawable.ic_bank_eastwest),
+        CHINABANK("ChinaBank",  R.drawable.ic_bank_china_bank),
+        PNB("PNB",  R.drawable.ic_bank_pnb)
     }
 }

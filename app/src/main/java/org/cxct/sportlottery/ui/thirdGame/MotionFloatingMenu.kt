@@ -1,0 +1,49 @@
+package org.cxct.sportlottery.ui.thirdGame
+
+import android.content.Context
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import androidx.constraintlayout.motion.widget.MotionLayout
+import kotlinx.android.synthetic.main.menu_motion_floating.view.*
+import org.cxct.sportlottery.R
+
+/**
+ * @author Hewie
+ * Modified by Simon Change 2021/02/03
+ * 漂浮式選單
+ */
+
+class MotionFloatingMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : MotionLayout(context, attrs, defStyle) {
+
+    private var mOnMenuListener: OnMenuListener? = null
+
+    init {
+        addView(LayoutInflater.from(context).inflate(R.layout.menu_motion_floating, this, false))
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+
+        motion_back_home.setOnClickListener {
+            mOnMenuListener?.onHome()
+        }
+
+        motion_cash_save.setOnClickListener {
+            mOnMenuListener?.onCashSave()
+        }
+
+        motion_cash_get.setOnClickListener {
+            mOnMenuListener?.onCashGet()
+        }
+    }
+
+    fun setOnMenuListener(onMenuListener: OnMenuListener?) {
+        mOnMenuListener = onMenuListener
+    }
+
+    interface OnMenuListener {
+        fun onHome()
+        fun onCashSave()
+        fun onCashGet()
+    }
+}

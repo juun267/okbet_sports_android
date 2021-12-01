@@ -1,6 +1,6 @@
 package org.cxct.sportlottery.ui.finance
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -8,92 +8,67 @@ import kotlinx.coroutines.launch
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.OneBoSportApi
 import org.cxct.sportlottery.network.money.list.RechargeListRequest
-import org.cxct.sportlottery.network.money.list.RechargeListResult
 import org.cxct.sportlottery.network.money.list.Row
-import org.cxct.sportlottery.network.user.money.UserMoneyResult
 import org.cxct.sportlottery.network.withdraw.list.WithdrawListRequest
-import org.cxct.sportlottery.network.withdraw.list.WithdrawListResult
-import org.cxct.sportlottery.repository.BetInfoRepository
-import org.cxct.sportlottery.ui.base.BaseViewModel
-import org.cxct.sportlottery.ui.finance.data.*
+import org.cxct.sportlottery.repository.*
+import org.cxct.sportlottery.ui.base.BaseSocketViewModel
 import org.cxct.sportlottery.ui.finance.df.CheckStatus
 import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
 import org.cxct.sportlottery.ui.finance.df.UWType
-import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import java.util.*
 
 const val pageSize = 20
 
-class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfoRepository) : BaseViewModel() {
+class FinanceViewModel(
+    androidContext: Application,
+    userInfoRepository: UserInfoRepository,
+    loginRepository: LoginRepository,
+    betInfoRepository: BetInfoRepository,
+    infoCenterRepository: InfoCenterRepository,
+    favoriteRepository: MyFavoriteRepository,
+) : BaseSocketViewModel(
+    androidContext,
+    userInfoRepository,
+    loginRepository,
+    betInfoRepository,
+    infoCenterRepository,
+    favoriteRepository
+) {
 
-    init {
-        betInfoRepository = betInfoRepo
-    }
+    val allTag = "ALL"
 
-    val userMoney: LiveData<Double?>
-        get() = _userMoney
+    val isLoading: LiveData<Boolean> //使用者餘額
+        get() = _isLoading
 
-    val userRechargeListResult: LiveData<RechargeListResult?>
-        get() = _userRechargeResult
+    val userRechargeListResult: LiveData<MutableList<Row>?>
+        get() = _userRechargeListResult
 
-    val userWithdrawListResult: LiveData<WithdrawListResult?>
+    val userWithdrawListResult: LiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>
         get() = _userWithdrawResult
-
-    val recordList: LiveData<List<Pair<String, Int>>>
-        get() = _recordList
-
-    val recordCalendarRange: LiveData<Pair<Calendar, Calendar>>
-        get() = _recordCalendarRange
-
-    val recordCalendarStartDate: LiveData<RechargeTime>
-        get() = _recordCalendarStartDate
-
-    val recordCalendarEndDate: LiveData<RechargeTime>
-        get() = _recordCalendarEndDate
-
-    val rechargeStateList: LiveData<List<RechargeState>>
-        get() = _rechargeStateList
-
-    val rechargeChannelList: LiveData<List<RechargeChannel>>
-        get() = _rechargeChannelList
 
     val recordType: LiveData<String>
         get() = _recordType
 
-    val withdrawStateList: LiveData<List<WithdrawState>>
-        get() = _withdrawStateList
+    val withdrawLogDetail: LiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>
+        get() = _withdrawLogDetail
 
-    val withdrawTypeList: LiveData<List<WithdrawType>>
-        get() = _withdrawTypeList
-
-    val logDetail: LiveData<LogDetail>
-        get() = _logDetail
+    val rechargeLogDetail: LiveData<Event<Row>>
+        get() = _rechargeLogDetail
 
     val isFinalPage: LiveData<Boolean>
         get() = _isFinalPage
 
-    private val _userMoneyResult = MutableLiveData<UserMoneyResult?>()
-    private val _userMoney = BroadcastRepository().instance().userMoney
-    private val _userRechargeResult = MutableLiveData<RechargeListResult?>()
-    private val _userWithdrawResult = MutableLiveData<WithdrawListResult?>()
+    private val _isLoading = MutableLiveData<Boolean>()
+    private val _userRechargeListResult = MutableLiveData<MutableList<Row>?>()
+    private val _userWithdrawResult = MutableLiveData<MutableList<org.cxct.sportlottery.network.withdraw.list.Row>?>()
 
-    private val _recordList = MutableLiveData<List<Pair<String, Int>>>()
     private val _recordType = MutableLiveData<String>()
 
-    private val _recordCalendarRange = MutableLiveData<Pair<Calendar, Calendar>>()
-    private val _recordCalendarStartDate = MutableLiveData<RechargeTime>()
-    private val _recordCalendarEndDate = MutableLiveData<RechargeTime>()
-
-    private val _rechargeStateList = MutableLiveData<List<RechargeState>>()
-    private val _rechargeChannelList = MutableLiveData<List<RechargeChannel>>()
-
-    private val _withdrawStateList = MutableLiveData<List<WithdrawState>>()
-    private val _withdrawTypeList = MutableLiveData<List<WithdrawType>>()
-
-    private val _logDetail = MutableLiveData<LogDetail>()
+    private val _withdrawLogDetail = MutableLiveData<Event<org.cxct.sportlottery.network.withdraw.list.Row>>()
+    private val _rechargeLogDetail = MutableLiveData<Event<Row>>()
 
     private val _isFinalPage = MutableLiveData<Boolean>().apply { value = false }
     private var page = 1
@@ -103,129 +78,33 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
         _recordType.postValue(recordType)
     }
 
-    fun setRecordTimeRange(start: Calendar, end: Calendar? = null) {
-        val startDate =
-                RechargeTime(TimeUtil.timeFormat(start.timeInMillis, "yyyy-MM-dd"), start.timeInMillis)
-        _recordCalendarStartDate.postValue(startDate)
-
-        end?.let {
-            val endDate =
-                    RechargeTime(TimeUtil.timeFormat(it.timeInMillis, "yyyy-MM-dd"), end.timeInMillis)
-            _recordCalendarEndDate.postValue(endDate)
-        }
+    private fun loading() {
+        _isLoading.postValue(true)
     }
 
-    fun setRechargeState(position: Int) {
-        val list = _rechargeStateList.value
-
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
-
-        _rechargeStateList.postValue(list ?: listOf())
+    private fun hideLoading() {
+        _isLoading.postValue(false)
     }
 
-    fun setRechargeChannel(position: Int) {
-        val list = _rechargeChannelList.value
 
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
+    private val rechargeLogList = mutableListOf<Row>()
 
-        _rechargeChannelList.postValue(list ?: listOf())
-    }
+    fun getUserRechargeList(
+        isFirstFetch: Boolean,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        status: String? = null,
+        rechType: String? = null,
+    ) {
+        if (!isFirstFetch && isFinalPage.value == true) return
 
-    fun getMoney() {
-        viewModelScope.launch {
-            val userMoneyResult = doNetwork(androidContext) {
-                OneBoSportApi.userService.getMoney()
-            }
+        loading()
 
-            _userMoney.postValue(userMoneyResult?.money)
-        }
-    }
+        val filter = { item: String? -> if (item == allTag) null else item }
 
-    fun getRecordList() {
-        val recordStrList = androidContext.resources.getStringArray(R.array.finance_array)
-        val recordImgList = androidContext.resources.obtainTypedArray(R.array.finance_img_array)
-
-        val recordList = recordStrList.map {
-            it to recordImgList.getResourceId(recordStrList.indexOf(it), -1)
-        }
-        recordImgList.recycle()
-
-        _recordList.postValue(recordList)
-    }
-
-    fun getCalendarRange() {
-        val calendarToday = TimeUtil.getTodayEndTimeCalendar()
-        val calendarPastMonth = TimeUtil.getTodayEndTimeCalendar()
-        calendarPastMonth.add(Calendar.DATE, -30)
-
-        _recordCalendarRange.postValue(calendarPastMonth to calendarToday)
-    }
-
-    fun getRechargeState() {
-        val rechargeStateList =
-                androidContext.resources.getStringArray(R.array.recharge_state_array)
-
-        val list = rechargeStateList.map {
-            when (it) {
-                androidContext.getString(R.string.recharge_state_processing) -> {
-                    RechargeState(Status.PROCESSING.code, it)
-                }
-                androidContext.getString(R.string.recharge_state_success) -> {
-                    RechargeState(Status.SUCCESS.code, it)
-
-                }
-                androidContext.getString(R.string.recharge_state_failed) -> {
-                    RechargeState(Status.FAILED.code, it)
-                }
-                else -> {
-                    RechargeState(null, it).apply { isSelected = true }
-                }
-            }
-        }
-
-        _rechargeStateList.postValue(list)
-    }
-
-    fun getRechargeChannel() {
-        val rechargeChannelList =
-                androidContext.resources.getStringArray(R.array.recharge_channel_array)
-
-        val list = rechargeChannelList.map {
-            when (it) {
-                androidContext.getString(R.string.recharge_channel_online) -> {
-                    RechargeChannel(RechType.ONLINE_PAYMENT.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_bank) -> {
-                    RechargeChannel(RechType.BANK_TRANSFER.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_alipay) -> {
-                    RechargeChannel(RechType.ALIPAY.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_weixin) -> {
-                    RechargeChannel(RechType.WEIXIN.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_cft) -> {
-                    RechargeChannel(RechType.CFT.type, it)
-                }
-                androidContext.getString(R.string.recharge_channel_admin) -> {
-                    RechargeChannel(RechType.ADMIN_ADD_MONEY.type, it)
-                }
-                else -> {
-                    RechargeChannel(null, it).apply { isSelected = true }
-                }
-            }
-        }
-
-        _rechargeChannelList.postValue(list)
-    }
-
-    fun getUserRechargeList(isFirstFetch: Boolean) {
         when {
             isFirstFetch -> {
+                rechargeLogList.clear()
                 _isFinalPage.postValue(false)
                 page = 1
             }
@@ -236,154 +115,87 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
             }
         }
 
-        val rechType = _rechargeChannelList.value?.find {
-            it.isSelected
-        }?.type
-
-        val status = _rechargeStateList.value?.find {
-            it.isSelected
-        }?.code
-
-        val startTime = _recordCalendarStartDate.value?.date
-        val endTime = _recordCalendarEndDate.value?.date
-
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.moneyService.getUserRechargeList(
-                        RechargeListRequest(
-                                rechType = rechType,
-                                status = status,
-                                startTime = startTime,
-                                endTime = endTime,
-                                page = page,
-                                pageSize = pageSize
-                        )
-                )
+                OneBoSportApi.moneyService.getUserRechargeList(RechargeListRequest(rechType = filter(rechType), status = filter(status)?.toIntOrNull(), startTime = startTime, endTime = endTime, page = page, pageSize = pageSize))
             }
 
             result?.rows?.map {
                 it.rechState = when (it.status) {
                     Status.SUCCESS.code -> androidContext.getString(R.string.recharge_state_success)
                     Status.FAILED.code -> androidContext.getString(R.string.recharge_state_failed)
-                    Status.PROCESSING.code -> androidContext.getString(R.string.recharge_state_processing)
-                    Status.RECHARGING.code -> androidContext.getString(R.string.recharge_state_recharging)
+                    Status.PROCESSING.code, Status.RECHARGING.code -> androidContext.getString(R.string.recharge_state_processing)
                     else -> ""
                 }
 
-                it.rechDateStr = TimeUtil.timeFormat(it.rechTime, "yyyy-MM-dd")
-                it.rechTimeStr = TimeUtil.timeFormat(it.rechTime, "HH:mm:ss")
+                it.rechTypeDisplay = when (it.rechType) {
+                    RechType.ONLINE_PAYMENT.type -> androidContext.getString(R.string.recharge_channel_online)
+                    RechType.ADMIN_ADD_MONEY.type -> androidContext.getString(R.string.recharge_channel_admin)
+                    RechType.CFT.type -> androidContext.getString(R.string.recharge_channel_cft)
+                    RechType.WEIXIN.type -> androidContext.getString(R.string.recharge_channel_weixin)
+                    RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
+                    RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
+                    RechType.CRYPTO.type -> androidContext.getString(R.string.recharge_channel_crypto)
+                    RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
+                    RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
+                    RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
+                    else -> ""
+                }
 
-                it.displayMoney = ArithUtil.toMoneyFormat(it.rechMoney)
+                it.rechDateAndTime = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd HH:mm:ss")
+                it.rechDateStr = TimeUtil.timeFormat(it.addTime, "yyyy-MM-dd")
+                it.rechTimeStr = TimeUtil.timeFormat(it.addTime, "HH:mm:ss")
+
+                it.displayMoney = TextUtil.formatMoney(it.rechMoney)
+            }
+
+            result?.rows?.let {
+                rechargeLogList.addAll(it)
             }
 
             result?.total?.let {
                 _isFinalPage.postValue(page * pageSize >= it)
             }
 
-            _userRechargeResult.postValue(result)
-        }
-    }
-
-    fun setWithdrawState(position: Int) {
-        val list = _withdrawStateList.value
-
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
-
-        _withdrawStateList.postValue(list ?: listOf())
-    }
-
-    fun setWithdrawType(position: Int) {
-        val list = _withdrawTypeList.value
-
-        list?.forEach {
-            it.isSelected = (list.indexOf(it) == position)
-        }
-
-        _withdrawTypeList.postValue(list ?: listOf())
-    }
-
-    fun getWithdrawState() {
-        val withdrawStateList =
-                androidContext.resources.getStringArray(R.array.withdraw_state_array)
-
-        val list = withdrawStateList.map {
-            when (it) {
-                androidContext.getString(R.string.withdraw_log_state_processing) -> {
-                    WithdrawState(CheckStatus.PROCESSING.code, it)
-                }
-                androidContext.getString(R.string.withdraw_log_state_pass) -> {
-                    WithdrawState(CheckStatus.PASS.code, it)
-                }
-                androidContext.getString(R.string.withdraw_log_state_un_pass) -> {
-                    WithdrawState(CheckStatus.UN_PASS.code, it)
-                }
-                else -> {
-                    WithdrawState(null, it).apply { isSelected = true }
-                }
+            if (result?.success == true) {
+                _userRechargeListResult.postValue(rechargeLogList)
             }
-        }
 
-        _withdrawStateList.postValue(list)
+            hideLoading()
+        }
     }
 
-    fun getWithdrawType() {
-        val withdrawTypeList =
-                androidContext.resources.getStringArray(R.array.withdraw_type_array)
 
-        val list = withdrawTypeList.map {
-            when (it) {
-                androidContext.getString(R.string.withdraw_log_type_bank_trans) -> {
-                    WithdrawType(UWType.BANK_TRANSFER.type, it)
-                }
-                androidContext.getString(R.string.withdraw_log_type_admin) -> {
-                    WithdrawType(UWType.ADMIN_SUB_MONEY.type, it)
-                }
-                else -> {
-                    WithdrawType(null, it).apply { isSelected = true }
-                }
-            }
-        }
+    private val withdrawLogList = mutableListOf<org.cxct.sportlottery.network.withdraw.list.Row>()
 
-        _withdrawTypeList.postValue(list)
-    }
-
-    fun getUserWithdrawList(isFirstFetch: Boolean) {
-        when {
-            isFirstFetch -> {
-                _isFinalPage.postValue(false)
-                page = 1
-            }
-            else -> {
-                if (isFinalPage.value == false) {
-                    page++
-                }
-            }
-        }
-
-        val checkStatus = _withdrawStateList.value?.find {
-            it.isSelected
-        }?.code
-
-        val uwType = _withdrawTypeList.value?.find {
-            it.isSelected
-        }?.type
-
-        val startTime = _recordCalendarStartDate.value?.date
-        val endTime = _recordCalendarEndDate.value?.date
-
+    fun getUserWithdrawList(
+        isFirstFetch: Boolean,
+        startTime: String? = TimeUtil.getDefaultTimeStamp().startTime,
+        endTime: String? = TimeUtil.getDefaultTimeStamp().endTime,
+        checkStatus: String? = null,
+        uwType: String? = null,
+    ) {
+        if (!isFirstFetch && isFinalPage.value == true) return
+        loading()
+        val filter = { item: String? -> if (item == allTag) null else item }
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
-                OneBoSportApi.withdrawService.getWithdrawList(
-                        WithdrawListRequest(
-                                checkStatus = checkStatus,
-                                uwType = uwType,
-                                startTime = startTime,
-                                endTime = endTime,
+                OneBoSportApi.withdrawService.getWithdrawList(WithdrawListRequest(checkStatus = filter(checkStatus)?.toIntOrNull(), uwType = filter(uwType), startTime = startTime, endTime = endTime))
+            }
 
-                                )
-                )
+            result.apply {
+                when {
+                    isFirstFetch -> {
+                        withdrawLogList.clear()
+                        _isFinalPage.postValue(false)
+                        page = 1
+                    }
+                    else -> {
+                        if (isFinalPage.value == false) {
+                            page++
+                        }
+                    }
+                }
             }
 
             result?.rows?.map {
@@ -397,45 +209,46 @@ class FinanceViewModel(private val androidContext: Context, betInfoRepo: BetInfo
                 it.withdrawType = when (it.uwType) {
                     UWType.ADMIN_SUB_MONEY.type -> androidContext.getString(R.string.withdraw_log_type_admin)
                     UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
+                    UWType.CRYPTO.type -> androidContext.getString(R.string.withdraw_log_crypto_transfer)
+                    UWType.E_WALLET.type -> androidContext.getString(R.string.ewallet)
                     else -> ""
                 }
 
-                it.withdrawDate = TimeUtil.timeFormat(it.applyTime, "yyyy-MM-dd")
-                it.withdrawTime = TimeUtil.timeFormat(it.applyTime, "HH:mm:ss")
+                it.applyTime?.let { nonNullApTime ->
+                    it.withdrawDateAndTime = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd HH:mm:ss")
+                    it.withdrawDate = TimeUtil.timeFormat(nonNullApTime, "yyyy-MM-dd")
+                    it.withdrawTime = TimeUtil.timeFormat(nonNullApTime, "HH:mm:ss")
+                }
 
-                it.displayMoney = ArithUtil.toMoneyFormat(it.applyMoney)
+                it.operatorTime?.let { nonNullOpTime ->
+                    it.operatorDateAndTime = TimeUtil.timeFormat(nonNullOpTime, "yyyy-MM-dd HH:mm:ss")
+                }
+
+                it.displayMoney = TextUtil.formatMoney(it.applyMoney ?: 0.0)
+            }
+
+            result?.rows?.let {
+                withdrawLogList.clear()
+                withdrawLogList.addAll(it)
             }
 
             result?.total?.let {
                 _isFinalPage.postValue(page * pageSize >= it)
             }
 
-            _userWithdrawResult.postValue(result)
+            if (result?.success == true) {
+                _userWithdrawResult.postValue(withdrawLogList)
+            }
+
+            hideLoading()
         }
     }
 
-    fun setLogDetail(row: Row) {
-        val logDetail = LogDetail(
-                row.orderNo,
-                TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
-                row.rechName,
-                row.displayMoney,
-                row.rechState
-        )
-
-        _logDetail.postValue(logDetail)
+    fun setLogDetail(row: Event<Row>) {
+        _rechargeLogDetail.postValue(row)
     }
 
-    fun setLogDetail(row: org.cxct.sportlottery.network.withdraw.list.Row) {
-        val logDetail = LogDetail(
-                row.orderNo,
-                TimeUtil.timeFormat(row.operatorTime, "yyyy-MM-dd HH:mm:ss"),
-                row.uwType,
-                row.displayMoney,
-                row.withdrawState
-        )
-
-        _logDetail.postValue(logDetail)
+    fun setWithdrawLogDetail(row: Event<org.cxct.sportlottery.network.withdraw.list.Row>) {
+        _withdrawLogDetail.postValue(row)
     }
-
 }

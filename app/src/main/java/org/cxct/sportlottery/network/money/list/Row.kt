@@ -11,7 +11,7 @@ data class Row(
     @Json(name = "accountMoney")
     val accountMoney: Double,
     @Json(name = "actualMoney")
-    val actualMoney: Double,
+    val actualMoney: Double?,
     @Json(name = "channel")
     val channel: Double?,
     @Json(name = "fullName")
@@ -21,7 +21,7 @@ data class Row(
     @Json(name = "onlineType")
     val onlineType: Double?,
     @Json(name = "operatorTime")
-    val operatorTime: Long,
+    val operatorTime: Long?,
     @Json(name = "orderNo")
     val orderNo: String,
     @Json(name = "payee")
@@ -48,10 +48,12 @@ data class Row(
     val rechName: String,
     @Json(name = "rechTime")
     val rechTime: Long,
+    @Json(name = "addTime")
+    val addTime: Long,
     @Json(name = "rechType")
     val rechType: String,
     @Json(name = "remark")
-    val remark: String,
+    val remark: String?,
     @Json(name = "statDate")
     val statDate: Long,
     @Json(name = "status")
@@ -63,10 +65,14 @@ data class Row(
     @Json(name = "userId")
     val userId: Double,
     @Json(name = "userName")
-    val userName: String
+    val userName: String,
+    @Json(name = "reason")
+    val reason: String?
 ) {
+    var rechDateAndTime: String? = null
     var rechDateStr: String? = null
     var rechTimeStr: String? = null
     var rechState: String? = null
+    var rechTypeDisplay: String? = null
     var displayMoney: String? = null
 }

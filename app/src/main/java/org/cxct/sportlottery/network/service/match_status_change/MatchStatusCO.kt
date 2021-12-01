@@ -6,38 +6,44 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class MatchStatusCO(
+    @Json(name = "gameType")
+    val gameType: String?,
     @Json(name = "awayCards")
-    val awayCards: Int? = -1,
+    val awayCards: Int? = null,
     @Json(name = "awayCornerKicks")
-    val awayCornerKicks: Int? = -1,
+    val awayCornerKicks: Int? = null,
     @Json(name = "awayScore")
-    val awayScore: Int ?= -1,
+    val awayScore: Int ?= null,
     @Json(name = "awayTotalScore")
-    val awayTotalScore: Int ?= -1,
+    val awayTotalScore: Int ?= null,
     @Json(name = "awayYellowCards")
-    val awayYellowCards: Int ?= -1,
+    val awayYellowCards: Int ?= null,
     @Json(name = "dataId")
     val dataId: String? = "",
     @Json(name = "homeCards")
-    val homeCards: Int ?= -1,
+    val homeCards: Int ?= null,
     @Json(name = "homeCornerKicks")
-    val homeCornerKicks: Int ?= -1,
+    val homeCornerKicks: Int ?= null,
     @Json(name = "homeScore")
-    val homeScore: Int ?= -1,
+    val homeScore: Int ?= null,
     @Json(name = "homeTotalScore")
-    val homeTotalScore: Int ?= -1,
+    val homeTotalScore: Int ?= null,
+    @Json(name = "homePoints")
+    val homePoints: Int ?= null,
+    @Json(name = "awayPoints")
+    val awayPoints: Int ?= null,
     @Json(name = "homeYellowCards")
-    val homeYellowCards: Int ?= -1,
+    val homeYellowCards: Int ?= null,
     @Json(name = "latestStatus")
-    val latestStatus: Int ?= -1,
+    val latestStatus: Int ?= null,
     @Json(name = "matchId")
     val matchId: String? = "",
     @Json(name = "status")
-    val status: Int ?= -1,
+    val status: Int ?= null,
     @Json(name = "statusName")
     val statusName: String? = "",
     @Json(name = "statusNameI18n")
-    val statusNameI18n: StatusNameI18n? = StatusNameI18n(),
+    val statusNameI18n: Map<String?, String?>? = mapOf(),
     @Json(name = "time")
     val time: String? = ""
 )

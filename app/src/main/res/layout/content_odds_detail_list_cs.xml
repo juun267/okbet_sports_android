@@ -2,126 +2,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:background="@color/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="HardcodedText,SpUsage">
+
 
     <include layout="@layout/content_odds_detail_list_item" />
+
 
     <LinearLayout
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/activity_vertical_margin">
 
         <LinearLayout
+            android:id="@+id/ll_game"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#EEEEEE"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:id="@+id/tv_home_name"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="主隊"
-                android:textColor="@color/textColorDark"
-                android:textSize="14sp" />
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="皇家马德里" />
 
             <TextView
+                android:id="@+id/tv_draw"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="和局"
-                android:textColor="#999999"
-                android:textSize="14sp" />
+                android:text="@string/draw"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="和" />
 
             <TextView
                 android:id="@+id/tv_away_name"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="客隊"
-                android:textColor="@color/text_brownish_gray"
-                android:textSize="14sp" />
-
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="利物浦" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/divider_straight"
-            android:orientation="horizontal"
-            android:showDividers="middle">
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:orientation="horizontal">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_home"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                android:overScrollMode="never"
+                tools:listitem="@layout/content_type_grid_item" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_draw"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                android:overScrollMode="never"
+                tools:itemCount="5"
+                tools:listitem="@layout/content_type_grid_item" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_away"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp" />
+                android:overScrollMode="never"
+                tools:listitem="@layout/content_type_grid_item" />
 
         </LinearLayout>
 
-        <View
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_bet"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/background" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:gravity="center_vertical|end">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:gravity="center"
-                android:text="其他比分"
-                android:textColor="@color/text_brownish_gray"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_odds"
-                android:layout_width="56dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:background="@drawable/select_button_radius_5_odds"
-                android:gravity="center"
-                android:textColor="@color/color_select_text_odds"
-                android:textSize="14sp" />
-
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
 
     </LinearLayout>
 

@@ -23,7 +23,7 @@
         android:layout_margin="16dp"
         android:background="@null"
         android:contentDescription="@null"
-        android:src="@drawable/ic_arrow_back"
+        android:src="@drawable/ic_arrow_login"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,8 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:text="@string/btn_login"
-        android:textColor="@color/blue"
+        android:textColor="@color/colorBlueDark"
         android:textSize="@dimen/textSize30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/et_account"
         app:layout_constraintStart_toStartOf="@id/et_account" />
 
@@ -43,7 +44,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="4dp"
         app:cvHint="@string/please_input_account"
         app:cvInputType="text"
         app:cvTitle="@string/login_account"
@@ -57,7 +57,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="4dp"
         app:cvHint="@string/please_input_password"
         app:cvInputType="textPassword"
         app:cvTitle="@string/login_password"
@@ -71,7 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="4dp"
         app:cvEnableVerificationCode="true"
         app:cvHint="@string/hint_verification_code"
         app:cvInputType="number"
@@ -88,7 +86,7 @@
         android:button="@drawable/effect_select_checkbox"
         android:padding="4dp"
         android:text="@string/remember_password"
-        android:textColor="@color/gray4"
+        android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toTopOf="@id/btn_login"
         app:layout_constraintStart_toStartOf="@id/btn_login" />
@@ -98,18 +96,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/effect_ripple_fillet_6dp_red"
+        android:background="@null"
         android:clickable="true"
         android:focusable="true"
         android:padding="4dp"
         android:text="@string/forget_password_question"
-        android:textColor="@color/orangeRed"
+        android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toTopOf="@id/btn_login"
         app:layout_constraintEnd_toEndOf="@id/btn_login" />
 
     <Button
         android:id="@+id/btn_login"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:layout_marginStart="28dp"
@@ -117,7 +116,7 @@
         android:layout_marginBottom="6dp"
         android:background="@drawable/bg_radius_20_button_dusk"
         android:text="@string/btn_login"
-        android:textColor="@android:color/white"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize16sp"
         app:layout_constraintBottom_toTopOf="@id/block_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,11 +131,21 @@
         app:layout_constraintBottom_toBottomOf="@id/guidelineBottom">
 
         <TextView
+            android:visibility="gone"
+            android:id="@+id/btn_visit_first"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/desc_no_account"
-            android:textColor="@color/gray4"
+            android:padding="4dp"
+            android:text="@string/visit_first"
+            android:textColor="@color/colorGray"
             android:textSize="@dimen/textSize12sp" />
+
+        <View
+            android:visibility="gone"
+            android:layout_width="1dp"
+            android:layout_height="12dp"
+            android:layout_marginHorizontal="4dp"
+            android:background="@color/colorGray" />
 
         <TextView
             android:id="@+id/btn_sign_up"
@@ -144,7 +153,7 @@
             android:layout_height="wrap_content"
             android:padding="4dp"
             android:text="@string/sign_up_know"
-            android:textColor="@color/pumpkinOrange"
+            android:textColor="@color/colorOrange"
             android:textSize="@dimen/textSize12sp" />
 
     </LinearLayout>

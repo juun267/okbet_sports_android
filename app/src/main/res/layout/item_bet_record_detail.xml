@@ -1,59 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="SpUsage">
 
     <data>
+
         <variable
             name="data"
             type="org.cxct.sportlottery.network.bet.MatchOdd" />
+
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="4dp"
-        android:orientation="vertical"
-        android:paddingVertical="12dp">
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
+                android:minWidth="70dp"
                 android:text="@string/league_name"
-                android:textColor="@color/gray3"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
             <TextView
                 android:id="@+id/tv_league"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
                 android:text="@{data.leagueName}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="超级联赛" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
+                android:minWidth="70dp"
                 android:text="@string/game_match"
-                android:textColor="@color/gray3"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
@@ -62,79 +70,79 @@
                 android:id="@+id/tv_match"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
                 android:text="@{String.format(@string/match_names, data.homeName, data.awayName)}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="(主) 泰拉维  vs  库塔伊西鱼雷 (客)" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
+                android:minWidth="70dp"
                 android:text="@string/play_type"
-                android:textColor="@color/gray3"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
             <TextView
                 android:id="@+id/tv_type"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
                 android:text="@{data.playCateName}"
-                android:textColor="@color/gray6"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 tools:text="独赢" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="3dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="20dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="end"
+                android:minWidth="70dp"
                 android:text="@string/game_odds"
-                android:textColor="@color/gray3"
+                android:textColor="@color/colorGrayDark"
                 android:textSize="@dimen/textSize12sp"
                 app:autoSizeMaxTextSize="@dimen/textSize12sp"
                 app:autoSizeMinTextSize="@dimen/textSize8sp" />
 
             <TextView
-                android:id="@+id/tv_odds_name"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_play_odd"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:text="@{data.playName}"
-                android:textColor="@color/gray6"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="泰拉雅" />
+                tools:text="泰拉雅 2 \@3.45" />
 
-            <TextView
-                android:id="@+id/tv_odds"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{data.odds > 0 ? String.format(@string/at_symbol, data.odds) : null}"
-                android:textColor="@color/red2"
-                android:textSize="@dimen/textSize12sp"
-                tools:text="\@3.45"/>
         </LinearLayout>
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="4dp"
-            android:background="@color/gray10" />
+            android:layout_marginTop="10dp"
+            android:background="@color/colorWhite6" />
     </LinearLayout>
 </layout>

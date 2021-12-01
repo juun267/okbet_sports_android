@@ -11,7 +11,10 @@ data class Row(
     @Json(name = "name")
     val name: String,
     @Json(name = "num")
-    val num: Int
+    val num: Int,
+    @Json(name= "icon")
+    val icon: String
 ) {
-    var isExpand = false
+    var isExpand = true
+    var searchList = listOf<League>()
 }

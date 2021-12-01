@@ -8,25 +8,35 @@ import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.db.SportRoomDatabase
 import org.cxct.sportlottery.network.manager.NetworkStatusManager
 import org.cxct.sportlottery.network.manager.RequestManager
-import org.cxct.sportlottery.repository.InfoCenterRepository
-import org.cxct.sportlottery.repository.LoginRepository
-import org.cxct.sportlottery.repository.SettlementRepository
-import org.cxct.sportlottery.repository.SportMenuRepository
-import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.repository.*
-import org.cxct.sportlottery.ui.bet.record.BetRecordViewModel
+import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 import org.cxct.sportlottery.ui.finance.FinanceViewModel
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.helpCenter.HelpCenterViewModel
 import org.cxct.sportlottery.ui.infoCenter.InfoCenterViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginViewModel
 import org.cxct.sportlottery.ui.login.signUp.RegisterViewModel
+import org.cxct.sportlottery.ui.main.MainViewModel
+import org.cxct.sportlottery.ui.maintenance.MaintenanceViewModel
 import org.cxct.sportlottery.ui.money.recharge.MoneyRechViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordViewModel
-import org.cxct.sportlottery.ui.profileCenter.nickname.NicknameModel
+import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
+import org.cxct.sportlottery.ui.profileCenter.nickname.ModifyProfileInfoViewModel
+import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.profile.ProfileModel
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
+import org.cxct.sportlottery.repository.HostRepository
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
+import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
+import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
 import org.cxct.sportlottery.ui.splash.SplashViewModel
+import org.cxct.sportlottery.ui.statistics.StatisticsViewModel
+import org.cxct.sportlottery.ui.transactionStatus.TransactionStatusViewModel
+import org.cxct.sportlottery.ui.vip.VipViewModel
 import org.cxct.sportlottery.ui.withdraw.WithdrawViewModel
 import org.cxct.sportlottery.util.LanguageManager
 import org.koin.android.ext.koin.androidContext
@@ -43,39 +53,65 @@ import timber.log.Timber.DebugTree
 class MultiLanguagesApplication : Application() {
     companion object {
         lateinit var appContext: Context
+        const val UUID_DEVICE_CODE = "uuidDeviceCode"
+        const val UUID = "uuid"
     }
 
     private val viewModelModule = module {
-        viewModel { SplashViewModel(get()) }
-        viewModel { MoneyRechViewModel(get(), get(), get()) }
-        viewModel { MainViewModel(get(), get(), get(), get(), get()) }
-        viewModel { LoginViewModel(get(), get()) }
-        viewModel { RegisterViewModel(get(), get()) }
-        viewModel { SettlementViewModel(get(), get(), get()) }
-        viewModel { BetRecordViewModel(get(), get()) }
-        viewModel { InfoCenterViewModel(get(), get(), get()) }
-        viewModel { HelpCenterViewModel(get(), get()) }
-        viewModel { WithdrawViewModel(get(), get(), get(), get()) }
-        viewModel { ProfileModel(get(), get(), get()) }
-        viewModel { NicknameModel(get(), get(), get()) }
-        viewModel { SettingPasswordViewModel(get(), get(), get()) }
-        viewModel { FinanceViewModel(get(), get()) }
-        viewModel { ProfileCenterViewModel(get(), get(), get(), get()) }
+
+        viewModel { SplashViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { LoginViewModel(get(), get(), get(), get()) }
+        viewModel { RegisterViewModel(get(), get(), get(), get()) }
+        viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { BetRecordViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { HelpCenterViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { WithdrawViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { ModifyProfileInfoViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { SettingPasswordViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { FeedbackViewModel(get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { FinanceViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { ProfileCenterViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
+        viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+        viewModel { MaintenanceViewModel(get(), get(), get(), get(), get()) }
+        viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { TransactionStatusViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { MyFavoriteViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { CreditRecordViewModel(get(), get(), get(), get(), get(), get()) }
+        viewModel { StatisticsViewModel(get(), get(), get(), get()) }
     }
 
     private val repoModule = module {
-        single { UserInfoRepository(get()) }
+        single { UserInfoRepository(get(), get()) }
         single { LoginRepository(get(), get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
         single { InfoCenterRepository() }
         single { MoneyRepository(get()) }
-        single { BetInfoRepository() }
+        single { BetInfoRepository(get()) }
+        single { AvatarRepository(get(), get()) }
+        single { FeedbackRepository() }
+        single { HostRepository(get()) }
+        single { ThirdGameRepository() }
+        single { WithdrawRepository(get(), get()) }
+        single { PlayQuotaComRepository() }
+        single { MyFavoriteRepository() }
     }
 
     private val dbModule = module {
         single { SportRoomDatabase.getDatabase(get()) }
         single { get<SportRoomDatabase>().userInfoDao() }
+    }
+
+    private val serviceModule = module {
+        factory { ServiceBroadcastReceiver(get()) }
     }
 
     override fun attachBaseContext(base: Context) {
@@ -107,7 +143,8 @@ class MultiLanguagesApplication : Application() {
                 listOf(
                     viewModelModule,
                     repoModule,
-                    dbModule
+                    dbModule,
+                    serviceModule
                 )
             )
         }
@@ -117,6 +154,9 @@ class MultiLanguagesApplication : Application() {
         setupTimber()
 
         initJPush()
+
+        //生成UUID作為設備識別碼
+        setupDeviceCode()
     }
 
     private fun setupTimber() {
@@ -129,5 +169,14 @@ class MultiLanguagesApplication : Application() {
     private fun initJPush() {
         JPushInterface.setDebugMode(true) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
         JPushInterface.init(this)
+    }
+
+    private fun setupDeviceCode() {
+        val devicePreferences = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
+        if (devicePreferences.getString(UUID, null).isNullOrEmpty())
+            devicePreferences
+                .edit()
+                .putString(UUID, java.util.UUID.randomUUID().toString())
+                .apply()
     }
 }

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.menu
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,23 +12,33 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.fragment_menu.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.bet.record.BetRecordActivity
-import org.cxct.sportlottery.ui.helpCenter.HelpCenterActivity
-import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.ui.infoCenter.InfoCenterActivity
+import org.cxct.sportlottery.network.Constants
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.StaticData
+import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.favorite.MyFavoriteActivity
+import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
+import org.cxct.sportlottery.ui.main.MainActivity
+import org.cxct.sportlottery.ui.main.MainViewModel
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterActivity
+import org.cxct.sportlottery.ui.profileCenter.otherBetRecord.OtherBetRecordActivity
+import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordActivity
+import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateActivity
 import org.cxct.sportlottery.ui.results.ResultsSettlementActivity
-import org.cxct.sportlottery.ui.withdraw.BankActivity
-import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
-import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.ui.vip.VipActivity
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.ToastUtil
 
 /**
  * 遊戲右側功能選單
  */
-class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
+@SuppressLint("SetTextI18n")
+class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
     private var mDownMenuListener: View.OnClickListener? = null
 
     override fun onCreateView(
@@ -41,10 +52,17 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupCloseBtn()
         initObserve()
         initEvent()
-        setupSelectLanguage()
         setupVersion()
+        getOddsType()
+    }
+
+    private fun setupCloseBtn() {
+        btn_close.setOnClickListener {
+            mDownMenuListener?.onClick(btn_close)
+        }
     }
 
     private fun getMoney() {
@@ -53,65 +71,88 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
 
     private fun initObserve() {
         viewModel.isLogin.observe(viewLifecycleOwner, Observer {
-            if (it) {
+            if (it)
                 getMoney()
-            }
         })
-        viewModel.userMoney.observe(viewLifecycleOwner, Observer {
-            tv_money.text = "￥" + ArithUtil.toMoneyFormat(it)
+
+        viewModel.isCreditAccount.observe(viewLifecycleOwner, {
+            updateUIVisibility(it)
+        })
+
+        viewModel.userMoney.observe(viewLifecycleOwner, Observer { money ->
+            tv_money.text = "₱" + money?.let { it -> TextUtil.formatMoney(it) }
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, Observer {
-            updateUI(it?.iconUrl, it?.userName)
+            updateUI(it?.iconUrl, it?.userName, it?.nickName, it?.fullName, StaticData.getTestFlag(it?.testFlag))
         })
     }
 
     private fun initEvent() {
-        btn_change_language.setOnClickListener {
-            ChangeLanguageDialog().show(parentFragmentManager, null)
+
+        //個人中心
+        menu_profile_center.setOnClickListener {
+            when (viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    startActivity(Intent(context, ProfileCenterActivity::class.java))
+                }
+                null -> { //尚未登入
+                    startActivity(Intent(context, LoginActivity::class.java))
+                }
+                else -> { //遊客
+                    ToastUtil.showToastInCenter(context, getString(R.string.message_guest_no_permission))
+                }
+            }
+            mDownMenuListener?.onClick(menu_profile_center)
         }
 
-        btn_close.setOnClickListener {
-            mDownMenuListener?.onClick(btn_close)
+        //我的賽事
+        menu_my_favorite.setOnClickListener {
+            startActivity(Intent(context, MyFavoriteActivity::class.java))
+            mDownMenuListener?.onClick(menu_my_favorite)
         }
 
+        //其他投注記錄
+        menu_other_bet_record.setOnClickListener {
+            startActivity(Intent(context, OtherBetRecordActivity::class.java))
+            mDownMenuListener?.onClick(menu_other_bet_record)
+        }
+
+        //會員層級
+        menu_member_level.setOnClickListener {
+            startActivity(Intent(context, VipActivity::class.java))
+            mDownMenuListener?.onClick(menu_member_level)
+        }
+
+        //賽果結算
         menu_game_result.setOnClickListener {
             startActivity(Intent(activity, ResultsSettlementActivity::class.java))
             mDownMenuListener?.onClick(menu_game_result)
         }
 
-        menu_sign_out.setOnClickListener {
-            viewModel.logout()
-            context?.run {
-                MainActivity.reStart(this)
+        //遊戲規則
+        menu_game_rule.setOnClickListener {
+            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
+            mDownMenuListener?.onClick(menu_game_rule)
+        }
+
+        //版本更新
+        menu_version_update.setOnClickListener {
+            startActivity(Intent(activity, VersionUpdateActivity::class.java))
+            mDownMenuListener?.onClick(menu_version_update)
+        }
+
+        //退出登入
+        btn_sign_out.setOnClickListener {
+            viewModel.doLogoutCleanUser {
+                context?.run {
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
+                }
             }
-        }
-
-        menu_bet_history.setOnClickListener {
-            startActivity(Intent(context, BetRecordActivity::class.java))
-        }
-
-        menu_profile_center.setOnClickListener {
-            startActivity(Intent(context, ProfileCenterActivity::class.java))
-            mDownMenuListener?.onClick(menu_profile_center)
-        }
-
-        menu_news.setOnClickListener {
-            startActivity(Intent(context, InfoCenterActivity::class.java))
-            mDownMenuListener?.onClick(menu_news)
-        }
-
-        menu_help.setOnClickListener {
-            startActivity(Intent(context, HelpCenterActivity::class.java))
-            mDownMenuListener?.onClick(menu_help)
-        }
-    }
-
-    private fun setupSelectLanguage() {
-        tv_language.text = when (LanguageManager.getSelectLanguage(tv_language.context)) {
-            LanguageManager.Language.ZH -> getString(R.string.language_cn)
-            LanguageManager.Language.EN -> getString(R.string.language_en)
-            else -> getString(R.string.language_en)
+            mDownMenuListener?.onClick(btn_sign_out)
         }
     }
 
@@ -119,13 +160,47 @@ class MenuFragment : BaseFragment<MainViewModel>(MainViewModel::class) {
         tv_version.text = getString(R.string.label_version, BuildConfig.VERSION_NAME)
     }
 
-    private fun updateUI(iconUrl: String?, userName: String?) {
+    private fun getOddsType() {
+        viewModel.getOddsType()
+    }
+
+    private fun updateUIVisibility(isCreditAccount: Boolean){
+        //其他投注記錄 信用盤 或 第三方關閉 隱藏
+        menu_other_bet_record.visibility = if (isCreditAccount || sConfigData?.thirdOpen != FLAG_OPEN) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+
+        menu_member_level.visibility = if (sConfigData?.thirdOpen != FLAG_OPEN) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+    }
+
+    private fun updateUI(iconUrl: String?, userName: String?, nickName: String?, fullName: String?, testFlag: TestFlag?) {
         Glide.with(this)
             .load(iconUrl)
-            .apply(RequestOptions().placeholder(R.drawable.ic_head))
+            .apply(RequestOptions().placeholder(R.drawable.img_avatar_default))
             .into(iv_head) //載入頭像
 
-        tv_name.text = userName
+        tv_name.text = when (testFlag) {
+            TestFlag.GUEST -> fullName
+            else -> {
+                if (nickName.isNullOrEmpty()) {
+                    userName
+                } else {
+                    nickName
+                }
+            }
+        }
+
+        menu_profile_center.visibility = if (testFlag == TestFlag.GUEST) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
     }
 
     /**

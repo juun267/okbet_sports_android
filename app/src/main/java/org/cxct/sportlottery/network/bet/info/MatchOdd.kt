@@ -1,29 +1,31 @@
 package org.cxct.sportlottery.network.bet.info
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import org.cxct.sportlottery.enum.OddState
+import org.cxct.sportlottery.enum.SpreadState
+import org.cxct.sportlottery.network.error.BetAddError
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
     @Json(name = "awayName")
-    val awayName: String,
+    val awayName: String?,
     @Json(name = "homeName")
-    val homeName: String,
+    val homeName: String?,
     @Json(name = "inplay")
     val inplay: Int,
     @Json(name = "leagueId")
     val leagueId: String,
     @Json(name = "leagueName")
-    val leagueName: String,
+    val leagueName: String?,
     @Json(name = "matchId")
     val matchId: String,
     @Json(name = "odds")
-    val odds: Double,
+    var odds: Double,
+    @Json(name = "hkOdds")
+    var hkOdds: Double,
     @Json(name = "oddsId")
-    val oddsId: String,
-    @Json(name = "oddsType")
-    val oddsType: String,
+    var oddsId: String,
     @Json(name = "playCateId")
     val playCateId: Int,
     @Json(name = "playCateName")
@@ -37,9 +39,24 @@ data class MatchOdd(
     @Json(name = "producerId")
     val producerId: Int,
     @Json(name = "spread")
-    val spread: String,
+    var spread: String,
     @Json(name = "startTime")
-    val startTime: Long,
+    val startTime: Long?,
     @Json(name = "status")
-    val status: Int
-)
+    var status: Int?,
+    @Json(name = "gameType")
+    var gameType: String,
+    @Json(name = "homeScore")
+    var homeScore: Int,
+    @Json(name = "awayScore")
+    var awayScore: Int,
+
+    ) {
+    var oddState: Int = OddState.SAME.state
+    var runnable: Runnable? = null //賠率變更，按鈕顏色變換任務
+    var betAddError: BetAddError? = null
+    var oddsHasChanged = false
+    var spreadState: Int = SpreadState.SAME.state
+    var extInfo: String? = null //球員名稱
+}
+

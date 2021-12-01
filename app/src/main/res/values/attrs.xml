@@ -6,10 +6,36 @@
 
     <declare-styleable name="CustomView">
         <attr name="cvTitle" format="string" />
+        <attr name="cvMarginBottom" format="dimension" />
+        <attr name="cvTitleTextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+        <attr name="cvEnable" format="boolean" />
         <attr name="cvCount" format="string" />
         <attr name="cvIcon" format="reference" />
         <attr name="cvHint" format="string" />
         <attr name="cvText" format="string" />
+        <attr name="cvEms" format="integer" />
+        <attr name="cvTitleMinEms" format="integer" />
+        <attr name="necessarySymbol">
+            <!-- Visible on screen; the default value. -->
+            <enum name="visible" value="0x00000000" />
+            <!-- Not displayed, but taken into account during layout (space is left for it). -->
+            <enum name="invisible" value="0x00000004" />
+            <!-- Completely hidden, as if the view had not been added. -->
+            <enum name="gone" value="0x00000008" />
+        </attr>
+        <attr name="arrowSymbolVisibility">
+            <!-- Visible on screen; the default value. -->
+            <enum name="visible" value="0x00000000" />
+            <!-- Not displayed, but taken into account during layout (space is left for it). -->
+            <enum name="invisible" value="0x00000004" />
+            <!-- Completely hidden, as if the view had not been added. -->
+            <enum name="gone" value="0x00000008" />
+        </attr>
         <attr name="cvInputType">
             <!-- Just plain old text.  Corresponds to
             {@link android.text.InputType#TYPE_CLASS_TEXT} |
@@ -23,8 +49,37 @@
             {@link android.text.InputType#TYPE_CLASS_NUMBER} |
             {@link android.text.InputType#TYPE_NUMBER_VARIATION_NORMAL}. -->
             <flag name="number" value="0x00000002" />
+            <flag name="numberPassword" value="0x00000012" />
         </attr>
         <attr name="cvEnableVerificationCode" format="boolean" />
+        <attr name="cvEnableMoreBtn" format="boolean" />
+        <attr name="cvSpanCount" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="SpinnerWithTitleAtStartStyle">
+        <attr name="titleText" format="string" />
+        <attr name="spinnerLayout" format="reference" />
+        <attr name="spinnerTitle" format="string" />
+        <attr name="spinnerIsShowCloseButton" format="boolean" />
+        <attr name="spinnerList" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CalendarBottomSheetStyle">
+        <attr name="calendarLayout" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="StatusBottomSheetStyle">
+        <attr name="sheetLayout" format="reference" />
+        <attr name="defaultStatusText" format="string" />
+        <attr name="defaultBottomSheetTitleText" format="string" />
+        <attr name="bottomSheetShowCloseButton" format="boolean" />
+        <attr name="arrowAtEnd" format="boolean" />
+        <attr name="horizontalChainStyle" format="enum">
+            <enum name="spread" value="0" />
+            <enum name="spread_inside" value="1" />
+            <enum name="packed" value="2" />
+        </attr>
+        <attr name="arrowSrc" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="ToolBarView">
@@ -56,4 +111,22 @@
             <enum name="at_start" value="5" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="GameFilterRow" />
+
+    <declare-styleable name="GameListView" />
+
+    <declare-styleable name="OddButton" />
+
+    <declare-styleable name="OddsButton">
+        <attr name="ob_fillet" format="boolean" />
+        <attr name="ob_background" format="reference" />
+        <attr name="ob_hide_item_flag" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="BottomNavigationItem">
+        <attr name="btiTitle" format="string" />
+        <attr name="btiIcon" format="reference" />
+    </declare-styleable>
+
 </resources>

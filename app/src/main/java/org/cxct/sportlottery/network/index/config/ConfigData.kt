@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.index.config
 
 data class ConfigData(
+    val platformId: Long?,
     val agentMode: String?, //代理模式：ulimit 无限级，fixed 固定级
     val agentUrl: String?, //代理地址
     val agentZxkfUrl: String?, //代理专属客服地址
@@ -77,5 +78,10 @@ data class ConfigData(
     val withDrawBalanceLimit: String?, //最低提现金额限制
     val zalo: String?,
     val zaloLink: String?,
-    val zaloQR: String?
+    val zaloQR: String?,
+    val sportAnimation: String?,//体育动画接口 20210812確認暫時無用處
+    val liveUrl: String?,
+    val analysisUrl: String?,
+    val referUrl: String?,
+    val presetBetAmount: List<Int>? //前台预设下注金额配置
 )

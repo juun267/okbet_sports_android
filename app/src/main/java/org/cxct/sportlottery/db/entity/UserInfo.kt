@@ -57,5 +57,23 @@ data class UserInfo(
     val setted: Int? = null, //是否设置过昵称 0单标未设置过 1代表设置过
 
     @ColumnInfo(name = "user_rebate_list")
-    val userRebateList: List<UserRebate>? = null
+    val userRebateList: List<UserRebate>? = null,
+
+    @ColumnInfo(name = "credit_account")
+    val creditAccount: Int? = null,
+
+    @ColumnInfo(name = "credit_status")
+    val creditStatus: Int? = null,
+
+    @ColumnInfo(name = "maxBetMoney")//会员对应vip层级的单注最大下注额
+    val maxBetMoney: Int? = null,
+
+    @ColumnInfo(name = "maxParlayBetMoney")//会员对应vip层级的串关最大下注额
+    val maxParlayBetMoney: Int? = null,
+
+    @ColumnInfo(name = "maxCpBetMoney")//会员对应vip层级的单注冠军最大下注额
+    val maxCpBetMoney: Int? = null,
+
+    @ColumnInfo(name = "discount")
+    val discount: Float? = null
 )

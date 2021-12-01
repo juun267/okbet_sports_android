@@ -69,28 +69,6 @@ object FileUtil {
         }
     }
 
-    @Deprecated("inputStream 在同一個地方 open 跟 close 感覺比較好。 另創建 fun readStringFromAssetManager() 取代")
-    @JvmStatic
-    fun readStringFromInputStream(inputStream: InputStream?): String? {
-        var inputStreamReader: InputStreamReader? = null
-        var builder: StringBuilder? = null
-        try {
-            inputStreamReader = InputStreamReader(inputStream, "utf-8")
-            val reader = BufferedReader(inputStreamReader)
-            builder = StringBuilder()
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                builder.append(line)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            closeQuietly(inputStream)
-        }
-        return builder?.toString()
-    }
-
-
     fun deleteFile(file: File?): Boolean {
         val flag = false
         return if (file == null || !file.exists()) {

@@ -1,23 +1,18 @@
 package org.cxct.sportlottery.ui.profileCenter.changePassword
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.View
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_setting_password.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.entity.UserInfo
-import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdRequest
 import org.cxct.sportlottery.network.user.updateFundPwd.UpdateFundPwdResult
-import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdRequest
 import org.cxct.sportlottery.network.user.updatePwd.UpdatePwdResult
 import org.cxct.sportlottery.repository.FLAG_IS_NEED_UPDATE_PAY_PW
-import org.cxct.sportlottery.ui.base.BaseActivity
-import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.ToastUtil
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.login.LoginEditText
 
-class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
+class SettingPasswordActivity :
+    BaseSocketActivity<SettingPasswordViewModel>(SettingPasswordViewModel::class) {
     companion object {
         const val PWD_PAGE = "PWD_PAGE"
     }
@@ -66,65 +61,56 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
 
     private fun setupEditText() {
         //當失去焦點才去檢查 inputData
-        et_current_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
+        setupEditTextFocusChangeEvent(et_current_password) { viewModel.checkCurrentPwd(it) }
+        setupEditTextFocusChangeEvent(et_new_password) {
+            viewModel.checkNewPwd(
+                mPwdPage,
+                et_current_password.getText(),
+                it
+            )
         }
-        et_new_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
+        setupEditTextFocusChangeEvent(et_confirm_password) {
+            viewModel.checkConfirmPwd(
+                et_new_password.getText(),
+                it
+            )
         }
-        et_confirm_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+    }
+
+    private fun setupEditTextFocusChangeEvent(editText: LoginEditText, listener: (String) -> Unit) {
+        editText.setEditTextOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus)
-                checkInputData()
+                listener.invoke(editText.getText())
         }
     }
 
     private fun setupConfirmButton() {
         btn_confirm.setOnClickListener {
-            if (checkInputData()) {
-                when (mPwdPage) {
-                    PwdPage.LOGIN_PWD -> updatePwd()
-                    PwdPage.BANK_PWD -> updateFundPwd()
-                }
-            }
+            checkInputData()
         }
     }
 
-    private fun checkInputData(): Boolean {
-        return viewModel.checkInputField(mPwdPage, this, et_current_password.getText(), et_new_password.getText(), et_confirm_password.getText())
-    }
-
-    private fun updatePwd() {
-        val updatePwdRequest = UpdatePwdRequest(
-            userId = mUserInfo?.userId ?: return,
-            platformId = mUserInfo?.platformId ?: return,
-            oldPassword = MD5Util.MD5Encode(et_current_password.getText()),
-            newPassword = MD5Util.MD5Encode(et_new_password.getText())
+    private fun checkInputData() {
+        viewModel.checkInputField(
+            mPwdPage,
+            et_current_password.getText(),
+            et_new_password.getText(),
+            et_confirm_password.getText()
         )
-
-        loading()
-        viewModel.updatePwd(updatePwdRequest)
-    }
-
-    private fun updateFundPwd() {
-        val updateFundPwdRequest = UpdateFundPwdRequest(
-            userId = mUserInfo?.userId ?: return,
-            platformId = mUserInfo?.platformId ?: return,
-            oldPassword = MD5Util.MD5Encode(et_current_password.getText()),
-            newPassword = MD5Util.MD5Encode(et_new_password.getText())
-        )
-
-        loading()
-        viewModel.updateFundPwd(updateFundPwdRequest)
     }
 
     private fun initObserve() {
-        viewModel.passwordFormState.observe(this, Observer {
-            val passwordState = it ?: return@Observer
-            et_current_password.setError(passwordState.currentPwdError)
-            et_new_password.setError(passwordState.newPwdError)
-            et_confirm_password.setError(passwordState.confirmPwdError)
+
+        viewModel.currentPwdError.observe(this, Observer {
+            et_current_password.setError(it)
+        })
+
+        viewModel.newPwdError.observe(this, Observer {
+            et_new_password.setError(it)
+        })
+
+        viewModel.confirmPwdError.observe(this, Observer {
+            et_confirm_password.setError(it)
         })
 
         viewModel.updatePwdResult.observe(this, Observer {
@@ -144,29 +130,45 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
     private fun updateUiWithResult(updatePwdResult: UpdatePwdResult?) {
         hideLoading()
         if (updatePwdResult?.success == true) {
-            ToastUtil.showToast(this, getString(R.string.update_login_pwd))
-            finish()
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.update_login_pwd)
+            ) { finish() }
         } else {
             val errorMsg = updatePwdResult?.msg ?: getString(R.string.unknown_error)
-            showErrorDialog(errorMsg)
+            showErrorPromptDialog(getString(R.string.prompt), errorMsg) {}
         }
     }
 
     private fun updateUiWithResult(updateFundPwdResult: UpdateFundPwdResult?) {
         hideLoading()
         if (updateFundPwdResult?.success == true) {
-            showPromptDialog(getString(R.string.setting_password), getString(R.string.update_withdrawal_pwd)) { finish() }
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.update_withdrawal_pwd)
+            ) { finish() }
         } else {
             val errorMsg = updateFundPwdResult?.msg ?: getString(R.string.unknown_error)
-            showErrorDialog(errorMsg)
+            showErrorPromptDialog(getString(R.string.prompt), errorMsg) {}
         }
     }
 
     private fun updateCurrentPwdEditTextHint(pwdPage: PwdPage, updatePayPw: Int?) {
-        if (pwdPage == PwdPage.BANK_PWD && updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW)
+        if (pwdPage == PwdPage.LOGIN_PWD) {
+            et_current_password.setTitle(getString(R.string.current_login_password))
             et_current_password.setHint(getString(R.string.hint_current_login_password))
-        else
-            et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
+            et_new_password.setHint(getString(R.string.hint_register_password))
+        } else {
+
+            if (updatePayPw == FLAG_IS_NEED_UPDATE_PAY_PW) {
+                et_current_password.setTitle(getString(R.string.current_login_password))
+                et_current_password.setHint(getString(R.string.hint_current_login_password))
+            } else {
+                et_current_password.setTitle(getString(R.string.current_withdrawal_password))
+                et_current_password.setHint(getString(R.string.hint_current_withdrawal_password))
+            }
+            et_new_password.setHint(getString(R.string.hint_withdrawal_new_password))
+        }
     }
 
     private fun cleanField() {
@@ -178,14 +180,5 @@ class SettingPasswordActivity : BaseActivity<SettingPasswordViewModel>(SettingPa
 
         et_confirm_password.setText(null)
         et_confirm_password.setError(null)
-    }
-
-    private fun showErrorDialog(errorMsg: String?) {
-        val dialog = CustomAlertDialog(this)
-        dialog.setMessage(errorMsg)
-        dialog.setNegativeButtonText(null)
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
     }
 }

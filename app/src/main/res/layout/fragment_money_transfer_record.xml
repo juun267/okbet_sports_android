@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".ui.profileCenter.money_transfer.MoneyTransferActivity"
+    tools:ignore="spUsage">
+
+    <org.cxct.sportlottery.ui.component.DateRangeSearchView
+        android:id="@+id/date_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/date_search_bar">
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/selector_out_plat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:arrowAtEnd="true"
+            app:defaultStatusText="@string/all_out_plat" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorWhite6" />
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/selector_in_plat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:arrowAtEnd="true"
+            app:defaultStatusText="@string/all_in_plat" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="14dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorWhite6" />
+
+        <org.cxct.sportlottery.ui.component.StatusSelectorView
+            android:id="@+id/selector_transfer_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:arrowAtEnd="true"
+            app:defaultStatusText="@string/all_status" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite3"
+        android:orientation="horizontal"
+        android:paddingVertical="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selector_transfer_status">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+
+            android:text="@string/record_time"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/money"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/transfer_platform"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/status"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize12sp"
+            app:autoSizeMaxTextSize="@dimen/textSize12sp"
+            app:autoSizeMinTextSize="@dimen/textSize8sp" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/view_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srlDragRate="0.3"
+            app:srlEnableLoadMore="true"
+            app:srlEnablePureScrollMode="true">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_record"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_money_transfer_history" />
+
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+        <ImageView
+            android:id="@+id/iv_scroll_to_top"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="bottom|start"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@drawable/bg_circle_gray6_alpha50"
+            android:padding="14dp"
+            android:src="@drawable/ic_scroll_to_top" />
+    </FrameLayout>
+
+
+</LinearLayout>
+

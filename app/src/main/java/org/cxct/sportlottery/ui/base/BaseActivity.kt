@@ -2,30 +2,27 @@ package org.cxct.sportlottery.ui.base
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.layout_bet_info_list_float_button.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.service.SERVICE_SEND_DATA
-import org.cxct.sportlottery.ui.bet.list.BetInfoListDialog
-import org.cxct.sportlottery.ui.bet.list.BetInfoListParlayDialog
+import org.cxct.sportlottery.repository.FLAG_OPEN
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
-import org.cxct.sportlottery.ui.home.MainActivity
-import org.cxct.sportlottery.ui.home.MainViewModel
-import org.cxct.sportlottery.ui.home.broadcast.BroadcastRepository
-import org.cxct.sportlottery.ui.home.broadcast.ServiceBroadcastReceiver
+import org.cxct.sportlottery.ui.common.StatusSheetAdapter
+import org.cxct.sportlottery.ui.common.StatusSheetData
+import org.cxct.sportlottery.ui.game.GameActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
@@ -34,75 +31,24 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
 
     private var mLayoutHandler = Handler(Looper.getMainLooper())
     private var mPromptDialog: CustomAlertDialog? = null
+    private var mTokenPromptDialog: CustomAlertDialog? = null
+    private var mOnNetworkExceptionListener: View.OnClickListener? = null
 
     val viewModel: T by viewModel(clazz = clazz)
 
     private var loadingView: View? = null
 
-    private var floatButtonView: View? = null
-
-    private val mReceiver by lazy {
-        ServiceBroadcastReceiver()
+    val bottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(this) }
+    private val bottomSheetView: View by lazy {
+        LayoutInflater.from(this).inflate(R.layout.dialog_bottom_sheet_custom, null)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         onTokenStateChanged()
         onNetworkException()
-        subscribeBroadCastReceiver()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        removeBroadcast()
-    }
-
-    private fun subscribeBroadCastReceiver() {
-        val filter = IntentFilter().apply {
-            addAction(SERVICE_SEND_DATA)
-        }
-
-        val bcRepository = BroadcastRepository().instance()
-        bcRepository.addDataSources(
-                mReceiver.globalStop,
-                mReceiver.matchClock,
-                mReceiver.matchOddsChange,
-                mReceiver.matchStatusChange,
-                mReceiver.notice,
-                mReceiver.oddsChange,
-                mReceiver.orderSettlement,
-                mReceiver.pingPong,
-                mReceiver.producerUp,
-                mReceiver.userMoney,
-                mReceiver.userNotice
-        )
-        registerReceiver(mReceiver, filter)
-    }
-
-    private fun removeBroadcast() {
-
-        val bcRepository = BroadcastRepository().instance()
-        bcRepository.removeDataSource(
-                mReceiver.globalStop,
-                mReceiver.matchClock,
-                mReceiver.matchOddsChange,
-                mReceiver.matchStatusChange,
-                mReceiver.notice,
-                mReceiver.oddsChange,
-                mReceiver.orderSettlement,
-                mReceiver.pingPong,
-                mReceiver.producerUp,
-                mReceiver.userMoney,
-                mReceiver.userNotice
-        )
-
-        unregisterReceiver(mReceiver)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        createOddButton()
     }
 
     private fun onTokenStateChanged() {
@@ -112,20 +58,33 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun showDialogLogout(message: String) {
-        val dialog = CustomAlertDialog(this)
-        dialog.setMessage(message)
-        dialog.setPositiveClickListener {
-            MainActivity.reStart(this)
-            dialog.dismiss()
+        showTokenPromptDialog(message) {
+            viewModel.doLogoutCleanUser {
+                if (sConfigData?.thirdOpen == FLAG_OPEN) MainActivity.reStart(this) else GameActivity.reStart(this)
+            }
         }
-        dialog.setNegativeButtonText(null)
-        dialog.show()
     }
 
     private fun onNetworkException() {
-        viewModel.networkExceptionUnknown.observe(this, Observer {
-            //TODO show network exception message
+        viewModel.networkExceptionUnavailable.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
         })
+
+        viewModel.networkExceptionTimeout.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
+        })
+
+        viewModel.networkExceptionUnknown.observe(this, {
+            hideLoading()
+            showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
+        })
+    }
+
+    //20210526 紀錄：call webAPI 的 exception 錯誤提示統一在 BackActivity 處理，若有需要 callback 再使用此 fun
+    fun setOnNetworkExceptionListener(listener: View.OnClickListener?) {
+        mOnNetworkExceptionListener = listener
     }
 
     /*弹出加载界面*/
@@ -160,10 +119,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     fun hideSoftKeyboard(activity: Activity) {
         try {
             val inputMethodManager = activity.getSystemService(
-                    Activity.INPUT_METHOD_SERVICE
+                Activity.INPUT_METHOD_SERVICE
             ) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(
-                    activity.currentFocus?.windowToken, 0
+                activity.currentFocus?.windowToken, 0
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -174,84 +133,87 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         Toast.makeText(applicationContext, R.string.connect_first, Toast.LENGTH_SHORT).show()
     }
 
-    private fun createOddButton() {
-        if (floatButtonView != null) return
-        val contentView: ViewGroup = window.decorView.findViewById(android.R.id.content)
-        floatButtonView = LayoutInflater.from(this).inflate(R.layout.layout_bet_info_list_float_button, contentView, false)
-        contentView.addView(floatButtonView)
+    private fun showTokenPromptDialog(errorMessage: String, positiveClickListener: () -> Unit?) {
+        safelyUpdateLayout(Runnable {
+            try {
+                //防止跳出多個 error dialog
+                if (mTokenPromptDialog?.isShowing == true)
+                    return@Runnable
 
-        betFloatButtonVisible(false)//default
+                mTokenPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                    setTextColor(R.color.colorRed)
+                    setTitle(getString(R.string.prompt))
+                    setMessage(errorMessage)
+                    setPositiveButtonText(getString(R.string.btn_determine))
+                    setNegativeButtonText(null)
+                    setPositiveClickListener(View.OnClickListener {
+                        positiveClickListener()
+                        mTokenPromptDialog?.dismiss()
+                        mTokenPromptDialog = null
+                    })
 
-        viewModel.betInfoRepository?.betInfoList?.observe(this, Observer {
-            if (it != null) {
-                viewModel.betInfoRepository?.isParlayPage?.value?.let { isParlay ->
-                    val size = if (it.size == 0) 0 else if (isParlay) 1 else it.size
-                    checkBetInfoList(size)
+                    setCanceledOnTouchOutside(false)
+                    setCancelable(false) //不能用系統 BACK 按鈕關閉 dialog
+                    show()
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         })
-
-        viewModel.betInfoRepository?.isParlayPage?.observe(this, Observer {
-            viewModel.betInfoRepository?.betInfoList?.value?.size?.let { size ->
-                if (it) {
-                    checkBetInfoList(if (size == 0) 0 else 1)
-                } else {
-                    checkBetInfoList(size)
-                }
-            }
-        })
-
-        rl_bet_float_button.setOnClickListener {
-            viewModel.betInfoRepository?.isParlayPage?.value?.let {
-                if (it) {
-                    BetInfoListParlayDialog().show(supportFragmentManager, BetInfoListParlayDialog.TAG)
-                } else {
-                    BetInfoListDialog().show(supportFragmentManager, BetInfoListDialog.TAG)
-                }
-            }
-        }
-
-
-        //default
-        viewModel.betInfoRepository?.let {
-            checkBetInfoList(it.betList.size)//test
-            it._betInfoList.postValue(it.betList)
-        }
-
     }
 
-    private fun checkBetInfoList(count: Int) {
-        if (count > 0) {
-            betFloatButtonVisible(true)
-            setBetCount(count)
-        } else {
-            betFloatButtonVisible(false)
-        }
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialog(title, message, null, positiveClickListener, false)
     }
 
-    open fun betFloatButtonVisible(visible: Boolean) {
-        rl_bet_float_button.visibility = if (visible) View.VISIBLE else View.GONE
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        buttonText: String?,
+        isShowDivider: Boolean,
+        positiveClickListener: () -> Unit?
+    ) {
+        showPromptDialog(title, message, buttonText, positiveClickListener, false, isShowDivider)
     }
 
-    open fun setBetCount(count: Int) {
-        tv_bet_count.text = count.toString()
+    fun showErrorPromptDialog(message: String, positiveClickListener: () -> Unit?) {
+        showErrorPromptDialog(getString(R.string.error), message, positiveClickListener)
     }
 
-    fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
-        showPromptDialog(title, message, null, positiveClickListener)
+    fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
+        showPromptDialog(title, message, null, positiveClickListener, true)
     }
 
-    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?) {
+    fun showPromptDialog(
+        title: String?,
+        errorMessage: String?,
+        buttonText: String?,
+        positiveClickListener: () -> Unit?,
+        isError: Boolean,
+        isShowDivider: Boolean? = false
+    ) {
         safelyUpdateLayout(Runnable {
             try {
                 //防止跳出多個 error dialog
                 if (mPromptDialog?.isShowing == true)
                     mPromptDialog?.dismiss()
+                if (mTokenPromptDialog?.isShowing == true) {
+                    mPromptDialog?.dismiss()
+                    return@Runnable
+                }
 
                 mPromptDialog = CustomAlertDialog(this@BaseActivity).apply {
+                    if (isError) {
+                        setTextColor(R.color.colorRed)
+                    }
+                    setShowDivider(isShowDivider)
                     setTitle(title)
                     setMessage(errorMessage)
-                    setPositiveButtonText(buttonText ?: getString(R.string.btn_confirm))
+                    setPositiveButtonText(buttonText ?: getString(R.string.btn_determine))
                     setNegativeButtonText(null)
                     setPositiveClickListener(View.OnClickListener {
                         positiveClickListener()
@@ -266,6 +228,36 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
                 e.printStackTrace()
             }
         })
+    }
+
+    fun showBottomSheetDialog(
+        title: String?,
+        dataList: List<StatusSheetData>,
+        defaultData: StatusSheetData,
+        itemClickListener: StatusSheetAdapter.ItemCheckedListener,
+        isShowSelectAll: Boolean = false,
+    ) {
+        bottomSheetView.apply {
+            sheet_tv_title.text = title
+
+            checkbox_select_all.visibility = if (isShowSelectAll) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+            sheet_rv_more.adapter =
+                StatusSheetAdapter(itemClickListener).apply {
+                    this.dataList = dataList
+                    this.defaultCheckedCode = defaultData.code
+                }
+
+            sheet_tv_close.setOnClickListener {
+                bottomSheet.dismiss()
+            }
+        }
+        bottomSheet.setContentView(bottomSheetView)
+        bottomSheet.show()
     }
 
     protected fun safelyUpdateLayout(runnable: Runnable) {

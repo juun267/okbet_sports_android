@@ -6,6 +6,8 @@ import org.cxct.sportlottery.network.index.login.LoginData
 
 const val FLAG_OPEN = "1"
 const val FLAG_CLOSE = "0"
+const val FLAG_LIVE = "1"
+const val FLAG_NO_LIVE = "0"
 const val FLAG_IS_NEED_UPDATE_PAY_PW = 1 //尚未設置過資金密碼的 flag，需要更新資金密碼
 const val FLAG_NICKNAME_IS_SET = 1 //已經設置過暱稱
 
@@ -17,3 +19,11 @@ const val PLATFORM_CODE = BuildConfig.CHANNEL_NAME //平台代碼
 const val PROJECT_CODE = "cx_sports" //項目代碼
 
 var sConfigData: ConfigData? = null
+
+class StaticData {
+    companion object{
+        fun getTestFlag(index: Long?): TestFlag? {
+            return TestFlag.values().find { it.index == index }
+        }
+    }
+}

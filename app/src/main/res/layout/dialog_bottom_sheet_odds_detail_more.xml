@@ -5,7 +5,7 @@
     <data>
         <variable
             name="mainViewModel"
-            type="org.cxct.sportlottery.ui.home.MainViewModel" />
+            type="org.cxct.sportlottery.ui.main.MainViewModel" />
     </data>
 
     <LinearLayout
@@ -17,7 +17,7 @@
             tools:ignore="UselessParent"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/bottom_sheet_top_bar_background">
+            android:background="@color/colorWhite2">
 
             <TextView
                 android:id="@+id/tv_close"
@@ -29,15 +29,17 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:text="@string/bottom_sheet_close"
-                android:textColor="@color/bottom_sheet_top_bar_close_text"
-                android:textSize="14sp" />
+                android:textColor="@color/colorGrayLight"
+                android:textSize="@dimen/textSize14sp" />
 
         </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:overScrollMode="never"
             android:id="@+id/rv_more"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/content_odds_detail_more"/>
 
 
     </LinearLayout>

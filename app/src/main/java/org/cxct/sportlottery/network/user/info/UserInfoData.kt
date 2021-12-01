@@ -16,7 +16,7 @@ data class UserInfoData(
     @Json(name = "facebook")
     val facebook: String?,
     @Json(name = "fullName")
-    val fullName: String,
+    val fullName: String?,
     @Json(name = "hideFlag")
     val hideFlag: Int?,
     @Json(name = "iconUrl")
@@ -72,5 +72,19 @@ data class UserInfoData(
     @Json(name = "whatsapp")
     val whatsapp: String?,
     @Json(name = "zalo")
-    val zalo: String?
+    val zalo: String?,
+    @Json(name = "growth")
+    val growth: Long?,
+    @Json(name = "creditAccount")
+    val creditAccount: Int?,
+    @Json(name = "creditStatus")
+    val creditStatus: Int?,
+    @Json(name = "maxBetMoney")
+    val maxBetMoney: Int?,
+    @Json(name = "maxCpBetMoney")
+    val maxCpBetMoney: Int?,
+    @Json(name = "maxParlayBetMoney")
+    val maxParlayBetMoney: Int?,
+    @Json(name = "discount")
+    val discount: Float?
 )

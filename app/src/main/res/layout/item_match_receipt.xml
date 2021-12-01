@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="20dp">
+
+    <TextView
+        android:id="@+id/tv_play_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="日本奥运队" />
+
+    <TextView
+        android:id="@+id/tv_spread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize15sp"
+        android:layout_marginStart="4dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/tv_play_name"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_play_name"
+        tools:text="1.5/2" />
+
+    <TextView
+        android:id="@+id/tv_match_at"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="\＠"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize15sp"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_play_name"
+        app:layout_constraintStart_toEndOf="@+id/tv_spread" />
+
+    <TextView
+        android:id="@+id/tv_match_odd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize15sp"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_match_at"
+        app:layout_constraintTop_toTopOf="@id/tv_play_name"
+        tools:text="0.89" />
+
+    <TextView
+        android:id="@+id/tv_league"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tv_play_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_play_name"
+        tools:text="奥林匹克运动会2020男子足球(在日本)D组特别投注" />
+
+    <TextView
+        android:id="@+id/tv_team_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintStart_toStartOf="@id/tv_play_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_league"
+        tools:text="日本奥运队" />
+
+
+    <TextView
+        android:id="@+id/tv_verse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/verse"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_team_home"
+        app:layout_constraintTop_toTopOf="@+id/tv_team_home" />
+
+    <TextView
+        android:id="@+id/tv_team_away"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_verse"
+        app:layout_constraintTop_toTopOf="@+id/tv_team_home"
+        tools:text="纽西兰奥运队" />
+
+    <TextView
+        android:id="@+id/tv_match_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize13sp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_team_home"
+        tools:text="让球" />
+
+    <include
+        android:id="@+id/view_receipt_bet"
+        layout="@layout/view_match_receipt_bet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_match_type"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

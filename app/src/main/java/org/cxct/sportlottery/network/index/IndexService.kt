@@ -8,10 +8,13 @@ import org.cxct.sportlottery.network.Constants.INDEX_LOGOUT
 import org.cxct.sportlottery.network.Constants.INDEX_REGISTER
 import org.cxct.sportlottery.network.Constants.INDEX_SEND_SMS
 import org.cxct.sportlottery.network.Constants.INDEX_VALIDATE_CODE
+import org.cxct.sportlottery.network.Constants.LOGIN_FOR_GUEST
 import org.cxct.sportlottery.network.index.checkAccount.CheckAccountResult
+import org.cxct.sportlottery.network.index.checktoken.CheckTokenResult
 import org.cxct.sportlottery.network.index.config.ConfigResult
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
+import org.cxct.sportlottery.network.index.login_for_guest.LoginForGuestRequest
 import org.cxct.sportlottery.network.index.logout.LogoutRequest
 import org.cxct.sportlottery.network.index.logout.LogoutResult
 import org.cxct.sportlottery.network.index.register.RegisterRequest
@@ -50,5 +53,8 @@ interface IndexService {
     suspend fun checkAccountExist(@Path("userName") userName: String): Response<CheckAccountResult>
 
     @POST(INDEX_CHECK_TOKEN)
-    suspend fun checkToken(): Response<LoginResult>
+    suspend fun checkToken(): Response<CheckTokenResult>
+
+    @POST(LOGIN_FOR_GUEST)
+    suspend fun loginForGuest(@Body loginForGuestRequest: LoginForGuestRequest): Response<LoginResult>
 }

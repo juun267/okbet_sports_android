@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dot">・</string>
+    <string name="greet">Hi!</string>
+    <string name="tilde">～</string>
+    <string name="start">*</string>
+    <string name="verse_lower">&#160;&#160;vs&#160;&#160;</string>
+    <string name="verse_">&#160;&#160;v&#160;&#160;</string>
+    <string name="unknown_data">–</string>
+    <string name="percent">%</string>
+    <string name="id">ID</string>
+    <string name="at">\u0040</string>
+
+
+    <!--  Member Level Page  -->
+    <string name="level_one">VIP1</string>
+    <string name="level_two">VIP2</string>
+    <string name="level_three">VIP3</string>
+    <string name="level_four">VIP4</string>
+    <string name="level_five">VIP5</string>
+    <string name="level_six">VIP6</string>
+
+    <!--bet record-->
+    <string name="at_symbol">\u0040%s</string>
+    <string name="nothing">--</string>
+    <string name="draw_or_cancel">0.000</string>
+
+    <!--game hall-->
+    <string name="match_type_row_btn_double">1 X 2</string>
+
+    <!--  Withdraw  -->
+    <string name="currency">PHP</string>
+<!--    <string name="finance_rmb">%s RMB</string>-->
+    <string name="finance_rmb">%s PHP</string>
+
+    <!--keyboard-->
+    <string name="keyboard_code_delete">-5</string>
+    <string name="keyboard_code_insert_dot">-48</string>
+    <string name="keyboard_code_insert_0">48</string>
+    <string name="keyboard_code_plus_10">-10</string>
+    <string name="keyboard_code_plus_50">-50</string>
+    <string name="keyboard_code_plus_100">-100</string>
+    <string name="keyboard_code_done">-4</string>
+
+    <!--Time-->
+    <string name="time_null">--:--</string>
+
+    <!--date time concat-->
+    <string name="concat_date_time">%s %s</string>
+
+    <!--svg format-->
+    <string name="svg_format">&lt;svg xmlns=\u0027http://www.w3.org/2000/svg\u0027 xmlns:xlink=\u0027http://www.w3.org/1999/xlink\u0027 width=\u0027%d\u0027 height=\u0027%d\u0027 viewBox=\u00270 0 %d %d\u0027 &gt;%s&lt;/svg&gt;</string>
+
+    <string name="dash_no_trans">-</string>
+    <string name="splash_no_trans">/</string>
+    <string name="draw_no_trans">Draw</string>
+
+    <!--Language List-->
+    <string name="language_cn">简体中文</string>
+    <string name="language_en">English</string>
+    <string name="language_vi">Tiếng Việt</string>
+</resources>

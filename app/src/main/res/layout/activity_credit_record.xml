@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
+    tools:context=".ui.profileCenter.creditrecord.CreditRecordActivity"
+    tools:ignore="spUsage">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/credit_record_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/colorBlue"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/credit_bet_record"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/textSize16sp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/credit_record_remain_border"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/credit_record_toolbar" />
+
+    <View
+        android:id="@+id/credit_record_quota_border"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <TextView
+        android:id="@+id/credit_record_remain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/credit_record_remain"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
+        app:layout_constraintStart_toStartOf="@id/credit_record_remain_border"
+        app:layout_constraintTop_toTopOf="@id/credit_record_remain_border" />
+
+    <TextView
+        android:id="@+id/credit_record_remain_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/colorBlue"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
+        app:layout_constraintStart_toEndOf="@id/credit_record_remain"
+        app:layout_constraintTop_toTopOf="@id/credit_record_remain_border"
+        tools:text="15 日" />
+
+    <TextView
+        android:id="@+id/credit_record_deactivate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/credit_record_deactivate"
+        android:textColor="@color/colorRedDark"
+        android:textSize="@dimen/textSize14sp"
+        app:layout_constraintBottom_toBottomOf="@id/credit_record_remain_border"
+        app:layout_constraintStart_toStartOf="@id/credit_record_remain_border"
+        app:layout_constraintTop_toTopOf="@id/credit_record_remain_border"
+        tools:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorWhite4"
+        app:layout_constraintTop_toTopOf="@id/credit_record_quota_border" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/credit_record_quota"
+        app:layout_constraintBottom_toBottomOf="@id/credit_record_quota_border"
+        app:layout_constraintEnd_toStartOf="@id/credit_record_quota_amount"
+        app:layout_constraintTop_toTopOf="@id/credit_record_quota_border" />
+
+    <TextView
+        android:id="@+id/credit_record_quota_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:textColor="@color/colorGreen"
+        android:textSize="@dimen/textSize12sp"
+        app:layout_constraintBottom_toBottomOf="@id/credit_record_quota_border"
+        app:layout_constraintEnd_toEndOf="@id/credit_record_quota_border"
+        app:layout_constraintTop_toTopOf="@id/credit_record_quota_border"
+        tools:text="+34,752.000" />
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_bias="0"
+        app:layout_constraintBottom_toTopOf="@id/credit_record_quota_border"
+        app:layout_constraintTop_toBottomOf="@id/credit_record_remain_border"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/credit_record_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/itemview_credit_record" />
+
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

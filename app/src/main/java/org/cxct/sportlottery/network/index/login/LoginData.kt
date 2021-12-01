@@ -39,5 +39,17 @@ data class LoginData(
     @Json(name = "hyType")
     val hyType: Int?, //会员类型
     @Json(name = "userRebateList")
-    val userRebateList: List<UserRebate>? //用户返点数据
+    val userRebateList: List<UserRebate>?, //用户返点数据
+    @Json(name = "creditAccount")
+    val creditAccount: Int?,
+    @Json(name = "creditStatus")
+    val creditStatus: Int?,
+    @Json(name = "maxBetMoney")
+    val maxBetMoney: Int?,
+    @Json(name = "maxCpBetMoney")
+    val maxCpBetMoney: Int?,
+    @Json(name = "maxParlayBetMoney")
+    val maxParlayBetMoney: Int?,
+    @Json(name = "discount")
+    var discount: Float? //後台維修 暫時修改做測試 要改回val
 )

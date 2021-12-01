@@ -1,61 +1,52 @@
 package org.cxct.sportlottery.ui.odds
 
+
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
+import android.widget.TextView
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_odds_detail.*
+import kotlinx.android.synthetic.main.fragment_odds_detail.rv_detail
+import kotlinx.android.synthetic.main.fragment_odds_detail.tab_cat
+import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
+import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailBinding
-import org.cxct.sportlottery.network.odds.detail.Odd
-import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.home.MainViewModel
+import org.cxct.sportlottery.network.common.FavoriteType
+import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.network.error.HttpError
+import org.cxct.sportlottery.network.odds.MatchInfo
+import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.detail.MatchOdd
+import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
+import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.SocketLinearManager
+import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
-import org.cxct.sportlottery.util.ToastUtil
-
-class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), Animation.AnimationListener, OnOddClickListener {
 
 
-    companion object {
-        const val GAME_TYPE = "gameType"
-        const val TYPE_NAME = "typeName"
-        const val MATCH_ID = "matchId"
-        const val ODDS_TYPE = "oddsType"
-
-        fun newInstance(gameType: String?, typeName: String?, matchId: String, oddsType: String) =
-            OddsDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(GAME_TYPE, gameType)
-                    putString(TYPE_NAME, typeName)
-                    putString(MATCH_ID, matchId)
-                    putString(ODDS_TYPE, oddsType)
-                }
-            }
-    }
+@Suppress("DEPRECATION")
+class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
+    OnOddClickListener {
 
 
-    private var gameType: String? = null
-    private var typeName: String? = null
-    private var matchId: String? = null
-    private var oddsType: String? = null
+    private val args: OddsDetailFragmentArgs by navArgs()
 
 
-    private lateinit var dataBinding: FragmentOddsDetailBinding
+    var matchId: String? = null
+    private var matchOdd: MatchOdd? = null
 
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
@@ -63,96 +54,51 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            gameType = it.getString(GAME_TYPE)
-            typeName = it.getString(TYPE_NAME)
-            matchId = it.getString(MATCH_ID)
-            oddsType = it.getString(ODDS_TYPE)
-        }
+        matchId = args.matchId
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_odds_detail, container, false)
-        dataBinding.apply {
-            view = this@OddsDetailFragment
-            oddsDetailViewModel = this@OddsDetailFragment.viewModel
-            lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
-        }
-        return dataBinding.root
-    }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = FragmentOddsDetailBinding.inflate(inflater, container, false).apply {
+        fragment = this@OddsDetailFragment
+        gameViewModel = this@OddsDetailFragment.viewModel
+        lifecycleOwner = this@OddsDetailFragment.viewLifecycleOwner
+        executePendingBindings()
+    }.root
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
         observeData()
-        observeSocketData()
+        initSocketObserver()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        //TODO if args.matchInfoList is empty than need to get match list to find same league match for more button used.
         getData()
     }
 
+    private fun initUI() {
+        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-    private fun observeSocketData() {
-        viewModel.matchStatusChange.observe(this.viewLifecycleOwner, Observer{
-            if (it == null) return@Observer
-            Log.e(">>>>>", "matchStatusChange")
-        })
-/*
-        viewModel.matchClock.observe(viewLifecycleOwner, Observer{
-            if (it == null) return@Observer
-            Log.e(">>>>>", "matchClock")
-        })
-*/
-
-        viewModel.matchOddsChange.observe(viewLifecycleOwner, Observer{
-            if (it == null) return@Observer
-            //TODO Cheryl: 改變UI (取odds list 中的前兩個, 做顯示判斷, 根據)
-
-            Log.e(">>>>>", "matchOddsChange")
-
-            val newList = arrayListOf<OddsDetailListData>()
-
-            for ( (key, value) in it.odds) {
-                newList.add(
-                    OddsDetailListData(
-                        key,
-                        TextUtil.split(value.typeCodes),
-                        value.name,
-                        value.odds
-                    )
-                )
+            oddsDetailListener = OddsDetailListener {
+                viewModel.pinFavorite(FavoriteType.PLAY_CATE, it, args.gameType.key)
             }
 
-            oddsDetailListAdapter?.updatedOddsDetailDataList = newList
-        })
-    }
-
-
-    private fun initUI() {
-        tv_type_name.text = typeName
-
-        (dataBinding.rvDetail.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment)
-
-        dataBinding.rvDetail.apply {
-            adapter = oddsDetailListAdapter
-            layoutManager = LinearLayoutManager(requireContext())
+            sportCode = args.gameType
         }
 
-        tv_more.setOnClickListener {
-            parentFragmentManager.let {
-                matchId?.let { id ->
-                    OddsDetailMoreFragment.newInstance(id, object : OddsDetailMoreFragment.ChangeGameListener {
-                        override fun refreshData(matchId: String) {
-                            this@OddsDetailFragment.matchId = matchId
-                            getData()
-                        }
-                    }).apply {
-                        show(it, "")
-                    }
-                }
-            }
+        rv_detail.apply {
+            (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+            adapter = oddsDetailListAdapter
+            layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
         tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -164,87 +110,222 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.position?.let { t ->
-                    viewModel.playCateListResult.value?.rows?.get(t)?.code?.let {
-                        (dataBinding.rvDetail.adapter as OddsDetailListAdapter).notifyDataSetChangedByCode(it)
+                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(t)?.code?.let {
+                        oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
                     }
                 }
             }
-        }
-        )
+        })
     }
 
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.playCateListResult.observe(this.viewLifecycleOwner, Observer { result ->
-            result?.success?.let {
-                if (it) {
-                    dataBinding.tabCat.removeAllTabs()
-                    for (row in result.rows) {
-                        dataBinding.tabCat.addTab(dataBinding.tabCat.newTab().setText(row.name), false)
+        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { result ->
+                when (result.success) {
+                    true -> {
+                        result.setupPlayCateTab()
+
+                        matchOdd = result.oddsDetailData?.matchOdd
+                        result.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
+                            result.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
+                                oddsDetailListAdapter?.homeName = home
+                                oddsDetailListAdapter?.awayName = away
+                            }
+                        }
+                        setupStartTime(matchOdd?.matchInfo)
+                    }
+                    false -> {
+                        showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
                     }
                 }
             }
         })
 
-        viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, Observer {
-
-            it?.oddsDetailData?.matchOdd?.matchInfo?.startTime?.let { time ->
-                dataBinding.tvTime.text = TimeUtil.stampToDate(time.toLong())
-            }
-
-            it?.oddsDetailData?.matchOdd?.matchInfo?.homeName?.let { home ->
-                it.oddsDetailData.matchOdd.matchInfo.awayName.let { away ->
-                    val strVerse = getString(R.string.verse_)
-                    val strMatch = "$home${strVerse}$away"
-                    val color = ContextCompat.getColor(requireContext(), R.color.text_focus)
-                    val startPosition = strMatch.indexOf(strVerse)
-                    val endPosition = startPosition + strVerse.length
-                    val style = SpannableStringBuilder(strMatch)
-                    style.setSpan(ForegroundColorSpan(color), startPosition, endPosition, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    dataBinding.tvMatch.text = style
-
+        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { list ->
+                if (list.isNotEmpty()) {
+                    oddsDetailListAdapter?.oddsDetailDataList = list
+                } else {
+                    navGameInPlay()
                 }
             }
         })
 
-        viewModel.oddsDetailList.observe(this.viewLifecycleOwner, Observer {
-            oddsDetailListAdapter?.oddsDetailDataList?.clear()
-            oddsDetailListAdapter?.oddsDetailDataList?.addAll(it)
-            dataBinding.tabCat.getTabAt(0)?.select()
-        })
-
-        viewModel.betInfoRepository?.betInfoList?.observe(this.viewLifecycleOwner, Observer {
-            oddsDetailListAdapter?.setBetInfoList(it)
-        })
-
-        viewModel.betInfoRepository?.isParlayPage?.observe(this.viewLifecycleOwner, Observer {
-            oddsDetailListAdapter?.setCurrentMatchId(if (it) matchId else null)
-        })
-
-        viewModel.betInfoResult.observe(this.viewLifecycleOwner, Observer {
-            if (it?.success != true) {
-                ToastUtil.showBetResultToast(requireActivity(), it?.msg?: getString(R.string.unknown_error), false)
+        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+            it.peekContent().let { list ->
+                oddsDetailListAdapter?.betInfoList = list
             }
         })
 
+        viewModel.betInfoResult.observe(this.viewLifecycleOwner, {
+            val eventResult = it.getContentIfNotHandled()
+            eventResult?.success?.let { success ->
+                if (!success && eventResult.code != HttpError.BET_INFO_CLOSE.code) {
+                    showErrorPromptDialog(getString(R.string.prompt), eventResult.msg) {}
+                }
+            }
+        })
+
+        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+            oddsDetailListAdapter?.oddsType = it
+        })
+
+        viewModel.favorPlayCateList.observe(this.viewLifecycleOwner, {
+            oddsDetailListAdapter?.let { oddsDetailListAdapter ->
+                val playCate = it.find { playCate ->
+                    playCate.gameType == args.gameType.key
+                }
+
+                val playCateCodeList = playCate?.code?.let { it1 ->
+                    if (it1.isNotEmpty()) {
+                        TextUtil.split(it1)
+                    } else {
+                        mutableListOf()
+                    }
+                }
+
+                val pinList = oddsDetailListAdapter.oddsDetailDataList.filter {
+                    playCateCodeList?.contains(it.gameType) ?: false
+                }.sortedByDescending { oddsDetailListData ->
+                    playCateCodeList?.indexOf(oddsDetailListData.gameType)
+                }
+
+                val epsSize = oddsDetailListAdapter.oddsDetailDataList.groupBy {
+                    it.gameType == PlayCate.EPS.value
+                }[true]?.size ?: 0
+
+                oddsDetailListAdapter.oddsDetailDataList.sortBy { it.originPosition }
+                oddsDetailListAdapter.oddsDetailDataList.forEach {
+                    it.isPin = false
+                }
+
+                pinList.forEach {
+                    it.isPin = true
+
+                    oddsDetailListAdapter.oddsDetailDataList.add(
+                        epsSize,
+                        oddsDetailListAdapter.oddsDetailDataList.removeAt(
+                            oddsDetailListAdapter.oddsDetailDataList.indexOf(
+                                it
+                            )
+                        )
+                    )
+                }
+
+                oddsDetailListAdapter.notifyDataSetChanged()
+            }
+        })
+    }
+
+    private fun initSocketObserver() {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+            it?.let { matchOddsChangeEvent ->
+                matchOddsChangeEvent.updateOddsSelectedState()
+
+                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                    if (SocketUpdateUtil.updateMatchOdds(
+                            oddsDetailListData,
+                            matchOddsChangeEvent
+                        )
+                        && oddsDetailListData.isExpand
+                    ) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
+                    }
+                }
+            }
+        })
+
+        receiver.globalStop.observe(this.viewLifecycleOwner, {
+            it?.let { globalStopEvent ->
+                oddsDetailListAdapter?.oddsDetailDataList?.forEachIndexed { index, oddsDetailListData ->
+                    if (SocketUpdateUtil.updateOddStatus(
+                            oddsDetailListData,
+                            globalStopEvent
+                        ) && oddsDetailListData.isExpand
+                    ) {
+                        oddsDetailListAdapter?.notifyItemChanged(index)
+                    }
+                }
+            }
+        })
+
+        receiver.producerUp.observe(this.viewLifecycleOwner, {
+            it?.let {
+                unSubscribeChannelEventAll()
+                subscribeChannelEvent(matchId)
+            }
+        })
+    }
+
+    private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
+                oddTypeSocketMapEntry.value.odds?.onEach { odd ->
+                    odd?.isSelected =
+                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                            betInfoListData.matchOdd.oddsId == odd?.id
+                        }
+                }
+            }
+        }
+
+        return this
     }
 
     private fun getData() {
-        gameType?.let { gameType ->
-            viewModel.getPlayCateList(gameType)
-        }
-
         matchId?.let { matchId ->
-            oddsType?.let { oddsType ->
-                viewModel.getOddsDetail(matchId, oddsType)
-            }
+            viewModel.getOddsDetail(matchId)
+            subscribeChannelEvent(matchId)
         }
     }
 
 
-    override fun getBetInfoList(odd: Odd) {
-        viewModel.getBetInfoList(listOf(org.cxct.sportlottery.network.bet.Odd(odd.id, odd.odds)))
+    private fun navGameInPlay() {
+        findNavController().navigate(OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY))
+    }
+
+    private fun OddsDetailResult.setupPlayCateTab(){
+        tab_cat.removeAllTabs()
+        val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
+        if (playCateTypeList?.isNotEmpty() == true) {
+            for (row in playCateTypeList) {
+                val customTabView = layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
+                    findViewById<TextView>(R.id.tv_tab).text = row.name
+                }
+
+                tab_cat.addTab(
+                    tab_cat.newTab().setCustomView(customTabView),
+                    false
+                )
+            }
+            tab_cat.getTabAt(0)?.select()
+        } else {
+            tab_cat.visibility = View.GONE
+        }
+    }
+
+    private fun setupStartTime(matchInfo: MatchInfo?) {
+        matchInfo?.apply {
+            tv_time_top.text = TimeUtil.timeFormat(startTime, TimeUtil.DM_FORMAT)
+            tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
+        }
+    }
+
+
+    override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
+        matchOdd?.let { matchOdd ->
+            viewModel.updateMatchBetList(
+                matchType = args.matchType,
+                gameType = args.gameType,
+                playCateCode = oddsDetail.gameType,
+                playCateName = oddsDetail.name,
+                matchInfo = matchOdd.matchInfo,
+                odd = odd,
+                subscribeChannelType = ChannelType.EVENT
+            )
+        }
     }
 
 
@@ -253,59 +334,8 @@ class OddsDetailFragment : BaseFragment<MainViewModel>(MainViewModel::class), An
     }
 
 
-    fun back() {
-        //比照h5特別處理退出動畫
-        val animation: Animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.exit_to_right)
-        animation.duration = resources.getInteger(R.integer.config_navAnimTime).toLong()
-        animation.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                parentFragmentManager.popBackStack()
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-        })
-        this.view?.startAnimation(animation)
+    override fun onStop() {
+        super.onStop()
+        unSubscribeChannelEvent(matchId)
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        requireView().isFocusableInTouchMode = true
-        requireView().requestFocus()
-        requireView().setOnKeyListener(View.OnKeyListener { _, i, keyEvent ->
-            if (keyEvent.action == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_BACK) {
-                back()
-                return@OnKeyListener true
-            }
-            false
-        })
-    }
-
-
-    override fun onAnimationRepeat(animation: Animation?) {
-    }
-
-
-    override fun onAnimationEnd(animation: Animation?) {
-    }
-
-
-    override fun onAnimationStart(animation: Animation?) {
-    }
-
-
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-        return if (enter) {
-            val anim = AnimationUtils.loadAnimation(activity, R.anim.enter_from_right)
-            anim.setAnimationListener(this)
-            anim
-        } else {
-            null
-        }
-    }
-
 }

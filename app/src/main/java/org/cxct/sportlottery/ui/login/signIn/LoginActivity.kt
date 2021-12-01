@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.login.signIn
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -7,6 +8,8 @@ import androidx.lifecycle.Observer
 import cn.jpush.android.api.JPushInterface
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
+import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
@@ -16,12 +19,14 @@ import org.cxct.sportlottery.repository.LOGIN_SRC
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
+import org.cxct.sportlottery.ui.game.GameActivity
 import org.cxct.sportlottery.ui.login.signUp.RegisterActivity
+import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.util.BitmapUtil
-import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
+import java.util.*
 
 
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
@@ -38,7 +43,14 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         setupRememberPWD()
         setupForgetPasswordButton()
         setupRegisterButton()
+        setUpLoginForGuestButton()
         initObserve()
+    }
+
+    private fun setUpLoginForGuestButton() {
+        btn_visit_first.setOnClickListener {
+            viewModel.loginAsGuest()
+        }
     }
 
     private fun setupBackButton() {
@@ -112,8 +124,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val password = et_password.getText()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = et_verification_code.getText()
-        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
-        Timber.d("極光推播: RegistrationID = $deviceSn")
+//        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+        val deviceSn = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
+        Timber.d("UUID = $deviceSn")
 
         val loginRequest = LoginRequest(
             account = account,
@@ -125,6 +138,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             appVersion = BuildConfig.VERSION_NAME
         )
         viewModel.login(loginRequest, password)
+
     }
 
     private fun setupRememberPWD() {
@@ -136,15 +150,7 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
     private fun setupForgetPasswordButton() {
         btn_forget_password.setOnClickListener {
-            val dialog = CustomAlertDialog(this)
-            dialog.setTitle(getString(R.string.forget_password))
-            dialog.setMessage(getString(R.string.desc_forget_password))
-            dialog.setPositiveClickListener(View.OnClickListener {
-                JumpUtil.toOnlineService(this)
-                dialog.dismiss()
-            })
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.show()
+            showPromptDialog(getString(R.string.prompt), getString(R.string.desc_forget_password)) {}
         }
     }
 
@@ -175,7 +181,12 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun updateUiWithResult(loginResult: LoginResult) {
         hideLoading()
         if (loginResult.success) {
-            finish()
+            this.run {
+                if (sConfigData?.thirdOpen == FLAG_OPEN)
+                    MainActivity.reStart(this)
+                else
+                    GameActivity.reStart(this)
+            }
         } else {
             updateValidCode()
             showErrorDialog(loginResult.msg)

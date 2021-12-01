@@ -13,7 +13,7 @@ data class MatchResultListResult(
     @Json(name = "msg")
     override val msg: String,
     @Json(name = "rows")
-    val rows: List<Row>?,
+    val matchResultList: List<MatchResultList>?,
     @Json(name = "success")
     override val success: Boolean,
     @Json(name = "total")

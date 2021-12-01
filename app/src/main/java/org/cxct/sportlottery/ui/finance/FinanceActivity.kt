@@ -1,13 +1,15 @@
 package org.cxct.sportlottery.ui.finance
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
-import kotlinx.android.synthetic.main.appbar_finance.*
+import kotlinx.android.synthetic.main.activity_finance.*
+import kotlinx.android.synthetic.main.view_base_tool_bar_no_drawer.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.ui.base.BaseActivity
+import org.cxct.sportlottery.ui.base.BaseSocketActivity
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity.Companion.RechargeViewLog
 
-class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) {
+
+class FinanceActivity : BaseSocketActivity<FinanceViewModel>(FinanceViewModel::class) {
 
     private val navController by lazy {
         findNavController(R.id.financeFragment)
@@ -20,32 +22,56 @@ class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) 
 
         setupToolbarBack()
 
-        viewModel.recordType.observe(this, Observer {
+        setupToolbarTitle(getString(R.string.finance))
+
+        viewModel.recordType.observe(this, {
             setupToolbarTitle(it)
 
             when (it) {
                 getString(R.string.record_recharge) -> {
-                    navRechargeLogFragment(it)
+                    navRechargeLogFragment()
                 }
                 getString(R.string.record_withdrawal) -> {
-                    navRechargeWithdrawFragment(it)
+                    navRechargeWithdrawFragment()
+                }
+                getString(R.string.record_conversion) -> {
+                    navController.navigate(FinanceFragmentDirections.actionFinanceFragmentToMoneyTransferRecordFragment())
                 }
             }
         })
+
+        checkQuickJump()
+    }
+
+    private fun checkQuickJump() {
+        intent.apply {
+            val viewLog = getStringExtra(RechargeViewLog)
+            viewLog?.let {
+                setupToolbarTitle(it)
+                when (it) {
+                    getString(R.string.record_recharge) -> {
+                        navRechargeLogFragment()
+                    }
+                }
+            }
+        }
     }
 
     private fun setupToolbarTitle(title: String) {
         tv_toolbar_title.text = title
-
     }
 
     private fun setupToolbarBack() {
         btn_toolbar_back.setOnClickListener {
-            finish()
+            if (financeFragment.childFragmentManager.backStackEntryCount > 0) {
+                navController.navigateUp()
+                if (!financeFragment.isHidden) setupToolbarTitle(getString(R.string.finance))
+
+            } else finish()
         }
     }
 
-    private fun navRechargeLogFragment(type: String) {
+    private fun navRechargeLogFragment() {
         when (navController.currentDestination?.id) {
             R.id.financeFragment -> {
                 val action = FinanceFragmentDirections.actionFinanceFragmentToRechargeLogFragment()
@@ -54,7 +80,7 @@ class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) 
         }
     }
 
-    private fun navRechargeWithdrawFragment(type: String) {
+    private fun navRechargeWithdrawFragment() {
         when (navController.currentDestination?.id) {
             R.id.financeFragment -> {
                 val action = FinanceFragmentDirections.actionFinanceFragmentToWithdrawLogFragment()
@@ -62,4 +88,5 @@ class FinanceActivity : BaseActivity<FinanceViewModel>(FinanceViewModel::class) 
             }
         }
     }
+
 }

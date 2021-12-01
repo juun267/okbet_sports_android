@@ -4,10 +4,9 @@
     <item android:gravity="center">
         <shape>
             <size
-                android:width="27dp"
-                android:height="2dp" />
-            <corners android:radius="1dp" />
-            <solid android:color="@color/text_focus" />
+                android:height="32dp" />
+            <corners android:radius="4dp" />
+            <solid android:color="@color/colorBlue" />
         </shape>
     </item>
 </layer-list>

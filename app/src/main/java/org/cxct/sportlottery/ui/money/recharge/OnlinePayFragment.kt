@@ -2,37 +2,49 @@ package org.cxct.sportlottery.ui.money.recharge
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_icon_and_tick.*
 import kotlinx.android.synthetic.main.online_pay_fragment.*
-import kotlinx.android.synthetic.main.online_pay_fragment.btn_submit
-import kotlinx.android.synthetic.main.transfer_pay_fragment.*
+import kotlinx.android.synthetic.main.online_pay_fragment.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
-import org.cxct.sportlottery.network.money.MoneyRechCfg
+import org.cxct.sportlottery.network.money.OnlineType
+import org.cxct.sportlottery.network.money.config.RechCfg
 import org.cxct.sportlottery.ui.base.BaseFragment
-import org.cxct.sportlottery.ui.base.CustomImageAdapter
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
-import java.util.*
+import org.cxct.sportlottery.util.TextUtil
+import kotlin.math.abs
 
 class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::class) {
 
-    companion object {
-        private const val TAG = "OnlinePayFragment"
-    }
+    private var mMoneyPayWay: MoneyPayWayData? = null //支付類型
 
-    private var mMoneyPayWay: MoneyPayWayData? = MoneyPayWayData("", "", "", "", 0) //支付類型
+    private var mSelectRechCfgs: RechCfg? = null //選擇的入款帳號
 
-    private var mSelectRechCfgs: MoneyRechCfg.RechConfig? = null //選擇的入款帳號
-
-    private val mSpannerList: MutableList<CustomImageAdapter.SelectBank> by lazy {
+    private val mBankList: MutableList<BtsRvAdapter.SelectBank> by lazy {
         mutableListOf()
     }
+
+    private var rechCfgsList: List<RechCfg> = mutableListOf()
+
+    private var payRoadSpannerList = mutableListOf<BtsRvAdapter.SelectBank>()
+
+    private lateinit var payGapBottomSheet: BottomSheetDialog
+
+    private lateinit var bankBottomSheet: BottomSheetDialog
+
+    private lateinit var payGapAdapter: BtsRvAdapter
+
+    private lateinit var bankCardAdapter: BtsRvAdapter
+
+    private var bankPosition = 0
+
+    private var typeIcon: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,13 +55,12 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initPayRoadSpinner()
-
         initButton()
-        initView()
         initObserve()
-
+        initData()
+        initView()
+        setPayGapBottomSheet()
+        setPayBankBottomSheet(view)
     }
 
     private fun initObserve() {
@@ -57,122 +68,293 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         viewModel.rechargeOnlineAmountMsg.observe(viewLifecycleOwner, {
             et_recharge_online_amount.setError(it)
         })
+
+        //在線充值成功
+        viewModel.onlinePayResult.observe(this.viewLifecycleOwner, {
+            resetEvent()
+        })
     }
 
     private fun initView() {
-        if (mMoneyPayWay?.image != "ic_online_pay") {
+        if (mMoneyPayWay?.onlineType != OnlineType.WX.type
+            && mMoneyPayWay?.onlineType != OnlineType.GCASH.type
+            && mMoneyPayWay?.onlineType != OnlineType.GRABPAY.type
+            && mMoneyPayWay?.onlineType != OnlineType.PAYMAYA.type) {
             cv_pay_bank.visibility = View.GONE
         } else {
             cv_pay_bank.visibility = View.VISIBLE
         }
 
+        tv_pay_gap_subtitle.text =
+            if (mMoneyPayWay?.onlineType == OnlineType.WY.type) getString(R.string.title_pay_channel)
+            else getString(R.string.title_pay_gap)
+
+        et_recharge_online_amount.setHint(getAmountLimitHint())
+
         setupTextChangeEvent()
+        setupFocusEvent()
     }
 
     private fun initButton() {
         btn_submit.setOnClickListener {
-            val moneyAddRequest = MoneyAddRequest(
-                rechCfgId = mSelectRechCfgs?.id ?: 0,
-                depositMoney = if (et_recharge_online_amount.getText().isNotEmpty()) {
-                    et_recharge_online_amount.getText().toInt()
-                } else {
-                    0
-                },
-                bankCode = mSpannerList[sp_pay_bank?.selectedItemPosition ?: 0].bankName.toString(),
-                payer = "",
-                payerBankName = mSpannerList[sp_pay_bank?.selectedItemPosition ?: 0].bankName.toString(),
-                payerInfo = "",
-                payerName = "",
-                depositDate = 0
-            )
-            viewModel.rechargeOnlinePay(moneyAddRequest)
+
+            val bankCode = when (cv_pay_bank.visibility) {
+                View.GONE -> ""
+                else -> mSelectRechCfgs?.banks?.get(bankPosition)?.value
+            }
+
+            val depositMoney = if (et_recharge_online_amount.getText().isNotEmpty()) {
+                et_recharge_online_amount.getText()
+            } else {
+                ""
+            }
+            viewModel.rechargeOnlinePay(requireContext(), mSelectRechCfgs, depositMoney, bankCode)
         }
-
-
+        ll_pay_gap.setOnClickListener {
+            payGapBottomSheet.show()
+        }
+        cv_pay_bank.setOnClickListener {
+            bankBottomSheet.show()
+        }
     }
-
+//TODO Bill 等UI出圖
     fun setArguments(moneyPayWay: MoneyPayWayData?): OnlinePayFragment {
         mMoneyPayWay = moneyPayWay
+        typeIcon = when (mMoneyPayWay?.onlineType) {
+            OnlineType.WY.type  -> R.drawable.ic_online_pay_type
+            OnlineType.ZFB.type  -> R.drawable.ic_alipay_type
+            OnlineType.WX.type -> R.drawable.ic_wechat_pay_type
+            OnlineType.JUAN.type -> R.drawable.ic_juancash
+            OnlineType.DISPENSHIN.type -> R.drawable.ic_juancash
+            OnlineType.ONLINEBANK.type -> R.drawable.ic_juancash
+            OnlineType.GCASH.type -> R.drawable.ic_grab_pay_type
+            OnlineType.GRABPAY.type -> R.drawable.ic_grab_pay_type
+            OnlineType.PAYMAYA.type -> R.drawable.ic_pay_maya_type
+            else -> R.drawable.ic_online_pay_type
+        }
         return this
     }
 
-    private fun initPayRoadSpinner() {
+    //依據選擇的支付渠道，刷新UI
+    @SuppressLint("SetTextI18n")
+    private fun refreshSelectRechCfgs() {
+        ll_remark.visibility = if (mSelectRechCfgs?.remark.isNullOrEmpty()) View.GONE else View.VISIBLE
+        tv_hint.text = mSelectRechCfgs?.remark
+        et_recharge_online_amount.setHint(getAmountLimitHint())
+
+        //反利、手續費
+        setupRebateFee()
+    }
+
+    private fun refreshPayBank(rechCfgsList: RechCfg?) {
+        mBankList.clear()
+        rechCfgsList?.banks?.forEach {
+            val data =
+                BtsRvAdapter.SelectBank(
+                    it.bankName,
+                    MoneyManager.getBankIconByBankName(it.bankName.toString())
+                )
+            mBankList.add(data)
+        }.let {
+            mBankList[0].bankIcon?.let { icon -> iv_bank_icon.setImageResource(icon) }
+            mBankList[0].bankName?.let { name -> txv_pay_bank.text = name }
+            bankPosition = 0
+        }
+    }
+
+    private fun setupTextChangeEvent() {
+        viewModel.apply {
+            //充值金額
+            et_recharge_online_amount.afterTextChanged {
+                if(it.startsWith("0") && it.length > 1){
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().replace("0",""))
+                    et_recharge_online_amount.setCursor()
+                    return@afterTextChanged
+                }
+
+                if(et_recharge_online_amount.getText().length > 6){
+                    et_recharge_online_amount.setText(et_recharge_online_amount.getText().substring(0,6))
+                    et_recharge_online_amount.setCursor()
+                    return@afterTextChanged
+                }
+
+                checkRcgOnlineAmount(it, mSelectRechCfgs)
+                if (it.isEmpty() || it.isBlank()) {
+                    tv_fee_amount.text = ArithUtil.toMoneyFormat(0.0)
+                } else {
+                    tv_fee_amount.text = TextUtil.formatMoney(
+                        ArithUtil.toMoneyFormat(
+                            it.toDouble().times(abs(mSelectRechCfgs?.rebateFee ?: 0.0))
+                        ).toDouble()
+                    )
+                }
+            }
+        }
+    }
+
+    private fun setupFocusEvent() {
+        et_recharge_online_amount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+            if (!hasFocus)
+                viewModel.checkRcgOnlineAmount(et_recharge_online_amount.getText(), mSelectRechCfgs)
+        }
+    }
+
+
+    private fun getAmountLimitHint(): String {
+        return String.format(
+            getString(R.string.edt_hint_deposit_money),
+            TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toLong() ?: 0),
+            TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toLong() ?: 999999)
+        )
+    }
+
+    private fun setupRebateFee() {
+        val rebateFee = mSelectRechCfgs?.rebateFee
+        if (rebateFee == null || rebateFee == 0.0) {
+            title_fee_rate.text = getString(R.string.title_fee_rate)
+            title_fee_amount.text = getString(R.string.title_fee_amount)
+            tv_fee_rate.text = "0.000"
+            tv_fee_amount.text = "0.000"
+        } else {
+            if (rebateFee < 0.0) {
+                title_fee_rate.text = getString(R.string.title_fee_rate)
+                title_fee_amount.text = getString(R.string.title_fee_amount)
+            } else {
+                title_fee_rate.text = getString(R.string.title_rebate_rate)
+                title_fee_amount.text = getString(R.string.title_rebate_amount)
+            }
+            tv_fee_rate.text = ArithUtil.toOddFormat(abs(rebateFee).times(100))
+            tv_fee_amount.text =
+                TextUtil.formatMoney(ArithUtil.toOddFormat(0.0.times(100)).toDouble())
+        }
+    }
+
+    private fun setPayGapBottomSheet() {
+        try {
+            val contentView: ViewGroup? =
+                activity?.window?.decorView?.findViewById(android.R.id.content)
+
+            val bottomSheetView =
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_icon_and_tick, contentView, false)
+            payGapBottomSheet = BottomSheetDialog(this.requireContext())
+            payGapBottomSheet.apply {
+                setContentView(bottomSheetView)
+                payGapAdapter = BtsRvAdapter(
+                    payRoadSpannerList,
+                    BtsRvAdapter.BankAdapterListener { _, position ->
+                        getPayGap(position)
+                        resetEvent()
+                        payGapBottomSheet.dismiss()
+                    })
+                rv_bank_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+                rv_bank_item.adapter = payGapAdapter
+
+                if (mMoneyPayWay?.onlineType == OnlineType.WY.type)
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_channel))
+                else
+                    tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_gap))
+
+                payGapBottomSheet.btn_close.setOnClickListener {
+                    this.dismiss()
+                }
+            }
+            getPayGap(0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun setPayBankBottomSheet(view: View) {
+        try {
+
+            val contentView: ViewGroup? =
+                activity?.window?.decorView?.findViewById(android.R.id.content)
+
+            val bottomSheetView =
+                layoutInflater.inflate(R.layout.dialog_bottom_sheet_icon_and_tick, contentView, false)
+
+            bankBottomSheet = BottomSheetDialog(this.requireContext())
+            bankBottomSheet.apply {
+                setContentView(bottomSheetView)
+                bankCardAdapter = BtsRvAdapter(
+                    mBankList,
+                    BtsRvAdapter.BankAdapterListener { it, position ->
+                        view.iv_bank_icon.setImageResource(it.bankIcon ?: 0)
+                        view.txv_pay_bank.text = it.bankName.toString()
+                        bankPosition = position
+                        resetEvent()
+                        dismiss()
+                    })
+                rv_bank_item.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+                rv_bank_item.adapter = bankCardAdapter
+                tv_game_type_title.text=String.format(resources.getString(R.string.title_choose_pay_bank))
+                bankBottomSheet.btn_close.setOnClickListener {
+                    this.dismiss()
+                }
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
+
+    private fun initData() {
         //支付類型的入款帳號清單
-        val rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
+        rechCfgsList = viewModel.rechargeConfigs.value?.rechCfgs?.filter {
             it.rechType == mMoneyPayWay?.rechType && it.onlineType == mMoneyPayWay?.onlineType && it.pcMobile != 1
         } ?: mutableListOf()
 
         //產生對應 spinner 選單
         var count = 1
 
-        val payRoadSpannerList = mutableListOf<String>()
-        val title = mMoneyPayWay?.title
+        payRoadSpannerList = mutableListOf()
+
         if (rechCfgsList.size > 1)
-            rechCfgsList.forEach { _ -> payRoadSpannerList.add(title + count++) }
-        else
-            rechCfgsList.forEach { _ -> payRoadSpannerList.add(title + "") }
-
-        sp_pay_gap.adapter =
-            ArrayAdapter(requireContext(), R.layout.spinner_text_item, payRoadSpannerList)
-
-        //選擇入款帳號
-        sp_pay_gap.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                try {
-                    mSelectRechCfgs = rechCfgsList[position]
-                    refreshSelectRechCfgs(mSelectRechCfgs)
-                    refreshPayBank(mSelectRechCfgs)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+            rechCfgsList.forEach { it ->
+                val selectBank =
+                    BtsRvAdapter.SelectBank(
+                        viewModel.getOnlinePayTypeName(it.onlineType) + count++,
+                        typeIcon
+                    )
+                payRoadSpannerList.add(selectBank)
             }
-        }
-
-        //default 選擇第一個不為 null 的入款帳號資料
-        if (sp_pay_gap.count > 0)
-            sp_pay_gap.setSelection(0)
         else
-            mSelectRechCfgs = null
+            rechCfgsList.forEach { it ->
+                val selectBank =
+                    BtsRvAdapter.SelectBank(
+                        viewModel.getOnlinePayTypeName(it.onlineType) + count,
+                        typeIcon
+                    )
+                payRoadSpannerList.add(selectBank)
+            }
     }
 
-    //依據選擇的支付渠道，刷新UI
-    @SuppressLint("SetTextI18n")
-    private fun refreshSelectRechCfgs(selectRechCfgs: MoneyRechCfg.RechConfig?) {
-        //手續費率/贈送費率 <0是手續費 >0是贈送費率 PM還在討論
-        txv_rebate.text = "${selectRechCfgs?.rebateFee.toString()}%"
-//        et_recharge_online_amount.hint = String.format(
-//            getString(R.string.edt_hint_online_pay_money),
-//            "${selectRechCfgs?.minMoney}",
-//            "${selectRechCfgs?.maxMoney}"
-//        )
-    }
+    private fun getPayGap(position: Int) {
+        //default 選擇第一個不為 null 的入款帳號資料
+        try {
+            if (payRoadSpannerList.size > 0) {
+                mSelectRechCfgs = rechCfgsList[position]
+                refreshSelectRechCfgs()
 
-    private fun refreshPayBank(rechCfgsList: MoneyRechCfg.RechConfig?) {
+                if (cv_pay_bank.visibility == View.VISIBLE)
+                    refreshPayBank(mSelectRechCfgs)
 
-        rechCfgsList?.banks?.forEach {
-            val data =
-                CustomImageAdapter.SelectBank(
-                    it.bankName,
-                    MoneyManager.getBankIconByBankName(it.bankName.toString())
-                )
-            mSpannerList.add(data)
-        }
-        sp_pay_bank.adapter = CustomImageAdapter(context, mSpannerList)
-
-    }
-
-    private fun setupTextChangeEvent() {
-        viewModel.apply {
-            //充值金額
-            et_recharge_online_amount.afterTextChanged { checkRcgOnlineAmount(it) }
+                iv_gap_icon.setImageResource(payRoadSpannerList[position].bankIcon ?: 0)
+                txv_pay_gap.text = payRoadSpannerList[position].bankName
+                clearFocus()
+            } else
+                mSelectRechCfgs = null
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
-
+    //重置畫面事件
+    private fun resetEvent() {
+        clearFocus()
+        et_recharge_online_amount.setText("")
+        viewModel.clearnRechargeStatus()
+    }
 }

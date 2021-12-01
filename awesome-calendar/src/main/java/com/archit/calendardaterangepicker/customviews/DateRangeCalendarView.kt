@@ -8,17 +8,17 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.archit.calendardaterangepicker.R
 import com.archit.calendardaterangepicker.R.layout
+import com.archit.calendardaterangepicker.manager.LanguageManager
+import com.archit.calendardaterangepicker.manager.LanguageManager.Language
 import com.archit.calendardaterangepicker.models.CalendarStyleAttrImpl
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes
 import java.text.DateFormatSymbols
-import java.util.Calendar
-import java.util.Locale
+import java.util.*
 
 class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     private lateinit var tvYearTitle: CustomTextView
@@ -26,24 +26,33 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     private lateinit var imgVNavRight: AppCompatImageView
     private lateinit var adapterEventCalendarMonths: AdapterEventCalendarMonths
     private lateinit var locale: Locale
+    private val selectedLocale: Language? by lazy { LanguageManager.getSelectLanguage(context) }
     private lateinit var vpCalendar: ViewPager
     private lateinit var calendarStyleAttr: CalendarStyleAttributes
     private lateinit var mDateRangeCalendarManager: CalendarDateRangeManagerImpl
 
     constructor(context: Context) : super(context) {
+        setupLocale()
         initViews(context, null)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        setupLocale()
         initViews(context, attrs)
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        setupLocale()
         initViews(context, attrs)
     }
 
     private fun initViews(context: Context, attrs: AttributeSet?) {
-        locale = Locale.getDefault()
+        locale = when (selectedLocale) {
+            Language.ZH, Language.ZHT -> Locale.CHINESE
+            Language.VI -> Locale("vi")
+            null -> Locale.getDefault()
+            else -> Locale.US
+        }
         calendarStyleAttr = CalendarStyleAttrImpl(context, attrs)
         val layoutInflater = LayoutInflater.from(context)
         layoutInflater.inflate(layout.layout_calendar_container, this, true)
@@ -65,6 +74,38 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
         vpCalendar.currentItem = TOTAL_ALLOWED_MONTHS
         setCalendarYearTitle(TOTAL_ALLOWED_MONTHS)
         setListeners()
+    }
+
+    private fun setupLocale() {
+        val res = context.resources
+        val dm = res.displayMetrics
+        val config = res.configuration
+
+        Locale.setDefault(
+            when (selectedLocale) {
+                Language.ZH, Language.ZHT -> Locale.CHINESE
+                Language.VI -> Locale("vi")
+                null -> Locale.getDefault()
+                else -> Locale.US
+            }
+        )
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.setLocale(
+                when (selectedLocale) {
+                    Language.ZH, Language.ZHT -> Locale.CHINESE
+                    Language.VI -> Locale("vi")
+                    null -> Locale.getDefault()
+                    else -> Locale.US
+                }
+            )
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            context.createConfigurationContext(config)
+        } else {
+            res.updateConfiguration(config, dm)
+        }
     }
 
     private fun setListeners() {
@@ -89,6 +130,15 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
                 vpCalendar.currentItem = newPosition
             }
         }
+    }
+
+    /**
+     * To set start date or end date now.
+     *
+     * @param dateSelectedType current modify date type
+     */
+    fun setDateSelectedType(dateSelectedType: DateSelectedType) {
+        mDateRangeCalendarManager.setDateSelectedType(dateSelectedType)
     }
 
     /**
@@ -117,13 +167,26 @@ class DateRangeCalendarView : LinearLayout, DateRangeCalendarViewApi {
     private fun setCalendarYearTitle(position: Int) {
         val currentCalendarMonth = mDateRangeCalendarManager.getVisibleMonthDataList()[position]
         var dateText = DateFormatSymbols(locale).months[currentCalendarMonth[Calendar.MONTH]]
-        dateText = dateText.substring(0, 1).toUpperCase() + dateText.subSequence(1, dateText.length)
+        dateText = dateText.substring(0, 1).toUpperCase(Locale.getDefault()) + dateText.subSequence(1, dateText.length)
 //        val yearTitle = dateText + " " + currentCalendarMonth[Calendar.YEAR]
-        val yearTitle: String
-        if (locale.displayLanguage == "en") {
-            yearTitle = "${currentCalendarMonth[Calendar.YEAR]} $dateText"
-        } else {
-            yearTitle = "${currentCalendarMonth[Calendar.YEAR]}年 ${currentCalendarMonth[Calendar.MONTH]+1}月"
+        val yearTitle: String = when (selectedLocale) {
+            Language.ZH, Language.ZHT -> {
+                "${currentCalendarMonth[Calendar.YEAR]}${context.getString(R.string.year)} ${currentCalendarMonth[Calendar.MONTH] + 1}${
+                    context.getString(
+                        R.string.month
+                    )
+                }"
+            }
+            Language.VI -> {
+                "${context.getString(R.string.month)} ${currentCalendarMonth[Calendar.MONTH] + 1} ${
+                    context.getString(
+                        R.string.year
+                    )
+                } ${currentCalendarMonth[Calendar.YEAR]}"
+            }
+            else -> {
+                "$dateText ${currentCalendarMonth[Calendar.YEAR]}"
+            }
         }
         tvYearTitle.text = yearTitle
         tvYearTitle.setTextColor(calendarStyleAttr.titleColor)

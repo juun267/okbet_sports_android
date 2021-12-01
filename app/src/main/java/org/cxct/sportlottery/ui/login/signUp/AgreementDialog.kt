@@ -11,7 +11,7 @@ import org.cxct.sportlottery.ui.base.BaseDialog
 class AgreementDialog : BaseDialog<RegisterViewModel>(RegisterViewModel::class) {
 
     init {
-        setStyle(R.style.CustomDialogStyle)
+        setStyle(R.style.Common)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

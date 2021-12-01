@@ -3,9 +3,12 @@ package org.cxct.sportlottery.ui.common
 import android.content.Context
 import android.os.Bundle
 import android.text.Spanned
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.View
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.dialog_custom_alert.*
 import org.cxct.sportlottery.R
 
@@ -27,6 +30,9 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
     private var mPositiveClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mNegativeClickListener: View.OnClickListener = View.OnClickListener { dismiss() }
     private var mGravity = Gravity.CENTER
+    private var mTextColor = R.color.colorBlackLight
+    private var isShowDivider: Boolean = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +64,11 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
         } else
             btn_negative.text = mNegativeText
 
+
+        tv_message.setTextColor(ContextCompat.getColor(context, mTextColor))
+
+        divider2.visibility = if (isShowDivider) View.VISIBLE else View.GONE
+
         btn_positive.setOnClickListener(mPositiveClickListener)
         btn_negative.setOnClickListener(mNegativeClickListener)
     }
@@ -70,8 +81,16 @@ class CustomAlertDialog(context: Context) : AlertDialog(context) {
         mTitle = title
     }
 
+    fun setShowDivider(show: Boolean?) {
+        isShowDivider = show?:false
+    }
+
     fun setMessage(message: String?) {
         mMessage = message
+    }
+
+    fun setTextColor(@ColorRes colorResource: Int) {
+        mTextColor = colorResource
     }
 
     //set .html 語法文字

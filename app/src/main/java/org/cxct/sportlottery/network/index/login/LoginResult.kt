@@ -3,7 +3,6 @@ package org.cxct.sportlottery.network.index.login
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.BaseResult
-import org.cxct.sportlottery.network.index.login.LoginData
 
 
 @JsonClass(generateAdapter = true)

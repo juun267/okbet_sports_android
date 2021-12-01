@@ -17,7 +17,7 @@ data class MatchInfo(
     @Json(name = "playCateNum")
     val playCateNum: Int?,
     @Json(name = "startTime")
-    val startTime: String,
+    val startTime: Long,
     @Json(name = "status")
     val status: Int
 )

@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.view_item_recharge_log.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.list.Row
+import org.cxct.sportlottery.ui.finance.df.RechType
 import org.cxct.sportlottery.ui.finance.df.Status
+import org.cxct.sportlottery.util.Event
 
 class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -53,7 +55,7 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.bind(item, rechargeLogListener)
             }
             is NoDataViewHolder -> {
-                holder.bind(isFinalPage)
+                holder.bind(isFinalPage, data.isNotEmpty())
             }
         }
     }
@@ -66,10 +68,22 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.rech_log_date.text = item.rechDateStr
             itemView.rech_log_time.text = item.rechTimeStr
             itemView.rech_log_amount.text = item.displayMoney
-            itemView.rech_log_type.text = item.rechName
+            itemView.rech_log_type.text = when (item.rechType) {
+                RechType.ONLINE_PAYMENT.type -> itemView.context.getString(R.string.recharge_channel_online)
+                RechType.ADMIN_ADD_MONEY.type -> itemView.context.getString(R.string.recharge_channel_admin)
+                RechType.CFT.type -> itemView.context.getString(R.string.recharge_channel_cft)
+                RechType.WEIXIN.type -> itemView.context.getString(R.string.recharge_channel_weixin)
+                RechType.ALIPAY.type -> itemView.context.getString(R.string.recharge_channel_alipay)
+                RechType.BANK_TRANSFER.type -> itemView.context.getString(R.string.recharge_channel_bank)
+                RechType.CRYPTO.type -> itemView.context.getString(R.string.recharge_channel_crypto)
+                RechType.GCASH.type -> itemView.context.getString(R.string.recharge_channel_gcash)
+                RechType.GRABPAY.type -> itemView.context.getString(R.string.recharge_channel_grabpay)
+                RechType.PAYMAYA.type -> itemView.context.getString(R.string.recharge_channel_paymaya)
+                else -> ""
+            }
             itemView.rech_log_state.text = item.rechState
             itemView.setOnClickListener {
-                rechargeLogListener?.onClick(item)
+                rechargeLogListener?.onClick(Event(item))
             }
 
             setupStateTextColor(item)
@@ -77,19 +91,11 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private fun setupStateTextColor(item: Row) {
             when (item.status) {
-                Status.PROCESSING.code -> {
-                    itemView.rech_log_state.setTextColor(
-                        ContextCompat.getColor(
-                            itemView.context,
-                            R.color.textGray
-                        )
-                    )
-                }
                 Status.SUCCESS.code -> {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.green_blue
+                            R.color.colorGreen
                         )
                     )
                 }
@@ -98,7 +104,16 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     itemView.rech_log_state.setTextColor(
                         ContextCompat.getColor(
                             itemView.context,
-                            R.color.orangeRed
+                            R.color.colorRed
+                        )
+                    )
+                }
+
+                else -> {
+                    itemView.rech_log_state.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            R.color.colorGray
                         )
                     )
                 }
@@ -119,8 +134,8 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(isFinalPage: Boolean) {
-            itemView.visibility = if (isFinalPage) {
+        fun bind(isFinalPage: Boolean, hasData: Boolean) {
+            itemView.visibility = if (isFinalPage && hasData) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -131,12 +146,12 @@ class RechargeLogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup) =
                 NoDataViewHolder(
                     LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_finance_no_data, parent, false)
+                        .inflate(R.layout.item_footer_no_data, parent, false)
                 )
         }
     }
 }
 
-class RechargeLogListener(val clickListener: (row: Row) -> Unit) {
-    fun onClick(row: Row) = clickListener(row)
+class RechargeLogListener(val clickListener: (row: Event<Row>) -> Unit) {
+    fun onClick(row: Event<Row>) = clickListener(row)
 }

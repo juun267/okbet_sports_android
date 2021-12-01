@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:paddingVertical="4dp"
     android:paddingStart="24dp"
     android:paddingEnd="4dp"
-    android:background="@color/gray7"
+    android:background="@color/colorWhite2"
     android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatCheckBox
@@ -18,7 +17,7 @@
             android:textSize="@dimen/textSize12sp"
             android:paddingStart="28dp"
             android:paddingEnd="4dp"
-            android:buttonTint="@color/gray6" />
+            android:buttonTint="@color/colorGrayDark" />
 
         <TextView
             android:id="@+id/tv_cancel_selections"
@@ -27,8 +26,8 @@
             android:gravity="center"
             android:textSize="@dimen/textSize12sp"
             android:paddingHorizontal="24dp"
-            android:text="@string/cancel_select"
-            android:textColor="@color/gray8" />
+            android:text="@string/select_cancel"
+            android:textColor="@color/colorGrayLight" />
 
 
 </LinearLayout>

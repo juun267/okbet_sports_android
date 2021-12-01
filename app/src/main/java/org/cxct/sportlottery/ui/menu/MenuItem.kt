@@ -17,12 +17,20 @@ class MenuItem @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             .obtainStyledAttributes(attrs, R.styleable.CustomView, 0, 0)
         try {
             view.tv_title.text = typedArray.getText(R.styleable.CustomView_cvTitle)
+            view.tv_title.letterSpacing = 0.117f
             view.iv_icon.setImageResource(typedArray.getResourceId(R.styleable.CustomView_cvIcon, 0))
+            view.iv_arrow.visibility = typedArray.getInt(R.styleable.CustomView_arrowSymbolVisibility, 0x00000008)
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
             typedArray.recycle()
         }
     }
+
+    var text: CharSequence
+        get() = tv_title.text
+        set(value) {
+            tv_title.text = value
+        }
 
 }

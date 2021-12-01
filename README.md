@@ -9,6 +9,8 @@
 
 [後台]( https://sportsadmin.cxct.org/#/login?redirect=%2Fsub-account-list)
 
+[Color res 命名參考網站](https://chir.ag/projects/name-that-color/)
+
 
 ## Network
 

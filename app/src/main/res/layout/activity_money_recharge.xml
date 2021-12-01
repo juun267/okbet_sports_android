@@ -4,81 +4,100 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite1"
     android:orientation="vertical"
-    android:background="#F3F4F5"
     tools:context=".ui.money.recharge.MoneyRechargeActivity">
 
-    <!-- Tab bar-->
-    <RelativeLayout
+    <include
+        layout="@layout/view_base_tool_bar_no_drawer"/>
+
+    <LinearLayout
         android:id="@+id/block_tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/main_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="@color/colorBlueLight"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_frame_6dp_white"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="0dp">
 
-            <TextView
-                android:id="@+id/btn_transfer_pay"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_left"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="转账充值"
-                android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize16sp" />
-
-            <TextView
-                android:id="@+id/btn_online_pay"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/bg_frame_6dp_white_select_effect_right"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="在线充值"
-                android:textColor="@color/selector_text_effect_main_light_color"
-                android:textSize="@dimen/textSize16sp" />
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/block_tab">
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#F3F4F5">
-
-            <LinearLayout
+            <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:background="@drawable/frame_4dp_white"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/btn_transfer_pay"
+                    android:text="@string/txv_transfer_pay"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize16sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite" />
+
+                <RadioButton
+                    android:id="@+id/btn_online_pay"
+                    android:text="@string/txv_online_pay"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize16sp" />
+
+            </RadioGroup>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlDragRate="0.3"
+        app:srlEnableLoadMore="true"
+        app:srlEnablePureScrollMode="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite1"
+                android:overScrollMode="never">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_pay_type"
@@ -89,6 +108,7 @@
                         android:layout_marginEnd="5dp"
                         android:layout_marginBottom="15dp"
                         android:clipToPadding="false"
+                        android:overScrollMode="never"
                         android:visibility="gone"
                         tools:itemCount="5"
                         tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
@@ -103,41 +123,50 @@
                         android:visibility="gone"
                         tools:visibility="visible" />
 
+                    <RelativeLayout
+                        android:id="@+id/block_no_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layout_constraintTop_toBottomOf="@+id/block_tab"
+                        tools:visibility="gone">
 
-                <!--                TODO Bill 這裡沒綁定銀行卡UI還沒出圖-->
-                <RelativeLayout
-                    android:id="@+id/block_no_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_constraintTop_toBottomOf="@+id/block_tab"
-                    tools:visibility="gone">
+                        <ImageView
+                            android:id="@+id/iv_bank_no_type"
+                            android:layout_width="150dp"
+                            android:layout_height="100dp"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="40dp"
+                            android:src="@drawable/ic_no_bank_type" />
 
-                    <ImageView
-                        android:id="@+id/iv_bank_no_type"
-                        android:layout_width="150dp"
-                        android:layout_height="100dp"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="40dp"
-                        android:src="@drawable/ic_no_bank_type" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/iv_bank_no_type"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="12dp"
+                            android:gravity="center"
+                            android:text="当前无该类充值渠道,详情请联系客服"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/textSize16sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/iv_bank_no_type"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="12dp"
-                        android:gravity="center"
-                        android:text="当前无该类充值渠道,详情请联系客服"
-                        android:textColor="@color/gray3"
-                        android:textSize="@dimen/textSize16sp" />
+                    </RelativeLayout>
 
-                </RelativeLayout>
+                </LinearLayout>
 
-            </LinearLayout>
+            </ScrollView>
 
-        </ScrollView>
+            <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+                android:id="@+id/btn_floating_service"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="14dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
 
 
 </LinearLayout>

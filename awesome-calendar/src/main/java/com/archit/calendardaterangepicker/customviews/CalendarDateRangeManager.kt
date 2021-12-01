@@ -16,6 +16,10 @@ interface CalendarDateRangeManager {
         const val DATE_FORMAT = "yyyyMMddHHmm"
     }
 
+    fun setDateSelectedType(dateSelectedType: DateSelectedType)
+
+    fun getDateSelectedType(): DateSelectedType
+
     fun setVisibleMonths(startMonth: Calendar, endMonth: Calendar)
 
     fun getStartVisibleMonth(): Calendar
@@ -24,7 +28,7 @@ interface CalendarDateRangeManager {
 
     fun setSelectableDateRange(startDate: Calendar, endDate: Calendar)
 
-    fun setSelectedDateRange(startDate: Calendar, endDate: Calendar?)
+    fun setSelectedDateRange(startDate: Calendar?, endDate: Calendar?)
 
     fun resetSelectedDateRange()
 
