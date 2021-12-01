@@ -27,7 +27,7 @@
             android:id="@+id/tv_check_maximum_limit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="right"
             android:text="@string/bet_info_check_maximum_limit"
             android:textColor="@color/colorBlue"
             android:textSize="@dimen/textSize12sp"
