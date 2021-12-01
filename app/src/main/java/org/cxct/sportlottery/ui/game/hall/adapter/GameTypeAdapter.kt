@@ -77,16 +77,49 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private fun setupSportTypeImage(item: Item) {
             when (item.code) {
                 GameType.FT.key -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_ft_v4)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_ft_v5)
                 }
                 GameType.BK.key -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bk_v4)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bk_v5)
                 }
                 GameType.TN.key -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_tn_v4)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_tn_v5)
                 }
                 GameType.VB.key -> {
-                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_vb_v4)
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_vb_v5)
+                }
+                GameType.BM.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bm_v5)
+                }
+                GameType.TT.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_tt_v5)
+                }
+                GameType.IH.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_ih_v5)
+                }
+                GameType.BX.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bx_v5)
+                }
+                GameType.CB.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_cb_v5)
+                }
+                GameType.CK.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_ck_v5)
+                }
+                GameType.BB.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bb_v5)
+                }
+                GameType.RB.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_rb_v5)
+                }
+                GameType.AFT.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_aft_v5)
+                }
+                GameType.MR.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_mr_v5)
+                }
+                GameType.GF.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_gf_v5)
                 }
             }
         }
@@ -95,7 +128,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             fun from(parent: ViewGroup): ViewHolderSport {
                 val layoutInflater = LayoutInflater.from(parent.context)
                 val view = layoutInflater
-                    .inflate(R.layout.itemview_sport_type_v4, parent, false)
+                    .inflate(R.layout.itemview_sport_type_v5, parent, false)
 
                 return ViewHolderSport(view)
             }
