@@ -99,6 +99,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
                 GameType.BX.key -> {
                     itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_bx_v5)
+                }
                 GameType.CB.key -> {
                     itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_cb_v5)
                 }
@@ -111,6 +112,8 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 GameType.RB.key -> {
                     itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_rb_v5)
                 }
+                GameType.AFT.key -> {
+                    itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_aft_v5)
                 }
                 GameType.MR.key -> {
                     itemView.sport_type_img.setImageResource(R.drawable.selector_sport_type_item_img_mr_v5)
