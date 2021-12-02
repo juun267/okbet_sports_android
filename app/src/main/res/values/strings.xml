@@ -203,6 +203,16 @@
     <string name="tennis">网球</string>
     <string name="badminton">羽球</string>
     <string name="volleyball">排球</string>
+    <string name="TT">乒乓球</string>
+    <string name="IH">冰球</string>
+    <string name="BX">拳击</string>
+    <string name="CB">台球</string>
+    <string name="CK">板球</string>
+    <string name="BB">棒球</string>
+    <string name="RB">橄榄球</string>
+    <string name="AFT">美足</string>
+    <string name="MR">赛车</string>
+    <string name="GF">高尔夫球</string>
     <string name="section">节</string>
     <string name="total_score_over_time">总分\n含加时</string>
     <string name="plat">盘</string>
