@@ -27,36 +27,33 @@ class LeftMenuItemNewAdapter(
 
     var dataList: List<MenuItemData> = listOf()
     var selectedNumber = 0
+    var isLogin = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     fun addFooterAndSubmitList(newDataList: MutableList<MenuItemData>) {
         newDataList.add(0, MenuItemData(0, "", "", 1).apply {
             isHeaderOrFooter = true
         }) //add header
 
-        newDataList.add(newDataList.size, MenuItemData(0, "", "", 0).apply {
+        newDataList.add(MenuItemData(0, "", "", 0).apply {
             isHeaderOrFooter = true
         }) //add footer
 
         selectedNumber = newDataList.count {
             it.isSelected == 1
         }
-        Log.e(">>>", "dataList.size = ${dataList.size}")
 
         this.dataList = newDataList
         notifyDataSetChanged()
     }
 
     override fun getItemViewType(position: Int): Int {
-        /*
-        return when {
-            dataList[position].isHeader -> ItemType.HEADER.ordinal
-            dataList[position].isFooter -> ItemType.FOOTER.ordinal
-            else -> ItemType.ITEM.ordinal
-        }
-*/
         return when (position) {
             0 -> ItemType.HEADER.ordinal
-            dataList.size -> ItemType.FOOTER.ordinal
+            dataList.size - 1 -> ItemType.FOOTER.ordinal
             else -> ItemType.ITEM.ordinal
         }
     }
@@ -76,14 +73,10 @@ class LeftMenuItemNewAdapter(
             }
 
             is FooterViewHolder -> {
-                Log.e(">>>", "footer position = $position")
-
-//                holder.bind(inPlayClickListener, premiumOddsClickListener)
                 holder.bind(gameRuleClickListener, oddTypeClickListener)
             }
 
             is ItemViewHolder -> {
-                Log.e(">>>", "item position = $position")
                 val item = dataList[position]
 
                 holder.itemView.apply {
@@ -99,25 +92,29 @@ class LeftMenuItemNewAdapter(
                     when (item.isSelected) {
                         0 -> {
                             btn_select.setImageResource(R.drawable.ic_pin_v4)
+                            item.isSelected = 1
+
                             btn_select.setOnClickListener {
                                 itemSelectedListener.onSelect(
                                     item.gameType,
                                     MyFavoriteNotifyType.SPORT_ADD.code
                                 )
-                                item.isSelected = 1
-                                notifyItemChanged(position)
+                                if (isLogin) notifyItemChanged(position)
                             }
+
                         }
                         1 -> {
                             btn_select.setImageResource(R.drawable.ic_pin_selected_v4)
+                            item.isSelected = 0
+
                             btn_select.setOnClickListener {
                                 itemSelectedListener.onSelect(
                                     item.gameType,
                                     MyFavoriteNotifyType.SPORT_REMOVE.code
                                 )
-                                item.isSelected = 0
                                 notifyItemChanged(position)
                             }
+
                         }
                     }
                 }

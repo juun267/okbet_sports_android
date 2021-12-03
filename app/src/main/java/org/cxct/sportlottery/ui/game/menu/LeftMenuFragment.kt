@@ -238,6 +238,10 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             updateFavorSport(it)
         }
 
+        viewModel.isLogin.observe(this.viewLifecycleOwner) {
+            newAdapter.isLogin = it
+        }
+
         viewModel.isLoading.observe(this.viewLifecycleOwner) {
             if (it)
                 loading()
@@ -278,9 +282,6 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             it.isSelected == 1
         }.toMutableList()
         newAdapter.addFooterAndSubmitList(selectedList)
-
-//        line_pin.visibility =
-//            if (selectedList.isNotEmpty() && selectedList.size < 13) View.VISIBLE else View.GONE
     }
 
     private fun navSportEntrance(sport: String) {
