@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.odds.eps.EpsOdds
 import org.cxct.sportlottery.network.odds.eps.MatchOddsItem
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.MatchOddUtil.updateEpsDiscount
 import org.cxct.sportlottery.util.SvgUtil
 import org.cxct.sportlottery.util.TimeUtil
 
@@ -25,6 +26,18 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
     var dataList = listOf<EpsLeagueOddsItem>()
         set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    var discount: Float = 1.0F
+        set(value) {
+            dataList.forEach { epsLeagueOddsItem ->
+                epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                    matchOddsItem.oddsEps?.updateEpsDiscount(field, value)
+                }
+            }
+
             field = value
             notifyDataSetChanged()
         }

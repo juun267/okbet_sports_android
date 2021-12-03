@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.view.size
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
@@ -112,7 +113,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onViewCreated(view, savedInstanceState)
 
         try {
-
+            initDiscount()
             initTable()
             initRecommend()
             initHighlight()
@@ -139,7 +140,15 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRvHighlightAdapter.stopAllTimer()
     }
 
+    private fun initDiscount() {
+        val discount = viewModel.userInfo.value?.discount ?: 1.0F
+        mRvGameTable4Adapter.discount = discount
+        mRecommendAdapter.discount = discount
+        mRvHighlightAdapter.discount = discount
+    }
+
     private fun initTable() {
+        judgeTableBar()
         rv_game_table.layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         rv_game_table.adapter = mRvGameTable4Adapter
         mRvGameTable4Adapter.onClickOddListener = object : OnClickOddListener {
@@ -196,6 +205,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initRecommend() {
+        updateRecommendVisibility(false)
         rv_recommend.adapter = mRecommendAdapter
         mRecommendAdapter.onClickOddListener = mOnClickOddListener
         mRecommendAdapter.onClickOutrightOddListener = object : OnClickOddListener {
@@ -260,6 +270,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initHighlight() {
+        updateHighlightVisibility(false)
         rv_highlight_sport_type.adapter = mHighlightGameTypeAdapter
         mHighlightGameTypeAdapter.gameTypeListener = GameTypeListener { selectItem ->
             highlight_tv_game_name.text = selectItem.name
@@ -509,6 +520,14 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun initObserve() {
+        viewModel.userInfo.observe(viewLifecycleOwner, {
+            it?.discount?.let { newDiscount ->
+                mRvGameTable4Adapter.discount = newDiscount
+                mRecommendAdapter.discount = newDiscount
+                mRvHighlightAdapter.discount = newDiscount
+            }
+        })
+
         viewModel.sportMenuList.observe(viewLifecycleOwner, {
             it.peekContent().let { list ->
                 if (block_game.size != list.size) {
@@ -1044,6 +1063,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun refreshRecommend(result: MatchRecommendResult) {
         mRecommendAdapter.setData(result)
+        updateRecommendVisibility((result.rows?.size ?: 0) > 0)
     }
 
     private fun refreshHighlightMenu(result: MatchCategoryResult) {
@@ -1051,10 +1071,25 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             Item(menu.code ?: "", menu.name ?: "", 0, null, menu.sortNum ?: 0)
         } ?: listOf()
 
-        //default 選擇第一個
-        mHighlightGameTypeAdapter.dataSport.firstOrNull()?.let {
-            mHighlightGameTypeAdapter.gameTypeListener?.onClick(it)
+        if (mHighlightGameTypeAdapter.dataSport.isNotEmpty()) {
+            //default 選擇第一個
+            mHighlightGameTypeAdapter.dataSport.firstOrNull()?.let {
+                mHighlightGameTypeAdapter.gameTypeListener?.onClick(it)
+            }
+            updateHighlightVisibility(true)
+        } else {
+            updateHighlightVisibility(false)
         }
+    }
+
+    private fun updateRecommendVisibility(show: Boolean) {
+        recommend_bar.isVisible = show
+    }
+
+    private fun updateHighlightVisibility(show: Boolean) {
+        highlight_bar.isVisible = show
+        ll_highlight_type.isVisible = show
+        highlight_titleBar.isVisible = show
     }
 
     //mapping 下注單裡面項目，更新 賠率按鈕 選擇狀態

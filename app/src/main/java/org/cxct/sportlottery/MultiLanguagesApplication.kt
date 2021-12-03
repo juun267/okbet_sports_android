@@ -29,6 +29,7 @@ import org.cxct.sportlottery.ui.profileCenter.sportRecord.BetRecordViewModel
 import org.cxct.sportlottery.ui.profileCenter.versionUpdate.VersionUpdateViewModel
 import org.cxct.sportlottery.ui.results.SettlementViewModel
 import org.cxct.sportlottery.repository.HostRepository
+import org.cxct.sportlottery.service.ServiceBroadcastReceiver
 import org.cxct.sportlottery.ui.favorite.MyFavoriteViewModel
 import org.cxct.sportlottery.ui.main.accountHistory.AccountHistoryViewModel
 import org.cxct.sportlottery.ui.profileCenter.creditrecord.CreditRecordViewModel
@@ -88,7 +89,7 @@ class MultiLanguagesApplication : Application() {
     }
 
     private val repoModule = module {
-        single { UserInfoRepository(get()) }
+        single { UserInfoRepository(get(), get()) }
         single { LoginRepository(get(), get()) }
         single { SportMenuRepository() }
         single { SettlementRepository() }
@@ -107,6 +108,10 @@ class MultiLanguagesApplication : Application() {
     private val dbModule = module {
         single { SportRoomDatabase.getDatabase(get()) }
         single { get<SportRoomDatabase>().userInfoDao() }
+    }
+
+    private val serviceModule = module {
+        factory { ServiceBroadcastReceiver(get()) }
     }
 
     override fun attachBaseContext(base: Context) {
@@ -138,7 +143,8 @@ class MultiLanguagesApplication : Application() {
                 listOf(
                     viewModelModule,
                     repoModule,
-                    dbModule
+                    dbModule,
+                    serviceModule
                 )
             )
         }

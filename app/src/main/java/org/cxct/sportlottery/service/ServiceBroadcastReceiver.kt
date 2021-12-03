@@ -6,8 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.service.EventType
 import org.cxct.sportlottery.network.service.ServiceConnectStatus
+import org.cxct.sportlottery.network.service.UserDiscountChangeEvent
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.league_change.LeagueChangeEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
@@ -21,14 +27,19 @@ import org.cxct.sportlottery.network.service.ping_pong.PingPongEvent
 import org.cxct.sportlottery.network.service.play_quota_change.PlayQuotaChangeEvent
 import org.cxct.sportlottery.network.service.producer_up.ProducerUpEvent
 import org.cxct.sportlottery.network.service.sys_maintenance.SysMaintenanceEvent
+import org.cxct.sportlottery.network.service.user_level_config_change.UserLevelConfigListEvent
 import org.cxct.sportlottery.network.service.user_notice.UserNoticeEvent
+import org.cxct.sportlottery.repository.UserInfoRepository
 import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
+import org.cxct.sportlottery.service.BackService.Companion.mUserId
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.json.JSONArray
 import timber.log.Timber
 
-open class ServiceBroadcastReceiver : BroadcastReceiver() {
+open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? = null) : BroadcastReceiver() {
 
     val globalStop: LiveData<GlobalStopEvent?>
         get() = _globalStop
@@ -78,6 +89,15 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     val matchOddsLock: LiveData<MatchOddsLockEvent?>
         get() = _matchOddsLock
 
+    val userDiscountChange: LiveData<UserDiscountChangeEvent?>
+        get() = _userDiscountChange
+
+    val userMaxBetMoneyChange: LiveData<UserLevelConfigListEvent?>
+        get() = _userMaxBetMoneyChange
+
+    val dataSourceChange: LiveData<Boolean?>
+        get() = _dataSourceChange
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -94,6 +114,9 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
     private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
     private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
+    private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
+    private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
+    private val _dataSourceChange = MutableLiveData<Boolean?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -148,6 +171,11 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         _playQuotaChange.value = data
                     }
 
+                    //公共频道
+                    EventType.DATA_SOURCE_CHANGE -> {
+                        _dataSourceChange.value = true
+                    }
+
                     //用户私人频道
                     EventType.USER_MONEY -> {
                         val data = ServiceMessage.getUserMoney(jObjStr)
@@ -179,7 +207,21 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                         val data = ServiceMessage.getOddsChange(jObjStr)?.apply {
                             channel = channelStr
                         }
-                        _oddsChange.value = data
+
+                        //query為耗時任務不能在主線程, LiveData需在主線程更新
+                        GlobalScope.launch(Dispatchers.Main) {
+                            withContext(Dispatchers.IO) {
+                                mUserId?.let { userId ->
+                                    val discount = userInfoRepository?.getDiscount(userId)
+                                    data?.setupOddDiscount(discount ?: 1.0F)
+                                    withContext(Dispatchers.Main) {
+                                        _oddsChange.value = data
+                                    }
+                                } ?: run {
+                                    _oddsChange.value = data
+                                }
+                            }
+                        }
                     }
                     EventType.LEAGUE_CHANGE -> {
                         val data = ServiceMessage.getLeagueChange(jObjStr)
@@ -194,13 +236,72 @@ open class ServiceBroadcastReceiver : BroadcastReceiver() {
                     //具体赛事/赛季频道
                     EventType.MATCH_ODDS_CHANGE -> {
                         val data = ServiceMessage.getMatchOddsChange(jObjStr)
-                        _matchOddsChange.value = data
+                        //query為耗時任務不能在主線程, LiveData需在主線程更新
+                        GlobalScope.launch(Dispatchers.Main) {
+                            withContext(Dispatchers.IO) {
+                                mUserId?.let { userId ->
+                                    val discount = userInfoRepository?.getDiscount(userId)
+                                    data?.setupOddDiscount(discount ?: 1.0F)
+                                    withContext(Dispatchers.Main) {
+                                        _matchOddsChange.value = data
+                                    }
+                                } ?: run {
+                                    _matchOddsChange.value = data
+                                }
+                            }
+                        }
                     }
+
+                    //賠率折扣
+                    EventType.USER_DISCOUNT_CHANGE -> {
+                        val data = ServiceMessage.getUserDiscountChange(jObjStr)
+                        _userDiscountChange.value = data
+                    }
+
+                    //特定VIP层级的最新设定内容(會影響最大下注金額)
+                    EventType.USER_LEVEL_CONFIG_CHANGE -> {
+                        val data = ServiceMessage.getUserMaxBetMoney(jObjStr)
+                        _userMaxBetMoneyChange.value = data
+                    }
+
                     EventType.UNKNOWN -> {
                         Timber.i("Receive UnKnown EventType : ${eventType.value}")
                     }
                 }
             }
         }
+    }
+
+    private fun OddsChangeEvent.setupOddDiscount(discount: Float): OddsChangeEvent {
+        this.odds?.let { oddTypeSocketMap ->
+            oddTypeSocketMap.forEach { (key, value) ->
+                value.forEach { odd ->
+                    odd?.odds = odd?.odds?.applyDiscount(discount)
+                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                    if (key == PlayCate.EPS.value){
+                        odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                    }
+                }
+            }
+        }
+
+        return this
+    }
+
+    private fun MatchOddsChangeEvent.setupOddDiscount(discount: Float): MatchOddsChangeEvent {
+        this.odds?.let { oddsMap ->
+            oddsMap.forEach { (key, value) ->
+                value.odds?.forEach { odd ->
+                    odd?.odds = odd?.odds?.applyDiscount(discount)
+                    odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
+
+                    if (key == PlayCate.EPS.value) {
+                        odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                    }
+                }
+            }
+        }
+        return this
     }
 }

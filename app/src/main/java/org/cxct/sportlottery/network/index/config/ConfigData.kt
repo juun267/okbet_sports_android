@@ -82,5 +82,6 @@ data class ConfigData(
     val sportAnimation: String?,//体育动画接口 20210812確認暫時無用處
     val liveUrl: String?,
     val analysisUrl: String?,
-    val referUrl: String?
+    val referUrl: String?,
+    val presetBetAmount: List<Int>? //前台预设下注金额配置
 )

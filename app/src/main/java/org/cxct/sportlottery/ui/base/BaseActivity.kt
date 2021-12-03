@@ -162,11 +162,21 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         })
     }
 
-    fun showPromptDialog(title: String, message: String, positiveClickListener: () -> Unit?) {
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        positiveClickListener: () -> Unit?
+    ) {
         showPromptDialog(title, message, null, positiveClickListener, false)
     }
 
-    fun showPromptDialog(title: String, message: String, buttonText: String?, isShowDivider: Boolean, positiveClickListener: () -> Unit?) {
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        buttonText: String?,
+        isShowDivider: Boolean,
+        positiveClickListener: () -> Unit?
+    ) {
         showPromptDialog(title, message, buttonText, positiveClickListener, false, isShowDivider)
     }
 
@@ -178,7 +188,14 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         showPromptDialog(title, message, null, positiveClickListener, true)
     }
 
-    fun showPromptDialog(title: String?, errorMessage: String?, buttonText: String?, positiveClickListener: () -> Unit?, isError: Boolean, isShowDivider: Boolean ?= false) {
+    fun showPromptDialog(
+        title: String?,
+        errorMessage: String?,
+        buttonText: String?,
+        positiveClickListener: () -> Unit?,
+        isError: Boolean,
+        isShowDivider: Boolean? = false
+    ) {
         safelyUpdateLayout(Runnable {
             try {
                 //防止跳出多個 error dialog

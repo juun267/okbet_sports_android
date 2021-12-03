@@ -63,6 +63,24 @@
                     android:textColor="@color/color_select_primary_white"
                     android:textSize="@dimen/textSize14sp" />
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite" />
+
+                <RadioButton
+                    android:id="@+id/tab_wallet"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/effect_select_bg_white_transparent"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="@string/ewallet"
+                    android:textColor="@color/color_select_primary_white"
+                    android:textSize="@dimen/textSize14sp" />
+
             </RadioGroup>
 
         </androidx.cardview.widget.CardView>

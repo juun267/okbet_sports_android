@@ -10,7 +10,7 @@
     <string name="message_socket_connect">Kết nối mạng vượt quá thời gian chờ, vui lòng kết nối lại</string>
     <string name="message_network_no_connect">vui lòng kiểm tra kết nối mạng rồi thử lại</string>
     <string name="message_network_timeout">kết nối mạng vượt quá thời gian, vui lòng thử lại</string>
-    <string name="error">bị lỗi</string>
+    <string name="error">Nhắc nhở</string>
     <string name="error_input_empty">Trường hợp bắt buộc cần điền</string>
     <string name="error_incompatible_format">Các ký tự bạn đã nhập không phù hợp</string>
     <string name="error_wx_incompatible_format">lỗi định dạng Wechat ID không hợp lệ</string>
@@ -138,7 +138,7 @@
     <string name="transfer_notes">Ghi chú chuyển khoản</string>
     <string name="best_recommend">Đề xuất tốt nhất</string>
     <string name="navigation_web">Mạng điều hướng</string>
-    <string name="other">Khác</string>
+    <string name="other">SẮP TỚI</string>
     <string name="games_lobby">Sảnh trò chơi</string>
     <string name="sport_game">Sport</string>
     <string name="cg_lottery">Xổ số CG</string>
@@ -319,7 +319,7 @@
     <string name="game_filter_row_search_hint_league">Vui lòng nhập tên đội</string>
     <string name="date_row_league">trận đấu</string>
     <string name="date_row_other">Các kèo khác</string>
-    <string name="date_row_all">Tất cả các trận đấu</string>
+    <string name="date_row_all">TẤT CẢ</string>
     <string name="date_row_live">trận đấu đang diễn ra</string>
     <string name="date_row_today">trận đấu hôm nay</string>
     <string name="outright_row_entrance">Cược chấp ở giải vô địch</string>
@@ -386,6 +386,9 @@
     <string name="wx_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Wechat có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="ali_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Alipay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="cft_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Tenpay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
+    <string name="gcash_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản Gcash có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
+    <string name="grabpay_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản GrabPay có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
+    <string name="paymaya_recharge_hint">Mỗi lần đăng nhập vui lòng thành viên kiểm tra tài khoản PayMaya có được sử dụng hay không. Chúng tôi không thể kiểm tra khoản thanh toán vào tài khoản đã hết hạn, và sẽ không chịu trách nhiệm về việc đó!</string>
     <string name="title_pay_channel">Phương thức thanh toán</string>
     <string name="title_choose_pay_channel">Chọn phương thức thanh toán</string>
     <string name="title_pay_gap">Tài khoản thanh toán</string>
@@ -434,12 +437,18 @@
     <string name="title_weixin">Wechat</string>
     <string name="online_bank">Ngân hàng trực tuyến</string>
     <string name="online_juan">JuanCash</string>
+    <string name="online_dispenshing">出款</string>
+    <string name="online_online_bank">網銀</string>
+    <string name="online_gcash">Gcash</string>
+    <string name="online_grab">GrabPay</string>
+    <string name="online_maya">PayMaya</string>
     <string name="online_alipay">Alipay trực tuyến</string>
     <string name="online_weixin">WeChat trực tuyến</string>
     <string name="online_qq">QQ trực tuyến</string>
     <string name="online_credit_card">Thẻ tín dụng trực tuyến</string>
     <string name="bank_card">Thẻ ngân hàng</string>
     <string name="crypto">Tiền ảo</string>
+    <string name="ewallet">eWallet</string>
     <string name="currency_protocol">Thoả thuận / Loại tiền</string>
     <string name="select_crypto_address">Chọn địa chỉ</string>
     <string name="withdraw_number">Số tiền rút</string>
@@ -454,6 +463,7 @@
     <string name="please_setting_withdraw_password">Vui lòng thiết mật khẩu rút tiền</string>
     <string name="please_complete_profile_info">thông tin cá nhân đã được hoàn thiện</string>
     <string name="please_setting_bank_card">Vui lòng thiết lập thẻ ngân hàng</string>
+    <string name="please_setting_ewallet">Vui lòng thiết lập eWallet</string>
     <string name="please_setting_crypto">Vui lòng thiết lập tiền ảo</string>
     <string name="please_setting_money_card">Vui lòng thiết lập thẻ ngân hàng / tiền ảo</string>
     <string name="go_to_setting">Đi tới cài đặt</string>
@@ -477,12 +487,16 @@
     <string name="add_new">Thêm mới</string>
     <string name="add_credit_card">Thêm mới thẻ ngân hàng</string>
     <string name="add_crypto_card">Thêm mới tiền ảo</string>
-    <string name="add_credit_or_virtual">Thêm mới thẻ ngân hàng / tiền ảo mới</string>
+    <string name="add_e_wallet">Thêm mới eWallet</string>
+    <string name="add_credit_or_virtual">Thêm mới thẻ ngân hàng / tiền ảo / eWallet</string>
+    <string name="add_credit_or_e_wallet">Thêm mới thẻ ngân hàng / eWallet</string>
+
     <string name="create_bank">Tài khoản ngân hàng</string>
     <string name="create_name">Họ tên chủ thẻ</string>
     <string name="hint_please_enter_create_name">Vui lòng nhập họ và tên thẻ ngân hàng của bạn</string>
     <string name="edit_bank_card">Chỉnh sửa thẻ ngân hàng</string>
     <string name="edit_crypto_card">Chỉnh sửa tiền ảo</string>
+    <string name="edit_e_wallet">Chỉnh sửa eWallet</string>
     <string name="bank_card_number">Số thẻ ngân hàng</string>
     <string name="wallet_address">Địa chỉ ví</string>
     <string name="please_enter_bank_card_rule">Vui lòng nhập số thẻ ngân hàng</string>
@@ -490,6 +504,8 @@
     <string name="network_point">Địa điểm mở tài khoản</string>
     <string name="please_enter_network_point">Địa điểm mở tài khoản</string>
     <string name="delete_bank_card">xóa bỏ</string>
+    <string name="delete_crypto">xóa bỏ</string>
+    <string name="delete_e_wallet">xóa bỏ</string>
     <string name="select_currency_protocol">Chọn thỏa thuận / Loại tiền</string>
     <string name="error_create_name">Họ và tên từ 2-20 ký tự gồm trung anh</string>
     <string name="error_bank_card_number">Số thẻ khoản ngân hàng không đúng</string>
@@ -497,17 +513,20 @@
     <string name="error_withdraw_password">Mật khẩu bạn nhập không đúng</string>
     <string name="error_wallet_address">Địa chỉ bạn đăng nhập không hợp lệ</string>
     <string name="text_bank_card_delete_success">Đã xóa thẻ ngân hàng thành công</string>
+    <string name="text_e_wallet_delete_success">Đã xóa eWallet thành công</string>
     <string name="text_crypto_delete_success">Đã xóa tiền ảo thành công</string>
     <string name="text_bank_card_add_success">Mặc định thẻ ngân hàng thành công</string>
+    <string name="text_e_wallet_add_success">Mặc định eWallet thành công</string>
     <string name="text_crypto_add_success">Mặc định tiền ảo thành công</string>
     <string name="text_bank_card_modify_success">Chỉnh sửa thẻ ngân hàng thành công</string>
     <string name="text_crypto_modify_success">Chỉnh sửa tiền ảo thành công</string>
+    <string name="text_e_wallet_modify_success">Chỉnh sửa eWallet thành công</string>
     <string name="bet_info_list_title">Đơn cược</string>
     <string name="bet_list_title">ĐƠN CƯỢC</string>
     <string name="bet_info_list_game_closed">Kèo chấp đã đóng</string>
     <string name="bet_info_list_game_odds_changed">Tỷ lệ cược đã thay đổi</string>
     <string name="bet_info_list_bet_quota">Số tiền cược : </string>
-    <string name="bet_receipt_bet_quota">Số tiền cược : </string>
+    <string name="bet_receipt_bet_quota">Số tiền đặt cược : </string>
     <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
     <string name="bet_list_win_quota">Số tiền có thể thắng:</string>
 <!--    <string name="bet_info_list_rmb">RMB</string>-->
@@ -530,7 +549,7 @@
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_different_game_type">không cùng loại bóng không thể tiến hành cược xiên</string>
     <string name="bet_info_input_quota">Nhập số tiền</string>
-    <string name="bet_info_check_maximum_limit">Số tiền đặt cược</string>
+    <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số\ntiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
@@ -570,6 +589,9 @@
     <string name="recharge_channel_weixin">Chuyển khoản WeChat</string>
     <string name="recharge_channel_cft">Chuyển khoản Tenpay</string>
     <string name="recharge_channel_crypto">Chuyển khoản tiền ảo</string>
+    <string name="recharge_channel_gcash">Gcash</string>
+    <string name="recharge_channel_grabpay">GrabPay</string>
+    <string name="recharge_channel_paymaya">PayMaya</string>
     <string name="recharge_channel_admin">Hệ thống nạp tiền</string>
     <string name="recharge_log_order_time">Thời gian đơn cược</string>
     <string name="recharge_log_recharge_amount">Số tiền nạp</string>
@@ -757,4 +779,84 @@
     <string name="service_2">CSKH2</string>
     <string name="service_connect">Liên hệ</string>
     <string name="top_game">Sự kiện hàng đầu thế giới</string>
+    <string name="parlay_10_fold">10 xiên 1</string>
+    <string name="parlay_10_block">10 xiên 1013</string>
+    <string name="parlay_2_fold">2 xiên 1</string>
+    <string name="parlay_3_fold">3 xiên 1</string>
+    <string name="parlay_3_block">3 xiên 4</string>
+    <string name="parlay_4_fold">4 xiên 1</string>
+    <string name="parlay_4_block">4 xiên 11</string>
+    <string name="parlay_5_fold">5 xiên 1</string>
+    <string name="parlay_5_block">5 xiên 26</string>
+    <string name="parlay_6_fold">6 xiên 1</string>
+    <string name="parlay_6_block">6 xiên 57</string>
+    <string name="parlay_7_fold">7 xiên 1</string>
+    <string name="parlay_7_block">7 xiên 120</string>
+    <string name="parlay_8_fold">8 xiên 1</string>
+    <string name="parlay_8_block">8 xiên 247</string>
+    <string name="parlay_9_fold">9 xiên 1</string>
+    <string name="parlay_9_block">9 xiên 502</string>
+    <string name="parlay_2_fold_rule">Xâu 2 là sự kết hợp của hai lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 2 có thể kết hợp. Ví dụ Xâu 2 (x3) từ 3 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_3_fold_rule">Xâu 3 là sự kết hợp của ba lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 3 có thể kết hợp. Ví dụ Xâu 3 (x4) từ 4 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_3_block_rule">Liên Hoàn 3 là kết hợp 3 lựa chọn riêng biệt gồm tổng cộng 4 xâu nhỏ
+    3 cược Xâu 2x1 và 1 cược Xâu 3x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_4_fold_rule">Xâu 4 là sự kết hợp của bốn lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 4 có thể kết hợp. Ví dụ Xâu 4 (x5) từ 5 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_4_block_rule">Liên Hoàn 4 là kết hợp 4 lựa chọn riêng biệt gồm tổng cộng 11 xâu nhỏ
+    6 Xâu 2x1, 4 Xâu 3x1 và một Xâu 4x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_5_fold_rule">Xâu 5 là sự kết hợp của năm lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 5 có thể kết hợp. Ví dụ Xâu 5 (x6) từ 6 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_5_block_rule">Liên Hoàn 5 là kết hợp 5 lựa chọn riêng biệt gồm tổng cộng 26 xâu nhỏ
+    10 Xâu 2x1, 10 Xâu 3x1, 5 Xâu 4x1 và 1 Xâu 5x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_6_fold_rule">Xâu 6 là sự kết hợp của sáu lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 6 có thể kết hợp. Ví dụ Xâu 6 (x7) từ 7 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_6_block_rule">Liên Hoàn 6 là kết hợp 6 lựa chọn riêng biệt gồm tổng cộng 57 xâu nhỏ
+    15 Xâu 2x1, 20 Xâu 3x1, 15 Xâu 4x1, 6 Xâu 5x1 và 1 Xâu 6x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_7_fold_rule">Xâu 7 là sự kết hợp của bảy lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 7 có thể kết hợp. Ví dụ Xâu 7 (x8) từ 8 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_7_block_rule">Liên Hoàn 7 là kết hợp 7 lựa chọn riêng biệt gồm tổng cộng 120 xâu nhỏ
+    21 Xâu 2x1, 35 Xâu 3x1, 35 Xâu 4x1, 21 Xâu 5x1, 7 Xâu 6x1 và 1 Xâu 7x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_8_fold_rule">Xâu 8 là sự kết hợp của tám lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 8 có thể kết hợp. Ví dụ Xâu 8 (x9) từ 9 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_8_block_rule">Liên Hoàn 8 là kết hợp 8 lựa chọn riêng biệt gồm tổng cộng 247 xâu nhỏ
+    28 Xâu 2x1, 56 Xâu 3x1, 70 Xâu 4x1, 56 Xâu 5x1, 28 Xâu 6x1, 8 Xâu 7x1 và 1 Xâu 8x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_9_fold_rule">Xâu 9 là sự kết hợp của chín lựa chọn trên các sự kiện riêng biệt.
+    Cược trả về khi có tất cả cược đều thắng.
+    Trường hợp nhiều trận đấu đang diễn ra, Xâu 9 có thể kết hợp. Ví dụ Xâu 9 (x10) từ 10 lựa chọn.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_9_block_rule">Liên Hoàn 9 là kết hợp 9 lựa chọn riêng biệt gồm tổng cộng 502 xâu nhỏ.
+    36 Xâu 2x1, 84 Xâu 3x1, 126 Xâu 4x1, 126 Xâu 5x1, 84 Xâu 6x1, 36 Xâu 7x1, 9 Xâu 8x1 và 1 Xâu 9x1.
+    Cược trả về khi có tối thiểu 2 lựa chọn thắng.
+    Các loại bóng khác nhau và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="parlay_10_fold_rule">1 xiên 10 là một cược đơn bao gồm 10 lựa chọn, cần phải thắng tất cả các mục chọn để được hoàn tiền, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên</string>
+    <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
+    <string name="message_source_change">Hệ thống nhận dữ liệu sự kiện mới nhất và sẽ tự động quay lại trang chủ ngay lập tức</string>
 </resources>

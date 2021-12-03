@@ -136,6 +136,9 @@ class FinanceViewModel(
                     RechType.ALIPAY.type -> androidContext.getString(R.string.recharge_channel_alipay)
                     RechType.BANK_TRANSFER.type -> androidContext.getString(R.string.recharge_channel_bank)
                     RechType.CRYPTO.type -> androidContext.getString(R.string.recharge_channel_crypto)
+                    RechType.GCASH.type -> androidContext.getString(R.string.recharge_channel_gcash)
+                    RechType.GRABPAY.type -> androidContext.getString(R.string.recharge_channel_grabpay)
+                    RechType.PAYMAYA.type -> androidContext.getString(R.string.recharge_channel_paymaya)
                     else -> ""
                 }
 
@@ -207,6 +210,7 @@ class FinanceViewModel(
                     UWType.ADMIN_SUB_MONEY.type -> androidContext.getString(R.string.withdraw_log_type_admin)
                     UWType.BANK_TRANSFER.type -> androidContext.getString(R.string.withdraw_log_type_bank_trans)
                     UWType.CRYPTO.type -> androidContext.getString(R.string.withdraw_log_crypto_transfer)
+                    UWType.E_WALLET.type -> androidContext.getString(R.string.ewallet)
                     else -> ""
                 }
 

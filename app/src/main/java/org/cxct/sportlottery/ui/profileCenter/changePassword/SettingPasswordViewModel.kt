@@ -18,7 +18,7 @@ import org.cxct.sportlottery.util.VerifyConstUtil
 
 class SettingPasswordViewModel(
     androidContext: Application,
-    private val userInfoRepository: UserInfoRepository,
+    userInfoRepository: UserInfoRepository,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
     infoCenterRepository: InfoCenterRepository,

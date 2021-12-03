@@ -25,12 +25,24 @@ import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import java.util.*
 
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
 
     private var dataList = listOf<MatchOdd>()
+
+    var discount: Float = 1.0F
+        set(newDiscount) {
+            dataList.forEach { matchOdd ->
+                matchOdd.oddsMap.updateOddsDiscount(field, newDiscount)
+            }
+
+            notifyDataSetChanged()
+            field = newDiscount
+        }
+
     fun setData(sportCode: String?, newList: List<OddData>?) {
         dataList = newList?.map {
             val matchInfo = MatchInfo(

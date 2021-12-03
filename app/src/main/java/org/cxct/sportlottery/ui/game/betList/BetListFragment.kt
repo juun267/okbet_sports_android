@@ -24,6 +24,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -43,6 +44,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private lateinit var binding: FragmentBetListBinding
 
     private var oddsType: OddsType = OddsType.EU
+
+    private var discount = 1.0F
 
     private var keyboard: KeyBoardUtil? = null
 
@@ -90,6 +93,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initDiscount()
         initView()
         initObserver()
         initSocketObserver()
@@ -107,6 +111,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     override fun onDestroyView() {
         super.onDestroyView()
         rv_bet_list.adapter = null
+    }
+
+    private fun initDiscount () {
+        discount = viewModel.userInfo.value?.discount ?: 1.0F
     }
 
     private fun initView() {
@@ -288,7 +296,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initKeyBoard() {
-        keyboard = KeyBoardUtil(binding.kvKeyboard, null)
+        keyboard = KeyBoardUtil(binding.kvKeyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
     }
 
     private fun initObserver() {
@@ -304,6 +312,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
             betListRefactorAdapter?.oddsType = it
+        })
+
+        viewModel.userInfo.observe(viewLifecycleOwner, {
+            it?.discount?.let { newDiscount ->
+                if (discount == newDiscount) return@observe
+
+                viewModel.updateBetInfoDiscount(discount, newDiscount)
+                discount = newDiscount
+            }
         })
 
         viewModel.betInfoList.observe(viewLifecycleOwner, {

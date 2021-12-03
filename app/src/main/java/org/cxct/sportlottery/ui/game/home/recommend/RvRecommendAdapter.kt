@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.home_recommend_item.view.indicator_view
 import kotlinx.android.synthetic.main.home_recommend_item.view.view_pager
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.matchCategory.result.MatchRecommendResult
 import org.cxct.sportlottery.network.matchCategory.result.RECOMMEND_OUTRIGHT
 import org.cxct.sportlottery.network.odds.MatchInfo
@@ -23,6 +24,8 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.game.home.OnClickMoreListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.util.TimeUtil
 
 class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolder>() {
@@ -35,6 +38,23 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
 
     private var mDataList = listOf<RecommendGameEntity>()
 
+    var discount: Float = 1.0F
+        set(newDiscount) {
+            mDataList.forEach { recommendGameEntity ->
+                recommendGameEntity.oddBeans.forEach { oddBean ->
+                    oddBean.oddList.forEach { odd ->
+                        if (oddBean.playTypeCode == PlayCate.EPS.value)
+                            odd?.updateEPSDiscount(field, newDiscount)
+                        else
+                            odd?.updateDiscount(field, newDiscount)
+                    }
+                }
+            }
+
+            field = newDiscount
+            notifyDataSetChanged()
+        }
+
     fun setData(result: MatchRecommendResult) {
         val dataList = mutableListOf<RecommendGameEntity>()
         result.rows?.forEach { row ->
@@ -42,7 +62,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                 val beans = oddData.oddsMap.toSortedMap(compareBy<String> {
                     val sortOrder = oddData.oddsSort?.split(",")
                     sortOrder?.indexOf(it)
-                }.thenBy { it }).map { OddBean(it.key, it.value?.toList() ?: listOf()) }
+                }.thenBy { it }).map {
+                    OddBean(it.key, it.value?.toList() ?: listOf()) }
 
                 val entity = RecommendGameEntity(
                     code = row.sport?.code,

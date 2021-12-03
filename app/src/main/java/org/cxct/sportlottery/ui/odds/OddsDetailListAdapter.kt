@@ -34,6 +34,8 @@ import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelp
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 import org.cxct.sportlottery.util.DisplayUtil.dp
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 
 
 /**
@@ -57,6 +59,26 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
                 }
             }
+            notifyDataSetChanged()
+        }
+
+    var discount: Float = 1.0F
+        set(value) {
+            if (field == value) return
+
+            oddsDetailDataList.forEach { oddsDetailListData ->
+                if (oddsDetailListData.gameType == PlayCate.EPS.value) {
+                    oddsDetailListData.oddArrayList.forEach { odd ->
+                        odd?.updateEPSDiscount(field, value)
+                    }
+                } else {
+                    oddsDetailListData.oddArrayList.forEach { odd ->
+                        odd?.updateDiscount(field, value)
+                    }
+                }
+            }
+
+            field = value
             notifyDataSetChanged()
         }
 

@@ -17,7 +17,6 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
-import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -150,6 +149,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val leagueAdapter by lazy {
         LeagueAdapter(args.matchType).apply {
+            discount = viewModel.userInfo.value?.discount ?: 1.0F
+
             leagueListener = LeagueListener {
                 subscribeChannelHall(it)
             }
@@ -534,6 +535,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
                 else -> {
                     game_tabs.selectTab(game_tabs.getTabAt(0))
+                }
+            }
+        })
+
+        viewModel.userInfo.observe(this.viewLifecycleOwner, { userInfo ->
+            when (game_list.adapter) {
+                is LeagueAdapter -> {
+                    leagueAdapter.discount = userInfo?.discount ?: 1.0F
+                }
+
+                is EpsListAdapter -> {
+                    epsListAdapter.discount = userInfo?.discount ?: 1.0F
                 }
             }
         })

@@ -79,7 +79,7 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
             if (sConfigData?.thirdOpen == FLAG_OPEN)
                 true
             else
-                recordHideStrList?.contains(it) == true
+                recordHideStrList?.contains(it) == false
         }?.map {
             it to (recordImgList?.getResourceId(recordStrList.indexOf(it), -1) ?: -1)
         } ?: listOf()

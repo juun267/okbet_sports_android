@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
@@ -18,12 +19,30 @@ import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
+import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
+import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RvGameTable4Adapter.ItemViewHolder>() {
 
     private var mDataList = mutableListOf<GameEntity>()
     private var mMatchType: MatchType = MatchType.IN_PLAY
     var isLogin: Boolean? = false
+
+    var discount: Float = 1.0F
+        set(newDiscount) {
+            mDataList.forEach { gameEntity ->
+                gameEntity.matchOdds.forEach { matchOdd ->
+                    matchOdd.oddsMap.forEach { (key, value) ->
+                        value?.forEach { odd ->
+                            odd?.updateDiscount(field, newDiscount)
+                        }
+                    }
+                }
+            }
+            notifyDataSetChanged()
+            field = newDiscount
+        }
 
     fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
         mDataList = matchPreloadData?.datas?.map { data ->

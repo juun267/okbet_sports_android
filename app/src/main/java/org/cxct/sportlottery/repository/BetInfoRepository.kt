@@ -17,6 +17,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.util.Event
+import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
 
@@ -303,6 +304,17 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.BK -> playQuotaComData?.oUTRIGHTBK
                     GameType.TN -> playQuotaComData?.oUTRIGHTTN
                     GameType.VB -> playQuotaComData?.oUTRIGHTVB
+                    GameType.BM -> playQuotaComData?.oUTRIGHTBM
+                    GameType.TT -> playQuotaComData?.oUTRIGHTTT
+                    GameType.IH -> playQuotaComData?.oUTRIGHTIH
+                    GameType.BX -> playQuotaComData?.oUTRIGHTBX
+                    GameType.CB -> playQuotaComData?.oUTRIGHTCB
+                    GameType.CK -> playQuotaComData?.oUTRIGHTCK
+                    GameType.BB -> playQuotaComData?.oUTRIGHTBB
+                    GameType.RB -> playQuotaComData?.oUTRIGHTRB
+                    GameType.AFT -> playQuotaComData?.oUTRIGHTAFT
+                    GameType.MR -> playQuotaComData?.oUTRIGHTMR
+                    GameType.GF -> playQuotaComData?.oUTRIGHTGF
                     else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
@@ -313,6 +325,17 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.BK -> playQuotaComData?.pARLAYBK
                     GameType.TN -> playQuotaComData?.pARLAYTN
                     GameType.VB -> playQuotaComData?.pARLAYVB
+                    GameType.BM -> playQuotaComData?.pARLAYBM
+                    GameType.TT -> playQuotaComData?.pARLAYTT
+                    GameType.IH -> playQuotaComData?.pARLAYIH
+                    GameType.BX -> playQuotaComData?.pARLAYBX
+                    GameType.CB -> playQuotaComData?.pARLAYCB
+                    GameType.CK -> playQuotaComData?.pARLAYCK
+                    GameType.BB -> playQuotaComData?.pARLAYBB
+                    GameType.RB -> playQuotaComData?.pARLAYRB
+                    GameType.AFT -> playQuotaComData?.pARLAYAFT
+                    GameType.MR -> playQuotaComData?.pARLAYMR
+                    GameType.GF -> playQuotaComData?.pARLAYGF
                     else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
@@ -322,6 +345,17 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.BK -> playQuotaComData?.sINGLEBK
                     GameType.TN -> playQuotaComData?.sINGLETN
                     GameType.VB -> playQuotaComData?.sINGLEVB
+                    GameType.BM -> playQuotaComData?.sINGLEBM
+                    GameType.TT -> playQuotaComData?.sINGLETT
+                    GameType.IH -> playQuotaComData?.sINGLEIH
+                    GameType.BX -> playQuotaComData?.sINGLEBX
+                    GameType.CB -> playQuotaComData?.sINGLECB
+                    GameType.CK -> playQuotaComData?.sINGLECK
+                    GameType.BB -> playQuotaComData?.sINGLEBB
+                    GameType.RB -> playQuotaComData?.sINGLERB
+                    GameType.AFT -> playQuotaComData?.sINGLEAFT
+                    GameType.MR -> playQuotaComData?.sINGLEMR
+                    GameType.GF -> playQuotaComData?.sINGLEGF
                     else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
@@ -344,10 +378,31 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.min?.toBigDecimal()
         )
 
+        var parlayBetLimit = 9999
+        parlayBetLimitMap.map {
+            parlayBetLimit = it.value.max.toInt()
+        }
+
+        var maxBet = 9999
+        val maxBetMoney = GameConfigManager.maxBetMoney
+        val maxCpBetMoney = GameConfigManager.maxCpBetMoney
+        val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney
+
+        maxBet = when (matchType) {
+            MatchType.PARLAY -> maxParlayBetMoney?.let { if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
+
+            MatchType.OUTRIGHT -> maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
+
+            else -> maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                ?: parlayBetLimit
+        }
+
         return parlayBetLimitMap.map {
             ParlayOdd(
                 parlayType = it.key,
-                max = it.value.max.toInt(),
+                max = maxBet,
                 min = it.value.min.toInt(),
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),

@@ -63,6 +63,7 @@ class LoginViewModel(
             doNetwork(androidContext) {
                 loginRepository.login(loginRequest)
             }?.let { result ->
+//                result.loginData?.discount = 0.4f //後台修復中 測試用
                 _loginResult.postValue(result)
             }
         }

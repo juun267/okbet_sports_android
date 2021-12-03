@@ -133,7 +133,7 @@ class CryptoPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         cv_upload.setOnClickListener {
             this.activity?.let { activity ->
                 activity.supportFragmentManager.let { fragmentManager ->
-                    RechargePicSelectorDialog(activity, mSelectMediaListener).show(
+                    RechargePicSelectorDialog(activity, mSelectMediaListener,RechargePicSelectorDialog.CropType.SQUARE).show(
                         fragmentManager, null
                     )
                 }

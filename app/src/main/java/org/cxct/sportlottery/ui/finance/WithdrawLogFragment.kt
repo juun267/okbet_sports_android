@@ -195,6 +195,9 @@ class WithdrawLogFragment : BaseFragment<FinanceViewModel>(FinanceViewModel::cla
                 getString(R.string.withdraw_log_crypto_transfer) -> {
                     StatusSheetData(UWType.CRYPTO.type, it)
                 }
+                getString(R.string.ewallet) -> {
+                    StatusSheetData(UWType.E_WALLET.type, it)
+                }
                 else -> {
                     StatusSheetData(viewModel.allTag, it).apply { isChecked = true }
                 }
