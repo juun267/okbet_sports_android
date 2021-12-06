@@ -27,6 +27,17 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 BK.key -> BK
                 TN.key -> TN
                 VB.key -> VB
+                BM.key -> BM
+                TT.key -> TT
+                IH.key -> IH
+                BX.key -> BX
+                CB.key -> CB
+                CK.key -> CK
+                BB.key -> BB
+                RB.key -> RB
+                AFT.key -> AFT
+                MR.key -> MR
+                GF.key -> GF
                 else -> null
             }
         }
