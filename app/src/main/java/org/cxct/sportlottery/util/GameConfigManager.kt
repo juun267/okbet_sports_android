@@ -93,6 +93,7 @@ object GameConfigManager {
             GameType.CK.key -> R.drawable.img_home_title_ck_background
             GameType.BB.key -> R.drawable.img_home_title_bb_background
             GameType.RB.key -> R.drawable.img_home_title_rb_background
+            GameType.AFT.key -> R.drawable.img_home_title_aft_background
             else -> null
         }
     }
