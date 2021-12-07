@@ -1188,6 +1188,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             else -> null
                         }
                     }
+                    GameType.BM.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.badminton_100
+                            game_bg_layer3.isVisible -> R.drawable.badminton_132
+                            else -> null
+                        }
+                    }
                     else -> {
                         when {
                             game_bg_layer2.isVisible -> R.drawable.soccer108
