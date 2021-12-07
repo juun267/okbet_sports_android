@@ -473,6 +473,16 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 GameType.BK.key -> R.drawable.basketball108
                 GameType.TN.key -> R.drawable.tennis108
                 GameType.VB.key -> R.drawable.volleyball108
+                GameType.BM.key -> R.drawable.badminton_100
+                GameType.TT.key -> R.drawable.pingpong_100
+                GameType.BX.key -> R.drawable.boxing_100
+                GameType.CB.key -> R.drawable.snooker_100
+                GameType.CK.key -> R.drawable.cricket_100
+                GameType.BB.key -> R.drawable.baseball_100
+                GameType.RB.key -> R.drawable.rugby_100
+                GameType.AFT.key -> R.drawable.amfootball_100
+                GameType.MR.key -> R.drawable.rancing_100
+                GameType.GF.key -> R.drawable.golf_108
                 else -> null
             }
         ).into(favorite_bg_layer2)
