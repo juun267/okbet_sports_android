@@ -87,6 +87,7 @@ object GameConfigManager {
             GameType.VB.key -> R.drawable.img_home_title_volleyball_background
             GameType.BM.key -> R.drawable.img_home_title_bm_background
             GameType.TT.key -> R.drawable.img_home_title_tt_background
+            GameType.IH.key -> R.drawable.img_home_title_ih_background
             else -> null
         }
     }
