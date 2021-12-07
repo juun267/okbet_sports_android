@@ -235,6 +235,8 @@
     <string name="third_session">第三节</string>
     <string name="fourth_session">第四节</string>
     <string name="add_time">加时</string>
+    <string name="add_time_first_half_game">加时赛上半场</string>
+    <string name="add_time_second_half_game">加时赛下半场</string>
     <string name="account_balance">账户余额</string>
     <string name="user_id_colon">用戶ID：</string>
     <string name="recharge">充值</string>

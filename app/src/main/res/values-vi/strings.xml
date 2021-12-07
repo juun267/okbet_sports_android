@@ -215,6 +215,8 @@
     <string name="third_session">hiệp ba</string>
     <string name="fourth_session">hiệp bốn</string>
     <string name="add_time">Tăng ca</string>
+    <string name="add_time_first_half_game">Tăng ca hiệp 1</string>
+    <string name="add_time_second_half_game">Tăng ca hiệp 2</string>
     <string name="account_balance">Số dư tài khoản</string>
     <string name="user_id_colon">ID người dùng：</string>
     <string name="recharge">Nạp tiền</string>

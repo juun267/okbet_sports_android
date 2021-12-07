@@ -225,6 +225,8 @@
     <string name="third_session">Second period</string>
     <string name="fourth_session">4th period</string>
     <string name="add_time">Overtime</string>
+    <string name="add_time_first_half_game">Overtime First half</string>
+    <string name="add_time_second_half_game">Overtime Second half</string>
     <string name="account_balance">Current Balance</string>
     <string name="user_id_colon">User ID</string>
     <string name="recharge">Recharge</string>
