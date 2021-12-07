@@ -4,7 +4,6 @@ package org.cxct.sportlottery.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.network.bet.info.MatchOdd
@@ -316,6 +315,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.AFT -> playQuotaComData?.oUTRIGHTAFT
                     GameType.MR -> playQuotaComData?.oUTRIGHTMR
                     GameType.GF -> playQuotaComData?.oUTRIGHTGF
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
 
@@ -336,6 +336,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.AFT -> playQuotaComData?.pARLAYAFT
                     GameType.MR -> playQuotaComData?.pARLAYMR
                     GameType.GF -> playQuotaComData?.pARLAYGF
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
             else -> {
@@ -355,6 +356,7 @@ class BetInfoRepository(val androidContext: Context) {
                     GameType.AFT -> playQuotaComData?.sINGLEAFT
                     GameType.MR -> playQuotaComData?.sINGLEMR
                     GameType.GF -> playQuotaComData?.sINGLEGF
+                    else -> playQuotaComData?.oUTRIGHTFT //測試用，需再添加各項球類playQuotaComData
                 }
             }
         }
