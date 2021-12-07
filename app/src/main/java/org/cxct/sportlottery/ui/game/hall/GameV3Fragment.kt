@@ -1195,6 +1195,69 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             else -> null
                         }
                     }
+                    GameType.TT.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.pingpong_100
+                            game_bg_layer3.isVisible -> R.drawable.pingpong_140
+                            else -> null
+                        }
+                    }
+                    GameType.BX.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.boxing_100
+                            game_bg_layer3.isVisible -> R.drawable.boxing_132
+                            else -> null
+                        }
+                    }
+                    GameType.CB.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.snooker_100
+                            game_bg_layer3.isVisible -> R.drawable.snooker_140
+                            else -> null
+                        }
+                    }
+                    GameType.CK.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.cricket_100
+                            game_bg_layer3.isVisible -> R.drawable.cricket_132
+                            else -> null
+                        }
+                    }
+                    GameType.BB.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.baseball_100
+                            game_bg_layer3.isVisible -> R.drawable.baseball_132
+                            else -> null
+                        }
+                    }
+                    GameType.RB.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.rugby_100
+                            game_bg_layer3.isVisible -> R.drawable.rugby_140
+                            else -> null
+                        }
+                    }
+                    GameType.AFT.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.amfootball_100
+                            game_bg_layer3.isVisible -> R.drawable.amfootball_132
+                            else -> null
+                        }
+                    }
+                    GameType.MR.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.rancing_100
+                            game_bg_layer3.isVisible -> R.drawable.rancing_140
+                            else -> null
+                        }
+                    }
+                    GameType.GF.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.golf_108
+                            game_bg_layer3.isVisible -> R.drawable.golf_132
+                            else -> null
+                        }
+                    }
                     else -> {
                         when {
                             game_bg_layer2.isVisible -> R.drawable.soccer108
