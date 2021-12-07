@@ -95,6 +95,7 @@ object GameConfigManager {
             GameType.RB.key -> R.drawable.img_home_title_rb_background
             GameType.AFT.key -> R.drawable.img_home_title_aft_background
             GameType.MR.key -> R.drawable.img_home_title_mr_background
+            GameType.GF.key -> R.drawable.img_home_title_gf_background
             else -> null
         }
     }
