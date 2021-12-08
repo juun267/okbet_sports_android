@@ -1332,7 +1332,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         playCateName: String
     ) {
         //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
-        BetInfoCarDialog.launch()
+        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
+            BetInfoCarDialog.launch()
+        }
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 

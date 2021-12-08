@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.network.odds.list
 
 
+import android.util.Log
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.common.MatchOdd
@@ -16,7 +17,7 @@ data class MatchOdd(
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo? = null,
     @Json(name = "odds")
-    override val oddsMap: MutableMap<String, MutableList<Odd?>?> = mutableMapOf(
+    override var oddsMap: MutableMap<String, MutableList<Odd?>?> = mutableMapOf(
         PlayCate.HDP.value to mutableListOf(),
         PlayCate.OU.value to mutableListOf(),
         PlayCate.SINGLE.value to mutableListOf()
@@ -37,4 +38,14 @@ data class MatchOdd(
     var leagueTime: Int? = null
 
     var positionButtonPage = 0
+
+    fun sortOddsMap() {
+        this.oddsMap.forEach { (_, value) ->
+            if (value?.size!! > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
+                value?.sortBy {
+                    it?.marketSort
+                }
+            }
+        }
+    }
 }

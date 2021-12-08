@@ -142,7 +142,8 @@ abstract class BaseOddButtonViewModel(
                     matchInfo = matchInfo,
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
-                    playCateMenuCode = playCateMenuCode
+                    playCateMenuCode = playCateMenuCode,
+                    oddsType = loginRepository.mOddsType.value
                 )
             }
         } else {
@@ -183,7 +184,7 @@ abstract class BaseOddButtonViewModel(
                     matchInfo = matchOdd.matchInfo,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
-                    playCateMenuCode = PlayCate.OUTRIGHT.value
+                    oddsType = loginRepository.mOddsType.value
                 )
             }
         } else {
@@ -328,7 +329,7 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount,currentOddsTypes.code))
+            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
         }
 
         //串關注單

@@ -68,7 +68,6 @@
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize15sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/iv_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="俄罗斯 -0.5/1 ＠ 0.890" />
@@ -129,6 +128,33 @@
             app:layout_constraintStart_toStartOf="@+id/et_bet"
             app:layout_constraintTop_toTopOf="@+id/et_bet"
             app:layout_constraintWidth_percent="0.442" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintStart_toEndOf="@+id/et_clickable"
+            app:layout_constraintTop_toTopOf="@+id/et_clickable"
+            app:layout_constraintBottom_toBottomOf="@+id/et_clickable">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[TR]实际下注"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize12sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvRealAmount"
+                android:text="0.00"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/textSize12sp"
+                />
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_error_message"

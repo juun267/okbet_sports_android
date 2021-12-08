@@ -37,6 +37,9 @@ data class Odd(
     @Json(name = "indoOdds")
     var indoOdds: Double? = null, //印尼盤
 
+    @Json(name = "marketSort")
+    var marketSort: Int? = null, //marketSort
+
     @Json(name = "status")
     var status: Int? = null, //0:活跃可用，可投注、1：临时锁定，不允许投注、2：不可用，不可见也不可投注
 

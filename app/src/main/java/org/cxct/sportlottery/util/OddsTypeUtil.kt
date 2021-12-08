@@ -28,6 +28,20 @@ fun getOdds(matchOdd: MatchOdd?, oddsType: OddsType): Double {
     }
 }
 
+fun getOddsNew(matchOdd: MatchOdd?, oddsType: OddsType): Double {
+    var currentOddsType = oddsType
+    if(matchOdd?.odds == matchOdd?.malayOdds){
+        currentOddsType = OddsType.EU
+    }
+    return when (currentOddsType) {
+        OddsType.EU -> matchOdd?.odds ?: 0.0
+        OddsType.HK -> matchOdd?.hkOdds ?: 0.0
+        //Martin
+        OddsType.MYS -> matchOdd?.malayOdds ?: 0.0
+        OddsType.IDN -> matchOdd?.indoOdds ?: 0.0
+    }
+}
+
 fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd?, oddsType: OddsType): Double {
     return when (oddsType) {
         OddsType.EU -> matchOdd?.odds ?: 0.0

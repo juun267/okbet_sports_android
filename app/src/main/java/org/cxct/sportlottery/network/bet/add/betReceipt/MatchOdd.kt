@@ -18,9 +18,9 @@ data class MatchOdd(
     @Json(name = "hkOdds")
     val hkOdds: Double?,
     @Json(name = "malayOdds")
-    var malayOdds: Double,
+    var malayOdds: Double?,
     @Json(name = "indoOdds")
-    var indoOdds: Double,
+    var indoOdds: Double?,
     @Json(name = "homeId")
     val homeId: String,
     @Json(name = "homeName")
