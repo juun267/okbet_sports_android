@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
-            tools:itemCount="2"
+            tools:itemCount="10"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/content_left_menu_item"
             tools:orientation="vertical" />

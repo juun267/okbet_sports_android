@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.ui.game.menu
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,12 +12,10 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 
 class LeftMenuItemNewAdapter(
+    private val isShowMemberLevel: Boolean,
+    private val headerSelectedListener: HeaderSelectedListener,
     private val itemSelectedListener: ItemSelectedListener,
-    private val sportClickListener: SportClickListener,
-    private val inPlayClickListener: InPlayClickListener,
-    private val premiumOddsClickListener: PremiumOddsClickListener,
-    private val gameRuleClickListener: GameRuleClickListener,
-    private val oddTypeClickListener: OddTypeClickListener
+    private val footerSelectedListener: FooterSelectedListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -69,11 +66,11 @@ class LeftMenuItemNewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
-                holder.bind(inPlayClickListener, premiumOddsClickListener)
+                holder.bind(isShowMemberLevel, isLogin, headerSelectedListener)
             }
 
             is FooterViewHolder -> {
-                holder.bind(gameRuleClickListener, oddTypeClickListener)
+                holder.bind(isLogin, footerSelectedListener)
             }
 
             is ItemViewHolder -> {
@@ -86,7 +83,7 @@ class LeftMenuItemNewAdapter(
                     divider.isVisible = position == selectedNumber - 1
 
                     cl_content.setOnClickListener {
-                        sportClickListener.onClickSport(item.gameType)
+                        itemSelectedListener.onSportClick(item.gameType)
                     }
 
                     when (item.isSelected) {
@@ -95,7 +92,7 @@ class LeftMenuItemNewAdapter(
                             item.isSelected = 1
 
                             btn_select.setOnClickListener {
-                                itemSelectedListener.onSelect(
+                                itemSelectedListener.onSportSelect(
                                     item.gameType,
                                     MyFavoriteNotifyType.SPORT_ADD.code
                                 )
@@ -108,7 +105,7 @@ class LeftMenuItemNewAdapter(
                             item.isSelected = 0
 
                             btn_select.setOnClickListener {
-                                itemSelectedListener.onSelect(
+                                itemSelectedListener.onSportSelect(
                                     item.gameType,
                                     MyFavoriteNotifyType.SPORT_REMOVE.code
                                 )
@@ -150,20 +147,39 @@ class LeftMenuItemNewAdapter(
         }
 
         fun bind(
-            inPlayClickListener: InPlayClickListener,
-            premiumOddsClickListener: PremiumOddsClickListener
+            isShowMemberLevel: Boolean,
+            isLogin: Boolean,
+            headerSelectedListener: HeaderSelectedListener
         ) {
             itemView.apply {
+                tv_recharge.isVisible = isLogin
+                tv_withdraw.isVisible = isLogin
+                tv_member_level.isVisible = isLogin && isShowMemberLevel
+                tv_promotion.isVisible = isLogin
+                divider_login.isVisible = isLogin
+
+                tv_recharge.setOnClickListener {
+                    headerSelectedListener.rechargeSelected()
+                }
+                tv_withdraw.setOnClickListener {
+                    headerSelectedListener.withdrawSelected()
+                }
+                tv_member_level.setOnClickListener {
+                    headerSelectedListener.memberLevelSelected()
+                }
+                tv_promotion.setOnClickListener {
+                    headerSelectedListener.promotionSelected()
+                }
+
                 ct_inplay.setOnClickListener {
-                    inPlayClickListener.onClick()
+                    headerSelectedListener.inPlaySelected()
                 }
                 ct_premium_odds.setOnClickListener {
-                    premiumOddsClickListener.onClick()
+                    headerSelectedListener.premiumOddsSelected()
                 }
             }
         }
     }
-
 
     class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -177,44 +193,61 @@ class LeftMenuItemNewAdapter(
         }
 
         fun bind(
-            gameRuleClickListener: GameRuleClickListener,
-            oddTypeClickListener: OddTypeClickListener
+            isLogin: Boolean,
+            footerSelectedListener: FooterSelectedListener
         ) {
             itemView.apply {
-                //遊戲規則
-                ct_game_rule.setOnClickListener {
-                    gameRuleClickListener.onClick()
-                }
+
+                tv_appearance.isVisible = isLogin
+
                 //盤口設定
                 tv_odds_type.setOnClickListener {
-                    oddTypeClickListener.onClick()
+                    footerSelectedListener.oddTypeSelected()
+                }
+
+                tv_appearance.setOnClickListener {
+                    footerSelectedListener.appearanceSelected()
+                }
+
+                //遊戲規則
+                ct_game_rule.setOnClickListener {
+                    footerSelectedListener.gameRuleSelected()
                 }
             }
         }
     }
 
-    class ItemSelectedListener(private val itemSelectedListener: (string: String, type: Int) -> Unit) {
-        fun onSelect(string: String, type: Int) = itemSelectedListener(string, type)
+    class HeaderSelectedListener(
+        private val rechargeSelectedListener: () -> Unit,
+        private val withdrawSelectedListener: () -> Unit,
+        private val memberLevelSelectedListener: () -> Unit,
+        private val promotionSelectedListener: () -> Unit,
+        private val inPlaySelectedListener: () -> Unit,
+        private val premiumOddsSelectedListener: () -> Unit,
+    ) {
+        fun rechargeSelected() = rechargeSelectedListener()
+        fun withdrawSelected() = withdrawSelectedListener()
+        fun memberLevelSelected() = memberLevelSelectedListener()
+        fun promotionSelected() = promotionSelectedListener()
+        fun inPlaySelected() = inPlaySelectedListener()
+        fun premiumOddsSelected() = premiumOddsSelectedListener()
     }
 
-    class SportClickListener(val clickSportListener: (gameType: String) -> Unit) {
-        fun onClickSport(gameType: String) = clickSportListener(gameType)
+    class ItemSelectedListener(
+        private val sportClickListener: (gameType: String) -> Unit,
+        private val sportSelectedListener: (string: String, type: Int) -> Unit
+    ) {
+        fun onSportClick(gameType: String) = sportClickListener(gameType)
+        fun onSportSelect(string: String, type: Int) = sportSelectedListener(string, type)
     }
 
-    class PremiumOddsClickListener(private val clickListener: () -> Unit) {
-        fun onClick() = clickListener()
+    class FooterSelectedListener(
+        private val oddTypeSelectedListener: () -> Unit,
+        private val appearanceSelectedListener: () -> Unit,
+        private val gameRuleSelectedListener: () -> Unit
+    ) {
+        fun oddTypeSelected() = oddTypeSelectedListener()
+        fun appearanceSelected() = appearanceSelectedListener()
+        fun gameRuleSelected() = gameRuleSelectedListener()
     }
-
-    class InPlayClickListener(private val clickListener: () -> Unit) {
-        fun onClick() = clickListener()
-    }
-
-    class GameRuleClickListener(private val clickListener: () -> Unit) {
-        fun onClick() = clickListener()
-    }
-
-    class OddTypeClickListener(private val clickListener: () -> Unit) {
-        fun onClick() = clickListener()
-    }
-
 }
