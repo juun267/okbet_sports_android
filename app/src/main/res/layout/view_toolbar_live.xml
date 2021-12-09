@@ -36,6 +36,14 @@
                 android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/v_toolbar"
                 app:use_controller="false" />
+
+            <WebView
+                android:id="@+id/web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/v_toolbar"
+                android:visibility="gone"/>
+
         </FrameLayout>
 
     </net.cachapa.expandablelayout.ExpandableLayout>
@@ -55,15 +63,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_statistics"
+            app:layout_constraintEnd_toStartOf="@+id/iv_animation"
             />
+
+        <ImageView
+            android:id="@+id/iv_animation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_icon_game_schedule"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_statistics"
+            app:layout_constraintStart_toEndOf="@id/iv_play"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_statistics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/selector_icon_statistics"
-            app:layout_constraintStart_toEndOf="@+id/iv_play"
+            app:layout_constraintStart_toEndOf="@+id/iv_animation"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

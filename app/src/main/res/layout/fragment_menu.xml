@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context=".ui.menu.MenuFragment">
+    tools:context=".ui.menu.MenuFragment"
+    tools:layout_gravity="end"
+    tools:layout_width="300dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -38,8 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:ellipsize="marquee"
-            android:singleLine="true"
             android:letterSpacing="0.1"
+            android:singleLine="true"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_money"
@@ -53,11 +55,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="₱0.00"
             android:letterSpacing="0.1"
-            android:textStyle="bold"
+            android:text="₱0.00"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
@@ -79,15 +81,67 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
-         android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:minHeight="60dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_recharge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_rectangle_oval_gray"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="27dp"
+                    android:paddingVertical="9dp"
+                    android:text="@string/recharge"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="@dimen/textSize16sp"
+                    app:autoSizeMinTextSize="4dp"
+                    app:autoSizeTextType="uniform"
+                    app:drawableStartCompat="@drawable/ic_profile_center_recharge" />
+
+                <androidx.legacy.widget.Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_withdraw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_rectangle_oval_gray"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="27dp"
+                    android:paddingVertical="9dp"
+                    android:text="@string/withdraw"
+                    android:textColor="@color/colorGrayDark"
+                    android:textSize="@dimen/textSize16sp"
+                    android:textStyle="bold"
+                    app:autoSizeMaxTextSize="@dimen/textSize16sp"
+                    app:autoSizeMinTextSize="4dp"
+                    app:autoSizeTextType="uniform"
+                    app:drawableStartCompat="@drawable/ic_profile_center_withdraw" />
+            </LinearLayout>
 
             <org.cxct.sportlottery.ui.menu.MenuItem
                 android:id="@+id/menu_profile_center"
@@ -159,9 +213,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="26dp"
             android:background="@drawable/bg_radius_20_button_white6"
+            android:letterSpacing="0.117"
             android:minHeight="38dp"
             android:text="@string/sign_out"
-            android:letterSpacing="0.117"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toTopOf="@id/tv_version" />

@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="#202020"
@@ -32,11 +32,26 @@
 
     <ImageView
         android:id="@+id/iv_country"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_earth"
+        app:layout_constraintBottom_toBottomOf="@id/league_border"
+        app:layout_constraintEnd_toStartOf="@+id/iv_refresh"
+        app:layout_constraintTop_toTopOf="@id/league_border"
+        tools:ignore="WebViewLayout" />
+
+    <ImageView
+        android:id="@+id/iv_refresh"
+        android:layout_width="34dp"
+        android:layout_height="0dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="0dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_refresh_gray"
         app:layout_constraintBottom_toBottomOf="@id/league_border"
         app:layout_constraintEnd_toEndOf="@id/league_border"
         app:layout_constraintTop_toTopOf="@id/league_border"

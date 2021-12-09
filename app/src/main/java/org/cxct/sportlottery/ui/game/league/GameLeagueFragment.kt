@@ -88,9 +88,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         LeagueAdapter(args.matchType).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener {
+            leagueListener = LeagueListener ({
                 subscribeChannelHall(it)
-            }
+            },{
+                viewModel.refreshGame(
+                    args.matchType,
+                    listOf(it.league.id),
+                    listOf())
+            })
 
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
@@ -200,24 +205,24 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initObserve() {
-        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+        viewModel.userInfo.observe(this.viewLifecycleOwner) {
             leagueAdapter.discount = it?.discount ?: 1.0F
-        })
+        }
 
-        viewModel.playList.observe(this.viewLifecycleOwner, {
+        viewModel.playList.observe(this.viewLifecycleOwner) {
             playCategoryAdapter.data = it
-        })
+        }
 
-        viewModel.playCate.observe(this.viewLifecycleOwner, {
+        viewModel.playCate.observe(this.viewLifecycleOwner) {
             playCategoryAdapter.apply {
                 data.find { it.isSelected }?.playCateList?.forEach { playCate ->
                     playCate.isSelected = (playCate.code == it)
                 }
                 notifyDataSetChanged()
             }
-        })
+        }
 
-        viewModel.oddsListResult.observe(this.viewLifecycleOwner, {
+        viewModel.oddsListResult.observe(this.viewLifecycleOwner) {
             hideLoading()
 
             it.getContentIfNotHandled()?.let { oddsListResult ->
@@ -241,9 +246,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        })
+        }
 
-        viewModel.oddsListIncrementResult.observe(this.viewLifecycleOwner, {
+        viewModel.oddsListIncrementResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueListIncrementResult ->
                 val leagueListIncrement = leagueListIncrementResult.oddsListResult
 
@@ -273,13 +278,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                 }
             }
-        })
+        }
 
-        viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner, {
+        viewModel.leagueListSearchResult.observe(this.viewLifecycleOwner) {
             leagueAdapter.data = it.toMutableList()
-        })
+        }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
 
@@ -307,15 +312,15 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
                 leagueAdapter.notifyDataSetChanged()
             }
-        })
+        }
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
             }
-        })
+        }
 
-        viewModel.favorMatchList.observe(this.viewLifecycleOwner, {
+        viewModel.favorMatchList.observe(this.viewLifecycleOwner) {
             leagueAdapter.data.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
                     matchOdd.matchInfo?.isFavorite = it.contains(matchOdd.matchInfo?.id)
@@ -323,7 +328,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
             }
 
             leagueAdapter.notifyDataSetChanged()
-        })
+        }
     }
 
     private fun updateToolbar(oddsListData: OddsListData?) {
@@ -348,7 +353,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initSocketObserver() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 val leagueOdds = leagueAdapter.data
 
@@ -369,9 +374,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        })
+        }
 
-        receiver.matchClock.observe(this.viewLifecycleOwner, {
+        receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 val leagueOdds = leagueAdapter.data
 
@@ -388,9 +393,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        })
+        }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+        receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
 
@@ -408,9 +413,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        })
+        }
 
-        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
 
                 val leagueOdds = leagueAdapter.data
@@ -425,9 +430,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        })
+        }
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, {
+        receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
 
                 val leagueOdds = leagueAdapter.data
@@ -445,9 +450,9 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     }
                 }
             }
-        })
+        }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelHallAll()
 
@@ -455,23 +460,25 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                     subscribeChannelHall(leagueOdd)
                 }
             }
-        })
+        }
 
-        receiver.leagueChange.observe(this.viewLifecycleOwner, {
+        receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
                     leagueIdList.filter { changedLeagueId ->
                         leagueAdapter.data.find { adapterLeague -> adapterLeague.league.id == changedLeagueId } != null
                     }.let { onScreenLeagueIdList ->
                         if (onScreenLeagueIdList.isNotEmpty())
-                            viewModel.getLeagueOddsList(args.matchType,
+                            viewModel.getLeagueOddsList(
+                                args.matchType,
                                 onScreenLeagueIdList,
                                 listOf(),
-                                isIncrement = true)
+                                isIncrement = true
+                            )
                     }
                 }
             }
-        })
+        }
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
