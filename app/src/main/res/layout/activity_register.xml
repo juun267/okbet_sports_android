@@ -122,8 +122,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:hintText="@string/hint_register_password"
-                app:iconSignifier="@drawable/ic_login_account"
+                app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/login_password"
+                app:endIcon="@drawable/ic_eye_open"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_member_account">
 
@@ -132,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
@@ -146,6 +147,7 @@
                 app:hintText="@string/hint_confirm_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/confirm_password"
+                app:endIcon="@drawable/ic_eye_open"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_login_password">
 
@@ -154,7 +156,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLines="1"
                     android:textSize="14sp" />
 
@@ -232,7 +234,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:hintText="@string/hint_phone_number"
-                app:iconSignifier="@drawable/ic_login_qq"
+                app:iconSignifier="@drawable/ic_login_phone_number"
                 app:labelText="@string/phone_number"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_qq">
@@ -242,7 +244,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="phone"
                     android:maxLines="1"
                     android:textSize="14sp" />
 

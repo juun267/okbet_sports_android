@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -15,6 +17,7 @@ import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.ActivityRegisterBinding
+import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.sendSms.SmsResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
@@ -24,6 +27,7 @@ import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.util.BitmapUtil
+import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.ToastUtil
 import org.cxct.sportlottery.widget.boundsEditText.ExtendedEditText
@@ -40,6 +44,15 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         when (v) {
             binding.ivReturn -> {
                updateValidCode()
+            }
+            binding.tvDuty -> {
+                JumpUtil.toInternalWeb(this, Constants.getGameRuleUrl(this), getString(R.string.game_rule))
+            }
+            binding.tvPrivacy -> {
+                JumpUtil.toInternalWeb(this, Constants.getGameRuleUrl(this), getString(R.string.game_rule))
+            }
+            binding.tvAgreement -> {
+                JumpUtil.toInternalWeb(this, Constants.getGameRuleUrl(this), getString(R.string.game_rule))
             }
 
         }
@@ -72,7 +85,31 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupRegisterButton()
         setupGoToLoginButton()
         initObserve()
+        binding.etLoginPassword.endIconImageButton.setOnClickListener {
+            if (binding.etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                binding.eetLoginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                binding.etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
+                binding.eetLoginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            }
+            binding.eetLoginPassword.setSelection(binding.eetLoginPassword.text.toString().length)
+        }
+        binding.etConfirmPassword.endIconImageButton.setOnClickListener {
+            if (binding.etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                binding.eetConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                binding.etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
+                binding.eetConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            }
+            binding.eetConfirmPassword.setSelection(binding.eetConfirmPassword.text.toString().length)
+        }
+
         binding.ivReturn.setOnClickListener(this)
+        binding.tvDuty.setOnClickListener(this)
+        binding.tvPrivacy.setOnClickListener(this)
+        binding.tvAgreement.setOnClickListener(this)
     }
 
     override fun onDestroy() {
@@ -108,6 +145,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
     }
 
     private fun setupLoginPassword() {
+
         //setupEditTextFocusListener(et_login_password) { viewModel.checkLoginPassword(it) }
     }
 
@@ -227,11 +265,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 
     private fun setupValidCode() {
         if (sConfigData?.enableRegValidCode == FLAG_OPEN) {
-            binding.etVerificationCode.visibility = View.VISIBLE
+            binding.blockValidCode.visibility = View.VISIBLE
             updateValidCode()
             //setupEditTextFocusListener(et_verification_code) { viewModel.checkValidCode(it) }
         } else {
-            binding.etVerificationCode.visibility = View.GONE
+            binding.blockValidCode.visibility = View.GONE
         }
 
 //        binding.etVerificationCode.setVerificationCodeBtnOnClickListener {
@@ -262,11 +300,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
 //            else -> binding.llAgreement.orientation = LinearLayout.VERTICAL
 //        }
 //
-//        binding.cbAgreement.setOnClickListener {
-//            binding.cbAgreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-//            binding.cbAgreement.buttonTintList = null
-//            viewModel.checkAgreement(binding.cbAgreement.isChecked)
-//        }
+        binding.cbAgreement.setOnClickListener {
+            binding.cbAgreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+            binding.cbAgreement.buttonTintList = null
+            viewModel.checkAgreement(binding.cbAgreement.isChecked)
+        }
     }
 
     private fun setupRegisterAgreementButton() {
@@ -369,14 +407,14 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         })
 
         viewModel.agreementChecked.observe(this, {
-//            if (it?.not() == true) {
-//                cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorRedDark))
-//                cb_agreement.buttonTintList =
-//                    ContextCompat.getColorStateList(this, R.color.colorRedDark)
-//            } else {
-//                cb_agreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
-//                cb_agreement.buttonTintList = null
-//            }
+            if (it?.not() == true) {
+                binding.cbAgreement.setTextColor(ContextCompat.getColor(this, R.color.colorRedDark))
+                binding.cbAgreement.buttonTintList =
+                    ContextCompat.getColorStateList(this, R.color.colorRedDark)
+            } else {
+                binding.cbAgreement.setTextColor(ContextCompat.getColor(this, R.color.colorGray))
+                binding.cbAgreement.buttonTintList = null
+            }
         })
 
         /**

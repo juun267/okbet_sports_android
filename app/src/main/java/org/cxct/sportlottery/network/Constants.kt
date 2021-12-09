@@ -52,9 +52,9 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://cxisport.com/sports-rule/#/"
-                LanguageManager.Language.VI -> "https://cxisport.com/sports-rule/#/vi"
-                else -> "https://cxisport.com/sports-rule/#/us"
+                LanguageManager.Language.ZH -> "https://onbet-cn.cxsport.net/sports-rule/#/"
+                LanguageManager.Language.VI -> "https://onbet-vn.cxsport.net/sports-rule/#/"
+                else -> "https://okbet-ph.cxsport.net/sports-rule/#/"
             }
 
         } catch (e: UnsupportedEncodingException) {
