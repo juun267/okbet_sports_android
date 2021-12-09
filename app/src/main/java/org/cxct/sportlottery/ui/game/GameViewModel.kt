@@ -203,7 +203,8 @@ class GameViewModel(
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
-    private val _oddsListGameHallIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
+    private val _oddsListGameHallIncrementResult =
+        MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
@@ -658,14 +659,6 @@ class GameViewModel(
 
                     oddData.setupOddDiscount()
                     oddData.updateOddStatus()
-
-/*
-                    oddData.oddsMap.forEach {
-                        it.value?.filterNotNull()?.forEach { odd ->
-                            Log.e(">>>>>>", ">>>>> ${odd.name}, odd?.odds = ${odd?.odds}")
-                        }
-                    }
-                    */
                 }
 
                 _highlightMatchResult.postValue(Event(result))
@@ -854,6 +847,24 @@ class GameViewModel(
         }
     }
 
+    fun refreshGame(
+        matchType: MatchType,
+        leagueIdList: List<String>? = null,
+        matchIdList: List<String>? = null
+    ) {
+        val nowMatchType = curChildMatchType.value ?: matchType
+        getSportSelected(nowMatchType)?.let { item ->
+            getOddsList(
+                item.code,
+                matchType.postValue,
+                getCurrentTimeRangeParams(),
+                leagueIdList,
+                matchIdList,
+                true
+            )
+        }
+    }
+
     fun getMatchCategoryQuery(matchType: MatchType) {
         viewModelScope.launch {
             getSportSelected(matchType)?.code?.let { gameType ->
@@ -994,14 +1005,28 @@ class GameViewModel(
                     }
 
                     if (isIncrement)
-                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                        _oddsListGameHallIncrementResult.postValue(
+                            Event(
+                                OddsListIncrementResult(
+                                    leagueIdList,
+                                    result
+                                )
+                            )
+                        )
                     else
                         _oddsListGameHallResult.postValue(Event(result))
                 }
 
                 MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                     if (isIncrement)
-                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                        _oddsListGameHallIncrementResult.postValue(
+                            Event(
+                                OddsListIncrementResult(
+                                    leagueIdList,
+                                    result
+                                )
+                            )
+                        )
                     else
                         _oddsListResult.postValue(Event(result))
                 }
@@ -1042,7 +1067,8 @@ class GameViewModel(
                             odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
 
                             if (key == QuickPlayCate.QUICK_EPS.value) {
-                                odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                                odd?.extInfo =
+                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
                             }
                         }
                     }
@@ -1199,9 +1225,9 @@ class GameViewModel(
             dateRow.updateDateSelectedState(it)
         }
     }
-    
+
     private fun getDateRowEarly(): List<Date> {
-        val locale = when(LanguageManager.getSelectLanguage(androidContext)) {
+        val locale = when (LanguageManager.getSelectLanguage(androidContext)) {
             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
                 Locale.CHINA
             }

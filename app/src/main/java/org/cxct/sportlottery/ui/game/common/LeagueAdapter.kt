@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_league_v4.view.*
@@ -183,6 +184,12 @@ class LeagueAdapter(private val matchType: MatchType) :
             itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
             updateTimer(matchType, item.gameType)
 
+            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
+
+            itemView.iv_refresh.setOnClickListener {
+                leagueListener?.onRefresh(item)
+            }
+
             itemView.setOnClickListener {
                 item.unfold = if (item.unfold == FoldState.UNFOLD.code) {
                     FoldState.FOLD.code
@@ -230,6 +237,7 @@ class LeagueAdapter(private val matchType: MatchType) :
     }
 }
 
-class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit) {
+class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit, val refreshListener: (item: LeagueOdd) -> Unit, ) {
     fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
+    fun onRefresh(item: LeagueOdd) = refreshListener(item)
 }
