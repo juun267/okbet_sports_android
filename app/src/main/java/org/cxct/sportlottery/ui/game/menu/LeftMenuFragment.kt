@@ -1,7 +1,7 @@
 package org.cxct.sportlottery.ui.game.menu
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,51 +18,97 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.sport.SportMenu
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.vip.VipActivity
+import org.cxct.sportlottery.ui.withdraw.BankActivity
+import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.ToastUtil
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     private var newAdapter =
         LeftMenuItemNewAdapter(
-            LeftMenuItemNewAdapter.ItemSelectedListener { gameType, addOrRemove ->
-                when (viewModel.userInfo.value?.testFlag) {
-                    TestFlag.NORMAL.index -> {
-                        viewModel.pinFavorite(
-                            FavoriteType.SPORT,
-                            gameType
+            sConfigData?.thirdOpen == FLAG_OPEN,
+            LeftMenuItemNewAdapter.HeaderSelectedListener(
+                { //recharge
+                    viewModel.checkRechargeSystem()
+                    dismiss()
+                },
+                { //withdraw
+                    viewModel.checkWithdrawSystem()
+                    dismiss()
+                },
+                { //member level
+                    startActivity(Intent(context, VipActivity::class.java))
+                    dismiss()
+                },
+                { //promotion
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getPromotionUrl(
+                                viewModel.token,
+                                LanguageManager.getSelectLanguage(context)
+                            ),
+                            getString(R.string.promotion)
                         )
-                        setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
                     }
-                    else -> { //遊客 //尚未登入
-                        setSnackBarMyFavoriteNotify(isLogin = false)
+                    dismiss()
+                },
+                { //inPlay
+                    viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
+                    dismiss()
+                },
+                { //premium
+                    viewModel.navDirectEntrance(MatchType.EPS, null)
+                    dismiss()
+                }),
+            LeftMenuItemNewAdapter.ItemSelectedListener(
+                { sportType -> //點擊
+                    navSportEntrance(sportType)
+                },
+                { gameType, addOrRemove -> //圖釘
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            viewModel.pinFavorite(
+                                FavoriteType.SPORT,
+                                gameType
+                            )
+                            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
+                        }
+                        else -> { //遊客 //尚未登入
+                            setSnackBarMyFavoriteNotify(isLogin = false)
+                        }
                     }
                 }
-            },
-            LeftMenuItemNewAdapter.SportClickListener { sportType ->
-                navSportEntrance(sportType)
-            },
-            LeftMenuItemNewAdapter.InPlayClickListener {
-                viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
-                dismiss()
-            },
-            LeftMenuItemNewAdapter.PremiumOddsClickListener {
-                viewModel.navDirectEntrance(MatchType.EPS, null)
-                dismiss()
-            },
-            LeftMenuItemNewAdapter.GameRuleClickListener {
-                JumpUtil.toInternalWeb(
-                    requireContext(),
-                    Constants.getGameRuleUrl(requireContext()),
-                    getString(R.string.game_rule)
-                )
-                dismiss()
-            },
-            LeftMenuItemNewAdapter.OddTypeClickListener {
-                ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
-            })
+            ),
+            LeftMenuItemNewAdapter.FooterSelectedListener(
+                { //盤口設定
+                    ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
+                },
+                { //外觀
+                    ChangeAppearanceDialog().show(parentFragmentManager, null)
+                },
+                { //遊戲規則
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        Constants.getGameRuleUrl(requireContext()),
+                        getString(R.string.game_rule)
+                    )
+                    dismiss()
+                }
+            )
+        )
 
     //提示
     private var snackBarMyFavoriteNotify: Snackbar? = null
@@ -252,6 +298,132 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
                 initData(list)
+            }
+        }
+
+        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(context, MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
+                    ) {}
+                }
+            }
+        }
+
+        viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false) {
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.message_withdraw_maintain)
+                ) {}
+            }
+        }
+
+        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(
+                            Intent(
+                                context,
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    SettingPasswordActivity.PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
+                    }
+                } else {
+                    viewModel.checkProfileInfoComplete()
+                }
+            }
+        }
+
+        viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, ProfileActivity::class.java))
+                    }
+                } else {
+                    viewModel.checkBankCardPermissions()
+                }
+            }
+        }
+
+        viewModel.needToBindBankCard.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { messageId ->
+                if (messageId != -1) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(messageId),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, BankActivity::class.java))
+                    }
+                } else {
+                    startActivity(Intent(context, WithdrawActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(
+                            Intent(
+                                context,
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    SettingPasswordActivity.PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
+                    }
+                } else if (!b) {
+                    startActivity(Intent(context, BankActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.settingNeedToCompleteProfileInfo.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, ProfileActivity::class.java))
+                    }
+                } else if (!b) {
+                    startActivity(Intent(context, BankActivity::class.java))
+                }
             }
         }
     }

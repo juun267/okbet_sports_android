@@ -20,6 +20,17 @@
             android:textColor="@color/colorBlackLight"
             app:drawableStartCompat="@drawable/ic_menu_odds_type" />
 
+        <TextView
+            android:id="@+id/tv_appearance"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:drawablePadding="10dp"
+            android:gravity="start|center_vertical"
+            android:paddingStart="20dp"
+            android:text="@string/appearance"
+            android:textColor="@color/colorBlackLight"
+            app:drawableStartCompat="@drawable/ic_night_mode" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
