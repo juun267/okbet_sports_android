@@ -90,6 +90,11 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             matchOdd.let {
                 val odds = getOdds(matchOdd, oddsType)
                 binding.tvOdd.setOddFormat(odds)
+                binding.tvOddsType.text = when (it.oddsType) {
+                    OddsType.MYS.code -> "("+itemView.context.getString(OddsType.MYS.res)+")"
+                    OddsType.IDN.code -> "("+itemView.context.getString(OddsType.IDN.res)+")"
+                    else -> "("+itemView.context.getString(OddsType.EU.res)+")"
+                }?.let { it }
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(

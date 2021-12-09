@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import org.cxct.sportlottery.R
@@ -97,6 +98,12 @@ class OddsButton @JvmOverloads constructor(
         }
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
+        if(getOdds(odd, oddsType) < 0){
+            tv_odds.setTextColor(ContextCompat.getColorStateList(
+                context,
+                R.color.selector_button_odd_bottom_text_red
+            ))
+        }
 
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
@@ -122,7 +129,12 @@ class OddsButton @JvmOverloads constructor(
             )
             text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         }
-
+        if(getOdds(odd, oddsType) < 0){
+            tv_odds.setTextColor(ContextCompat.getColorStateList(
+                context,
+                R.color.selector_button_odd_bottom_text_red
+            ))
+        }
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status
@@ -184,7 +196,7 @@ class OddsButton @JvmOverloads constructor(
                         if (mFillet) R.drawable.bg_radius_4_button_unselected_red
                         else R.drawable.bg_radius_0_button_red
                     )
-
+                resources.getColor(R.color.colorRed)
                 isActivated = true
             }
             else -> {

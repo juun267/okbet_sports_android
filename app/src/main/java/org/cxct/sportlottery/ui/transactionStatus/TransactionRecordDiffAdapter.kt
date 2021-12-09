@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.content_outright_record.view.content_time_
 import kotlinx.android.synthetic.main.content_outright_record.view.content_winnable_amount
 import kotlinx.android.synthetic.main.content_outright_record.view.spread_name
 import kotlinx.android.synthetic.main.content_outright_record.view.title_league_name
+import kotlinx.android.synthetic.main.content_outright_record.view.content_odds_type
+import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
@@ -107,14 +109,23 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.playName
-                content_odds.text = when (oddsType) {
-                    OddsType.HK -> matchOdds.hkOdds
-                    else -> matchOdds.odds
-                }?.let {
-                    TextUtil.formatForOdd(
-                        it
-                    )
-                }
+//                content_odds.text = when (matchOdds.oddsType) {
+//                    OddsType.HK.code -> matchOdds.hkOdds
+//                    OddsType.MYS.code -> matchOdds.malayOdds
+//                    OddsType.IDN.code -> matchOdds.indoOdds
+//                    else -> matchOdds.odds
+//                }?.let {
+//                    TextUtil.formatForOdd(
+//                        it
+//                    )
+//                }
+                content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
+                content_odds_type.text = when (matchOdds.oddsType) {
+                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
+                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
+                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
+                    else -> "("+context.getString(OddsType.EU.res)+")"
+                }?.let { it }
                 content_bet_amount.text = TextUtil.format(data.totalAmount!!)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -144,14 +155,21 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.spread
-                content_odds.text = when (oddsType) {
-                    OddsType.HK -> matchOdds.hkOdds
-                    else -> matchOdds.odds
-                }?.let {
-                    TextUtil.formatForOdd(
-                        it
-                    )
-                }
+//                content_odds.text = when (oddsType) {
+//                    OddsType.HK -> matchOdds.hkOdds
+//                    else -> matchOdds.odds
+//                }?.let {
+//                    TextUtil.formatForOdd(
+//                        it
+//                    )
+//                }
+                content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
+                content_odds_type.text = when (matchOdds.oddsType) {
+                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
+                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
+                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
+                    else -> "("+context.getString(OddsType.EU.res)+")"
+                }?.let { it }
                 content_bet_amount.text = TextUtil.format(data.totalAmount!!)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
