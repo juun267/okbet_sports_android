@@ -5,6 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sport_type.view.*
+import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
+import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
+import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.sport.Item
@@ -66,6 +69,8 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             setupSportTypeImage(item)
 
             itemView.sport_type_text.text = item.name
+
+            itemView.sport_count_text.text = item.num.toString()
 
             itemView.isSelected = item.isSelected
 
