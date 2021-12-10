@@ -33,7 +33,6 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.ToastUtil
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     private var newAdapter =
@@ -145,7 +144,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.VB -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_vb_v4,
+                            R.drawable.selector_left_menu_ball_vb,
                             getString(R.string.volleyball),
                             GameType.VB.key,
                             0
@@ -155,7 +154,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.TN -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_tn_v4,
+                            R.drawable.selector_left_menu_ball_tn,
                             getString(R.string.tennis),
                             GameType.TN.key,
                             0
@@ -165,7 +164,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.BK -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_bk_v4,
+                            R.drawable.selector_left_menu_ball_bk,
                             getString(R.string.basketball),
                             GameType.BK.key,
                             0
@@ -175,7 +174,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.FT -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_ft,
                             getString(R.string.soccer),
                             GameType.FT.key,
                             0
@@ -186,7 +185,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.BM -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_bm,
                             getString(R.string.badminton),
                             GameType.BM.key, 0
                         )
@@ -195,7 +194,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.PP -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_pp,
                             getString(R.string.ping_pong),
                             GameType.PP.key, 0
                         )
@@ -204,7 +203,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.IH -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_ih,
                             getString(R.string.ice_hockey),
                             GameType.IH.key, 0
                         )
@@ -213,7 +212,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.BX -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_bx,
                             getString(R.string.boxing),
                             GameType.BX.key, 0
                         )
@@ -222,7 +221,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.CB -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_cb,
                             getString(R.string.cue_ball),
                             GameType.CB.key, 0
                         )
@@ -231,7 +230,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.CK -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_ck,
                             getString(R.string.cricket),
                             GameType.CK.key, 0
                         )
@@ -240,7 +239,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.BB -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_bb,
                             getString(R.string.baseball),
                             GameType.BB.key, 0
                         )
@@ -249,7 +248,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.RB -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_rb,
                             getString(R.string.rugby_football),
                             GameType.RB.key, 0
                         )
@@ -258,7 +257,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.MR -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_mr,
                             getString(R.string.motor_racing),
                             GameType.MR.key, 0
                         )
@@ -267,7 +266,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 GameType.GF -> {
                     unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_gf,
                             getString(R.string.golf),
                             GameType.GF.key, 0
                         )
