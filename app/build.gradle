@@ -38,11 +38,16 @@ android {
 
     buildTypes {
         debug {
+            minifyEnabled false
+            zipAlignEnabled true
+            versionNameSuffix "-debug"
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
         }
 
         release {
             minifyEnabled false
+            zipAlignEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             buildConfigField 'Boolean', 'MOCK', 'false'//使用mock data要設為true
@@ -70,12 +75,36 @@ android {
                     JPUSH_PERMISSION       : fastlane_jpush_permission,
                     NETWORK_SECURITY_CONFIG: fastlane_security_config,
             ]
-        }        
+        }
         forqa {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             resValue "string", "app_name", "OKBET"
             applicationId "com.happysport.sl.test"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
+        OnbetVi {
+            buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
+            resValue "string", "app_name", "ONBET"
+            applicationId "com.happysport.vi.test"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"vi\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
+        OnbetCn {
+            buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
+            resValue "string", "app_name", "ONBET"
+            applicationId "com.happysport.cn.test"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"zh\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
@@ -98,9 +127,11 @@ android {
     }
 
     sourceSets {
-        fastlane.res.srcDirs  = ["${fastlane_res_src_dir}"]        
-        forqa.res.srcDirs = ['src/platform/spplat1/res']
-        demo.res.srcDirs = ['src/platform/spplat1/res']
+        fastlane.res.srcDirs = ["${fastlane_res_src_dir}"]
+        forqa.res.srcDirs = ['src/okbet/res']
+        OnbetVi.res.srcDirs = ['src/onbet_vi/res']
+        OnbetCn.res.srcDirs = ['src/onbet_cn/res']
+        demo.res.srcDirs = ['src/okbet/res']
     }
 
     compileOptions {
@@ -265,7 +296,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-okhttp:2.15.1'
 
     //下拉刷新，上拉加載 元件 https://github.com/scwang90/SmartRefreshLayout
-    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.3'
+    implementation 'com.scwang.smart:refresh-layout-kernel:2.0.3'
 
     //DateTimePicker
     implementation 'com.contrarywind:Android-PickerView:4.1.9'
@@ -279,26 +310,27 @@ multiLanguages {
 }
 
 task syncConfigJson {
-    doLast {        
-        Map<String, String> jsonObject = [:]//['dictionary_version': android.defaultConfig.versionName, 'short_version': android.defaultConfig.versionCode]
+    doLast {
+        Map<String, String> jsonObject = [:]
+//['dictionary_version': android.defaultConfig.versionName, 'short_version': android.defaultConfig.versionCode]
         jsonObject['dictionary_version'] = android.defaultConfig.versionName
         jsonObject['short_version'] = android.defaultConfig.versionCode
         jsonObject['platform'] = []
 
         Map<String, String> nameMapping = ["forqa": "spplat1"]
 
-        android.productFlavors.all { flavor->
+        android.productFlavors.all { flavor ->
             if (flavor.name != 'fastlane') {
                 Map<String, String> appObject = [:]
                 appObject['app_code'] = nameMapping.containsKey(flavor.name) ? nameMapping[flavor.name] : flavor.name
                 appObject['appid'] = flavor.applicationId
                 appObject['app_name'] = flavor.resValues.app_name.value
                 appObject['jpush_appKey'] = flavor.manifestPlaceholders['JPUSH_APPKEY']
-                
+
                 jsonObject['platform'].add(appObject)
-            }            
+            }
         }
-        
+
         def json = JsonOutput.toJson(jsonObject)
         // pretty format
         json = JsonOutput.prettyPrint(json)
