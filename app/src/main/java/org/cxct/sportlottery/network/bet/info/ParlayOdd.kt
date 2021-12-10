@@ -16,6 +16,10 @@ data class ParlayOdd(
     val odds: Double,
     @Json(name = "hkOdds")
     var hkOdds: Double?,
+    @Json(name = "malayOdds")
+    var malayOdds: Double,
+    @Json(name = "indoOdds")
+    var indoOdds: Double,
     @Json(name = "parlayType")
     val parlayType: String
 ) {

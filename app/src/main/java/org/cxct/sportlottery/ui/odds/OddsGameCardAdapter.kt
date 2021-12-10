@@ -198,17 +198,17 @@ class OddsGameCardAdapter(
                 }
                 GameType.BK.key -> {
                     when (matchStatusCO.status) {
+                        1, 13 -> {
+                            status = context?.getString(R.string.first_session).toString()
+                        }
+                        2,14 -> {
+                            status = context?.getString(R.string.second_session).toString()
+                        }
                         6 -> {
                             status = context?.getString(R.string.first_half_game).toString()
                         }
                         7 -> {
                             status = context?.getString(R.string.second_half_game).toString()
-                        }
-                        13 -> {
-                            status = context?.getString(R.string.first_session).toString()
-                        }
-                        14 -> {
-                            status = context?.getString(R.string.second_session).toString()
                         }
                         15 -> {
                             status = context?.getString(R.string.third_session).toString()
@@ -216,8 +216,11 @@ class OddsGameCardAdapter(
                         16 -> {
                             status = context?.getString(R.string.fourth_session).toString()
                         }
-                        40 -> {
-                            status = context?.getString(R.string.add_time).toString()
+                        106 -> {
+                            status = context?.getString(R.string.add_time_first_half_game).toString()
+                        }
+                        107 -> {
+                            status = context?.getString(R.string.add_time_second_half_game).toString()
                         }
                     }
                 }

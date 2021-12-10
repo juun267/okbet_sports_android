@@ -5,4 +5,6 @@ data class MenuItemData(
     val title: String,
     val gameType: String,
     var isSelected: Int //0:沒被置頂 ; 1:置頂
-)
+) {
+    var isHeaderOrFooter = false
+}

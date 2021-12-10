@@ -8,9 +8,11 @@
 
     <ImageView
         android:id="@+id/country_league_choose"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="20dp"
+        android:layout_width="48dp"
+        android:layout_height="38dp"
+        android:padding="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_item_country_league_choose_v4"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +24,6 @@
         android:id="@+id/country_league_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="12dp"
         android:ellipsize="end"
         android:singleLine="true"
@@ -63,10 +64,10 @@
 
     <ImageView
         android:id="@+id/country_league_pin"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:padding="4dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="12dp"
+        android:layout_marginEnd="4dp"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_item_country_league_pin_v4"
         app:layout_constraintBottom_toBottomOf="parent"

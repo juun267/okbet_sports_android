@@ -236,6 +236,131 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
             }
 
+            GameType.BM -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.AFT -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.BB -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
+                    PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal -> LayoutType.SINGLE.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.CB -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                    PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.IH -> {
+                when (viewType) {
+                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.SINGLE.ordinal
+                    -> LayoutType.SINGLE.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.RB -> {
+                when (viewType) {
+                    PlayCate.SINGLE_ND.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
+                    PlayCate.WM.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                    -> LayoutType.SINGLE.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+            GameType.TT -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                    PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
+                    PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
+                    PlayCate.SET_HDP.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.BX -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
+            GameType.CK -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
+                    PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
+                    PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
+
             else -> LayoutType.ONE_LIST.layout
 
         }
@@ -429,7 +554,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                 }
-
+                else -> {
+                    tvGameName?.text = getTitleNormal(oddsDetail)
+                }
             }
 
 
@@ -555,6 +682,136 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_SEG5.ordinal,
                         PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_SEG5.ordinal,
                         PlayCate.OE.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE_SEG4.ordinal, PlayCate.OE_SEG5.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+
+                GameType.BM -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OE_SEG1.ordinal, PlayCate.OE_SEG2.ordinal, PlayCate.OE_SEG3.ordinal, PlayCate.OE.ordinal, PlayCate.SET_HDP.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.AFT -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+                GameType.BB -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
+                        PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal
+                        -> forSingle(oddsDetail, 3)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.CB -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                        PlayCate.SINGLE_SEG5.ordinal, PlayCate.SINGLE_SEG6.ordinal, PlayCate.SINGLE_SEG7.ordinal, PlayCate.SINGLE_SEG8.ordinal, PlayCate.SINGLE_1ST.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+                GameType.IH -> {
+                    when (viewType) {
+                        PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.SINGLE.ordinal
+                        -> forSingle(oddsDetail, 3)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+                GameType.RB -> {
+                    when (viewType) {
+                        PlayCate.SINGLE_ND.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_1ST.ordinal, PlayCate.HDP_2ST.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal, PlayCate.OU_2ST.ordinal,
+                        PlayCate.WM.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.SINGLE_2ST.ordinal
+                        -> forSingle(oddsDetail, 3)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.TT -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
+                        PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.HDP_SEG2.ordinal, PlayCate.HDP_SEG3.ordinal, PlayCate.HDP_SEG4.ordinal,
+                        PlayCate.OU.ordinal, PlayCate.OU_SEG1.ordinal, PlayCate.OU_SEG2.ordinal, PlayCate.OU_SEG3.ordinal, PlayCate.OU_SEG4.ordinal,
+                        PlayCate.SET_HDP.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.BX -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal
+                        -> forSingle(oddsDetail, 2)
+
+                        PlayCate.EPS.ordinal
+                        -> forEPS(oddsDetail)
+
+                        else -> oneList(oddsDetail)
+                    }
+                }
+
+                GameType.CK -> {
+                    when (viewType) {
+                        PlayCate.SINGLE.ordinal, PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
+                        PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
+                        PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal
                         -> forSingle(oddsDetail, 2)
 
                         PlayCate.EPS.ordinal

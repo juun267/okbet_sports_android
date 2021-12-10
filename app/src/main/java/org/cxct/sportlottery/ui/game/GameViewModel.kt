@@ -73,6 +73,7 @@ class GameViewModel(
     myFavoriteRepository: MyFavoriteRepository,
     private val sportMenuRepository: SportMenuRepository,
     private val thirdGameRepository: ThirdGameRepository,
+    private val withdrawRepository: WithdrawRepository
 ) : BaseBottomNavViewModel(
     androidContext,
     userInfoRepository,
@@ -84,6 +85,8 @@ class GameViewModel(
     companion object {
         const val GameLiveSP = "GameLiveSharedPreferences"
     }
+
+    val token = loginRepository.token
 
     private val gameLiveSharedPreferences by lazy {
         androidContext.getSharedPreferences(
@@ -178,6 +181,21 @@ class GameViewModel(
     val playCate: LiveData<String?>
         get() = _playCate
 
+    val withdrawSystemOperation =
+        withdrawRepository.withdrawSystemOperation
+    val rechargeSystemOperation =
+        withdrawRepository.rechargeSystemOperation
+    val needToUpdateWithdrawPassword =
+        withdrawRepository.needToUpdateWithdrawPassword //提款頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToUpdateWithdrawPassword =
+        withdrawRepository.settingNeedToUpdateWithdrawPassword //提款設置頁面是否需要更新提款密碼 true: 需要, false: 不需要
+    val settingNeedToCompleteProfileInfo =
+        withdrawRepository.settingNeedToCompleteProfileInfo //提款設置頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val needToCompleteProfileInfo =
+        withdrawRepository.needToCompleteProfileInfo //提款頁面是否需要完善個人資料 true: 需要, false: 不需要
+    val needToBindBankCard =
+        withdrawRepository.needToBindBankCard //提款頁面是否需要新增銀行卡 -1 : 不需要新增, else : 以value作為string id 顯示彈窗提示
+
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
     private val _messageListResult = MutableLiveData<MessageListResult?>()
@@ -185,7 +203,8 @@ class GameViewModel(
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
-    private val _oddsListGameHallIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
+    private val _oddsListGameHallIncrementResult =
+        MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _oddsListResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListIncrementResult = MutableLiveData<Event<OddsListIncrementResult?>>()
     private val _leagueListResult = MutableLiveData<Event<LeagueListResult?>>()
@@ -509,8 +528,10 @@ class GameViewModel(
                 )
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
+                //Martin
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
+                        matchOdd.sortOddsMap()
                         matchOdd.oddsMap.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
@@ -546,6 +567,7 @@ class GameViewModel(
             }?.let { result ->
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
+                        matchOdd.sortOddsMap()
                         //計算且賦值 即將開賽 的倒數時間
                         matchOdd.matchInfo?.apply {
                             remainTime = startTime?.let { TimeUtil.getRemainTime(it) }
@@ -583,6 +605,9 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
+                result.t?.odds?.forEach { oddData ->
+                    oddData.sortOddsMap()
+                }
                 _highlightMenuResult.postValue(Event(result))
             }
         }
@@ -596,6 +621,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
+                        oddData.sortOddsMap()
                         oddData.oddsMap.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
@@ -640,14 +666,6 @@ class GameViewModel(
 
                     oddData.setupOddDiscount()
                     oddData.updateOddStatus()
-
-/*
-                    oddData.oddsMap.forEach {
-                        it.value?.filterNotNull()?.forEach { odd ->
-                            Log.e(">>>>>>", ">>>>> ${odd.name}, odd?.odds = ${odd?.odds}")
-                        }
-                    }
-                    */
                 }
 
                 _highlightMatchResult.postValue(Event(result))
@@ -836,6 +854,24 @@ class GameViewModel(
         }
     }
 
+    fun refreshGame(
+        matchType: MatchType,
+        leagueIdList: List<String>? = null,
+        matchIdList: List<String>? = null
+    ) {
+        val nowMatchType = curChildMatchType.value ?: matchType
+        getSportSelected(nowMatchType)?.let { item ->
+            getOddsList(
+                item.code,
+                matchType.postValue,
+                getCurrentTimeRangeParams(),
+                leagueIdList,
+                matchIdList,
+                true
+            )
+        }
+    }
+
     fun getMatchCategoryQuery(matchType: MatchType) {
         viewModelScope.launch {
             getSportSelected(matchType)?.code?.let { gameType ->
@@ -938,6 +974,7 @@ class GameViewModel(
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.sortOddsMap()
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
@@ -976,14 +1013,28 @@ class GameViewModel(
                     }
 
                     if (isIncrement)
-                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                        _oddsListGameHallIncrementResult.postValue(
+                            Event(
+                                OddsListIncrementResult(
+                                    leagueIdList,
+                                    result
+                                )
+                            )
+                        )
                     else
                         _oddsListGameHallResult.postValue(Event(result))
                 }
 
                 MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                     if (isIncrement)
-                        _oddsListGameHallIncrementResult.postValue(Event(OddsListIncrementResult(leagueIdList, result)))
+                        _oddsListGameHallIncrementResult.postValue(
+                            Event(
+                                OddsListIncrementResult(
+                                    leagueIdList,
+                                    result
+                                )
+                            )
+                        )
                     else
                         _oddsListResult.postValue(Event(result))
                 }
@@ -1024,7 +1075,8 @@ class GameViewModel(
                             odd?.hkOdds = odd?.hkOdds?.applyHKDiscount(discount)
 
                             if (key == QuickPlayCate.QUICK_EPS.value) {
-                                odd?.extInfo = odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
+                                odd?.extInfo =
+                                    odd?.extInfo?.toDouble()?.applyDiscount(discount)?.toString()
                             }
                         }
                     }
@@ -1181,9 +1233,9 @@ class GameViewModel(
             dateRow.updateDateSelectedState(it)
         }
     }
-    
+
     private fun getDateRowEarly(): List<Date> {
-        val locale = when(LanguageManager.getSelectLanguage(androidContext)) {
+        val locale = when (LanguageManager.getSelectLanguage(androidContext)) {
             LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
                 Locale.CHINA
             }
@@ -1317,6 +1369,7 @@ class GameViewModel(
             result?.success?.let { success ->
                 val list: ArrayList<OddsDetailListData> = ArrayList()
                 if (success) {
+                    result.oddsDetailData?.matchOdd?.sortOddsMap()
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
                             value.odds.forEach { odd ->
@@ -1792,4 +1845,41 @@ class GameViewModel(
     fun clearLiveInfo() {
         _matchLiveInfo.postValue(null)
     }
+
+    //提款功能是否啟用
+    fun checkWithdrawSystem() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkWithdrawSystem()
+            }
+        }
+    }
+
+    //充值功能是否啟用
+    fun checkRechargeSystem() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkRechargeSystem()
+            }
+        }
+    }
+
+    /**
+     * 判斷個人資訊是否完整, 若不完整需要前往個人資訊頁面完善資料.
+     * complete true: 個人資訊有缺漏, false: 個人資訊完整
+     */
+    fun checkProfileInfoComplete() {
+        viewModelScope.launch {
+            withdrawRepository.checkProfileInfoComplete()
+        }
+    }
+
+    fun checkBankCardPermissions() {
+        viewModelScope.launch {
+            doNetwork(androidContext) {
+                withdrawRepository.checkBankCardPermissions()
+            }
+        }
+    }
+
 }

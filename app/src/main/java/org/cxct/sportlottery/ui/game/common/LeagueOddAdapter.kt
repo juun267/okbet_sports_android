@@ -145,6 +145,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 GameType.TN.key -> setTnScoreText(matchType, item)
                 GameType.FT.key -> setFtScoreText(matchType, item)
                 GameType.BK.key -> setBkScoreText(matchType, item)
+                else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型
             }
 
             setStatusTextColor(matchType, item)

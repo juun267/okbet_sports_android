@@ -3,10 +3,13 @@ package org.cxct.sportlottery.ui.component
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
@@ -29,6 +32,10 @@ import timber.log.Timber
 @SuppressLint("SetJavaScriptEnabled")
 class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     LinearLayout(context, attrs, defStyle) {
+
+    private val defaultAnimationUrl by lazy {
+        "https://sports.cxsport.net/animation/?matchId=5479249&mode=widget&lang=" + LanguageManager.getLanguageString(context)
+    }
 
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(
@@ -119,7 +126,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
         addView(view).apply {
-            expand_layout.collapse(false)
+            expand_layout.expand(false)
         }
 
         try {
@@ -140,9 +147,22 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 true -> {
                     stopPlayer()
                     startPlayer()
+                    iv_play.setImageResource(R.drawable.ic_live_player)
                 }
                 false -> {
                     switchLiveView(true)
+                    iv_play.setImageResource(R.drawable.ic_live_player_selected)
+                }
+            }
+        }
+
+        iv_animation.setOnClickListener {
+            when (expand_layout.isExpanded) {
+                true -> {
+                    hideWebView()
+                }
+                false -> {
+                    openWebView()
                 }
             }
         }
@@ -159,33 +179,25 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                 switchLiveView(true)
             }
         }
-
-        expand_layout.setOnExpansionUpdateListener { _, state ->
-            iv_play.setImageResource(
-                when (state) {
-                    0 -> R.drawable.ic_live_player
-                    else -> R.drawable.ic_live_player_selected
-                }
-            )
-        }
     }
 
     private fun switchLiveView(open: Boolean) {
         if (!iv_play.isVisible) return
-
         when (open) {
             true -> {
+                hideWebView()
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 iv_play.isSelected = true
                 expand_layout.expand()
                 liveToolBarListener?.getLiveInfo()
                 if (!mStreamUrl.isNullOrEmpty()) {
-                    startPlayer()
+                    iv_play.performClick()
+                } else {
+                    iv_animation.performClick()
                 }
             }
             false -> {
                 stopPlayer()
-
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
                 iv_play.isSelected = false
                 expand_layout.collapse()
@@ -209,7 +221,6 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     fun setupPlayerControl(show: Boolean) {
-        switchLiveView(show)
         iv_play.isVisible = show
         iv_arrow.isVisible = show
     }
@@ -259,14 +270,45 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
 
     }
+    private fun openWebView() {
+        expand_layout.expand()
+        iv_play.setImageResource(R.drawable.ic_live_player)
+        iv_animation.setImageResource(R.drawable.ic_icon_game_schedule_ec)
+        player_view.isVisible = false
+        web_view.isVisible = true
+
+        web_view.settings.apply {
+            javaScriptEnabled = true
+            useWideViewPort = true
+            displayZoomControls = false
+        }
+        web_view.setInitialScale(25)
+        web_view.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
+                view?.loadUrl(defaultAnimationUrl)
+                return true
+            }
+        }
+        web_view.loadUrl(defaultAnimationUrl)
+    }
+
+    private fun hideWebView() {
+        expand_layout.collapse()
+        iv_animation.setImageResource(R.drawable.ic_icon_game_schedule)
+        web_view.isVisible = false
+    }
 
     fun getExoPlayer(): SimpleExoPlayer? {
         return exoPlayer
     }
 
     private fun initializePlayer(streamUrl: String?) {
-        streamUrl?.let {
-            if (exoPlayer == null) {
+        when {
+            streamUrl.isNullOrBlank() -> openWebView()
+            exoPlayer == null -> {
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
                     val mediaItem =
@@ -278,7 +320,8 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                     exoPlayer.addListener(playbackStateListener)
                     exoPlayer.prepare()
                 }
-            } else {
+            }
+            else -> {
                 exoPlayer?.let { player ->
                     val mediaItem =
                         MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
