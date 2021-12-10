@@ -554,7 +554,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                 }
-
+                else -> {
+                    tvGameName?.text = getTitleNormal(oddsDetail)
+                }
             }
 
 
