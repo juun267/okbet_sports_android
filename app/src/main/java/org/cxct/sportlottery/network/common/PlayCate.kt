@@ -71,6 +71,7 @@ enum class PlayCate(val value: String) {
     HDP("HDP"),//让球
     HDP_1ST("HDP-1ST"),
     HDP_1ST_OT("HDP-1ST-OT"),
+    HDP_2ST("HDP-2ST"),
     HDP_2ST_INCL_OT("HDP-2ST-INCL-OT"),
     HDP_INCL_OT("HDP-INCL-OT"),
     HDP_OT("HDP-OT"),
@@ -184,6 +185,7 @@ enum class PlayCate(val value: String) {
     SEG_POINT("SEG-POINT"),
     SET_HDP("SET-HDP"),
     SINGLE("1X2"),//独赢
+    SINGLE_ND("1X2-ND"),//独赢(无和)
     SINGLE_1ST("1X2-1ST"),//独赢-上半場
     SINGLE_1ST_ND("1X2-1ST-ND"),
     SINGLE_1ST_OT("1X2-1ST-OT"),
@@ -233,6 +235,8 @@ enum class PlayCate(val value: String) {
     SINGLE_SEG5_GAMES_4("1X2_SEG5_GAMES:4"),
     SINGLE_SEG5_GAMES_5("1X2_SEG5_GAMES:5"),
     SINGLE_SEG6("1X2-SEG6"),
+    SINGLE_SEG7("1X2-SEG7"),
+    SINGLE_SEG8("1X2-SEG8"),
     SUBSTITUTION_FIRST("SUBSTITUTION-FIRST"),
     SUBSTITUTION_LAST("SUBSTITUTION-LAST"),
     TG("TG"),//总进球数
