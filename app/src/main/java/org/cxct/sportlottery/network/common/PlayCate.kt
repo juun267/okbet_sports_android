@@ -380,6 +380,7 @@ enum class PlayCate(val value: String) {
                 GT3.value -> GT3
                 HDP.value -> HDP
                 HDP_1ST.value -> HDP_1ST
+                HDP_2ST.value -> HDP_2ST
                 HDP_1ST_OT.value -> HDP_1ST_OT
                 HDP_2ST_INCL_OT.value -> HDP_2ST_INCL_OT
                 HDP_INCL_OT.value -> HDP_INCL_OT
@@ -493,6 +494,7 @@ enum class PlayCate(val value: String) {
                 SEG_POINT.value -> SEG_POINT
                 SET_HDP.value -> SET_HDP
                 SINGLE.value -> SINGLE//独赢
+                SINGLE_ND.value -> SINGLE_ND////独赢(无和)
                 SINGLE_1ST.value -> SINGLE_1ST//独赢-上半場
                 SINGLE_1ST_ND.value -> SINGLE_1ST_ND
                 SINGLE_1ST_OT.value -> SINGLE_1ST_OT
@@ -538,6 +540,8 @@ enum class PlayCate(val value: String) {
                 SINGLE_SEG5_GAMES_4.value -> SINGLE_SEG5_GAMES_4
                 SINGLE_SEG5_GAMES_5.value -> SINGLE_SEG5_GAMES_5
                 SINGLE_SEG6.value -> SINGLE_SEG6
+                SINGLE_SEG7.value -> SINGLE_SEG7
+                SINGLE_SEG8.value -> SINGLE_SEG8
                 SUBSTITUTION_FIRST.value -> SUBSTITUTION_FIRST
                 SUBSTITUTION_LAST.value -> SUBSTITUTION_LAST
                 TG.value -> TG//总进球数
@@ -582,7 +586,28 @@ enum class PlayCate(val value: String) {
                 WM_SEG2.value -> WM_SEG2
                 WM_SEG3.value -> WM_SEG3
                 WM_SEG4.value -> WM_SEG4
-                WM3_SD_OT.value -> WM3_SD_OT;
+                WM3_SD_OT.value -> WM3_SD_OT
+                WM3_SD_OT.value ->WM3_SD_OT
+                GTD.value -> GTD
+                MOV.value ->MOV
+                MOV_UFC.value ->MOV_UFC
+                ROUND.value ->ROUND
+                ROUND_UFC.value ->ROUND_UFC
+                TO_WIN_THE_TOSS.value->TO_WIN_THE_TOSS
+                TOP_TEAM_BATSMAN_H.value -> TOP_TEAM_BATSMAN_H
+                TOP_TEAM_BATSMAN_C.value->TOP_TEAM_BATSMAN_C
+                TOP_TEAM_BOWLER_H.value->TOP_TEAM_BOWLER_H
+                TOP_TEAM_BOWLER_C.value->TOP_TEAM_BOWLER_C
+                MOST_MATCH_FOURS.value->MOST_MATCH_FOURS
+                MOST_MATCH_SIXES.value->MOST_MATCH_SIXES
+                HIGHEST_OPENING_PARTNERSHIP.value->HIGHEST_OPENING_PARTNERSHIP
+                RUN_AT_FALL_OF_1ST_WICKET_H.value->RUN_AT_FALL_OF_1ST_WICKET_H
+                RUN_AT_FALL_OF_1ST_WICKET_C.value->RUN_AT_FALL_OF_1ST_WICKET_C
+                WICKET_METHOD_1ST.value->WICKET_METHOD_1ST
+                WICKET_METHOD_H_1ST.value->WICKET_METHOD_H_1ST
+                WICKET_METHOD_C_1ST.value->WICKET_METHOD_C_1ST
+                OVER_RUNS_2_WAY_H_1ST.value->OVER_RUNS_2_WAY_H_1ST
+                OVER_RUNS_2_WAY_C_1ST.value->OVER_RUNS_2_WAY_C_1ST
                 else -> UNCHECK
             }
         }
