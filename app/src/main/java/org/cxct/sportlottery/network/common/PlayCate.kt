@@ -587,27 +587,27 @@ enum class PlayCate(val value: String) {
                 WM_SEG3.value -> WM_SEG3
                 WM_SEG4.value -> WM_SEG4
                 WM3_SD_OT.value -> WM3_SD_OT
-                WM3_SD_OT.value ->WM3_SD_OT
+                WM3_SD_OT.value -> WM3_SD_OT
                 GTD.value -> GTD
-                MOV.value ->MOV
-                MOV_UFC.value ->MOV_UFC
-                ROUND.value ->ROUND
-                ROUND_UFC.value ->ROUND_UFC
-                TO_WIN_THE_TOSS.value->TO_WIN_THE_TOSS
+                MOV.value -> MOV
+                MOV_UFC.value -> MOV_UFC
+                ROUND.value -> ROUND
+                ROUND_UFC.value -> ROUND_UFC
+                TO_WIN_THE_TOSS.value -> TO_WIN_THE_TOSS
                 TOP_TEAM_BATSMAN_H.value -> TOP_TEAM_BATSMAN_H
-                TOP_TEAM_BATSMAN_C.value->TOP_TEAM_BATSMAN_C
-                TOP_TEAM_BOWLER_H.value->TOP_TEAM_BOWLER_H
-                TOP_TEAM_BOWLER_C.value->TOP_TEAM_BOWLER_C
-                MOST_MATCH_FOURS.value->MOST_MATCH_FOURS
-                MOST_MATCH_SIXES.value->MOST_MATCH_SIXES
-                HIGHEST_OPENING_PARTNERSHIP.value->HIGHEST_OPENING_PARTNERSHIP
-                RUN_AT_FALL_OF_1ST_WICKET_H.value->RUN_AT_FALL_OF_1ST_WICKET_H
-                RUN_AT_FALL_OF_1ST_WICKET_C.value->RUN_AT_FALL_OF_1ST_WICKET_C
-                WICKET_METHOD_1ST.value->WICKET_METHOD_1ST
-                WICKET_METHOD_H_1ST.value->WICKET_METHOD_H_1ST
-                WICKET_METHOD_C_1ST.value->WICKET_METHOD_C_1ST
-                OVER_RUNS_2_WAY_H_1ST.value->OVER_RUNS_2_WAY_H_1ST
-                OVER_RUNS_2_WAY_C_1ST.value->OVER_RUNS_2_WAY_C_1ST
+                TOP_TEAM_BATSMAN_C.value -> TOP_TEAM_BATSMAN_C
+                TOP_TEAM_BOWLER_H.value -> TOP_TEAM_BOWLER_H
+                TOP_TEAM_BOWLER_C.value -> TOP_TEAM_BOWLER_C
+                MOST_MATCH_FOURS.value -> MOST_MATCH_FOURS
+                MOST_MATCH_SIXES.value -> MOST_MATCH_SIXES
+                HIGHEST_OPENING_PARTNERSHIP.value -> HIGHEST_OPENING_PARTNERSHIP
+                RUN_AT_FALL_OF_1ST_WICKET_H.value -> RUN_AT_FALL_OF_1ST_WICKET_H
+                RUN_AT_FALL_OF_1ST_WICKET_C.value -> RUN_AT_FALL_OF_1ST_WICKET_C
+                WICKET_METHOD_1ST.value -> WICKET_METHOD_1ST
+                WICKET_METHOD_H_1ST.value -> WICKET_METHOD_H_1ST
+                WICKET_METHOD_C_1ST.value -> WICKET_METHOD_C_1ST
+                OVER_RUNS_2_WAY_H_1ST.value -> OVER_RUNS_2_WAY_H_1ST
+                OVER_RUNS_2_WAY_C_1ST.value -> OVER_RUNS_2_WAY_C_1ST
                 else -> UNCHECK
             }
         }
