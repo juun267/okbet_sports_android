@@ -282,8 +282,22 @@ enum class PlayCate(val value: String) {
     MOV("MOV"),
     MOV_UFC("MOV-UFC"),
     ROUND("ROUND"),
-    ROUND_UFC("ROUND-UFC");
-
+    ROUND_UFC("ROUND-UFC"),
+    TO_WIN_THE_TOSS("TO-WIN-THE-TOSS"),//抛币中获胜
+    TOP_TEAM_BATSMAN_H("TOP-TEAM-BATSMAN-H"),//球队最佳击球手|{H}
+    TOP_TEAM_BATSMAN_C("TOP-TEAM-BATSMAN-C"),//球队最佳击球手|{C}
+    TOP_TEAM_BOWLER_H("TOP-TEAM-BOWLER-H"),//球队最佳投球手|{H}
+    TOP_TEAM_BOWLER_C("TOP-TEAM-BOWLER-C"),//球队最佳投球手|{C}
+    MOST_MATCH_FOURS("MOST-MATCH-FOURS"),//Most Match Fours
+    MOST_MATCH_SIXES("MOST-MATCH-SIXES"),//获得最多一击满分(6分)的次数
+    HIGHEST_OPENING_PARTNERSHIP("HIGHEST-OPENING-PARTNERSHIP"),//最高配对选手开场得分
+    RUN_AT_FALL_OF_1ST_WICKET_H("RUN-AT-FALL-OF-1ST-WICKET-H"),//被击倒跑位得分第1三柱门({S}})|{H}
+    RUN_AT_FALL_OF_1ST_WICKET_C("RUN-AT-FALL-OF-1ST-WICKET-C"),//被击倒跑位得分第1三柱门({S}})|{C}
+    WICKET_METHOD_1ST("1ST-WICKET-METHOD"),//首次取得三柱门的方式
+    WICKET_METHOD_H_1ST("1ST-WICKET-METHOD-H"),//首次取得三柱门的方式|{H}
+    WICKET_METHOD_C_1ST("1ST-WICKET-METHOD-C"),//首次取得三柱门的方式|{C}
+    OVER_RUNS_2_WAY_H_1ST("1ST-OVER-RUNS-2-WAY-H"),
+    OVER_RUNS_2_WAY_C_1ST("1ST-OVER-RUNS-2-WAY-C");
 
     companion object {
         /**
