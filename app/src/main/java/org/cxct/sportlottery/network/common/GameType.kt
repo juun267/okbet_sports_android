@@ -58,6 +58,17 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 BK -> R.drawable.ic_game_basketball
                 TN -> R.drawable.ic_game_tennis
                 VB -> R.drawable.ic_game_volleyball
+                BM -> R.drawable.img_badminton
+                TT -> R.drawable.img_pingpong
+                IH -> R.drawable.img_icehockey
+                BX -> R.drawable.img_boxing
+                CB -> R.drawable.img_snooker
+                CK -> R.drawable.img_cricket
+                BB -> R.drawable.img_baseball
+                RB -> R.drawable.img_rugby
+                AFT -> R.drawable.img_amfootball
+                MR -> R.drawable.img_racing
+                GF -> R.drawable.img_golf
                 else -> null
             }
         }
