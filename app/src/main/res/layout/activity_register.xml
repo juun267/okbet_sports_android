@@ -510,7 +510,7 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code">
-
+            <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvDutyTitle"
                     android:layout_width="wrap_content"
@@ -520,7 +520,7 @@
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
+                <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvDuty"
                     android:layout_width="wrap_content"
@@ -539,7 +539,7 @@
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/tvDuty"
                     app:layout_constraintTop_toTopOf="parent" />
-
+                <!--缺翻譯-->
                 <CheckBox
                     android:id="@+id/cbPrivacy"
                     android:layout_width="wrap_content"
@@ -552,7 +552,7 @@
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
-
+                <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvPrivacy"
                     android:layout_width="wrap_content"
@@ -563,7 +563,7 @@
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/cbPrivacy"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
-
+                <!--缺翻譯-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -573,7 +573,7 @@
                     android:layout_marginTop="12dp"
                     app:layout_constraintStart_toEndOf="@+id/tvPrivacy"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
-
+                <!--缺翻譯-->
                 <CheckBox
                     android:id="@+id/cbAgreement"
                     android:layout_width="wrap_content"
@@ -586,7 +586,7 @@
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cbPrivacy" />
-
+                <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvAgreement"
                     android:layout_width="wrap_content"
