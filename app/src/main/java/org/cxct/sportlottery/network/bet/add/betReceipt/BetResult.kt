@@ -21,7 +21,7 @@ data class BetResult(
     @Json(name = "parlayType")
     val parlayType: String?,
     @Json(name = "stake")
-    val stake: Int?,
+    val stake: Double?,
     @Json(name = "status")
     val status: Int?,
     @Json(name = "winnable")

@@ -10,8 +10,18 @@
         <item name="android:colorControlHighlight">@android:color/transparent</item>
 
         <item name="android:windowAnimationStyle">@style/WindowAnimationStyle</item>
+    </style>
 
+    <style name="VietnamTheme" parent="AppTheme">
+        <item name="fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="ChineseTheme" parent="AppTheme">
         <item name="fontFamily">@font/helvetica</item>
+    </style>
+
+    <style name="EnglishTheme" parent="AppTheme">
+        <item name="fontFamily">@font/ping_fang_sc</item>
     </style>
 
     <!--20200522 設置activity過場動畫，確保在不同機型過場動畫效果一致-->

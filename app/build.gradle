@@ -149,6 +149,7 @@ android {
 
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 
     // release apk時，不將.mock包入apk

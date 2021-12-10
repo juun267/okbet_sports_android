@@ -341,6 +341,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
+                                            PlayCate.HDP.value,
                                             playCateStr
                                         )
                                     }
@@ -353,6 +354,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
+                                            PlayCate.SINGLE.value,
                                             playCateStr
                                         )
                                     }
@@ -426,6 +428,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
+                                            PlayCate.HDP.value,
                                             playCateStr
                                         )
                                     }
@@ -438,6 +441,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
+                                            PlayCate.SINGLE.value,
                                             playCateStr
                                         )
                                     }

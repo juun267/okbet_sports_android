@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
+import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import org.cxct.sportlottery.R
@@ -230,11 +232,11 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if (originalList.size == list.size) getCurrentParlayList() else mutableListOf()//單注有不能投注的單則串關不做顯示也不能投注
 
         val totalBetAmount =
-            list.sumByDouble { it.betAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
+            list.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
         val betCount =
             list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
         val winnableAmount = list.sumByDouble {
-            getWinnable(it.betAmount, getOdds(it.matchOdd, oddsType))
+            getWinnable(it.betAmount, getOddsNew(it.matchOdd, oddsType))
         } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType)) }
 
         binding.apply {
@@ -249,9 +251,33 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun getWinnable(betAmount: Double, odds: Double): Double {
-        var winnable = betAmount * odds
-        if (oddsType == OddsType.EU) {
-            winnable -= betAmount
+//        var winnable = betAmount * odds
+//        if (oddsType == OddsType.EU) {
+//            winnable -= betAmount
+//        }
+
+        var winnable = 0.0
+        when (oddsType) {
+            OddsType.MYS -> {
+                winnable = if (odds < 0) {
+                    betAmount
+                } else {
+                    betAmount * odds
+                }
+            }
+            OddsType.IDN -> {
+                winnable = if (odds < 0) {
+                    betAmount
+                } else {
+                    betAmount * odds
+                }
+            }
+            OddsType.EU -> {
+                winnable = betAmount * (odds - 1)
+            }
+            else -> {
+                winnable = betAmount * odds
+            }
         }
         return winnable
     }
@@ -312,6 +338,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.oddsType.observe(viewLifecycleOwner, {
             betListRefactorAdapter?.oddsType = it
+            oddsType = it
         })
 
         viewModel.userInfo.observe(viewLifecycleOwner, {

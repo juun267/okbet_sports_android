@@ -128,6 +128,15 @@
                 android:textSize="13sp"
                 tools:text="1.860" />
 
+            <TextView
+                android:id="@+id/content_odds_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGray"
+                android:textSize="13sp"
+                android:layout_marginLeft="8dp"
+                tools:text="(印尼盘)" />
+
         </LinearLayout>
 
     </LinearLayout>

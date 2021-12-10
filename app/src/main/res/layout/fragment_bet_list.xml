@@ -145,11 +145,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bet_list"
-            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/ll_cant_parlay_warn"
             android:layout_below="@+id/fl_title"
+            android:overScrollMode="never"
             tools:itemCount="2"
             tools:listitem="@layout/content_bet_info_item" />
 
