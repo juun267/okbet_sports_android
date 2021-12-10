@@ -334,6 +334,18 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     else -> LayoutType.ONE_LIST.layout
                 }
             }
+
+            GameType.BX -> {
+                when (viewType) {
+                    PlayCate.SINGLE.ordinal, PlayCate.OU.ordinal, PlayCate.GTD.ordinal, PlayCate.MOV.ordinal, PlayCate.MOV_UFC.ordinal, PlayCate.ROUND.ordinal, PlayCate.ROUND_UFC.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
+
+                    PlayCate.EPS.ordinal
+                    -> LayoutType.EPS.layout
+
+                    else -> LayoutType.ONE_LIST.layout
+                }
+            }
             else -> LayoutType.ONE_LIST.layout
 
         }
