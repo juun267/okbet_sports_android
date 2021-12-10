@@ -568,10 +568,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
-                BetInfoCarDialog().show(
-                    supportFragmentManager,
-                    BetInfoCarDialog::class.java.simpleName
-                )
+                //[Martin]
+//                BetInfoCarDialog().show(
+//                    supportFragmentManager,
+//                    BetInfoCarDialog::class.java.simpleName
+//                )
             }
         })
     }

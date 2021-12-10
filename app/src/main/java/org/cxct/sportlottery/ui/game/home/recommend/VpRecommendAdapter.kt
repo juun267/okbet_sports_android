@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.game.home.recommend
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -170,6 +171,7 @@ class VpRecommendAdapter(
         }
 
         private fun setupOddsButton(oddsButton: OddsButton, playCateCode: String, odd: Odd?) {
+
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
                 this@ViewHolderHdpOu.setupOddState(oddsButton, odd)
@@ -193,6 +195,7 @@ class VpRecommendAdapter(
     ) : OddStateViewHolder(itemView) {
 
         fun bind(data: OddBean, dynamicMarkets: Map<String, DynamicMarket>?) {
+
             itemView.apply {
                 tv_play_type.text =
                     dynamicMarkets?.get(data.playTypeCode)?.getTranslate(itemView.context)
@@ -220,7 +223,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(0)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
+                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
                         }
                     }
                 }
@@ -248,7 +251,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(1)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
+                            }, odd, PlayCate.UNCHECK.value ,data.playTypeCode)
                         }
                     }
                 }
@@ -276,7 +279,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(2)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
+                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
                         }
                     }
                 }
@@ -304,7 +307,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(3)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd, data.playTypeCode)
+                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
                         }
                     }
                 }
@@ -365,7 +368,7 @@ class VpRecommendAdapter(
                     odd?.let {
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
-                        }, odd, playCateName)
+                        }, odd, PlayCate.UNCHECK.value ,playCateName)
                     }
                 }
             }

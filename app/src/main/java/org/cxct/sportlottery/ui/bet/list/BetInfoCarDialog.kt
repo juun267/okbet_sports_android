@@ -5,12 +5,14 @@ import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
@@ -28,6 +30,7 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
@@ -37,6 +40,8 @@ import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+import org.cxct.sportlottery.util.ArithUtil.toMoneyFormat
+import java.lang.Math.abs
 
 
 /**
@@ -236,15 +241,52 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 }
 
                 betInfoListData?.betAmount = quota
+                //計算實際下注金額
+                var realAmount = quota
+                var win = 0.0
+                when (oddsType) {
+                    OddsType.MYS -> {
+                        if (getOdds(matchOdd, oddsType) < 0) {
+                            realAmount = quota * abs(getOdds(matchOdd, oddsType))
+                            tvRealAmount.text = toMoneyFormat(realAmount)
+                            win = quota
+                        } else {
+                            win = quota * getOdds(matchOdd, oddsType)
+                            tvRealAmount.text = toMoneyFormat(realAmount)
+                        }
+
+                    }
+                    OddsType.IDN -> {
+                        if (getOdds(matchOdd, oddsType) < 0) {
+                            realAmount = quota * abs(getOdds(matchOdd, oddsType))
+                            tvRealAmount.text = toMoneyFormat(realAmount)
+                            win = quota
+                        } else {
+                            win = quota * getOdds(matchOdd, oddsType)
+                            tvRealAmount.text = toMoneyFormat(realAmount)
+                        }
+                    }
+                    OddsType.EU -> {
+                        win = quota * (getOdds(matchOdd, oddsType)-1)
+                        tvRealAmount.text = toMoneyFormat(realAmount)
+
+                    }
+                    else -> {
+                        win = quota * getOdds(matchOdd, oddsType)
+                        tvRealAmount.text = toMoneyFormat(realAmount)
+                    }
+                }
+
 
                 //比照以往計算
-                var win = quota * getOdds(matchOdd, oddsType)
-                if (oddsType == OddsType.EU) {
-                    win -= quota
-                }
+                //var win = quota * getOdds(matchOdd, oddsType)
+//                if (oddsType == OddsType.EU) {
+//                    win -= quota
+//                }
                 tv_win_quota.text = TextUtil.format(win)
 
                 button_bet.isOddsChanged = false //輸入金額行為, 視為接受當前賠率
+
             }
 
             checkMinQuota(if (it.isEmpty()) 0.0 else it.toDouble())
@@ -286,10 +328,45 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     betInfoListData = list[0]
 
                     val betAmount = betInfoListData?.betAmount ?: 0.0
-                    var win = betAmount * getOdds(matchOdd, oddsType)
-                    if (oddsType == OddsType.EU) {
-                        win -= betAmount
+//                    var win = betAmount * getOdds(matchOdd, oddsType)
+//                    if (oddsType == OddsType.EU) {
+//                        win -= betAmount
+//                    }
+                    var realAmount = 0.00
+                    var win = 0.0
+                    when (oddsType) {
+                        OddsType.MYS -> {
+                            if (getOdds(matchOdd, oddsType) < 0) {
+                                realAmount = betAmount * abs(getOdds(matchOdd, oddsType))
+                                tvRealAmount.text = toMoneyFormat(realAmount)
+                                win = betAmount
+                            } else {
+                                win = betAmount * getOdds(matchOdd, oddsType)
+                                tvRealAmount.text = toMoneyFormat(betAmount)
+                            }
+
+                        }
+                        OddsType.IDN -> {
+                            if (getOdds(matchOdd, oddsType) < 0) {
+                                realAmount = betAmount * abs(getOdds(matchOdd, oddsType))
+                                tvRealAmount.text = toMoneyFormat(realAmount)
+                                win = betAmount
+                            } else {
+                                win = betAmount * getOdds(matchOdd, oddsType)
+                                tvRealAmount.text = toMoneyFormat(betAmount)
+                            }
+                        }
+                        OddsType.EU -> {
+                            win = betAmount * (getOdds(matchOdd, oddsType)-1)
+                            tvRealAmount.text = toMoneyFormat(betAmount)
+
+                        }
+                        else -> {
+                            win = betAmount * getOdds(matchOdd, oddsType)
+                            tvRealAmount.text = toMoneyFormat(betAmount)
+                        }
                     }
+
                     tv_win_quota.text = TextUtil.format(win)
                 }
             }
@@ -446,8 +523,17 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             button_bet.isOddsChanged = true
         }
 
+
+
         betInfoListData?.let { betInfoData ->
-            OddSpannableString.setupOddsContent(betInfoData, oddsType, tv_odds_content)
+            //[Martin] 判斷馬來盤與歐洲盤賠率是否一樣 若相同 則該項玩法是不支持馬來盤or印尼下注的 則將oddsType
+            var currentOddsType = if(betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds){
+                OddsType.EU
+            }else{
+                oddsType
+            }
+            betInfoData.singleBetOddsType = currentOddsType
+            OddSpannableString.setupOddsContent(betInfoData, currentOddsType, tv_odds_content)
         }
     }
 
@@ -463,9 +549,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun addBetSingle() {
         if (matchOdd?.status == BetStatus.LOCKED.code || matchOdd?.status == BetStatus.DEACTIVATED.code) return
-
         val stake = if (et_bet.text.toString().isEmpty()) 0.0 else et_bet.text.toString().toDouble()
-
 
         if (stake > currentMoney ?: 0.0) {
             showErrorPromptDialog(
@@ -489,4 +573,19 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
         }
     }
+
+
+    companion object {
+
+        @JvmStatic
+        fun launch(): Boolean {
+            val currentActivity = (AppManager.currentActivity() as FragmentActivity)
+            BetInfoCarDialog().run {
+                showNow(currentActivity.supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
+            }
+            return false
+        }
+    }
+
+
 }

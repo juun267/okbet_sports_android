@@ -111,6 +111,8 @@ abstract class BaseOddButtonViewModel(
             when (loginRepository.sOddsType) {
                 OddsType.EU.code -> OddsType.EU
                 OddsType.HK.code -> OddsType.HK
+                OddsType.MYS.code -> OddsType.MYS
+                OddsType.IDN.code -> OddsType.IDN
                 else -> OddsType.EU
             }
         )
@@ -140,7 +142,8 @@ abstract class BaseOddButtonViewModel(
                     matchInfo = matchInfo,
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
-                    playCateMenuCode = playCateMenuCode
+                    playCateMenuCode = playCateMenuCode,
+                    oddsType = loginRepository.mOddsType.value
                 )
             }
         } else {
@@ -181,7 +184,7 @@ abstract class BaseOddButtonViewModel(
                     matchInfo = matchOdd.matchInfo,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
-                    playCateMenuCode = PlayCate.OUTRIGHT.value
+                    oddsType = loginRepository.mOddsType.value
                 )
             }
         } else {
@@ -316,11 +319,17 @@ abstract class BaseOddButtonViewModel(
         parlayBetList: List<ParlayOdd>,
         oddsType: OddsType
     ) {
-
+        //調整盤口
+        var currentOddsTypes = oddsType
+        currentOddsTypes = if(normalBetList.size == 1){
+            normalBetList[0].singleBetOddsType
+        }else{
+            OddsType.EU
+        }
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, oddsType), it.betAmount))
+            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
         }
 
         //串關注單
@@ -331,6 +340,7 @@ abstract class BaseOddButtonViewModel(
             }
         }
 
+
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.betService.addBet(
@@ -338,7 +348,6 @@ abstract class BaseOddButtonViewModel(
                         matchList,
                         parlayList,
                         1,
-                        oddsType.code,
                         2,
                         deviceId
                     )
@@ -376,18 +385,17 @@ abstract class BaseOddButtonViewModel(
     fun addBetSingle(stake: Double, betInfoListData: BetInfoListData) {
         val parlayType =
             if (betInfoListData.matchType == MatchType.OUTRIGHT) MatchType.OUTRIGHT.postValue else betInfoListData.parlayOdds?.parlayType
-
         val request = BetAddRequest(
             listOf(
                 Odd(
                     betInfoListData.matchOdd.oddsId,
-                    getOdds(betInfoListData.matchOdd, oddsType.value ?: OddsType.EU),
-                    stake
-                )
+                    getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
+                    stake,
+                    betInfoListData.singleBetOddsType?.code
+                    )
             ),
             listOf(Stake(parlayType ?: "", stake)),
             1,
-            oddsType.value?.code ?: OddsType.EU.code,
             2,
             deviceId
         )

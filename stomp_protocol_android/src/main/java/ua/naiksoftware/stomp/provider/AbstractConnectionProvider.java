@@ -76,7 +76,7 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
             if (getSocket() == null) {
                 throw new IllegalStateException("Not connected");
             } else {
-                Log.d(TAG, "Send STOMP message: " + stompMessage);
+                Log.v(TAG, "Send STOMP message: " + stompMessage);
                 rawSend(stompMessage);
                 return null;
             }
@@ -108,12 +108,12 @@ public abstract class AbstractConnectionProvider implements ConnectionProvider {
     protected abstract Object getSocket();
 
     protected void emitLifecycleEvent(@NonNull LifecycleEvent lifecycleEvent) {
-        Log.d(TAG, "Emit lifecycle event: " + lifecycleEvent.getType().name());
+        Log.v(TAG, "Emit lifecycle event: " + lifecycleEvent.getType().name());
         lifecycleStream.onNext(lifecycleEvent);
     }
 
     protected void emitMessage(String stompMessage) {
-        Log.d(TAG, "Receive STOMP message: " + stompMessage);
+        Log.v(TAG, "Receive STOMP message: " + stompMessage);
         messagesStream.onNext(stompMessage);
     }
 
