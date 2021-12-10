@@ -3,18 +3,20 @@ package org.cxct.sportlottery.ui.menu
 
 import android.os.Bundle
 import android.view.*
-import kotlinx.android.synthetic.main.dialog_change_odd_type.*
-import kotlinx.android.synthetic.main.dialog_change_odd_type.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.DialogChangeOddTypeBinding
 import org.cxct.sportlottery.ui.base.BaseBottomSheetFragment
 import org.cxct.sportlottery.ui.main.MainViewModel
 
 
 class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewModel::class) {
 
+    private lateinit var viewBinding: DialogChangeOddTypeBinding
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_change_odd_type, container, false)
+        viewBinding = DialogChangeOddTypeBinding.inflate(inflater, container, false)
+        return viewBinding.root
     }
 
 
@@ -28,16 +30,24 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
 
     private fun initEvent(rootView: View?) {
         rootView?.apply {
-            img_close?.setOnClickListener {
+            viewBinding.imgClose.setOnClickListener {
                 dismiss()
             }
 
-            rb_eu?.setOnClickListener {
+            viewBinding.rbEu.setOnClickListener {
                 selectOddsType(OddsType.EU)
             }
 
-            rb_hk?.setOnClickListener {
+            viewBinding.rbHk.setOnClickListener {
                 selectOddsType(OddsType.HK)
+            }
+
+            viewBinding.rbMys.setOnClickListener {
+                selectOddsType(OddsType.MYS)
+            }
+
+            viewBinding.rbIdn.setOnClickListener {
+                selectOddsType(OddsType.IDN)
             }
         }
     }
@@ -58,10 +68,16 @@ class ChangeOddsTypeDialog : BaseBottomSheetFragment<MainViewModel>(MainViewMode
         context?.let {
             when (oddsType) {
                 OddsType.EU -> {
-                    rb_eu.isChecked = true
+                    viewBinding.rbEu.isChecked = true
                 }
                 OddsType.HK -> {
-                    rb_hk.isChecked = true
+                    viewBinding.rbHk.isChecked = true
+                }
+                OddsType.MYS -> {
+                    viewBinding.rbMys.isChecked = true
+                }
+                OddsType.IDN -> {
+                    viewBinding.rbIdn.isChecked = true
                 }
             }
         }

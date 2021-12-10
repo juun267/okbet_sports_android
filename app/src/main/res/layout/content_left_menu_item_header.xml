@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorWhite6"/>
+
+    <TextView
+        android:id="@+id/tv_recharge"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:minHeight="48dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/recharge"
+        android:textColor="@color/colorBlackLight"
+        app:drawableStartCompat="@drawable/ic_recharge" />
+
+    <TextView
+        android:id="@+id/tv_withdraw"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:minHeight="48dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/withdraw"
+        android:textColor="@color/colorBlackLight"
+        app:drawableStartCompat="@drawable/ic_withdraw" />
+
+    <TextView
+        android:id="@+id/tv_member_level"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:minHeight="48dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/member_level"
+        android:textColor="@color/colorBlackLight"
+        app:drawableStartCompat="@drawable/ic_member_level" />
+
+    <TextView
+        android:id="@+id/tv_promotion"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:minHeight="48dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/promotion"
+        android:textColor="@color/colorBlackLight"
+        app:drawableStartCompat="@drawable/ic_promotion" />
+
+    <View
+        android:id="@+id/divider_login"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorWhite6"/>
+
+    <TextView
+        android:id="@+id/ct_inplay"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:minHeight="48dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/match_type_row_in_play"
+        android:textColor="@color/colorBlackLight"
+        app:drawableStartCompat="@drawable/ic_inplay_v4" />
+
+    <TextView
+        android:id="@+id/ct_premium_odds"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:minHeight="48dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/premium_odds"
+        android:textColor="@color/colorBlackLight"
+        app:drawableStartCompat="@drawable/ic_price_v4" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/colorWhite6"/>
+
+</LinearLayout>

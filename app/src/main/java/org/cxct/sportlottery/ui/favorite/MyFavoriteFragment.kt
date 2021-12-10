@@ -93,9 +93,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         LeagueAdapter(MatchType.MY_EVENT).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener {
+            leagueListener = LeagueListener ({
                 subscribeChannelHall(it)
-            }
+            }, {})
 
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->

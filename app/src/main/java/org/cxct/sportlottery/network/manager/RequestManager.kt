@@ -11,10 +11,7 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.network.Constants.CONNECT_TIMEOUT
 import org.cxct.sportlottery.network.Constants.READ_TIMEOUT
 import org.cxct.sportlottery.network.Constants.WRITE_TIMEOUT
-import org.cxct.sportlottery.network.interceptor.LogInterceptor
-import org.cxct.sportlottery.network.interceptor.MockApiInterceptor
-import org.cxct.sportlottery.network.interceptor.MoreBaseUrlInterceptor
-import org.cxct.sportlottery.network.interceptor.RequestInterceptor
+import org.cxct.sportlottery.network.interceptor.*
 import org.cxct.sportlottery.network.odds.detail.CateDetailData
 import org.cxct.sportlottery.util.NullValueAdapter
 import retrofit2.Retrofit
@@ -50,7 +47,10 @@ class RequestManager private constructor(context: Context) {
         .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         .addInterceptor(MoreBaseUrlInterceptor())
         .addInterceptor(RequestInterceptor(context))
-        .addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
+        .addInterceptor(HttpLogInterceptor())
+        //.addInterceptor(LogInterceptor().setLevel(LogInterceptor.Level.BODY))
+
+
         .apply {
             // mock data, 必須擺在最後
             if (BuildConfig.MOCK)

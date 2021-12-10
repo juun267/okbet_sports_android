@@ -84,6 +84,16 @@ open class BaseFragment<T : BaseViewModel>(clazz: KClass<T>) : Fragment() {
         }
     }
 
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        buttonText: String?,
+        isShowDivider: Boolean,
+        positiveClickListener: () -> Unit?
+    ) {
+        (activity as BaseActivity<*>).showPromptDialog(title, message, buttonText, positiveClickListener, false, isShowDivider)
+    }
+
     fun showBottomSheetDialog(
         title: String?,
         dataList: List<StatusSheetData>,

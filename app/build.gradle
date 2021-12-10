@@ -22,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.48"
+        versionName "1.0.49"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -118,6 +118,7 @@ android {
 
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 
     // release apk時，不將.mock包入apk
