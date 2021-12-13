@@ -61,6 +61,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 RB -> "RUGBY FOOTBALL"
                 MR -> "MOTOR RACING"
                 GF -> "GOLF"
+                TT -> "TABLE TENNIS"
+                AFT -> "AMERICA FOOT BALL"
                 else -> null
             }
         }
