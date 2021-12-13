@@ -22,6 +22,8 @@ data class OddsChangeEvent(
     val dynamicMarkets: Map<String, DynamicMarkets>? = mapOf(), //动态市场字典(冠军玩法有效)， key: 对应odds的key, value: {zh:"xxx",en:"cxxewe"}
     @Json(name = "quickPlayCateList")
     val quickPlayCateList: List<QuickPlayCate>? = null,
+    @Json(name = "gameType")
+    val gameType: String? = null,
     @Json(name = "playCateNum")
     val playCateNum: Int? = null,
 ) : ServiceEventType, ServiceChannel {
