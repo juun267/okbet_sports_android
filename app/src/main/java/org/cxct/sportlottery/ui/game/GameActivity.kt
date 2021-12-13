@@ -464,32 +464,32 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initObserve() {
-        viewModel.settlementNotificationMsg.observe(this, {
+        viewModel.settlementNotificationMsg.observe(this) {
             val message = it.getContentIfNotHandled()
             message?.let { messageNotnull -> view_notification.addNotification(messageNotnull) }
-        })
+        }
 
-        viewModel.isLogin.observe(this, {
+        viewModel.isLogin.observe(this) {
             getAnnouncement()
-        })
+        }
 
-        viewModel.showBetUpperLimit.observe(this, {
+        viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true)
                 snackBarBetUpperLimitNotify.apply {
                     setAnchorView(R.id.game_bottom_navigation)
                     show()
                 }
-        })
+        }
 
-        viewModel.messageListResult.observe(this, {
+        viewModel.messageListResult.observe(this) {
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.nowTransNum.observe(this, {
+        viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
-        })
+        }
 
-        viewModel.specialEntrance.observe(this, {
+        viewModel.specialEntrance.observe(this) {
             hideLoading()
             it?.let { _ ->
                 when (it.matchType) {
@@ -516,30 +516,30 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
                 }
             }
-        })
+        }
 
-        viewModel.curMatchType.observe(this, {
+        viewModel.curMatchType.observe(this) {
             it?.let {
                 navGameFragment(it)
             }
-        })
+        }
 
-        viewModel.sportMenuResult.observe(this, {
+        viewModel.sportMenuResult.observe(this) {
             hideLoading()
             updateUiWithResult(it)
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.errorPromptMessage.observe(this, {
+        viewModel.errorPromptMessage.observe(this) {
             it.getContentIfNotHandled()
                 ?.let { message -> showErrorPromptDialog(getString(R.string.prompt), message) {} }
 
-        })
+        }
 
-        viewModel.leagueSelectedList.observe(this, {
+        viewModel.leagueSelectedList.observe(this) {
             game_submit.apply {
                 visibility = if (it.isEmpty()) {
                     View.GONE
@@ -549,7 +549,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
                 text = getString(R.string.button_league_submit, it.size)
             }
-        })
+        }
 
         viewModel.showBetInfoSingle.observe(this, {
             it?.getContentIfNotHandled()?.let {
