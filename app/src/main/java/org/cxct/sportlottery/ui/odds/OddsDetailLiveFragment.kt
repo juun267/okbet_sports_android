@@ -134,7 +134,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.id, null)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
         }
     }
 
@@ -144,7 +144,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.id, null)
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
         }
     }
 
@@ -367,7 +367,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.matchLiveInfo.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-                live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.id, liveStreamInfo.streamUrl)
+                live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, liveStreamInfo.streamUrl)
             }
         }
     }
@@ -499,7 +499,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.id, null)
+        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
     }
 
     private fun getData() {
