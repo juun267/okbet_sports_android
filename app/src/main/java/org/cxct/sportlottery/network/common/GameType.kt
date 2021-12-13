@@ -38,6 +38,9 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 RB.key -> RB
                 MR.key -> MR
                 GF.key -> GF
+                VB.key -> VB
+                TT.key -> TT
+                AFT.key -> AFT
                 else -> null
             }
         }
