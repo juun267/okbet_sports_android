@@ -15,14 +15,10 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_game.*
 import kotlinx.android.synthetic.main.bottom_navigation_item.view.*
 import kotlinx.android.synthetic.main.home_cate_tab.view.*
-import kotlinx.android.synthetic.main.motion_view_service_floating.*
-import kotlinx.android.synthetic.main.motion_view_service_floating.view.*
 import kotlinx.android.synthetic.main.sport_bottom_navigation.*
-import kotlinx.android.synthetic.main.sport_bottom_navigation.view.*
 import kotlinx.android.synthetic.main.view_bottom_navigation_sport.*
 import kotlinx.android.synthetic.main.view_game_tab_match_type_v4.*
 import kotlinx.android.synthetic.main.view_message.*
-import kotlinx.android.synthetic.main.view_nav_left.*
 import kotlinx.android.synthetic.main.view_nav_right.*
 import kotlinx.android.synthetic.main.view_toolbar_main.*
 import org.cxct.sportlottery.R
@@ -551,14 +547,14 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
 
-        viewModel.showBetInfoSingle.observe(this, {
+        viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
                 BetInfoCarDialog().show(
                     supportFragmentManager,
                     BetInfoCarDialog::class.java.simpleName
                 )
             }
-        })
+        }
     }
 
     private fun initServiceButton() {
