@@ -31,15 +31,19 @@ class OddButtonPagerAdapter(
         set(value) {
             field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
 
-            data = field.keys.withIndex().groupBy {
-                it.index / 2
-            }.map {
-                it.value.map { it.value }
-            }.map {
-                it.map { playCate ->
-                    playCate to field[playCate]
+            data = field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
+                .plus(field.filterValues { !it.isNullOrEmpty() }
+                    .filter { it.value?.get(0) == null })
+                .plus(field.filterValues { it.isNullOrEmpty() })
+                .keys.withIndex().groupBy {
+                    it.index / 2
+                }.map {
+                    it.value.map { it.value }
+                }.map {
+                    it.map { playCate ->
+                        playCate to field[playCate]
+                    }
                 }
-            }
         }
 
     var oddsType: OddsType = OddsType.EU
