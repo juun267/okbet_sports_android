@@ -23,6 +23,16 @@ public class ParlayBetLimit {
     private BigDecimal hdOdds;
 
     /**
+     * 馬來盤
+     */
+    private BigDecimal malayOdds;
+
+    /**
+     * 印尼盤
+     */
+    private BigDecimal indoOdds;
+
+    /**
      * 最大投注金额
      */
     private BigDecimal max;
@@ -46,6 +56,22 @@ public class ParlayBetLimit {
 
     public void setOdds(BigDecimal odds) {
         this.odds = odds;
+    }
+
+    public void setMalayOdds(BigDecimal odds) {
+        this.malayOdds = odds;
+    }
+
+    public void setIndoOdds(BigDecimal odds) {
+        this.indoOdds = odds;
+    }
+
+    public BigDecimal getMalayOdds() {
+        return malayOdds;
+    }
+
+    public BigDecimal getIndoOdds() {
+        return indoOdds;
     }
 
     public BigDecimal getHdOdds() {

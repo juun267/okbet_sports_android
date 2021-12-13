@@ -3,14 +3,18 @@ package org.cxct.sportlottery.ui.login.signIn
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import cn.jpush.android.api.JPushInterface
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID
 import org.cxct.sportlottery.MultiLanguagesApplication.Companion.UUID_DEVICE_CODE
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.databinding.ActivityLoginBinding
 import org.cxct.sportlottery.network.index.login.LoginRequest
 import org.cxct.sportlottery.network.index.login.LoginResult
 import org.cxct.sportlottery.network.index.validCode.ValidCodeResult
@@ -27,13 +31,21 @@ import org.cxct.sportlottery.util.MD5Util
 import org.cxct.sportlottery.util.ToastUtil
 import timber.log.Timber
 import java.util.*
+import org.cxct.sportlottery.widget.boundsEditText.SimpleTextChangedWatcher
+
+
+
 
 
 class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 
+    private lateinit var binding: ActivityLoginBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setupBackButton()
         setupAccount()
@@ -48,59 +60,89 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setUpLoginForGuestButton() {
-        btn_visit_first.setOnClickListener {
+        binding.btnVisitFirst.setOnClickListener {
             viewModel.loginAsGuest()
         }
     }
 
     private fun setupBackButton() {
-        btn_back.setOnClickListener { finish() }
+        binding.btnBack.setOnClickListener { finish() }
     }
 
     private fun setupAccount() {
-        et_account.setText(viewModel.account)
-        et_account.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+        binding.eetAccount.setText(viewModel.account)
+//        binding.eetAccount.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
+//        binding.eetAccount.setOnFocusChangeListener { v, hasFocus ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
     }
 
     private fun setupPassword() {
-        et_password.setText(viewModel.password)
-
-        //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
-        et_password.eyeVisibility = View.GONE
-        et_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (hasFocus && et_password.eyeVisibility == View.GONE) {
-                et_password.eyeVisibility = View.VISIBLE
-                et_password.setText(null)
+        binding.eetPassword.setText(viewModel.password)
+        binding.etPassword.endIconImageButton.setOnClickListener {
+            if (binding.etPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                binding.eetPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.etPassword.setEndIcon(R.drawable.ic_eye_close)
+            } else {
+                binding.etPassword.setEndIcon(R.drawable.ic_eye_open)
+                binding.eetPassword.transformationMethod = PasswordTransformationMethod.getInstance()
             }
-
-            if (!hasFocus)
-                checkInputData()
+            binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
         }
+        //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
+        binding.etPassword.endIconImageButton.visibility = View.GONE
+//        binding.etPassword.setOnFocusChangeListener { v, hasFocus ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
+        binding.etPassword.setSimpleTextChangeWatcher(object : SimpleTextChangedWatcher {
+            override fun onTextChanged(theNewText: String?, isError: Boolean) {
+                if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
+                    binding.etPassword.endIconImageButton.visibility = View.VISIBLE
+                    binding.eetPassword.setText(null)
+                }
+            }
+        })
+//        et_password.eyeVisibility = View.GONE
+//        et_password.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+//            if (hasFocus && et_password.eyeVisibility == View.GONE) {
+//                et_password.eyeVisibility = View.VISIBLE
+//                et_password.setText(null)
+//            }
+//
+//            if (!hasFocus)
+//                checkInputData()
+//        }
     }
 
     private fun setupValidCode() {
         if (sConfigData?.enableValidCode == FLAG_OPEN) {
-            et_verification_code.visibility = View.VISIBLE
+            binding.blockValidCode.visibility = View.VISIBLE
             updateValidCode()
         } else {
-            et_verification_code.visibility = View.GONE
+            binding.blockValidCode.visibility = View.GONE
         }
+        binding.ivReturn.setOnClickListener { updateValidCode() }
+//        binding.eetVerificationCode.setOnFocusChangeListener { v, hasFocus ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
+//        binding.ivReturn.setVerificationCodeBtnOnClickListener(View.OnClickListener {
+//            updateValidCode()
+//        })
 
-        et_verification_code.setVerificationCodeBtnOnClickListener(View.OnClickListener {
-            updateValidCode()
-        })
-
-        et_verification_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
-            if (!hasFocus)
-                checkInputData()
-        }
+//        et_verification_code.setEditTextOnFocusChangeListener { _: View, hasFocus: Boolean ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
     }
 
     private fun setupLoginButton() {
-        btn_login.setOnClickListener {
+        binding.btnLogin.setOnClickListener {
             if (checkInputData()) {
                 login()
             }
@@ -108,24 +150,30 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun checkInputData(): Boolean {
-        return viewModel.checkInputData(this, et_account.getText(), et_password.getText(), et_verification_code.getText())
+        return viewModel.checkInputData(
+            this,
+            binding.eetAccount.text.toString(),
+            binding.eetPassword.text.toString(),
+            binding.eetVerificationCode.text.toString()
+        )
     }
 
     private fun updateValidCode() {
         val data = viewModel.validCodeResult.value?.validCodeData
         viewModel.getValidCode(data?.identity)
-        et_verification_code.setText(null)
+        binding.eetVerificationCode.setText(null)
     }
 
     private fun login() {
         loading()
 
-        val account = et_account.getText()
-        val password = et_password.getText()
+        val account = binding.eetAccount.text.toString()
+        val password = binding.eetPassword.text.toString()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
-        val validCode = et_verification_code.getText()
+        val validCode = binding.eetVerificationCode.text.toString()
 //        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
-        val deviceSn = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
+        val deviceSn =
+            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
         Timber.d("UUID = $deviceSn")
 
         val loginRequest = LoginRequest(
@@ -142,20 +190,23 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     }
 
     private fun setupRememberPWD() {
-        cb_remember_password.isChecked = viewModel.isRememberPWD
-        cb_remember_password.setOnCheckedChangeListener { _, isChecked ->
+        binding.cbRememberPassword.isChecked = viewModel.isRememberPWD
+        binding.cbRememberPassword.setOnCheckedChangeListener { _, isChecked ->
             viewModel.isRememberPWD = isChecked
         }
     }
 
     private fun setupForgetPasswordButton() {
-        btn_forget_password.setOnClickListener {
-            showPromptDialog(getString(R.string.prompt), getString(R.string.desc_forget_password)) {}
+        binding.btnForgetPassword.setOnClickListener {
+            showPromptDialog(
+                getString(R.string.prompt),
+                getString(R.string.desc_forget_password)
+            ) {}
         }
     }
 
     private fun setupRegisterButton() {
-        btn_sign_up.setOnClickListener {
+        binding.btnSignUp.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
             finish()
         }
@@ -164,9 +215,9 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun initObserve() {
         viewModel.loginFormState.observe(this, Observer {
             val loginState = it ?: return@Observer
-            et_account.setError(loginState.accountError)
-            et_password.setError(loginState.passwordError)
-            et_verification_code.setError(loginState.validCodeError)
+            binding.etAccount.setError(loginState.accountError, false)
+            binding.etPassword.setError(loginState.passwordError, false)
+            binding.etVerificationCode.setError(loginState.validCodeError, false)
         })
 
         viewModel.loginResult.observe(this, Observer {
@@ -196,11 +247,16 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
     private fun updateUiWithResult(validCodeResult: ValidCodeResult?) {
         if (validCodeResult?.success == true) {
             val bitmap = BitmapUtil.stringToBitmap(validCodeResult.validCodeData?.img)
-            et_verification_code.setVerificationCode(bitmap)
+            Glide.with(this)
+                .load(bitmap)
+                .into(binding.ivVerification)
         } else {
             updateValidCode()
-            et_verification_code.setVerificationCode(null)
-            ToastUtil.showToastInCenter(this@LoginActivity, getString(R.string.get_valid_code_fail_point))
+            //et_verification_code.setVerificationCode(null)
+            ToastUtil.showToastInCenter(
+                this@LoginActivity,
+                getString(R.string.get_valid_code_fail_point)
+            )
         }
     }
 

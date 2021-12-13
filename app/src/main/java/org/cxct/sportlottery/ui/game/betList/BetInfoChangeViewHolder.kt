@@ -21,6 +21,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.bet.list.OddSpannableString
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
@@ -36,6 +37,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
     private lateinit var playNameSpan: SpannableString
     private lateinit var spreadSpan: SpannableString
     private lateinit var oddsSpan: SpannableString
+    private lateinit var oddsTypeSpan: SpannableString
     private var extInfo: SpannableString? = null
 
 
@@ -80,6 +82,9 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         setupSpreadSpannableString(textView.context, matchType, matchOdd, isSpreadChanged)
 
         setupOddsSpannableString(textView.context, matchOdd, isOddsChanged, oddsType)
+
+        setupOddsTypeSpannableString(textView.context, oddsType)
+
 
         mergeString(textView)
     }
@@ -129,6 +134,17 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         oddsSpan.setSpan(BackgroundColorSpan(backgroundColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
 
+    private fun setupOddsTypeSpannableString(context: Context, oddsType: OddsType) {
+        val textColor = ContextCompat.getColor(context,  R.color.colorGray)
+        val backgroundColor = ContextCompat.getColor(context,  R.color.transparent)
+
+        val oddsType = " ("+context.getString(oddsType.res)+")"
+        val oddsEnd = oddsType.length
+        oddsTypeSpan = SpannableString(oddsType)
+        oddsTypeSpan.setSpan(ForegroundColorSpan(textColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        oddsTypeSpan.setSpan(BackgroundColorSpan(backgroundColor), 0, oddsEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+
 
     private fun mergeString(textView: TextView) {
         val oddContentBuilder = SpannableStringBuilder()
@@ -140,6 +156,7 @@ abstract class BetInfoChangeViewHolder(itemView: View): RecyclerView.ViewHolder(
         oddContentBuilder.append(spreadSpan)
         oddContentBuilder.append(" ＠ ")
         oddContentBuilder.append(oddsSpan)
+        oddContentBuilder.append(oddsTypeSpan)
 
         textView.text = oddContentBuilder
     }

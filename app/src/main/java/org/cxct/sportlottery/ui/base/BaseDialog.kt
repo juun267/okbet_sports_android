@@ -67,6 +67,16 @@ open class BaseDialog<T : BaseViewModel>(clazz: KClass<T>) : DialogFragment() {
         }
     }
 
+    fun showPromptDialog(
+        title: String? = getString(R.string.prompt),
+        message: String,
+        buttonText: String?,
+        isShowDivider: Boolean,
+        positiveClickListener: () -> Unit?
+    ) {
+        (activity as BaseActivity<*>).showPromptDialog(title, message, buttonText, positiveClickListener, false, isShowDivider)
+    }
+
     fun showErrorPromptDialog(title: String, message: String, positiveClickListener: () -> Unit) {
         if (activity is BaseActivity<*>) {
             (activity as BaseActivity<*>).showErrorPromptDialog(title, message, positiveClickListener)

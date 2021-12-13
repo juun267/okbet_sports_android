@@ -6,7 +6,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 data class BetListData(
     val row: List<Row>,
     val oddsType: OddsType,
-    val totalMoney: Long,
+    val totalMoney: Double,
     val page: Int,
     val isLastPage: Boolean
 )

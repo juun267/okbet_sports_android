@@ -52,9 +52,54 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://cxisport.com/sports-rule/#/"
-                LanguageManager.Language.VI -> "https://cxisport.com/sports-rule/#/vi"
-                else -> "https://cxisport.com/sports-rule/#/us"
+                LanguageManager.Language.ZH -> "https://onbet-cn.cxsport.net/sports-rule/#/"
+                LanguageManager.Language.VI -> "https://onbet-vn.cxsport.net/sports-rule/#/"
+                else -> "https://okbet-ph.cxsport.net/sports-rule/#/"
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun getDutyRuleUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/responsibility"
+                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/responsibility"
+                else -> "https://sports.cxsport.net/sports-rule/#/us/responsibility"
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun getPrivacyRuleUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/privacy-policy?platform=OKBET"
+                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/privacy-policy?platform=OKBET"
+                else -> "https://sports.cxsport.net/sports-rule/#/us/privacy-policy?platform=OKBET"
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun getAgreementRuleUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/terms-conditions?platform=OKBET"
+                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/terms-conditions?platform=OKBET"
+                else -> "https://sports.cxsport.net/sports-rule/#/us/terms-conditions?platform=OKBET"
             }
 
         } catch (e: UnsupportedEncodingException) {

@@ -7,8 +7,11 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.Odds
 import org.cxct.sportlottery.ui.bet.list.INPLAY
+import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 object MatchOddUtil {
     fun transfer(
@@ -33,6 +36,8 @@ object MatchOddUtil {
                             matchId = matchId,
                             odds = odds,
                             hkOdds = hkOdds,
+                            malayOdds = odd.malayOdds!!,
+                            indoOdds = odd.indoOdds!!,
                             oddsId = oddsId,
                             playCateId = 0,
                             playCateName = playCateName,
@@ -75,6 +80,10 @@ object MatchOddUtil {
     fun Odd.updateDiscount(discount: Float, newDiscount: Float) {
         this.odds = this.odds?.updateDiscount(discount, newDiscount)
         this.hkOdds = this.hkOdds?.updateHKDiscount(discount, newDiscount)
+        if(this.malayOdds != this.odds){
+            this.malayOdds = this.hkOdds?.convertToMYOdds()
+            this.indoOdds = this.hkOdds?.convertToIndoOdds()
+        }
     }
 
     fun Odd.updateEPSDiscount(discount: Float, newDiscount: Float) {
@@ -85,6 +94,10 @@ object MatchOddUtil {
     fun MatchOdd.updateDiscount(discount: Float, newDiscount: Float) {
         this.odds = this.odds.updateDiscount(discount, newDiscount)
         this.hkOdds = this.hkOdds.updateHKDiscount(discount, newDiscount)
+        if(this.malayOdds != this.odds){
+            this.malayOdds = this.hkOdds?.convertToMYOdds()
+            this.indoOdds = this.hkOdds?.convertToIndoOdds()
+        }
 
         if (this.playCode == PlayCate.EPS.value) {
             this.extInfo = this.extInfo?.toDouble()?.updateDiscount(discount, newDiscount)?.toString()
@@ -113,5 +126,21 @@ object MatchOddUtil {
 
     private fun Double.updateHKDiscount(discount: Float, newDiscount: Float): Double {
         return this.applyReverselyHKDiscount(discount).applyHKDiscount(newDiscount)
+    }
+    private fun Double.convertToMYOdds(): Double {
+
+        return if(this > 1){
+            ArithUtil.div(-1.0,this,3, RoundingMode.HALF_EVEN)
+            //(-1 / this)
+        }else{
+            this
+        }
+    }
+    private fun Double.convertToIndoOdds(): Double {
+        return if(this > 1){
+            this
+        }else{
+            ArithUtil.div(1.0,this,3, RoundingMode.HALF_EVEN) * -1
+        }
     }
 }

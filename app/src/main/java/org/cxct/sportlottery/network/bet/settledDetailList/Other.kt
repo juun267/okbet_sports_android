@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class Other (
     @Json(name = "totalAmount")
-    val totalAmount: Long?,
+    val totalAmount: Double?,
     @Json(name = "win")
     val win: Double?,
     @Json(name = "valueBetAmount")
-    val valueBetAmount:Int?
+    val valueBetAmount:Double?
 )

@@ -291,18 +291,18 @@ class ProfileCenterActivity :
     }
 
     private fun initObserve() {
-        viewModel.userMoney.observe(this, {
+        viewModel.userMoney.observe(this) {
             it?.let {
                 refreshMoneyHideLoading()
                 tv_account_balance.text = TextUtil.format(it)
             }
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateUI(it)
-        })
+        }
 
-        viewModel.withdrawSystemOperation.observe(this, {
+        viewModel.withdrawSystemOperation.observe(this) {
             val operation = it.getContentIfNotHandled()
             if (operation == false) {
                 showPromptDialog(
@@ -310,9 +310,9 @@ class ProfileCenterActivity :
                     getString(R.string.message_withdraw_maintain)
                 ) {}
             }
-        })
+        }
 
-        viewModel.rechargeSystemOperation.observe(this, {
+        viewModel.rechargeSystemOperation.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     startActivity(Intent(this, MoneyRechargeActivity::class.java))
@@ -323,9 +323,9 @@ class ProfileCenterActivity :
                     ) {}
                 }
             }
-        })
+        }
 
-        viewModel.needToUpdateWithdrawPassword.observe(this, {
+        viewModel.needToUpdateWithdrawPassword.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -349,9 +349,9 @@ class ProfileCenterActivity :
                     viewModel.checkProfileInfoComplete()
                 }
             }
-        })
+        }
 
-        viewModel.needToCompleteProfileInfo.observe(this, {
+        viewModel.needToCompleteProfileInfo.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -366,9 +366,9 @@ class ProfileCenterActivity :
                     viewModel.checkBankCardPermissions()
                 }
             }
-        })
+        }
 
-        viewModel.needToBindBankCard.observe(this, {
+        viewModel.needToBindBankCard.observe(this) {
             it.getContentIfNotHandled()?.let { messageId ->
                 if (messageId != -1) {
                     showPromptDialog(
@@ -383,9 +383,9 @@ class ProfileCenterActivity :
                     startActivity(Intent(this, WithdrawActivity::class.java))
                 }
             }
-        })
+        }
 
-        viewModel.settingNeedToUpdateWithdrawPassword.observe(this, {
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -409,9 +409,9 @@ class ProfileCenterActivity :
                     startActivity(Intent(this, BankActivity::class.java))
                 }
             }
-        })
+        }
 
-        viewModel.settingNeedToCompleteProfileInfo.observe(this, {
+        viewModel.settingNeedToCompleteProfileInfo.observe(this) {
             it.getContentIfNotHandled()?.let { b ->
                 if (b) {
                     showPromptDialog(
@@ -426,9 +426,9 @@ class ProfileCenterActivity :
                     startActivity(Intent(this, BankActivity::class.java))
                 }
             }
-        })
+        }
 
-        viewModel.editIconUrlResult.observe(this, {
+        viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
                 showPromptDialog(
@@ -437,11 +437,11 @@ class ProfileCenterActivity :
                 ) {}
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
-        })
+        }
 
-        viewModel.isCreditAccount.observe(this, {
+        viewModel.isCreditAccount.observe(this) {
             updateCreditAccountUI(it)
-        })
+        }
     }
 
     @SuppressLint("SetTextI18n")

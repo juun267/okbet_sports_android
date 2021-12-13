@@ -117,8 +117,23 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         initTabLayout()
         initObserve()
         initServiceButton()
+        setFontTheme()
 
         queryData()
+    }
+
+    private fun setFontTheme() {
+        when (LanguageManager.getSelectLanguage(this)) {
+            LanguageManager.Language.ZH, LanguageManager.Language.ZHT -> {
+                setTheme(R.style.ChineseTheme)
+            }
+            LanguageManager.Language.VI -> {
+                setTheme(R.style.VietnamTheme)
+            }
+            else -> {
+                setTheme(R.style.EnglishTheme)
+            }
+        }
     }
 
     override fun onResume() {
@@ -551,14 +566,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         })
 
-        viewModel.showBetInfoSingle.observe(this, {
-            it?.getContentIfNotHandled()?.let {
-                BetInfoCarDialog().show(
-                    supportFragmentManager,
-                    BetInfoCarDialog::class.java.simpleName
-                )
-            }
-        })
+//        viewModel.showBetInfoSingle.observe(this, {
+//            it?.getContentIfNotHandled()?.let {
+//                //[Martin]
+////                BetInfoCarDialog().show(
+////                    supportFragmentManager,
+////                    BetInfoCarDialog::class.java.simpleName
+////                )
+//            }
+//        })
     }
 
     private fun initServiceButton() {

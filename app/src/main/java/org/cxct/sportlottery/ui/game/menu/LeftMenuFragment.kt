@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.menu
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,47 +18,99 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.sport.SportMenu
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.TestFlag
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.ChangeAppearanceDialog
 import org.cxct.sportlottery.ui.menu.ChangeOddsTypeFullScreenDialog
+import org.cxct.sportlottery.ui.money.recharge.MoneyRechargeActivity
+import org.cxct.sportlottery.ui.profileCenter.changePassword.SettingPasswordActivity
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
+import org.cxct.sportlottery.ui.vip.VipActivity
+import org.cxct.sportlottery.ui.withdraw.BankActivity
+import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
+import org.cxct.sportlottery.util.LanguageManager
 
 class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
-
-    //點擊置頂後
-    private var unselectedAdapter =
-        LeftMenuItemAdapter(LeftMenuItemAdapter.ItemClickListener { gameType ->
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    viewModel.pinFavorite(
-                        FavoriteType.SPORT,
-                        gameType
+    private var newAdapter =
+        LeftMenuItemNewAdapter(
+            sConfigData?.thirdOpen == FLAG_OPEN,
+            LeftMenuItemNewAdapter.HeaderSelectedListener(
+                { //recharge
+                    viewModel.checkRechargeSystem()
+                    dismiss()
+                },
+                { //withdraw
+                    viewModel.checkWithdrawSystem()
+                    dismiss()
+                },
+                { //member level
+                    startActivity(Intent(context, VipActivity::class.java))
+                    dismiss()
+                },
+                { //promotion
+                    context?.let {
+                        JumpUtil.toInternalWeb(
+                            it,
+                            Constants.getPromotionUrl(
+                                viewModel.token,
+                                LanguageManager.getSelectLanguage(context)
+                            ),
+                            getString(R.string.promotion)
+                        )
+                    }
+                    dismiss()
+                },
+                { //inPlay
+                    viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
+                    dismiss()
+                },
+                { //premium
+                    viewModel.navDirectEntrance(MatchType.EPS, null)
+                    dismiss()
+                }),
+            LeftMenuItemNewAdapter.ItemSelectedListener(
+                { sportType -> //點擊
+                    navSportEntrance(sportType)
+                },
+                { gameType, addOrRemove -> //圖釘
+                    when (viewModel.userInfo.value?.testFlag) {
+                        TestFlag.NORMAL.index -> {
+                            viewModel.pinFavorite(
+                                FavoriteType.SPORT,
+                                gameType
+                            )
+                            setSnackBarMyFavoriteNotify(myFavoriteNotifyType = addOrRemove)
+                        }
+                        else -> { //遊客 //尚未登入
+                            setSnackBarMyFavoriteNotify(isLogin = false)
+                        }
+                    }
+                }
+            ),
+            LeftMenuItemNewAdapter.FooterSelectedListener(
+                { //盤口設定
+                    ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
+                },
+                { //外觀
+                    ChangeAppearanceDialog().show(parentFragmentManager, null)
+                },
+                { //遊戲規則
+                    JumpUtil.toInternalWeb(
+                        requireContext(),
+                        Constants.getGameRuleUrl(requireContext()),
+                        getString(R.string.game_rule)
                     )
-                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_ADD.code)
+                    dismiss()
                 }
-                else -> { //遊客 //尚未登入
-                    setSnackBarMyFavoriteNotify(isLogin = false)
-                }
-            }
-        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
-
-    //取消置頂
-    var selectedAdapter =
-        LeftMenuItemSelectedAdapter(LeftMenuItemSelectedAdapter.ItemClickListener { gameType ->
-            when (viewModel.userInfo.value?.testFlag) {
-                TestFlag.NORMAL.index -> {
-                    viewModel.pinFavorite(FavoriteType.SPORT, gameType)
-                    setSnackBarMyFavoriteNotify(myFavoriteNotifyType = MyFavoriteNotifyType.SPORT_REMOVE.code)
-                }
-                else -> { //遊客 //尚未登入
-                    setSnackBarMyFavoriteNotify(isLogin = false)
-                }
-            }
-        }, LeftMenuItemAdapter.SportClickListener { sportType -> navSportEntrance(sportType) })
+            )
+        )
 
     //提示
-    var snackBarMyFavoriteNotify: Snackbar? = null
+    private var snackBarMyFavoriteNotify: Snackbar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,36 +133,18 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
         btn_close.setOnClickListener {
             dismiss()
         }
-        //滾球
-        ct_inplay.setOnClickListener {
-            viewModel.navDirectEntrance(MatchType.IN_PLAY, null)
-            dismiss()
-        }
-        //特優賠率
-        ct_premium_odds.setOnClickListener {
-            viewModel.navDirectEntrance(MatchType.EPS, null)
-            dismiss()
-        }
-        //遊戲規則
-        ct_game_rule.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getGameRuleUrl(requireContext()), getString(R.string.game_rule))
-            dismiss()
-        }
-        //盤口設定
-        tv_odds_type.setOnClickListener {
-            ChangeOddsTypeFullScreenDialog().show(parentFragmentManager, null)
-        }
     }
 
-    private fun initData(list: List<SportMenu>) {
-        val unselectedArray = mutableListOf<MenuItemData>()
+    private val unselectedList = mutableListOf<MenuItemData>()
 
+    private fun initData(list: List<SportMenu>) {
+        unselectedList.clear()
         list.forEach {
             when (it.gameType) {
                 GameType.VB -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_vb_v4,
+                            R.drawable.selector_left_menu_ball_vb,
                             getString(R.string.volleyball),
                             GameType.VB.key,
                             0
@@ -117,9 +152,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.TN -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_tn_v4,
+                            R.drawable.selector_left_menu_ball_tn,
                             getString(R.string.tennis),
                             GameType.TN.key,
                             0
@@ -127,9 +162,9 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.BK -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_bk_v4,
+                            R.drawable.selector_left_menu_ball_bk,
                             getString(R.string.basketball),
                             GameType.BK.key,
                             0
@@ -137,93 +172,309 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                     )
                 }
                 GameType.FT -> {
-                    unselectedArray.add(
+                    unselectedList.add(
                         MenuItemData(
-                            R.drawable.selector_sport_type_item_img_ft_v4,
+                            R.drawable.selector_left_menu_ball_ft,
                             getString(R.string.soccer),
                             GameType.FT.key,
                             0
                         )
                     )
                 }
+
+                GameType.BM -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_bm,
+                            getString(R.string.badminton),
+                            GameType.BM.key, 0
+                        )
+                    )
+                }
+                GameType.PP -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_pp,
+                            getString(R.string.ping_pong),
+                            GameType.PP.key, 0
+                        )
+                    )
+                }
+                GameType.IH -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_ih,
+                            getString(R.string.ice_hockey),
+                            GameType.IH.key, 0
+                        )
+                    )
+                }
+                GameType.BX -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_bx,
+                            getString(R.string.boxing),
+                            GameType.BX.key, 0
+                        )
+                    )
+                }
+                GameType.CB -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_cb,
+                            getString(R.string.cue_ball),
+                            GameType.CB.key, 0
+                        )
+                    )
+                }
+                GameType.CK -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_ck,
+                            getString(R.string.cricket),
+                            GameType.CK.key, 0
+                        )
+                    )
+                }
+                GameType.BB -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_bb,
+                            getString(R.string.baseball),
+                            GameType.BB.key, 0
+                        )
+                    )
+                }
+                GameType.RB -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_rb,
+                            getString(R.string.rugby_football),
+                            GameType.RB.key, 0
+                        )
+                    )
+                }
+                GameType.MR -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_mr,
+                            getString(R.string.motor_racing),
+                            GameType.MR.key, 0
+                        )
+                    )
+                }
+                GameType.GF -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_gf,
+                            getString(R.string.golf),
+                            GameType.GF.key, 0
+                        )
+                    )
+                }
             }
         }
-        unselectedAdapter.data = unselectedArray
-
         viewModel.notifyFavorite(FavoriteType.SPORT)
     }
 
     fun initObserve() {
-        viewModel.favorSportList.observe(this.viewLifecycleOwner, {
+        viewModel.favorSportList.observe(this.viewLifecycleOwner) {
             updateMenuSport(it)
             updateFavorSport(it)
-        })
+        }
 
-        viewModel.isLoading.observe(this.viewLifecycleOwner, {
+        viewModel.isLogin.observe(this.viewLifecycleOwner) {
+            newAdapter.isLogin = it
+        }
+
+        viewModel.isLoading.observe(this.viewLifecycleOwner) {
             if (it)
                 loading()
             else
                 hideLoading()
-        })
+        }
 
-        viewModel.sportMenuList.observe(viewLifecycleOwner, {
+        viewModel.sportMenuList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
                 initData(list)
             }
-        })
+        }
+
+        viewModel.rechargeSystemOperation.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    startActivity(Intent(context, MoneyRechargeActivity::class.java))
+                } else {
+                    showPromptDialog(
+                        getString(R.string.prompt),
+                        getString(R.string.message_recharge_maintain)
+                    ) {}
+                }
+            }
+        }
+
+        viewModel.withdrawSystemOperation.observe(viewLifecycleOwner) {
+            val operation = it.getContentIfNotHandled()
+            if (operation == false) {
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.message_withdraw_maintain)
+                ) {}
+            }
+        }
+
+        viewModel.needToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(
+                            Intent(
+                                context,
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    SettingPasswordActivity.PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
+                    }
+                } else {
+                    viewModel.checkProfileInfoComplete()
+                }
+            }
+        }
+
+        viewModel.needToCompleteProfileInfo.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, ProfileActivity::class.java))
+                    }
+                } else {
+                    viewModel.checkBankCardPermissions()
+                }
+            }
+        }
+
+        viewModel.needToBindBankCard.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { messageId ->
+                if (messageId != -1) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(messageId),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, BankActivity::class.java))
+                    }
+                } else {
+                    startActivity(Intent(context, WithdrawActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.settingNeedToUpdateWithdrawPassword.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_setting_withdraw_password),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(
+                            Intent(
+                                context,
+                                SettingPasswordActivity::class.java
+                            ).apply {
+                                putExtra(
+                                    SettingPasswordActivity.PWD_PAGE,
+                                    SettingPasswordActivity.PwdPage.BANK_PWD
+                                )
+                            })
+                    }
+                } else if (!b) {
+                    startActivity(Intent(context, BankActivity::class.java))
+                }
+            }
+        }
+
+        viewModel.settingNeedToCompleteProfileInfo.observe(viewLifecycleOwner) {
+            it.getContentIfNotHandled()?.let { b ->
+                if (b) {
+                    showPromptDialog(
+                        getString(R.string.withdraw_setting),
+                        getString(R.string.please_complete_profile_info),
+                        getString(R.string.go_to_setting),
+                        true
+                    ) {
+                        startActivity(Intent(context, ProfileActivity::class.java))
+                    }
+                } else if (!b) {
+                    startActivity(Intent(context, BankActivity::class.java))
+                }
+            }
+        }
     }
 
     private fun initRecyclerView() {
-        rv_unselect.apply {
-            layoutManager =
-                object : LinearLayoutManager(rv_unselect.context, VERTICAL, false) {
-                    override fun canScrollVertically(): Boolean {
-                        return false
-                    }
-                }
 
-            adapter = unselectedAdapter
-        }
-
-        rv_selected.apply {
-            layoutManager =
-                object : LinearLayoutManager(rv_selected.context, VERTICAL, false) {
-                    override fun canScrollVertically(): Boolean {
-                        return false
-                    }
-                }
-
-            adapter = selectedAdapter
+        rv_menu.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = newAdapter
         }
     }
 
     private fun updateMenuSport(favorSportTypeList: List<String>) {
-        unselectedAdapter.data.forEach { menuSport ->
+        unselectedList.forEach { menuSport ->
             menuSport.isSelected =
                 if (favorSportTypeList.isNotEmpty() && favorSportTypeList.contains(menuSport.gameType)) 1 else 0
         }
-        unselectedAdapter.notifyDataSetChanged()
+
+        newAdapter.addFooterAndSubmitList(unselectedList)
     }
 
     private fun updateFavorSport(favorSportTypeList: List<String>) {
-        val selectedList = unselectedAdapter.data.filter {
-            favorSportTypeList.contains(it.gameType)
+        val selectedList = unselectedList.filter {
+            !it.isHeaderOrFooter
         }.sortedBy {
             favorSportTypeList.indexOf(it.gameType)
-        }
-        selectedAdapter.data = selectedList
-        line_pin.visibility = if(selectedList.isNotEmpty() && selectedList.size < 4) View.VISIBLE else View.GONE
+        }.sortedByDescending {
+            it.isSelected == 1
+        }.toMutableList()
+        newAdapter.addFooterAndSubmitList(selectedList)
     }
 
-    private fun navSportEntrance(sport:String){
+    private fun navSportEntrance(sport: String) {
         loading()
-        val matchType = viewModel.sportMenuList.value?.peekContent()?.find { it.gameType.key == sport }?.entranceType
+        val matchType = viewModel.sportMenuList.value?.peekContent()
+            ?.find { it.gameType.key == sport }?.entranceType
 
         val sportType = when (sport) {
             GameType.FT.name -> GameType.FT
             GameType.BK.name -> GameType.BK
             GameType.TN.name -> GameType.TN
             GameType.VB.name -> GameType.VB
+            GameType.BM.name -> GameType.BM
+            GameType.PP.name -> GameType.PP
+            GameType.IH.name -> GameType.IH
+            GameType.BX.name -> GameType.BX
+            GameType.CB.name -> GameType.CB
+            GameType.CK.name -> GameType.CK
+            GameType.BB.name -> GameType.BB
+            GameType.RB.name -> GameType.RB
+            GameType.MR.name -> GameType.MR
+            GameType.GF.name -> GameType.GF
             else -> GameType.FT
         }
         if (matchType != null) {
@@ -281,7 +532,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                 if (isLogin == true)
                     snackView.txv_title.text = title
                 else snackView.tv_notify.text = title
-                
+
                 (this.view as Snackbar.SnackbarLayout).apply {
                     findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
                         visibility = View.INVISIBLE
