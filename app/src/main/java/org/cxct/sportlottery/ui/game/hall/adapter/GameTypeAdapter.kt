@@ -78,6 +78,8 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView.sport_type_text.text = item.name
             if (item.isSelected) itemView.sport_count_text.text = "$playCateNum"
 
+            itemView.sport_count_text.text = item.num.toString()
+
             itemView.isSelected = item.isSelected
 
             itemView.setOnClickListener {

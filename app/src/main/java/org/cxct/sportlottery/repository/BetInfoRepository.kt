@@ -16,10 +16,12 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.MatchOddUtil
 import org.cxct.sportlottery.util.parlaylimit.ParlayLimitUtil
+import kotlin.math.abs
 
 
 const val BET_INFO_MAX_COUNT = 10
@@ -33,7 +35,6 @@ class BetInfoRepository(val androidContext: Context) {
 
     val showBetInfoSingle: LiveData<Event<Boolean?>>
         get() = _showBetInfoSingle
-
 
     //每個畫面都要觀察
     private val _betInfoList = MutableLiveData<Event<MutableList<BetInfoListData>>>().apply {
@@ -69,6 +70,13 @@ class BetInfoRepository(val androidContext: Context) {
             field = value
             field?.let {
                 updatePlayQuota()
+            }
+        }
+
+    var oddsType: OddsType = OddsType.EU
+        set(value) {
+            if (value != field) {
+                field = value
             }
         }
 
@@ -227,7 +235,6 @@ class BetInfoRepository(val androidContext: Context) {
     fun addInBetInfo() {
         _showBetInfoSingle.postValue(Event(false))
     }
-
     /**
      * 點擊賠率按鈕加入投注清單, 並產生串關注單
      */
@@ -240,10 +247,11 @@ class BetInfoRepository(val androidContext: Context) {
         matchInfo: MatchInfo,
         odd: Odd,
         subscribeChannelType: ChannelType,
-        playCateMenuCode: String? = null
+        playCateMenuCode: String? = null,
+        oddsType: OddsType?
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-
+        this.oddsType = oddsType!!
         if (betList.size >= BET_INFO_MAX_COUNT){
             _showBetUpperLimit.postValue(Event(true))
             return
@@ -377,7 +385,6 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.max?.toBigDecimal(),
             playQuota?.min?.toBigDecimal()
         )
-
         var parlayBetLimit = 9999
         parlayBetLimitMap.map {
             parlayBetLimit = it.value.max.toInt()
@@ -399,6 +406,18 @@ class BetInfoRepository(val androidContext: Context) {
                 ?: parlayBetLimit
         }
 
+        //[Martin]為馬來盤＆印度計算投注上限
+        if(oddsType == OddsType.MYS){
+            if(matchOddList[0].malayOdds < 0 && oddsList.size <= 1){
+                maxBet  = (maxBet * abs(matchOddList[0].malayOdds)).toInt()
+            }
+        }else if(oddsType == OddsType.IDN){
+            if(matchOddList[0].indoOdds < 0 && oddsList.size <= 1){
+                maxBet  = (maxBet * abs(matchOddList[0].indoOdds)).toInt()
+            }
+        }
+
+
         return parlayBetLimitMap.map {
             ParlayOdd(
                 parlayType = it.key,
@@ -407,6 +426,9 @@ class BetInfoRepository(val androidContext: Context) {
                 num = it.value.num,
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
+                //Martin
+                malayOdds = if(oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].malayOdds,
+                indoOdds = if(oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].indoOdds
             )
         }
     }
@@ -573,5 +595,4 @@ class BetInfoRepository(val androidContext: Context) {
         _showOddsCloseWarn.postValue(hasPlatClose)
         _hasBetPlatClose.postValue(hasBetPlatClose)
     }
-
 }

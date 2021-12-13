@@ -325,6 +325,10 @@ class OddButtonPagerViewHolder private constructor(
                 tv_odds.text = when (oddsType) {
                     OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.odds ?: 1)
                     OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.hkOdds ?: 0)
+                    //Martin
+                    OddsType.MYS -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.malayOdds ?: 0)
+                    OddsType.IDN -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.indoOdds ?: 0)
+
                 }
 
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
@@ -398,6 +402,9 @@ class OddButtonPagerViewHolder private constructor(
                 tv_odds.text = when (oddsType) {
                     OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.odds ?: 1)
                     OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.hkOdds ?: 0)
+                    //Martin
+                    OddsType.MYS -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.malayOdds ?: 0)
+                    OddsType.IDN -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.indoOdds ?: 0)
                 }
 
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
@@ -470,6 +477,9 @@ class OddButtonPagerViewHolder private constructor(
                 tv_odds.text = when (oddsType) {
                     OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.odds ?: 1)
                     OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.hkOdds ?: 0)
+                    //Martin
+                    OddsType.MYS -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.malayOdds ?: 0)
+                    OddsType.IDN -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.indoOdds ?: 0)
                 }
 
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))

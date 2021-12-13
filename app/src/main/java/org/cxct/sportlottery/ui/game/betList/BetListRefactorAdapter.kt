@@ -31,6 +31,7 @@ import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
+import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 
@@ -75,7 +76,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         num = -1,
                         odds = 0.0,
                         hkOdds = 0.0,
-                        parlayType = ""
+                        parlayType = "",
+                        //Martin
+                        malayOdds = 0.0,
+                        indoOdds = 0.0
                     )
                 )
             } else {
@@ -117,11 +121,17 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        var currentOddsType = oddsType
+
+        if(betList?.getOrNull(position)?.matchOdd?.odds == betList?.getOrNull(position)?.matchOdd?.malayOdds){
+            currentOddsType = OddsType.EU
+        }
+
         when (holder) {
             is BetInfoItemViewHolder -> {
                 holder.bind(
                     betList?.getOrNull(position)!!,
-                    oddsType,
+                    currentOddsType,
                     itemCount,
                     onItemClickListener
                 )
@@ -131,7 +141,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
-                    oddsType,
+                    currentOddsType,
                     hasBetClosed,
                     hasParlayList,
                     moreOptionCollapse,
@@ -147,7 +157,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             is BatchParlayConnectViewHolder -> {
                 holder.bind(
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
-                    oddsType,
+                    currentOddsType,
                     hasBetClosed,
                     onItemClickListener
                 )
@@ -255,10 +265,57 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                             checkMinimumLimit(itemData, quota)
                             //比照以往計算
-                            var win = quota * getOdds(itemData.matchOdd, oddsType)
-                            if (oddsType == OddsType.EU) {
-                                win -= quota
+//                            var win = quota * getOdds(itemData.matchOdd, oddsType)
+//                            if (oddsType == OddsType.EU) {
+//                                win -= quota
+//                            }
+
+                            var realAmount = itemData.betAmount
+                            var win = 0.0
+                            when (oddsType) {
+                                OddsType.MYS -> {
+                                    if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                                        realAmount = itemData.betAmount * Math.abs(
+                                            getOdds(
+                                                itemData.matchOdd,
+                                                oddsType
+                                            )
+                                        )
+                                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                                        win = itemData.betAmount
+                                    } else {
+                                        win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                                        tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+                                    }
+
+                                }
+                                OddsType.IDN -> {
+                                    if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                                        realAmount = itemData.betAmount * Math.abs(
+                                            getOdds(
+                                                itemData.matchOdd,
+                                                oddsType
+                                            )
+                                        )
+                                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                                        win = itemData.betAmount
+                                    } else {
+                                        win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                                        tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+                                    }
+                                }
+                                OddsType.EU -> {
+                                    win = itemData.betAmount * (getOdds(itemData.matchOdd, oddsType)-1)
+                                    tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+
+                                }
+                                else -> {
+                                    win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                                    tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+                                }
                             }
+
+                            itemData.realAmount = realAmount
                             tv_win_quota.text = TextUtil.format(win)
 
                         }
@@ -287,7 +344,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
-                setupOddsContent(itemData, oddsType = oddsType, tv_odds_content)
+                var currentOddsType = oddsType
+                if(itemData.matchOdd.odds == itemData.matchOdd.malayOdds){
+                    currentOddsType = OddsType.EU
+                }
+                setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
                 tv_match.text = if (itemData.matchType == MatchType.OUTRIGHT) itemData.outrightMatchInfo?.name
                 else "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
 
@@ -319,10 +380,57 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 val quota = itemData.betAmount
                 //比照以往計算
-                var win = quota * getOdds(itemData.matchOdd, oddsType)
-                if (oddsType == OddsType.EU) {
-                    win -= quota
+//                            var win = quota * getOdds(itemData.matchOdd, oddsType)
+//                            if (oddsType == OddsType.EU) {
+//                                win -= quota
+//                            }
+
+                var realAmount = itemData.betAmount
+                var win = 0.0
+                when (oddsType) {
+                    OddsType.MYS -> {
+                        if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                            realAmount = itemData.betAmount * Math.abs(
+                                getOdds(
+                                    itemData.matchOdd,
+                                    oddsType
+                                )
+                            )
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            win = itemData.betAmount
+                        } else {
+                            win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+                        }
+
+                    }
+                    OddsType.IDN -> {
+                        if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                            realAmount = itemData.betAmount * Math.abs(
+                                getOdds(
+                                    itemData.matchOdd,
+                                    oddsType
+                                )
+                            )
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+                            win = itemData.betAmount
+                        } else {
+                            win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+                        }
+                    }
+                    OddsType.EU -> {
+                        win = itemData.betAmount * (getOdds(itemData.matchOdd, oddsType)-1)
+                        tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+
+                    }
+                    else -> {
+                        win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                        tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
+                    }
                 }
+
+                itemData.realAmount = realAmount
                 tv_win_quota.text = TextUtil.format(win)
             }
         }
@@ -695,6 +803,53 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 if (oddsType == OddsType.EU) {
                     win -= quota
                 }
+//                var realAmount = 0.00
+//                var win = 0.0
+//                when (oddsType) {
+//                    OddsType.MYS -> {
+//                        if (getOdds(data, oddsType) < 0) {
+//                            realAmount = data.betAmount * Math.abs(
+//                                getOdds(
+//                                    data,
+//                                    oddsType
+//                                )
+//                            )
+//                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+//                            win = data.betAmount
+//                        } else {
+//                            win = data.betAmount * getOdds(data, oddsType)
+//                            tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
+//                        }
+//
+//                    }
+//                    OddsType.IDN -> {
+//                        if (getOdds(data, oddsType) < 0) {
+//                            realAmount = data.betAmount * Math.abs(
+//                                getOdds(
+//                                    data,
+//                                    oddsType
+//                                )
+//                            )
+//                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
+//                            win = data.betAmount
+//                        } else {
+//                            win = data.betAmount * getOdds(data, oddsType)
+//                            tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
+//                        }
+//                    }
+//                    OddsType.EU -> {
+//                        win = data.betAmount * (getOdds(data, oddsType)-1)
+//                        tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
+//
+//                    }
+//                    else -> {
+//                        win = data.betAmount * getOdds(data, oddsType)
+//                        tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
+//                    }
+//                }
+
+                //data.realAmount = realAmount
+
                 tv_win_quota.text = TextUtil.format(win)
             }
         }

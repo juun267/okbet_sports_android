@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_outright_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -191,6 +192,11 @@ class AccountHistoryNextAdapter(
             first?.let {
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
+                binding.tvOddsType.text = when (first.oddsType) {
+                    OddsType.MYS.code -> "("+itemView.context.getString(OddsType.MYS.res)+")"
+                    OddsType.IDN.code -> "("+itemView.context.getString(OddsType.IDN.res)+")"
+                    else -> "("+itemView.context.getString(OddsType.EU.res)+")"
+                }?.let { it }
             }
 
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
@@ -225,6 +231,11 @@ class AccountHistoryNextAdapter(
             first?.let {
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
+                binding.tvOddsType.text = when (first.oddsType) {
+                    OddsType.MYS.code -> "("+itemView.context.getString(OddsType.MYS.res)+")"
+                    OddsType.IDN.code -> "("+itemView.context.getString(OddsType.IDN.res)+")"
+                    else -> "("+itemView.context.getString(OddsType.EU.res)+")"
+                }?.let { it }
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(

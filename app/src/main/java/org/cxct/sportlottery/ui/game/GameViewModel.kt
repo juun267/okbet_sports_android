@@ -528,8 +528,10 @@ class GameViewModel(
                 )
             }?.let { result ->
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
+                //Martin
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
+                        matchOdd.sortOddsMap()
                         matchOdd.oddsMap.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
@@ -565,6 +567,7 @@ class GameViewModel(
             }?.let { result ->
                 result.matchPreloadData?.datas?.forEach { data ->
                     data.matchOdds.forEach { matchOdd ->
+                        matchOdd.sortOddsMap()
                         //計算且賦值 即將開賽 的倒數時間
                         matchOdd.matchInfo?.apply {
                             remainTime = startTime?.let { TimeUtil.getRemainTime(it) }
@@ -602,6 +605,9 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
+                result.t?.odds?.forEach { oddData ->
+                    oddData.sortOddsMap()
+                }
                 _highlightMenuResult.postValue(Event(result))
             }
         }
@@ -615,6 +621,7 @@ class GameViewModel(
                 //mapping 下注單裡面項目 & 賠率按鈕 選擇狀態
                 result.rows?.forEach { row ->
                     row.leagueOdds?.matchOdds?.forEach { oddData ->
+                        oddData.sortOddsMap()
                         oddData.oddsMap.forEach { map ->
                             map.value?.forEach { odd ->
                                 odd?.isSelected =
@@ -967,6 +974,7 @@ class GameViewModel(
 
             result?.oddsListData?.leagueOdds?.forEach { leagueOdd ->
                 leagueOdd.matchOdds.forEach { matchOdd ->
+                    matchOdd.sortOddsMap()
                     matchOdd.matchInfo?.let { matchInfo ->
                         matchInfo.startDateDisplay =
                             TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
@@ -1361,6 +1369,7 @@ class GameViewModel(
             result?.success?.let { success ->
                 val list: ArrayList<OddsDetailListData> = ArrayList()
                 if (success) {
+                    result.oddsDetailData?.matchOdd?.sortOddsMap()
                     result.oddsDetailData?.matchOdd?.odds?.forEach { (key, value) ->
                         betInfoRepository.betInfoList.value?.peekContent()?.let { list ->
                             value.odds.forEach { odd ->

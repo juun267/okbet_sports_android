@@ -6,7 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_outright_record.view.*
 import kotlinx.android.synthetic.main.content_parlay_match.view.*
+import kotlinx.android.synthetic.main.content_parlay_match.view.content_odds
+import kotlinx.android.synthetic.main.content_parlay_match.view.content_odds_type
+import kotlinx.android.synthetic.main.content_parlay_match.view.content_play
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -71,6 +75,14 @@ class ContentParlayMatchAdapter : ListAdapter<MatchOdd, RecyclerView.ViewHolder>
                         it
                     )
                 }
+
+                content_odds.text  = TextUtil.formatForOdd(data.odds)
+                content_odds_type.text = when (data.oddsType) {
+                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
+                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
+                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
+                    else -> "("+context.getString(OddsType.EU.res)+")"
+                }?.let { it }
             }
         }
     }

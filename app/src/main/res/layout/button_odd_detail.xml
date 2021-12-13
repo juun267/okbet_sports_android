@@ -60,8 +60,7 @@
             android:textColor="@color/selector_button_odd_bottom_text"
             android:textSize="@dimen/textSize15sp"
             android:textStyle="bold"
-            tools:text="1.067"
-            tools:textColor="@color/colorBlack" />
+            tools:text="1.067" />
 
     </LinearLayout>
 

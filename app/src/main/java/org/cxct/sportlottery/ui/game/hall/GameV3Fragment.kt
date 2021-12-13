@@ -36,6 +36,7 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -738,7 +739,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
-
+                //[Martin]aaaaa
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.values.forEach { oddList ->
@@ -1197,6 +1198,76 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             else -> null
                         }
                     }
+                    GameType.BM.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.badminton_100
+                            game_bg_layer3.isVisible -> R.drawable.badminton_132
+                            else -> null
+                        }
+                    }
+                    GameType.TT.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.pingpong_100
+                            game_bg_layer3.isVisible -> R.drawable.pingpong_140
+                            else -> null
+                        }
+                    }
+                    GameType.BX.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.boxing_100
+                            game_bg_layer3.isVisible -> R.drawable.boxing_132
+                            else -> null
+                        }
+                    }
+                    GameType.CB.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.snooker_100
+                            game_bg_layer3.isVisible -> R.drawable.snooker_140
+                            else -> null
+                        }
+                    }
+                    GameType.CK.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.cricket_100
+                            game_bg_layer3.isVisible -> R.drawable.cricket_132
+                            else -> null
+                        }
+                    }
+                    GameType.BB.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.baseball_100
+                            game_bg_layer3.isVisible -> R.drawable.baseball_132
+                            else -> null
+                        }
+                    }
+                    GameType.RB.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.rugby_100
+                            game_bg_layer3.isVisible -> R.drawable.rugby_140
+                            else -> null
+                        }
+                    }
+                    GameType.AFT.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.amfootball_100
+                            game_bg_layer3.isVisible -> R.drawable.amfootball_132
+                            else -> null
+                        }
+                    }
+                    GameType.MR.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.rancing_100
+                            game_bg_layer3.isVisible -> R.drawable.rancing_140
+                            else -> null
+                        }
+                    }
+                    GameType.GF.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.golf_108
+                            game_bg_layer3.isVisible -> R.drawable.golf_132
+                            else -> null
+                        }
+                    }
                     else -> {
                         when {
                             game_bg_layer2.isVisible -> R.drawable.soccer108
@@ -1339,6 +1410,10 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         playCateCode: String,
         playCateName: String
     ) {
+        //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
+        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
+            BetInfoCarDialog.launch()
+        }
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 

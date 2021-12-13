@@ -24,6 +24,10 @@ data class MatchOdd(
     var odds: Double,
     @Json(name = "hkOdds")
     var hkOdds: Double,
+    @Json(name = "malayOdds")
+    var malayOdds: Double,
+    @Json(name = "indoOdds")
+    var indoOdds: Double,
     @Json(name = "oddsId")
     var oddsId: String,
     @Json(name = "playCateId")
