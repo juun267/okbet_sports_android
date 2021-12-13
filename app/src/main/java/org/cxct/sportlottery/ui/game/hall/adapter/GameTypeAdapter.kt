@@ -76,9 +76,8 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             setupSportTypeImage(item)
 
             itemView.sport_type_text.text = item.name
-            if (item.isSelected) itemView.sport_count_text.text = "$playCateNum"
-
             itemView.sport_count_text.text = item.num.toString()
+            if (item.isSelected) itemView.sport_count_text.text = "$playCateNum"
 
             itemView.isSelected = item.isSelected
 
