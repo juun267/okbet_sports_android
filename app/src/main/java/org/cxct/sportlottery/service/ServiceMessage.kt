@@ -110,4 +110,9 @@ object ServiceMessage {
         return adapter.fromJson(messageStr)
     }
 
+    fun getUserInfoChange(messageStr: String): UserLevelConfigListEvent? {
+        val adapter = moshi.adapter(UserLevelConfigListEvent::class.java)
+        return adapter.fromJson(messageStr)
+    }
+
 }
