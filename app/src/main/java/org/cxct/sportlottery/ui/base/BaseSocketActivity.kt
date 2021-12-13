@@ -109,7 +109,9 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         })
 
         receiver.userInfoChange.observe(this, {
-            viewModel.updateDiscount(null)
+            if(viewModel.isLogin.value == true){
+                viewModel.updateDiscount(null)
+            }
         })
 
         receiver.userMaxBetMoneyChange.observe(this, {
