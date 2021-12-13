@@ -75,10 +75,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
 //            if (!hasFocus)
 //                checkInputData()
 //        }
-        binding.eetAccount.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus)
-                checkInputData()
-        }
+//        binding.eetAccount.setOnFocusChangeListener { v, hasFocus ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
     }
 
     private fun setupPassword() {
@@ -95,10 +95,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         }
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
         binding.etPassword.endIconImageButton.visibility = View.GONE
-        binding.etPassword.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus)
-                checkInputData()
-        }
+//        binding.etPassword.setOnFocusChangeListener { v, hasFocus ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
         binding.etPassword.setSimpleTextChangeWatcher(object : SimpleTextChangedWatcher {
             override fun onTextChanged(theNewText: String?, isError: Boolean) {
                 if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
@@ -127,10 +127,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             binding.blockValidCode.visibility = View.GONE
         }
         binding.ivReturn.setOnClickListener { updateValidCode() }
-        binding.eetVerificationCode.setOnFocusChangeListener { v, hasFocus ->
-            if (!hasFocus)
-                checkInputData()
-        }
+//        binding.eetVerificationCode.setOnFocusChangeListener { v, hasFocus ->
+//            if (!hasFocus)
+//                checkInputData()
+//        }
 //        binding.ivReturn.setVerificationCodeBtnOnClickListener(View.OnClickListener {
 //            updateValidCode()
 //        })
