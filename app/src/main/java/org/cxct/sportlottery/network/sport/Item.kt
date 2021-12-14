@@ -18,4 +18,5 @@ data class Item(
     val sortNum: Int
 ) {
     var isSelected: Boolean = false
+    var playCateNum: Int? = null
 }
