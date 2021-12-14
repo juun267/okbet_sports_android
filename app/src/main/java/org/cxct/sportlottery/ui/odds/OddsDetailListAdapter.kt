@@ -266,9 +266,11 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             GameType.BB -> {
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.HDP.ordinal, PlayCate.HDP_SEG1.ordinal, PlayCate.OU.ordinal, PlayCate.OU_1ST.ordinal,
-                    PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal -> LayoutType.SINGLE_2_ITEM.layout
+                    PlayCate.EXTRA_TIME.ordinal, PlayCate.SINGLE_1ST.ordinal, PlayCate.TG_OU_H.ordinal, PlayCate.TG_OU_C.ordinal
+                    -> LayoutType.SINGLE_2_ITEM.layout
 
-                    PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal -> LayoutType.SINGLE.layout
+                    PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_1ST.ordinal
+                    -> LayoutType.SINGLE.layout
 
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
@@ -276,6 +278,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     else -> LayoutType.ONE_LIST.layout
                 }
             }
+
             GameType.CB -> {
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
@@ -320,6 +323,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     else -> LayoutType.ONE_LIST.layout
                 }
             }
+
             GameType.TT -> {
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.SINGLE_SEG1.ordinal, PlayCate.SINGLE_SEG2.ordinal, PlayCate.SINGLE_SEG3.ordinal, PlayCate.SINGLE_SEG4.ordinal,
