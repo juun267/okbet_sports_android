@@ -46,13 +46,16 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                updateValidCode()
             }
             binding.tvDuty -> {
-                JumpUtil.toExternalWeb(this, Constants.getDutyRuleUrl(this))
+                //暫時關閉
+                //JumpUtil.toExternalWeb(this, Constants.getDutyRuleUrl(this))
             }
             binding.tvPrivacy -> {
-                JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
+                //暫時關閉
+                //JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
             }
             binding.tvAgreement -> {
-                JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
+                //暫時關閉
+                //JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
             }
 
         }
