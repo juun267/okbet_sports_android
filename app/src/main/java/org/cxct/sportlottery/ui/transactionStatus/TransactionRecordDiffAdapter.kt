@@ -42,7 +42,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     fun setupBetList(betListData: BetListData) {
         isLastPage = betListData.isLastPage
         oddsType = betListData.oddsType
-        totalAmount = betListData.totalMoney.toDouble()
+        totalAmount = betListData.totalMoney
         val itemList = when {
             betListData.row.isEmpty() -> listOf(DataItem.NoData)
             else -> betListData.row.map { DataItem.Item(it) } + listOf(DataItem.Total(totalAmount))
@@ -109,16 +109,6 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.playName
-//                content_odds.text = when (matchOdds.oddsType) {
-//                    OddsType.HK.code -> matchOdds.hkOdds
-//                    OddsType.MYS.code -> matchOdds.malayOdds
-//                    OddsType.IDN.code -> matchOdds.indoOdds
-//                    else -> matchOdds.odds
-//                }?.let {
-//                    TextUtil.formatForOdd(
-//                        it
-//                    )
-//                }
                 content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
                 content_odds_type.text = when (matchOdds.oddsType) {
                     OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
@@ -130,6 +120,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
+                tv_score.text = "(${matchOdds.rtScore})"
             }
         }
 
@@ -155,14 +146,6 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
                 spread_name.text = matchOdds.spread
-//                content_odds.text = when (oddsType) {
-//                    OddsType.HK -> matchOdds.hkOdds
-//                    else -> matchOdds.odds
-//                }?.let {
-//                    TextUtil.formatForOdd(
-//                        it
-//                    )
-//                }
                 content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
                 content_odds_type.text = when (matchOdds.oddsType) {
                     OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
