@@ -22,11 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.exoplayer2.util.Util
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_game_v3.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_odds_detail_toolbar.*
-import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentOddsDetailLiveBinding
 import org.cxct.sportlottery.network.common.*
@@ -137,7 +134,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         super.onStart()
 
         if (Util.SDK_INT >= 24) {
-            live_view_tool_bar.startPlayer()
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
         }
     }
 
@@ -147,7 +144,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         startTimer()
 
         if ((Util.SDK_INT < 24) || live_view_tool_bar.getExoPlayer() == null) {
-            live_view_tool_bar.startPlayer()
+            live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
         }
     }
 
@@ -370,7 +367,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.matchLiveInfo.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-                live_view_tool_bar.setupLiveUrl(liveStreamInfo.streamUrl)
+                live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, liveStreamInfo.streamUrl)
             }
         }
     }
@@ -459,12 +456,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             }
         }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelEventAll()
                 subscribeChannelEvent(matchId)
             }
-        })
+        }
     }
 
     private fun MatchOddsChangeEvent.updateOddsSelectedState(): MatchOddsChangeEvent {
@@ -502,13 +499,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     private fun setupLiveView(liveVideo: Int?) {
         live_view_tool_bar.setupToolBarListener(liveToolBarListener)
         live_view_tool_bar.setupPlayerControl(liveVideo.toString() == FLAG_LIVE)
-        if (liveVideo.toString() != FLAG_LIVE) {
-
-        }
-
-        matchOdd?.let {
-            live_view_tool_bar.matchOdd = it
-        }
+        live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, null)
     }
 
     private fun getData() {

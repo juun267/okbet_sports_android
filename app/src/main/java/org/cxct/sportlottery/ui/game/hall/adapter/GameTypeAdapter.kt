@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_sport_type.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
 import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
@@ -26,10 +26,20 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    var dataThirdGame = listOf<GameCateData>()
+    private var dataThirdGame = listOf<GameCateData>()
         set(value) {
             field = value
             notifyDataSetChanged()
+        }
+
+    var updatePlayCateNum: Pair<String?, Int?>? = null //<gameType, playCateNum>
+        set(value) {
+            field = value
+            val position = dataSport.find {
+                it.code == value?.first
+            }?.sortNum
+
+            position?.let { notifyItemChanged(it) }
         }
 
     var gameTypeListener: GameTypeListener? = null
@@ -51,7 +61,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ViewHolderSport -> {
                 val item = dataSport[position]
-                holder.bind(item, gameTypeListener)
+                holder.bind(updatePlayCateNum, item, gameTypeListener)
             }
             is ViewHolderThirdGame -> {
                 val item = dataThirdGame[position - dataSport.size]
@@ -64,13 +74,15 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ViewHolderSport private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(item: Item, gameTypeListener: GameTypeListener?) {
+        fun bind(playCateNum: Pair<String?, Int?>?, item: Item, gameTypeListener: GameTypeListener?) {
 
             setupSportTypeImage(item)
 
             itemView.sport_type_text.text = item.name
-
             itemView.sport_count_text.text = item.num.toString()
+            playCateNum?.second?.let {
+                if (item.isSelected) itemView.sport_count_text.text = "${playCateNum.second}"
+            }
 
             itemView.isSelected = item.isSelected
 
