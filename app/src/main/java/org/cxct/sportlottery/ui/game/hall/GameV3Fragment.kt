@@ -950,6 +950,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
+                gameTypeAdapter.updatePlayCateNum = Pair(oddsChangeEvent.gameType, oddsChangeEvent.playCateNum)
 
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
