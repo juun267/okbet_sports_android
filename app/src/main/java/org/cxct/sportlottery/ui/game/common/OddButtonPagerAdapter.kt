@@ -42,6 +42,21 @@ class OddButtonPagerAdapter(
                 }.map {
                     it.map { playCate ->
                         playCate to field[playCate]
+            val gameList =
+                field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
+                    .plus(field.filterValues { !it.isNullOrEmpty() }
+                        .filter { it.value?.get(0) == null }).map { it.key }.run {
+                        var gameListFilter = mutableListOf<String>()
+                        if (this.size > 16) {
+                            gameListFilter = this.take(16) as MutableList<String> //只取前面16比資料
+                        } else {
+                            val count = 16 - this.size
+                            gameListFilter = this.take(this.size + 1) as MutableList<String>
+                            for (i in 1..count) {
+                                gameListFilter.add("EmptyData${i}")
+                            }
+                        }
+                        gameListFilter
                     }
                 }
         }
