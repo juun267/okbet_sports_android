@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="end"
     android:gravity="end"
-    android:textColor="@color/colorGrayLight"
+    android:textColor="@color/colorGray"
     android:textSize="@dimen/textSize12sp"
     tools:ignore="SpUsage"
     tools:text="完賽: 1-3" />

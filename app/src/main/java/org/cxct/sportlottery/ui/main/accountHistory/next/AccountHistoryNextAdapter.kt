@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_outright_record.view.*
 import kotlinx.android.synthetic.main.view_account_history_next_title_bar.view.*
 import kotlinx.android.synthetic.main.view_back_to_top.view.*
@@ -65,7 +66,9 @@ class AccountHistoryNextAdapter(
         adapterScope.launch {
             val items = listOf(DataItem.TitleBar) + when {
                 list.isNullOrEmpty() -> listOf(DataItem.NoData)
-                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(DataItem.BackToTop)
+                isLastPage -> list.map { DataItem.Item(it) } + listOf(DataItem.Footer) + listOf(
+                    DataItem.BackToTop
+                )
                 else -> list.map { DataItem.Item(it) }
             }
 
@@ -151,19 +154,22 @@ class AccountHistoryNextAdapter(
         private val parlayAdapter by lazy { ParlayItemAdapter() }
 
         fun bind(row: Row, oddsType: OddsType) {
-            binding.matchOdd = row.matchOdds?.firstOrNull()
             binding.row = row
-            binding.tvParlayType.text = row.parlayType?.replace("C", "串")
 
-            binding.rvParlay.apply {
-                adapter = parlayAdapter
-                layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
-                parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
-                parlayAdapter.oddsType = oddsType
-                parlayAdapter.gameType = row.gameType ?: ""
+            binding.apply {
+                matchOdd = row.matchOdds?.firstOrNull()
+                tvParlayType.text = row.parlayType?.replace("C", "串")
+
+                rvParlay.apply {
+                    adapter = parlayAdapter
+                    layoutManager =
+                        LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
+                    parlayAdapter.addFooterAndSubmitList(row.matchOdds, false) //TODO Cheryl: 是否需要換頁
+                    parlayAdapter.oddsType = oddsType
+                    parlayAdapter.gameType = row.gameType ?: ""
+                }
+                executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
             }
-
-            binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 
         companion object {
@@ -193,9 +199,9 @@ class AccountHistoryNextAdapter(
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
                 binding.tvOddsType.text = when (first.oddsType) {
-                    OddsType.MYS.code -> "("+itemView.context.getString(OddsType.MYS.res)+")"
-                    OddsType.IDN.code -> "("+itemView.context.getString(OddsType.IDN.res)+")"
-                    else -> "("+itemView.context.getString(OddsType.EU.res)+")"
+                    OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
+                    OddsType.IDN.code -> "(" + itemView.context.getString(OddsType.IDN.res) + ")"
+                    else -> "(" + itemView.context.getString(OddsType.EU.res) + ")"
                 }?.let { it }
             }
 
@@ -232,9 +238,9 @@ class AccountHistoryNextAdapter(
                 val odds = getOdds(first, oddsType)
                 binding.tvOdd.setOddFormat(odds)
                 binding.tvOddsType.text = when (first.oddsType) {
-                    OddsType.MYS.code -> "("+itemView.context.getString(OddsType.MYS.res)+")"
-                    OddsType.IDN.code -> "("+itemView.context.getString(OddsType.IDN.res)+")"
-                    else -> "("+itemView.context.getString(OddsType.EU.res)+")"
+                    OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
+                    OddsType.IDN.code -> "(" + itemView.context.getString(OddsType.IDN.res) + ")"
+                    else -> "(" + itemView.context.getString(OddsType.EU.res) + ")"
                 }?.let { it }
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
@@ -249,8 +255,15 @@ class AccountHistoryNextAdapter(
                     )
                 }
 
+                if (first.rtScore?.isNotEmpty() == true)
+                    binding.tvScore.text = String.format(
+                        binding.tvScore.context.getString(R.string.brackets),
+                        first.rtScore
+                    )
+
                 binding.listScore.apply {
-                    layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
+                    layoutManager =
+                        LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
                     adapter = roundAdapter
                 }
                 roundAdapter.submitList(scoreList)
@@ -292,17 +305,23 @@ class AccountHistoryNextAdapter(
     class TitleBarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         private val sportStatusList by lazy {
-                listOf(
-                    StatusSheetData("", itemView.context.getString(R.string.all_sport)),
-                    StatusSheetData(GameType.FT.key, itemView.context.getString(GameType.FT.string)),
-                    StatusSheetData(GameType.BK.key, itemView.context.getString(GameType.BK.string)),
-                    StatusSheetData(GameType.TN.key, itemView.context.getString(GameType.TN.string)),
-                    StatusSheetData(GameType.VB.key, itemView.context.getString(GameType.VB.string))
-                )
+            listOf(
+                StatusSheetData("", itemView.context.getString(R.string.all_sport)),
+                StatusSheetData(GameType.FT.key, itemView.context.getString(GameType.FT.string)),
+                StatusSheetData(GameType.BK.key, itemView.context.getString(GameType.BK.string)),
+                StatusSheetData(GameType.TN.key, itemView.context.getString(GameType.TN.string)),
+                StatusSheetData(GameType.VB.key, itemView.context.getString(GameType.VB.string))
+            )
         }
         private val dateString by lazy {
             { minusDate: Int ->
-                "${TimeUtil.getMinusDate(minusDate)} ${itemView.context.getString(TimeUtil.getMinusDayOfWeek(minusDate))}"
+                "${TimeUtil.getMinusDate(minusDate)} ${
+                    itemView.context.getString(
+                        TimeUtil.getMinusDayOfWeek(
+                            minusDate
+                        )
+                    )
+                }"
             }
         }
 

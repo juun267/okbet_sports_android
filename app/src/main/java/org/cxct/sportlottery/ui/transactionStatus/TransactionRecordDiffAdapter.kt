@@ -120,7 +120,8 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
-                tv_score.text = "(${matchOdds.rtScore})"
+                if(matchOdds.rtScore?.isNotEmpty() == true)
+                    tv_score.text = String.format(context.getString(R.string.brackets), matchOdds.rtScore)
             }
         }
 
