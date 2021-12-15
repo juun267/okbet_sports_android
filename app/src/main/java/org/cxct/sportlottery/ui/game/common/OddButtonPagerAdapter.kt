@@ -272,7 +272,7 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-        if (matchInfo.status == null || matchInfo.status == 2) {
+        if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString().contains("EmptyData")) {
             oddBtnType.text = "-"
             oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
             oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
