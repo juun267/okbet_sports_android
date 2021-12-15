@@ -29,7 +29,7 @@ class OddButtonPagerAdapter(
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
+            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate().sortMarketSort()
 
             data = field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
                 .plus(field.filterValues { !it.isNullOrEmpty() }
@@ -194,6 +194,10 @@ class OddButtonPagerAdapter(
         }
 
         return sortMap
+    }
+
+    private fun Map<String, List<Odd?>?>.sortMarketSort(): Map<String, List<Odd?>?> {
+        return this.toList().sortedBy { it.second?.firstOrNull()?.marketSort }.toMap()
     }
 }
 
