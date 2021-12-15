@@ -53,12 +53,9 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/privacy-policy?platform="+context.getString(
-                    R.string.app_name)
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/privacy-policy?platform="+context.getString(
-                    R.string.app_name)
-                else -> "https://sports.cxsport.net/sports-rule/#/us/privacy-policy?platform="+context.getString(
-                    R.string.app_name)
+                LanguageManager.Language.ZH -> "https://onbet-cn.cxsport.net/sports-rule/#/"
+                LanguageManager.Language.VI -> "https://onbet-vn.cxsport.net/sports-rule/#/"
+                else -> "https://okbet-ph.cxsport.net/sports-rule/#/"
             }
 
         } catch (e: UnsupportedEncodingException) {
