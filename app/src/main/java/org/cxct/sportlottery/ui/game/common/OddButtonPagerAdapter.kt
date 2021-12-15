@@ -31,17 +31,6 @@ class OddButtonPagerAdapter(
         set(value) {
             field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate().sortMarketSort()
 
-            data = field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
-                .plus(field.filterValues { !it.isNullOrEmpty() }
-                    .filter { it.value?.get(0) == null })
-                .plus(field.filterValues { it.isNullOrEmpty() })
-                .keys.withIndex().groupBy {
-                    it.index / 2
-                }.map {
-                    it.value.map { it.value }
-                }.map {
-                    it.map { playCate ->
-                        playCate to field[playCate]
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
                     .plus(field.filterValues { !it.isNullOrEmpty() }
@@ -58,7 +47,19 @@ class OddButtonPagerAdapter(
                         }
                         gameListFilter
                     }
+
+            data = gameList.withIndex().groupBy {
+                it.index / 2
+            }.map {
+                it.value.map { it.value }
+            }.map {
+                it.map { playCate ->
+                    if (playCate.contains("EmptyData"))
+                        playCate to listOf<Odd?>(null, null)
+                    else
+                        playCate to field[playCate]
                 }
+            }
         }
 
     var oddsType: OddsType = OddsType.EU
