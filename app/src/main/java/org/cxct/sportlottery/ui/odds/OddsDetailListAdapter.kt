@@ -294,7 +294,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
             GameType.IH -> {
                 when (viewType) {
-                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal
+                    PlayCate.HDP.ordinal, PlayCate.OU.ordinal, PlayCate.OE.ordinal, PlayCate.SINGLE_ND.ordinal
                     -> LayoutType.SINGLE_2_ITEM.layout
 
                     PlayCate.SINGLE.ordinal
