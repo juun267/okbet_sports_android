@@ -355,7 +355,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 when (viewType) {
                     PlayCate.SINGLE.ordinal, PlayCate.TO_WIN_THE_TOSS.ordinal, PlayCate.TOP_TEAM_BATSMAN_H.ordinal, PlayCate.TOP_TEAM_BATSMAN_C.ordinal, PlayCate.TOP_TEAM_BOWLER_H.ordinal, PlayCate.TOP_TEAM_BOWLER_C.ordinal, PlayCate.MOST_MATCH_FOURS.ordinal, PlayCate.MOST_MATCH_SIXES.ordinal,
                     PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
-                    PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal
+                    PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal,
+                    PlayCate.SINGLE_ND.ordinal, PlayCate.TWTT.ordinal, PlayCate.T_BATSMAN_H.ordinal, PlayCate.T_BATSMAN_C.ordinal,
+                    PlayCate.T_BOWLER_H.ordinal, PlayCate.T_BOWLER_C.ordinal, PlayCate.RAFO_1ST_W_H.ordinal, PlayCate.RAFO_1ST_W_C.ordinal, PlayCate.W_METHOD_1ST.ordinal,
+                    PlayCate.W_METHOD_H_1ST.ordinal, PlayCate.W_METHOD_C_1ST.ordinal, PlayCate.O_R_2_WAY_H_1ST.ordinal, PlayCate.O_R_2_WAY_C_1ST.ordinal,
+                    PlayCate.NMO_1ST_H.ordinal, PlayCate.NMO_1ST_C.ordinal, PlayCate.NMO_2ND_H.ordinal, PlayCate.NMO_2ND_C.ordinal, PlayCate.MODW_1ST_H.ordinal,
+                    PlayCate.MODW_1ST_C.ordinal, PlayCate.MODW_2ND_H.ordinal,
+                    PlayCate.MODW_2ND_C.ordinal, PlayCate.S_RAFO_1ST_W_H.ordinal, PlayCate.S_RAFO_1ST_W_C.ordinal,
+                    PlayCate.S_RAFO_2ND_W_H.ordinal, PlayCate.S_RAFO_2ND_W_C.ordinal,
+                    PlayCate.S_MR_1ST_H.ordinal, PlayCate.S_MR_1ST_C.ordinal, PlayCate.S_MR_2ND_H.ordinal, PlayCate.S_MR_2ND_C.ordinal, PlayCate.NMO_H.ordinal, PlayCate.NMO_C.ordinal,
+                    PlayCate.S_MR_H.ordinal, PlayCate.S_MR_C.ordinal, PlayCate.MOD_W_H.ordinal, PlayCate.MOD_W_C.ordinal, PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
                     PlayCate.EPS.ordinal
