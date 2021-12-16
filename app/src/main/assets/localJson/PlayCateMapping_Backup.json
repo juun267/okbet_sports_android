@@ -304,30 +304,6 @@
     "playCateNum": "2"
   },
   {
-    "gameType": "FT",
-    "playCateCode": "1X2-1ST-OT",
-    "playCateName": "独赢-加时赛上半场",
-    "playCateName-english": "1 X 2-1st Half(extra time)",
-    "playCateName-vietnamese": "1X2-Hiệp 1(extra time)",
-    "playCateNum": "3"
-  },
-  {
-    "gameType": "FT",
-    "playCateCode": "HDP-1ST-OT",
-    "playCateName": "让球-加时赛上半场",
-    "playCateName-english": "Handicap-1st Half(extra time)",
-    "playCateName-vietnamese": "Cược Chấp-Hiệp 1(extra time)",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "FT",
-    "playCateCode": "O/U-1ST-OT",
-    "playCateName": "进球: 大 / 小-加时赛上半场",
-    "playCateName-english": "Goals O/U-1st Half(extra time)",
-    "playCateName-vietnamese": "Bàn Thắng Trên / Dưới-Hiệp 1(extra time)",
-    "playCateNum": "2"
-  },
-  {
     "gameType": "BK",
     "playCateCode": "HDP-INCL-OT",
     "playCateName": "让球",
@@ -968,54 +944,6 @@
     "playCateNum": "1"
   },
   {
-    "gameType": "BM",
-    "playCateCode": "HDP-SEG1",
-    "playCateName": "让球\n第一盘",
-    "playCateName-english": "Handicap\n1st Qtr",
-    "playCateName-vietnamese": "Cược Chấp\nĐặt 1",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "BM",
-    "playCateCode": "HDP-SEG2",
-    "playCateName": "让球\n第二盘",
-    "playCateName-english": "Handicap\n2nd Qtr",
-    "playCateName-vietnamese": "Cược Chấp\nĐặt 2",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "BM",
-    "playCateCode": "HDP-SEG3",
-    "playCateName": "让球\n第三盘",
-    "playCateName-english": "Handicap\n3rd Qtr",
-    "playCateName-vietnamese": "Cược Chấp\nĐặt 3",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "BM",
-    "playCateCode": "O/U-SEG1",
-    "playCateName": "球队积分\n第一盘",
-    "playCateName-english": "Total Points\n1st Qtr",
-    "playCateName-vietnamese": "Tổng Số Điểm\nĐặt 1",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "BM",
-    "playCateCode": "O/U-SEG2",
-    "playCateName": "球队积分\n第二盘",
-    "playCateName-english": "Total Points\n2nd Qtr",
-    "playCateName-vietnamese": "Tổng Số Điểm\nĐặt 2",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "BM",
-    "playCateCode": "O/U-SEG3",
-    "playCateName": "球队积分\n第三盘",
-    "playCateName-english": "Total Points\n3rd Qtr",
-    "playCateName-vietnamese": "Tổng Số Điểm\nĐặt 3",
-    "playCateNum": "2"
-  },
-  {
     "gameType": "TT",
     "playCateCode": "1X2",
     "playCateName": "独赢盘",
@@ -1045,38 +973,6 @@
     "playCateName": "球队积分",
     "playCateName-english": "Total Points",
     "playCateName-vietnamese": "Tổng Số Điểm",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "TT",
-    "playCateCode": "HDP-SEG1",
-    "playCateName": "让球\n第一局",
-    "playCateName-english": "Handicap\n1st Qtr",
-    "playCateName-vietnamese": "Cược Chấp\nĐặt 1",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "TT",
-    "playCateCode": "HDP-SEG2",
-    "playCateName": "让球\n第二局",
-    "playCateName-english": "Handicap\n2nd Qtr",
-    "playCateName-vietnamese": "Cược Chấp\nĐặt 2",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "TT",
-    "playCateCode": "HDP-SEG3",
-    "playCateName": "让球\n第三局",
-    "playCateName-english": "Handicap\n3rd Qtr",
-    "playCateName-vietnamese": "Cược Chấp\nĐặt 3",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "TT",
-    "playCateCode": "HDP-SEG4",
-    "playCateName": "让球\n第四局",
-    "playCateName-english": "Handicap\n4th Qtr",
-    "playCateName-vietnamese": "Cược Chấp\nĐặt 4",
     "playCateNum": "2"
   },
   {
@@ -1229,22 +1125,6 @@
     "playCateName": "最多得分的球队",
     "playCateName-english": "Highest Opening Partnership",
     "playCateName-vietnamese": "Highest Opening Partnership",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "CK",
-    "playCateCode": "1X2",
-    "playCateName": "独赢",
-    "playCateName-english": "1 X 2",
-    "playCateName-vietnamese": "1 X 2",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "CK",
-    "playCateCode": "1X2-ND",
-    "playCateName": "独赢盘",
-    "playCateName-english": "Winner",
-    "playCateName-vietnamese": "Đội Vô Địch",
     "playCateNum": "2"
   },
   {
