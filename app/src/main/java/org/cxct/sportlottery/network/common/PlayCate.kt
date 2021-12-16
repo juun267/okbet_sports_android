@@ -648,6 +648,46 @@ enum class PlayCate(val value: String) {
                 WICKET_METHOD_C_1ST.value -> WICKET_METHOD_C_1ST
                 OVER_RUNS_2_WAY_H_1ST.value -> OVER_RUNS_2_WAY_H_1ST
                 OVER_RUNS_2_WAY_C_1ST.value -> OVER_RUNS_2_WAY_C_1ST
+                TWTT.value -> TWTT
+                T_BATSMAN_H.value -> T_BATSMAN_H
+                T_BATSMAN_C.value -> T_BATSMAN_C
+                T_BOWLER_H.value -> T_BOWLER_H
+                T_BOWLER_C.value -> T_BOWLER_C
+                MOST_FOUR.value -> MOST_FOUR
+                MOST_SIX.value -> MOST_SIX
+                HOP.value -> HOP
+                RAFO_1ST_W_H.value -> RAFO_1ST_W_H
+                RAFO_1ST_W_C.value -> RAFO_1ST_W_C
+                W_METHOD_1ST.value -> W_METHOD_1ST
+                W_METHOD_H_1ST.value -> W_METHOD_H_1ST
+                W_METHOD_C_1ST.value -> W_METHOD_C_1ST
+                O_R_2_WAY_H_1ST.value -> O_R_2_WAY_H_1ST
+                O_R_2_WAY_C_1ST.value -> O_R_2_WAY_C_1ST
+                NMO_1ST_H.value -> NMO_1ST_H
+                NMO_1ST_C.value -> NMO_1ST_C
+                NMO_2ND_H.value -> NMO_2ND_H
+                NMO_2ND_C.value -> NMO_2ND_C
+                FIL.value -> FIL
+                MODW_1ST_H.value -> MODW_1ST_H
+                MODW_1ST_C.value -> MODW_1ST_C
+                MODW_2ND_H.value -> MODW_2ND_H
+                MODW_2ND_C.value -> MODW_2ND_C
+                S_RAFO_1ST_W_H.value -> S_RAFO_1ST_W_H
+                S_RAFO_1ST_W_C.value -> S_RAFO_1ST_W_C
+                S_RAFO_2ND_W_H.value -> S_RAFO_2ND_W_H
+                S_RAFO_2ND_W_C.value -> S_RAFO_2ND_W_C
+                S_MR_1ST_H.value -> S_MR_1ST_H
+                S_MR_1ST_C.value -> S_MR_1ST_C
+                S_MR_2ND_H.value -> S_MR_2ND_H
+                S_MR_2ND_C.value -> S_MR_2ND_C
+                NMO_H.value -> NMO_H
+                NMO_C.value -> NMO_C
+                S_MR_H.value -> S_MR_H
+                S_MR_C.value -> S_MR_C
+                MOD_W_H.value -> MOD_W_H
+                MOD_W_C.value -> MOD_W_C
+                OU_2_WAY_1ST_C.value -> OU_2_WAY_1ST_C
+                OU_2_WAY_1ST_H.value -> OU_2_WAY_1ST_H
                 else -> UNCHECK
             }
         }
