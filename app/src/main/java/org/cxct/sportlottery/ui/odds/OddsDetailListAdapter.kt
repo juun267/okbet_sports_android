@@ -367,6 +367,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                     PlayCate.S_MR_H.ordinal, PlayCate.S_MR_C.ordinal, PlayCate.MOD_W_H.ordinal, PlayCate.MOD_W_C.ordinal, PlayCate.OU_2_WAY_1ST_C.ordinal, PlayCate.OU_2_WAY_1ST_H.ordinal,
                     -> LayoutType.SINGLE_2_ITEM.layout
 
+                    PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
+                    PlayCate.HOP.ordinal, PlayCate.FIL.ordinal
+                    -> LayoutType.SINGLE.layout
+
                     PlayCate.EPS.ordinal
                     -> LayoutType.EPS.layout
 
@@ -826,6 +830,10 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                         PlayCate.HIGHEST_OPENING_PARTNERSHIP.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_H.ordinal, PlayCate.RUN_AT_FALL_OF_1ST_WICKET_C.ordinal, PlayCate.WICKET_METHOD_1ST.ordinal, PlayCate.WICKET_METHOD_H_1ST.ordinal, PlayCate.WICKET_METHOD_C_1ST.ordinal,
                         PlayCate.OVER_RUNS_2_WAY_H_1ST.ordinal, PlayCate.OVER_RUNS_2_WAY_C_1ST.ordinal
                         -> forSingle(oddsDetail, 2)
+
+                        PlayCate.MOST_FOUR.ordinal, PlayCate.MOST_SIX.ordinal,
+                        PlayCate.HOP.ordinal, PlayCate.FIL.ordinal
+                        -> forSingle(oddsDetail, 3)
 
                         PlayCate.EPS.ordinal
                         -> forEPS(oddsDetail)
