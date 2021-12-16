@@ -286,7 +286,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun openWebView() {
         expand_layout.expand()
-        iv_play.setImageResource(R.drawable.ic_live_player)
+        setLivePlayImg()
         setAnimationImgIcon(true)
         player_view.isVisible = false
         web_view.isVisible = true
@@ -307,6 +307,26 @@ class LiveViewToolbar @JvmOverloads constructor(
             }
         }
         web_view.loadUrl(defaultAnimationUrl)
+    }
+
+    private fun setLivePlayImg() {
+        when (gameType) {
+            GameType.FT -> iv_animation.setImageResource(R.drawable.ic_live_football_small)
+            GameType.BK -> iv_animation.setImageResource(R.drawable.ic_live_basketball_small)
+            GameType.TN -> iv_animation.setImageResource(R.drawable.ic_live_tennis_small)
+            GameType.VB -> iv_animation.setImageResource(R.drawable.ic_live_volleyball_small)
+            GameType.BM -> iv_animation.setImageResource(R.drawable.ic_live_badminton_small)
+            GameType.TT -> iv_animation.setImageResource(R.drawable.ic_live_pingpong_small)
+            GameType.IH -> iv_animation.setImageResource(R.drawable.ic_live_icehockey_small)
+            GameType.BX -> iv_animation.setImageResource(R.drawable.ic_live_boxing_small)
+            GameType.CB -> iv_animation.setImageResource(R.drawable.ic_live_billiards_small)
+            GameType.CK -> iv_animation.setImageResource(R.drawable.ic_live_cricket_small)
+            GameType.BB -> iv_animation.setImageResource(R.drawable.ic_live_baseball_small)
+            GameType.RB -> iv_animation.setImageResource(R.drawable.ic_live_rugby_small)
+            GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_live_soccer_small)
+            GameType.MR -> iv_animation.setImageResource(R.drawable.ic_live_racing_small)
+            GameType.GF -> iv_animation.setImageResource(R.drawable.ic_live_golf_small)
+        }
     }
 
     private fun setAnimationImgIcon(isOn: Boolean) {
