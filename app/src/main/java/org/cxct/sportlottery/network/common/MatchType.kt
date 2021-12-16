@@ -11,5 +11,6 @@ enum class MatchType(val postValue: String, @StringRes val resId: Int) {
     OUTRIGHT("OUTRIGHT", R.string.home_tab_outright),
     AT_START("ATSTART", R.string.home_tab_at_start),
     EPS("EPS", R.string.home_tab_eps),
-    MY_EVENT("MYEVENT", R.string.my_favorite)
+    MY_EVENT("MYEVENT", R.string.my_favorite),
+    OTHER("OTHER", R.string.my_favorite)
 }

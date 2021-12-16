@@ -195,11 +195,20 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
+                            <org.cxct.sportlottery.ui.game.home.HomeGameCard
+                                android:id="@+id/card_game_special"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="@{gameViewModel.sportCouponCount==0 ? View.INVISIBLE : View.VISIBLE}"
+                                app:cvCount="@{gameViewModel.sportCouponCount.toString()}"
+                                app:cvIcon="@drawable/ic_game_champ"
+                                app:cvTitle="@{gameViewModel.sportCouponMenuResult.couponName.toString()}" />
 
                             <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_game_soon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="6dp"
                                 app:cvCount="@{gameViewModel.asStartCount.toString()}"
                                 app:cvIcon="@drawable/ic_game_soon"
                                 app:cvTitle="@string/game_soon" />

@@ -11,7 +11,7 @@ data class SportCouponMenuResult(
     override val code: Int,
     @Json(name = "msg")
     override val msg: String,
-    @Json(name = "sportCouponMenuData")
+    @Json(name = "rows")
     val sportCouponMenuData: List<SportCouponMenuData>,
     @Json(name = "success")
     override val success: Boolean,

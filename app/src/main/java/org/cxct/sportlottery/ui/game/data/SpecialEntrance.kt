@@ -7,4 +7,5 @@ import org.cxct.sportlottery.network.common.MatchType
 data class SpecialEntrance(
     val matchType: MatchType,
     val gameType: GameType? = null,
+    val couponCode:String? = null
 )

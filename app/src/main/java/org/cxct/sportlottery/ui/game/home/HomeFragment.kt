@@ -392,6 +392,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             viewModel.navSpecialEntrance(MatchType.AT_START, null)
         }
 
+        card_game_special.setOnClickListener {
+            viewModel.navSpecialEntrance(MatchType.OTHER, null)
+        }
+
         card_lottery.setOnClickListener {
             navThirdGame(ThirdGameCategory.CGCP)
         }

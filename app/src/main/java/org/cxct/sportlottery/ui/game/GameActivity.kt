@@ -529,6 +529,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.EPS -> {
                         tabLayout.getTabAt(7)?.select()
                     }
+                    MatchType.OTHER -> {
+                        tabLayout.getTabAt(3)?.select()
+                    }
                 }
             }
         })

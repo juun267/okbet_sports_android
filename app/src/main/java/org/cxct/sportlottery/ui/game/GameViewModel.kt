@@ -45,6 +45,8 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
+import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuData
+import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
 import org.cxct.sportlottery.network.sport.query.SportQueryRequest
@@ -112,6 +114,10 @@ class GameViewModel(
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
+    val sportCouponMenuResult: LiveData<SportCouponMenuData?>
+        get() = _sportCouponMenuResult
+
+
     val oddsListGameHallResult: LiveData<Event<OddsListResult?>>
         get() = _oddsListGameHallResult
 
@@ -165,7 +171,8 @@ class GameViewModel(
 
     val asStartCount: LiveData<Int> //即將開賽的數量
         get() = _asStartCount
-
+    val sportCouponCount: LiveData<Int> //即將開賽的數量
+        get() = _sportCouponCount
     val leagueSelectedList: LiveData<List<League>>
         get() = _leagueSelectedList
 
@@ -202,6 +209,7 @@ class GameViewModel(
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
+    private val _sportCouponMenuResult = MutableLiveData<SportCouponMenuData?>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListGameHallIncrementResult =
         MutableLiveData<Event<OddsListIncrementResult?>>()
@@ -217,6 +225,7 @@ class GameViewModel(
     private val _curDate = MutableLiveData<List<Date>>()
     private val _curDatePosition = MutableLiveData<Int>()
     private val _asStartCount = MutableLiveData<Int>()
+    private val _sportCouponCount = MutableLiveData<Int>()
     private val _isNoHistory = MutableLiveData<Boolean>()
     private val _errorPromptMessage = MutableLiveData<Event<String>>()
     private val _specialEntrance = MutableLiveData<SpecialEntrance?>()
@@ -296,6 +305,7 @@ class GameViewModel(
         gameType?.let { recordSportType(matchType, it.key) }
     }
 
+
     private fun getSpecEntranceFromHome(
         matchType: MatchType,
         gameType: GameType?
@@ -307,6 +317,9 @@ class GameViewModel(
         matchType == MatchType.AT_START && getMatchCount(matchType) == 0 -> {
             _errorPromptMessage.postValue(Event(androidContext.getString(R.string.message_no_at_start)))
             null
+        }
+        matchType == MatchType.OTHER ->{
+            SpecialEntrance(matchType, gameType,_sportCouponMenuResult.value?.couponCode)
         }
         else -> {
             SpecialEntrance(matchType, gameType)
@@ -408,6 +421,17 @@ class GameViewModel(
 
             }
             _curMatchType.value = matchType
+        }
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                sportMenuRepository.getSportCouponMenu()
+            }
+            //postHomeCardCount(result)
+
+            result?.let {
+                _sportCouponMenuResult.postValue(it.sportCouponMenuData[0])
+                _sportCouponCount.postValue(it.total)
+            }
         }
         _isLoading.value = false
     }
