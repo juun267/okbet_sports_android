@@ -89,11 +89,6 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             }
 
-            //TODO Bill Cheryl檢查中
-            playCateNum?.second?.let {
-                if (item.isSelected) itemView.sport_count_text.text = "${playCateNum.second}"
-            }
-
         }
 
         private fun setupSportTypeImage(item: Item) {
