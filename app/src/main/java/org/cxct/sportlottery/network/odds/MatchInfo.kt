@@ -44,6 +44,8 @@ data class MatchInfo(
     val eps: Int? = null,
     @Json(name = "spt")
     val spt: Int? = null,
+    @Json(name = "trackerId")
+    val trackerId: String? = null, //动画映射id
 
     ) : Parcelable, MatchInfo {
     //Live

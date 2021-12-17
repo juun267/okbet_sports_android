@@ -120,7 +120,6 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
             itemView.setOnClickListener {
                 clickListener.onClick(data)
             }
-
             binding.executePendingBindings()
         }
 

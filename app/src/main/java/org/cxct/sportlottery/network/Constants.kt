@@ -2,6 +2,7 @@ package org.cxct.sportlottery.network
 
 import android.content.Context
 import org.cxct.sportlottery.BuildConfig
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.LanguageManager.getSelectLanguage
 import java.io.UnsupportedEncodingException
@@ -82,9 +83,12 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/privacy-policy?platform=OKBET"
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/privacy-policy?platform=OKBET"
-                else -> "https://sports.cxsport.net/sports-rule/#/us/privacy-policy?platform=OKBET"
+                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/privacy-policy?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/privacy-policy?platform="+context.getString(
+                    R.string.app_name)
+                else -> "https://sports.cxsport.net/sports-rule/#/us/privacy-policy?platform"+context.getString(
+                        R.string.app_name)
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -97,9 +101,12 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/terms-conditions?platform=OKBET"
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/terms-conditions?platform=OKBET"
-                else -> "https://sports.cxsport.net/sports-rule/#/us/terms-conditions?platform=OKBET"
+                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/terms-conditions?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/terms-conditions?platform="+context.getString(
+                    R.string.app_name)
+                else -> "https://sports.cxsport.net/sports-rule/#/us/terms-conditions?platform="+context.getString(
+                    R.string.app_name)
             }
 
         } catch (e: UnsupportedEncodingException) {

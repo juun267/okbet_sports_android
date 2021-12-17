@@ -98,6 +98,10 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     val dataSourceChange: LiveData<Boolean?>
         get() = _dataSourceChange
 
+    val userInfoChange: LiveData<Boolean?>
+        get() = _userInfoChange
+
+
     private val _globalStop = MutableLiveData<GlobalStopEvent?>()
     private val _matchClock = MutableLiveData<MatchClockEvent?>()
     private val _matchOddsChange = MutableLiveData<MatchOddsChangeEvent?>()
@@ -117,6 +121,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
     private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
     private val _dataSourceChange = MutableLiveData<Boolean?>()
+    private val _userInfoChange = MutableLiveData<Boolean?>()
 
 
     override fun onReceive(context: Context?, intent: Intent) {
@@ -262,6 +267,11 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                     EventType.USER_LEVEL_CONFIG_CHANGE -> {
                         val data = ServiceMessage.getUserMaxBetMoney(jObjStr)
                         _userMaxBetMoneyChange.value = data
+                    }
+
+                    //用戶資訊成功
+                    EventType.USER_INFO_CHANGE -> {
+                        _userInfoChange.value = true
                     }
 
                     EventType.UNKNOWN -> {

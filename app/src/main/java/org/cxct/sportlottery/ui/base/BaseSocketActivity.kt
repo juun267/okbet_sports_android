@@ -108,6 +108,12 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             }
         })
 
+        receiver.userInfoChange.observe(this, {
+            if(viewModel.isLogin.value == true){
+                viewModel.updateDiscount(null)
+            }
+        })
+
         receiver.userMaxBetMoneyChange.observe(this, {
             if(viewModel.isLogin.value == true && sharedPref.getInt(KEY_USER_LEVEL_ID,-1) == it?.userLevelConfigList?.firstOrNull()?.id){
                 GameConfigManager.maxBetMoney = it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 99999

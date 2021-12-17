@@ -257,7 +257,6 @@ class AccountHistoryNextAdapter(
 
             }
 
-
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 
