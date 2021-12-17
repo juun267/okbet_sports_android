@@ -7,18 +7,12 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd1
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd2
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_star
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.iv_match_in_play
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_away
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_home
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_play_type_count
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_time
+import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -117,6 +111,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
             itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1)
 
+            itemView.iv_play.setLiveImg()
+
             itemView.table_match_info_border.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
@@ -130,6 +126,26 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             }
         }
 
+        private fun ImageView.setLiveImg() {
+            when (gameType) {
+                GameType.FT.key -> setImageResource(R.drawable.ic_live_football_small)
+                GameType.BK.key -> setImageResource(R.drawable.ic_live_basketball_small)
+                GameType.TN.key -> setImageResource(R.drawable.ic_live_tennis_small)
+                GameType.VB.key -> setImageResource(R.drawable.ic_live_volleyball_small)
+                GameType.BM.key -> setImageResource(R.drawable.ic_live_badminton_small)
+                GameType.TT.key -> setImageResource(R.drawable.ic_live_pingpong_small)
+                GameType.IH.key -> setImageResource(R.drawable.ic_live_icehockey_small)
+                GameType.BX.key -> setImageResource(R.drawable.ic_live_boxing_small)
+                GameType.CB.key -> setImageResource(R.drawable.ic_live_billiards_small)
+                GameType.CK.key -> setImageResource(R.drawable.ic_live_cricket_small)
+                GameType.BB.key -> setImageResource(R.drawable.ic_live_baseball_small)
+                GameType.RB.key -> setImageResource(R.drawable.ic_live_rugby_small)
+                GameType.AFT.key -> setImageResource(R.drawable.ic_live_soccer_small)
+                GameType.MR.key -> setImageResource(R.drawable.ic_live_racing_small)
+                GameType.GF.key -> setImageResource(R.drawable.ic_live_golf_small)
+            }
+        }
+        
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
                 gameType = data.matchInfo?.gameType

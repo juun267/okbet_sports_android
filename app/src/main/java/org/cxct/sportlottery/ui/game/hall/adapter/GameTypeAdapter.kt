@@ -1,10 +1,11 @@
 package org.cxct.sportlottery.ui.game.hall.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.itemview_sport_type.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
 import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
@@ -26,7 +27,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    var dataThirdGame = listOf<GameCateData>()
+    private var dataThirdGame = listOf<GameCateData>()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -68,15 +69,26 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setupSportTypeImage(item)
 
-            itemView.sport_type_text.text = item.name
+            itemView.apply {
 
-            itemView.sport_count_text.text = item.num.toString()
+                sport_type_text.text = item.name
 
-            itemView.isSelected = item.isSelected
+                sport_count_text.text = item.num.toString()
 
-            itemView.setOnClickListener {
-                gameTypeListener?.onClick(item)
+                isSelected = item.isSelected
+
+                if (isSelected) {
+                    sport_type_img.startAnimation(
+                        AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+                    )
+                }
+
+                setOnClickListener {
+                    gameTypeListener?.onClick(item)
+                }
+
             }
+
         }
 
         private fun setupSportTypeImage(item: Item) {

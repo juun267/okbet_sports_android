@@ -98,6 +98,7 @@
 
         <!-- 投注單 -->
         <FrameLayout
+            tools:visibility="gone"
             android:id="@+id/fl_bet_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -106,6 +107,7 @@
 
     <!--左側邊攔v4-->
     <FrameLayout
+        tools:visibility="gone"
         android:id="@+id/fl_left_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

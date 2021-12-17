@@ -29,15 +29,35 @@ class OddButtonPagerAdapter(
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
+            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate().sortMarketSort()
 
-            data = field.keys.withIndex().groupBy {
+            val gameList =
+                field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
+                    .plus(field.filterValues { !it.isNullOrEmpty() }
+                        .filter { it.value?.get(0) == null }).map { it.key }.run {
+                        var gameListFilter = mutableListOf<String>()
+                        if (this.size > 16) {
+                            gameListFilter = this.take(16) as MutableList<String> //只取前面16比資料
+                        } else {
+                            val count = 16 - this.size
+                            gameListFilter = this.take(this.size + 1) as MutableList<String>
+                            for (i in 1..count) {
+                                gameListFilter.add("EmptyData${i}")
+                            }
+                        }
+                        gameListFilter
+                    }
+
+            data = gameList.withIndex().groupBy {
                 it.index / 2
             }.map {
                 it.value.map { it.value }
             }.map {
                 it.map { playCate ->
-                    playCate to field[playCate]
+                    if (playCate.contains("EmptyData"))
+                        playCate to listOf<Odd?>(null, null)
+                    else
+                        playCate to field[playCate]
                 }
             }
         }
@@ -191,6 +211,10 @@ class OddButtonPagerAdapter(
 
         return sortMap
     }
+
+    private fun Map<String, List<Odd?>?>.sortMarketSort(): Map<String, List<Odd?>?> {
+        return this.toList().sortedBy { it.second?.firstOrNull()?.marketSort }.toMap()
+    }
 }
 
 class OddButtonPagerViewHolder private constructor(
@@ -248,7 +272,7 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-        if (matchInfo.status == null || matchInfo.status == 2) {
+        if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString().contains("EmptyData")) {
             oddBtnType.text = "-"
             oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
             oddBtnAway.betStatus = BetStatus.DEACTIVATED.code

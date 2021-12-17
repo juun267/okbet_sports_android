@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.component
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,22 +19,23 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_webview.view.*
-import kotlinx.android.synthetic.main.fragment_odds_detail_live.*
 import kotlinx.android.synthetic.main.view_toolbar_live.view.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.odds.detail.MatchOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
 import timber.log.Timber
 
 @SuppressLint("SetJavaScriptEnabled")
-class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
+class LiveViewToolbar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) :
     LinearLayout(context, attrs, defStyle) {
 
-    private val defaultAnimationUrl by lazy {
-        "https://sports.cxsport.net/animation/?matchId=5479249&mode=widget&lang=" + LanguageManager.getLanguageString(context)
-    }
+    var defaultAnimationUrl = ""
 
     private val typedArray by lazy {
         context.theme.obtainStyledAttributes(
@@ -51,13 +51,16 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
             R.layout.dialog_bottom_sheet_webview
         )
     }
-    private val bottomSheetView by lazy { LayoutInflater.from(context).inflate(bottomSheetLayout, null) }
+    private val bottomSheetView by lazy {
+        LayoutInflater.from(context).inflate(bottomSheetLayout, null)
+    }
     private val webBottomSheet: BottomSheetDialog by lazy { BottomSheetDialog(context) }
 
     private var mStreamUrl: String? = null
     private var newestUrl: Boolean = false
 
-    lateinit var matchOdd: MatchOdd
+    private var mMatchId: String? = null
+    private var mEventId: String? = null
 
     //exoplayer
     private var exoPlayer: SimpleExoPlayer? = null
@@ -123,6 +126,8 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
     private var liveToolBarListener: LiveToolBarListener? = null
 
+    var gameType: GameType? = null
+    
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
         addView(view).apply {
@@ -141,12 +146,20 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
 
+    private fun setAnimationUrl() {
+        defaultAnimationUrl = "https://sports.cxsport.net/animation/?" +
+                "matchId=${mMatchId}" +
+                "&mode=widget" +
+                "&lang=${LanguageManager.getLanguageString(context)}" +
+                "&eventId=${mEventId}"
+    }
+
     private fun initOnclick() {
         iv_play.setOnClickListener {
             when (expand_layout.isExpanded) {
                 true -> {
                     stopPlayer()
-                    startPlayer()
+                    startPlayer(mMatchId, mEventId, mStreamUrl)
                     iv_play.setImageResource(R.drawable.ic_live_player)
                 }
                 false -> {
@@ -169,7 +182,7 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
 
         iv_statistics.setOnClickListener {
             setTitle(context.getString(R.string.statistics_title))
-            loadBottomSheetUrl(matchOdd)
+            loadBottomSheetUrl()
         }
 
         iv_arrow.setOnClickListener {
@@ -237,15 +250,15 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         iv_live_status.setImageResource(R.drawable.img_no_live)
     }
 
-    fun setupLiveUrl(streamUrl: String?) {
-        mStreamUrl = streamUrl
-        startPlayer()
-    }
-
-    private fun loadBottomSheetUrl(matchOdd: MatchOdd) {
+    private fun loadBottomSheetUrl() {
         bottomSheetView.bottom_sheet_web_view.loadUrl(
-            sConfigData?.analysisUrl?.replace("{lang}", LanguageManager.getSelectLanguage(context).key)
-                ?.replace("{eventId}", matchOdd.matchInfo.id)
+            mMatchId?.let {
+                sConfigData?.analysisUrl?.replace(
+                    "{lang}",
+                    LanguageManager.getSelectLanguage(context).key
+                )
+                    ?.replace("{eventId}", it)
+            }
         )
         webBottomSheet.show()
     }
@@ -270,10 +283,11 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         }
 
     }
+
     private fun openWebView() {
         expand_layout.expand()
-        iv_play.setImageResource(R.drawable.ic_live_player)
-        iv_animation.setImageResource(R.drawable.ic_icon_game_schedule_ec)
+        setLivePlayImg()
+        setAnimationImgIcon(true)
         player_view.isVisible = false
         web_view.isVisible = true
 
@@ -295,9 +309,69 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         web_view.loadUrl(defaultAnimationUrl)
     }
 
+    private fun setLivePlayImg() {
+        when (gameType) {
+            GameType.FT -> iv_animation.setImageResource(R.drawable.ic_live_football_small)
+            GameType.BK -> iv_animation.setImageResource(R.drawable.ic_live_basketball_small)
+            GameType.TN -> iv_animation.setImageResource(R.drawable.ic_live_tennis_small)
+            GameType.VB -> iv_animation.setImageResource(R.drawable.ic_live_volleyball_small)
+            GameType.BM -> iv_animation.setImageResource(R.drawable.ic_live_badminton_small)
+            GameType.TT -> iv_animation.setImageResource(R.drawable.ic_live_pingpong_small)
+            GameType.IH -> iv_animation.setImageResource(R.drawable.ic_live_icehockey_small)
+            GameType.BX -> iv_animation.setImageResource(R.drawable.ic_live_boxing_small)
+            GameType.CB -> iv_animation.setImageResource(R.drawable.ic_live_billiards_small)
+            GameType.CK -> iv_animation.setImageResource(R.drawable.ic_live_cricket_small)
+            GameType.BB -> iv_animation.setImageResource(R.drawable.ic_live_baseball_small)
+            GameType.RB -> iv_animation.setImageResource(R.drawable.ic_live_rugby_small)
+            GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_live_soccer_small)
+            GameType.MR -> iv_animation.setImageResource(R.drawable.ic_live_racing_small)
+            GameType.GF -> iv_animation.setImageResource(R.drawable.ic_live_golf_small)
+        }
+    }
+
+    private fun setAnimationImgIcon(isOn: Boolean) {
+        if (isOn) {
+            when (gameType) {
+                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_selected)
+                GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_selected)
+                GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_selected)
+                GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_selected)
+                GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_selected)
+                GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_selected)
+                GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_selected)
+                GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_selected)
+                GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_selected)
+                GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_selected)
+                GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_selected)
+                GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_selected)
+                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
+                GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_selected)
+                GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_selected)
+            }
+        } else {
+            when (gameType) {
+                GameType.FT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_football_unselected)
+                GameType.BK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_basketball_unselected)
+                GameType.TN -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_tennis_unselected)
+                GameType.VB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_volleyball_unselected)
+                GameType.BM -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_badminton_unselected)
+                GameType.TT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_pingpong_unselected)
+                GameType.IH -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_icehockey_unselected)
+                GameType.BX -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_boxing_unselected)
+                GameType.CB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_billiards_unselected)
+                GameType.CK -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_cricket_unselected)
+                GameType.BB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_baseball_unselected)
+                GameType.RB -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_rugby_unselected)
+                GameType.AFT -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
+                GameType.MR -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_racing_unselected)
+                GameType.GF -> iv_animation.setImageResource(R.drawable.ic_icon_game_live_golf_unselected)
+            }
+        }
+    }
+
     private fun hideWebView() {
         expand_layout.collapse()
-        iv_animation.setImageResource(R.drawable.ic_icon_game_schedule)
+        setAnimationImgIcon(false)
         web_view.isVisible = false
     }
 
@@ -308,11 +382,13 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
     private fun initializePlayer(streamUrl: String?) {
         when {
             streamUrl.isNullOrBlank() -> openWebView()
+
             exoPlayer == null -> {
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
                     val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                        MediaItem.Builder().setUri(streamUrl)
+                            .setMimeType(MimeTypes.APPLICATION_M3U8).build()
                     exoPlayer.setMediaItem(mediaItem)
 
                     exoPlayer.playWhenReady = playWhenReady
@@ -321,10 +397,12 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
                     exoPlayer.prepare()
                 }
             }
+
             else -> {
                 exoPlayer?.let { player ->
                     val mediaItem =
-                        MediaItem.Builder().setUri(streamUrl).setMimeType(MimeTypes.APPLICATION_M3U8).build()
+                        MediaItem.Builder().setUri(streamUrl)
+                            .setMimeType(MimeTypes.APPLICATION_M3U8).build()
                     player.setMediaItem(mediaItem)
                     player.playWhenReady = playWhenReady
                     player.seekTo(currentWindow, playbackPosition)
@@ -345,8 +423,12 @@ class LiveViewToolbar @JvmOverloads constructor(context: Context, attrs: Attribu
         exoPlayer = null
     }
 
-    fun startPlayer() {
-        initializePlayer(mStreamUrl)
+    fun startPlayer(matchId: String?, eventId: String?, streamUrl: String?) {
+        mMatchId = matchId
+        mEventId = eventId
+        mStreamUrl = streamUrl
+        setAnimationUrl()
+        initializePlayer(streamUrl)
     }
 
     fun stopPlayer() {
