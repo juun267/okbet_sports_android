@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
@@ -68,14 +69,31 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             setupSportTypeImage(item)
 
-            itemView.sport_type_text.text = item.name
-            itemView.sport_count_text.text = item.num.toString()
+            itemView.apply {
 
-            itemView.isSelected = item.isSelected
+                sport_type_text.text = item.name
 
-            itemView.setOnClickListener {
-                gameTypeListener?.onClick(item)
+                sport_count_text.text = item.num.toString()
+
+                isSelected = item.isSelected
+
+                if (isSelected) {
+                    sport_type_img.startAnimation(
+                        AnimationUtils.loadAnimation(context, R.anim.rotate_sport)
+                    )
+                }
+
+                setOnClickListener {
+                    gameTypeListener?.onClick(item)
+                }
+
             }
+
+            //TODO Bill Cheryl檢查中
+            playCateNum?.second?.let {
+                if (item.isSelected) itemView.sport_count_text.text = "${playCateNum.second}"
+            }
+
         }
 
         private fun setupSportTypeImage(item: Item) {

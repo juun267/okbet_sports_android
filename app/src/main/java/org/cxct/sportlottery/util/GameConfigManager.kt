@@ -74,6 +74,17 @@ object GameConfigManager {
             GameType.BK.key -> R.drawable.ic_basketball_icon
             GameType.TN.key -> R.drawable.ic_tennis_icon
             GameType.VB.key -> R.drawable.ic_volley_ball
+            GameType.BM.key -> R.drawable.ic_sport_badminton
+            GameType.TT.key -> R.drawable.ic_sport_pingpong
+            GameType.IH.key -> R.drawable.ic_sport_iceball
+            GameType.BX.key -> R.drawable.ic_sport_boxing
+            GameType.CB.key -> R.drawable.ic_sport_snooker
+            GameType.CK.key -> R.drawable.ic_sport_cricket
+            GameType.BB.key -> R.drawable.ic_sport_baseball
+            GameType.RB.key -> R.drawable.ic_sport_rugby
+            GameType.AFT.key -> R.drawable.ic_sport_amfootball
+            GameType.MR.key -> R.drawable.ic_sport_racing
+            GameType.GF.key -> R.drawable.ic_sport_golf
             else -> null
         }
     }
