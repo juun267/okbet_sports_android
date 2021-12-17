@@ -191,12 +191,12 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                         )
                     )
                 }
-                GameType.PP -> {
+                GameType.TT -> {
                     unselectedList.add(
                         MenuItemData(
                             R.drawable.selector_left_menu_ball_pp,
                             getString(R.string.ping_pong),
-                            GameType.PP.key, 0
+                            GameType.TT.key, 0
                         )
                     )
                 }
@@ -466,7 +466,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             GameType.TN.name -> GameType.TN
             GameType.VB.name -> GameType.VB
             GameType.BM.name -> GameType.BM
-            GameType.PP.name -> GameType.PP
+            GameType.TT.name -> GameType.TT
             GameType.IH.name -> GameType.IH
             GameType.BX.name -> GameType.BX
             GameType.CB.name -> GameType.CB

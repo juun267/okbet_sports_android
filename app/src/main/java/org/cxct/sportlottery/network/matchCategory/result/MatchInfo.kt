@@ -26,7 +26,7 @@ data class MatchInfo(
     @Json(name = "name")
     val name: String?,
     @Json(name = "playCateNum")
-    val playCateNum: Int?,
+    override var playCateNum: Int?,
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")

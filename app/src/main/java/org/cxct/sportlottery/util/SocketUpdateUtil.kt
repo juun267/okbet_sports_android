@@ -237,11 +237,16 @@ object SocketUpdateUtil {
                     false -> {
                         refreshPlayCate(matchOdd, oddsChangeEvent)
                     }
-                }
+                } || (matchOdd.matchInfo?.playCateNum != oddsChangeEvent.playCateNum)
+
 
                 if (isNeedRefresh) {
                     sortOdds(matchOdd)
                     matchOdd.updateOddStatus()
+                }
+
+                if (isNeedRefreshPlayCate) {
+                    matchOdd.matchInfo?.playCateNum = oddsChangeEvent.playCateNum
                 }
             }
         }

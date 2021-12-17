@@ -33,16 +33,6 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    var updatePlayCateNum: Pair<String?, Int?>? = null //<gameType, playCateNum>
-        set(value) {
-            field = value
-            val position = dataSport.find {
-                it.code == value?.first
-            }?.sortNum
-
-            position?.let { notifyItemChanged(it) }
-        }
-
     var gameTypeListener: GameTypeListener? = null
 
     var thirdGameListener: ThirdGameListener? = null
@@ -62,7 +52,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (holder) {
             is ViewHolderSport -> {
                 val item = dataSport[position]
-                holder.bind(updatePlayCateNum, item, gameTypeListener)
+                holder.bind(item, gameTypeListener)
             }
             is ViewHolderThirdGame -> {
                 val item = dataThirdGame[position - dataSport.size]
@@ -75,7 +65,7 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class ViewHolderSport private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(playCateNum: Pair<String?, Int?>?, item: Item, gameTypeListener: GameTypeListener?) {
+        fun bind(item: Item, gameTypeListener: GameTypeListener?) {
 
             setupSportTypeImage(item)
 
