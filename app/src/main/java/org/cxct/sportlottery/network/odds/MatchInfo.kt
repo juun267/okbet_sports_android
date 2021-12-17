@@ -21,7 +21,7 @@ data class MatchInfo(
     @Json(name = "id")
     override val id: String, //赛事或赛季id
     @Json(name = "playCateNum")
-    val playCateNum: Int?,
+    override var playCateNum: Int?,
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")

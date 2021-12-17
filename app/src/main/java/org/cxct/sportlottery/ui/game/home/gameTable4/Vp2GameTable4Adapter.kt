@@ -11,14 +11,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd1
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_match_odd2
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.btn_star
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.iv_match_in_play
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_away
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_game_name_home
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_play_type_count
-import kotlinx.android.synthetic.main.home_game_table_item_4.view.tv_match_time
+import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
