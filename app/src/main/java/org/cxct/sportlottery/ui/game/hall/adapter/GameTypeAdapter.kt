@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
+import kotlinx.android.synthetic.main.itemview_sport_type_v4.view.*
 import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.GameType
@@ -18,7 +19,7 @@ import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
 class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
-        SPORT, THIRD_GAME
+        SPORT, SPORT_HOME, THIRD_GAME
     }
 
     var dataSport = listOf<Item>()
@@ -37,13 +38,17 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var thirdGameListener: ThirdGameListener? = null
 
+    var isFromHome = false
+
     override fun getItemViewType(position: Int): Int = when {
+        isFromHome -> ItemType.SPORT_HOME.ordinal
         (position < dataSport.size) -> ItemType.SPORT.ordinal
         else -> ItemType.THIRD_GAME.ordinal
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         when (viewType) {
+            ItemType.SPORT_HOME.ordinal -> ViewHolderSportHome.from(parent)
             ItemType.SPORT.ordinal -> ViewHolderSport.from(parent)
             else -> ViewHolderThirdGame.from(parent)
         }
@@ -51,6 +56,10 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolderSport -> {
+                val item = dataSport[position]
+                holder.bind(item, gameTypeListener)
+            }
+            is ViewHolderSportHome -> {
                 val item = dataSport[position]
                 holder.bind(item, gameTypeListener)
             }

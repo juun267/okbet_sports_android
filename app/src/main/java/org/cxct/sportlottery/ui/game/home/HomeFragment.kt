@@ -301,6 +301,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             mHighlightGameTypeAdapter.notifyDataSetChanged()
             viewModel.getHighlightMatch(selectItem.code)
         }
+        mHighlightGameTypeAdapter.isFromHome = true
 
         rv_game_highlight.adapter = mRvHighlightAdapter
         mRvHighlightAdapter.onClickOddListener = mOnClickOddListener
