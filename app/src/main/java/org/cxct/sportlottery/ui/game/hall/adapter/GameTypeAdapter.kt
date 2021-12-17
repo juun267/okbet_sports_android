@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_img
 import kotlinx.android.synthetic.main.itemview_sport_type.view.sport_type_text
@@ -85,6 +86,12 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             itemView.isSelected = item.isSelected
+
+            if(itemView.isSelected){
+                itemView.sport_type_img.startAnimation(
+                    AnimationUtils.loadAnimation(itemView.context,R.anim.rotate_sport)
+                )
+            }
 
             itemView.setOnClickListener {
                 gameTypeListener?.onClick(item)
