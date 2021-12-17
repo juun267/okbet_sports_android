@@ -157,6 +157,87 @@ class GameTypeAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    class ViewHolderSportHome private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        fun bind(item: Item, gameTypeListener: GameTypeListener?) {
+
+            setupSportTypeImage(item)
+
+            itemView.apply {
+
+                sport_type_home_text.text = item.name
+
+                isSelected = item.isSelected
+
+                setOnClickListener {
+                    gameTypeListener?.onClick(item)
+                }
+
+            }
+
+        }
+
+        private fun setupSportTypeImage(item: Item) {
+            when (item.code) {
+                GameType.FT.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_ft)
+                }
+                GameType.BK.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_bk)
+                }
+                GameType.TN.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_tn)
+                }
+                GameType.VB.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_vb)
+                }
+                GameType.BM.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_bm)
+                }
+                GameType.TT.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_pp)
+                }
+                GameType.IH.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_ih)
+                }
+                GameType.BX.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_bx)
+                }
+                GameType.CB.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_cb)
+                }
+                GameType.CK.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_ck)
+                }
+                GameType.BB.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_bb)
+                }
+                GameType.RB.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_rb)
+                }
+                GameType.AFT.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_aft)
+                }
+                GameType.MR.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_mr)
+                }
+                GameType.GF.key -> {
+                    itemView.sport_type_home_img.setImageResource(R.drawable.selector_left_menu_ball_gf)
+                }
+            }
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): ViewHolderSportHome {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater
+                    .inflate(R.layout.itemview_sport_type_v4, parent, false)
+
+                return ViewHolderSportHome(view)
+            }
+        }
+    }
+
     class ViewHolderThirdGame private constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
