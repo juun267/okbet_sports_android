@@ -40,7 +40,7 @@ class OddButtonPagerAdapter(
                             gameListFilter = this.take(16) as MutableList<String> //只取前面16比資料
                         } else {
                             val count = 16 - this.size
-                            gameListFilter = this.take(this.size + 1) as MutableList<String>
+                            gameListFilter = this.take(this.size + 1).toMutableList()
                             for (i in 1..count) {
                                 gameListFilter.add("EmptyData${i}")
                             }
