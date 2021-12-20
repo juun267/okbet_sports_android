@@ -116,6 +116,8 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var onClickTotalMatchListener: OnSelectItemListener<GameEntity>? = null
 
+    var onClickSportListener: OnSelectItemListener<OtherMatch>? = null
+
     var onClickFavoriteListener: OnClickFavoriteListener? = null
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
@@ -282,11 +284,10 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         }
                         holder.setText(R.id.tvSport, t.name)
                         holder.setText(R.id.tvSportCount, t.num.toString())
+                        holder.getView<RelativeLayout>(R.id.layoutSport).setOnClickListener {
+                            onClickSportListener?.onClick(t)
+                        }
                     }
-
-//                    private fun implementSingleBet(position: Int, oddString: String) {
-//                        onESportBetClickListener.onOutRightBet(t,position,oddString)
-//                    }
                 }
                 rvSport.adapter = adapter
             }

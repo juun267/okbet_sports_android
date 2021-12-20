@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layoutBankCard"
+    android:id="@+id/layoutSport"
     android:layout_width="match_parent"
     android:layout_height="@dimen/margin_48"
     android:background="@color/color_fff3f3f3">
