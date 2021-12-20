@@ -53,9 +53,12 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://onbet-cn.cxsport.net/sports-rule/#/"
-                LanguageManager.Language.VI -> "https://onbet-vn.cxsport.net/sports-rule/#/"
-                else -> "https://okbet-ph.cxsport.net/sports-rule/#/"
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/?platform="+context.getString(
+                    R.string.app_name)
             }
 
         } catch (e: UnsupportedEncodingException) {
