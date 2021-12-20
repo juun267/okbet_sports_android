@@ -218,9 +218,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             ) {
                 GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
                     //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
-                    if(viewModel.betInfoList.value?.peekContent()?.size == 0){
-                        BetInfoCarDialog.launch()
-                    }
+//                    if(viewModel.betInfoList.value?.peekContent()?.size == 0){
+//                        BetInfoCarDialog.launch()
+//                    }
                     viewModel.updateMatchBetListForOutRight(
                         matchType = MatchType.OUTRIGHT,
                         gameType = gameType,
@@ -369,9 +369,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         playCateName: String?
     ) {
         //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
-        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
-            BetInfoCarDialog.launch()
-        }
+//        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
+//            BetInfoCarDialog.launch()
+//        }
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
             matchOdd.matchInfo?.let { matchInfo ->
                 viewModel.updateMatchBetList(
