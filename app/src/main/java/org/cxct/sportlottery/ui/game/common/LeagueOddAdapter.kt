@@ -237,7 +237,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     }
 
                     matchType == MatchType.EARLY || matchType == MatchType.PARLAY || matchType == MatchType.TODAY || matchType == MatchType.AT_START || (matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == false)
-                    -> { //TODO: 串關尚未確定顯示邏輯(是否要判斷滾球做不同顯示?)
+                    -> {
                         if (it == 3 || it == 5) {//除3、5以外不顯示
                             itemView.league_spt.visibility = View.VISIBLE
                             itemView.league_spt.text = when (it) {
