@@ -47,13 +47,21 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
             rb_hk?.setOnClickListener {
                 selectOddsType(OddsType.HK)
             }
+
+            rb_mys?.setOnClickListener {
+                selectOddsType(OddsType.MYS)
+            }
+
+            rb_idn?.setOnClickListener {
+                selectOddsType(OddsType.IDN)
+            }
         }
     }
 
     private fun initObserver(){
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             setOddsType(it)
-        })
+        }
     }
 
 

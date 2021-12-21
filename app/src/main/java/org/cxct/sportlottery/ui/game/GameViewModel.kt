@@ -274,7 +274,6 @@ class GameViewModel(
     val sportMenuList: LiveData<Event<List<SportMenu>>>
         get() = _sportMenuList
 
-    //    private var sportMenuList: List<SportMenu>? = null
     private var sportQueryData: SportQueryData? = null
 
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
