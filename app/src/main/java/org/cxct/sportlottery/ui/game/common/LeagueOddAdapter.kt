@@ -186,14 +186,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
         private fun setFtScoreText(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
-                setScoreTextAtFront(matchType, item)
+                setScoreTextAtFront(item)
                 setCardText(matchType, item)
             }
         }
 
         private fun setBkScoreText(matchType: MatchType, item: MatchOdd) {
             itemView.apply {
-                setScoreTextAtFront(matchType, item)
+                setScoreTextAtFront(item)
             }
         }
 
@@ -276,7 +276,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun View.setScoreTextAtFront(matchType: MatchType, item: MatchOdd) {
+        private fun View.setScoreTextAtFront(item: MatchOdd) {
             league_odd_match_score_home.apply {
                 visibility = when (item.matchInfo?.isInPlay) {
                     true -> View.VISIBLE
