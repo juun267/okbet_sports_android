@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
@@ -228,6 +229,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
         //賽制(5盤3勝 or /int)
+        @SuppressLint("SetTextI18n")
         private fun setSptText(item: MatchOdd, matchType: MatchType) {
             item.matchInfo?.spt?.let {
                 when {
@@ -628,6 +630,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
+        @SuppressLint("InflateParams")
         private fun setupQuickCategory(
             item: MatchOdd,
             oddsType: OddsType,
