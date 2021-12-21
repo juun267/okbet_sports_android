@@ -181,7 +181,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             itemView.league_odd_match_price_boost.isVisible = item.matchInfo?.eps == 1
             itemView.space2.isVisible = (item.matchInfo?.eps == 1 || item.matchInfo?.liveVideo == 1)
-            itemView.iv_play.isVisible = item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
+            itemView.iv_play.isVisible =
+                item.matchInfo?.liveVideo == 1 && (matchType == MatchType.IN_PLAY || matchType == MatchType.MY_EVENT && item.matchInfo.isInPlay == true)
 
         }
 
@@ -392,7 +393,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                     itemView.league_odd_match_time.text =
                                         TimeUtil.longToMmSs(timeMillis)
                                 } else {
-                                    itemView.league_odd_match_time.text = itemView.context.getString(R.string.time_null)
+                                    itemView.league_odd_match_time.text =
+                                        itemView.context.getString(R.string.time_null)
                                 }
                                 item.matchInfo.leagueTime = (timeMillis / 1000).toInt()
                             }
@@ -441,7 +443,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                                                 TimeUtil.longToMmSs(timeMillis)
                                             item.matchInfo.leagueTime = (timeMillis / 1000).toInt()
                                         } else {
-                                            itemView.league_odd_match_time.text = itemView.context.getString(R.string.time_null)
+                                            itemView.league_odd_match_time.text =
+                                                itemView.context.getString(R.string.time_null)
                                         }
                                     }
                                 }
@@ -595,9 +598,15 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                         this.oddsType = oddsType
 
-                        this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
-                            leagueOddListener?.onClickBet(matchInfo, odd, playCateCode, playCateName)
-                        }
+                        this.listener =
+                            OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                                leagueOddListener?.onClickBet(
+                                    matchInfo,
+                                    odd,
+                                    playCateCode,
+                                    playCateName
+                                )
+                            }
                     }
 
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -614,7 +623,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
                 setCurrentItem(item.positionButtonPage, false)
                 getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-                OverScrollDecoratorHelper.setUpOverScroll(getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+                OverScrollDecoratorHelper.setUpOverScroll(
+                    getChildAt(0) as RecyclerView,
+                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
+                )
             }
             OverScrollDecoratorHelper.setUpOverScroll(itemView.league_odd_btn_pager_main)
 
@@ -671,11 +683,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 }
 
                 item.quickPlayCateList?.sortedBy { it.sort }?.forEachIndexed { index, it ->
-                    val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                    val inflater =
+                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
 
                     addView(rb.apply {
-                        text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: it.name
+                        text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key)
+                            ?: it.name
 
                         id = it.hashCode()
 
@@ -805,9 +819,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
 
             if (quickOdds.keys.any {
                     it == PlayCate.ADVANCE.value
-                } && !(quickOdds[PlayCate.ADVANCE.value].isNullOrEmpty())){
+                } && !(quickOdds[PlayCate.ADVANCE.value].isNullOrEmpty())) {
                 adapter.odds = quickOdds[PlayCate.ADVANCE.value] ?: listOf()
-            }else {
+            } else {
                 itemView.quick_odd_pair_tab.check(
                     when {
                         (itemView.quick_odd_pair_tab_2.isVisible && item.quickPlayCateList?.find { it.isSelected }?.positionButtonPairTab == 1) -> R.id.quick_odd_pair_tab_2
@@ -832,13 +846,20 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 this.adapter =
                     OddButtonPagerAdapter(item.matchInfo, item.playCateMappingList).apply {
 
-                        this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds ?: mutableMapOf()
+                        this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds
+                            ?: mutableMapOf()
 
                         this.oddsType = oddsType
 
-                        this.listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
-                            leagueOddListener?.onClickBet(matchInfo, odd, playCateCode, playCateName)
-                        }
+                        this.listener =
+                            OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                                leagueOddListener?.onClickBet(
+                                    matchInfo,
+                                    odd,
+                                    playCateCode,
+                                    playCateName
+                                )
+                            }
                     }
 
                 registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -858,7 +879,10 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     item.quickPlayCateList?.find { it.isSelected }?.positionButtonPage ?: 0, false
                 )
                 getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-                OverScrollDecoratorHelper.setUpOverScroll(getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+                OverScrollDecoratorHelper.setUpOverScroll(
+                    getChildAt(0) as RecyclerView,
+                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
+                )
             }
 
             itemView.quick_odd_btn_indicator_other.apply {
