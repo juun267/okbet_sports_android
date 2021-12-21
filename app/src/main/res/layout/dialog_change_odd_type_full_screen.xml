@@ -83,7 +83,6 @@
             android:id="@+id/rb_eu"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_weight="1"
             android:button="@drawable/selector_odds_type"
             android:drawablePadding="10dp"
             android:paddingStart="10dp"
@@ -95,7 +94,6 @@
             android:id="@+id/rb_hk"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_weight="1"
             android:button="@drawable/selector_odds_type"
             android:drawablePadding="10dp"
             android:paddingStart="10dp"
@@ -103,6 +101,27 @@
             android:textColor="@color/colorGrayDark"
             android:textSize="@dimen/textSize14sp" />
 
+        <RadioButton
+            android:id="@+id/rb_mys"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:button="@drawable/selector_odds_type"
+            android:drawablePadding="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/odd_type_mys"
+            android:textColor="@color/colorGrayDark"
+            android:textSize="@dimen/textSize14sp" />
+
+        <RadioButton
+            android:id="@+id/rb_idn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:button="@drawable/selector_odds_type"
+            android:drawablePadding="10dp"
+            android:paddingStart="10dp"
+            android:text="@string/odd_type_idn"
+            android:textColor="@color/colorGrayDark"
+            android:textSize="@dimen/textSize14sp" />
     </RadioGroup>
 
 

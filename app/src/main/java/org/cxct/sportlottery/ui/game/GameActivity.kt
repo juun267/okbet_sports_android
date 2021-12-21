@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -566,15 +567,15 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         })
 
-//        viewModel.showBetInfoSingle.observe(this, {
-//            it?.getContentIfNotHandled()?.let {
-//                //[Martin]
-////                BetInfoCarDialog().show(
-////                    supportFragmentManager,
-////                    BetInfoCarDialog::class.java.simpleName
-////                )
-//            }
-//        })
+        viewModel.showBetInfoSingle.observe(this, {
+            it?.getContentIfNotHandled()?.let {
+                //[Martin]
+                BetInfoCarDialog().show(
+                    supportFragmentManager,
+                    BetInfoCarDialog::class.java.simpleName
+                )
+            }
+        })
     }
 
     private fun initServiceButton() {

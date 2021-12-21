@@ -950,7 +950,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
-                gameTypeAdapter.updatePlayCateNum = Pair(oddsChangeEvent.gameType, oddsChangeEvent.playCateNum)
 
                 when (game_list.adapter) {
                     is LeagueAdapter -> {
@@ -1411,9 +1410,9 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         playCateName: String
     ) {
         //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
-        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
-            BetInfoCarDialog.launch()
-        }
+//        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
+//            BetInfoCarDialog.launch()
+//        }
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
