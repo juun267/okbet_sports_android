@@ -88,10 +88,22 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
-        OnbetVi {
+        OkbetPH {
+            buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
+            resValue "string", "app_name", "OKBET"
+            applicationId "com.okbet.ph"
+            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
+            manifestPlaceholders = [
+                    JPUSH_PKGNAME          : applicationId,
+                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
+                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
+                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
+            ]
+        }
+        OnbetVI {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             resValue "string", "app_name", "ONBET"
-            applicationId "com.happysport.vi.test"
+            applicationId "com.onbet.vi"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"vi\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
@@ -100,10 +112,10 @@ android {
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
         }
-        WinbetCn {
+        WinbetCN {
             buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
             resValue "string", "app_name", "WINBET"
-            applicationId "com.happysport.cn.test"
+            applicationId "com.winbet.cn"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"zh\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
@@ -128,10 +140,11 @@ android {
 
     sourceSets {
         fastlane.res.srcDirs = ["${fastlane_res_src_dir}"]
-        forqa.res.srcDirs = ['src/okbet/res']
-        OnbetVi.res.srcDirs = ['src/onbet_vi/res']
-        WinbetCn.res.srcDirs = ['src/winbet_cn/res']
-        demo.res.srcDirs = ['src/okbet/res']
+        forqa.res.srcDirs = ['src/okbet_ph/res']
+        OkbetPH.res.srcDirs = ['src/okbet_ph/res']
+        OnbetVI.res.srcDirs = ['src/onbet_vi/res']
+        WinbetCN.res.srcDirs = ['src/winbet_cn/res']
+        demo.res.srcDirs = ['src/okbet_ph/res']
     }
 
     compileOptions {
