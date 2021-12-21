@@ -146,7 +146,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 else -> setBkScoreText(matchType, item)//TODO Bill 這裡要等PM確認版型
             }
 
-            setStatusTextColor(matchType, item)
+            setStatusTextColor(item)
 
             itemView.league_odd_match_play_count.apply {
                 text = item.matchInfo?.playCateNum.toString()
@@ -217,8 +217,9 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             }
         }
 
-        private fun setStatusTextColor(matchType: MatchType, item: MatchOdd) {
-            val color = if (item.matchInfo?.isInPlay == true) R.color.colorRedDark else R.color.colorGray
+        private fun setStatusTextColor(item: MatchOdd) {
+            val color =
+                if (item.matchInfo?.isInPlay == true) R.color.colorRedDark else R.color.colorGray
             itemView.apply {
                 league_odd_match_status.setTextColor(ContextCompat.getColor(this.context, color))
                 league_odd_spt.setTextColor(ContextCompat.getColor(this.context, color))
