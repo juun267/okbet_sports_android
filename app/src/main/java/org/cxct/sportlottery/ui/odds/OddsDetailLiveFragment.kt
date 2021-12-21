@@ -172,6 +172,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun initUI() {
+        live_view_tool_bar.gameType = args.gameType
+
         oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailLiveFragment).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
