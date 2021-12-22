@@ -346,6 +346,13 @@ class GameViewModel(
         getAllPlayCategory(matchType)
         filterLeague(listOf())
     }
+    fun switchSpecialMatchType(code: String) {
+        _curChildMatchType.value = null
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+        getAllPlayCategoryByCode(code)
+        filterLeague(listOf())
+    }
 
     fun switchChildMatchType(childMatchType: MatchType? = null) {
         _curChildMatchType.value = childMatchType
@@ -450,6 +457,22 @@ class GameViewModel(
 
             sportQueryData = result?.sportQueryData
             checkLastSportType(matchType, sportQueryData)
+        }
+    }
+    private fun getAllPlayCategoryByCode(code: String) {
+        viewModelScope.launch {
+            val result = doNetwork(androidContext) {
+                OneBoSportApi.sportService.getQuery(
+                    SportQueryRequest(
+                        TimeUtil.getNowTimeStamp().toString(),
+                        TimeUtil.getTodayStartTimeStamp().toString(),
+                        code
+                    )
+                )
+            }
+
+            sportQueryData = result?.sportQueryData
+            //checkLastSportType(matchType, sportQueryData)
         }
     }
 
@@ -814,6 +837,14 @@ class GameViewModel(
                 MatchType.EPS -> {
                     val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(), TimeUtil.YMD_FORMAT)
                     getEpsList(item.code, startTime = time)
+                }
+                MatchType.OTHER -> {
+                    getLeagueList(
+                        item.code,
+                        "sc:longTermEvent",
+                        getCurrentTimeRangeParams(),
+                        isIncrement = isIncrement
+                    )
                 }
                 else -> {
                 }
@@ -1540,6 +1571,9 @@ class GameViewModel(
         }
         MatchType.EPS -> {
             sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }
+        }
+        MatchType.OTHER -> {
+            sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }
         }
         else -> null
     }

@@ -18,7 +18,8 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     MR("MR", R.string.motor_racing),
     GF("GF", R.string.golf),
     VB("VB", R.string.volleyball),
-    AFT("AFT",R.string.AFT);
+    AFT("AFT",R.string.AFT),
+    OTHER("OTHER",R.string.other);
 
     companion object {
         fun getGameType(code: String?): GameType? {
@@ -59,6 +60,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 MR -> "MOTOR RACING"
                 GF -> "GOLF"
                 AFT -> "AMERICA FOOT BALL"
+                OTHER -> ""
             }
         }
 
@@ -79,6 +81,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 AFT -> R.drawable.ic_game_amfootball
                 MR -> R.drawable.ic_game_rancing
                 GF -> R.drawable.ic_game_golf
+                OTHER -> R.drawable.ic_game_champ
             }
         }
     }

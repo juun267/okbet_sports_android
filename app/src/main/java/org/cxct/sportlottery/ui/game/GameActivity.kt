@@ -61,7 +61,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
 
-    companion object{
+    companion object {
         //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, GameActivity::class.java)
@@ -199,7 +199,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                LeftMenuFragment().show(supportFragmentManager, LeftMenuFragment::class.java.simpleName)
+                LeftMenuFragment().show(
+                    supportFragmentManager,
+                    LeftMenuFragment::class.java.simpleName
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -507,8 +510,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.specialEntrance.observe(this, {
             hideLoading()
-            it?.let { _ ->
-                when (it.matchType) {
+            if (it?.couponCode.isNullOrEmpty()) {
+                when (it?.matchType) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()
                     }
@@ -534,7 +537,11 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                         tabLayout.getTabAt(3)?.select()
                     }
                 }
+            } else {
+                viewModel.switchSpecialMatchType(it!!.couponCode!!)
+                navGameFragment(it?.matchType)
             }
+
         })
 
         viewModel.curMatchType.observe(this, {

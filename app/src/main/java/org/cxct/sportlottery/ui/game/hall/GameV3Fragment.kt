@@ -229,6 +229,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             MatchType.AT_START -> getString(R.string.home_tab_at_start_2)
             MatchType.OUTRIGHT -> getString(R.string.home_tab_outright)
             MatchType.EPS -> getString(R.string.home_title_eps)
+            MatchType.OTHER -> viewModel.sportCouponMenuResult.value?.couponName
             else -> ""
         }
     }
@@ -363,12 +364,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun setupSportBackground(view: View) {
         view.game_bg_layer2.visibility = when (args.matchType) {
-            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS -> View.VISIBLE
+            MatchType.IN_PLAY, MatchType.AT_START, MatchType.OUTRIGHT, MatchType.EPS, MatchType.OTHER-> View.VISIBLE
             else -> View.GONE
         }
 
         view.game_bg_layer3.visibility = when (args.matchType) {
-            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY -> View.VISIBLE
+            MatchType.TODAY, MatchType.EARLY, MatchType.PARLAY , MatchType.OTHER -> View.VISIBLE
             else -> View.GONE
         }
     }
@@ -379,7 +380,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         OverScrollDecoratorHelper.setUpOverScroll(view.match_category_pager.getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
         view.match_category_indicator.setupWithViewPager2(view.match_category_pager)
         view.game_match_category_pager.visibility =
-            if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY) {
+            if (args.matchType == MatchType.TODAY || args.matchType == MatchType.PARLAY || args.matchType == MatchType.OTHER) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -400,7 +401,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             )
 
             visibility =
-                if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START) {
+                if (args.matchType == MatchType.IN_PLAY || args.matchType == MatchType.AT_START ) {
                     View.VISIBLE
                 } else {
                     View.GONE
