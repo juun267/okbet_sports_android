@@ -101,10 +101,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
     }
-
-    enum class Page { ODDS_DETAIL, OUTRIGHT }
-
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
