@@ -36,10 +36,10 @@ class OddButtonPagerAdapter(
                     .plus(field.filterValues { !it.isNullOrEmpty() }
                         .filter { it.value?.get(0) == null }).map { it.key }.run {
                         var gameListFilter = mutableListOf<String>()
-                        if (this.size > 16) {
-                            gameListFilter = this.take(16) as MutableList<String> //只取前面16比資料
+                        if (this.size > 8) {
+                            gameListFilter = this.take(8) as MutableList<String> //只取前面8比資料
                         } else {
-                            val count = 16 - this.size
+                            val count = 8 - this.size
                             gameListFilter = this.take(this.size + 1).toMutableList()
                             for (i in 1..count) {
                                 gameListFilter.add("EmptyData${i}")
