@@ -61,7 +61,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
 
-    companion object{
+    companion object {
         //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, GameActivity::class.java)
@@ -101,7 +101,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
     }
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
@@ -196,7 +196,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                LeftMenuFragment().show(supportFragmentManager, LeftMenuFragment::class.java.simpleName)
+                LeftMenuFragment().show(
+                    supportFragmentManager,
+                    LeftMenuFragment::class.java.simpleName
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
