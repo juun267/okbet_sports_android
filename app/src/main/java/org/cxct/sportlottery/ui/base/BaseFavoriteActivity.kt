@@ -54,7 +54,7 @@ abstract class BaseFavoriteActivity<T : BaseFavoriteViewModel>(clazz: KClass<T>)
         }
 
         snackBarMyFavoriteNotify = Snackbar.make(
-            findViewById(android.R.id.content),
+            this.findViewById(android.R.id.content),
             title,
             Snackbar.LENGTH_LONG
         ).apply {
