@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -61,7 +60,7 @@ import org.cxct.sportlottery.util.MetricsUtil
 
 class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) {
 
-    companion object{
+    companion object {
         //切換語系，activity 要重啟才會生效
         fun reStart(context: Context) {
             val intent = Intent(context, GameActivity::class.java)
@@ -101,9 +100,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             }
         }
     }
-
-    enum class Page { ODDS_DETAIL, OUTRIGHT }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -199,7 +195,10 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             //左邊側邊攔v4
             btn_menu_left.setOnClickListener {
-                LeftMenuFragment().show(supportFragmentManager, LeftMenuFragment::class.java.simpleName)
+                LeftMenuFragment().show(
+                    supportFragmentManager,
+                    LeftMenuFragment::class.java.simpleName
+                )
             }
         } catch (e: Exception) {
             e.printStackTrace()
