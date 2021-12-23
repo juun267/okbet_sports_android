@@ -626,7 +626,7 @@ abstract class BaseOddButtonViewModel(
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                    loginRepository.mOddsType.value ?: OddsType.HK
                                 ), newItem
                             )
 
@@ -690,7 +690,7 @@ abstract class BaseOddButtonViewModel(
                                     newMatchOdd.oddState = getOddState(
                                         getOdds(
                                             newMatchOdd,
-                                            loginRepository.mOddsType.value ?: OddsType.EU
+                                            loginRepository.mOddsType.value ?: OddsType.HK
                                         ), newItem
                                     )
 
@@ -750,7 +750,7 @@ abstract class BaseOddButtonViewModel(
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                    loginRepository.mOddsType.value ?: OddsType.HK
                                 ), newItem
                             )
 

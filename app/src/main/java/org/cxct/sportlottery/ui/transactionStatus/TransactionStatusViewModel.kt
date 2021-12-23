@@ -92,7 +92,7 @@ class TransactionStatusViewModel(
                 _betListData.value =
                     BetListData(
                         rowList,
-                        loginRepository.mOddsType.value ?: OddsType.EU,
+                        loginRepository.mOddsType.value ?: OddsType.HK,
                         result.other?.totalAmount ?: 0.0,
                         page,
                         (rowList.size >= (result.total ?: 0))
