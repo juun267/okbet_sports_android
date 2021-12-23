@@ -1018,7 +1018,7 @@
   {
     "gameType": "TT",
     "playCateCode": "SET-HDP",
-    "playCateName": "让局",
+    "playCateName": "让盘",
     "playCateName-english": "Game Handicap",
     "playCateName-vietnamese": "Cược Chấp Game",
     "playCateNum": "2"
@@ -1042,7 +1042,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG1",
-    "playCateName": "让球\n第一局",
+    "playCateName": "让球\n第1局",
     "playCateName-english": "Handicap\n1st Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 1",
     "playCateNum": "2"
@@ -1050,7 +1050,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG2",
-    "playCateName": "让球\n第二局",
+    "playCateName": "让球\n第2局",
     "playCateName-english": "Handicap\n2nd Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 2",
     "playCateNum": "2"
@@ -1058,7 +1058,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG3",
-    "playCateName": "让球\n第三局",
+    "playCateName": "让球\n第3局",
     "playCateName-english": "Handicap\n3rd Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 3",
     "playCateNum": "2"
@@ -1066,7 +1066,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG4",
-    "playCateName": "让球\n第四局",
+    "playCateName": "让球\n第4局",
     "playCateName-english": "Handicap\n4th Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 4",
     "playCateNum": "2"
