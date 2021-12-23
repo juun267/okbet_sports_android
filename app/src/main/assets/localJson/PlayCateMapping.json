@@ -817,14 +817,6 @@
   },
   {
     "gameType": "VB",
-    "playCateCode": "HDP-SEG1",
-    "playCateName": "让分-第一盘",
-    "playCateName-english": "Point Handicap - 1st Set",
-    "playCateName-vietnamese": "#N/A",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "VB",
     "playCateCode": "1X2",
     "playCateName": "独赢",
     "playCateName-english": "Winner",
