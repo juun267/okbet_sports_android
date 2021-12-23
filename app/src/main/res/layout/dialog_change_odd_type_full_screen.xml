@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical"
-    tools:context=".ui.menu.ChangeLanguageDialog"
+    tools:context=".ui.menu.ChangeOddsTypeFullScreenDialog"
     tools:ignore="SpUsage,RtlSymmetry">
 
 
