@@ -178,7 +178,7 @@
   {
     "gameType": "FT",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
@@ -450,7 +450,7 @@
   {
     "gameType": "BK",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
@@ -762,7 +762,7 @@
   {
     "gameType": "TN",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
@@ -850,7 +850,7 @@
   {
     "gameType": "VB",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
