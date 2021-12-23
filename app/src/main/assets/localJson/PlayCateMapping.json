@@ -186,7 +186,7 @@
   {
     "gameType": "FT",
     "playCateCode": "HDP-OT",
-    "playCateName": "让球-加时赛",
+    "playCateName": "让球\n加时赛",
     "playCateName-english": "Handicap (extra time)",
     "playCateName-vietnamese": "Cược Chấp",
     "playCateNum": "2"
@@ -194,7 +194,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/U-OT",
-    "playCateName": "进球 大/小-加时赛",
+    "playCateName": "进球 大/小\n加时赛",
     "playCateName-english": "Goals O/U (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Trên / Dưới",
     "playCateNum": "2"
@@ -202,7 +202,7 @@
   {
     "gameType": "FT",
     "playCateCode": "1X2-OT",
-    "playCateName": "独赢-加时赛",
+    "playCateName": "独赢\n加时赛",
     "playCateName-english": "1 X 2 (extra time)",
     "playCateName-vietnamese": "1X2",
     "playCateNum": "3"
@@ -210,7 +210,7 @@
   {
     "gameType": "FT",
     "playCateCode": "BTS-OT",
-    "playCateName": "双方球队进球-加时赛",
+    "playCateName": "双方球队进球\n加时赛",
     "playCateName-english": "Both Teams to Score (extra time)",
     "playCateName-vietnamese": "Hai Đội Ghi Bàn",
     "playCateNum": "2"
@@ -218,7 +218,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/E-OT",
-    "playCateName": "进球 单/双-加时赛",
+    "playCateName": "进球 单/双\n加时赛",
     "playCateName-english": "Goals O/E (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Chẵn / Lẻ",
     "playCateNum": "2"
@@ -226,7 +226,7 @@
   {
     "gameType": "FT",
     "playCateCode": "NGOAL-OT",
-    "playCateName": "下个得分-加时赛",
+    "playCateName": "下个得分\n加时赛",
     "playCateName-english": "Next score (extra time)",
     "playCateName-vietnamese": "Next score (extra time)",
     "playCateNum": "2"
@@ -234,7 +234,7 @@
   {
     "gameType": "FT",
     "playCateCode": "HDP-OT",
-    "playCateName": "让球-加时赛",
+    "playCateName": "让球\n加时赛",
     "playCateName-english": "Handicap (extra time)",
     "playCateName-vietnamese": "Cược Chấp",
     "playCateNum": "2"
@@ -242,7 +242,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/U-OT",
-    "playCateName": "进球 大/小-加时赛",
+    "playCateName": "进球 大/小\n加时赛",
     "playCateName-english": "Goals O/U (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Trên / Dưới",
     "playCateNum": "2"
@@ -250,7 +250,7 @@
   {
     "gameType": "FT",
     "playCateCode": "1X2-OT",
-    "playCateName": "独赢-加时赛",
+    "playCateName": "独赢\n加时赛",
     "playCateName-english": "1 X 2 (extra time)",
     "playCateName-vietnamese": "1X2",
     "playCateNum": "3"
@@ -258,7 +258,7 @@
   {
     "gameType": "FT",
     "playCateCode": "NGOAL-OT",
-    "playCateName": "下个得分-加时赛",
+    "playCateName": "下个得分\n加时赛",
     "playCateName-english": "Next score (extra time)",
     "playCateName-vietnamese": "Next score (extra time)",
     "playCateNum": "2"
@@ -266,7 +266,7 @@
   {
     "gameType": "FT",
     "playCateCode": "BTS-OT",
-    "playCateName": "双方球队进球-加时赛",
+    "playCateName": "双方球队进球\n加时赛",
     "playCateName-english": "Both Teams to Score (extra time)",
     "playCateName-vietnamese": "Hai Đội Ghi Bàn",
     "playCateNum": "2"
@@ -274,7 +274,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/E-OT",
-    "playCateName": "进球 单/双-加时赛",
+    "playCateName": "进球 单/双\n加时赛",
     "playCateName-english": "Goals O/E (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Chẵn / Lẻ",
     "playCateNum": "2"
@@ -285,7 +285,7 @@
     "playCateName": "下个得分",
     "playCateName-english": "Next score",
     "playCateName-vietnamese": "Next score",
-    "playCateNum": "2"
+    "playCateNum": "3"
   },
   {
     "gameType": "FT",
@@ -306,7 +306,7 @@
   {
     "gameType": "FT",
     "playCateCode": "1X2-1ST-OT",
-    "playCateName": "独赢-加时赛上半场",
+    "playCateName": "独赢\n加时赛上半场",
     "playCateName-english": "1 X 2-1st Half(extra time)",
     "playCateName-vietnamese": "1X2-Hiệp 1(extra time)",
     "playCateNum": "3"
@@ -314,7 +314,7 @@
   {
     "gameType": "FT",
     "playCateCode": "HDP-1ST-OT",
-    "playCateName": "让球-加时赛上半场",
+    "playCateName": "让球\n加时赛上半场",
     "playCateName-english": "Handicap-1st Half(extra time)",
     "playCateName-vietnamese": "Cược Chấp-Hiệp 1(extra time)",
     "playCateNum": "2"
@@ -322,7 +322,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/U-1ST-OT",
-    "playCateName": "进球: 大 / 小-加时赛上半场",
+    "playCateName": "进球: 大 / 小\n加时赛上半场",
     "playCateName-english": "Goals O/U-1st Half(extra time)",
     "playCateName-vietnamese": "Bàn Thắng Trên / Dưới-Hiệp 1(extra time)",
     "playCateNum": "2"
