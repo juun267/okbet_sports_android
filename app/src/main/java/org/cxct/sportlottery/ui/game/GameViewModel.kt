@@ -114,7 +114,7 @@ class GameViewModel(
     val sportMenuResult: LiveData<SportMenuResult?>
         get() = _sportMenuResult
 
-    val sportCouponMenuResult: LiveData<SportCouponMenuData?>
+    val sportCouponMenuResult: LiveData<Event<SportCouponMenuResult>>
         get() = _sportCouponMenuResult
 
 
@@ -209,7 +209,7 @@ class GameViewModel(
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
-    private val _sportCouponMenuResult = MutableLiveData<SportCouponMenuData?>()
+    private val _sportCouponMenuResult = MutableLiveData<Event<SportCouponMenuResult>>()
     private val _oddsListGameHallResult = MutableLiveData<Event<OddsListResult?>>()
     private val _oddsListGameHallIncrementResult =
         MutableLiveData<Event<OddsListIncrementResult?>>()
@@ -284,7 +284,7 @@ class GameViewModel(
         get() = _sportMenuList
 
     //    private var sportMenuList: List<SportMenu>? = null
-    private var sportQueryData: SportQueryData? = null
+    var sportQueryData: SportQueryData? = null
 
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
         MatchType.IN_PLAY.postValue to null,
@@ -305,6 +305,10 @@ class GameViewModel(
         gameType?.let { recordSportType(matchType, it.key) }
     }
 
+    fun navSpecialEntrance(matchType: MatchType, gameType: GameType?,couponCode:String,couponName:String) {
+        _specialEntrance.postValue(SpecialEntrance(matchType, gameType,couponCode,couponName))
+        gameType?.let { recordSportType(matchType, it.key) }
+    }
 
     private fun getSpecEntranceFromHome(
         matchType: MatchType,
@@ -319,7 +323,7 @@ class GameViewModel(
             null
         }
         matchType == MatchType.OTHER ->{
-            SpecialEntrance(matchType, gameType,_sportCouponMenuResult.value?.couponCode)
+            SpecialEntrance(matchType, gameType,"_sportCouponMenuResult.value?.couponCode")
         }
         else -> {
             SpecialEntrance(matchType, gameType)
@@ -436,7 +440,7 @@ class GameViewModel(
             //postHomeCardCount(result)
 
             result?.let {
-                _sportCouponMenuResult.postValue(it.sportCouponMenuData[0])
+                _sportCouponMenuResult.postValue(Event(it))
                 _sportCouponCount.postValue(it.total)
             }
         }
@@ -454,14 +458,13 @@ class GameViewModel(
                     )
                 )
             }
-
             sportQueryData = result?.sportQueryData
             checkLastSportType(matchType, sportQueryData)
         }
     }
     private fun getAllPlayCategoryByCode(code: String) {
         viewModelScope.launch {
-            val result = doNetwork(androidContext) {
+            doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
                     SportQueryRequest(
                         TimeUtil.getNowTimeStamp().toString(),
@@ -469,9 +472,17 @@ class GameViewModel(
                         code
                     )
                 )
+            }?.let { result ->
+                sportQueryData = result?.sportQueryData
+                if(sportQueryData?.items!!.isNotEmpty()){
+                    getLeagueList(
+                        sportQueryData?.items!![0].code!!,
+                        code,
+                        getCurrentTimeRangeParams(),
+                        isIncrement = false)
+                }
             }
-
-            sportQueryData = result?.sportQueryData
+            //_sportMenuResult.postValue()
             //checkLastSportType(matchType, sportQueryData)
         }
     }
@@ -838,14 +849,14 @@ class GameViewModel(
                     val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(), TimeUtil.YMD_FORMAT)
                     getEpsList(item.code, startTime = time)
                 }
-                MatchType.OTHER -> {
-                    getLeagueList(
-                        item.code,
-                        "sc:longTermEvent",
-                        getCurrentTimeRangeParams(),
-                        isIncrement = isIncrement
-                    )
-                }
+//                MatchType.OTHER -> {
+//                    getLeagueList(
+//                        item.code,
+//                        "sc:longTermEvent",
+//                        getCurrentTimeRangeParams(),
+//                        isIncrement = isIncrement
+//                    )
+//                }
                 else -> {
                 }
             }

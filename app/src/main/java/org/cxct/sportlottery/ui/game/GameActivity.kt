@@ -538,8 +538,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     }
                 }
             } else {
-                viewModel.switchSpecialMatchType(it!!.couponCode!!)
-                navGameFragment(it?.matchType)
+                //viewModel.switchSpecialMatchType(it!!.couponCode!!)
+                navGameFragment(it!!.matchType)
             }
 
         })

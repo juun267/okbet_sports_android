@@ -394,7 +394,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         card_game_special.setOnClickListener {
-            viewModel.navSpecialEntrance(MatchType.OTHER, GameType.OTHER)
+            viewModel.navSpecialEntrance(MatchType.OTHER, null  )
         }
 
         card_lottery.setOnClickListener {
@@ -538,6 +538,36 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 mRvGameTable4Adapter.discount = newDiscount
                 mRecommendAdapter.discount = newDiscount
                 mRvHighlightAdapter.discount = newDiscount
+            }
+        }
+        viewModel.sportCouponMenuResult.observe(viewLifecycleOwner) {
+            it.peekContent().let { data ->
+                if (special_block_game.size != data.sportCouponMenuData.size) {
+                    special_block_game.removeAllViews()
+                    data.sportCouponMenuData.forEach {sportCouponMenuData ->
+                        special_block_game.addView(HomeGameCard(context ?: requireContext()).apply {
+                            this.apply {
+                                setTitle(sportCouponMenuData.couponName)
+                                setIcon(R.drawable.ic_game_champ)
+                                setOnClickListener {
+                                    viewModel.navSpecialEntrance(MatchType.OTHER, null,sportCouponMenuData.couponCode,sportCouponMenuData.couponName)
+                                }
+                            }
+                        })
+                    }
+                }else{
+                    data.sportCouponMenuData.forEachIndexed { index, sportCouponMenuData ->
+                        HomeGameCard(context ?: requireContext()).apply {
+                            (special_block_game.getChildAt(index) as HomeGameCard).apply {
+                                setTitle(sportCouponMenuData.couponName)
+                                setIcon(R.drawable.ic_game_champ)
+                                setOnClickListener {
+                                    viewModel.navSpecialEntrance(MatchType.OTHER, null,sportCouponMenuData.couponCode,sportCouponMenuData.couponName)
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
