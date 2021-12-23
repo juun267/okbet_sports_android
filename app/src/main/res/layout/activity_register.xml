@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 app:hintText="@string/hint_member_account"
-                app:iconSignifier="@drawable/ic_login_password"
+                app:iconSignifier="@drawable/ic_login_account"
                 app:labelText="@string/member_account"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_recommend_code">
