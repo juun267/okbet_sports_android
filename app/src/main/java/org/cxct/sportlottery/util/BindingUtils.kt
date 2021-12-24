@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.util
 
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -41,7 +42,6 @@ fun TextView.setDateNoYear(date: String?) {
 fun TextView.setDateTimeNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
 }
-
 
 @BindingAdapter("gameType")
 fun TextView.setGameType(gameType: String?) {
@@ -364,4 +364,10 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
             }
         }
     })
+}
+
+fun TextView.setTextTypeFace(type: Int) {
+    apply {
+        typeface = Typeface.create(this.typeface, type)
+    }
 }
