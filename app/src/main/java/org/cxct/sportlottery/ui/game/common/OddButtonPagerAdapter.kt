@@ -29,7 +29,7 @@ class OddButtonPagerAdapter(
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate().sortMarketSort()
+            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
 
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
