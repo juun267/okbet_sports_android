@@ -12,7 +12,11 @@ import org.cxct.sportlottery.ui.main.MainViewModel
 
 class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::class) {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.dialog_change_odd_type_full_screen, container, false)
     }
 
@@ -34,9 +38,10 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
             }
 
             img_close?.setOnClickListener {
-                parentFragmentManager.findFragmentByTag(LeftMenuFragment::class.java.simpleName)?.let {
-                    (it as DialogFragment).dismiss()
-                }
+                parentFragmentManager.findFragmentByTag(LeftMenuFragment::class.java.simpleName)
+                    ?.let {
+                        (it as DialogFragment).dismiss()
+                    }
                 dismiss()
             }
 
@@ -58,14 +63,14 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
         }
     }
 
-    private fun initObserver(){
+    private fun initObserver() {
         viewModel.oddsType.observe(viewLifecycleOwner) {
             setOddsType(it)
         }
     }
 
 
-    private fun getOddsType(){
+    private fun getOddsType() {
         viewModel.getOddsType()
     }
 
@@ -78,6 +83,12 @@ class ChangeOddsTypeFullScreenDialog : BaseDialog<MainViewModel>(MainViewModel::
                 }
                 OddsType.HK -> {
                     rb_hk.isChecked = true
+                }
+                OddsType.MYS -> {
+                    rb_mys.isChecked = true
+                }
+                OddsType.IDN -> {
+                    rb_idn.isChecked = true
                 }
             }
         }
