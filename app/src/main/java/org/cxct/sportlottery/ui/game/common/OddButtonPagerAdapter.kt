@@ -167,6 +167,23 @@ class OddButtonPagerAdapter(
         return splitMap
     }
 
+    private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
+        //FT: NOGAL(下個進球) 玩法需特殊處理
+        val splitMap = mutableMapOf<String, List<Odd?>?>()
+        val rgzMap = this.filter { (key, value) -> key.startsWith("NGOAL:")}
+
+        this.forEach { oddsMap ->
+            if(oddsMap.key == "NGOAL" && rgzMap.isNotEmpty()){
+                splitMap[oddsMap.key] = rgzMap.iterator().next().value
+            }else{
+                splitMap[oddsMap.key] = oddsMap.value
+            }
+        }
+        
+        return splitMap
+    }
+
+
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
         gameType: String?
     ): Map<String, List<Odd?>?> {
