@@ -103,6 +103,11 @@ class OddsButton @JvmOverloads constructor(
                 context,
                 R.color.selector_button_odd_bottom_text_red
             ))
+        } else {
+            tv_odds.setTextColor(ContextCompat.getColorStateList(
+                context,
+                R.color.selector_button_odd_bottom_text
+            ))
         }
 
         isSelected = odd?.isSelected ?: false
