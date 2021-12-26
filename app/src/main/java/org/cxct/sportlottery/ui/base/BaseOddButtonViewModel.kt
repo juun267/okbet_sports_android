@@ -359,6 +359,7 @@ abstract class BaseOddButtonViewModel(
                     s.matchType = normalBetList.find { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == m.oddsId
                     }?.matchType
+                    s.oddsType = oddsType
                 }
             }
 
@@ -404,6 +405,8 @@ abstract class BaseOddButtonViewModel(
             val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
             result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
+            result?.receipt?.singleBets?.firstOrNull()?.oddsType = oddsType.value
+
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(betInfoListData.matchType, result)

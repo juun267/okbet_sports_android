@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.cxct.sportlottery.ui.game.betList.BetListRefactorAdapter"
     tools:ignore="RtlSymmetry,SpUsage,ContentDescription,HardcodedText,Autofill">
 
 
@@ -65,14 +66,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="9dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize15sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/iv_close"
-            tools:text="俄罗斯 -0.5/1 ＠ 0.890" />
+            tools:text="俄罗斯 -0.5/1 ＠ 0.890 (歐洲盤)" />
 
 
         <TextView
