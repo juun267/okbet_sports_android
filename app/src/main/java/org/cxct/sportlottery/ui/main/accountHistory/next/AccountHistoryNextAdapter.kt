@@ -255,12 +255,16 @@ class AccountHistoryNextAdapter(
                     )
                 }
 
-                if (first.rtScore?.isNotEmpty() == true)
-                    binding.tvScore.text = String.format(
-                        binding.tvScore.context.getString(R.string.brackets),
-                        first.rtScore
-                    )
+                when(row.gameType) {
+                    GameType.FT.key, GameType.BK.key -> {
+                        if (first.rtScore?.isNotEmpty() == true)
+                            binding.tvScore.text = String.format(
+                                binding.tvScore.context.getString(R.string.brackets),
+                                first.rtScore
+                            )
 
+                    }
+                }
                 binding.listScore.apply {
                     layoutManager =
                         LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
