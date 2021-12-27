@@ -102,6 +102,7 @@
                     android:id="@+id/tv_recharge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_rounded_rectangle_oval_gray"
                     android:drawablePadding="10dp"
@@ -116,7 +117,8 @@
                     app:autoSizeMaxTextSize="@dimen/textSize16sp"
                     app:autoSizeMinTextSize="4dp"
                     app:autoSizeTextType="uniform"
-                    app:drawableStartCompat="@drawable/ic_profile_center_recharge" />
+                    app:drawableStartCompat="@drawable/ic_profile_center_recharge"
+                    app:drawableTint="@color/colorBlue" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="10dp"
@@ -126,6 +128,7 @@
                     android:id="@+id/tv_withdraw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_rounded_rectangle_oval_gray"
                     android:drawablePadding="10dp"
@@ -140,7 +143,8 @@
                     app:autoSizeMaxTextSize="@dimen/textSize16sp"
                     app:autoSizeMinTextSize="4dp"
                     app:autoSizeTextType="uniform"
-                    app:drawableStartCompat="@drawable/ic_profile_center_withdraw" />
+                    app:drawableStartCompat="@drawable/ic_profile_center_withdraw"
+                    app:drawableTint="@color/colorBlue" />
             </LinearLayout>
 
             <org.cxct.sportlottery.ui.menu.MenuItem
