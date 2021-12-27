@@ -67,12 +67,12 @@ object SocketUpdateUtil {
                         isNeedRefresh = true
                     }
 
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key || gameType == GameType.TT.key) && matchStatusCO.homeTotalScore != null && matchStatusCO.homeTotalScore != matchOdd.matchInfo?.homeTotalScore) {
                         matchOdd.matchInfo?.homeTotalScore = matchStatusCO.homeTotalScore
                         isNeedRefresh = true
                     }
 
-                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
+                    if ((gameType == GameType.TN.key || gameType == GameType.VB.key || gameType == GameType.TT.key) && matchStatusCO.awayTotalScore != null && matchStatusCO.awayTotalScore != matchOdd.matchInfo?.awayTotalScore) {
                         matchOdd.matchInfo?.awayTotalScore = matchStatusCO.awayTotalScore
                         isNeedRefresh = true
                     }
