@@ -879,7 +879,12 @@ class GameViewModel(
 
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.matchCategoryService.getMatchCategoryQuery(
-                        MatchCategoryQueryRequest(gameType)
+                        MatchCategoryQueryRequest(
+                            gameType,
+                            matchType.postValue,
+                            TimeUtil.getNowTimeStamp().toString(),
+                            TimeUtil.getTodayStartTimeStamp().toString()
+                        )
                     )
                 }
 
