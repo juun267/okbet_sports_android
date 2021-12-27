@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -98,10 +99,16 @@ class OddsButton @JvmOverloads constructor(
         }
 
         tv_odds?.text = TextUtil.formatForOdd(getOdds(odd, oddsType))
-        if(getOdds(odd, oddsType) < 0){
+
+        if(getOdds(odd, oddsType) < 0.0){
             tv_odds.setTextColor(ContextCompat.getColorStateList(
                 context,
                 R.color.selector_button_odd_bottom_text_red
+            ))
+        } else {
+            tv_odds.setTextColor(ContextCompat.getColorStateList(
+                context,
+                R.color.selector_button_odd_bottom_text
             ))
         }
 
@@ -129,12 +136,19 @@ class OddsButton @JvmOverloads constructor(
             )
             text = TextUtil.formatForOdd(getOdds(odd, oddsType))
         }
-        if(getOdds(odd, oddsType) < 0){
+
+        if(getOdds(odd, oddsType) < 0.0){
             tv_odds.setTextColor(ContextCompat.getColorStateList(
                 context,
                 R.color.selector_button_odd_bottom_text_red
             ))
+        } else {
+            tv_odds.setTextColor(ContextCompat.getColorStateList(
+                context,
+                R.color.selector_button_odd_bottom_text
+            ))
         }
+
         isSelected = odd?.isSelected ?: false
         //[Martin]馬來盤＆印尼盤會有負數的賠率
         //betStatus = if (getOdds(odd, oddsType) <= 0.0 || odd == null) BetStatus.LOCKED.code else odd.status

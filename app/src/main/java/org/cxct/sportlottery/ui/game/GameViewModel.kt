@@ -274,7 +274,6 @@ class GameViewModel(
     val sportMenuList: LiveData<Event<List<SportMenu>>>
         get() = _sportMenuList
 
-    //    private var sportMenuList: List<SportMenu>? = null
     private var sportQueryData: SportQueryData? = null
 
     private var lastSportTypeHashMap: HashMap<String, String?> = hashMapOf(
@@ -470,7 +469,9 @@ class GameViewModel(
         _sportMenuList.value?.peekContent()?.let { list ->
             list.forEach { sportMenu ->
                 sportMenu.apply {
-                    gameCount = getSportCount(MatchType.TODAY, gameType, sportMenuResult)
+                    gameCount = getSportCount(MatchType.IN_PLAY, gameType, sportMenuResult)+ getSportCount(MatchType.TODAY, gameType, sportMenuResult) + getSportCount(MatchType.EARLY, gameType, sportMenuResult) +
+                            getSportCount(MatchType.PARLAY, gameType, sportMenuResult) + getSportCount(MatchType.OUTRIGHT, gameType, sportMenuResult) + getSportCount(MatchType.AT_START, gameType, sportMenuResult) +
+                            getSportCount(MatchType.EPS, gameType, sportMenuResult)
 
                     entranceType = when {
                         getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> {
@@ -878,7 +879,12 @@ class GameViewModel(
 
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.matchCategoryService.getMatchCategoryQuery(
-                        MatchCategoryQueryRequest(gameType)
+                        MatchCategoryQueryRequest(
+                            gameType,
+                            matchType.postValue,
+                            TimeUtil.getNowTimeStamp().toString(),
+                            TimeUtil.getTodayStartTimeStamp().toString()
+                        )
                     )
                 }
 

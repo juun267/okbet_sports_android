@@ -27,6 +27,7 @@ import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
 
 class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdpOu>() {
@@ -219,16 +220,14 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private fun showStrongTeam() {
             itemView.apply {
                 tv_game_name_home.apply {
-                    setTypeface(
-                        this.typeface, if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                    setTextTypeFace(if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
                             Typeface.BOLD
                         else
                             Typeface.NORMAL
                     )
                 }
                 tv_game_name_away.apply {
-                    setTypeface(
-                        this.typeface, if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                    setTextTypeFace(if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
                             Typeface.BOLD
                         else
                             Typeface.NORMAL

@@ -128,11 +128,12 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     }
 
                     itemView.setBetReceiptBackground(status)
-                    tv_bet_amount.text = TextUtil.formatBetQuota(itemData.stake ?: 0)
+                    tv_bet_amount.text = TextUtil.formatMoney(itemData.stake ?: 0.0)
                     tv_winnable_amount.text = TextUtil.formatMoney(winnable ?: 0.0)
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
                     tv_bet_status.setReceiptStatusColor(status)
+                    tv_odd_type.setOddTypeString(oddsType)
 
                     if (matchType == MatchType.OUTRIGHT) {
                         tv_spread.visibility = View.GONE

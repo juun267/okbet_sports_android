@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
@@ -19,6 +20,7 @@ import org.cxct.sportlottery.ui.game.widget.OddsButton
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.getOdds
 
 
 class OddButtonPagerAdapter(
@@ -29,21 +31,37 @@ class OddButtonPagerAdapter(
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
+            field = value.splitPlayCate().reorganizePlay().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
 
-            data = field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
-                .plus(field.filterValues { !it.isNullOrEmpty() }
-                    .filter { it.value?.get(0) == null })
-                .plus(field.filterValues { it.isNullOrEmpty() })
-                .keys.withIndex().groupBy {
-                    it.index / 2
-                }.map {
-                    it.value.map { it.value }
-                }.map {
-                    it.map { playCate ->
-                        playCate to field[playCate]
+            val gameList =
+                field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
+                    .plus(field.filterValues { !it.isNullOrEmpty() }
+                        .filter { it.value?.get(0) == null }).map { it.key }.run {
+                        var gameListFilter = mutableListOf<String>()
+                        if (this.size > 8) {
+                            gameListFilter = this.take(8) as MutableList<String> //只取前面8比資料
+                        } else {
+                            val count = 8 - this.size
+                            gameListFilter = this.take(this.size + 1).toMutableList()
+                            for (i in 1..count) {
+                                gameListFilter.add("EmptyData${i}")
+                            }
+                        }
+                        gameListFilter
                     }
+
+            data = gameList.withIndex().groupBy {
+                it.index / 2
+            }.map {
+                it.value.map { it.value }
+            }.map {
+                it.map { playCate ->
+                    if (playCate.contains("EmptyData"))
+                        playCate to listOf<Odd?>(null, null)
+                    else
+                        playCate to field[playCate]
                 }
+            }
         }
 
     var oddsType: OddsType = OddsType.EU
@@ -151,6 +169,23 @@ class OddButtonPagerAdapter(
         return splitMap
     }
 
+    private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
+        //FT: NOGAL(下個進球) 玩法需特殊處理
+        val splitMap = mutableMapOf<String, List<Odd?>?>()
+        val rgzMap = this.filter { (key, value) -> key.startsWith("NGOAL:")}
+
+        this.forEach { oddsMap ->
+            if(oddsMap.key == "NGOAL" && rgzMap.isNotEmpty()){
+                splitMap[oddsMap.key] = rgzMap.iterator().next().value
+            }else{
+                splitMap[oddsMap.key] = oddsMap.value
+            }
+        }
+        
+        return splitMap
+    }
+
+
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
         gameType: String?
     ): Map<String, List<Odd?>?> {
@@ -194,6 +229,10 @@ class OddButtonPagerAdapter(
         }
 
         return sortMap
+    }
+
+    private fun Map<String, List<Odd?>?>.sortMarketSort(): Map<String, List<Odd?>?> {
+        return this.toList().sortedBy { it.second?.firstOrNull()?.marketSort }.toMap()
     }
 }
 
@@ -252,7 +291,7 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-        if (matchInfo.status == null || matchInfo.status == 2) {
+        if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString().contains("EmptyData")) {
             oddBtnType.text = "-"
             oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
             oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
@@ -326,14 +365,8 @@ class OddButtonPagerViewHolder private constructor(
                     text = odds.second?.getOrNull(0)?.spread ?: ""
                 }
 
-                tv_odds.text = when (oddsType) {
-                    OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.odds ?: 1)
-                    OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.hkOdds ?: 0)
-                    //Martin
-                    OddsType.MYS -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.malayOdds ?: 0)
-                    OddsType.IDN -> TextUtil.formatForOdd(odds.second?.getOrNull(0)?.indoOdds ?: 0)
-
-                }
+                tv_odds.text = getOddByType(odds.second?.getOrNull(0), oddsType)
+                tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(0), oddsType))
 
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
 
@@ -403,12 +436,19 @@ class OddButtonPagerViewHolder private constructor(
                     text = odds.second?.getOrNull(1)?.spread ?: ""
                 }
 
-                tv_odds.text = when (oddsType) {
-                    OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.odds ?: 1)
-                    OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.hkOdds ?: 0)
-                    //Martin
-                    OddsType.MYS -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.malayOdds ?: 0)
-                    OddsType.IDN -> TextUtil.formatForOdd(odds.second?.getOrNull(1)?.indoOdds ?: 0)
+                tv_odds.text = getOddByType(odds.second?.getOrNull(1), oddsType)
+                tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(1), oddsType))
+
+                if(getOdds(odds.second?.getOrNull(1), oddsType) < 0.0){
+                    tv_odds.setTextColor(ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text_red
+                    ))
+                } else {
+                    tv_odds.setTextColor(ContextCompat.getColorStateList(
+                        context,
+                        R.color.selector_button_odd_bottom_text
+                    ))
                 }
 
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
@@ -478,13 +518,8 @@ class OddButtonPagerViewHolder private constructor(
 
                 }
 
-                tv_odds.text = when (oddsType) {
-                    OddsType.EU -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.odds ?: 1)
-                    OddsType.HK -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.hkOdds ?: 0)
-                    //Martin
-                    OddsType.MYS -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.malayOdds ?: 0)
-                    OddsType.IDN -> TextUtil.formatForOdd(odds.second?.getOrNull(2)?.indoOdds ?: 0)
-                }
+                tv_odds.text = getOddByType(odds.second?.getOrNull(2), oddsType)
+                tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
 
                 this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
 
@@ -502,6 +537,31 @@ class OddButtonPagerViewHolder private constructor(
                 }
             }
         }
+    }
+
+    private fun getOddByType(
+        odd: Odd?,
+        oddsType: OddsType
+    ) = when (oddsType) {
+        OddsType.EU -> TextUtil.formatForOdd(odd?.odds ?: 1)
+        OddsType.HK -> TextUtil.formatForOdd(odd?.hkOdds ?: 0)
+        OddsType.MYS -> TextUtil.formatForOdd(odd?.malayOdds ?: 0)
+        OddsType.IDN -> TextUtil.formatForOdd(odd?.indoOdds ?: 0)
+    }
+
+    private fun OddsButton.oddColorStateList(
+        odd: Odd?,
+        oddsType: OddsType
+    ) = if (getOdds(odd, oddsType) < 0.0) {
+        ContextCompat.getColorStateList(
+            context,
+            R.color.selector_button_odd_bottom_text_red
+        )
+    } else {
+        ContextCompat.getColorStateList(
+            context,
+            R.color.selector_button_odd_bottom_text
+        )
     }
 
     private fun PlayCateMapItem.getPlayCateName(l: LanguageManager.Language): String {

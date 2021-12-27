@@ -95,8 +95,7 @@
         android:visibility="gone"
         app:autoSizeMaxTextSize="15dp"
         app:autoSizeMinTextSize="2dp"
-        app:autoSizeTextType="uniform"
-        app:drawableStartCompat="@drawable/ic_odds_type_change" />
+        app:autoSizeTextType="uniform" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/iv_head"

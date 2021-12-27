@@ -242,7 +242,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
             tvTotalBetAmount.text =
-                "${TextUtil.formatBetQuota(totalBetAmount)} ${getString(R.string.currency)}"
+                "${TextUtil.formatMoney(totalBetAmount)} ${getString(R.string.currency)}"
             tvTotalWinnableAmount.text =
                 "${TextUtil.formatMoney(winnableAmount)} ${getString(R.string.currency)}"
         }
@@ -287,7 +287,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             val totalBetAmountNotNull = totalBetAmount ?: 0.0
             totalBetAmountNotNull.let {
                 binding.apply {
-                    btnBet.tv_quota.text = TextUtil.formatBetQuota(it)
+                    btnBet.tv_quota.text = TextUtil.formatMoney(it)
                     betAllAmount = it
                 }
             }
