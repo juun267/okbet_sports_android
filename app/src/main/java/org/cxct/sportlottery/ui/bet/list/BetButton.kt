@@ -76,7 +76,7 @@ class BetButton @JvmOverloads constructor(
 
     private fun setupQuotaListener() {
         tv_quota.doAfterTextChanged {
-            isCanSendOut = it.toString().replace(",", "").toInt() != 0
+            isCanSendOut = it.toString().replace(",", "").toDouble() != 0.0
         }
     }
 
@@ -88,7 +88,7 @@ class BetButton @JvmOverloads constructor(
 
     private fun setupOddsChanged(isOddsChanged: Boolean) {
         tv_accept_odds_change.visibility =
-            if (isOddsChanged && tv_quota.text.toString().replace(",", "").toInt() != 0) View.VISIBLE else View.GONE
+            if (isOddsChanged && tv_quota.text.toString().replace(",", "").toDouble() != 0.0) View.VISIBLE else View.GONE
     }
 
 

@@ -212,9 +212,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     private fun initEditText() {
         et_bet.afterTextChanged {
-            button_bet.tv_quota.text = TextUtil.formatBetQuota(if (it.isEmpty()) 0 else it.toInt())
+
 
             if (it.isEmpty()) {
+                button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
 
                 tv_check_maximum_limit.visibility = View.VISIBLE
                 ll_bet_quota_detail.visibility = View.GONE
@@ -273,7 +274,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                         tvRealAmount.text = toMoneyFormat(realAmount)
                     }
                 }
-
+                button_bet.tv_quota.text = TextUtil.format(realAmount)
 
                 //比照以往計算
                 //var win = quota * getOdds(matchOdd, oddsType)
