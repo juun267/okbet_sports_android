@@ -973,7 +973,7 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = timeFilter(timeRangeParams?.startTime),
                         endTime = timeFilter(timeRangeParams?.endTime),
-                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
+                        playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
                     )
                 )
             }?.updateMatchType()
