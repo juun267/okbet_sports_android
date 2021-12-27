@@ -321,17 +321,17 @@ abstract class BaseOddButtonViewModel(
     ) {
         //調整盤口
         var currentOddsTypes = oddsType
-        currentOddsTypes = if(normalBetList.size == 1){
-            normalBetList[0].singleBetOddsType
-        }else{
-            OddsType.EU
-        }
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
             matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
         }
-
+        //若有串關 則改為EU
+        currentOddsTypes = if(normalBetList.size == 1){
+            normalBetList[0].singleBetOddsType
+        }else{
+            OddsType.EU
+        }
         //串關注單
         val parlayList: MutableList<Stake> = mutableListOf()
         parlayBetList.forEach {
