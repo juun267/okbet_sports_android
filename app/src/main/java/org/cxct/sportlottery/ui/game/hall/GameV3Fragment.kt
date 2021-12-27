@@ -708,10 +708,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
+            hideLoading()
             countryAdapter.data = it
         }
 
         viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
+            hideLoading()
             outrightCountryAdapter.data = it
         }
 
