@@ -155,6 +155,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueListener = LeagueListener({
                   subscribeChannelHall(it)
             }, {
+                loading()
                  viewModel.refreshGame(
                      args.matchType,
                      listOf(it.league.id),
@@ -586,6 +587,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.oddsListGameHallIncrementResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { leagueListIncrementResult ->
+                hideLoading()
                 val leagueListIncrement = leagueListIncrementResult.oddsListResult
 
                 leagueListIncrementResult.leagueIdList?.forEach { leagueId ->
