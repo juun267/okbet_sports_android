@@ -133,6 +133,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
                     tv_order_number.text = if (orderNo.isNullOrEmpty()) "-" else orderNo
                     tv_bet_status.setBetReceiptStatus(status)
                     tv_bet_status.setReceiptStatusColor(status)
+                    tv_odd_type.setOddTypeString(oddsType)
 
                     if (matchType == MatchType.OUTRIGHT) {
                         tv_spread.visibility = View.GONE
