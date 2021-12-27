@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
-import kotlinx.android.synthetic.main.itemview_sport_type_v5.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
@@ -27,6 +26,7 @@ import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
 
 class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) :
@@ -259,8 +259,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                         tv_game_score_home.visibility = View.GONE
                         tv_game_score_away.visibility = View.GONE
 
-                        tv_game_name_home.setTypeface(tv_game_name_home.typeface, Typeface.NORMAL)
-                        tv_game_name_away.setTypeface(tv_game_name_away.typeface, Typeface.NORMAL)
+                        tv_game_name_home.setTextTypeFace(Typeface.NORMAL)
+                        tv_game_name_away.setTextTypeFace(Typeface.NORMAL)
 
                         tv_score.visibility = View.GONE
                         tv_point.visibility = View.GONE
@@ -273,6 +273,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
         private fun showStrongTeam() {
             itemView.apply {
+
                 val homeStrongType = if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
                     Typeface.BOLD
                 else
@@ -283,11 +284,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 else
                     Typeface.NORMAL
 
-                tv_game_score_home.apply { setTypeface(this.typeface, homeStrongType) }
-                tv_game_name_home.apply { setTypeface(this.typeface, homeStrongType) }
+                tv_game_score_home.setTextTypeFace(homeStrongType)
+                tv_game_name_home.setTextTypeFace(homeStrongType)
 
-                tv_game_score_away.apply { setTypeface(this.typeface, awayStrongType) }
-                tv_game_name_away.apply { setTypeface(this.typeface, awayStrongType) }
+                tv_game_score_away.setTextTypeFace(awayStrongType)
+                tv_game_name_away.setTextTypeFace(awayStrongType)
             }
         }
 
