@@ -121,10 +121,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:endIcon="@drawable/ic_eye_open"
                 app:hintText="@string/hint_register_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/login_password"
-                app:endIcon="@drawable/ic_eye_open"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_member_account">
 
@@ -144,10 +144,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:endIcon="@drawable/ic_eye_open"
                 app:hintText="@string/hint_confirm_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/confirm_password"
-                app:endIcon="@drawable/ic_eye_open"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_login_password">
 
@@ -510,7 +510,7 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code">
-            <!--缺翻譯-->
+                <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvDutyTitle"
                     android:layout_width="wrap_content"
@@ -558,9 +558,9 @@
                     android:id="@+id/tvPrivacy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="隐私权政策"
                     android:textColor="@color/colorBlue"
-                    android:layout_marginTop="12dp"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/cbPrivacy"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
@@ -568,10 +568,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="向我发送更新和促销信息"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
-                    android:layout_marginTop="12dp"
                     app:layout_constraintStart_toEndOf="@+id/tvPrivacy"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
                 <!--缺翻譯-->
@@ -593,9 +593,9 @@
                     android:id="@+id/tvAgreement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:text="规则与条款"
                     android:textColor="@color/colorBlue"
-                    android:layout_marginTop="12dp"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/cbAgreement"
                     app:layout_constraintTop_toBottomOf="@+id/cbPrivacy" />
