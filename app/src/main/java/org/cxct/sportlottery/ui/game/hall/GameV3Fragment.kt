@@ -66,6 +66,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 viewModel.switchSportType(args.matchType, it)
                 loading()
+                notifyDataSetChanged()
             }
 
             thirdGameListener = ThirdGameListener {
@@ -468,6 +469,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 isReloadPlayCate = true,
                 isLastSportType = true
             )
+
             viewModel.getMatchCategoryQuery(args.matchType)
         }
         loading()
@@ -651,20 +653,20 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             data = rows
                         }
                     }
-                    var tempItem : MutableList<Item> = mutableListOf()
+                    var tempItem: MutableList<Item> = mutableListOf()
 
                     when (args.matchType) {
                         MatchType.OTHER -> {
-                            viewModel.sportQueryData!!.items!!.forEach { it ->
-                                tempItem.add(
-                                    Item(
-                                        code = it.code!!,
-                                        name = it.name!!,
-                                        num = it.num!!,
-                                        play = null,
-                                        sortNum = it.sortNum!!
-                                    )
+                            viewModel.specialMenuData!!.items!!.forEach { it ->
+                                var item = Item(
+                                    code = it.code!!,
+                                    name = it.name!!,
+                                    num = it.num!!,
+                                    play = null,
+                                    sortNum = it.sortNum!!,
                                 )
+                                item.isSelected = it.isSelected
+                                tempItem.add(item)
                             }
                             updateSportType(tempItem)
                         }
@@ -1180,13 +1182,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateSportType(gameTypeList: List<Item>) {
         gameTypeAdapter.dataSport = gameTypeList
-
-        gameTypeList.find { it.isSelected }.let { item ->
-            game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
-                .toUpperCase(Locale.getDefault())
-            updateSportBackground(item)
-            subscribeSportChannelHall(item?.code)
+        if (args.matchType != MatchType.OTHER) {
+            gameTypeList.find { it.isSelected }.let { item ->
+                game_toolbar_sport_type.text = item?.name ?: resources.getString(GameType.FT.string)
+                    .toUpperCase(Locale.getDefault())
+                updateSportBackground(item)
+                subscribeSportChannelHall(item?.code)
+            }
         }
+
     }
 
     private fun updateSportBackground(sport: Item?) {
