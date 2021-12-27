@@ -112,9 +112,9 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
         else -> if (parlayNum == 1) {
-            itemData.stake?.let { TextUtil.formatBetQuota(it) }
+            itemData.stake?.let { TextUtil.formatMoney(it) }
         } else {
-            itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * $parlayNum" }
+            itemData.stake?.let { "${TextUtil.formatMoney(it)} * $parlayNum" }
         }
     }
 }
