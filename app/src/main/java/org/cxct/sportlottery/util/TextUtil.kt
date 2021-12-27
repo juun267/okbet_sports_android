@@ -42,6 +42,10 @@ object TextUtil : DecimalFormatUtil() {
         return doNumberFormat(any, "###,###,###,###")
     }
 
+    fun formatBetQuotaMoney(any: Any): String {
+        return doNumberFormat(any, "###,###,###,###0.000")
+    }
+
     fun formatForVipRebates(any: Any): String {
         return doNumberFormat(any, "#.# %") { decimalFormat -> decimalFormat.roundingMode = RoundingMode.HALF_UP }
     }
