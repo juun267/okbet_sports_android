@@ -197,11 +197,11 @@ class VpRecommendAdapter(
         fun bind(data: OddBean, dynamicMarkets: Map<String, DynamicMarket>?) {
 
             itemView.apply {
-                tv_play_type.text =
+                tv_play_type_champion.text =
                     dynamicMarkets?.get(data.playTypeCode)?.getTranslate(itemView.context)
 
                 rec_champ_btn_pre1.apply {
-                    if (data.oddList.isEmpty()) {
+                    if (data.oddList.isEmpty() || data.oddList.getOrNull(0) == null) {
                         visibility = View.GONE
                         return
                     }
@@ -229,7 +229,7 @@ class VpRecommendAdapter(
                 }
 
                 rec_champ_btn_pre2.apply {
-                    if (data.oddList.size < 2) {
+                    if (data.oddList.size < 2|| data.oddList.getOrNull(1) == null) {
                         visibility = View.GONE
                         return
                     }
@@ -257,7 +257,7 @@ class VpRecommendAdapter(
                 }
 
                 rec_champ_btn_pre3.apply {
-                    if (data.oddList.size < 3) {
+                    if (data.oddList.size < 3 || data.oddList.getOrNull(2) == null) {
                         visibility = View.GONE
                         return
                     }
@@ -285,7 +285,7 @@ class VpRecommendAdapter(
                 }
 
                 rec_champ_btn_pre4.apply {
-                    if (data.oddList.size < 4) {
+                    if (data.oddList.size < 4|| data.oddList.getOrNull(3) == null) {
                         visibility = View.GONE
                         return
                     }
