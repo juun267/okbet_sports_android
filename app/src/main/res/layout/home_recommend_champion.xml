@@ -9,7 +9,7 @@
     tools:ignore="spUsage">
 
     <TextView
-        android:id="@+id/tv_play_type"
+        android:id="@+id/tv_play_type_champion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
