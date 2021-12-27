@@ -31,17 +31,17 @@ class OddButtonPagerAdapter(
 
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.splitPlayCate().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate().sortMarketSort()
+            field = value.splitPlayCate().reorganizePlay().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
 
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
                     .plus(field.filterValues { !it.isNullOrEmpty() }
                         .filter { it.value?.get(0) == null }).map { it.key }.run {
-                        val gameListFilter: MutableList<String>
-                        if (this.size > 16) {
-                            gameListFilter = this.take(16) as MutableList<String> //只取前面16比資料
+                        var gameListFilter = mutableListOf<String>()
+                        if (this.size > 8) {
+                            gameListFilter = this.take(8) as MutableList<String> //只取前面8比資料
                         } else {
-                            val count = 16 - this.size
+                            val count = 8 - this.size
                             gameListFilter = this.take(this.size + 1).toMutableList()
                             for (i in 1..count) {
                                 gameListFilter.add("EmptyData${i}")
@@ -168,6 +168,23 @@ class OddButtonPagerAdapter(
 
         return splitMap
     }
+
+    private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
+        //FT: NOGAL(下個進球) 玩法需特殊處理
+        val splitMap = mutableMapOf<String, List<Odd?>?>()
+        val rgzMap = this.filter { (key, value) -> key.startsWith("NGOAL:")}
+
+        this.forEach { oddsMap ->
+            if(oddsMap.key == "NGOAL" && rgzMap.isNotEmpty()){
+                splitMap[oddsMap.key] = rgzMap.iterator().next().value
+            }else{
+                splitMap[oddsMap.key] = oddsMap.value
+            }
+        }
+        
+        return splitMap
+    }
+
 
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
         gameType: String?
