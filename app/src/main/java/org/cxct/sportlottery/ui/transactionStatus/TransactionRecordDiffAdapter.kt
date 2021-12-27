@@ -115,8 +115,8 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                     OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
                     OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
                     else -> "("+context.getString(OddsType.EU.res)+")"
-                }?.let { it }
-                content_bet_amount.text = TextUtil.format(data.totalAmount!!)
+                }
+                content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
@@ -153,8 +153,8 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                     OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
                     OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
                     else -> "("+context.getString(OddsType.EU.res)+")"
-                }?.let { it }
-                content_bet_amount.text = TextUtil.format(data.totalAmount!!)
+                }
+                content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
@@ -204,7 +204,7 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
 
                 }
 
-                content_parlay_bet_amount.text = TextUtil.format(data.totalAmount!!)
+                content_parlay_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_parlay_winnable_amount.text = TextUtil.format(data.winnable)
                 content_parlay_order_no.text = data.orderNo
                 content_parlay_time_type.text = getTimeFormatFromDouble(data.addTime)
