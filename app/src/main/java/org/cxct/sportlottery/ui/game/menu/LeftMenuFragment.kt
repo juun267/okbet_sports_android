@@ -487,17 +487,30 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             GameType.AFT.name -> GameType.AFT
             else -> GameType.FT
         }
-        if (matchType != null) {
-            matchType.let {
+
+        when{
+            sportType == GameType.GF -> { //GF 只有冠軍
                 viewModel.navSpecialEntrance(
-                    it,
+                    MatchType.OUTRIGHT,
                     sportType
                 )
                 dismiss()
             }
-        } else {
-            setSnackBarMyFavoriteNotify(isGameClose = true, gameType = sportType)
-            hideLoading()
+
+            matchType != null -> {
+                matchType.let {
+                    viewModel.navSpecialEntrance(
+                        it,
+                        sportType
+                    )
+                    dismiss()
+                }
+            }
+
+            else -> {
+                setSnackBarMyFavoriteNotify(isGameClose = true, gameType = sportType)
+                hideLoading()
+            }
         }
     }
 
