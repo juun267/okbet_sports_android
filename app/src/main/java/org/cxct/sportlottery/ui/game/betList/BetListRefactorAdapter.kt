@@ -606,7 +606,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onFocusChangeListener = null
                 }
 
-                ll_winnable.visibility = View.INVISIBLE
+                if (et_bet.text.isNullOrEmpty())
+                    ll_winnable.visibility = View.INVISIBLE
+                else
+                    ll_winnable.visibility = View.VISIBLE
+
                 tv_single_count.text = betList.size.toString()
 
                 val initValue =
