@@ -142,7 +142,6 @@
             </LinearLayout>
         </FrameLayout>
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_bet_list"
             android:layout_width="match_parent"
@@ -350,12 +349,12 @@
             android:id="@+id/kv_keyboard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:background="@color/colorWhite"
             android:focusable="true"
+            android:layout_above="@+id/btn_bet"
             android:focusableInTouchMode="true"
             android:keyBackground="@drawable/bg_frame_6dp_white"
-            android:visibility="gone" />
-
+            android:visibility="gone"
+            tools:visibility="visible"/>
     </RelativeLayout>
 </layout>
