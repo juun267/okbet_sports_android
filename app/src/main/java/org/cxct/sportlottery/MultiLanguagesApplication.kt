@@ -79,7 +79,7 @@ class MultiLanguagesApplication : Application() {
         viewModel { VersionUpdateViewModel(get(), get(), get(), get()) }
         viewModel { MoneyTransferViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { GameViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { MaintenanceViewModel(get(), get(), get(), get(), get()) }
+        viewModel { MaintenanceViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { OtherBetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { VipViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { AccountHistoryViewModel(get(), get(), get(), get(), get(), get()) }

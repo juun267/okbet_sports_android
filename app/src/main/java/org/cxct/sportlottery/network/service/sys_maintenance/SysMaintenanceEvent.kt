@@ -10,5 +10,5 @@ data class SysMaintenanceEvent(
     @Json(name = "eventType")
     override val eventType: String? = EventType.SYS_MAINTENANCE.value,
     @Json(name = "status")
-    val status: Int? = null
+    val status: Int? = null //0 关闭 ，1 维护中
 ) : ServiceEventType
