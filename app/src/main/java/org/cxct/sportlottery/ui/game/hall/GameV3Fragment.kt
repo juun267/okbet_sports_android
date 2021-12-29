@@ -157,10 +157,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 subscribeChannelHall(it)
             }, {
                 loading()
-                 viewModel.refreshGame(
-                     args.matchType,
-                     listOf(it.league.id),
-                     listOf())
+                viewModel.refreshGame(
+                    args.matchType,
+                    listOf(it.league.id),
+                    listOf()
+                )
             })
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
@@ -243,10 +244,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     viewModel.switchChildMatchType(childMatchType = args.matchType)
                 }
                 getString(R.string.game_tab_outright_odd) -> { //冠軍
-                    viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
+                    if(args.matchType == MatchType.OTHER){
+                        viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
+                    }else{
+                        viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
+                    }
                 }
                 getString(R.string.game_tab_price_boosts_odd) -> { //特優賠率
-                    viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
+                    if(args.matchType == MatchType.OTHER){
+                        viewModel.switchChildMatchType(childMatchType = MatchType.OTHER_EPS)
+                    }else{
+                        viewModel.switchChildMatchType(childMatchType = MatchType.EPS)
+                    }
                 }
             }
         }
@@ -545,8 +554,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     game_tabs.selectTab(game_tabs.getTabAt(0))
                     game_tabs.addOnTabSelectedListener(onTabSelectedListener)
                 }
+                MatchType.OTHER_OUTRIGHT -> {
+                    game_tabs.selectTab(game_tabs.getTabAt(1))
+                }
                 MatchType.OUTRIGHT -> {
                     game_tabs.selectTab(game_tabs.getTabAt(1))
+                }
+                MatchType.OTHER_EPS -> {
+                    game_tabs.selectTab(game_tabs.getTabAt(2))
                 }
                 MatchType.EPS -> {
                     game_tabs.selectTab(game_tabs.getTabAt(2))
@@ -735,15 +750,15 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
 
-        viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
-            hideLoading()
-            countryAdapter.data = it
-        }
+            viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
+                hideLoading()
+                countryAdapter.data = it
+            }
 
-        viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
-            hideLoading()
-            outrightCountryAdapter.data = it
-        }
+            viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
+                hideLoading()
+                outrightCountryAdapter.data = it
+            }
 
             viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
                 outrightCountryAdapter.data = it

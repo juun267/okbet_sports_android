@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -353,6 +354,7 @@ class GameViewModel(
         _curChildMatchType.value = null
         _oddsListGameHallResult.value = Event(null)
         _oddsListResult.value = Event(null)
+        _curMatchType.value  = MatchType.OTHER
         getAllPlayCategoryByCode(code)
         filterLeague(listOf())
     }
@@ -430,6 +432,7 @@ class GameViewModel(
                 }
 
             }
+            Log.e("Martin","matchType=="+matchType)
             _curMatchType.value = matchType
         }
         viewModelScope.launch {
@@ -850,7 +853,7 @@ class GameViewModel(
 
                 }
                 MatchType.OUTRIGHT -> {
-                    getOutrightSeasonList(item.code)
+                    getOutrightSeasonList(item.code,false)
                 }
                 MatchType.AT_START -> {
                     getOddsList(
@@ -872,6 +875,12 @@ class GameViewModel(
                         getCurrentTimeRangeParams(),
                         isIncrement = isIncrement
                     )
+                }
+                MatchType.OTHER_OUTRIGHT ->{
+                    getOutrightSeasonList(item.code,true)
+                }
+                MatchType.OTHER_EPS ->{
+
                 }
                 else -> {
                 }
@@ -1236,11 +1245,18 @@ class GameViewModel(
         }
     }
 
-    private fun getOutrightSeasonList(gameType: String) {
+    private fun getOutrightSeasonList(gameType: String,isSpecial:Boolean) {
         viewModelScope.launch {
+            var outrightLeagueListRequest:OutrightLeagueListRequest
+            if(isSpecial){
+                outrightLeagueListRequest = OutrightLeagueListRequest(gameType,"sc:longTermEvent")
+            }else{
+                outrightLeagueListRequest = OutrightLeagueListRequest(gameType,)
+            }
+
             val result = doNetwork(androidContext) {
                 OneBoSportApi.outrightService.getOutrightSeasonList(
-                    OutrightLeagueListRequest(gameType)
+                    outrightLeagueListRequest
                 )
             }
 
