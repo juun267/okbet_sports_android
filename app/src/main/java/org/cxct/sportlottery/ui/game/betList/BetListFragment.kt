@@ -237,7 +237,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
         val winnableAmount = list.sumByDouble {
             getWinnable(it.betAmount, getOddsNew(it.matchOdd, oddsType))
-        } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType)) }
+        } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType),isParlay = true) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -250,33 +250,37 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         setupBtnBetAmount(totalBetAmount)
     }
 
-    private fun getWinnable(betAmount: Double, odds: Double): Double {
+    private fun getWinnable(betAmount: Double, odds: Double, isParlay: Boolean = false): Double {
 //        var winnable = betAmount * odds
 //        if (oddsType == OddsType.EU) {
 //            winnable -= betAmount
 //        }
 
         var winnable = 0.0
-        when (oddsType) {
-            OddsType.MYS -> {
-                winnable = if (odds < 0) {
-                    betAmount
-                } else {
-                    betAmount * odds
+        if(isParlay){
+            winnable = betAmount * (odds - 1)
+        }else{
+            when (oddsType) {
+                OddsType.MYS -> {
+                    winnable = if (odds < 0) {
+                        betAmount
+                    } else {
+                        betAmount * odds
+                    }
                 }
-            }
-            OddsType.IDN -> {
-                winnable = if (odds < 0) {
-                    betAmount
-                } else {
-                    betAmount * odds
+                OddsType.IDN -> {
+                    winnable = if (odds < 0) {
+                        betAmount
+                    } else {
+                        betAmount * odds
+                    }
                 }
-            }
-            OddsType.EU -> {
-                winnable = betAmount * (odds - 1)
-            }
-            else -> {
-                winnable = betAmount * odds
+                OddsType.EU -> {
+                    winnable = betAmount * (odds - 1)
+                }
+                else -> {
+                    winnable = betAmount * odds
+                }
             }
         }
         return winnable
