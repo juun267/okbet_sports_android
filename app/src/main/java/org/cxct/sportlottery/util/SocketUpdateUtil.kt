@@ -566,6 +566,8 @@ object SocketUpdateUtil {
 
                                     odd?.odds = oddSocket?.odds
                                     odd?.hkOdds = oddSocket?.hkOdds
+                                    odd?.malayOdds = oddSocket?.malayOdds
+                                    odd?.indoOdds = oddSocket?.indoOdds
 
                                     if (odd?.status != oddSocket?.status) {
                                         odd?.status = oddSocket?.status
@@ -648,6 +650,8 @@ object SocketUpdateUtil {
 
                 odd?.odds = oddSocket.odds
                 odd?.hkOdds = oddSocket.hkOdds
+                odd?.malayOdds = oddSocket.malayOdds
+                odd?.indoOdds = oddSocket.indoOdds
 
                 if (odd?.status != oddSocket.status) {
                     odd?.status = oddSocket.status
