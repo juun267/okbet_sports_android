@@ -156,19 +156,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueListener = LeagueListener({
                 subscribeChannelHall(it)
             }, {
-<<<<<<< HEAD
-                viewModel.refreshGame(
-                    args.matchType,
-                    listOf(it.league.id),
-                    listOf()
-                )
-=======
                 loading()
                  viewModel.refreshGame(
                      args.matchType,
                      listOf(it.league.id),
                      listOf())
->>>>>>> develop
             })
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
@@ -741,13 +733,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
                 }
             }
-<<<<<<< HEAD
 
-            viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
-                countryAdapter.data = it
-            }
-=======
-        }
 
         viewModel.countryListSearchResult.observe(this.viewLifecycleOwner) {
             hideLoading()
@@ -758,7 +744,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             hideLoading()
             outrightCountryAdapter.data = it
         }
->>>>>>> develop
 
             viewModel.outrightCountryListSearchResult.observe(this.viewLifecycleOwner) {
                 outrightCountryAdapter.data = it
