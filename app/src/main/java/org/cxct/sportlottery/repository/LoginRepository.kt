@@ -132,7 +132,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
         }
 
     var sOddsType
-        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.EU.code)
+        get() = sharedPref.getString(KEY_ODDS_TYPE, OddsType.HK.code)
         set(value) {
             with(sharedPref.edit()) {
                 putString(KEY_ODDS_TYPE, value)

@@ -349,8 +349,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     currentOddsType = OddsType.EU
                 }
                 setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
-                tv_match.text = if (itemData.matchType == MatchType.OUTRIGHT) itemData.outrightMatchInfo?.name
-                else "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+
+                tv_match.text = when {
+                    itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
+                    itemData.matchOdd.awayName?.length?.let {
+                        itemData.matchOdd.homeName?.length?.plus(
+                            it
+                        )
+                    } ?: 0 > 21 -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}\n${itemData.matchOdd.awayName}"
+                    else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
+                }
 
                 tv_name.text = if (itemData.matchOdd.inplay == INPLAY) {
                     context.getString(
@@ -598,7 +606,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     onFocusChangeListener = null
                 }
 
-                ll_winnable.visibility = View.INVISIBLE
+                if (et_bet.text.isNullOrEmpty())
+                    ll_winnable.visibility = View.INVISIBLE
+                else
+                    ll_winnable.visibility = View.VISIBLE
+
                 tv_single_count.text = betList.size.toString()
 
                 val initValue =

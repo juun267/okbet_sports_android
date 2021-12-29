@@ -242,7 +242,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
             tvTotalBetAmount.text =
-                "${TextUtil.formatBetQuota(totalBetAmount)} ${getString(R.string.currency)}"
+                "${TextUtil.formatMoney(totalBetAmount)} ${getString(R.string.currency)}"
             tvTotalWinnableAmount.text =
                 "${TextUtil.formatMoney(winnableAmount)} ${getString(R.string.currency)}"
         }
@@ -287,7 +287,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             val totalBetAmountNotNull = totalBetAmount ?: 0.0
             totalBetAmountNotNull.let {
                 binding.apply {
-                    btnBet.tv_quota.text = TextUtil.formatBetQuota(it)
+                    btnBet.tv_quota.text = TextUtil.formatMoney(it)
                     betAllAmount = it
                 }
             }
@@ -327,30 +327,30 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
     private fun initObserver() {
         //是否登入
-        viewModel.isLogin.observe(this.viewLifecycleOwner, {
+        viewModel.isLogin.observe(this.viewLifecycleOwner) {
             setupUserBalanceView(it)
             setupBetButtonType(it)
-        })
+        }
 
-        viewModel.userMoney.observe(viewLifecycleOwner, {
+        viewModel.userMoney.observe(viewLifecycleOwner) {
             it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
-        })
+        }
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             betListRefactorAdapter?.oddsType = it
             oddsType = it
-        })
+        }
 
-        viewModel.userInfo.observe(viewLifecycleOwner, {
+        viewModel.userInfo.observe(viewLifecycleOwner) {
             it?.discount?.let { newDiscount ->
                 if (discount == newDiscount) return@observe
 
                 viewModel.updateBetInfoDiscount(discount, newDiscount)
                 discount = newDiscount
             }
-        })
+        }
 
-        viewModel.betInfoList.observe(viewLifecycleOwner, {
+        viewModel.betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
                 if (list.isEmptyBetList()) return@let
                 tv_bet_list_count.text = list.size.toString()
@@ -360,33 +360,36 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 refreshAllAmount(list)
                 checkAllAmountCanBet()
             }
-        })
+        }
 
         //移除注單解除訂閱
-        viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner, { event ->
+        viewModel.betInfoRepository.removeItem.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 unSubscribeChannelEvent(it)
             }
             betListRefactorAdapter?.notifyDataSetChanged()
-        })
+        }
 
         //串關列表
-        viewModel.parlayList.observe(this.viewLifecycleOwner, {
+        viewModel.parlayList.observe(this.viewLifecycleOwner) {
             betListRefactorAdapter?.parlayList = it
-        })
+        }
 
-        viewModel.betParlaySuccess.observe(viewLifecycleOwner, {
+        viewModel.betParlaySuccess.observe(viewLifecycleOwner) {
             showHideCantParlayWarn(!it)
-        })
+        }
 
         //投注結果
-        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
+        viewModel.betAddResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled().let { result ->
                 showReceipt = result != null
                 result?.let { resultNotNull ->
                     hideLoading()
                     if (resultNotNull.success) {
-                        betResultListener?.onBetResult(resultNotNull.receipt, betParlayList ?: listOf())
+                        betResultListener?.onBetResult(
+                            resultNotNull.receipt,
+                            betParlayList ?: listOf()
+                        )
                         refreshAllAmount()
                         showOddChangeWarn = false
                         btn_bet.isOddsChanged = false
@@ -396,47 +399,47 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                 }
             }
-        })
+        }
 
         //賠率變更提示
-        viewModel.showOddsChangeWarn.observe(this.viewLifecycleOwner, {
+        viewModel.showOddsChangeWarn.observe(this.viewLifecycleOwner) {
             showOddChangeWarn = it
             btn_bet.isOddsChanged = it
             showHideWarn()
-        })
+        }
 
         //盤口關閉提示
-        viewModel.showOddsCloseWarn.observe(this.viewLifecycleOwner, {
+        viewModel.showOddsCloseWarn.observe(this.viewLifecycleOwner) {
             showPlatCloseWarn = it
             showHideWarn()
-        })
+        }
 
-        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner, {
+        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner) {
             btn_bet.hasBetPlatClose = it
-        })
+        }
 
     }
 
     private fun initSocketObserver() {
-        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsChangeEvent ->
                 viewModel.updateMatchOdd(matchOddsChangeEvent)
             }
-        })
+        }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+        receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
-        })
+        }
 
-        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 viewModel.updateLockMatchOdd(matchOddsLockEvent)
             }
-        })
+        }
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, {
+        receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
                 val betRefactorList = betListRefactorAdapter?.betList
                 betRefactorList?.forEach { listData ->
@@ -446,9 +449,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 }
                 betListRefactorAdapter?.betList = betRefactorList
             }
-        })
+        }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 betListRefactorAdapter?.betList.let { list ->
                     betListPageUnSubScribeEvent()
@@ -458,7 +461,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
                 }
             }
-        })
+        }
     }
 
     private fun getCurrentBetList(): MutableList<BetInfoListData> {

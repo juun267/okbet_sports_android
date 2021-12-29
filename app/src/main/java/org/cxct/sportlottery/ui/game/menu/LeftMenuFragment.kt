@@ -254,6 +254,15 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
                         )
                     )
                 }
+                GameType.AFT -> {
+                    unselectedList.add(
+                        MenuItemData(
+                            R.drawable.selector_left_menu_ball_aft,
+                            getString(R.string.america_football),
+                            GameType.AFT.key, 0
+                        )
+                    )
+                }
                 GameType.MR -> {
                     unselectedList.add(
                         MenuItemData(
@@ -475,19 +484,33 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             GameType.RB.name -> GameType.RB
             GameType.MR.name -> GameType.MR
             GameType.GF.name -> GameType.GF
+            GameType.AFT.name -> GameType.AFT
             else -> GameType.FT
         }
-        if (matchType != null) {
-            matchType.let {
+
+        when{
+            sportType == GameType.GF -> { //GF 只有冠軍
                 viewModel.navSpecialEntrance(
-                    it,
+                    MatchType.OUTRIGHT,
                     sportType
                 )
                 dismiss()
             }
-        } else {
-            setSnackBarMyFavoriteNotify(isGameClose = true, gameType = sportType)
-            hideLoading()
+
+            matchType != null -> {
+                matchType.let {
+                    viewModel.navSpecialEntrance(
+                        it,
+                        sportType
+                    )
+                    dismiss()
+                }
+            }
+
+            else -> {
+                setSnackBarMyFavoriteNotify(isGameClose = true, gameType = sportType)
+                hideLoading()
+            }
         }
     }
 

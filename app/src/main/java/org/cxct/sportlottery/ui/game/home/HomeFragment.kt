@@ -581,9 +581,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 setupSecondGame(sportMenu)
                             }
                             else -> {
-                                block_game.addView(HomeGameCard(context ?: requireContext()).apply {
-                                    setupHomeCard(this, sportMenu)
-                                })
+                                if(sportMenu.gameCount > 0){
+                                    block_game.addView(HomeGameCard(context ?: requireContext()).apply {
+                                        setupHomeCard(this, sportMenu)
+                                    })
+                                }
                             }
                         }
                     }
@@ -597,10 +599,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 setupSecondGame(sportMenu)
                             }
                             else -> {
-                                setupHomeCard(
-                                    (block_game.getChildAt(index) as HomeGameCard),
-                                    sportMenu
-                                )
+                                if(sportMenu.gameCount > 0) {
+                                    setupHomeCard(
+                                        (block_game.getChildAt(index) as HomeGameCard),
+                                        sportMenu
+                                    )
+                                }
                             }
                         }
                     }

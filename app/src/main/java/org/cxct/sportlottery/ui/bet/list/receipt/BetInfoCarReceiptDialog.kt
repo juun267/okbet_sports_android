@@ -57,6 +57,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 tv_bet_status.setBetReceiptStatus(status)
                 tv_bet_status.setReceiptStatusColor(status)
                 tv_receipt_status.setSingleReceiptStatusTips(status)
+                tv_odd_type.setOddTypeString(oddsType)
 
                 if (matchType == MatchType.OUTRIGHT) {
                     tv_spread.visibility = View.GONE

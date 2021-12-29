@@ -1,5 +1,7 @@
 package org.cxct.sportlottery.util
 
+import android.annotation.SuppressLint
+import android.graphics.Typeface
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -12,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetResult
 import org.cxct.sportlottery.network.common.GameMatchStatus
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TimeUtil.MD_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.MD_HMS_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
@@ -41,7 +44,6 @@ fun TextView.setDateNoYear(date: String?) {
 fun TextView.setDateTimeNoYear(timeStamp: Long?) {
     text = TimeUtil.timeFormat(timeStamp, MD_HMS_FORMAT)
 }
-
 
 @BindingAdapter("gameType")
 fun TextView.setGameType(gameType: String?) {
@@ -110,9 +112,9 @@ fun TextView.setBetReceiptAmount(itemData: BetResult) {
 fun TextView.setBetParlayReceiptAmount(itemData: BetResult, parlayNum: Int?) {
     text = when (itemData.status) {
         else -> if (parlayNum == 1) {
-            itemData.stake?.let { TextUtil.formatBetQuota(it) }
+            itemData.stake?.let { TextUtil.formatMoney(it) }
         } else {
-            itemData.stake?.let { "${TextUtil.formatBetQuota(it)} * $parlayNum" }
+            itemData.stake?.let { "${TextUtil.formatMoney(it)} * $parlayNum" }
         }
     }
 }
@@ -364,4 +366,17 @@ fun EditText.countTextAmount(textAmount: (Int) -> Unit) {
             }
         }
     })
+}
+
+fun TextView.setTextTypeFace(type: Int) {
+    apply {
+        typeface = Typeface.create(this.typeface, type)
+    }
+}
+
+@SuppressLint("SetTextI18n")
+fun TextView.setOddTypeString(oddsType: OddsType?) {
+    apply {
+        text = " (${context.getString((oddsType ?: OddsType.EU).res)})"
+    }
 }

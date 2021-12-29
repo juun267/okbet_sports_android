@@ -61,13 +61,13 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initObserver() {
-        viewModel.userMoney.observe(viewLifecycleOwner, {
+        viewModel.userMoney.observe(viewLifecycleOwner) {
             it.let { money -> tv_balance.text = TextUtil.formatMoney(money ?: 0.0) }
-        })
+        }
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             betReceiptDiffAdapter?.oddsType = it
-        })
+        }
     }
 
     private fun initView() {
@@ -94,7 +94,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "${betResultData?.totalStake} ${getString(R.string.currency)}"
+            tv_total_bet_amount.text = "${TextUtil.formatMoney(betResultData?.totalStake?: 0.0)} ${getString(R.string.currency)}"
             tv_total_winnable_amount.text =
                 "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${getString(R.string.currency)}"
         }

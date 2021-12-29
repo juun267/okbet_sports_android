@@ -529,7 +529,9 @@ class GameViewModel(
         _sportMenuList.value?.peekContent()?.let { list ->
             list.forEach { sportMenu ->
                 sportMenu.apply {
-                    gameCount = getSportCount(MatchType.TODAY, gameType, sportMenuResult)
+                    gameCount = getSportCount(MatchType.IN_PLAY, gameType, sportMenuResult)+ getSportCount(MatchType.TODAY, gameType, sportMenuResult) + getSportCount(MatchType.EARLY, gameType, sportMenuResult) +
+                            getSportCount(MatchType.PARLAY, gameType, sportMenuResult) + getSportCount(MatchType.OUTRIGHT, gameType, sportMenuResult) + getSportCount(MatchType.AT_START, gameType, sportMenuResult) +
+                            getSportCount(MatchType.EPS, gameType, sportMenuResult)
 
                     entranceType = when {
                         getSportCount(MatchType.TODAY, gameType, sportMenuResult) != 0 -> {
@@ -958,7 +960,12 @@ class GameViewModel(
 
                 val result = doNetwork(androidContext) {
                     OneBoSportApi.matchCategoryService.getMatchCategoryQuery(
-                        MatchCategoryQueryRequest(gameType)
+                        MatchCategoryQueryRequest(
+                            gameType,
+                            matchType.postValue,
+                            TimeUtil.getNowTimeStamp().toString(),
+                            TimeUtil.getTodayStartTimeStamp().toString()
+                        )
                     )
                 }
 
@@ -1047,7 +1054,7 @@ class GameViewModel(
                         matchIdList = emptyFilter(matchIdList),
                         startTime = timeFilter(timeRangeParams?.startTime),
                         endTime = timeFilter(timeRangeParams?.endTime),
-                        playCateMenuCode = getPlayCateSelected()?.code ?: ""
+                        playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
                     )
                 )
             }?.updateMatchType()

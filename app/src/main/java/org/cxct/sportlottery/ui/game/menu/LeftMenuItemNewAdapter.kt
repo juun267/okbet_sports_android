@@ -152,11 +152,10 @@ class LeftMenuItemNewAdapter(
             headerSelectedListener: HeaderSelectedListener
         ) {
             itemView.apply {
+                divider_login.isVisible = isLogin
                 tv_recharge.isVisible = isLogin
                 tv_withdraw.isVisible = isLogin
                 tv_member_level.isVisible = isLogin && isShowMemberLevel
-                tv_promotion.isVisible = isLogin
-                divider_login.isVisible = isLogin
 
                 tv_recharge.setOnClickListener {
                     headerSelectedListener.rechargeSelected()
@@ -170,7 +169,6 @@ class LeftMenuItemNewAdapter(
                 tv_promotion.setOnClickListener {
                     headerSelectedListener.promotionSelected()
                 }
-
                 ct_inplay.setOnClickListener {
                     headerSelectedListener.inPlaySelected()
                 }
@@ -198,7 +196,8 @@ class LeftMenuItemNewAdapter(
         ) {
             itemView.apply {
 
-                tv_appearance.isVisible = isLogin
+//                tv_appearance.isVisible = isLogin
+                tv_appearance.isVisible = false //暫時隱藏
 
                 //盤口設定
                 tv_odds_type.setOnClickListener {
