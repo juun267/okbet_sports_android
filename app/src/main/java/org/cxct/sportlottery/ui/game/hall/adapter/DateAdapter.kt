@@ -44,18 +44,33 @@ class DateAdapter : RecyclerView.Adapter<DateAdapter.ViewHolder>() {
             }
         }
 
+        enum class DateSplitPart(val part: Int) {
+            MONTH(1), DATE(2), WEEKDAY(3)
+        }
+
         private fun setupCalendarView(item: Date) {
             itemView.date_text_other.visibility = View.GONE
-            itemView.date_text_date.text = item.display.split("-")[2]
+
+            //格式: 2021-December-28-Tue
+            itemView.date_text_date.text = item.display.split("-")[DateSplitPart.DATE.part]
 
             when(LanguageManager.getSelectLanguage(itemView.date_text_month.context)){
                 LanguageManager.Language.VI -> {
-                    itemView.date_text_month.text = item.display.split("-")[1].replace("tháng","TH.").replace(" ","")
-                    itemView.date_text_week.text = item.display.split("-")[3].replace("Th","Thứ").replace("CN","Chủ nhật")
+                    itemView.date_text_month.text = item.display.split("-")[DateSplitPart.MONTH.part]
+                        .replace("tháng","TH.")
+                        .replace(" ","")
+                    itemView.date_text_week.text = item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                        .replace("Th","Thứ")
+                }
+                LanguageManager.Language.EN -> {
+                    itemView.date_text_month.text = item.display.split("-")[DateSplitPart.MONTH.part]
+                        .substring(0,3)
+                    itemView.date_text_week.text = item.display.split("-")[DateSplitPart.WEEKDAY.part]
+                        .substring(0,3)
                 }
                 else -> {
-                    itemView.date_text_month.text = item.display.split("-")[1]
-                    itemView.date_text_week.text = item.display.split("-")[3]
+                    itemView.date_text_month.text = item.display.split("-")[DateSplitPart.MONTH.part]
+                    itemView.date_text_week.text = item.display.split("-")[DateSplitPart.WEEKDAY.part]
                 }
             }
         }

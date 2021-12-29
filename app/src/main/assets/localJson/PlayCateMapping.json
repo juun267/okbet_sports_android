@@ -178,7 +178,7 @@
   {
     "gameType": "FT",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
@@ -186,7 +186,7 @@
   {
     "gameType": "FT",
     "playCateCode": "HDP-OT",
-    "playCateName": "让球-加时赛",
+    "playCateName": "让球\n加时赛",
     "playCateName-english": "Handicap (extra time)",
     "playCateName-vietnamese": "Cược Chấp",
     "playCateNum": "2"
@@ -194,7 +194,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/U-OT",
-    "playCateName": "进球 大/小-加时赛",
+    "playCateName": "进球 大/小\n加时赛",
     "playCateName-english": "Goals O/U (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Trên / Dưới",
     "playCateNum": "2"
@@ -202,7 +202,7 @@
   {
     "gameType": "FT",
     "playCateCode": "1X2-OT",
-    "playCateName": "独赢-加时赛",
+    "playCateName": "独赢\n加时赛",
     "playCateName-english": "1 X 2 (extra time)",
     "playCateName-vietnamese": "1X2",
     "playCateNum": "3"
@@ -210,7 +210,7 @@
   {
     "gameType": "FT",
     "playCateCode": "BTS-OT",
-    "playCateName": "双方球队进球-加时赛",
+    "playCateName": "双方球队进球\n加时赛",
     "playCateName-english": "Both Teams to Score (extra time)",
     "playCateName-vietnamese": "Hai Đội Ghi Bàn",
     "playCateNum": "2"
@@ -218,7 +218,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/E-OT",
-    "playCateName": "进球 单/双-加时赛",
+    "playCateName": "进球 单/双\n加时赛",
     "playCateName-english": "Goals O/E (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Chẵn / Lẻ",
     "playCateNum": "2"
@@ -226,7 +226,7 @@
   {
     "gameType": "FT",
     "playCateCode": "NGOAL-OT",
-    "playCateName": "下个得分-加时赛",
+    "playCateName": "下个得分\n加时赛",
     "playCateName-english": "Next score (extra time)",
     "playCateName-vietnamese": "Next score (extra time)",
     "playCateNum": "2"
@@ -234,7 +234,7 @@
   {
     "gameType": "FT",
     "playCateCode": "HDP-OT",
-    "playCateName": "让球-加时赛",
+    "playCateName": "让球\n加时赛",
     "playCateName-english": "Handicap (extra time)",
     "playCateName-vietnamese": "Cược Chấp",
     "playCateNum": "2"
@@ -242,7 +242,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/U-OT",
-    "playCateName": "进球 大/小-加时赛",
+    "playCateName": "进球 大/小\n加时赛",
     "playCateName-english": "Goals O/U (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Trên / Dưới",
     "playCateNum": "2"
@@ -250,7 +250,7 @@
   {
     "gameType": "FT",
     "playCateCode": "1X2-OT",
-    "playCateName": "独赢-加时赛",
+    "playCateName": "独赢\n加时赛",
     "playCateName-english": "1 X 2 (extra time)",
     "playCateName-vietnamese": "1X2",
     "playCateNum": "3"
@@ -258,7 +258,7 @@
   {
     "gameType": "FT",
     "playCateCode": "NGOAL-OT",
-    "playCateName": "下个得分-加时赛",
+    "playCateName": "下个得分\n加时赛",
     "playCateName-english": "Next score (extra time)",
     "playCateName-vietnamese": "Next score (extra time)",
     "playCateNum": "2"
@@ -266,7 +266,7 @@
   {
     "gameType": "FT",
     "playCateCode": "BTS-OT",
-    "playCateName": "双方球队进球-加时赛",
+    "playCateName": "双方球队进球\n加时赛",
     "playCateName-english": "Both Teams to Score (extra time)",
     "playCateName-vietnamese": "Hai Đội Ghi Bàn",
     "playCateNum": "2"
@@ -274,7 +274,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/E-OT",
-    "playCateName": "进球 单/双-加时赛",
+    "playCateName": "进球 单/双\n加时赛",
     "playCateName-english": "Goals O/E (extra time)",
     "playCateName-vietnamese": "Bàn Thắng Chẵn / Lẻ",
     "playCateNum": "2"
@@ -285,7 +285,7 @@
     "playCateName": "下个得分",
     "playCateName-english": "Next score",
     "playCateName-vietnamese": "Next score",
-    "playCateNum": "2"
+    "playCateNum": "3"
   },
   {
     "gameType": "FT",
@@ -306,7 +306,7 @@
   {
     "gameType": "FT",
     "playCateCode": "1X2-1ST-OT",
-    "playCateName": "独赢-加时赛上半场",
+    "playCateName": "独赢\n加时赛上半场",
     "playCateName-english": "1 X 2-1st Half(extra time)",
     "playCateName-vietnamese": "1X2-Hiệp 1(extra time)",
     "playCateNum": "3"
@@ -314,7 +314,7 @@
   {
     "gameType": "FT",
     "playCateCode": "HDP-1ST-OT",
-    "playCateName": "让球-加时赛上半场",
+    "playCateName": "让球\n加时赛上半场",
     "playCateName-english": "Handicap-1st Half(extra time)",
     "playCateName-vietnamese": "Cược Chấp-Hiệp 1(extra time)",
     "playCateNum": "2"
@@ -322,7 +322,7 @@
   {
     "gameType": "FT",
     "playCateCode": "O/U-1ST-OT",
-    "playCateName": "进球: 大 / 小-加时赛上半场",
+    "playCateName": "进球: 大 / 小\n加时赛上半场",
     "playCateName-english": "Goals O/U-1st Half(extra time)",
     "playCateName-vietnamese": "Bàn Thắng Trên / Dưới-Hiệp 1(extra time)",
     "playCateNum": "2"
@@ -450,7 +450,7 @@
   {
     "gameType": "BK",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
@@ -762,7 +762,7 @@
   {
     "gameType": "TN",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
@@ -817,14 +817,6 @@
   },
   {
     "gameType": "VB",
-    "playCateCode": "HDP-SEG1",
-    "playCateName": "让分-第一盘",
-    "playCateName-english": "Point Handicap - 1st Set",
-    "playCateName-vietnamese": "#N/A",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "VB",
     "playCateCode": "1X2",
     "playCateName": "独赢",
     "playCateName-english": "Winner",
@@ -858,7 +850,7 @@
   {
     "gameType": "VB",
     "playCateCode": "EPS",
-    "playCateName": "更优赔率",
+    "playCateName": "特优赔率",
     "playCateName-english": "Price Boosts",
     "playCateName-vietnamese": "Cược Đặc Biệt",
     "playCateNum": "1"
@@ -1026,7 +1018,7 @@
   {
     "gameType": "TT",
     "playCateCode": "SET-HDP",
-    "playCateName": "让局",
+    "playCateName": "让盘",
     "playCateName-english": "Game Handicap",
     "playCateName-vietnamese": "Cược Chấp Game",
     "playCateNum": "2"
@@ -1050,7 +1042,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG1",
-    "playCateName": "让球\n第一局",
+    "playCateName": "让球\n第1局",
     "playCateName-english": "Handicap\n1st Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 1",
     "playCateNum": "2"
@@ -1058,7 +1050,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG2",
-    "playCateName": "让球\n第二局",
+    "playCateName": "让球\n第2局",
     "playCateName-english": "Handicap\n2nd Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 2",
     "playCateNum": "2"
@@ -1066,7 +1058,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG3",
-    "playCateName": "让球\n第三局",
+    "playCateName": "让球\n第3局",
     "playCateName-english": "Handicap\n3rd Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 3",
     "playCateNum": "2"
@@ -1074,7 +1066,7 @@
   {
     "gameType": "TT",
     "playCateCode": "HDP-SEG4",
-    "playCateName": "让球\n第四局",
+    "playCateName": "让球\n第4局",
     "playCateName-english": "Handicap\n4th Qtr",
     "playCateName-vietnamese": "Cược Chấp\nĐặt 4",
     "playCateNum": "2"
@@ -1090,9 +1082,9 @@
   {
     "gameType": "IH",
     "playCateCode": "1X2-ND",
-    "playCateName": "独赢盘",
-    "playCateName-english": "Winner",
-    "playCateName-vietnamese": "Đội Vô Địch",
+    "playCateName": "独赢盘\n加时 & 点球",
+    "playCateName-english": "Winner\nIncl. OT & Pens",
+    "playCateName-vietnamese": "Đội Vô Địch\nGồm h.phụ & luân lưu",
     "playCateNum": "2"
   },
   {
@@ -1109,14 +1101,6 @@
     "playCateName": "进球 大/小",
     "playCateName-english": "Goals O/U",
     "playCateName-vietnamese": "Bàn Thắng Trên / Dưới",
-    "playCateNum": "2"
-  },
-  {
-    "gameType": "IH",
-    "playCateCode": "O/E",
-    "playCateName": "进球 单/双",
-    "playCateName-english": "Goals O/E",
-    "playCateName-vietnamese": "Bàn Thắng Chẵn / Lẻ",
     "playCateNum": "2"
   },
   {
@@ -1177,10 +1161,210 @@
   },
   {
     "gameType": "CB",
+    "playCateCode": "EPS",
+    "playCateName": "特优赔率",
+    "playCateName-english": "Price Boosts",
+    "playCateName-vietnamese": "Cược Đặc Biệt",
+    "playCateNum": "1"
+  },
+  {
+    "gameType": "CB",
     "playCateCode": "1X2-SEG1",
     "playCateName": "独赢盘\n第1局",
     "playCateName-english": "Winner\n1st Frame",
     "playCateName-vietnamese": "Đội Vô Địch\nVán 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG2",
+    "playCateName": "独赢盘\n第2局",
+    "playCateName-english": "Winner\n2nd Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 2",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG3",
+    "playCateName": "独赢盘\n第3局",
+    "playCateName-english": "Winner\n3rd Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 3",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG4",
+    "playCateName": "独赢盘\n第4局",
+    "playCateName-english": "Winner\n4th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 4",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG5",
+    "playCateName": "独赢盘\n第5局",
+    "playCateName-english": "Winner\n5th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 5",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG6",
+    "playCateName": "独赢盘\n第6局",
+    "playCateName-english": "Winner\n6th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 6",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG7",
+    "playCateName": "独赢盘\n第7局",
+    "playCateName-english": "Winner\n7th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 7",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG8",
+    "playCateName": "独赢盘\n第8局",
+    "playCateName-english": "Winner\n8th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 8",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG9",
+    "playCateName": "独赢盘\n第9局",
+    "playCateName-english": "Winner\n9th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 9",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG10",
+    "playCateName": "独赢盘\n第10局",
+    "playCateName-english": "Winner\n10th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 10",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG11",
+    "playCateName": "独赢盘\n第11局",
+    "playCateName-english": "Winner\n11th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 11",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG12",
+    "playCateName": "独赢盘\n第12局",
+    "playCateName-english": "Winner\n12th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 12",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG13",
+    "playCateName": "独赢盘\n第13局",
+    "playCateName-english": "Winner\n13th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 13",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG14",
+    "playCateName": "独赢盘\n第14局",
+    "playCateName-english": "Winner\n14th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 14",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG15",
+    "playCateName": "独赢盘\n第15局",
+    "playCateName-english": "Winner\n15th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 15",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG16",
+    "playCateName": "独赢盘\n第16局",
+    "playCateName-english": "Winner\n16th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 16",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG17",
+    "playCateName": "独赢盘\n第17局",
+    "playCateName-english": "Winner\n17th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 17",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG18",
+    "playCateName": "独赢盘\n第18局",
+    "playCateName-english": "Winner\n18th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 18",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG19",
+    "playCateName": "独赢盘\n第19局",
+    "playCateName-english": "Winner\n19th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 19",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG20",
+    "playCateName": "独赢盘\n第20局",
+    "playCateName-english": "Winner\n20th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 20",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG21",
+    "playCateName": "独赢盘\n第21局",
+    "playCateName-english": "Winner\n21st Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 21",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG22",
+    "playCateName": "独赢盘\n第22局",
+    "playCateName-english": "Winner\n22nd Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 22",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG23",
+    "playCateName": "独赢盘\n第23局",
+    "playCateName-english": "Winner\n23rd Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 23",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG24",
+    "playCateName": "独赢盘\n第24局",
+    "playCateName-english": "Winner\n24th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 24",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "CB",
+    "playCateCode": "1X2-SEG25",
+    "playCateName": "独赢盘\n第25局",
+    "playCateName-english": "Winner\n25th Frame",
+    "playCateName-vietnamese": "Đội Vô Địch\nVán 25",
     "playCateNum": "2"
   },
   {

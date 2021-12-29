@@ -16,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.common.BaseResult
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
@@ -52,34 +53,43 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     }
 
     private fun onTokenStateChanged() {
-        viewModel.errorResultToken.observe(this, Observer {
-            showDialogLogout(it.msg)
-        })
+        viewModel.errorResultToken.observe(this) {
+            showDialogLogout(it)
+        }
     }
 
-    private fun showDialogLogout(message: String) {
-        showTokenPromptDialog(message) {
+    enum class FailType(val code: Int) {
+        MAINTENANCE(2611)
+    }
+
+    private fun showDialogLogout(result: BaseResult) {
+        showTokenPromptDialog(result.msg) {
             viewModel.doLogoutCleanUser {
-                if (sConfigData?.thirdOpen == FLAG_OPEN) MainActivity.reStart(this) else GameActivity.reStart(this)
+                if (result.code != FailType.MAINTENANCE.code) {
+                    if (sConfigData?.thirdOpen == FLAG_OPEN)
+                        MainActivity.reStart(this)
+                    else
+                        GameActivity.reStart(this)
+                }
             }
         }
     }
 
     private fun onNetworkException() {
-        viewModel.networkExceptionUnavailable.observe(this, {
+        viewModel.networkExceptionUnavailable.observe(this) {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        })
+        }
 
-        viewModel.networkExceptionTimeout.observe(this, {
+        viewModel.networkExceptionTimeout.observe(this) {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        })
+        }
 
-        viewModel.networkExceptionUnknown.observe(this, {
+        viewModel.networkExceptionUnknown.observe(this) {
             hideLoading()
             showErrorPromptDialog(it) { mOnNetworkExceptionListener?.onClick(null) }
-        })
+        }
     }
 
     //20210526 紀錄：call webAPI 的 exception 錯誤提示統一在 BackActivity 處理，若有需要 callback 再使用此 fun

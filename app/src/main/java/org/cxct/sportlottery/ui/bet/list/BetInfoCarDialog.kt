@@ -16,10 +16,8 @@ import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
-import kotlinx.android.synthetic.main.dialog_bet_record_detail_list.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.view_bet_info_close_message.*
-import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
@@ -30,7 +28,6 @@ import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
@@ -214,10 +211,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun initEditText() {
+
         et_bet.afterTextChanged {
-            button_bet.tv_quota.text = TextUtil.formatBetQuota(if (it.isEmpty()) 0 else it.toInt())
+            button_bet.tv_quota.text = TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
+                button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
 
                 tv_check_maximum_limit.visibility = View.VISIBLE
                 ll_bet_quota_detail.visibility = View.GONE
@@ -276,7 +275,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                         tvRealAmount.text = toMoneyFormat(realAmount)
                     }
                 }
-
+                button_bet.tv_quota.text = TextUtil.format(realAmount)
 
                 //比照以往計算
                 //var win = quota * getOdds(matchOdd, oddsType)
@@ -313,16 +312,16 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun initObserve() {
-        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+        viewModel.userInfo.observe(this.viewLifecycleOwner) {
             it?.discount?.let { newDiscount ->
                 if (discount == newDiscount) return@observe
 
                 viewModel.updateBetInfoDiscount(discount, newDiscount)
                 discount = newDiscount
             }
-        })
+        }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list[0]
@@ -357,7 +356,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                             }
                         }
                         OddsType.EU -> {
-                            win = betAmount * (getOdds(matchOdd, oddsType)-1)
+                            win = betAmount * (getOdds(matchOdd, oddsType) - 1)
                             tvRealAmount.text = toMoneyFormat(betAmount)
 
                         }
@@ -370,21 +369,21 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     tv_win_quota.text = TextUtil.format(win)
                 }
             }
-        })
+        }
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
             oddsType = it
-        })
+        }
 
-        viewModel.isLogin.observe(this.viewLifecycleOwner, {
+        viewModel.isLogin.observe(this.viewLifecycleOwner) {
             isLogin = it
-        })
+        }
 
-        viewModel.userMoney.observe(this.viewLifecycleOwner, {
+        viewModel.userMoney.observe(this.viewLifecycleOwner) {
             currentMoney = it
-        })
+        }
 
-        viewModel.betAddResult.observe(this.viewLifecycleOwner, {
+        viewModel.betAddResult.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { result ->
                 if (!result.success) {
                     showPromptDialog(
@@ -399,53 +398,53 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     showBottomSheetDialog(result)
                 }
             }
-        })
+        }
 
-        viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner, { event ->
+        viewModel.showBetInfoSingle.observe(this.viewLifecycleOwner) { event ->
             event?.peekContent()?.let {
                 if (!it) dismiss()
             }
-        })
+        }
 
-        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner, {
+        viewModel.hasBetPlatClose.observe(this.viewLifecycleOwner) {
             button_bet.hasBetPlatClose = it
-        })
+        }
     }
 
     private fun initSocketObserver() {
-        receiver.matchOddsChange.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsChange.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsChangeEvent ->
                 viewModel.updateMatchOdd(matchOddsChangeEvent)
             }
-        })
+        }
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, {
+        receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
                 if (matchOdd?.producerId == null || matchOdd?.producerId == globalStopEvent.producerId) {
                     matchOdd?.status = BetStatus.LOCKED.code
                     matchOdd?.let { setupData(it) }
                 }
             }
-        })
+        }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelEventAll()
                 subscribeChannelEvent(matchOdd?.matchId)
             }
-        })
+        }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+        receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 viewModel.updateMatchOdd(oddsChangeEvent)
             }
-        })
+        }
 
-        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 viewModel.updateLockMatchOdd(matchOddsLockEvent)
             }
-        })
+        }
     }
 
     private fun showBottomSheetDialog(result: BetAddResult) {

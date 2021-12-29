@@ -321,17 +321,17 @@ abstract class BaseOddButtonViewModel(
     ) {
         //調整盤口
         var currentOddsTypes = oddsType
-        currentOddsTypes = if(normalBetList.size == 1){
-            normalBetList[0].singleBetOddsType
-        }else{
-            OddsType.EU
-        }
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
             matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
         }
-
+        //若有串關 則改為EU
+        currentOddsTypes = if(normalBetList.size == 1){
+            normalBetList[0].singleBetOddsType
+        }else{
+            OddsType.EU
+        }
         //串關注單
         val parlayList: MutableList<Stake> = mutableListOf()
         parlayBetList.forEach {
@@ -359,6 +359,7 @@ abstract class BaseOddButtonViewModel(
                     s.matchType = normalBetList.find { betInfoListData ->
                         betInfoListData.matchOdd.oddsId == m.oddsId
                     }?.matchType
+                    s.oddsType = oddsType
                 }
             }
 
@@ -404,6 +405,8 @@ abstract class BaseOddButtonViewModel(
             val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
             result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
+            result?.receipt?.singleBets?.firstOrNull()?.oddsType = oddsType.value
+
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
                     afterBet(betInfoListData.matchType, result)
@@ -626,7 +629,7 @@ abstract class BaseOddButtonViewModel(
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                    loginRepository.mOddsType.value ?: OddsType.HK
                                 ), newItem
                             )
 
@@ -690,7 +693,7 @@ abstract class BaseOddButtonViewModel(
                                     newMatchOdd.oddState = getOddState(
                                         getOdds(
                                             newMatchOdd,
-                                            loginRepository.mOddsType.value ?: OddsType.EU
+                                            loginRepository.mOddsType.value ?: OddsType.HK
                                         ), newItem
                                     )
 
@@ -750,7 +753,7 @@ abstract class BaseOddButtonViewModel(
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.EU
+                                    loginRepository.mOddsType.value ?: OddsType.HK
                                 ), newItem
                             )
 
