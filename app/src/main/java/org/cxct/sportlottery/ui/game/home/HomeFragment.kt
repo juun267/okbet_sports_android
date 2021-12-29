@@ -185,7 +185,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 override fun onClick(select: OtherMatch) {
                     scroll_view.smoothScrollTo(0, 0)
                     viewModel.navSpecialEntrance(
-                        mSelectMatchType,
+                        MatchType.TODAY,
                         GameType.getGameType(select.code)
                     )
                 }

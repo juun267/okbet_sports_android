@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -284,7 +285,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         }
                         holder.setText(R.id.tvSport, t.name)
                         holder.setText(R.id.tvSportCount, t.num.toString())
-                        holder.getView<RelativeLayout>(R.id.layoutSport).setOnClickListener {
+                        holder.getView<LinearLayout>(R.id.layoutSport).setOnClickListener {
                             onClickSportListener?.onClick(t)
                         }
                     }
