@@ -180,6 +180,16 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     )
                 }
             }
+        mRvGameTable4Adapter.onClickSportListener =
+            object : OnSelectItemListener<OtherMatch> {
+                override fun onClick(select: OtherMatch) {
+                    scroll_view.smoothScrollTo(0, 0)
+                    viewModel.navSpecialEntrance(
+                        MatchType.TODAY,
+                        GameType.getGameType(select.code)
+                    )
+                }
+            }
 
         mRvGameTable4Adapter.onClickFavoriteListener =
             object : OnClickFavoriteListener {
