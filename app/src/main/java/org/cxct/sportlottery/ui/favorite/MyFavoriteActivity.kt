@@ -208,30 +208,30 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
     }
 
     private fun initObserver() {
-        viewModel.showBetUpperLimit.observe(this, {
+        viewModel.showBetUpperLimit.observe(this) {
             if (it.getContentIfNotHandled() == true)
                 snackBarBetUpperLimitNotify.apply {
                     setAnchorView(R.id.my_favorite_bottom_navigation)
                     show()
                 }
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
-        viewModel.showBetInfoSingle.observe(this, {
+        viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
                 BetInfoCarDialog().show(
                     supportFragmentManager,
                     BetInfoCarDialog::class.java.simpleName
                 )
             }
-        })
+        }
 
-        viewModel.nowTransNum.observe(this, {
+        viewModel.nowTransNum.observe(this) {
             navigation_transaction_status.trans_number.text = it.toString()
-        })
+        }
     }
 
     private fun initServiceButton() {

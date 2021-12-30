@@ -871,6 +871,18 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             viewModel.getMatchPreload()
+            
+            it?.let { leagueChangeEvent ->
+                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                    viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+                        mSelectMatchType,
+                        leagueIdList,
+                        listOf(),
+                        isIncrement = true
+                    )
+                }
+            }
+
         }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
