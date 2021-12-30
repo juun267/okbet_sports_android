@@ -245,7 +245,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
                 getString(R.string.game_tab_outright_odd) -> { //冠軍
                     if(args.matchType == MatchType.OTHER){
-                        viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
+                        viewModel.switchChildMatchType(childMatchType = MatchType.OTHER_OUTRIGHT)
                     }else{
                         viewModel.switchChildMatchType(childMatchType = MatchType.OUTRIGHT)
                     }
