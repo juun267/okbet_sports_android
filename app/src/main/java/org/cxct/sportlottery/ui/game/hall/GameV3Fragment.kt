@@ -1083,15 +1083,24 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
-                when (game_list.adapter) {
-                    is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
-                        leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                            viewModel.getGameHallList(
-                                args.matchType,
-                                isReloadDate = false,
-                                leagueIdList = leagueIdList,
-                                isIncrement = true
-                            )
+
+                //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+                viewModel.switchMatchType(args.matchType)
+
+                //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
+                val nowGameType = GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+                if (nowGameType == leagueChangeEvent.gameType) {
+                    viewModel.refreshGame(args.matchType)
+                    when (game_list.adapter) {
+                        is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
+                            leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                                viewModel.getGameHallList(
+                                    args.matchType,
+                                    isReloadDate = false,
+                                    leagueIdList = leagueIdList,
+                                    isIncrement = true
+                                )
+                            }
                         }
                     }
                 }

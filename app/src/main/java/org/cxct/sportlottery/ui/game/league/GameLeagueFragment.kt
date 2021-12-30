@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,13 +87,14 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         LeagueAdapter(args.matchType).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
-            leagueListener = LeagueListener ({
+            leagueListener = LeagueListener({
                 subscribeChannelHall(it)
-            },{
+            }, {
                 viewModel.refreshGame(
                     args.matchType,
                     listOf(it.league.id),
-                    listOf())
+                    listOf()
+                )
             })
 
             leagueOddListener = LeagueOddListener(
@@ -334,9 +334,12 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     private fun updateToolbar(oddsListData: OddsListData?) {
         when {
             (oddsListData?.leagueOdds?.size ?: 0 == 1) -> {
-                game_toolbar_match_type.text = if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else oddsListData?.sport?.name ?: ""
-                game_toolbar_sport_type.text = args.matchCategoryName ?:
-                    (oddsListData?.leagueOdds?.firstOrNull()?.league?.name?.split(" ")?.getOrNull(1) ?: "").toUpperCase(Locale.getDefault())
+                game_toolbar_match_type.text =
+                    if (args.matchType == MatchType.AT_START) getString(R.string.home_tab_at_start_2) else oddsListData?.sport?.name
+                        ?: ""
+                game_toolbar_sport_type.text = args.matchCategoryName
+                    ?: (oddsListData?.leagueOdds?.firstOrNull()?.league?.name?.split(" ")
+                        ?.getOrNull(1) ?: "").toUpperCase(Locale.getDefault())
             }
 
             (oddsListData?.leagueOdds?.size ?: 0 > 1) -> {
@@ -464,12 +467,13 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.let { leagueChangeEvent ->
+
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
                     leagueIdList.filter { changedLeagueId ->
                         leagueAdapter.data.find { adapterLeague -> adapterLeague.league.id == changedLeagueId } != null
                     }.let { onScreenLeagueIdList ->
                         if (onScreenLeagueIdList.isNotEmpty())
-                            viewModel.getLeagueOddsList(
+                            viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                                 args.matchType,
                                 onScreenLeagueIdList,
                                 listOf(),
@@ -477,6 +481,20 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                             )
                     }
                 }
+
+                //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
+                if (args.gameType.key == leagueChangeEvent.gameType) {
+                    viewModel.refreshGame(args.matchType)
+                    leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                        viewModel.getGameHallList(
+                            args.matchType,
+                            isReloadDate = false,
+                            leagueIdList = leagueIdList,
+                            isIncrement = true
+                        )
+                    }
+                }
+
             }
         }
     }
@@ -678,8 +696,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
-    private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd){
-        leagueOdd.matchOdds.forEach {matchOdd ->
+    private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd) {
+        leagueOdd.matchOdds.forEach { matchOdd ->
             unSubscribeChannelHall(
                 leagueOdd.gameType?.key,
                 getPlayCateMenuCode(),
