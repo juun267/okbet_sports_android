@@ -979,11 +979,13 @@ class GameViewModel(
         matchIdList: List<String>? = null
     ) {
         val nowMatchType = curChildMatchType.value ?: matchType
+        val timeRangeParams =
+            if (matchType == MatchType.IN_PLAY) null else getCurrentTimeRangeParams()
         getSportSelected(nowMatchType)?.let { item ->
             getOddsList(
                 item.code,
                 matchType.postValue,
-                getCurrentTimeRangeParams(),
+                timeRangeParams,
                 leagueIdList,
                 matchIdList,
                 true
