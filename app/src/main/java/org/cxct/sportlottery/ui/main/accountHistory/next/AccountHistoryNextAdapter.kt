@@ -196,7 +196,7 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let {
-                val odds = getOdds(first, oddsType)
+                val odds = first.odds
                 binding.tvOdd.setOddFormat(odds)
                 binding.tvOddsType.text = when (first.oddsType) {
                     OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
@@ -235,7 +235,8 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let {
-                val odds = getOdds(first, oddsType)
+                val odds = first.odds
+
                 binding.tvOdd.setOddFormat(odds)
                 binding.tvOddsType.text = when (first.oddsType) {
                     OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
