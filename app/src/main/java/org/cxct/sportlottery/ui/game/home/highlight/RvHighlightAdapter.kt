@@ -271,8 +271,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 gameType = data.matchInfo?.gameType
 
                 val playCateStr = when (gameType) {
-                    GameType.FT.key, GameType.BK.key -> context.getText(R.string.ou_hdp_hdp_title)
-                    GameType.TN.key, GameType.VB.key -> context.getText(R.string.ou_hdp_1x2_title)
+                    GameType.FT.key, GameType.BK.key, GameType.IH.key, GameType.RB.key, GameType.AFT.key -> context.getText(
+                        R.string.ou_hdp_hdp_title
+                    )
+                    GameType.TN.key, GameType.VB.key, GameType.BX.key, GameType.CK.key -> context.getText(
+                        R.string.ou_hdp_1x2_title
+                    )
                     else -> ""
                 }.toString()
 
