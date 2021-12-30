@@ -324,6 +324,9 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
+            if(it.matchOdd.odds == it.matchOdd.malayOdds){
+                currentOddsTypes == OddsType.EU
+            }
             matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
         }
         //若有串關 則改為EU
