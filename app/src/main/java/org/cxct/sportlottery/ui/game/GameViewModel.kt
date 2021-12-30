@@ -493,6 +493,13 @@ class GameViewModel(
                         getCurrentTimeRangeParams(),
                         isIncrement = false
                     )
+//                    getOddsList(
+//                        specialMenuData?.items!![0].code!!,
+//                        code,
+//                        getCurrentTimeRangeParams(),
+//                        leagueIdList = null,
+//                        isIncrement = false
+//                    )
                 }
             }
             specialMenuData?.updateSportSelectState(null)
@@ -897,10 +904,11 @@ class GameViewModel(
                     getEpsList(code, startTime = time)
                 }
                 MatchType.OTHER -> {
-                    getLeagueList(
+                    getOddsList(
                         code,
-                        currentSpecialCode,
+                        "sc:longTermEvent",
                         getCurrentTimeRangeParams(),
+                        leagueIdList = leagueIdList,
                         isIncrement = isIncrement
                     )
                 }
@@ -1060,12 +1068,15 @@ class GameViewModel(
         matchIdList: List<String>? = null,
         isIncrement: Boolean = false
     ) {
+        var currentTimeRangeParams:TimeRangeParams? = null
         when (matchType) {
-            MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue -> {
+            MatchType.IN_PLAY.postValue, MatchType.AT_START.postValue,MatchType.OTHER.postValue -> {
                 _oddsListResult.value = Event(null)
+                currentTimeRangeParams = timeRangeParams
             }
             MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
                 _oddsListGameHallResult.value = Event(null)
+                currentTimeRangeParams = timeRangeParams
             }
         }
 
@@ -1091,8 +1102,8 @@ class GameViewModel(
                         matchTypeFilter(matchType),
                         leagueIdList = emptyFilter(leagueIdList),
                         matchIdList = emptyFilter(matchIdList),
-                        startTime = timeFilter(timeRangeParams?.startTime),
-                        endTime = timeFilter(timeRangeParams?.endTime),
+                        startTime = timeFilter(currentTimeRangeParams?.startTime),
+                        endTime = timeFilter(currentTimeRangeParams?.endTime),
                         playCateMenuCode = getPlayCateSelected()?.code ?: "MAIN"
                     )
                 )
@@ -1163,6 +1174,9 @@ class GameViewModel(
                         )
                     else
                         _oddsListResult.postValue(Event(result))
+                }
+                else ->{
+                    _oddsListGameHallResult.postValue(Event(result))
                 }
             }
 

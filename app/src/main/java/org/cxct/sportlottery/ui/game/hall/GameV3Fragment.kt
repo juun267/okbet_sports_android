@@ -368,9 +368,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         val epsItem = (view.game_tab_odd_v4.game_tabs.getChildAt(0) as ViewGroup).getChildAt(2)
         if (view.game_tab_odd_v4.visibility == View.VISIBLE && args.matchType == MatchType.PARLAY) {
             epsItem.visibility = View.GONE
+        }else if(args.matchType == MatchType.OTHER || args.matchType == MatchType.OTHER_OUTRIGHT){
+            epsItem.visibility = View.GONE
         } else {
             epsItem.visibility = View.VISIBLE
         }
+
     }
 
     private fun setupSportBackground(view: View) {
