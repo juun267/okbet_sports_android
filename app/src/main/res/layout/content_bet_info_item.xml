@@ -148,14 +148,14 @@
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
                 />
+
             <TextView
+                android:id="@+id/tvRealAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvRealAmount"
                 android:text="0.00"
                 android:textColor="@color/colorBlue"
-                android:textSize="@dimen/textSize12sp"
-                />
+                android:textSize="@dimen/textSize12sp" />
 
         </LinearLayout>
 

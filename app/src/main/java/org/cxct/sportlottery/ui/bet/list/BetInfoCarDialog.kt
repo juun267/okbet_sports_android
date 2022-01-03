@@ -217,7 +217,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
             if (it.isEmpty()) {
                 button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
-
+                tvRealAmount.text = toMoneyFormat(0.0)
                 tv_check_maximum_limit.visibility = View.VISIBLE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.GONE
@@ -246,7 +246,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 when (oddsType) {
                     OddsType.MYS -> {
                         if (getOdds(matchOdd, oddsType) < 0) {
-                            realAmount = quota * abs(getOdds(matchOdd, oddsType))
+                            realAmount = quota * kotlin.math.abs(getOdds(matchOdd, oddsType))
                             tvRealAmount.text = toMoneyFormat(realAmount)
                             win = quota
                         } else {
@@ -257,7 +257,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     }
                     OddsType.IDN -> {
                         if (getOdds(matchOdd, oddsType) < 0) {
-                            realAmount = quota * abs(getOdds(matchOdd, oddsType))
+                            realAmount = quota * kotlin.math.abs(getOdds(matchOdd, oddsType))
                             tvRealAmount.text = toMoneyFormat(realAmount)
                             win = quota
                         } else {
