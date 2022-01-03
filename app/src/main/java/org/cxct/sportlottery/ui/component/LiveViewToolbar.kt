@@ -294,15 +294,6 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun setupBottomSheetBehaviour() {
-/*
-        val bottomSheet = webBottomSheet.findViewById<View>(R.id.design_bottom_sheet)
-        bottomSheet?.let {
-            setBackgroundResource(android.R.color.transparent)
-            layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
-            val behavior = BottomSheetBehavior.from<View>(bottomSheet)
-            behavior.peekHeight = resources.displayMetrics.heightPixels - 50.dp //減去最上方工具列高度
-        }
-*/
         val bottomSheet: FrameLayout = webBottomSheet.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         val layoutParams = bottomSheet.layoutParams
