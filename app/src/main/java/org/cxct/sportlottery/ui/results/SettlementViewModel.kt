@@ -230,6 +230,16 @@ class SettlementViewModel(
             GameType.BK.key -> ListType.FIRST_ITEM_BK
             GameType.TN.key -> ListType.FIRST_ITEM_TN
             GameType.VB.key -> ListType.FIRST_ITEM_VB
+            GameType.TT.key -> ListType.FIRST_ITEM_TT
+            GameType.IH.key -> ListType.FIRST_ITEM_IH
+            GameType.BX.key -> ListType.FIRST_ITEM_BX
+            GameType.CB.key -> ListType.FIRST_ITEM_CB
+            GameType.CK.key -> ListType.FIRST_ITEM_CK
+            GameType.BB.key -> ListType.FIRST_ITEM_BB
+            GameType.RB.key -> ListType.FIRST_ITEM_RB
+            GameType.MR.key -> ListType.FIRST_ITEM_MR
+            GameType.GF.key -> ListType.FIRST_ITEM_GF
+            GameType.AFT.key -> ListType.FIRST_ITEM_AFT
             else -> ListType.DETAIL
         }
     }
