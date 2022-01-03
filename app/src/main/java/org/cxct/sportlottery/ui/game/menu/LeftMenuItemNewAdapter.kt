@@ -89,7 +89,6 @@ class LeftMenuItemNewAdapter(
                     when (item.isSelected) {
                         0 -> {
                             btn_select.setImageResource(R.drawable.ic_pin_v4)
-                            item.isSelected = 1
 
                             btn_select.setOnClickListener {
                                 itemSelectedListener.onSportSelect(
@@ -102,7 +101,6 @@ class LeftMenuItemNewAdapter(
                         }
                         1 -> {
                             btn_select.setImageResource(R.drawable.ic_pin_selected_v4)
-                            item.isSelected = 0
 
                             btn_select.setOnClickListener {
                                 itemSelectedListener.onSportSelect(
