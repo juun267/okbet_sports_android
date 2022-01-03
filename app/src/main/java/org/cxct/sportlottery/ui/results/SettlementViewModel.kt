@@ -124,7 +124,9 @@ class SettlementViewModel(
                             showDetail = it.matchExpanded
                         }
                     }
-                    ListType.FIRST_ITEM_FT, ListType.FIRST_ITEM_BK, ListType.FIRST_ITEM_TN, ListType.FIRST_ITEM_BM, ListType.FIRST_ITEM_VB, ListType.DETAIL -> {
+                    ListType.FIRST_ITEM_FT, ListType.FIRST_ITEM_BK, ListType.FIRST_ITEM_TN, ListType.FIRST_ITEM_BM, ListType.FIRST_ITEM_VB, ListType.DETAIL,
+                    ListType.FIRST_ITEM_TT, ListType.FIRST_ITEM_IH, ListType.FIRST_ITEM_BX, ListType.FIRST_ITEM_CB, ListType.FIRST_ITEM_CK, ListType.FIRST_ITEM_BB,
+                    ListType.FIRST_ITEM_RB, ListType.FIRST_ITEM_MR, ListType.FIRST_ITEM_GF, ListType.FIRST_ITEM_AFT -> {
                         if (showDetail) {
                             expandData.add(it)
                         }
