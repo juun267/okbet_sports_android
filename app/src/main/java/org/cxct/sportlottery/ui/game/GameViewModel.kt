@@ -1432,26 +1432,25 @@ class GameViewModel(
 
         return when (matchType) {
             MatchType.IN_PLAY -> {
-                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
             }
             MatchType.TODAY -> {
-                sportMenuRes?.sportMenuData?.menu?.today?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             }
             MatchType.EARLY -> {
-                sportMenuRes?.sportMenuData?.menu?.early?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             }
             MatchType.PARLAY -> {
-                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             }
             MatchType.OUTRIGHT -> {
-                sportMenuRes?.sportMenuData?.menu?.outright?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
             }
             MatchType.AT_START -> {
-                sportMenuRes?.sportMenuData?.atStart?.items?.size ?: 0
                 sportMenuRes?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             }
             MatchType.EPS -> {
-                sportMenuRes?.sportMenuData?.menu?.eps?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
             }
             else -> {
                 0
