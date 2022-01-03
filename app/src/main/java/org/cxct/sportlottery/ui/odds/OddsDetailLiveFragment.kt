@@ -599,6 +599,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                 setupBackScore(event)
                 setupStatusTnVb(event)
             }
+            else -> {}
         }
     }
 
