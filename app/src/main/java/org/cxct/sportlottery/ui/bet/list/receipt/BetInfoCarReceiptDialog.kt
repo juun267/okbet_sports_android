@@ -1,9 +1,11 @@
 package org.cxct.sportlottery.ui.bet.list.receipt
 
 import android.os.Bundle
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
 import kotlinx.android.synthetic.main.item_match_receipt.*
@@ -16,6 +18,7 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
+import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
 
 class BetInfoCarReceiptDialog(val result: BetAddResult) :
@@ -40,14 +43,11 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         view.apply {
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
-                    tv_play_name.text = playName
+                    tv_play_content.text = playName
                     tv_league.text = leagueName
                     tv_team_home.text = homeName
-                    tv_spread.text = spread
                     tv_team_away.text = awayName
                     tv_match_type.text = playCateName
-
-                    tv_spread.isVisible = needShowSpread(playCateCode)
                 }
 
                 view.view_match_receipt.setBetReceiptBackground(status)
@@ -57,16 +57,25 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 tv_bet_status.setBetReceiptStatus(status)
                 tv_bet_status.setReceiptStatusColor(status)
                 tv_receipt_status.setSingleReceiptStatusTips(status)
-                tv_odd_type.setOddTypeString(oddsType)
 
                 if (matchType == MatchType.OUTRIGHT) {
-                    tv_spread.visibility = View.GONE
                     tv_team_home.visibility = View.GONE
                     tv_verse.visibility = View.GONE
                     tv_team_away.visibility = View.GONE
                 }
-            }
 
+                val matchOdd = matchOdds?.firstOrNull()
+
+                matchOdd?.apply {
+                    tv_play_content.text = setSpannedString(
+                        needShowSpread(matchOdd.playCateCode) && (matchType != MatchType.OUTRIGHT),
+                        matchOdd.playName,
+                        matchOdd.spread,
+                        TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
+                        tv_play_content.context.getString(oddsType?.res ?: OddsType.EU.res)
+                    )
+                }
+            }
         }
     }
 
@@ -90,17 +99,48 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     private fun initObserver() {
 
-        viewModel.userMoney.observe(this.viewLifecycleOwner, {
+        viewModel.userMoney.observe(this.viewLifecycleOwner) {
             it?.let { money -> setupCurrentMoney(money) }
-        })
+        }
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) { oddType ->
             val matchOdd = result.receipt?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()
-            tv_match_odd.setOddFormat(getOdds(matchOdd, it))
-        })
+//            tv_play_content.setOddFormat(getOdds(matchOdd, it))
+            result.receipt?.singleBets?.firstOrNull()?.let { betResult ->
+                betResult.matchOdds?.firstOrNull()?.let { matchOdd ->
+                    tv_play_content.text = setSpannedString(
+                        needShowSpread(matchOdd.playCateCode) && (betResult.matchType != MatchType.OUTRIGHT),
+                        matchOdd.playName,
+                        matchOdd.spread,
+                        TextUtil.formatForOdd(getOdds(matchOdd, oddType)),
+                        tv_play_content.context.getString(oddType.res)
+                    )
+
+                }
+            }
+        }
 
     }
 
+    private fun setSpannedString(
+        isShowSpread: Boolean,
+        playName: String?,
+        spread: String?,
+        formatForOdd: String,
+        oddsType: String
+    ): Spanned {
+        val playNameStr =
+            if (!playName.isNullOrEmpty()) "<font color=#333333>$playName</font> " else ""
+        val spreadStr =
+            if (!spread.isNullOrEmpty() || isShowSpread) "<font color=#B73A20>$spread</font> " else ""
+
+        return HtmlCompat.fromHtml(
+            playNameStr +
+                    spreadStr +
+                    "<font color=#333333>@ $formatForOdd</font> " +
+                    "<font color=#666666>(${oddsType})</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
+    }
 
     private fun setupCurrentMoney(money: Double) {
         tv_current_money.text =
