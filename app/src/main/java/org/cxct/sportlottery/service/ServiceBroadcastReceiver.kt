@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +35,7 @@ import org.cxct.sportlottery.service.BackService.Companion.CHANNEL_KEY
 import org.cxct.sportlottery.service.BackService.Companion.CONNECT_STATUS
 import org.cxct.sportlottery.service.BackService.Companion.SERVER_MESSAGE_KEY
 import org.cxct.sportlottery.service.BackService.Companion.mUserId
+import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.json.JSONArray
@@ -83,7 +85,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     val playQuotaChange: LiveData<PlayQuotaChangeEvent?>
         get() = _playQuotaChange
 
-    val leagueChange: LiveData<LeagueChangeEvent?>
+    val leagueChange: LiveData<Event<LeagueChangeEvent?>>
         get() = _leagueChange
 
     val matchOddsLock: LiveData<MatchOddsLockEvent?>
@@ -116,7 +118,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
     private val _sysMaintenance = MutableLiveData<SysMaintenanceEvent?>()
     private val _serviceConnectStatus = MutableLiveData<ServiceConnectStatus>()
     private val _playQuotaChange = MutableLiveData<PlayQuotaChangeEvent?>()
-    private val _leagueChange = MutableLiveData<LeagueChangeEvent?>()
+    private val _leagueChange = MutableLiveData<Event<LeagueChangeEvent?>>()
     private val _matchOddsLock = MutableLiveData<MatchOddsLockEvent?>()
     private val _userDiscountChange = MutableLiveData<UserDiscountChangeEvent?>()
     private val _userMaxBetMoneyChange = MutableLiveData<UserLevelConfigListEvent?>()
@@ -151,6 +153,7 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                 val jObjStr = jsonArray.optJSONObject(i).toString()
                 val eventType = EventType.getEventType(jsonArray.optJSONObject(i).optString("eventType"))
                 //全体公共频道
+                Log.e("Martin","eventType="+eventType)
                 when (eventType) {
                     EventType.NOTICE -> {
                         val data = ServiceMessage.getNotice(jObjStr)
@@ -229,8 +232,9 @@ open class ServiceBroadcastReceiver(val userInfoRepository: UserInfoRepository? 
                         }
                     }
                     EventType.LEAGUE_CHANGE -> {
+                        Log.e("Martin","1234")
                         val data = ServiceMessage.getLeagueChange(jObjStr)
-                        _leagueChange.value = data
+                        _leagueChange.value = Event(data)
                     }
                     EventType.MATCH_ODDS_LOCK -> {
                         val data = ServiceMessage.getMatchOddsLock(jObjStr)

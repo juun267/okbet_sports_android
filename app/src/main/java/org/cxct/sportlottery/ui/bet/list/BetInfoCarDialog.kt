@@ -243,35 +243,39 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 //計算實際下注金額
                 var realAmount = quota
                 var win = 0.0
-                when (oddsType) {
+                var currentOddsType = oddsType
+                if(matchOdd?.odds == matchOdd?.malayOdds){
+                    currentOddsType = OddsType.EU
+                }
+                when (currentOddsType) {
                     OddsType.MYS -> {
-                        if (getOdds(matchOdd, oddsType) < 0) {
-                            realAmount = quota * kotlin.math.abs(getOdds(matchOdd, oddsType))
+                        if (getOdds(matchOdd, currentOddsType) < 0) {
+                            realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
                             tvRealAmount.text = toMoneyFormat(realAmount)
                             win = quota
                         } else {
-                            win = quota * getOdds(matchOdd, oddsType)
+                            win = quota * getOdds(matchOdd, currentOddsType)
                             tvRealAmount.text = toMoneyFormat(realAmount)
                         }
 
                     }
                     OddsType.IDN -> {
-                        if (getOdds(matchOdd, oddsType) < 0) {
-                            realAmount = quota * kotlin.math.abs(getOdds(matchOdd, oddsType))
+                        if (getOdds(matchOdd, currentOddsType) < 0) {
+                            realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
                             tvRealAmount.text = toMoneyFormat(realAmount)
                             win = quota
                         } else {
-                            win = quota * getOdds(matchOdd, oddsType)
+                            win = quota * getOdds(matchOdd, currentOddsType)
                             tvRealAmount.text = toMoneyFormat(realAmount)
                         }
                     }
                     OddsType.EU -> {
-                        win = quota * (getOdds(matchOdd, oddsType)-1)
+                        win = quota * (getOdds(matchOdd, currentOddsType)-1)
                         tvRealAmount.text = toMoneyFormat(realAmount)
 
                     }
                     else -> {
-                        win = quota * getOdds(matchOdd, oddsType)
+                        win = quota * getOdds(matchOdd, currentOddsType)
                         tvRealAmount.text = toMoneyFormat(realAmount)
                     }
                 }
@@ -333,35 +337,39 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 //                    }
                     var realAmount = 0.00
                     var win = 0.0
-                    when (oddsType) {
+                    var currentOddsType = oddsType
+                    if(matchOdd?.odds == matchOdd?.malayOdds){
+                        currentOddsType = OddsType.EU
+                    }
+                    when (currentOddsType) {
                         OddsType.MYS -> {
-                            if (getOdds(matchOdd, oddsType) < 0) {
-                                realAmount = betAmount * abs(getOdds(matchOdd, oddsType))
+                            if (getOdds(matchOdd, currentOddsType) < 0) {
+                                realAmount = betAmount * abs(getOdds(matchOdd, currentOddsType))
                                 tvRealAmount.text = toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
-                                win = betAmount * getOdds(matchOdd, oddsType)
+                                win = betAmount * getOdds(matchOdd, currentOddsType)
                                 tvRealAmount.text = toMoneyFormat(betAmount)
                             }
 
                         }
                         OddsType.IDN -> {
-                            if (getOdds(matchOdd, oddsType) < 0) {
-                                realAmount = betAmount * abs(getOdds(matchOdd, oddsType))
+                            if (getOdds(matchOdd, currentOddsType) < 0) {
+                                realAmount = betAmount * abs(getOdds(matchOdd, currentOddsType))
                                 tvRealAmount.text = toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
-                                win = betAmount * getOdds(matchOdd, oddsType)
+                                win = betAmount * getOdds(matchOdd, currentOddsType)
                                 tvRealAmount.text = toMoneyFormat(betAmount)
                             }
                         }
                         OddsType.EU -> {
-                            win = betAmount * (getOdds(matchOdd, oddsType) - 1)
+                            win = betAmount * (getOdds(matchOdd, currentOddsType) - 1)
                             tvRealAmount.text = toMoneyFormat(betAmount)
 
                         }
                         else -> {
-                            win = betAmount * getOdds(matchOdd, oddsType)
+                            win = betAmount * getOdds(matchOdd, currentOddsType)
                             tvRealAmount.text = toMoneyFormat(betAmount)
                         }
                     }
