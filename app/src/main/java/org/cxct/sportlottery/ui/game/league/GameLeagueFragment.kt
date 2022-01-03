@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.league
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -466,14 +467,16 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
-            it?.let { leagueChangeEvent ->
+            it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
 
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
                     leagueIdList.filter { changedLeagueId ->
                         leagueAdapter.data.find { adapterLeague -> adapterLeague.league.id == changedLeagueId } != null
                     }.let { onScreenLeagueIdList ->
                         if (onScreenLeagueIdList.isNotEmpty())
-                            viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+                            Log.e("Martin","2222=")
+
+                        viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                                 args.matchType,
                                 onScreenLeagueIdList,
                                 listOf(),
