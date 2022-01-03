@@ -1448,6 +1448,7 @@ class GameViewModel(
             }
             MatchType.AT_START -> {
                 sportMenuRes?.sportMenuData?.atStart?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             }
             MatchType.EPS -> {
                 sportMenuRes?.sportMenuData?.menu?.eps?.items?.size ?: 0
