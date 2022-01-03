@@ -302,18 +302,20 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             GameType.FT.key -> { //足球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, false) { timeMillis ->
-                                        val timeStr = TimeUtil.longToMmSs(timeMillis)
+                                        val timeMillisAbs = if (timeMillis > 0) timeMillis else 0
+                                        val timeStr = TimeUtil.longToMmSs(timeMillisAbs)
                                         tv_match_time.text = timeStr
-                                        data.leagueTime = (timeMillis / 1000).toInt()
+                                        data.leagueTime = (timeMillisAbs / 1000).toInt()
                                     }
                                 }
                             }
                             GameType.BK.key -> { //籃球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, true) { timeMillis ->
-                                        val timeStr = TimeUtil.longToMmSs(timeMillis)
+                                        val timeMillisAbs = if (timeMillis > 0) timeMillis else 0
+                                        val timeStr = TimeUtil.longToMmSs(timeMillisAbs)
                                         tv_match_time.text = timeStr
-                                        data.leagueTime = (timeMillis / 1000).toInt()
+                                        data.leagueTime = (timeMillisAbs / 1000).toInt()
                                     }
                                 }
                             }
@@ -332,13 +334,14 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                         data.matchInfo?.remainTime?.let { remainTime ->
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
+                                val timeMillisAbs = if (timeMillis > 0) timeMillis else 0
                                 val timeStr = statusName + String.format(
                                     itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    TimeUtil.longToMinute(timeMillis)
+                                    TimeUtil.longToMinute(timeMillisAbs)
                                 )
                                 tv_match_time.text = timeStr
 
-                                data.matchInfo.remainTime = timeMillis
+                                data.matchInfo.remainTime = timeMillisAbs
                             }
                         }
                     }

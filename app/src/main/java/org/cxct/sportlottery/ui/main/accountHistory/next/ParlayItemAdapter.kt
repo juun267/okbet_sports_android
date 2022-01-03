@@ -88,7 +88,7 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             binding.matchOdd = matchOdd
 
             matchOdd.let {
-                val odds = getOdds(matchOdd, oddsType)
+                val odds = getOdds(matchOdd, matchOdd.oddsType.toString())
                 binding.tvOdd.setOddFormat(odds)
                 binding.tvOddsType.text = when (it.oddsType) {
                     OddsType.MYS.code -> "("+itemView.context.getString(OddsType.MYS.res)+")"
