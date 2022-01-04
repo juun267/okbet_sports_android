@@ -226,27 +226,45 @@ class OddButtonPagerAdapter(
         val sortMap = mutableMapOf<String, List<Odd?>?>()
 
         this.forEach { oddsMap ->
-            if (oddsMap.key.contains(PlayCate.SINGLE.value)) {
 
-                val oddList = oddsMap.value?.toMutableList()
+            when {
+                oddsMap.key.contains(PlayCate.SINGLE.value) -> {
+                    val oddList = oddsMap.value?.toMutableList()
 
-                oddList?.indexOf(oddList.find {
-                    it?.nameMap?.get(LanguageManager.Language.EN.key)
-                        ?.split("-")
-                        ?.getOrNull(0)?.contains("Draw")
-                        ?: false
-                }
-                )?.let {
-                    if (it >= 0) {
-                        oddList.add(oddList.removeAt(it))
+                    oddList?.indexOf(oddList.find {
+                        it?.nameMap?.get(LanguageManager.Language.EN.key)
+                            ?.split("-")
+                            ?.getOrNull(0)?.contains("Draw")
+                            ?: false
                     }
+                    )?.let {
+                        if (it >= 0) {
+                            oddList.add(oddList.removeAt(it))
+                        }
+                    }
+
+                    sortMap[oddsMap.key] = oddList
                 }
+                oddsMap.key.contains(PlayCate.NGOAL.value) -> {
+                    val oddList = oddsMap.value?.toMutableList()
 
-                sortMap[oddsMap.key] = oddList
+                    oddList?.indexOf(oddList.find {
+                        it?.nameMap?.get(LanguageManager.Language.EN.key)
+                            ?.split("-")
+                            ?.getOrNull(0)?.contains("No Goal")
+                            ?: false
+                    }
+                    )?.let {
+                        if (it >= 0) {
+                            oddList.add(oddList.removeAt(it))
+                        }
+                    }
 
-            } else {
-
-                sortMap[oddsMap.key] = oddsMap.value
+                    sortMap[oddsMap.key] = oddList
+                }
+                else -> {
+                    sortMap[oddsMap.key] = oddsMap.value
+                }
             }
         }
 
