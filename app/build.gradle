@@ -89,7 +89,7 @@ android {
             ]
         }
         OkbetPH {
-            buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
+            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
             resValue "string", "app_name", "OKBET"
             applicationId "com.okbet.ph"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
@@ -113,22 +113,10 @@ android {
             ]
         }
         WinbetCN {
-            buildConfigField "String", "CHANNEL_NAME", "\"spplat1\""
+            buildConfigField "String", "CHANNEL_NAME", "\"spwb\""
             resValue "string", "app_name", "WINBET"
             applicationId "com.winbet.cn"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"zh\""
-            manifestPlaceholders = [
-                    JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
-                    JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
-                    NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
-            ]
-        }
-        demo {
-            buildConfigField "String", "CHANNEL_NAME", "\"spkx\""
-            resValue "string", "app_name", "OKBET"
-            applicationId "com.okbetinc.sltest"
-            buildConfigField "String", "DEFAULT_LANGUAGE", "\"en\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
                     JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
@@ -144,7 +132,6 @@ android {
         OkbetPH.res.srcDirs = ['src/okbet_ph/res']
         OnbetVI.res.srcDirs = ['src/onbet_vi/res']
         WinbetCN.res.srcDirs = ['src/winbet_cn/res']
-        demo.res.srcDirs = ['src/okbet_ph/res']
     }
 
     compileOptions {
