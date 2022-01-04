@@ -200,6 +200,16 @@
     <string name="tennis">Quần Vợt</string>
     <string name="badminton">Cầu lông</string>
     <string name="volleyball">Bóng Chuyền</string>
+    <string name="ping_pong">Bóng bàn</string>
+    <string name="ice_hockey">Khúc côn cầu trên sân băng</string>
+    <string name="boxing">Đấm bốc</string>
+    <string name="cue_ball">Bi-a</string>
+    <string name="cricket">Bóng gậy</string>
+    <string name="baseball">Bóng chày</string>
+    <string name="rugby_football">Bóng bầu dục</string>
+    <string name="america_football">Bóng đá Mỹ</string>
+    <string name="motor_racing">Công thức 1</string>
+    <string name="golf">golf</string>
     <string name="section">Hiệp</string>
     <string name="total_score_over_time">tổng điểm số /n gồm hiệp phụ</string>
     <string name="plat">Kèo</string>

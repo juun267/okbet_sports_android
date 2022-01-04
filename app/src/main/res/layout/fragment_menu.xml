@@ -98,53 +98,68 @@
                 android:minHeight="60dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_recharge"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="14dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_rounded_rectangle_oval_gray"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingHorizontal="27dp"
-                    android:paddingVertical="9dp"
-                    android:text="@string/recharge"
-                    android:textColor="@color/colorGrayDark"
-                    android:textSize="@dimen/textSize16sp"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="@dimen/textSize16sp"
-                    app:autoSizeMinTextSize="4dp"
-                    app:autoSizeTextType="uniform"
-                    app:drawableStartCompat="@drawable/ic_profile_center_recharge"
-                    app:drawableTint="@color/colorBlue" />
+                    android:layout_marginStart="14dp">
+
+                    <TextView
+                        android:id="@+id/tv_recharge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="9dp"
+                        android:drawablePadding="10dp"
+                        android:text="@string/recharge"
+                        android:textColor="@color/colorGrayDark"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold"
+                        app:autoSizeMaxTextSize="@dimen/textSize14sp"
+                        app:autoSizeMinTextSize="8dp"
+                        app:autoSizeTextType="uniform"
+                        app:drawableStartCompat="@drawable/ic_profile_center_recharge"
+                        app:drawableTint="@color/colorBlue" />
+
+                </FrameLayout>
 
                 <androidx.legacy.widget.Space
                     android:layout_width="10dp"
                     android:layout_height="wrap_content" />
 
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_rectangle_oval_gray"
+                    android:layout_marginEnd="14dp"
+                    >
+
                 <TextView
                     android:id="@+id/tv_withdraw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="14dp"
-                    android:layout_weight="1"
+                    android:layout_gravity="center"
                     android:background="@drawable/bg_rounded_rectangle_oval_gray"
                     android:drawablePadding="10dp"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:paddingHorizontal="27dp"
+                    android:paddingHorizontal="10dp"
                     android:paddingVertical="9dp"
                     android:text="@string/withdraw"
                     android:textColor="@color/colorGrayDark"
-                    android:textSize="@dimen/textSize16sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold"
-                    app:autoSizeMaxTextSize="@dimen/textSize16sp"
+                    app:autoSizeMaxTextSize="@dimen/textSize14sp"
                     app:autoSizeMinTextSize="4dp"
                     app:autoSizeTextType="uniform"
                     app:drawableStartCompat="@drawable/ic_profile_center_withdraw"
                     app:drawableTint="@color/colorBlue" />
+                </FrameLayout>
             </LinearLayout>
 
             <org.cxct.sportlottery.ui.menu.MenuItem
