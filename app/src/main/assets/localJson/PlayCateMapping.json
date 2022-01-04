@@ -721,6 +721,46 @@
   },
   {
     "gameType": "TN",
+    "playCateCode": "1X2_SEG1_GAMES",
+    "playCateName": "独赢盘\n局 {S}",
+    "playCateName-english": "Winner\nGame {S}",
+    "playCateName-vietnamese": "Đội Vô Địch||Game {S}",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "1X2_SEG2_GAMES",
+    "playCateName": "独赢盘\n局 {S}",
+    "playCateName-english": "Winner\nGame {S}",
+    "playCateName-vietnamese": "Đội Vô Địch||Game {S}",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "1X2_SEG3_GAMES",
+    "playCateName": "独赢盘\n局 {S}",
+    "playCateName-english": "Winner\nGame {S}",
+    "playCateName-vietnamese": "Đội Vô Địch||Game {S}",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "1X2_SEG4_GAMES",
+    "playCateName": "独赢盘\n局 {S}",
+    "playCateName-english": "Winner\nGame {S}",
+    "playCateName-vietnamese": "Đội Vô Địch||Game {S}",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "1X2_SEG5_GAMES",
+    "playCateName": "独赢盘\n局 {S}",
+    "playCateName-english": "Winner\nGame {S}",
+    "playCateName-vietnamese": "Đội Vô Địch||Game {S}",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
     "playCateCode": "SET-HDP",
     "playCateName": "让盘",
     "playCateName-english": "Set Handicap",
@@ -753,6 +793,46 @@
   },
   {
     "gameType": "TN",
+    "playCateCode": "HDP-SEG1",
+    "playCateName": "让局\n第1盘",
+    "playCateName-english": "Game Handicap\n1st Set",
+    "playCateName-vietnamese": "Cược Chấp Game\nSet 1",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "HDP-SEG2",
+    "playCateName": "让局\n第2盘",
+    "playCateName-english": "Game Handicap\n2nd Set",
+    "playCateName-vietnamese": "Cược Chấp Game\nSet 2",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "HDP-SEG3",
+    "playCateName": "让局\n第3盘",
+    "playCateName-english": "Game Handicap\n3rd Set",
+    "playCateName-vietnamese": "Cược Chấp Game\nSet 3",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "HDP-SEG4",
+    "playCateName": "让局\n第4盘",
+    "playCateName-english": "Game Handicap\n4th Set",
+    "playCateName-vietnamese": "Cược Chấp Game\nSet 4",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
+    "playCateCode": "HDP-SEG5",
+    "playCateName": "让局\n第5盘",
+    "playCateName-english": "Game Handicap\n5th Set",
+    "playCateName-vietnamese": "Cược Chấp Game\nSet 5",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "TN",
     "playCateCode": "WINNER",
     "playCateName": "冠军",
     "playCateName-english": "Winner",
@@ -773,7 +853,7 @@
     "playCateName": "独赢盘\n第一盘",
     "playCateName-english": "Winner\n1st Set",
     "playCateName-vietnamese": "Đội Vô Địch\nHiệp 1",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -781,7 +861,7 @@
     "playCateName": "独赢盘\n第二盘",
     "playCateName-english": "Winner\n2nd Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 2",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -789,7 +869,7 @@
     "playCateName": "独赢盘\n第三盘",
     "playCateName-english": "Winner\n3rd Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 3",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -797,7 +877,7 @@
     "playCateName": "独赢盘\n第四盘",
     "playCateName-english": "Winner\n4th Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 4",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -805,7 +885,7 @@
     "playCateName": "独赢盘\n第五盘",
     "playCateName-english": "Winner\n5th Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 5",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "VB",
