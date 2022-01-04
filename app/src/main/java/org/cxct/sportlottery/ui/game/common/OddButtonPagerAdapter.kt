@@ -376,7 +376,7 @@ class OddButtonPagerViewHolder private constructor(
 
                 tv_name.apply {
                     visibility = when {
-                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> View.VISIBLE
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() || playCateMapItem.isNOGALType() -> View.VISIBLE
                         else -> {
                             when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
                                 true -> View.INVISIBLE
@@ -392,6 +392,9 @@ class OddButtonPagerViewHolder private constructor(
                                     context
                                 ).key
                             ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
+                        }
+                        playCateMapItem.isNOGALType() -> {
+                            "第" + odds.second?.getOrNull(0)?.nextScore.toString()
                         }
                         else -> ""
                     }
@@ -447,7 +450,7 @@ class OddButtonPagerViewHolder private constructor(
 
                 tv_name.apply {
                     visibility = when {
-                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() -> View.VISIBLE
+                        playCateMapItem.isOUType() || playCateMapItem.isOEType() || playCateMapItem.isBTSType() || playCateMapItem.isNOGALType() -> View.VISIBLE
                         else -> {
                             when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
                                 true -> View.INVISIBLE
@@ -463,6 +466,9 @@ class OddButtonPagerViewHolder private constructor(
                                     context
                                 ).key
                             ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
+                        }
+                        playCateMapItem.isNOGALType() -> {
+                            "第" + odds.second?.getOrNull(1)?.nextScore.toString()
                         }
                         else -> ""
                     }
@@ -531,21 +537,23 @@ class OddButtonPagerViewHolder private constructor(
                         betStatus = odds.second?.getOrNull(2)?.status
                     }
                 }
-
+                
                 tv_name.apply {
                     visibility = View.VISIBLE
 
-                    text = when (playCateMapItem.isCombination()) {
-                        true -> {
+                    text = when {
+                        playCateMapItem.isNOGALType() -> "无"
+                        playCateMapItem.isCombination() -> {
                             (odds.second?.getOrNull(2)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(context).key
                             ) ?: odds.second?.getOrNull(2)?.name)?.split("-")?.firstOrNull() ?: ""
                         }
-                        false -> {
+                        !playCateMapItem.isCombination() -> {
                             odds.second?.getOrNull(2)?.nameMap?.get(
                                 LanguageManager.getSelectLanguage(context).key
                             ) ?: odds.second?.getOrNull(2)?.name
                         }
+                        else -> ""
                     }
                 }
 
