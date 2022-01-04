@@ -47,12 +47,12 @@
     <string name="error_register_password">Password must be 6–20 characters and contain letter and numbers</string>
     <string name="error_password_format">The password must be a combination of numbers, letters</string>
     <string name="register_please_read">Please read our</string>
-    <string name="register_responsibilities">gambling responsibilities</string>
+    <string name="register_responsibilities">&#160;gambling responsibilities</string>
     <string name="register_privacy">Send me updates and promotions in accordance with the</string>
-    <string name="register_privacy_policy">Privacy Policy</string>
+    <string name="register_privacy_policy">&#160;Privacy Policy</string>
     <string name="register_privacy_policy_promotions"></string>
-    <string name="register_over_21">I am over 21 years of age and have read and agree to the</string>
-    <string name="register_rules">Rules and Terms</string>
+    <string name="register_over_21">I am over 21 years of age and have read and agree to the&#160;</string>
+    <string name="register_rules">&#160;Rules and Terms</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="hint_confirm_password">Confirm Password</string>
     <string name="error_confirm_password">Password and confirm password don\'t match</string>
