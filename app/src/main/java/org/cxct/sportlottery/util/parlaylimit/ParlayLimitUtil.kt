@@ -46,7 +46,7 @@ object ParlayLimitUtil {
             // 香港盤 可以 odds-num
             val hkOdds = getTotalHkOdds(oddsList, parlayCom.getComList())
             // 投注限額 設定值/odds
-            val maxPayLimit = max!!.divide(odds, 0, RoundingMode.DOWN)
+            val maxPayLimit = max!!.divide(hkOdds, 0, RoundingMode.DOWN)
             parlayBetLimit.odds = odds
             parlayBetLimit.hdOdds = hkOdds
             parlayBetLimit.max = maxPayLimit

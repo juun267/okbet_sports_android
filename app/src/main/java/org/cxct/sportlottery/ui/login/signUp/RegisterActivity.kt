@@ -523,10 +523,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         if (sec-- > 0) {
                             binding.btnSendSms.isEnabled = false
                             //btn_send_sms.text = getString(R.string.send_timer, sec)
+                            binding.btnSendSms.text = "${sec}s"
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.colorBlue
+                                    R.color.colorGrayDark
                                 )
                             )
                         } else {
