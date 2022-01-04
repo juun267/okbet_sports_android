@@ -71,9 +71,9 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/responsibility"
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/responsibility"
-                else -> "https://sports.cxsport.net/sports-rule/#/us/responsibility"
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility"
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -86,11 +86,11 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/privacy-policy?platform="+context.getString(
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/privacy-policy?platform="+context.getString(
                     R.string.app_name)
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/privacy-policy?platform="+context.getString(
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/privacy-policy?platform="+context.getString(
                     R.string.app_name)
-                else -> "https://sports.cxsport.net/sports-rule/#/us/privacy-policy?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform"+context.getString(
                         R.string.app_name)
             }
 

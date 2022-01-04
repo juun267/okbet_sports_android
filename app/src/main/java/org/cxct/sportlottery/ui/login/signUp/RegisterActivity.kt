@@ -46,16 +46,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                updateValidCode()
             }
             binding.tvDuty -> {
-                //暫時關閉
-                //JumpUtil.toExternalWeb(this, Constants.getDutyRuleUrl(this))
+                JumpUtil.toExternalWeb(this, Constants.getDutyRuleUrl(this))
             }
             binding.tvPrivacy -> {
-                //暫時關閉
-                //JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
+                JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
             }
             binding.tvAgreement -> {
-                //暫時關閉
-                //JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
+                JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
             }
 
         }
@@ -509,10 +506,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         if (sec-- > 0) {
                             binding.btnSendSms.isEnabled = false
                             //btn_send_sms.text = getString(R.string.send_timer, sec)
+                            binding.btnSendSms.text = "${sec}s"
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.colorBlue
+                                    R.color.colorGrayDark
                                 )
                             )
                         } else {

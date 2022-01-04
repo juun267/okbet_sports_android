@@ -325,7 +325,7 @@ abstract class BaseOddButtonViewModel(
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
             if(it.matchOdd.odds == it.matchOdd.malayOdds){
-                currentOddsTypes == OddsType.EU
+                currentOddsTypes = OddsType.EU
             }
             matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
         }
@@ -395,7 +395,7 @@ abstract class BaseOddButtonViewModel(
                     betInfoListData.matchOdd.oddsId,
                     getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
                     stake,
-                    betInfoListData.singleBetOddsType?.code
+                    betInfoListData.singleBetOddsType.code
                     )
             ),
             listOf(Stake(parlayType ?: "", stake)),

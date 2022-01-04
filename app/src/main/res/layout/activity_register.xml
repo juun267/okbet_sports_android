@@ -309,6 +309,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/btn_send_sms"
                         android:minHeight="32dp"
+                        android:textAllCaps="false"
                         android:text="@string/get_verification_code"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/textSize14sp" />
