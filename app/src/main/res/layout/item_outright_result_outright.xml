@@ -49,10 +49,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
+            android:padding="8dp"
             tools:text="Bodo/Glimt" />
 
 
