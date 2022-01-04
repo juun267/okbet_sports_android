@@ -24,7 +24,7 @@ import org.cxct.sportlottery.util.TextUtil
  */
 class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
-    val betStatusCancelledCode = 7
+    private val betStatusCancelledCode = 7
 
     private var betResultData: Receipt? = null
 
