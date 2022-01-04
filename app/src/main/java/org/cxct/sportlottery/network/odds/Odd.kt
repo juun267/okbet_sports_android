@@ -65,6 +65,8 @@ data class Odd(
 
     var isSelected: Boolean? = false
 
+    var nextScore: String? = "" //FT 玩法下個進球會使用到
+
     override var oddState: Int = OddState.SAME.state
 
     @Transient
