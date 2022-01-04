@@ -26,6 +26,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -359,15 +360,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     } ?: 0 > 21 -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}\n${itemData.matchOdd.awayName}"
                     else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 }
+                tv_name.text = when {
+                    //TODO Bill 沒給翻譯！！！應該要後端處裡好放playCateName裡面
+                    itemData.matchOdd.playCode == PlayCate.NGOAL.value -> "第${itemData.matchOdd.awayScore.plus(itemData.matchOdd.homeScore).plus(1)}个进球"
 
-                tv_name.text = if (itemData.matchOdd.inplay == INPLAY) {
-                    context.getString(
-                        R.string.bet_info_in_play_score,
-                        itemData.matchOdd.playCateName,
-                        itemData.matchOdd.homeScore.toString(),
-                        itemData.matchOdd.awayScore.toString()
-                    )
-                } else itemData.matchOdd.playCateName
+                    itemData.matchOdd.inplay == INPLAY -> {
+                        context.getString(
+                            R.string.bet_info_in_play_score,
+                            itemData.matchOdd.playCateName,
+                            itemData.matchOdd.homeScore.toString(),
+                            itemData.matchOdd.awayScore.toString()
+                        )
+                    }
+                    else -> itemData.matchOdd.playCateName
+                }
 
                 if (itemData.betAmount > 0) {
                     et_bet.setText(TextUtil.formatInputMoney(itemData.betAmount))
