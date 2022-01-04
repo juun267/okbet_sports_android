@@ -315,8 +315,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             }
         }
 
-        receiver.leagueChange.observe(this.viewLifecycleOwner) {
-            it?.getContentIfNotHandled()?.let {
+        receiver.leagueChange.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
                 viewModel.getSportQuery(getLastPick = true) //而收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
 
                 val nowGameType = gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code
@@ -359,7 +359,6 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     override fun onStart() {
         super.onStart()
         viewModel.getSportQuery(getLastPick = true)
-        subscribeSportChannelHall() //有呼叫/api/front/sport/query的页面就要订阅
         loading()
     }
 
