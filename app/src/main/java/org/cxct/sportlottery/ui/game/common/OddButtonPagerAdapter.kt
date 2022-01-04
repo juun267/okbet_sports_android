@@ -208,6 +208,8 @@ class OddButtonPagerAdapter(
                     }
                 }
             }
+
+            else -> return this
         }
         
         return splitMap
