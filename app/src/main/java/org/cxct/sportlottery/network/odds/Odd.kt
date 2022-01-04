@@ -65,6 +65,8 @@ data class Odd(
 
     var isSelected: Boolean? = false
 
+    var nextScore: String? = ""
+
     override var oddState: Int = OddState.SAME.state
 
     @Transient
