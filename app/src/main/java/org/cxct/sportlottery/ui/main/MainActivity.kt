@@ -216,28 +216,28 @@ class MainActivity : BaseSocketActivity<MainViewModel>(MainViewModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.isLogin.observe(this, {
+        viewModel.isLogin.observe(this) {
             getMsgDialog() //登入/登出刷新彈窗公告
             updateUiWithLogin(it)
-        })
+        }
 
-        viewModel.isCreditAccount.observe(this, {
+        viewModel.isCreditAccount.observe(this) {
             if (it) {
                 startActivity(Intent(this, GameActivity::class.java))
                 finish()
             }
-        })
+        }
 
-        viewModel.userInfo.observe(this, {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
-        })
+        }
 
         //公告彈窗
-        viewModel.promoteNoticeResult.observe(this, {
+        viewModel.promoteNoticeResult.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
                 setNewsDialog(result)
             }
-        })
+        }
     }
 
     private fun updateUiWithLogin(isLogin: Boolean) {
