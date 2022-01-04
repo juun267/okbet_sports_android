@@ -662,7 +662,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun setupDetailItem(detailData: MatchResultPlayList?) {
             itemView.apply {
                 tv_play_cate_name.text = "${detailData?.playCateName} ${detailData?.spread}"
-                tv_play_name.text = detailData?.playName
+                tv_play_content.text = detailData?.playName
             }
         }
     }
