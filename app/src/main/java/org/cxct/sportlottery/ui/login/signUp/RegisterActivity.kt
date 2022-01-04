@@ -85,25 +85,38 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupRegisterButton()
         setupGoToLoginButton()
         initObserve()
-        binding.etLoginPassword.endIconImageButton.setOnClickListener {
-            if (binding.etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetLoginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                binding.etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
-            } else {
-                binding.etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetLoginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+
+        binding.apply {
+            etLoginPassword.endIconImageButton.setOnClickListener {
+                if (etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetLoginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
+                    eetLoginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                }
+                eetLoginPassword.setSelection(eetLoginPassword.text.toString().length)
             }
-            binding.eetLoginPassword.setSelection(binding.eetLoginPassword.text.toString().length)
-        }
-        binding.etConfirmPassword.endIconImageButton.setOnClickListener {
-            if (binding.etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                binding.etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
-            } else {
-                binding.etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            etConfirmPassword.endIconImageButton.setOnClickListener {
+                if (etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
+                    eetConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                }
+                eetConfirmPassword.setSelection(eetConfirmPassword.text.toString().length)
             }
-            binding.eetConfirmPassword.setSelection(binding.eetConfirmPassword.text.toString().length)
+            etWithdrawalPwd.endIconImageButton.setOnClickListener {
+                if (etWithdrawalPwd.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetWithdrawalPwd.transformationMethod = PasswordTransformationMethod.getInstance()
+                    etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_open)
+                    eetWithdrawalPwd.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                }
+                eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
+            }
         }
 
         binding.ivReturn.setOnClickListener(this)

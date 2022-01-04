@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.itemview_odd_btn_2x2_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
@@ -171,14 +172,35 @@ class OddButtonPagerAdapter(
 
     private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
         //FT: NOGAL(下個進球) 玩法需特殊處理
+        //TN: 1X2_SEG(X)_GAMES (独赢盘||局 {S}) 玩法需特殊處理 共1~5盤
         val splitMap = mutableMapOf<String, List<Odd?>?>()
-        val rgzMap = this.filter { (key, value) -> key.startsWith("NGOAL:")}
+        when(matchInfo?.gameType){
+            GameType.FT.key -> {
+                val rgzMap = this.filter { (key, value) -> key.startsWith("NGOAL:")}
 
-        this.forEach { oddsMap ->
-            if(oddsMap.key == "NGOAL" && rgzMap.isNotEmpty()){
-                splitMap[oddsMap.key] = rgzMap.iterator().next().value
-            }else{
-                splitMap[oddsMap.key] = oddsMap.value
+                this.forEach { oddsMap ->
+                    if(oddsMap.key == "NGOAL" && rgzMap.isNotEmpty()){
+                        splitMap[oddsMap.key] = rgzMap.iterator().next().value
+                    }else{
+                        splitMap[oddsMap.key] = oddsMap.value
+                    }
+                }
+            }
+            GameType.TN.key -> {
+                var gameKey = ""
+                for (i in 1..5) {
+                    gameKey = "1X2_SEG" + i + "_GAMES"
+                    val rgzMap = this.filter { (key, value) -> key.startsWith("$gameKey:") }
+
+                    this.forEach { oddsMap ->
+                        if (oddsMap.key == gameKey && rgzMap.isNotEmpty()) {
+                            splitMap[oddsMap.key] = rgzMap.iterator().next().value
+                        } else {
+                            if (!oddsMap.key.startsWith("1X2_SEG") && !oddsMap.key.endsWith("_GAMES"))
+                                splitMap[oddsMap.key] = oddsMap.value
+                        }
+                    }
+                }
             }
         }
         

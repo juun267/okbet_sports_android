@@ -294,7 +294,8 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun setupBottomSheetBehaviour() {
-        val bottomSheet: FrameLayout = webBottomSheet.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout
+        val bottomSheet: FrameLayout =
+            webBottomSheet.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
         val layoutParams = bottomSheet.layoutParams
         if (layoutParams != null) {
@@ -305,9 +306,9 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun openWebView() {
-        setLivePlayImg()
+//        setLivePlayImg()
         web_view.isVisible = true
-        setAnimationImgIcon(true)
+//        setAnimationImgIcon(true)
         player_view.isVisible = false
 
         web_view.settings.apply {
@@ -327,7 +328,7 @@ class LiveViewToolbar @JvmOverloads constructor(
         }
         web_view.loadUrl(defaultAnimationUrl)
     }
-
+/* 目前不會用，先留著，以防之後說要改回來。
     private fun setLivePlayImg() {
         when (gameType) {
             GameType.FT -> iv_animation.setImageResource(R.drawable.ic_live_football_small)
@@ -387,10 +388,16 @@ class LiveViewToolbar @JvmOverloads constructor(
             }
         }
     }
+*/
+
+    private fun setAnimationImgIcon(isOn: Boolean) {
+        if (isOn) iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_selected)
+        else iv_animation.setImageResource(R.drawable.ic_icon_game_live_soccer_unselected)
+    }
 
     private fun hideWebView() {
         web_view.isVisible = false
-        setAnimationImgIcon(false)
+//        setAnimationImgIcon(false)
     }
 
     fun getExoPlayer(): SimpleExoPlayer? {

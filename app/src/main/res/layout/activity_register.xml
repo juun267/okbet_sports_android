@@ -40,7 +40,9 @@
         android:overScrollMode="never"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo">
+        app:layout_constraintTop_toBottomOf="@id/ivLogo"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -121,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:endIcon="@drawable/ic_eye_open"
+                app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_register_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/login_password"
@@ -144,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:endIcon="@drawable/ic_eye_open"
+                app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_confirm_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/confirm_password"
@@ -189,6 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_withdrawal_pwd"
                 app:iconSignifier="@drawable/ic_login_withdraw_number"
                 app:labelText="@string/withdrawal_pwd"
@@ -200,8 +203,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="numberPassword"
                     android:maxLines="1"
+                    android:maxLength="4"
                     android:textSize="14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -603,39 +607,39 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/ll_agreement"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:layout_marginBottom="14dp"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:visibility="gone"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/block_valid_code">-->
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/ll_agreement"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginBottom="14dp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                android:visibility="gone"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/block_valid_code">-->
 
-<!--                <CheckBox-->
-<!--                    android:id="@+id/cb_agreement"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:button="@drawable/effect_select_checkbox"-->
-<!--                    android:paddingHorizontal="4dp"-->
-<!--                    android:text="@string/desc_agreement"-->
-<!--                    android:textColor="@color/colorGray"-->
-<!--                    android:textSize="@dimen/textSize12sp"-->
-<!--                    app:layout_constraintBottom_toTopOf="@id/btn_login"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/btn_login" />-->
+            <!--                <CheckBox-->
+            <!--                    android:id="@+id/cb_agreement"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:button="@drawable/effect_select_checkbox"-->
+            <!--                    android:paddingHorizontal="4dp"-->
+            <!--                    android:text="@string/desc_agreement"-->
+            <!--                    android:textColor="@color/colorGray"-->
+            <!--                    android:textSize="@dimen/textSize12sp"-->
+            <!--                    app:layout_constraintBottom_toTopOf="@id/btn_login"-->
+            <!--                    app:layout_constraintStart_toStartOf="@id/btn_login" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/btn_agreement"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/btn_agreement"-->
-<!--                    android:textColor="@color/colorOrange"-->
-<!--                    android:textSize="@dimen/textSize12sp" />-->
+            <!--                <TextView-->
+            <!--                    android:id="@+id/btn_agreement"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="@string/btn_agreement"-->
+            <!--                    android:textColor="@color/colorOrange"-->
+            <!--                    android:textSize="@dimen/textSize12sp" />-->
 
-<!--            </LinearLayout>-->
+            <!--            </LinearLayout>-->
 
             <Button
                 android:id="@+id/btn_register"
