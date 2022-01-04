@@ -177,9 +177,15 @@ class OddButtonPagerAdapter(
         when(matchInfo?.gameType){
             GameType.FT.key -> {
                 val rgzMap = this.filter { (key, value) -> key.startsWith("NGOAL:")}
-
+                var nextScore = "0"
+                if(rgzMap.isNotEmpty()){ //下個進球的分數會放在Key值的冒號後面
+                     nextScore = rgzMap.keys.iterator().next().split("NGOAL:")[1]
+                }
                 this.forEach { oddsMap ->
                     if(oddsMap.key == "NGOAL" && rgzMap.isNotEmpty()){
+                        rgzMap.iterator().next().value?.forEach {
+                            it?.nextScore = nextScore
+                        }
                         splitMap[oddsMap.key] = rgzMap.iterator().next().value
                     }else{
                         splitMap[oddsMap.key] = oddsMap.value
