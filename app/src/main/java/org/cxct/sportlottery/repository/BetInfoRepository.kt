@@ -409,11 +409,14 @@ class BetInfoRepository(val androidContext: Context) {
         //[Martin]為馬來盤＆印度計算投注上限
         if(oddsType == OddsType.MYS){
             if(matchOddList[0].malayOdds < 0 && oddsList.size <= 1){
-                maxBet  = (maxBet * abs(matchOddList[0].malayOdds)).toInt()
+                //maxBet  = (playQuota?.max?.toDouble()?.div(abs(matchOddList[0].malayOdds)))!!.toInt()
+                if (maxBetMoney != null) {
+                    maxBet = if (maxBetMoney < playQuota?.max!!) maxBetMoney else playQuota?.max
+                }
             }
         }else if(oddsType == OddsType.IDN){
             if(matchOddList[0].indoOdds < 0 && oddsList.size <= 1){
-                maxBet  = (maxBet * abs(matchOddList[0].indoOdds)).toInt()
+                maxBet  = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds)))!!.toInt())-1
             }
         }
 
