@@ -433,6 +433,30 @@
   },
   {
     "gameType": "BK",
+    "playCateCode": "O/U-SEG2",
+    "playCateName": "球队积分\n第2节",
+    "playCateName-english": "Total Points\n2nd Qtr",
+    "playCateName-vietnamese": "Tổng Số Điểm\nQ2",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "BK",
+    "playCateCode": "O/U-SEG3",
+    "playCateName": "球队积分\n第3节",
+    "playCateName-english": "Total Points\n3rd Qtr",
+    "playCateName-vietnamese": "Tổng Số Điểm\nQ3",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "BK",
+    "playCateCode": "O/U-SEG4",
+    "playCateName": "球队积分\n第4节",
+    "playCateName-english": "Total Points\n4th Qtr",
+    "playCateName-vietnamese": "Tổng Số Điểm\nQ4",
+    "playCateNum": "2"
+  },
+  {
+    "gameType": "BK",
     "playCateCode": "1X2-SEG1-ND",
     "playCateName": "独赢\n第一节",
     "playCateName-english": "Winner\n1st Qtr",
