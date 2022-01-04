@@ -42,13 +42,20 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when (viewType) {
+            //TODO Bill BB、MR、GF 還不確定版型
             ListType.TITLE.ordinal -> MatchTitleViewHolder.from(parent)
             ListType.MATCH.ordinal -> MatchViewHolder.from(parent)
-            ListType.FIRST_ITEM_FT.ordinal -> FtDetailFirstItemViewHolder.from(parent)
-            ListType.FIRST_ITEM_BK.ordinal -> BkDetailFirstItemViewHolder.from(parent)
+            ListType.FIRST_ITEM_FT.ordinal, ListType.FIRST_ITEM_BX.ordinal, ListType.FIRST_ITEM_CB.ordinal, ListType.FIRST_ITEM_CK.ordinal, ListType.FIRST_ITEM_BB.ordinal, ListType.FIRST_ITEM_RB.ordinal -> FtDetailFirstItemViewHolder.from(
+                parent
+            )
+            ListType.FIRST_ITEM_BK.ordinal, ListType.FIRST_ITEM_IH.ordinal, ListType.FIRST_ITEM_AFT.ordinal -> BkDetailFirstItemViewHolder.from(
+                parent
+            )
             ListType.FIRST_ITEM_TN.ordinal -> TnDetailFirstItemViewHolder.from(parent)
             ListType.FIRST_ITEM_BM.ordinal -> BmDetailFirstItemViewHolder.from(parent)
-            ListType.FIRST_ITEM_VB.ordinal -> VbDetailFirstItemViewHolder.from(parent)
+            ListType.FIRST_ITEM_VB.ordinal, ListType.FIRST_ITEM_TT.ordinal, ListType.FIRST_ITEM_MR.ordinal, ListType.FIRST_ITEM_GF.ordinal -> VbDetailFirstItemViewHolder.from(
+                parent
+            )
             ListType.DETAIL.ordinal -> DetailItemViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
@@ -655,7 +662,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun setupDetailItem(detailData: MatchResultPlayList?) {
             itemView.apply {
                 tv_play_cate_name.text = "${detailData?.playCateName} ${detailData?.spread}"
-                tv_play_name.text = detailData?.playName
+                tv_play_content.text = detailData?.playName
             }
         }
     }
