@@ -853,7 +853,7 @@
     "playCateName": "独赢盘\n第一盘",
     "playCateName-english": "Winner\n1st Set",
     "playCateName-vietnamese": "Đội Vô Địch\nHiệp 1",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -861,7 +861,7 @@
     "playCateName": "独赢盘\n第二盘",
     "playCateName-english": "Winner\n2nd Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 2",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -869,7 +869,7 @@
     "playCateName": "独赢盘\n第三盘",
     "playCateName-english": "Winner\n3rd Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 3",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -877,7 +877,7 @@
     "playCateName": "独赢盘\n第四盘",
     "playCateName-english": "Winner\n4th Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 4",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "TN",
@@ -885,7 +885,7 @@
     "playCateName": "独赢盘\n第五盘",
     "playCateName-english": "Winner\n5th Set",
     "playCateName-vietnamese": "Đội Vô Địch\nĐặt 5",
-    "playCateNum": "3"
+    "playCateNum": "2"
   },
   {
     "gameType": "VB",
