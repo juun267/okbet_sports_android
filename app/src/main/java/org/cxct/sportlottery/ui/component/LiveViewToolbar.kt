@@ -10,6 +10,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import com.google.android.exoplayer2.*
@@ -25,7 +26,9 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.DisplayUtil.dp
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.MetricsUtil
 import timber.log.Timber
+
 
 @SuppressLint("SetJavaScriptEnabled")
 class LiveViewToolbar @JvmOverloads constructor(
@@ -45,6 +48,7 @@ class LiveViewToolbar @JvmOverloads constructor(
             0
         )
     }
+
     private val bottomSheetLayout by lazy {
         typedArray.getResourceId(
             R.styleable.CalendarBottomSheetStyle_calendarLayout,
@@ -127,7 +131,7 @@ class LiveViewToolbar @JvmOverloads constructor(
     private var liveToolBarListener: LiveToolBarListener? = null
 
     var gameType: GameType? = null
-    
+
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.view_toolbar_live, this, false)
         addView(view).apply {
@@ -154,30 +158,44 @@ class LiveViewToolbar @JvmOverloads constructor(
                 "&eventId=${mEventId}"
     }
 
+    private var isPlayOpen = false
+    private var isAnimationOpen = false
+
     private fun initOnclick() {
         iv_play.setOnClickListener {
-            when (expand_layout.isExpanded) {
+            hideWebView()
+            when (expand_layout.isExpanded && !isAnimationOpen) {
                 true -> {
+                    switchLiveView(false)
                     stopPlayer()
                     startPlayer(mMatchId, mEventId, mStreamUrl)
                     iv_play.setImageResource(R.drawable.ic_live_player)
+                    isPlayOpen = false
                 }
                 false -> {
                     switchLiveView(true)
                     iv_play.setImageResource(R.drawable.ic_live_player_selected)
+                    isPlayOpen = true
                 }
             }
         }
 
         iv_animation.setOnClickListener {
-            when (expand_layout.isExpanded) {
+            stopPlayer()
+            iv_play.setImageResource(R.drawable.ic_live_player)
+            when (expand_layout.isExpanded && !isPlayOpen) {
                 true -> {
                     hideWebView()
+                    switchLiveView(false)
+                    isAnimationOpen = false
                 }
                 false -> {
                     openWebView()
+                    switchLiveView(true)
+                    isAnimationOpen = true
                 }
             }
+
         }
 
         iv_statistics.setOnClickListener {
@@ -195,25 +213,18 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun switchLiveView(open: Boolean) {
-        if (!iv_play.isVisible) return
         when (open) {
             true -> {
-                hideWebView()
+                expand_layout.expand()
                 iv_arrow.animate().rotation(180f).setDuration(100).start()
                 iv_play.isSelected = true
-                expand_layout.expand()
                 liveToolBarListener?.getLiveInfo()
-                if (!mStreamUrl.isNullOrEmpty()) {
-                    iv_play.performClick()
-                } else {
-                    iv_animation.performClick()
-                }
             }
             false -> {
+                expand_layout.collapse()
                 stopPlayer()
                 iv_arrow.animate().rotation(0f).setDuration(100).start()
                 iv_play.isSelected = false
-                expand_layout.collapse()
             }
         }
     }
@@ -227,16 +238,27 @@ class LiveViewToolbar @JvmOverloads constructor(
         val settings: WebSettings = bottomSheetView.bottom_sheet_web_view.settings
         settings.javaScriptEnabled = true
         bottomSheetView.bottom_sheet_web_view.webViewClient = WebViewClient()
-
         bottomSheetView.post {
             setupBottomSheetBehaviour()
         }
     }
 
-    fun setupPlayerControl(show: Boolean) {
-        iv_play.isVisible = show
-        iv_arrow.isVisible = show
+    fun setupPlayerControl(isPlayShow: Boolean) {
+        iv_play.isVisible = isPlayShow
+
+        isPlayOpen = isPlayShow
+        isAnimationOpen = !isPlayShow
+
+        if (isPlayShow) {
+            iv_play.setImageResource(R.drawable.ic_live_player_selected)
+            setAnimationImgIcon(false)
+            hideWebView()
+        } else {
+            setAnimationImgIcon(true)
+            openWebView()
+        }
     }
+
 
     fun liveLoading() {
         player_view.visibility = View.GONE
@@ -272,24 +294,21 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun setupBottomSheetBehaviour() {
-
-        val bottomSheet = webBottomSheet.findViewById<View>(R.id.design_bottom_sheet)
-        bottomSheet?.let {
-            setBackgroundResource(android.R.color.transparent)
-            layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
-            val behavior = BottomSheetBehavior.from<View>(bottomSheet)
-            behavior.peekHeight = resources.displayMetrics.heightPixels - 50.dp //減去最上方工具列高度
-
+        val bottomSheet: FrameLayout = webBottomSheet.findViewById<View>(R.id.design_bottom_sheet) as FrameLayout
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        val layoutParams = bottomSheet.layoutParams
+        if (layoutParams != null) {
+            layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
         }
-
+        bottomSheet.layoutParams = layoutParams
+        bottomSheetBehavior.peekHeight = resources.displayMetrics.heightPixels - 50.dp //減去最上方工具列高度
     }
 
     private fun openWebView() {
-        expand_layout.expand()
         setLivePlayImg()
+        web_view.isVisible = true
         setAnimationImgIcon(true)
         player_view.isVisible = false
-        web_view.isVisible = true
 
         web_view.settings.apply {
             javaScriptEnabled = true
@@ -370,9 +389,8 @@ class LiveViewToolbar @JvmOverloads constructor(
     }
 
     private fun hideWebView() {
-        expand_layout.collapse()
-        setAnimationImgIcon(false)
         web_view.isVisible = false
+        setAnimationImgIcon(false)
     }
 
     fun getExoPlayer(): SimpleExoPlayer? {
@@ -381,9 +399,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initializePlayer(streamUrl: String?) {
         when {
-            streamUrl.isNullOrBlank() -> openWebView()
-
-            exoPlayer == null -> {
+            (exoPlayer != null && !streamUrl.isNullOrEmpty()) -> {
                 exoPlayer = SimpleExoPlayer.Builder(context).build().also { exoPlayer ->
                     player_view.player = exoPlayer
                     val mediaItem =
@@ -397,7 +413,6 @@ class LiveViewToolbar @JvmOverloads constructor(
                     exoPlayer.prepare()
                 }
             }
-
             else -> {
                 exoPlayer?.let { player ->
                     val mediaItem =

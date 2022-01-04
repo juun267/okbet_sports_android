@@ -183,7 +183,7 @@ class LeagueAdapter(private val matchType: MatchType) :
             itemView.league_expand.setExpanded(item.unfold == FoldState.UNFOLD.code, false)
             updateTimer(matchType, item.gameType)
 
-            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
+//            itemView.iv_refresh.isVisible = matchType != MatchType.MY_EVENT
 
             itemView.iv_refresh.setOnClickListener {
                 leagueListener?.onRefresh(item)
