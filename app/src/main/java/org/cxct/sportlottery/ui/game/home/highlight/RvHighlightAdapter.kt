@@ -329,10 +329,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(0), oddsType)
+                            setupOdd(oddListHDP?.get(0), oddsType,"disable")
                         }
                         oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(0), oddsType)
+                            setupOdd(oddList1x2?.get(0), oddsType,"disable")
                         }
                     }
 
@@ -416,10 +416,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(1), oddsType)
+                            setupOdd(oddListHDP?.get(1), oddsType,"disable")
                         }
                         oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(1), oddsType)
+                            setupOdd(oddList1x2?.get(1), oddsType,"disable")
                         }
                     }
 
