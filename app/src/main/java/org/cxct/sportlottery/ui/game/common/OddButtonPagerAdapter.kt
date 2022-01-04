@@ -640,6 +640,10 @@ class OddButtonPagerViewHolder private constructor(
         return this.playCateCode.contains(PlayCate.SINGLE_OU.value) || this.playCateCode.contains(PlayCate.SINGLE_BTS.value)
     }
 
+    private fun PlayCateMapItem.isNOGALType(): Boolean {
+        return this.playCateCode.contains(PlayCate.NGOAL.value) && !this.isCombination()
+    }
+
     /**
      * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
      */
