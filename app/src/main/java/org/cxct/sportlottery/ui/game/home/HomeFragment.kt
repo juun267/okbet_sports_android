@@ -875,7 +875,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             
             it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
                 leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                    Log.e("Martin","1111=")
 
                     viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                         mSelectMatchType,
