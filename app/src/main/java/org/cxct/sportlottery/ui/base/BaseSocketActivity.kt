@@ -71,19 +71,19 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             }
         })
 
-        receiver.playQuotaChange.observe(this, {
+        receiver.playQuotaChange.observe(this) {
             it?.playQuotaComData?.let { playQuotaComData ->
                 viewModel.updatePlayQuota(playQuotaComData)
             }
-        })
+        }
 
-        receiver.userMoney.observe(this, {
+        receiver.userMoney.observe(this) {
             viewModel.updateMoney(it)
-        })
+        }
 
-        receiver.orderSettlement.observe(this, {
+        receiver.orderSettlement.observe(this) {
             viewModel.getSettlementNotification(it)
-        })
+        }
 
         receiver.userNotice.observe(this, Observer {
             it?.userNoticeList?.let { list ->
@@ -91,11 +91,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
             }
         })
 
-        receiver.userDiscountChange.observe(this, {
+        receiver.userDiscountChange.observe(this) {
             viewModel.updateDiscount(it?.discount)
-        })
+        }
 
-        receiver.dataSourceChange.observe(this, {
+        receiver.dataSourceChange.observe(this) {
             this.run {
                 fun reStart() = if (sConfigData?.thirdOpen == FLAG_OPEN)
                     MainActivity.reStart(this)
@@ -106,24 +106,31 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                     message = getString(R.string.message_source_change)
                 ) { reStart() }
             }
-        })
+        }
 
-        receiver.userInfoChange.observe(this, {
-            if(viewModel.isLogin.value == true){
+        receiver.userInfoChange.observe(this) {
+            if (viewModel.isLogin.value == true) {
                 viewModel.updateDiscount(null)
             }
-        })
+        }
 
-        receiver.userMaxBetMoneyChange.observe(this, {
-            if(viewModel.isLogin.value == true && sharedPref.getInt(KEY_USER_LEVEL_ID,-1) == it?.userLevelConfigList?.firstOrNull()?.id){
-                GameConfigManager.maxBetMoney = it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 99999
-                GameConfigManager.maxParlayBetMoney = it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
-                GameConfigManager.maxCpBetMoney = it.userLevelConfigList.firstOrNull()?.maxCpBetMoney ?: 99999
+        receiver.userMaxBetMoneyChange.observe(this) {
+            if (viewModel.isLogin.value == true && sharedPref.getInt(
+                    KEY_USER_LEVEL_ID,
+                    -1
+                ) == it?.userLevelConfigList?.firstOrNull()?.id
+            ) {
+                GameConfigManager.maxBetMoney =
+                    it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 99999
+                GameConfigManager.maxParlayBetMoney =
+                    it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
+                GameConfigManager.maxCpBetMoney =
+                    it.userLevelConfigList.firstOrNull()?.maxCpBetMoney ?: 99999
             }
-        })
+        }
     }
 
-    fun subscribeSportChannelHall(gameTypeCode: String?){
+    fun subscribeSportChannelHall(gameTypeCode: String ?= null){
         backService.subscribeSportChannelHall(gameTypeCode)
     }
 

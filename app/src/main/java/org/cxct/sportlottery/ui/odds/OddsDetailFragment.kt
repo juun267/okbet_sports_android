@@ -24,7 +24,6 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.error.HttpError
 import org.cxct.sportlottery.network.odds.MatchInfo
-import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
@@ -38,8 +37,7 @@ import org.cxct.sportlottery.util.TimeUtil
 
 
 @Suppress("DEPRECATION")
-class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
-    OnOddClickListener {
+class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
 
     private val args: OddsDetailFragmentArgs by navArgs()
@@ -85,7 +83,21 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initUI() {
-        oddsDetailListAdapter = OddsDetailListAdapter(this@OddsDetailFragment).apply {
+        oddsDetailListAdapter = OddsDetailListAdapter(
+            OnOddClickListener { odd, oddsDetail ->
+                matchOdd?.let { matchOdd ->
+                    viewModel.updateMatchBetList(
+                        matchType = MatchType.IN_PLAY,
+                        gameType = args.gameType,
+                        playCateCode = oddsDetail.gameType,
+                        playCateName = oddsDetail.name,
+                        matchInfo = matchOdd.matchInfo,
+                        odd = odd,
+                        subscribeChannelType = ChannelType.EVENT
+                    )
+                }
+            }
+        ).apply {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             oddsDetailListener = OddsDetailListener {
@@ -119,7 +131,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun observeData() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { result ->
@@ -286,7 +298,9 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         findNavController().navigate(OddsDetailFragmentDirections.actionOddsDetailFragmentToGameV3Fragment(MatchType.IN_PLAY))
     }
 
-    private fun OddsDetailResult.setupPlayCateTab(){
+
+    @SuppressLint("InflateParams")
+    private fun OddsDetailResult.setupPlayCateTab() {
         tab_cat.removeAllTabs()
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
@@ -306,31 +320,12 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         }
     }
 
+
     private fun setupStartTime(matchInfo: MatchInfo?) {
         matchInfo?.apply {
             tv_time_top.text = TimeUtil.timeFormat(startTime, TimeUtil.DM_FORMAT)
             tv_time_bottom.text = TimeUtil.timeFormat(startTime, TimeUtil.HM_FORMAT)
         }
-    }
-
-
-    override fun getBetInfoList(odd: Odd, oddsDetail: OddsDetailListData) {
-        matchOdd?.let { matchOdd ->
-            viewModel.updateMatchBetList(
-                matchType = args.matchType,
-                gameType = args.gameType,
-                playCateCode = oddsDetail.gameType,
-                playCateName = oddsDetail.name,
-                matchInfo = matchOdd.matchInfo,
-                odd = odd,
-                subscribeChannelType = ChannelType.EVENT
-            )
-        }
-    }
-
-
-    override fun removeBetInfoItem(odd: Odd) {
-        viewModel.removeBetInfoItem(odd.id)
     }
 
 

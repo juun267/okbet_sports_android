@@ -203,7 +203,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun initSocketObserver() {
-        receiver.matchStatusChange.observe(this.viewLifecycleOwner, {
+        receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 val leagueOdds = leagueAdapter.data
 
@@ -224,9 +224,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.matchClock.observe(this.viewLifecycleOwner, {
+        receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 val leagueOdds = leagueAdapter.data
 
@@ -243,9 +243,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.oddsChange.observe(this.viewLifecycleOwner, {
+        receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
                 oddsChangeEvent.filterMenuPlayCate()
@@ -269,9 +269,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.matchOddsLock.observe(this.viewLifecycleOwner, {
+        receiver.matchOddsLock.observe(this.viewLifecycleOwner) {
             it?.let { matchOddsLockEvent ->
                 val leagueOdds = leagueAdapter.data
 
@@ -285,9 +285,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.globalStop.observe(this.viewLifecycleOwner, {
+        receiver.globalStop.observe(this.viewLifecycleOwner) {
             it?.let { globalStopEvent ->
                 val leagueOdds = leagueAdapter.data
 
@@ -304,23 +304,27 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     }
                 }
             }
-        })
+        }
 
-        receiver.producerUp.observe(this.viewLifecycleOwner, {
+        receiver.producerUp.observe(this.viewLifecycleOwner) {
             it?.let {
                 unSubscribeChannelHallAll()
                 leagueAdapter.data.forEach { leagueOdd ->
                     subscribeChannelHall(leagueOdd)
                 }
             }
-        })
+        }
 
-        receiver.leagueChange.observe(this.viewLifecycleOwner, {
-            it?.let {
-                viewModel.getFavoriteMatch()
+        receiver.leagueChange.observe(this.viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                viewModel.getSportQuery(getLastPick = true) //而收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+
+                val nowGameType = gameTypeAdapter.dataSport.find { gameType -> gameType.isSelected }?.code
+                if (nowGameType == it.gameType) //收到的gameType与用户当前页面所选球种相同, 则需额外调用/myFavorite/match/query
+                    viewModel.getFavoriteMatch()
                 loading()
             }
-        })
+        }
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
@@ -359,17 +363,17 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
     }
 
     private fun initObserver() {
-        viewModel.userInfo.observe(this.viewLifecycleOwner, {
+        viewModel.userInfo.observe(this.viewLifecycleOwner) {
             leagueAdapter.discount = it?.discount ?: 1.0F
-        })
+        }
 
-        viewModel.myFavoriteLoading.observe(this.viewLifecycleOwner, {
+        viewModel.myFavoriteLoading.observe(this.viewLifecycleOwner) {
             it.getContentIfNotHandled()?.let { show ->
                 if (show) loading() else hideLoading()
             }
-        })
+        }
 
-        viewModel.sportQueryData.observe(this.viewLifecycleOwner, {
+        viewModel.sportQueryData.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { sportQueryData ->
 
                 updateGameTypeList(sportQueryData.items?.map { item ->
@@ -388,9 +392,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                     item.isSelected
                 }?.play)
             }
-        })
+        }
 
-        viewModel.favorMatchOddList.observe(this.viewLifecycleOwner, { leagueOddList ->
+        viewModel.favorMatchOddList.observe(this.viewLifecycleOwner) { leagueOddList ->
             hideLoading()
             leagueOddList.filterMenuPlayCate()
 
@@ -403,9 +407,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        })
+        }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner, {
+        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
 
@@ -433,9 +437,9 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
 
                 leagueAdapter.notifyDataSetChanged()
             }
-        })
+        }
 
-        viewModel.favorMatchList.observe(this.viewLifecycleOwner, { favorMatchList ->
+        viewModel.favorMatchList.observe(this.viewLifecycleOwner) { favorMatchList ->
             if (favorMatchList.isNullOrEmpty()) {
                 favorite_toolbar.visibility = View.VISIBLE
                 fl_no_game.visibility = View.VISIBLE
@@ -443,13 +447,13 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 favorite_toolbar.visibility = View.GONE
                 fl_no_game.visibility = View.GONE
             }
-        })
+        }
 
-        viewModel.oddsType.observe(this.viewLifecycleOwner, {
+        viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
                 leagueAdapter.oddsType = oddsType
             }
-        })
+        }
     }
 
     private fun updateGameTypeList(items: List<Item>?) {

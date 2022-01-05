@@ -103,7 +103,7 @@ class GameViewModel(
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
-    val messageListResult: LiveData<MessageListResult?>
+    val messageListResult: LiveData<Event<MessageListResult?>>
         get() = _messageListResult
 
     val curMatchType: LiveData<MatchType?>
@@ -204,7 +204,7 @@ class GameViewModel(
 
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
-    private val _messageListResult = MutableLiveData<MessageListResult?>()
+    private val _messageListResult = MutableLiveData<Event<MessageListResult?>>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -385,10 +385,16 @@ class GameViewModel(
                 doNetwork(androidContext) {
                     val typeList = arrayOf(1)
                     OneBoSportApi.messageService.getPromoteNotice(typeList)
-                }?.let { result -> _messageListResult.postValue(result) }
+                }?.let { result -> _messageListResult.postValue(Event(result)) }
             }
         } else {
-            _messageListResult.value = null
+//            _messageListResult.value = Event(null)
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    val typeList = arrayOf(2, 3)
+                    OneBoSportApi.messageService.getPromoteNotice(typeList)
+                }?.let { result -> _messageListResult.postValue(Event(result)) }
+            }
         }
     }
 
@@ -456,7 +462,7 @@ class GameViewModel(
         _isLoading.value = false
     }
 
-    private fun getAllPlayCategory(matchType: MatchType) {
+    fun getAllPlayCategory(matchType: MatchType) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
@@ -923,7 +929,7 @@ class GameViewModel(
             }
         }
 
-        _isNoHistory.postValue(sportItem == null)
+        _isNoHistory.postValue(false)
     }
 
     fun switchPlay(
@@ -1572,25 +1578,25 @@ class GameViewModel(
 
         return when (matchType) {
             MatchType.IN_PLAY -> {
-                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.inPlay?.items?.sumBy { it.num } ?: 0
             }
             MatchType.TODAY -> {
-                sportMenuRes?.sportMenuData?.menu?.today?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.today?.items?.sumBy { it.num } ?: 0
             }
             MatchType.EARLY -> {
-                sportMenuRes?.sportMenuData?.menu?.early?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.early?.items?.sumBy { it.num } ?: 0
             }
             MatchType.PARLAY -> {
-                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.parlay?.items?.sumBy { it.num } ?: 0
             }
             MatchType.OUTRIGHT -> {
-                sportMenuRes?.sportMenuData?.menu?.outright?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.outright?.items?.sumBy { it.num } ?: 0
             }
             MatchType.AT_START -> {
-                sportMenuRes?.sportMenuData?.atStart?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.atStart?.items?.sumBy { it.num } ?: 0
             }
             MatchType.EPS -> {
-                sportMenuRes?.sportMenuData?.menu?.eps?.items?.size ?: 0
+                sportMenuRes?.sportMenuData?.menu?.eps?.items?.sumBy { it.num } ?: 0
             }
             else -> {
                 0
@@ -1697,7 +1703,7 @@ class GameViewModel(
             specialMenuData!!.items?.find { it.isSelected }!!.code
         }
         else -> {
-            specialMenuData!!.items?.find { it.isSelected }!!.code
+            null
         }
     }
 
@@ -2043,6 +2049,7 @@ class GameViewModel(
 
     fun clearLiveInfo() {
         _matchLiveInfo.postValue(null)
+        _oddsDetailResult.postValue(null)
     }
 
     //提款功能是否啟用

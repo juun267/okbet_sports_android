@@ -9,7 +9,7 @@ abstract class BaseSocketFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
         (activity as BaseSocketActivity<*>).receiver
     }
 
-    protected fun subscribeSportChannelHall(gameTypeCode: String?) {
+    protected fun subscribeSportChannelHall(gameTypeCode: String ?= null) {
         (activity as BaseSocketActivity<*>).subscribeSportChannelHall(gameTypeCode)
     }
 

@@ -112,8 +112,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
             itemView.iv_play.isVisible = (data.matchInfo?.liveVideo == 1)
 
-            itemView.iv_play.setLiveImg()
-
             itemView.table_match_info_border.setOnClickListener {
                 onClickMatchListener?.onClick(data)
             }
@@ -126,7 +124,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
             }
         }
-
+/* 目前不會用，先留著，以防之後說要改回來。
         private fun ImageView.setLiveImg() {
             when (gameType) {
                 GameType.FT.key -> setImageResource(R.drawable.ic_live_football_small)
@@ -146,7 +144,7 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                 GameType.GF.key -> setImageResource(R.drawable.ic_live_golf_small)
             }
         }
-        
+        */
         private fun setupOddList(data: MatchOdd) {
             itemView.apply {
                 gameType = data.matchInfo?.gameType
@@ -302,18 +300,20 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             GameType.FT.key -> { //足球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, false) { timeMillis ->
-                                        val timeStr = TimeUtil.longToMmSs(timeMillis)
+                                        val timeMillisAbs = if (timeMillis > 0) timeMillis else 0
+                                        val timeStr = TimeUtil.longToMmSs(timeMillisAbs)
                                         tv_match_time.text = timeStr
-                                        data.leagueTime = (timeMillis / 1000).toInt()
+                                        data.leagueTime = (timeMillisAbs / 1000).toInt()
                                     }
                                 }
                             }
                             GameType.BK.key -> { //籃球
                                 data.leagueTime?.let { leagueTime ->
                                     startTimer(leagueTime, true) { timeMillis ->
-                                        val timeStr = TimeUtil.longToMmSs(timeMillis)
+                                        val timeMillisAbs = if (timeMillis > 0) timeMillis else 0
+                                        val timeStr = TimeUtil.longToMmSs(timeMillisAbs)
                                         tv_match_time.text = timeStr
-                                        data.leagueTime = (timeMillis / 1000).toInt()
+                                        data.leagueTime = (timeMillisAbs / 1000).toInt()
                                     }
                                 }
                             }
@@ -332,13 +332,14 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                         data.matchInfo?.remainTime?.let { remainTime ->
                             startTimer((remainTime / 1000).toInt(), true) { timeMillis ->
+                                val timeMillisAbs = if (timeMillis > 0) timeMillis else 0
                                 val timeStr = statusName + String.format(
                                     itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    TimeUtil.longToMinute(timeMillis)
+                                    TimeUtil.longToMinute(timeMillisAbs)
                                 )
                                 tv_match_time.text = timeStr
 
-                                data.matchInfo.remainTime = timeMillis
+                                data.matchInfo.remainTime = timeMillisAbs
                             }
                         }
                     }
@@ -459,7 +460,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                     //跟進h5 獨贏盤 主隊以1表示
                     tv_name.text = when (gameType) {
-                        GameType.TN.key, GameType.VB.key -> "1"
+                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> "1"
+                        GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> "1"
                         else -> ""
                     }
 

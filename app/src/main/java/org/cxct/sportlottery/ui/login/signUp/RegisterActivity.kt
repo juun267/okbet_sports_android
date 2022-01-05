@@ -6,10 +6,16 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.*
 import android.text.method.HideReturnsTransformationMethod
+import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
@@ -46,16 +52,13 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                updateValidCode()
             }
             binding.tvDuty -> {
-                //暫時關閉
-                //JumpUtil.toExternalWeb(this, Constants.getDutyRuleUrl(this))
+                JumpUtil.toExternalWeb(this, Constants.getDutyRuleUrl(this))
             }
             binding.tvPrivacy -> {
-                //暫時關閉
-                //JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
+                JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
             }
             binding.tvAgreement -> {
-                //暫時關閉
-                //JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
+                JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
             }
 
         }
@@ -88,32 +91,56 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         setupRegisterButton()
         setupGoToLoginButton()
         initObserve()
-        binding.etLoginPassword.endIconImageButton.setOnClickListener {
-            if (binding.etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetLoginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                binding.etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
-            } else {
-                binding.etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetLoginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+
+        binding.apply {
+            etLoginPassword.endIconImageButton.setOnClickListener {
+                if (etLoginPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetLoginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    etLoginPassword.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etLoginPassword.setEndIcon(R.drawable.ic_eye_open)
+                    eetLoginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                }
+                eetLoginPassword.setSelection(eetLoginPassword.text.toString().length)
             }
-            binding.eetLoginPassword.setSelection(binding.eetLoginPassword.text.toString().length)
-        }
-        binding.etConfirmPassword.endIconImageButton.setOnClickListener {
-            if (binding.etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
-                binding.eetConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                binding.etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
-            } else {
-                binding.etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
-                binding.eetConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            etConfirmPassword.endIconImageButton.setOnClickListener {
+                if (etConfirmPassword.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetConfirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    etConfirmPassword.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etConfirmPassword.setEndIcon(R.drawable.ic_eye_open)
+                    eetConfirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                }
+                eetConfirmPassword.setSelection(eetConfirmPassword.text.toString().length)
             }
-            binding.eetConfirmPassword.setSelection(binding.eetConfirmPassword.text.toString().length)
+            etWithdrawalPwd.endIconImageButton.setOnClickListener {
+                if (etWithdrawalPwd.endIconResourceId == R.drawable.ic_eye_open) {
+                    eetWithdrawalPwd.transformationMethod = PasswordTransformationMethod.getInstance()
+                    etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_close)
+                } else {
+                    etWithdrawalPwd.setEndIcon(R.drawable.ic_eye_open)
+                    eetWithdrawalPwd.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                }
+                eetWithdrawalPwd.setSelection(eetWithdrawalPwd.text.toString().length)
+            }
         }
 
         binding.ivReturn.setOnClickListener(this)
         binding.tvDuty.setOnClickListener(this)
-        binding.tvPrivacy.setOnClickListener(this)
-        binding.tvAgreement.setOnClickListener(this)
+        //binding.tvPrivacy.setOnClickListener(this)
+        //binding.tvAgreement.setOnClickListener(this)
+        binding.tvPrivacy.text = getString(R.string.register_privacy)+getString(R.string.register_privacy_policy)+getString(R.string.register_privacy_policy_promotions)
+        binding.tvPrivacy.makeLinks(
+            Pair(applicationContext.getString(R.string.register_privacy_policy), View.OnClickListener {
+                JumpUtil.toExternalWeb(this, Constants.getPrivacyRuleUrl(this))
+            }))
+        binding.tvAgreement.text = getString(R.string.register_over_21)+getString(R.string.app_name)+getString(R.string.register_rules)
+        binding.tvAgreement.makeLinks(
+            Pair(applicationContext.getString(R.string.register_rules), View.OnClickListener {
+                JumpUtil.toExternalWeb(this, Constants.getAgreementRuleUrl(this))
+            }))
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -496,10 +523,11 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                         if (sec-- > 0) {
                             binding.btnSendSms.isEnabled = false
                             //btn_send_sms.text = getString(R.string.send_timer, sec)
+                            binding.btnSendSms.text = "${sec}s"
                             binding.btnSendSms.setTextColor(
                                 ContextCompat.getColor(
                                     this@RegisterActivity,
-                                    R.color.colorBlue
+                                    R.color.colorGrayDark
                                 )
                             )
                         } else {
@@ -534,6 +562,35 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         dialog.show()
+    }
+
+
+    fun TextView.makeLinks(vararg links: Pair<String, View.OnClickListener>) {
+        val spannableString = SpannableString(this.text)
+        var startIndexOfLink = -1
+        for (link in links) {
+            val clickableSpan = object : ClickableSpan() {
+                override fun updateDrawState(textPaint: TextPaint) {
+                    textPaint.color = textPaint.linkColor
+                    textPaint.isUnderlineText = false
+                }
+
+                override fun onClick(view: View) {
+                    Selection.setSelection((view as TextView).text as Spannable, 0)
+                    view.invalidate()
+                    link.second.onClick(view)
+                }
+            }
+            startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
+//      if(startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
+            spannableString.setSpan(
+                clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
+        this.movementMethod =
+            LinkMovementMethod.getInstance() // without LinkMovementMethod, link can not click
+        this.setText(spannableString, TextView.BufferType.SPANNABLE)
     }
 
 

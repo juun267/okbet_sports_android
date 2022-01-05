@@ -21,6 +21,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
+import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -56,6 +57,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
         }
 
     var leagueOddListener: LeagueOddListener? = null
+
+    var leagueOdd: LeagueOdd? = null
 
     private val oddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {

@@ -42,13 +42,14 @@ fun getOddsNew(matchOdd: MatchOdd?, oddsType: OddsType): Double {
     }
 }
 
-fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd?, oddsType: OddsType): Double {
+fun getOdds(matchOdd: org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd?, oddsType: String): Double {
     return when (oddsType) {
-        OddsType.EU -> matchOdd?.odds ?: 0.0
-        OddsType.HK -> matchOdd?.hkOdds ?: 0.0
+        OddsType.EU.code -> matchOdd?.odds ?: 0.0
+        OddsType.HK.code -> matchOdd?.hkOdds ?: 0.0
         //Martin
-        OddsType.MYS -> matchOdd?.malayOdds ?: 0.0
-        OddsType.IDN -> matchOdd?.indoOdds ?: 0.0
+        OddsType.MYS.code -> matchOdd?.malayOdds ?: 0.0
+        OddsType.IDN.code -> matchOdd?.indoOdds ?: 0.0
+        else -> 0.0
     }
 }
 

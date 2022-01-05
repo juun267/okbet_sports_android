@@ -9,7 +9,7 @@ import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 
 object Constants {
-    val SERVER_URL_LIST = listOf("app66app.com", "app99app.vip", "app66app.vip", "app88app.vip")
+    val SERVER_URL_LIST = listOf("aioweiyaaaf.com", "app99app.vip", "app66app.vip", "app88app.vip")
     var currentServerUrl: String? = null  //當前選擇的的 server url (後續 CheckAppUpdate API 會用到)
     private var mBaseUrl = ""
 
@@ -71,9 +71,9 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/responsibility"
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/responsibility"
-                else -> "https://sports.cxsport.net/sports-rule/#/us/responsibility"
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility"
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -86,11 +86,11 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/privacy-policy?platform="+context.getString(
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/privacy-policy?platform="+context.getString(
                     R.string.app_name)
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/privacy-policy?platform="+context.getString(
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/privacy-policy?platform="+context.getString(
                     R.string.app_name)
-                else -> "https://sports.cxsport.net/sports-rule/#/us/privacy-policy?platform"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/privacy-policy?platform"+context.getString(
                         R.string.app_name)
             }
 

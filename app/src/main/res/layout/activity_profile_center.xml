@@ -189,8 +189,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_profile_center_recharge" />
 
@@ -220,8 +220,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_profile_center_withdraw" />
 

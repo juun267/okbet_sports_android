@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -298,8 +299,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
 
             tv_play_type_highlight.text = when (GameType.getGameType(selectItem.code)) {
-                GameType.FT, GameType.BK -> getText(R.string.ou_hdp_hdp_title)
-                GameType.TN, GameType.VB -> getText(R.string.ou_hdp_1x2_title)
+                GameType.FT, GameType.BK, GameType.IH, GameType.RB, GameType.AFT -> getText(R.string.ou_hdp_hdp_title)
+                GameType.TN, GameType.VB, GameType.BX, GameType.CK -> getText(R.string.ou_hdp_1x2_title)
                 else -> ""
             }
 
@@ -901,6 +902,20 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             viewModel.getMatchPreload()
+            
+            it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
+                leagueChangeEvent.leagueIdList?.let { leagueIdList ->
+                    Log.e("Martin","1111=")
+
+                    viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
+                        mSelectMatchType,
+                        leagueIdList,
+                        listOf(),
+                        isIncrement = true
+                    )
+                }
+            }
+
         }
 
         receiver.matchOddsLock.observe(this.viewLifecycleOwner) {

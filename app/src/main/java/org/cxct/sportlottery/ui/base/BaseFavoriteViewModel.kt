@@ -11,6 +11,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchRequest
 import org.cxct.sportlottery.network.myfavorite.match.MyFavoriteMatchResult
+import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.repository.*
@@ -82,6 +83,15 @@ abstract class BaseFavoriteViewModel(
             return
         }
 
+        getMyFavoriteMatch(gameType, playCateMenu, playCateCode)
+
+    }
+
+    private fun getMyFavoriteMatch(
+        gameType: String,
+        playCateMenu: String,
+        playCateCode: String?,
+    ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.favoriteService.getMyFavoriteMatch(
@@ -117,7 +127,7 @@ abstract class BaseFavoriteViewModel(
                             matchInfo.startDateDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "dd/MM")
 
-                            matchOdd.matchInfo.startTimeDisplay =
+                            matchInfo.startTimeDisplay =
                                 TimeUtil.timeFormat(matchInfo.startTime, "HH:mm")
 
                             matchInfo.remainTime = TimeUtil.getRemainTime(matchInfo.startTime)

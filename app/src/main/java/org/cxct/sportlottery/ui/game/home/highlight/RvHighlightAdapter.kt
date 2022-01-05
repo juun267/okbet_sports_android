@@ -271,8 +271,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 gameType = data.matchInfo?.gameType
 
                 val playCateStr = when (gameType) {
-                    GameType.FT.key, GameType.BK.key -> context.getText(R.string.ou_hdp_hdp_title)
-                    GameType.TN.key, GameType.VB.key -> context.getText(R.string.ou_hdp_1x2_title)
+                    GameType.FT.key, GameType.BK.key, GameType.IH.key, GameType.RB.key, GameType.AFT.key -> context.getText(
+                        R.string.ou_hdp_hdp_title
+                    )
+                    GameType.TN.key, GameType.VB.key, GameType.BX.key, GameType.CK.key -> context.getText(
+                        R.string.ou_hdp_1x2_title
+                    )
                     else -> ""
                 }.toString()
 
@@ -325,10 +329,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(0), oddsType)
+                            setupOdd(oddListHDP?.get(0), oddsType,"disable")
                         }
                         oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(0), oddsType)
+                            setupOdd(oddList1x2?.get(0), oddsType,"disable")
                         }
                     }
 
@@ -412,10 +416,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
                     when {
                         oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(1), oddsType)
+                            setupOdd(oddListHDP?.get(1), oddsType,"disable")
                         }
                         oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(1), oddsType)
+                            setupOdd(oddList1x2?.get(1), oddsType,"disable")
                         }
                     }
 

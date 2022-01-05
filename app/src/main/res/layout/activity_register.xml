@@ -40,7 +40,9 @@
         android:overScrollMode="never"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo">
+        app:layout_constraintTop_toBottomOf="@id/ivLogo"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -121,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:endIcon="@drawable/ic_eye_open"
+                app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_register_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/login_password"
@@ -144,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:endIcon="@drawable/ic_eye_open"
+                app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_confirm_password"
                 app:iconSignifier="@drawable/ic_login_password"
                 app:labelText="@string/confirm_password"
@@ -189,6 +191,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                app:endIcon="@drawable/ic_eye_close"
                 app:hintText="@string/hint_withdrawal_pwd"
                 app:iconSignifier="@drawable/ic_login_withdraw_number"
                 app:labelText="@string/withdrawal_pwd"
@@ -200,8 +203,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="text"
+                    android:inputType="numberPassword"
                     android:maxLines="1"
+                    android:maxLength="4"
                     android:textSize="14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -305,6 +309,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/btn_send_sms"
                         android:minHeight="32dp"
+                        android:textAllCaps="false"
                         android:text="@string/get_verification_code"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/textSize14sp" />
@@ -510,22 +515,19 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/block_valid_code">
-                <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvDutyTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="请仔细阅读我们的"
-                    android:textColor="@color/colorBlackLight"
+                    android:text="@string/register_please_read"                    android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-                <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvDuty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="博彩责任"
+                    android:text="@string/register_responsibilities"
                     android:textColor="@color/colorBlue"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/tvDutyTitle"
@@ -539,7 +541,6 @@
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toEndOf="@+id/tvDuty"
                     app:layout_constraintTop_toTopOf="parent" />
-                <!--缺翻譯-->
                 <CheckBox
                     android:id="@+id/cbPrivacy"
                     android:layout_width="wrap_content"
@@ -548,33 +549,24 @@
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
                     android:paddingLeft="4dp"
-                    android:text="按照"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
-                <!--缺翻譯-->
                 <TextView
                     android:id="@+id/tvPrivacy"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="隐私权政策"
-                    android:textColor="@color/colorBlue"
-                    android:textSize="@dimen/textSize13sp"
-                    app:layout_constraintStart_toEndOf="@+id/cbPrivacy"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
-                <!--缺翻譯-->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="向我发送更新和促销信息"
                     android:textColor="@color/colorBlackLight"
+                    android:textColorLink="@color/colorBlue"
                     android:textSize="@dimen/textSize13sp"
-                    app:layout_constraintStart_toEndOf="@+id/tvPrivacy"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle" />
-                <!--缺翻譯-->
+                    android:gravity="left"
+                    app:layout_constraintStart_toEndOf="@+id/cbPrivacy"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDutyTitle"
+                    app:layout_constraintEnd_toEndOf="@+id/clAgreement"/>
+
+
                 <CheckBox
                     android:id="@+id/cbAgreement"
                     android:layout_width="wrap_content"
@@ -583,59 +575,60 @@
                     android:button="@drawable/effect_login_select_checkbox"
                     android:checked="true"
                     android:paddingLeft="4dp"
-                    android:text="我已满18岁并且已阅读及同意OKBET"
                     android:textColor="@color/colorBlackLight"
                     android:textSize="@dimen/textSize13sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cbPrivacy" />
-                <!--缺翻譯-->
+
                 <TextView
                     android:id="@+id/tvAgreement"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="规则与条款"
-                    android:textColor="@color/colorBlue"
+                    android:textColor="@color/colorBlackLight"
+                    android:textColorLink="@color/colorBlue"
                     android:textSize="@dimen/textSize13sp"
+                    android:gravity="left"
                     app:layout_constraintStart_toEndOf="@+id/cbAgreement"
-                    app:layout_constraintTop_toBottomOf="@+id/cbPrivacy" />
+                    app:layout_constraintTop_toBottomOf="@+id/cbPrivacy"
+                    app:layout_constraintEnd_toEndOf="@+id/clAgreement"/>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--            <LinearLayout-->
-<!--                android:id="@+id/ll_agreement"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:layout_marginBottom="14dp"-->
-<!--                android:gravity="center"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:visibility="gone"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/block_valid_code">-->
+            <!--            <LinearLayout-->
+            <!--                android:id="@+id/ll_agreement"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:layout_marginBottom="14dp"-->
+            <!--                android:gravity="center"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                android:visibility="gone"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/block_valid_code">-->
 
-<!--                <CheckBox-->
-<!--                    android:id="@+id/cb_agreement"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:button="@drawable/effect_select_checkbox"-->
-<!--                    android:paddingHorizontal="4dp"-->
-<!--                    android:text="@string/desc_agreement"-->
-<!--                    android:textColor="@color/colorGray"-->
-<!--                    android:textSize="@dimen/textSize12sp"-->
-<!--                    app:layout_constraintBottom_toTopOf="@id/btn_login"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/btn_login" />-->
+            <!--                <CheckBox-->
+            <!--                    android:id="@+id/cb_agreement"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:button="@drawable/effect_select_checkbox"-->
+            <!--                    android:paddingHorizontal="4dp"-->
+            <!--                    android:text="@string/desc_agreement"-->
+            <!--                    android:textColor="@color/colorGray"-->
+            <!--                    android:textSize="@dimen/textSize12sp"-->
+            <!--                    app:layout_constraintBottom_toTopOf="@id/btn_login"-->
+            <!--                    app:layout_constraintStart_toStartOf="@id/btn_login" />-->
 
-<!--                <TextView-->
-<!--                    android:id="@+id/btn_agreement"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/btn_agreement"-->
-<!--                    android:textColor="@color/colorOrange"-->
-<!--                    android:textSize="@dimen/textSize12sp" />-->
+            <!--                <TextView-->
+            <!--                    android:id="@+id/btn_agreement"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="@string/btn_agreement"-->
+            <!--                    android:textColor="@color/colorOrange"-->
+            <!--                    android:textSize="@dimen/textSize12sp" />-->
 
-<!--            </LinearLayout>-->
+            <!--            </LinearLayout>-->
 
             <Button
                 android:id="@+id/btn_register"

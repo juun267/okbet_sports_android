@@ -196,11 +196,12 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let {
-                val odds = getOdds(first, oddsType)
-                binding.tvOdd.setOddFormat(odds)
+                //val odds = getOdds(first, first.oddsType.toString())
+                binding.tvOdd.setOddFormat(first.odds)
                 binding.tvOddsType.text = when (first.oddsType) {
                     OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
                     OddsType.IDN.code -> "(" + itemView.context.getString(OddsType.IDN.res) + ")"
+                    OddsType.HK.code -> "(" + itemView.context.getString(OddsType.HK.res) + ")"
                     else -> "(" + itemView.context.getString(OddsType.EU.res) + ")"
                 }?.let { it }
             }
@@ -234,12 +235,13 @@ class AccountHistoryNextAdapter(
             binding.row = row
             binding.matchOdd = first
 
-            first?.let {
-                val odds = getOdds(first, oddsType)
-                binding.tvOdd.setOddFormat(odds)
+            first?.let { it ->
+                //val odds = getOdds(first, first.oddsType.toString())
+                binding.tvOdd.setOddFormat(first.odds)
                 binding.tvOddsType.text = when (first.oddsType) {
                     OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
                     OddsType.IDN.code -> "(" + itemView.context.getString(OddsType.IDN.res) + ")"
+                    OddsType.HK.code -> "(" + itemView.context.getString(OddsType.HK.res) + ")"
                     else -> "(" + itemView.context.getString(OddsType.EU.res) + ")"
                 }?.let { it }
                 val scoreList = mutableListOf<String>()
