@@ -12,6 +12,8 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.webkit.*
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -46,7 +48,7 @@ import java.util.*
 
 
 @Suppress("DEPRECATION", "SetTextI18n")
-class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), TimerManager {
+class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
@@ -123,8 +125,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initUI()
-        observeData()
-        initSocketObserver()
     }
 
     override fun onStart() {
@@ -673,4 +673,24 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
         }
     }
+
+    //作用於頁面轉場流暢性
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        return if (enter) {
+            AnimationUtils.loadAnimation(context, nextAnim).apply {
+                setAnimationListener(this@OddsDetailLiveFragment)
+            }
+        } else {
+            super.onCreateAnimation(transit, enter, nextAnim)
+        }
+    }
+
+    override fun onAnimationStart(animation: Animation?) {}
+
+    override fun onAnimationEnd(animation: Animation?) {
+        observeData()
+        initSocketObserver()
+    }
+
+    override fun onAnimationRepeat(animation: Animation?) {}
 }
