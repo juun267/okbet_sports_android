@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/first"
+                android:text="@string/first_half_game"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp" />
 
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/second"
+                android:text="@string/second_half_game"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp" />
 
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/third"
+                android:text="@string/total_score"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp" />
 

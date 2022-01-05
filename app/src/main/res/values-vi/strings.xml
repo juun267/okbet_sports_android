@@ -184,6 +184,7 @@
     <string name="winner">Thắng</string>
     <string name="first_half_game">hiệp 1</string>
     <string name="second_half_game">hiệp 2</string>
+    <string name="total_score">Tổng điểm</string>
     <string name="full_game">toàn trận</string>
     <string name="game_result">Kết quả</string>
     <string name="game_yellow_card">Thẻ phạt</string>

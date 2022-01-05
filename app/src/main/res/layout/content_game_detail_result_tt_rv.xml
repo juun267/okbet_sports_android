@@ -93,7 +93,7 @@
             android:background="@color/colorWhite6" />
 
         <TextView
-            android:id="@+id/tt_score_second"
+            android:id="@+id/tt_plat_first"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -142,7 +142,7 @@
             android:background="@color/colorWhite6" />
 
         <TextView
-            android:id="@+id/tt_away_first"
+            android:id="@+id/tt_score_second"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -159,7 +159,7 @@
             android:background="@color/colorWhite6" />
 
         <TextView
-            android:id="@+id/tt_away_second"
+            android:id="@+id/tt_plat_second"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

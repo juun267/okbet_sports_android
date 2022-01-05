@@ -880,9 +880,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 //完場
                 gameStatus?.let {
                     tt_score_first.text = it.homeScore?.toString()
-                    tt_away_first.text = it.awayScore?.toString()
-                    tt_score_second.text = it.homeScore?.toString()
-                    tt_away_second.text = it.awayScore?.toString()
+                    tt_plat_first.text = it.homeTotalScore?.toString()
+                    tt_score_second.text = it.awayScore?.toString()
+                    tt_plat_second.text = it.awayTotalScore?.toString()
                 }
             }
         }
@@ -986,7 +986,6 @@ class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHo
             return NoDataViewHolder(view)
         }
     }
-}
 }
 
 
