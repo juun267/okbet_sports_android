@@ -51,14 +51,14 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         this.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        this.addItemDecoration(
-                            DividerItemDecorator(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.divider_color_white8
-                                )
-                            )
-                        )
+//                        this.addItemDecoration(
+//                            DividerItemDecorator(
+//                                ContextCompat.getDrawable(
+//                                    context,
+//                                    R.drawable.divider_color_silverlight_1dp
+//                                )
+//                            )
+//                        )
                     }
                 }
             }
@@ -69,14 +69,14 @@ class OutrightCountryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         this.layoutManager =
                             SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
 
-                        this.addItemDecoration(
-                            DividerItemDecorator(
-                                ContextCompat.getDrawable(
-                                    context,
-                                    R.drawable.divider_color_white8
-                                )
-                            )
-                        )
+//                        this.addItemDecoration(
+//                            DividerItemDecorator(
+//                                ContextCompat.getDrawable(
+//                                    context,
+//                                    R.drawable.divider_color_white8
+//                                )
+//                            )
+//                        )
                     }
                 }
             }

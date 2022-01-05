@@ -474,7 +474,6 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         leagueAdapter.data.find { adapterLeague -> adapterLeague.league.id == changedLeagueId } != null
                     }.let { onScreenLeagueIdList ->
                         if (onScreenLeagueIdList.isNotEmpty())
-                            Log.e("Martin","2222=")
 
                         viewModel.getLeagueOddsList( //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                                 args.matchType,
