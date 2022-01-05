@@ -496,13 +496,13 @@ class GameViewModel(
                     getLeagueList(
                         specialMenuData?.items!![0].code!!,
                         code,
-                        getCurrentTimeRangeParams(),
+                        null,
                         isIncrement = false
                     )
 //                    getOddsList(
 //                        specialMenuData?.items!![0].code!!,
 //                        code,
-//                        getCurrentTimeRangeParams(),
+//                        null,
 //                        leagueIdList = null,
 //                        isIncrement = false
 //                    )
@@ -912,7 +912,7 @@ class GameViewModel(
                 MatchType.OTHER -> {
                     getOddsList(
                         code,
-                        "sc:longTermEvent",
+                        specialEntrance.value?.couponCode!!,
                         getCurrentTimeRangeParams(),
                         leagueIdList = leagueIdList,
                         isIncrement = isIncrement
@@ -929,7 +929,7 @@ class GameViewModel(
             }
         }
 
-        _isNoHistory.postValue(false)
+        _isNoHistory.postValue(sportCode == null)
     }
 
     fun switchPlay(
