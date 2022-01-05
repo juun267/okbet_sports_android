@@ -590,9 +590,10 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     /**
      * 同賽事不能串關提示
      * @param show true:顯示, false:隱藏
+     * @如果資料只有一筆，也不用顯示
      */
     private fun showHideCantParlayWarn(show: Boolean) {
-        ll_cant_parlay_warn.visibility = if (show) View.VISIBLE else View.GONE
+        ll_cant_parlay_warn.visibility = if (show && betListRefactorAdapter?.betList?.size ?: 0 > 1) View.VISIBLE else View.GONE
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {
