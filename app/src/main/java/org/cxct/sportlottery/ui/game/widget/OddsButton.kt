@@ -89,7 +89,7 @@ class OddsButton @JvmOverloads constructor(
                 else
                     "$extInfoStr ${(odd?.nameMap?.get(LanguageManager.getSelectLanguage(context).key) ?: odd?.name)}"
 
-            visibility = if (odd?.name.isNullOrEmpty()) View.GONE else View.VISIBLE
+            visibility = if (odd?.name.isNullOrEmpty()||gameType == "disable") View.GONE else View.VISIBLE
         }
 
         tv_spread.apply {

@@ -100,7 +100,7 @@ class GameViewModel(
 
     val gameCateDataList by lazy { thirdGameRepository.gameCateDataList }
 
-    val messageListResult: LiveData<MessageListResult?>
+    val messageListResult: LiveData<Event<MessageListResult?>>
         get() = _messageListResult
 
     val curMatchType: LiveData<MatchType?>
@@ -198,7 +198,7 @@ class GameViewModel(
 
     val showBetUpperLimit = betInfoRepository.showBetUpperLimit
 
-    private val _messageListResult = MutableLiveData<MessageListResult?>()
+    private val _messageListResult = MutableLiveData<Event<MessageListResult?>>()
     private val _curMatchType = MutableLiveData<MatchType?>()
     private val _curChildMatchType = MutableLiveData<MatchType?>()
     private val _sportMenuResult = MutableLiveData<SportMenuResult?>()
@@ -350,10 +350,16 @@ class GameViewModel(
                 doNetwork(androidContext) {
                     val typeList = arrayOf(1)
                     OneBoSportApi.messageService.getPromoteNotice(typeList)
-                }?.let { result -> _messageListResult.postValue(result) }
+                }?.let { result -> _messageListResult.postValue(Event(result)) }
             }
         } else {
-            _messageListResult.value = null
+//            _messageListResult.value = Event(null)
+            viewModelScope.launch {
+                doNetwork(androidContext) {
+                    val typeList = arrayOf(2, 3)
+                    OneBoSportApi.messageService.getPromoteNotice(typeList)
+                }?.let { result -> _messageListResult.postValue(Event(result)) }
+            }
         }
     }
 
@@ -411,7 +417,7 @@ class GameViewModel(
         _isLoading.value = false
     }
 
-    private fun getAllPlayCategory(matchType: MatchType) {
+    fun getAllPlayCategory(matchType: MatchType) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(

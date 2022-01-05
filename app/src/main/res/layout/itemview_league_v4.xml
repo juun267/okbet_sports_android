@@ -52,6 +52,7 @@
         android:paddingBottom="20dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_refresh_gray"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/league_border"
         app:layout_constraintEnd_toEndOf="@id/league_border"
         app:layout_constraintTop_toTopOf="@id/league_border"
