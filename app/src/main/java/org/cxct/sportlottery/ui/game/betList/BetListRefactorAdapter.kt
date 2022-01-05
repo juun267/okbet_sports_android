@@ -133,7 +133,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     betList?.getOrNull(position)!!,
                     currentOddsType,
                     itemCount,
-                    onItemClickListener
+                    onItemClickListener,
+                    betList?.size ?: 0
                 )
             }
             is BatchSingleViewHolder -> {
@@ -196,13 +197,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemData: BetInfoListData,
             oddsType: OddsType,
             itemCount: Int,
-            onItemClickListener: OnItemClickListener
+            onItemClickListener: OnItemClickListener,
+            betListSize: Int
         ) {
             itemView.apply {
                 setupBetAmountInput(
                     itemData,
                     oddsType,
-                    onItemClickListener
+                    onItemClickListener,
+                    betListSize
                 )
 
                 setupOddStatus(itemData)
@@ -217,7 +220,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupBetAmountInput(
             itemData: BetInfoListData,
             oddsType: OddsType,
-            onItemClickListener: OnItemClickListener
+            onItemClickListener: OnItemClickListener,
+            betListSize: Int
         ) {
             itemView.apply {
                 et_bet.apply {
@@ -227,7 +231,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(itemData, oddsType)
+                setupOddInfo(itemData, oddsType ,betListSize )
                 setupMinimumLimitMessage(itemData)
                 onItemClickListener.refreshBetInfoTotal()
 
@@ -340,10 +344,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupOddInfo(
             itemData: BetInfoListData,
-            oddsType: OddsType
+            oddsType: OddsType,
+            betListSize: Int
         ) {
             itemView.apply {
-                v_point.visibility = if (itemData.pointMarked) View.VISIBLE else View.GONE
+                v_point.visibility = if (itemData.pointMarked && betListSize > 1) View.VISIBLE else View.GONE
                 var currentOddsType = oddsType
                 if(itemData.matchOdd.odds == itemData.matchOdd.malayOdds){
                     currentOddsType = OddsType.EU
