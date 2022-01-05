@@ -1858,6 +1858,7 @@ class GameViewModel(
 
     fun clearLiveInfo() {
         _matchLiveInfo.postValue(null)
+        _oddsDetailResult.postValue(null)
     }
 
     //提款功能是否啟用

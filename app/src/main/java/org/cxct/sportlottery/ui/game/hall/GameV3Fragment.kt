@@ -1,11 +1,15 @@
 package org.cxct.sportlottery.ui.game.hall
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -18,6 +22,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
+import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -30,6 +35,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
@@ -37,7 +43,6 @@ import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.ui.base.BaseActivity
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
-import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
@@ -55,7 +60,7 @@ import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SpaceItemDecoration
 import java.util.*
 
-
+@RequiresApi(Build.VERSION_CODES.M)
 class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameV3FragmentArgs by navArgs()
@@ -154,13 +159,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             discount = viewModel.userInfo.value?.discount ?: 1.0F
 
             leagueListener = LeagueListener({
-                  subscribeChannelHall(it)
+                subscribeChannelHall(it)
             }, {
                 loading()
-                 viewModel.refreshGame(
-                     args.matchType,
-                     listOf(it.league.id),
-                     listOf())
+                viewModel.refreshGame(
+                    args.matchType,
+                    listOf(it.league.id),
+                    listOf()
+                )
             })
             leagueOddListener = LeagueOddListener(
                 { matchId, matchInfoList ->
@@ -333,13 +339,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun refreshToolBarUI(view: View?){
+    private fun refreshToolBarUI(view: View?) {
         if (view != null) {
             if (leagueAdapter.data.isEmpty()) {
                 if (args.matchType == MatchType.AT_START)
                     game_toolbar_champion.isVisible = false
             } else {
-                if(args.matchType == MatchType.AT_START)
+                if (args.matchType == MatchType.AT_START)
                     game_toolbar_champion.isVisible = true
             }
         }
@@ -441,6 +447,32 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SpaceItemDecoration(context, R.dimen.item_spacing_league)
             )
         }
+
+        view.sv_game.setOnScrollChangeListener { _, _, _, _, _ ->
+            Rect().apply {
+                view.sv_game.getHitRect(this)
+                view.game_list.adapter?.let {
+                    if (leagueAdapter.data.isNotEmpty()) {
+                        for (i in 0 until leagueAdapter.data.size) {
+                            val vLeagueItem = view.game_list.findViewHolderForAdapterPosition(i)
+                            val leagueOddAdapter = (vLeagueItem as LeagueAdapter.ItemViewHolder).leagueOddAdapter
+                            val rvLeague = vLeagueItem.itemView.league_odd_list
+
+                            if (leagueOddAdapter.data.isNotEmpty()) {
+                                for (j in leagueOddAdapter.data.indices) {
+                                    val vMatchOddItem = rvLeague.getChildAt(j)
+                                    if (vMatchOddItem.getLocalVisibleRect(this)) {
+                                        subscribeChannelHallSingleMatchOdds(leagueAdapter.data[i], leagueOddAdapter.data[j])
+                                    } else {
+                                        unSubscribeChannelHallSingleMatchOdds(leagueAdapter.data[i], leagueOddAdapter.data[j])
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -466,6 +498,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         loading()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initObserve() {
         viewModel.sportMenuResult.observe(this.viewLifecycleOwner) {
             when (args.matchType) {
@@ -578,8 +611,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     }
                     setNoDataView(leagueAdapter.data)
 
-                    leagueOdds.forEach { leagueOdd ->
-                        subscribeChannelHall(leagueOdd)
+                    //賽事訂閱規則 因頁面初次展示不超過兩項 故保持兩項賽事訂閱避免過多socket response導致頁面卡頓
+                    if (leagueOdds.isNotEmpty()) {
+                        if (leagueOdds.first().matchOdds.size < 3) {
+                            subscribeChannelHall(leagueOdds.first())
+                            if (leagueOdds.first().matchOdds.size == 1 && leagueOdds.size > 1) {
+                                subscribeChannelHallSingleMatchOdds(leagueOdds.component2(), leagueOdds.component2().matchOdds.component1())
+                            }
+                        } else {
+                            subscribeChannelHallSingleMatchOdds(leagueOdds.first(), leagueOdds.first().matchOdds.component1())
+                            subscribeChannelHallSingleMatchOdds(leagueOdds.first(), leagueOdds.first().matchOdds.component2())
+                        }
                     }
                 }
                 refreshToolBarUI(this.view)
@@ -756,7 +798,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
 
                         matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds?.forEach { map ->
+                            quickPlayCate.quickOdds.forEach { map ->
                                 map.value?.forEach { odd ->
                                     odd?.isSelected = it.any { betInfoListData ->
                                         betInfoListData.matchOdd.oddsId == odd?.id
@@ -845,7 +887,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun setNoDataView(data:MutableList<LeagueOdd>){
+    private fun setNoDataView(data: MutableList<LeagueOdd>) {
         when {
             data.isNullOrEmpty() -> {
                 game_play_category.isVisible = false
@@ -1302,7 +1344,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             ),
             StatusSheetAdapter.ItemCheckedListener { _, playCate ->
                 unSubscribeChannelSwitchPlayCate()
-                viewModel.switchPlayCategory(args.matchType,play,playCate.code)
+                viewModel.switchPlayCategory(args.matchType, play, playCate.code)
                 upDateSelectPlay(play)
                 (activity as BaseActivity<*>).bottomSheet.dismiss()
                 loading()
@@ -1329,7 +1371,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun navGameLeague(
         leagueIdList: List<String> = listOf(),
         matchIdList: List<String> = listOf(),
-        matchCategoryName: String ?= null
+        matchCategoryName: String? = null
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -1462,6 +1504,88 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
+
+    private fun subscribeChannelHallSingleMatchOdds(leagueOdd: LeagueOdd, matchOdd: MatchOdd) {
+        when (leagueOdd.unfold == FoldState.UNFOLD.code) {
+            true -> {
+                subscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    getPlaySelectedCode(),
+                    matchOdd.matchInfo?.id
+                )
+
+                if (matchOdd.matchInfo?.eps == 1) {
+                    subscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOdd.matchInfo.id
+                    )
+                }
+
+                matchOdd.quickPlayCateList?.forEach {
+                    when (it.isSelected) {
+                        true -> {
+                            subscribeChannelHall(
+                                leagueOdd.gameType?.key,
+                                it.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                        false -> {
+                            unSubscribeChannelHall(
+                                leagueOdd.gameType?.key,
+                                it.code,
+                                matchOdd.matchInfo?.id
+                            )
+                        }
+                    }
+                }
+            }
+
+            false -> {
+                unSubscribeChannelHall(
+                    leagueOdd.gameType?.key,
+                    getPlayCateMenuCode(),
+                    matchOdd.matchInfo?.id
+                )
+
+                if (matchOdd.matchInfo?.eps == 1) {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        PlayCate.EPS.value,
+                        matchOdd.matchInfo.id
+                    )
+                }
+
+                matchOdd.quickPlayCateList?.forEach {
+                    unSubscribeChannelHall(
+                        leagueOdd.gameType?.key,
+                        it.code,
+                        matchOdd.matchInfo?.id
+                    )
+                }
+            }
+        }
+    }
+
+
+    private fun unSubscribeChannelHallSingleMatchOdds(leagueOdd: LeagueOdd, matchOdd: MatchOdd) {
+        unSubscribeChannelHall(
+            leagueOdd.gameType?.key,
+            getPlaySelectedCode(),
+            matchOdd.matchInfo?.id
+        )
+
+        if (matchOdd.matchInfo?.eps == 1) {
+            unSubscribeChannelHall(
+                leagueOdd.gameType?.key,
+                PlayCate.EPS.value,
+                matchOdd.matchInfo.id
+            )
+        }
+    }
+
+
     private fun subscribeChannelHall(leagueOdd: LeagueOdd) {
         leagueOdd.matchOdds.forEach { matchOdd ->
             when (leagueOdd.unfold == FoldState.UNFOLD.code) {
@@ -1532,7 +1656,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
      */
     private fun unSubscribeChannelSwitchPlayCate() {
         leagueAdapter.data.forEach { leagueOdd ->
-            leagueOdd.matchOdds.forEach {matchOdd ->
+            leagueOdd.matchOdds.forEach { matchOdd ->
                 unSubscribeChannelHall(
                     leagueOdd.gameType?.key,
                     getPlaySelectedCode(),
@@ -1550,8 +1674,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd){
-        leagueOdd.matchOdds.forEach {matchOdd ->
+    private fun unSubscribeLeagueChannelHall(leagueOdd: LeagueOdd) {
+        leagueOdd.matchOdds.forEach { matchOdd ->
             unSubscribeChannelHall(
                 leagueOdd.gameType?.key,
                 getPlaySelectedCode(),
