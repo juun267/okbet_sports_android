@@ -417,7 +417,7 @@ class GameViewModel(
         _isLoading.value = false
     }
 
-    private fun getAllPlayCategory(matchType: MatchType) {
+    fun getAllPlayCategory(matchType: MatchType) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
                 OneBoSportApi.sportService.getQuery(
