@@ -92,7 +92,7 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
 
         var currentOddsType = oddsType
 
-        if(betParlayList?.get(position)?.odds == betParlayList?.get(position)?.malayOdds){
+        if(betParlayList?.getOrNull(position)?.odds == betParlayList?.getOrNull(position)?.malayOdds){
             currentOddsType = OddsType.EU
         }
 
