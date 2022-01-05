@@ -134,7 +134,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     private fun observeData() {
         viewModel.oddsDetailResult.observe(this.viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
+            it?.getContentIfNotHandled()?.let { result ->
                 when (result.success) {
                     true -> {
                         result.setupPlayCateTab()

@@ -104,11 +104,11 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> "https://sports.cxsport.net/sports-rule/#/terms-conditions?platform="+context.getString(
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/terms-conditions?platform="+context.getString(
                     R.string.app_name)
-                LanguageManager.Language.VI -> "https://sports.cxsport.net/sports-rule/#/vi/terms-conditions?platform="+context.getString(
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/terms-conditions?platform="+context.getString(
                     R.string.app_name)
-                else -> "https://sports.cxsport.net/sports-rule/#/us/terms-conditions?platform="+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/terms-conditions?platform="+context.getString(
                     R.string.app_name)
             }
 

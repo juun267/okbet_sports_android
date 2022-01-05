@@ -1199,7 +1199,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
-                Log.e("Martin", "0000=")
                 //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
                 viewModel.getAllPlayCategory(args.matchType)
                 //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
