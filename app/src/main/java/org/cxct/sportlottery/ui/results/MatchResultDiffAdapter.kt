@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.content_game_detail_result_bb_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_first
 import kotlinx.android.synthetic.main.content_game_detail_result_bk_rv.view.tv_away_fourth
@@ -21,6 +22,7 @@ import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_ft_rv.view.ll_game_detail_first_item
 import kotlinx.android.synthetic.main.content_game_detail_result_rv.view.*
 import kotlinx.android.synthetic.main.content_game_detail_result_tn_rv.view.*
+import kotlinx.android.synthetic.main.content_game_detail_result_tt_rv.view.*
 import kotlinx.android.synthetic.main.item_match_result_match.view.*
 import kotlinx.android.synthetic.main.item_match_result_match.view.tv_away_name
 import kotlinx.android.synthetic.main.item_match_result_match.view.tv_home_name
@@ -32,7 +34,8 @@ import org.cxct.sportlottery.network.matchresult.list.MatchStatus
 import org.cxct.sportlottery.network.matchresult.playlist.MatchResultPlayList
 import org.cxct.sportlottery.util.TimeUtil
 
-class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickListener) : ListAdapter<MatchResultData, RecyclerView.ViewHolder>(MatchResultDiffCallBack()) {
+class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickListener) :
+    ListAdapter<MatchResultData, RecyclerView.ViewHolder>(MatchResultDiffCallBack()) {
     var gameType: String = ""
         set(value) {
             field = value
@@ -45,7 +48,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             //TODO Bill BB、MR、GF 還不確定版型
             ListType.TITLE.ordinal -> MatchTitleViewHolder.from(parent)
             ListType.MATCH.ordinal -> MatchViewHolder.from(parent)
-            ListType.FIRST_ITEM_FT.ordinal, ListType.FIRST_ITEM_BX.ordinal, ListType.FIRST_ITEM_CB.ordinal, ListType.FIRST_ITEM_CK.ordinal, ListType.FIRST_ITEM_BB.ordinal, ListType.FIRST_ITEM_RB.ordinal -> FtDetailFirstItemViewHolder.from(
+            ListType.FIRST_ITEM_FT.ordinal, ListType.FIRST_ITEM_CK.ordinal -> FtDetailFirstItemViewHolder.from(
                 parent
             )
             ListType.FIRST_ITEM_BK.ordinal, ListType.FIRST_ITEM_IH.ordinal, ListType.FIRST_ITEM_AFT.ordinal -> BkDetailFirstItemViewHolder.from(
@@ -53,9 +56,15 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             )
             ListType.FIRST_ITEM_TN.ordinal -> TnDetailFirstItemViewHolder.from(parent)
             ListType.FIRST_ITEM_BM.ordinal -> BmDetailFirstItemViewHolder.from(parent)
-            ListType.FIRST_ITEM_VB.ordinal, ListType.FIRST_ITEM_TT.ordinal, ListType.FIRST_ITEM_MR.ordinal, ListType.FIRST_ITEM_GF.ordinal -> VbDetailFirstItemViewHolder.from(
+            ListType.FIRST_ITEM_VB.ordinal, ListType.FIRST_ITEM_MR.ordinal, ListType.FIRST_ITEM_GF.ordinal -> VbDetailFirstItemViewHolder.from(
                 parent
             )
+            ListType.FIRST_ITEM_BB.ordinal -> BbDetailFirstItemViewHolder.from(parent)
+            ListType.FIRST_ITEM_TT.ordinal -> TtDetailFirstItemViewHolder.from(parent)
+//            ListType.FIRST_ITEM_BX.ordinal -> BxDetailFirstItemViewHolder.from(parent)
+            ListType.FIRST_ITEM_CB.ordinal -> CbDetailFirstItemViewHolder.from(parent)
+//            ListType.FIRST_ITEM_RB.ordinal -> RbDetailFirstItemViewHolder.from(parent)
+
             ListType.DETAIL.ordinal -> DetailItemViewHolder.from(parent)
             else -> NoDataViewHolder.from(parent)
         }
@@ -110,6 +119,24 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                     setupBottomLine(position, holder.bottomLine)
                 }
             }
+            is BbDetailFirstItemViewHolder -> {
+                holder.apply {
+                    bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
+                }
+            }
+            is TtDetailFirstItemViewHolder -> {
+                holder.apply {
+                    bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
+                }
+            }
+            is CbDetailFirstItemViewHolder -> {
+                holder.apply {
+                    bind(rvDataList.matchData)
+                    setupBottomLine(position, holder.bottomLine)
+                }
+            }
             is DetailItemViewHolder -> {
                 holder.apply {
                     bind(rvDataList.matchDetailData)
@@ -120,19 +147,28 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     }
 
     private fun setupBottomLine(position: Int, bottomLine: View) {
-        bottomLine.visibility = if (position + 1 < itemCount && (getItemViewType(position + 1) != ListType.TITLE.ordinal || getItemViewType(position) == ListType.MATCH.ordinal)) View.VISIBLE else View.GONE
+        bottomLine.visibility =
+            if (position + 1 < itemCount && (getItemViewType(position + 1) != ListType.TITLE.ordinal || getItemViewType(
+                    position
+                ) == ListType.MATCH.ordinal)
+            ) View.VISIBLE else View.GONE
     }
 
     class MatchTitleViewHolder constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.item_match_result_title, viewGroup, false)
+                val view =
+                    layoutInflater.inflate(R.layout.item_match_result_title, viewGroup, false)
                 return MatchTitleViewHolder(view)
             }
         }
 
-        fun bind(gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
+        fun bind(
+            gameType: String,
+            item: MatchResultData,
+            matchItemClickListener: MatchItemClickListener
+        ) {
             setupData(itemView, gameType, item)
             setupEvent(itemView, item, matchItemClickListener)
         }
@@ -171,7 +207,11 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             }
         }
 
-        private fun setupEvent(itemView: View, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
+        private fun setupEvent(
+            itemView: View,
+            item: MatchResultData,
+            matchItemClickListener: MatchItemClickListener
+        ) {
             itemView.setOnClickListener {
                 matchItemClickListener.leagueTitleClick(adapterPosition)
                 titleArrowRotate(itemView, item)
@@ -181,9 +221,19 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun titleArrowRotate(itemView: View, item: MatchResultData) {
             itemView.apply {
                 if (item.titleExpanded) {
-                    iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_dark))
+                    iv_arrow.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ic_arrow_dark
+                        )
+                    )
                 } else {
-                    iv_arrow.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_arrow_down_dark))
+                    iv_arrow.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.ic_arrow_down_dark
+                        )
+                    )
                 }
             }
         }
@@ -193,14 +243,19 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.item_match_result_match, viewGroup, false)
+                val view =
+                    layoutInflater.inflate(R.layout.item_match_result_match, viewGroup, false)
                 return MatchViewHolder(view)
             }
         }
 
         val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
-        fun bind(gameType: String, item: MatchResultData, matchItemClickListener: MatchItemClickListener) {
+        fun bind(
+            gameType: String,
+            item: MatchResultData,
+            matchItemClickListener: MatchItemClickListener
+        ) {
             setupView(itemView, item)
             setupViewType(itemView, gameType)
             setupResultItem(itemView, item)
@@ -261,15 +316,22 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
                 matchStatusList?.let {
                     val firstHalf = matchStatusList.find { it.status == StatusType.FIRST_HALF.code }
-                    val secondHalf = matchStatusList.find { it.status == StatusType.SECOND_HALF.code }
+                    val secondHalf =
+                        matchStatusList.find { it.status == StatusType.SECOND_HALF.code }
                     //110: 加時, 有加時先取加時
-                    val endGame = matchStatusList.find { it.status == StatusType.OVER_TIME.code } ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
-                    val fullGame = matchStatusList.find { it.status == StatusType.OVER_TIME.code } ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
+                    val endGame = matchStatusList.find { it.status == StatusType.OVER_TIME.code }
+                        ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
+                    val fullGame = matchStatusList.find { it.status == StatusType.OVER_TIME.code }
+                        ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
 
-                    tv_first_half_score.text = firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
-                    tv_second_half_score.text = secondHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
-                    tv_end_game_score.text = endGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
-                    tv_full_game_score.text = fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                    tv_first_half_score.text =
+                        firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                    tv_second_half_score.text =
+                        secondHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                    tv_end_game_score.text =
+                        endGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
+                    tv_full_game_score.text =
+                        fullGame?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                 }
             }
         }
@@ -277,7 +339,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         private fun setupEvent(itemView: View, matchItemClickListener: MatchItemClickListener) {
             itemView.apply {
                 ll_game_detail.setOnClickListener {
-                    matchItemClickListener.matchClick(adapterPosition)
+                    matchItemClickListener.matchClick(bindingAdapterPosition)
                 }
             }
         }
@@ -290,7 +352,11 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_game_detail_result_ft_rv, viewGroup, false)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_ft_rv,
+                    viewGroup,
+                    false
+                )
                 return FtDetailFirstItemViewHolder(view)
             }
         }
@@ -303,7 +369,9 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
 
         private fun setupFtDetailFirstItem(data: List<MatchStatus>?) {
             val firstHalf = data?.find { it.status == StatusType.FIRST_HALF.code }
-            val fullGame = data?.find { it.status == StatusType.OVER_TIME.code } ?: data?.find { it.status == StatusType.END_GAME.code }
+            val fullGame = data?.find { it.status == StatusType.OVER_TIME.code }
+                ?: data?.find { it.status == StatusType.END_GAME.code }
+
             fun getSituation(matchStatus: MatchStatus?, situationType: SituationType): String {
                 when (situationType) {
                     SituationType.YELLOW_CARD -> {
@@ -339,12 +407,16 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_game_detail_result_bk_rv, viewGroup, false)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_bk_rv,
+                    viewGroup,
+                    false
+                )
                 return BkDetailFirstItemViewHolder(view)
             }
         }
 
-        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupBkDetailFirstItem(detailData)
@@ -357,7 +429,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val secondSection = matchStatus?.find { it.status == StatusType.SECOND_SECTION.code }
             val thirdSection = matchStatus?.find { it.status == StatusType.THIRD_SECTION.code }
             val fourthSection = matchStatus?.find { it.status == StatusType.FOURTH_SECTION.code }
-            val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME.code } ?: matchStatus?.find { it.status == StatusType.END_GAME.code }
+            val overSection = matchStatus?.find { it.status == StatusType.OVER_TIME.code }
+                ?: matchStatus?.find { it.status == StatusType.END_GAME.code }
 
             itemView.apply {
                 ll_game_detail_first_item.visibility = View.VISIBLE
@@ -405,12 +478,16 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_game_detail_result_tn_rv, viewGroup, false)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_tn_rv,
+                    viewGroup,
+                    false
+                )
                 return TnDetailFirstItemViewHolder(view)
             }
         }
 
-        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupTnDetailFirstItem(detailData)
@@ -486,12 +563,16 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_game_detail_result_bm_rv, viewGroup, false)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_bm_rv,
+                    viewGroup,
+                    false
+                )
                 return BmDetailFirstItemViewHolder(view)
             }
         }
 
-        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupBmDetailFirstItem(detailData)
@@ -567,12 +648,16 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_game_detail_result_bm_rv, viewGroup, false)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_bm_rv,
+                    viewGroup,
+                    false
+                )
                 return VbDetailFirstItemViewHolder(view)
             }
         }
 
-        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
         fun bind(detailData: Match?) {
             setupBmDetailFirstItem(detailData)
@@ -642,44 +727,268 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
         }
     }
 
-    //詳情
-    class DetailItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    //棒球第一筆
+    class BbDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_game_detail_result_rv, viewGroup, false)
-                return DetailItemViewHolder(view)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_bb_rv,
+                    viewGroup,
+                    false
+                )
+                return BbDetailFirstItemViewHolder(view)
             }
         }
 
-        val bottomLine: View = itemView.findViewById<View>(R.id.bottom_line)
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
 
-        fun bind(detailData: MatchResultPlayList?) {
-            setupDetailItem(detailData)
+        fun bind(detailData: Match?) {
+            setupBbDetailFirstItem(detailData)
         }
 
-        @SuppressLint("SetTextI18n")
-        private fun setupDetailItem(detailData: MatchResultPlayList?) {
+        private fun setupBbDetailFirstItem(detailData: Match?) {
+            val matchList = detailData?.matchStatusList
+            val matchInfo = detailData?.matchInfo
+
+            val firstPlat = matchList?.find { it.status == StatusType.FIRST_HALF.code }
+            val secondPlat = matchList?.find { it.status == StatusType.SECOND_HALF.code }
+            val thirdPlat = matchList?.find { it.status == StatusType.END_GAME.code }
+
             itemView.apply {
-                tv_play_cate_name.text = "${detailData?.playCateName} ${detailData?.spread}"
-                tv_play_content.text = detailData?.playName
+                matchInfo?.apply {
+                    bb_home_name.text = homeName
+                    bb_away_name.text = awayName
+                }
+
+                matchList.apply {
+                    //上半場
+                    firstPlat?.let {
+                        bb_home_first.text = it.homeScore?.toString()
+                        bb_away_first.text = it.awayScore?.toString()
+                    }
+
+                    //下半場
+                    secondPlat?.let {
+                        bb_home_second.text = it.homeScore?.toString()
+                        bb_away_second.text = it.awayScore?.toString()
+                    }
+
+                    //總分
+                    thirdPlat?.let {
+                        bb_home_third.text = it.homeScore?.toString()
+                        bb_away_third.text = it.awayScore?.toString()
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //台球第一筆
+    class CbDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+                val layoutInflater = LayoutInflater.from(viewGroup.context)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_rv,
+                    viewGroup,
+                    false
+                )
+                return TtDetailFirstItemViewHolder(view)
+            }
+        }
+
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
+
+        fun bind(detailData: Match?) {
+            setupCbDetailFirstItem(detailData)
+        }
+
+        private fun setupCbDetailFirstItem(detailData: Match?) {
+            val matchList = detailData?.matchStatusList
+            val matchInfo = detailData?.matchInfo
+
+            val firstPlat = matchList?.find { it.status == StatusType.FIRST_HALF.code }
+            val secondPlat = matchList?.find { it.status == StatusType.SECOND_HALF.code }
+            val thirdPlat = matchList?.find { it.status == StatusType.END_GAME.code }
+
+            itemView.apply {
+                matchInfo?.apply {
+                    bb_home_name.text = homeName
+                    bb_away_name.text = awayName
+                }
+
+                matchList.apply {
+                    //上半場
+                    firstPlat?.let {
+                        bb_home_first.text = it.homeScore?.toString()
+                        bb_away_first.text = it.awayScore?.toString()
+                    }
+
+                    //下半場
+                    secondPlat?.let {
+                        bb_home_second.text = it.homeScore?.toString()
+                        bb_away_second.text = it.awayScore?.toString()
+                    }
+
+                    //總分
+                    thirdPlat?.let {
+                        bb_home_third.text = it.homeScore?.toString()
+                        bb_away_third.text = it.awayScore?.toString()
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    //桌球第一筆
+    class TtDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        companion object {
+            fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+                val layoutInflater = LayoutInflater.from(viewGroup.context)
+                val view = layoutInflater.inflate(
+                    R.layout.content_game_detail_result_tt_rv,
+                    viewGroup,
+                    false
+                )
+                return TtDetailFirstItemViewHolder(view)
+            }
+        }
+
+        val bottomLine: View = itemView.findViewById(R.id.bottom_line)
+
+        fun bind(detailData: Match?) {
+            setupTtDetailFirstItem(detailData)
+        }
+
+        private fun setupTtDetailFirstItem(detailData: Match?) {
+            val matchInfo = detailData?.matchInfo
+
+            val matchList = detailData?.matchStatusList
+            val gameStatus = matchList?.find { it.status == StatusType.END_GAME.code }
+
+            itemView.apply {
+                matchInfo?.apply {
+                    tt_home_name.text = homeName
+                    tt_away_name.text = awayName
+                }
+
+                //完場
+                gameStatus?.let {
+                    tt_score_first.text = it.homeScore?.toString()
+                    tt_away_first.text = it.awayScore?.toString()
+                    tt_score_second.text = it.homeScore?.toString()
+                    tt_away_second.text = it.awayScore?.toString()
+                }
             }
         }
     }
 
-    //無資料
-    class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        companion object {
-            fun from(parent: ViewGroup): NoDataViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater
-                    .inflate(R.layout.itemview_game_no_record, parent, false)
+}
 
-                return NoDataViewHolder(view)
+//橄欖球第一筆
+class RbDetailFirstItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    companion object {
+        fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+            val layoutInflater = LayoutInflater.from(viewGroup.context)
+            val view = layoutInflater.inflate(
+                R.layout.content_game_detail_result_rv,
+                viewGroup,
+                false
+            )
+            return RbDetailFirstItemViewHolder(view)
+        }
+    }
+
+    val bottomLine: View = itemView.findViewById(R.id.bottom_line)
+
+    fun bind(detailData: Match?) {
+        setupTtDetailFirstItem(detailData)
+    }
+
+    private fun setupTtDetailFirstItem(detailData: Match?) {
+        val matchList = detailData?.matchStatusList
+        val matchInfo = detailData?.matchInfo
+
+        val firstPlat = matchList?.find { it.status == StatusType.FIRST_HALF.code }
+        val secondPlat = matchList?.find { it.status == StatusType.SECOND_HALF.code }
+        val thirdPlat = matchList?.find { it.status == StatusType.END_GAME.code }
+
+        itemView.apply {
+            matchInfo?.apply {
+                bb_home_name.text = homeName
+                bb_away_name.text = awayName
             }
+
+            matchList.apply {
+                //上半場
+                firstPlat?.let {
+                    bb_home_first.text = it.homeScore?.toString()
+                    bb_away_first.text = it.awayScore?.toString()
+                }
+
+                //下半場
+                secondPlat?.let {
+                    bb_home_second.text = it.homeScore?.toString()
+                    bb_away_second.text = it.awayScore?.toString()
+                }
+
+                //總分
+                thirdPlat?.let {
+                    bb_home_third.text = it.homeScore?.toString()
+                    bb_away_third.text = it.awayScore?.toString()
+                }
+
+            }
+        }
+    }
+
+}
+
+//詳情
+class DetailItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    companion object {
+        fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
+            val layoutInflater = LayoutInflater.from(viewGroup.context)
+            val view =
+                layoutInflater.inflate(R.layout.content_game_detail_result_rv, viewGroup, false)
+            return DetailItemViewHolder(view)
+        }
+    }
+
+    val bottomLine: View = itemView.findViewById(R.id.bottom_line)
+
+    fun bind(detailData: MatchResultPlayList?) {
+        setupDetailItem(detailData)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupDetailItem(detailData: MatchResultPlayList?) {
+        itemView.apply {
+            tv_play_cate_name.text = "${detailData?.playCateName} ${detailData?.spread}"
+            tv_play_content.text = detailData?.playName
         }
     }
 }
+
+//無資料
+class NoDataViewHolder private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    companion object {
+        fun from(parent: ViewGroup): NoDataViewHolder {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val view = layoutInflater
+                .inflate(R.layout.itemview_game_no_record, parent, false)
+
+            return NoDataViewHolder(view)
+        }
+    }
+}
+}
+
 
 class MatchResultDiffCallBack : DiffUtil.ItemCallback<MatchResultData>() {
     override fun areItemsTheSame(oldItem: MatchResultData, newItem: MatchResultData): Boolean {
@@ -692,7 +1001,10 @@ class MatchResultDiffCallBack : DiffUtil.ItemCallback<MatchResultData>() {
 
 }
 
-class MatchItemClickListener(private val titleClick: (titlePosition: Int) -> Unit, private val matchClick: (matchClick: Int) -> Unit) {
+class MatchItemClickListener(
+    private val titleClick: (titlePosition: Int) -> Unit,
+    private val matchClick: (matchClick: Int) -> Unit
+) {
     fun leagueTitleClick(titlePosition: Int) = titleClick.invoke(titlePosition)
     fun matchClick(matchPosition: Int) = matchClick.invoke(matchPosition)
 }

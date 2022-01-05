@@ -103,7 +103,7 @@ class SettlementViewModel(
 
     private fun setupExpandData(matchResultList: List<MatchResultData>?) {
         val expandData = mutableListOf<MatchResultData>()
-        var showMatch: Boolean = false
+        var showMatch = false
         var showDetail = false
         var nowLeague: MatchResultData? = null
         matchResultList?.apply {
