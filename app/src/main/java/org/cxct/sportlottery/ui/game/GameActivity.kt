@@ -332,7 +332,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
             val tabAll = tabLayout.getTabAt(0)?.customView
             tabAll?.tv_title?.setText(R.string.home_tan_main)
-            tabAll?.tv_number?.text = countParlay.toString() //等於串關數量
+            //2022/01/05 主頁數量規則從使用"串關數量"修改為"其他玩法的加總"
+            tabAll?.tv_number?.text = countParlay.plus(countInPlay).plus(countAtStart).plus(countToday).plus(countEarly).plus(countOutright).plus(countEps).toString()
 
             val tabInPlay = tabLayout.getTabAt(1)?.customView
             tabInPlay?.tv_title?.setText(R.string.home_tab_in_play)
