@@ -131,6 +131,11 @@ class SettlementViewModel(
                             expandData.add(it)
                         }
                     }
+                    else -> {
+                        if (showDetail) {
+                            expandData.add(it)
+                        }
+                    }
                 }
             }
         }
@@ -158,6 +163,7 @@ class SettlementViewModel(
                         showData.add(it)
                     }
                 }
+                else -> {}
             }
         }
         _showOutrightData.value = showData
@@ -190,7 +196,7 @@ class SettlementViewModel(
         val clickedIndex = matchResultReformatted.indexOf(clickedItem)
 
         //若資料已存在則不再一次請求資料
-        if (clickedItem.matchExpanded && if (clickedIndex + 1 < matchResultReformatted.size) matchResultReformatted.get(clickedIndex + 1).dataType != listType else true) {
+        if (clickedItem.matchExpanded && if (clickedIndex + 1 < matchResultReformatted.size) matchResultReformatted.getOrNull(clickedIndex + 1)?.dataType != listType else true) {
             clickedItem.matchData?.matchInfo?.id?.let { getMatchDetail(it, clickedItem, gameType) }
         } else {
             filterToShowMatchResult()
