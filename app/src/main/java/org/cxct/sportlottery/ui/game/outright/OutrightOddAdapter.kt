@@ -29,23 +29,25 @@ class OutrightOddAdapter :
             field?.let { matchOdd ->
                 val list = mutableListOf<Any>()
                 matchOdd.oddsMap.forEach {
-                    list.add(it.key)
+                    if (it.value?.get(0) != null) {
+                        list.add(it.key)
 
-                    list.addAll(
-                        it.value?.filterNotNull()
-                            ?.filterIndexed { index, _ -> index < 4 }
-                            ?.map { odd ->
-                                odd.outrightCateKey = it.key
-                                odd
-                            } ?: listOf()
-                    )
+                        list.addAll(
+                            it.value?.filterNotNull()
+                                ?.filterIndexed { index, _ -> index < 4 }
+                                ?.map { odd ->
+                                    odd.outrightCateKey = it.key
+                                    odd
+                                } ?: listOf()
+                        )
 
 
-                    if (it.value?.filterNotNull()?.size ?: 0 > 4) {
-                        list.add(it.key to matchOdd)
+                        if (it.value?.filterNotNull()?.size ?: 0 > 4) {
+                            list.add(it.key to matchOdd)
+                        }
                     }
+                    data = list
                 }
-                data = list
             }
         }
 
