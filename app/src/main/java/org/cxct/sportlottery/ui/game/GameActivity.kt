@@ -522,8 +522,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
         viewModel.specialEntrance.observe(this) {
             hideLoading()
-            it?.let { _ ->
-                when (it.matchType) {
+            if (it?.couponCode.isNullOrEmpty()) {
+                when (it?.matchType) {
                     MatchType.IN_PLAY -> {
                         tabLayout.getTabAt(1)?.select()
                     }
@@ -545,9 +545,16 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                     MatchType.EPS -> {
                         tabLayout.getTabAt(7)?.select()
                     }
+                    MatchType.OTHER -> {
+                        tabLayout.getTabAt(3)?.select()
+                    }
                 }
+            } else {
+                //viewModel.switchSpecialMatchType(it!!.couponCode!!)
+                navGameFragment(it!!.matchType)
             }
         }
+
 
         viewModel.curMatchType.observe(this) {
             it?.let {

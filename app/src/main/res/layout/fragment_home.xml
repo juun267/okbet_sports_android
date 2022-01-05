@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorWhite"
-            android:overScrollMode="never"
-            android:fillViewport="true">
+            android:fillViewport="true"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -196,10 +196,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
 
+                            <LinearLayout
+                                android:id="@+id/special_block_game"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:divider="@drawable/divider_horizontal_6dp"
+                                android:orientation="horizontal"
+                                android:showDividers="middle|end"></LinearLayout>
+
                             <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_game_soon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="0dp"
                                 app:cvCount="@{gameViewModel.asStartCount.toString()}"
                                 app:cvIcon="@drawable/ic_game_soon"
                                 app:cvTitle="@string/game_soon" />
@@ -311,9 +320,9 @@
                         android:layout_height="28dp"
                         android:background="@null"
                         android:button="@null"
-                        android:textAllCaps="true"
                         android:paddingHorizontal="10dp"
                         android:text="@string/game_soon"
+                        android:textAllCaps="true"
                         android:textColor="@color/selector_blue_gray_light"
                         android:textSize="@dimen/textSize20sp"
                         android:textStyle="bold" />
@@ -414,11 +423,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:overScrollMode="never"
                     android:layout_marginBottom="8dp"
                     android:minHeight="60dp"
                     android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="4"
                     tools:listitem="@layout/itemview_sport_type_v4" />
