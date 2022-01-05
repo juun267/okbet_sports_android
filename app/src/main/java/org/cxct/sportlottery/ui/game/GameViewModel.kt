@@ -373,8 +373,12 @@ class GameViewModel(
         if (curMatchType.value == null) {
             _curMatchType.value = MatchType.OTHER
         }
-        curMatchType.value?.let {
-            getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
+        if(childMatchType == MatchType.OTHER_OUTRIGHT){
+            getGameHallList(matchType = childMatchType, isReloadDate = true, isReloadPlayCate = true)
+        }else{
+            curMatchType.value?.let {
+                getGameHallList(matchType = it, isReloadDate = true, isReloadPlayCate = true)
+            }
         }
     }
 
@@ -1168,7 +1172,7 @@ class GameViewModel(
                         _oddsListGameHallResult.postValue(Event(result))
                 }
 
-                MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue -> {
+                MatchType.TODAY.postValue, MatchType.EARLY.postValue, MatchType.PARLAY.postValue,MatchType.OTHER.postValue -> {
                     if (isIncrement)
                         _oddsListGameHallIncrementResult.postValue(
                             Event(
@@ -1700,6 +1704,9 @@ class GameViewModel(
             sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }!!.code
         }
         MatchType.OTHER -> {
+            specialMenuData!!.items?.find { it.isSelected }!!.code
+        }
+        MatchType.OTHER_OUTRIGHT -> {
             specialMenuData!!.items?.find { it.isSelected }!!.code
         }
         else -> {

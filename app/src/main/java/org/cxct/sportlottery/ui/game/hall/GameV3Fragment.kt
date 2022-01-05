@@ -182,6 +182,11 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 navOddsDetail(it, matchInfoList)
                             }
                         }
+                        MatchType.OTHER ->{
+                            matchId?.let {
+                                navOddsDetail(it, matchInfoList)
+                            }
+                        }
                         else -> {
                         }
                     }
