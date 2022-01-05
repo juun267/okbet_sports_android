@@ -252,8 +252,8 @@ class GameViewModel(
     val betInfoResult: LiveData<Event<BetInfoResult?>>
         get() = _betInfoResult
 
-    private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>>()
-    val oddsDetailResult: LiveData<Event<OddsDetailResult?>>
+    private val _oddsDetailResult = MutableLiveData<Event<OddsDetailResult?>?>()
+    val oddsDetailResult: LiveData<Event<OddsDetailResult?>?>
         get() = _oddsDetailResult
 
     private val _oddsDetailList = MutableLiveData<Event<ArrayList<OddsDetailListData>>>()
