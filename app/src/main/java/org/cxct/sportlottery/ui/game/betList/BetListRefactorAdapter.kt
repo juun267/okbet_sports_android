@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.et_bet
 import kotlinx.android.synthetic.main.content_bet_info_item.view.tv_error_message

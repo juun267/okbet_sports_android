@@ -89,15 +89,22 @@ class BetReceiptDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(Bet
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+        var currentOddsType = oddsType
+
+        if(betParlayList?.get(position)?.odds == betParlayList?.get(position)?.malayOdds){
+            currentOddsType = OddsType.EU
+        }
+
         when (holder) {
             is SingleViewHolder -> {
                 val itemData = getItem(position) as DataItem.SingleData
-                holder.bind(itemData.result, oddsType)
+                holder.bind(itemData.result, currentOddsType)
             }
 
             is ParlayViewHolder -> {
                 val itemData = getItem(position) as DataItem.ParlayData
-                holder.bind(itemData.result, itemData.firstItem, oddsType, betParlayList)
+                holder.bind(itemData.result, itemData.firstItem, currentOddsType, betParlayList)
             }
 
             is ParlayTitleViewHolder -> {
