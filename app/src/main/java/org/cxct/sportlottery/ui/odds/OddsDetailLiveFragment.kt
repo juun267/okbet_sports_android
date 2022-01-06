@@ -169,7 +169,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun initUI() {
-//        live_view_tool_bar.gameType = args.gameType
+//        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
 
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail ->
