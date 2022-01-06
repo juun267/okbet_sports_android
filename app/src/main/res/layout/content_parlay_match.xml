@@ -39,7 +39,7 @@
                 android:textSize="@dimen/textSize13sp"
                 tools:text="06-22" />
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:layout_width="4dp"
                 android:layout_height="wrap_content" />
 

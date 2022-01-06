@@ -14,7 +14,7 @@
         layout="@layout/view_account_balance_2"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Space
+    <androidx.legacy.widget.Space
         android:id="@+id/space"
         android:layout_width="match_parent"
         android:layout_height="12dp"
