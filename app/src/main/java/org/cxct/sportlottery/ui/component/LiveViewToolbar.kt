@@ -163,7 +163,7 @@ class LiveViewToolbar @JvmOverloads constructor(
 
     private fun initOnclick() {
         iv_play.setOnClickListener {
-            hideWebView()
+//            hideWebView()//根據需求，先隱藏賽事動畫
             when (expand_layout.isExpanded && !isAnimationOpen) {
                 true -> {
                     switchLiveView(false)
@@ -185,12 +185,12 @@ class LiveViewToolbar @JvmOverloads constructor(
             iv_play.setImageResource(R.drawable.ic_live_player)
             when (expand_layout.isExpanded && !isPlayOpen) {
                 true -> {
-                    hideWebView()
+//                    hideWebView()//根據需求，先隱藏賽事動畫
                     switchLiveView(false)
                     isAnimationOpen = false
                 }
                 false -> {
-                    openWebView()
+//                    openWebView()//根據需求，先隱藏賽事動畫
                     switchLiveView(true)
                     isAnimationOpen = true
                 }
@@ -252,10 +252,10 @@ class LiveViewToolbar @JvmOverloads constructor(
         if (isPlayShow) {
             iv_play.setImageResource(R.drawable.ic_live_player_selected)
             setAnimationImgIcon(false)
-            hideWebView()
+//            hideWebView() //根據需求，先隱藏賽事動畫
         } else {
             setAnimationImgIcon(true)
-            openWebView()
+//            openWebView() //根據需求，先隱藏賽事動畫
         }
     }
 

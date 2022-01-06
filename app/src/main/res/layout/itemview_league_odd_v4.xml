@@ -368,7 +368,7 @@
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription"
         app:layout_constraintEnd_toStartOf="@id/league_odd_match_play_count"
-        tools:src="@drawable/ic_live_soccer_s_unselected"
+        tools:src="@drawable/ic_live_player"
         tools:visibility="visible" />
 
     <Space
