@@ -41,14 +41,17 @@
 
     <TextView
         android:id="@+id/tv_team_home"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize13sp"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintEnd_toStartOf="@id/tv_verse"
         app:layout_constraintStart_toStartOf="@id/tv_play_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_league"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         tools:text="日本奥运队" />
-
 
     <TextView
         android:id="@+id/tv_verse"
@@ -58,33 +61,32 @@
         android:text="@string/verse"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize13sp"
-        app:layout_constraintStart_toEndOf="@+id/tv_team_home"
-        app:layout_constraintTop_toTopOf="@+id/tv_team_home" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_team_home"/>
 
     <TextView
         android:id="@+id/tv_team_away"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize13sp"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_verse"
-        app:layout_constraintTop_toTopOf="@+id/tv_team_home"
+        app:layout_constraintStart_toStartOf="@+id/tv_team_home"
+        app:layout_constraintTop_toBottomOf="@+id/tv_team_home"
+        app:layout_constraintHorizontal_bias="0"
         tools:text="纽西兰奥运队" />
 
     <TextView
         android:id="@+id/tv_match_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:textColor="@color/colorBlackLight"
         android:textSize="@dimen/textSize13sp"
-        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_team_home"
+        app:layout_constraintTop_toBottomOf="@+id/tv_team_away"
         tools:text="让球" />
 
     <include
@@ -93,9 +95,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_match_type"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tv_match_type" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
