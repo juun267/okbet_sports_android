@@ -459,9 +459,24 @@ abstract class BaseOddButtonViewModel(
         oldItemOdds: Double,
         newOdd: org.cxct.sportlottery.network.odds.Odd
     ): Int {
+        //馬來盤、印尼盤為null時自行計算
+        var newMalayOdds = 0.0
+        var newIndoOdds = 0.0
+
+        newOdd.hkOdds?.let {
+            newMalayOdds =
+                if (newOdd.hkOdds ?: 0.0 > 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                    .toDouble() else newOdd.hkOdds ?: 0.0
+            newIndoOdds =
+                if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
+                .toDouble() else newOdd.hkOdds ?: 0.0
+        }
+
         val odds = when (loginRepository.mOddsType.value) {
             OddsType.EU -> newOdd.odds
             OddsType.HK -> newOdd.hkOdds
+            OddsType.MYS -> newOdd.malayOdds ?: newMalayOdds
+            OddsType.IDN -> newOdd.indoOdds ?: newIndoOdds
             else -> null
         }
         val newOdds = odds ?: 0.0
