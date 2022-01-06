@@ -39,43 +39,19 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_play_content"
         tools:text="奥林匹克运动会2020男子足球(在日本)D组特别投注" />
 
+    <!--homeName v awayName 字串過長需換行顯示，故合併為1個textView-->
     <TextView
-        android:id="@+id/tv_team_home"
-        android:layout_width="0dp"
+        android:id="@+id/tv_team_names"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize13sp"
-        app:layout_constraintWidth_default="wrap"
-        app:layout_constraintEnd_toStartOf="@id/tv_verse"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tv_play_content"
         app:layout_constraintTop_toBottomOf="@+id/tv_league"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        tools:text="日本奥运队" />
-
-    <TextView
-        android:id="@+id/tv_verse"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/verse"
-        android:textColor="@color/colorGray"
-        android:textSize="@dimen/textSize13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_team_home"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_team_home"/>
-
-    <TextView
-        android:id="@+id/tv_team_away"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorGray"
-        android:textSize="@dimen/textSize13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_team_home"
-        app:layout_constraintTop_toBottomOf="@+id/tv_team_home"
-        app:layout_constraintHorizontal_bias="0"
-        tools:text="纽西兰奥运队" />
+        tools:text="日本奥运队 v 纽西兰奥运队" />
 
     <TextView
         android:id="@+id/tv_match_type"
@@ -86,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_team_away"
+        app:layout_constraintTop_toBottomOf="@+id/tv_team_names"
         tools:text="让球" />
 
     <include
@@ -95,9 +71,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_match_type" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_match_type"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
