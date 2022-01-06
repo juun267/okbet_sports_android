@@ -169,7 +169,7 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
     }
 
     private fun initUI() {
-        live_view_tool_bar.gameType = args.gameType
+//        live_view_tool_bar.gameType = args.gameType
 
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail ->
