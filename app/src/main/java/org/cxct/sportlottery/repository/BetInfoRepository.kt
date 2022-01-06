@@ -416,9 +416,12 @@ class BetInfoRepository(val androidContext: Context) {
             }
         }else if(oddsType == OddsType.IDN){
             if(matchOddList[0].indoOdds < 0 && oddsList.size <= 1){
+                //印度賠付額上限
                 var indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds)))!!.toInt())-1
+                //印度使用者投注上限
                 if (maxBetMoney != null) {
-                    maxBet  = if (maxBetMoney < indoMax) maxBetMoney else indoMax
+                    var indoUserMax = maxBetMoney?.div(abs(matchOddList[0].indoOdds)).toInt()
+                    maxBet  = if (indoUserMax < indoMax) indoUserMax else indoMax
                 }
             }
         }
