@@ -304,6 +304,7 @@ class OddButtonPagerAdapter(
     }
 }
 
+@Suppress("TYPE_INFERENCE_ONLY_INPUT_TYPES_WARNING")
 class OddButtonPagerViewHolder private constructor(
     itemView: View,
     private val oddStateRefreshListener: OddStateChangeListener
@@ -311,6 +312,7 @@ class OddButtonPagerViewHolder private constructor(
 
     fun bind(
         matchInfo: MatchInfo?,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         playCateMappingList: List<PlayCateMapItem>?,
         odds: List<Pair<String?, List<Odd?>?>>?,
         oddsType: OddsType,
@@ -322,6 +324,7 @@ class OddButtonPagerViewHolder private constructor(
             itemView.odd_btn_row1_away,
             itemView.odd_btn_row1_draw,
             matchInfo,
+            betPlayCateNameMap,
             playCateMappingList,
             odds?.get(0), oddsType, oddButtonListener
         )
@@ -332,6 +335,7 @@ class OddButtonPagerViewHolder private constructor(
             itemView.odd_btn_row2_away,
             itemView.odd_btn_row2_draw,
             matchInfo,
+            betPlayCateNameMap,
             playCateMappingList,
             odds?.get(1), oddsType, oddButtonListener
         )
@@ -357,6 +361,7 @@ class OddButtonPagerViewHolder private constructor(
         oddBtnAway: OddsButton,
         oddBtnDraw: OddsButton,
         matchInfo: MatchInfo?,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         playCateMappingList: List<PlayCateMapItem>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
