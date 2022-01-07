@@ -115,11 +115,11 @@ android {
         WinbetCN {
             buildConfigField "String", "CHANNEL_NAME", "\"spwb\""
             resValue "string", "app_name", "WINBET"
-            applicationId "com.winbet.cn"
+            applicationId "com.wbettyap.cnapp"
             buildConfigField "String", "DEFAULT_LANGUAGE", "\"zh\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
+                    JPUSH_APPKEY           : "e153d5d381f1db5b7b0ed0d4", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]
