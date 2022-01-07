@@ -337,6 +337,20 @@ class OddButtonPagerViewHolder private constructor(
         )
     }
 
+    private fun <K, V> Map<K, V>?.getPlayCateName(selectLanguage: LanguageManager.Language): String {
+        return when (selectLanguage) {
+            LanguageManager.Language.EN -> {
+                this?.get(LanguageManager.Language.EN.key).toString()
+            }
+            LanguageManager.Language.VI -> {
+                this?.get(LanguageManager.Language.VI.key).toString()
+            }
+            else -> {
+                this?.get(LanguageManager.Language.ZH.key).toString()
+            }
+        }
+    }
+
     private fun setupOddsButton(
         oddBtnType: TextView,
         oddBtnHome: OddsButton,
