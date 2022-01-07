@@ -201,6 +201,7 @@
     <string name="winner">Winner</string>
     <string name="first_half_game">First half</string>
     <string name="second_half_game">Second half</string>
+    <string name="total_score">Total score</string>
     <string name="full_game">Full-Time</string>
     <string name="game_result">Result</string>
     <string name="game_yellow_card">Penalty card</string>

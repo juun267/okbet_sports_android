@@ -85,6 +85,10 @@
         android:text="@string/premium_odds"
         android:textColor="@color/colorBlackLight"
         app:drawableStartCompat="@drawable/ic_price_v4" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rvLefSpecial"/>
 
     <View
         android:layout_width="match_parent"

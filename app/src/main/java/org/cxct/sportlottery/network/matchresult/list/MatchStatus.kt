@@ -27,5 +27,9 @@ data class MatchStatus(
     @Json(name = "status")
     val status: Int,
     @Json(name = "statusName")
-    val statusName: String
+    val statusName: String,
+    @Json(name = "awayTotalScore")
+    val awayTotalScore: Int?,
+    @Json(name = "homeTotalScore")
+    val homeTotalScore: Int?,
 )

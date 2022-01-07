@@ -66,6 +66,13 @@ object ArithUtil : DecimalFormatUtil() {
     }
 
     /**
+     * 20220105 印度盤口無條件進位到小數點第二位
+     * */
+    fun oddIdfFormat(value: Double?): String {
+        return round(value ?: 0.0, 2, RoundingMode.UP)
+    }
+
+    /**
      * 提款金額取整數
      */
     fun moneyToLong(value: String?): String {

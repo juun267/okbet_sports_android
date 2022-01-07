@@ -129,18 +129,31 @@ object MatchOddUtil {
     }
     private fun Double.convertToMYOdds(): Double {
 
-        return if(this > 1){
-            ArithUtil.div(-1.0,this,3, RoundingMode.HALF_EVEN)
-            //(-1 / this)
-        }else{
-            this
+        return when {
+            this == 0.0 -> {
+                this
+            }
+            this > 1 -> {
+                //(-1 / this)
+                ArithUtil.div(-1.0,this,3, RoundingMode.HALF_EVEN)
+            }
+            else -> {
+                this
+            }
         }
     }
     private fun Double.convertToIndoOdds(): Double {
-        return if(this > 1){
-            this
-        }else{
-            ArithUtil.div(1.0,this,3, RoundingMode.HALF_EVEN) * -1
+        return when {
+            this == 0.0 -> {
+                this
+            }
+            this > 1 -> {
+                this
+            }
+            else -> {
+                //(-1 / this)
+                ArithUtil.div(-1.0, this, 3, RoundingMode.HALF_EVEN)
+            }
         }
     }
 }

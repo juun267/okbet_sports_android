@@ -18,5 +18,25 @@ data class MatchResultData(
     var matchExpanded: Boolean = false
 }
 
-enum class ListType { TITLE, MATCH, DETAIL, FIRST_ITEM_FT, FIRST_ITEM_BK, FIRST_ITEM_TN, FIRST_ITEM_BM, FIRST_ITEM_VB, FIRST_ITEM_TT ,FIRST_ITEM_IH ,FIRST_ITEM_BX ,FIRST_ITEM_CB ,FIRST_ITEM_CK ,FIRST_ITEM_BB ,FIRST_ITEM_RB ,FIRST_ITEM_MR ,FIRST_ITEM_GF ,FIRST_ITEM_AFT ,NO_DATA }
+enum class ListType {
+    TITLE,
+    MATCH,
+    DETAIL,
+    FIRST_ITEM_FT, //足球
+    FIRST_ITEM_BK, //籃球
+    FIRST_ITEM_TN, //網球
+    FIRST_ITEM_BM, //羽球
+    FIRST_ITEM_VB, //排球
+    FIRST_ITEM_TT, //桌球
+    FIRST_ITEM_IH, //冰球
+    FIRST_ITEM_BX, //拳擊
+    FIRST_ITEM_CB, //台球
+    FIRST_ITEM_CK, //板球
+    FIRST_ITEM_BB, //棒球
+    FIRST_ITEM_RB, //橄欖球
+    FIRST_ITEM_MR, //賽車
+    FIRST_ITEM_GF, //高爾夫球
+    FIRST_ITEM_AFT, //美式足球
+    NO_DATA
+}
 
