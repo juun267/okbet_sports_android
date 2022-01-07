@@ -560,7 +560,9 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
                 GameType.TN -> {
                     tvGameName?.text = when {
-                        (oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains("CHAMP") && !oddsDetail.gameType.contains("CS-SEG")) || oddsDetail.gameType.contains(
+                        (oddsDetail.gameType.contains("-SEG") && !oddsDetail.gameType.contains("CHAMP") && !oddsDetail.gameType.contains(
+                            "CS-SEG"
+                        )) || oddsDetail.gameType.contains(
                             "-1ST"
                         ) || oddsDetail.gameType.contains(
                             "-2ST"
@@ -570,7 +572,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                 }
                 GameType.VB -> {
                     tvGameName?.text = when {
-                        oddsDetail.gameType.contains("-SEG") -> tvGameName?.context?.let { getTitle(it, oddsDetail) }
+                        oddsDetail.gameType.contains("-SEG") -> tvGameName?.context?.let {
+                            getTitle(
+                                it,
+                                oddsDetail
+                            )
+                        }
                         else -> tvGameName?.context?.let { getTitleNormal(oddsDetail) }
                     }
                 }
@@ -858,7 +865,7 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
                             setVisibility(true)
                             break
                         } else {
-                            setVisibility(false)
+                            setVisibility(true)
                         }
                     } catch (e: Exception) {
                         setVisibility(true)
@@ -871,16 +878,38 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             }
         }
 
-        private fun getTitle(context: Context, oddsDetail: OddsDetailListData): SpannableStringBuilder {
+        private fun getTitle(
+            context: Context,
+            oddsDetail: OddsDetailListData
+        ): SpannableStringBuilder {
             val textColor = ContextCompat.getColor(context, R.color.colorGray)
             val gameTitleContentBuilder = SpannableStringBuilder()
-            val statusWord = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.split("-")
-            val playName = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)?.replace("-${statusWord?.last() ?: ""}", "")
+            val statusWord =
+                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+                    ?.split("-")
+            val playName =
+                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+                    ?.replace("-${statusWord?.last() ?: ""}", "")
             val stWordSpan = SpannableString(statusWord?.last() ?: "")
             statusWord?.last()?.length?.let {
-                stWordSpan.setSpan(StyleSpan(Typeface.NORMAL), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                stWordSpan.setSpan(ForegroundColorSpan(textColor), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                stWordSpan.setSpan(AbsoluteSizeSpan(14, true), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                stWordSpan.setSpan(
+                    StyleSpan(Typeface.NORMAL),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                stWordSpan.setSpan(
+                    ForegroundColorSpan(textColor),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                stWordSpan.setSpan(
+                    AbsoluteSizeSpan(14, true),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
             val playNameSpan = SpannableString("$playName ")
             playName?.length?.let {
@@ -896,10 +925,16 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
         private fun getTitleNormal(oddsDetail: OddsDetailListData): SpannableStringBuilder {
             val gameTitleContentBuilder = SpannableStringBuilder()
-            val title = oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
+            val title =
+                oddsDetail.nameMap?.get(LanguageManager.getSelectLanguage(itemView.context).key)
             val playNameSpan = SpannableString(title)
             title?.length?.let {
-                playNameSpan.setSpan(StyleSpan(Typeface.BOLD), 0, it, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                playNameSpan.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    0,
+                    it,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
             gameTitleContentBuilder.append(playNameSpan)
 
@@ -1039,10 +1074,12 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
 
             oddsDetail.oddArrayList.forEach {
                 it?.let { odd ->
-                    val stringArray: List<String>? = odd.name?.replace("\\s".toRegex(), "")?.split("-")
+                    val stringArray: List<String>? =
+                        odd.name?.replace("\\s".toRegex(), "")?.split("-")
                     stringArray?.let { stringArrayNotNull ->
 
-                        if ((stringArrayNotNull.getOrNull(0)?.toInt() ?: 0) > (stringArrayNotNull.getOrNull(1)?.toInt()
+                        if ((stringArrayNotNull.getOrNull(0)?.toInt()
+                                ?: 0) > (stringArrayNotNull.getOrNull(1)?.toInt()
                                 ?: 0)
                         ) {
                             homeList.add(odd)
