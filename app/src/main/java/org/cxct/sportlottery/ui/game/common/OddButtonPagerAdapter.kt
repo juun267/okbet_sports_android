@@ -26,6 +26,8 @@ import org.cxct.sportlottery.util.getOdds
 
 class OddButtonPagerAdapter(
     private val matchInfo: MatchInfo?,
+    private val oddsSort: String?,
+    private val playCateNameMap: Map<String?, Map<String?, String?>?>?,
     private val playCateMappingList: List<PlayCateMapItem>?
 ) :
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
