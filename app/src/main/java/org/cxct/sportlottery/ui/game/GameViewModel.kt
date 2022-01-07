@@ -64,6 +64,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -1871,6 +1872,27 @@ class GameViewModel(
         sortOrder?.forEach {
             if (!this.oddsMap.keys.contains(it))
                 this.oddsMap[it] = mutableListOf(null, null, null)
+        }
+    }
+
+    /**
+     * 有些playCateCode後面會給： 要特別做處理
+     * */
+    private fun MatchOdd.refactorPlayCode() {
+        try {
+            val oddsMap: MutableMap<String, MutableList<Odd?>?>
+
+            val rgzMap = this.oddsMap.filter { (key, value) -> key.contains(":") }
+            if(rgzMap.isNotEmpty()){
+                oddsMap = this.oddsMap.filter { !it.key.contains(":") }.toMutableMap()
+                oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
+
+                this.oddsMap.clear()
+                this.oddsMap.putAll(oddsMap)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
