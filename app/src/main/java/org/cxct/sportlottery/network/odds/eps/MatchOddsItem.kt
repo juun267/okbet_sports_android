@@ -26,4 +26,6 @@ data class MatchOddsItem(
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     override val oddsSort: String? = null
+
+    override var stopped: Int? = null//賽事是否暫停倒數计时 1:是 ，0：否
 }

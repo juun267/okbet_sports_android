@@ -14,4 +14,7 @@ interface MatchOdd {
     val quickPlayCateList: MutableList<QuickPlayCate>?
     val oddsEps: Odds?
     var playCateMappingList: List<PlayCateMapItem>?
+
+    var stopped: Int? //是否计时停止 1:是 ，0：否
+
 }

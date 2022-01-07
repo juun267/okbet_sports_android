@@ -125,6 +125,12 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.leagueTime = leagueTime
                         true
                     }
+
+                    (matchClockCO.stopped != matchOdd.stopped) -> {
+                        matchOdd.stopped = matchClockCO.stopped
+                        true
+                    }
+
                     else -> false
                 }
             }
