@@ -22,6 +22,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import java.lang.Exception
 
 
 class OddButtonPagerAdapter(
@@ -31,11 +32,9 @@ class OddButtonPagerAdapter(
     private val playCateMappingList: List<PlayCateMapItem>?
 ) :
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
-
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.splitPlayCate().reorganizePlay().filterPlayCateSpanned(matchInfo?.gameType).sortPlayCate()
-
+            field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay().filterPlayCateSpanned().sortPlayCate()
             val gameList =
                 field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
                     .plus(field.filterValues { !it.isNullOrEmpty() }
@@ -386,12 +385,9 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-        playCateMappingList.find {
-            it.gameType == matchInfo.gameType && it.playCateCode == odds.first
-        }?.let { playCateMapItem ->
+            val playCateName = betPlayCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
 
-            val playCateName =
-                playCateMapItem.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+            val playCateCode = odds.first ?: ""
 
             oddBtnType.text = when {
                 (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
@@ -434,7 +430,7 @@ class OddButtonPagerViewHolder private constructor(
                                 ).key
                             ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
                         }
-                        playCateCode.isNOGALType() -> { 
+                        playCateCode.isNOGALType() -> {
                             "第" + odds.second?.getOrNull(0)?.nextScore.toString()
                         }
                         else -> ""
@@ -630,7 +626,6 @@ class OddButtonPagerViewHolder private constructor(
                         )
                     }
                 }
-            }
         }
     }
 
