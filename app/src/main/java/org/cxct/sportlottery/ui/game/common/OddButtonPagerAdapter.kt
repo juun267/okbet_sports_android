@@ -212,6 +212,30 @@ class OddButtonPagerAdapter(
         }
     }
 
+    /**
+     * 根據賽事的oddsSort將盤口重新排序
+     */
+    private fun Map<String, List<Odd?>?>.sortOdds(): Map<String, List<Odd?>?> {
+        var oddsMap = mutableMapOf<String, List<Odd?>?>()
+        val sortOrder = oddsSort?.split(",")
+        oddsMap = this.toSortedMap(compareBy<String> { //TODO Bill 有冒號的沒辦法排序
+            val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
+            oddsIndex
+        }.thenBy { it })
+
+        Timber.v("Bill=====>${this.toSortedMap(compareBy<String> { //TODO Bill 有冒號的沒辦法排序
+            val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
+            oddsIndex
+        }).keys}")
+
+        Timber.d("Bill=====>${this.toSortedMap(compareBy<String> { //TODO Bill 有冒號的沒辦法排序
+            val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
+            oddsIndex
+        }.thenBy { it }).keys}")
+
+        return oddsMap
+    }
+
 
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
         gameType: String?
