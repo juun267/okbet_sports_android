@@ -1880,7 +1880,7 @@ class GameViewModel(
     private fun MatchOdd.sortOdds() {
         val sortOrder = this.oddsSort?.split(",")
         val oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
-            val oddsIndex = sortOrder?.indexOf(it)
+            val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
             oddsIndex
         }.thenBy { it })
 
