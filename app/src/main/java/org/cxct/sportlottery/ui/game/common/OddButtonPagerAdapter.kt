@@ -175,47 +175,24 @@ class OddButtonPagerAdapter(
     private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
         //FT: NOGAL(下個進球) 玩法需特殊處理
         //TN: 1X2_SEG(X)_GAMES (独赢盘||局 {S}) 玩法需特殊處理 共1~5盤
-        val splitMap = mutableMapOf<String, List<Odd?>?>()
+        var splitMap = mutableMapOf<String, List<Odd?>?>()
         when(matchInfo?.gameType){
             GameType.FT.key -> {
-                val rgzMap = this.filter { (key, value) -> key.startsWith("${PlayCate.NGOAL.value }:")}
-                var nextScore = "0"
-                if(rgzMap.isNotEmpty()){ //下個進球的分數會放在Key值的冒號後面
-                     nextScore = rgzMap.keys.iterator().next().split("${PlayCate.NGOAL.value }:")[1]
-                }
-                this.forEach { oddsMap ->
-                    if(oddsMap.key == PlayCate.NGOAL.value  && rgzMap.isNotEmpty()){
-                        rgzMap.iterator().next().value?.forEach {
-                            it?.nextScore = nextScore
-                        }
-                        splitMap[oddsMap.key] = rgzMap.iterator().next().value
-                    }else{
-                        splitMap[oddsMap.key] = oddsMap.value
-                    }
-                }
-            }
-            GameType.TN.key -> {
-                var gameKey = ""
-                for (i in 1..5) {
-                    gameKey = "1X2_SEG" + i + "_GAMES"
-                    val rgzMap = this.filter { (key, value) -> key.startsWith("$gameKey:") }
-
-                    this.forEach { oddsMap ->
-                        if (oddsMap.key == gameKey && rgzMap.isNotEmpty()) {
-                            splitMap[oddsMap.key] = rgzMap.iterator().next().value
-                        } else {
-                            if (!oddsMap.key.startsWith("1X2_SEG") && !oddsMap.key.endsWith("_GAMES"))
-                                splitMap[oddsMap.key] = oddsMap.value
+                splitMap = this.toMutableMap()
+                splitMap.forEach { oddsMap ->
+                    if(oddsMap.key.contains("${PlayCate.NGOAL.value}:")){
+                        splitMap[oddsMap.key]?.forEach {
+                            it?.nextScore = oddsMap.key.split("${PlayCate.NGOAL.value }:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
                         }
                     }
                 }
             }
-
             else -> return this
         }
         
         return splitMap
     }
+
     /**
      * 有些playCateCode後面會給： 要特別做處理
      * */
