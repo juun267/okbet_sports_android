@@ -589,7 +589,8 @@ object SocketUpdateUtil {
                                 }
 
                                 false -> {
-                                    odds.add(oddSocket)
+                                    if(oddTypeMap.key == oddsMapEntrySocket.key)
+                                        odds.add(oddSocket)
 
                                     isNeedRefresh = true
                                 }

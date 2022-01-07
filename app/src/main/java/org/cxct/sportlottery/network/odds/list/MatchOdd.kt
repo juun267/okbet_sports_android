@@ -14,6 +14,10 @@ import org.cxct.sportlottery.ui.common.PlayCateMapItem
 
 @JsonClass(generateAdapter = true)
 data class MatchOdd(
+    @Json(name = "betPlayCateNameMap")
+    override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null,
+    @Json(name = "playCateNameMap")
+    override val playCateNameMap: Map<String?, Map<String?, String?>?>? = null,
     @Json(name = "matchInfo")
     override val matchInfo: MatchInfo? = null,
     @Json(name = "odds")

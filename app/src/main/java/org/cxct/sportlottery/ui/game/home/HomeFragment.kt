@@ -241,9 +241,11 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             oddsMap = matchOdd.oddsMap,
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = null,
-                            quickPlayCateList = matchOdd.quickPlayCateList
+                            quickPlayCateList = matchOdd.quickPlayCateList,
+                            betPlayCateNameMap = matchOdd.betPlayCateNameMap,
+                            playCateNameMap = matchOdd.playCateNameMap
                         ),
-                        odd = odd
+                        odd = odd,
                     )
                 }
             }
@@ -260,8 +262,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             oddsMap = matchOdd.oddsMap,
                             dynamicMarkets = matchOdd.dynamicMarkets ?: mapOf(),
                             oddsList = listOf(),
-                            quickPlayCateList = matchOdd.quickPlayCateList
-
+                            quickPlayCateList = matchOdd.quickPlayCateList,
+                            betPlayCateNameMap= matchOdd.betPlayCateNameMap,
+                            playCateNameMap = matchOdd.playCateNameMap
                         )
                     )
                 findNavController().navigate(action)

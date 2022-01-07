@@ -16,9 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.*
 import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.getOdds
-import org.cxct.sportlottery.util.setOddFormat
+import org.cxct.sportlottery.util.*
 
 class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
@@ -87,16 +85,17 @@ class ParlayItemAdapter : ListAdapter<ParlayDataItem, RecyclerView.ViewHolder>(D
             binding.gameType = gameType
             binding.matchOdd = matchOdd
 
-            matchOdd.let {
+            matchOdd.apply {
                 val odds = getOdds(matchOdd, matchOdd.oddsType.toString())
-                binding.tvOdd.setOddFormat(odds)
-                binding.tvOddsType.text = when (it.oddsType) {
-                    OddsType.MYS.code -> "("+itemView.context.getString(OddsType.MYS.res)+")"
-                    OddsType.IDN.code -> "("+itemView.context.getString(OddsType.IDN.res)+")"
-                    else -> "("+itemView.context.getString(OddsType.EU.res)+")"
-                }
+                binding.playContent.setPlayContent(
+                    playName,
+                    spread,
+                    TextUtil.formatForOdd(odds),
+                    oddsType.code
+                )
+                binding.tvTeamNames.text = "$homeName v $awayName"
                 val scoreList = mutableListOf<String>()
-                it.playCateMatchResultList?.map { scoreData ->
+                playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
                         "${
                             scoreData.statusNameI18n?.get(
