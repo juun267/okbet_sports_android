@@ -61,13 +61,12 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="10dp"
                                 android:alpha="0.25"
-                                android:includeFontPadding="false"
                                 android:maxLines="1"
+                                android:text="@string/goal_buster"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:text="@string/goal_buster" />
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
                                 android:id="@+id/iv_first_game"
@@ -79,20 +78,20 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:src="@drawable/ic_game_football" />
 
+                            <!--paddingTop是為解決includeFontPadding造成的字體裁切問題-->
                             <TextView
                                 android:id="@+id/label_first_game"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
                                 android:includeFontPadding="false"
+                                android:paddingTop="2dp"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
-                                app:layout_constraintVertical_bias="1"
-                                app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintBottom_toTopOf="@+id/tv_first_game_count"
                                 app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/label_en_first_game"
                                 app:layout_constraintWidth_default="wrap"
                                 tools:text="足球" />
 
@@ -100,14 +99,14 @@
                                 android:id="@+id/tv_first_game_count"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginHorizontal="10dp"
+                                android:layout_marginBottom="10dp"
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
-                                app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintWidth_default="wrap"
                                 tools:text="644" />
@@ -132,13 +131,12 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginTop="10dp"
                                 android:alpha="0.25"
-                                android:includeFontPadding="false"
                                 android:maxLines="1"
+                                android:text="@string/top_games"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:text="@string/top_games"/>
+                                app:layout_constraintTop_toTopOf="parent" />
 
                             <ImageView
                                 android:id="@+id/iv_second_game"
@@ -152,6 +150,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:src="@drawable/ic_game_basketball" />
 
+                            <!--paddingTop是為解決includeFontPadding造成的字體裁切問題-->
                             <TextView
                                 android:id="@+id/label_second_game"
                                 android:layout_width="0dp"
@@ -159,11 +158,12 @@
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
                                 android:textSize="@dimen/textSize16sp"
-                                app:layout_constraintWidth_default="wrap"
+                                android:paddingTop="2dp"
                                 app:layout_constraintBottom_toTopOf="@id/tv_second_game_count"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="@id/tv_second_game_count"
+                                app:layout_constraintWidth_default="wrap"
                                 tools:text="籃球" />
 
                             <TextView
@@ -174,12 +174,12 @@
                                 android:layout_marginBottom="10dp"
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
-                                app:layout_constraintHorizontal_bias="0"
-                                app:layout_constraintWidth_default="wrap"
                                 android:textSize="@dimen/textSize16sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0"
                                 app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintWidth_default="wrap"
                                 tools:text="48" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -202,7 +202,7 @@
                                 android:layout_height="wrap_content"
                                 android:divider="@drawable/divider_horizontal_6dp"
                                 android:orientation="horizontal"
-                                android:showDividers="middle|end"/>
+                                android:showDividers="middle|end" />
 
                             <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_game_soon"
