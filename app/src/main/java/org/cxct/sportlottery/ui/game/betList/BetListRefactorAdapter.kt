@@ -626,7 +626,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val initValue =
                     if (!(itemData?.allSingleInput.isNullOrEmpty())) itemData?.allSingleInput else ""
                 //init winnable amount
-                Log.e("Martin","oddstype="+oddsType)
                 tv_winnable_amount.text = TextUtil.formatMoney(
                     getAllWinnableAmount(
                         if (initValue.isNullOrEmpty()) 0.0 else initValue.toDouble(),
@@ -881,55 +880,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 //比照以往計算
                 var win = quota * getOdds(data, oddsType)
                 if (oddsType == OddsType.EU) {
-                    win -= quota
+                    win -= (quota*data.num)
                 }
-//                var realAmount = 0.00
-//                var win = 0.0
-//                when (oddsType) {
-//                    OddsType.MYS -> {
-//                        if (getOdds(data, oddsType) < 0) {
-//                            realAmount = data.betAmount * Math.abs(
-//                                getOdds(
-//                                    data,
-//                                    oddsType
-//                                )
-//                            )
-//                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
-//                            win = data.betAmount
-//                        } else {
-//                            win = data.betAmount * getOdds(data, oddsType)
-//                            tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
-//                        }
-//
-//                    }
-//                    OddsType.IDN -> {
-//                        if (getOdds(data, oddsType) < 0) {
-//                            realAmount = data.betAmount * Math.abs(
-//                                getOdds(
-//                                    data,
-//                                    oddsType
-//                                )
-//                            )
-//                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
-//                            win = data.betAmount
-//                        } else {
-//                            win = data.betAmount * getOdds(data, oddsType)
-//                            tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
-//                        }
-//                    }
-//                    OddsType.EU -> {
-//                        win = data.betAmount * (getOdds(data, oddsType)-1)
-//                        tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
-//
-//                    }
-//                    else -> {
-//                        win = data.betAmount * getOdds(data, oddsType)
-//                        tvRealAmount.text = ArithUtil.toMoneyFormat(data.betAmount)
-//                    }
-//                }
-
-                //data.realAmount = realAmount
-
                 tv_win_quota.text = TextUtil.format(win)
             }
         }
@@ -997,7 +949,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 //比照以往計算
                                 var win = quota * getOdds(data, oddsType)
                                 if (oddsType == OddsType.EU) {
-                                    win -= quota
+                                    win -= (quota * data.num)
                                 }
                                 itemView.tv_win_quota.text = TextUtil.format(win)
                             }
