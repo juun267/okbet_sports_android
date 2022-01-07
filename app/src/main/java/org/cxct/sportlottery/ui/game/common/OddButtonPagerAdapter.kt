@@ -229,16 +229,20 @@ class OddButtonPagerAdapter(
     }
 
 
-    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
-        gameType: String?
-    ): Map<String, List<Odd?>?> {
+    private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(): Map<String, List<Odd?>?> {
         return this.mapValues { map ->
-            val playCateMapItem = playCateMappingList?.find {
-                it.gameType == gameType && it.playCateCode == map.key
-            }
+            val playCateNum =
+                when { //根據IOS給的規則判斷顯示數量
+                    map.key.contains(PlayCate.HDP.value) || map.key.contains(PlayCate.OU.value) || map.key.contains(
+                        PlayCate.CORNER_OU.value
+                    ) -> 2
 
+                    map.key.contains(PlayCate.SINGLE.value) || map.key.contains(PlayCate.NGOAL.value) -> 3
+
+                    else -> 3
+                }
             map.value?.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
+                index < playCateNum
             }
         }
     }
