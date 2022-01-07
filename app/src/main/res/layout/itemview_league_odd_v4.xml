@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
+    tools:context="org.cxct.sportlottery.ui.game.common.LeagueOddAdapter"
     tools:ignore="spUsage">
 
     <View
@@ -149,9 +150,9 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize12sp"
         android:visibility="invisible"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintEnd_toStartOf="@id/league_odd_match_border_row1"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_home"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_match_border_row1"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_home"
         tools:text="1"
@@ -250,9 +251,9 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize12sp"
         android:visibility="invisible"
-        app:layout_constraintHorizontal_bias="1"
-        app:layout_constraintEnd_toStartOf="@+id/league_odd_match_border_row1"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_name_away"
+        app:layout_constraintEnd_toStartOf="@+id/league_odd_match_border_row1"
+        app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_name_away"
         tools:text="1"
@@ -343,14 +344,14 @@
 
     <ImageView
         android:id="@+id/league_odd_match_price_boost"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_price_v4"
         android:visibility="gone"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintEnd_toStartOf="@id/iv_play"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+        app:layout_constraintEnd_toStartOf="@id/iv_play"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border_row3"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
         tools:ignore="ContentDescription"
@@ -358,20 +359,21 @@
 
     <ImageView
         android:id="@+id/iv_play"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         android:layout_marginEnd="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_live_player"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
+        app:layout_constraintEnd_toStartOf="@id/league_odd_match_play_count"
         app:layout_constraintStart_toEndOf="@+id/league_odd_match_price_boost"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        app:tint="@color/colorGray"
         tools:ignore="ContentDescription"
-        app:layout_constraintEnd_toStartOf="@id/league_odd_match_play_count"
-        tools:src="@drawable/ic_live_soccer_s_unselected"
         tools:visibility="visible" />
 
-    <Space
+    <androidx.legacy.widget.Space
         android:id="@+id/space2"
         android:layout_width="10dp"
         android:layout_height="wrap_content"
@@ -395,21 +397,21 @@
 
     <ImageView
         android:id="@+id/league_odd_match_chart"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="5dp"
         android:scaleType="centerCrop"
-        app:tint="@color/colorGray"
         android:src="@drawable/ic_icon_chart"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border_row3"
         app:layout_constraintEnd_toStartOf="@id/league_odd_match_favorite"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row3"
+        app:tint="@color/colorGray"
         tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/league_odd_match_favorite"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginEnd="6dp"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_star_v4"
@@ -457,18 +459,18 @@
         app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
         app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
         app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
-        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" >
+        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border">
 
-    <RadioGroup
-        android:id="@+id/league_odd_quick_cate_tabs"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
-        app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
-        app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
-        app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
+        <RadioGroup
+            android:id="@+id/league_odd_quick_cate_tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/league_odd_quick_cate_border"
+            app:layout_constraintEnd_toStartOf="@id/league_odd_quick_cate_close"
+            app:layout_constraintStart_toStartOf="@id/league_odd_quick_cate_border"
+            app:layout_constraintTop_toTopOf="@id/league_odd_quick_cate_border" />
     </HorizontalScrollView>
 
     <ImageButton
