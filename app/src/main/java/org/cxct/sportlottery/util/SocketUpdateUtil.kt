@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
@@ -51,7 +52,11 @@ object SocketUpdateUtil {
 
                     if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
                         val statusValue =
-                            matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
+                            matchStatusCO.statusNameI18n?.get(
+                                LanguageManager.getSelectLanguage(
+                                    context
+                                ).key
+                            )
                                 ?: matchStatusCO.statusName
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
@@ -120,19 +125,17 @@ object SocketUpdateUtil {
                     else -> null
                 }
 
-                isNeedRefresh = when {
-                    (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) -> {
-                        matchOdd.matchInfo?.leagueTime = leagueTime
-                        true
-                    }
-
-                    (matchClockCO.stopped != matchOdd.stopped) -> {
-                        matchOdd.stopped = matchClockCO.stopped
-                        true
-                    }
-
-                    else -> false
+                if (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) {
+                    matchOdd.matchInfo?.leagueTime = leagueTime
+                    isNeedRefresh = true
                 }
+
+
+                if (matchClockCO.stopped != matchOdd.matchInfo?.stopped) {
+                    matchOdd.matchInfo?.stopped = matchClockCO.stopped
+                    isNeedRefresh = true
+                }
+
             }
         }
 
@@ -595,7 +598,7 @@ object SocketUpdateUtil {
                                 }
 
                                 false -> {
-                                    if(oddTypeMap.key == oddsMapEntrySocket.key)
+                                    if (oddTypeMap.key == oddsMapEntrySocket.key)
                                         odds.add(oddSocket)
 
                                     isNeedRefresh = true
@@ -666,7 +669,7 @@ object SocketUpdateUtil {
                     isNeedRefresh = true
                 }
 
-                if (odd?.spread != oddSocket.spread){
+                if (odd?.spread != oddSocket.spread) {
                     odd?.spread = oddSocket.spread
 
                     isNeedRefresh = true

@@ -31,7 +31,6 @@ data class OddData(
 ) : MatchOdd {
     override val oddsEps: Odds? = null
     override var playCateMappingList: List<PlayCateMapItem>? = null
-    override var stopped: Int? = null//賽事是否暫停倒數计时 1:是 ，0：否
 
     fun sortOddsMap() {
         this.oddsMap.forEach { (_, value) ->

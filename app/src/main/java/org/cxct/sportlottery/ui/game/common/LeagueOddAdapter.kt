@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,9 +84,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             it.matchInfo
         }
 
-
-        val isTimerPause = item.stopped == TimeCounting.STOP.value
-
         when (holder) {
             is ViewHolderHdpOu -> {
                 holder.stopTimer()
@@ -94,7 +92,6 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                     item,
                     leagueOddListener,
                     isTimerEnable,
-                    isTimerPause,
                     oddsType,
                     matchInfoList
                 )
@@ -122,13 +119,13 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
-            isTimerPause: Boolean,
             oddsType: OddsType,
             matchInfoList: List<MatchInfo>,
 
             ) {
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
 
+            val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause)
 
             setupOddsButton(item, oddsType, leagueOddListener)
