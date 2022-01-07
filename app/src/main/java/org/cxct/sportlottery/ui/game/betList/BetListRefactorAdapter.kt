@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -142,7 +143,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
-                    currentOddsType,
+                    oddsType,
                     hasBetClosed,
                     hasParlayList,
                     moreOptionCollapse,
@@ -321,7 +322,6 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                             itemData.realAmount = realAmount
                             tv_win_quota.text = TextUtil.format(win)
-
                         }
                         onItemClickListener.refreshBetInfoTotal()
                     }
@@ -626,8 +626,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val initValue =
                     if (!(itemData?.allSingleInput.isNullOrEmpty())) itemData?.allSingleInput else ""
                 //init winnable amount
+                Log.e("Martin","oddstype="+oddsType)
                 tv_winnable_amount.text = TextUtil.formatMoney(
-                    getAllSingleWinnableAmount(
+                    getAllWinnableAmount(
                         if (initValue.isNullOrEmpty()) 0.0 else initValue.toDouble(),
                         oddsType,
                         betList
@@ -649,6 +650,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 true -> {
                                     itemView.apply {
                                         ll_winnable.visibility = View.VISIBLE
+                                        //
                                         tv_winnable_amount.text =
                                             TextUtil.formatMoney(allWinnableAmount)
                                     }
@@ -701,6 +703,62 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             var allWinnableAmount = 0.0
             betList.forEach {
                 allWinnableAmount += getOdds(it.matchOdd, oddsType) * betAmount
+            }
+            return allWinnableAmount
+        }
+
+        private fun getAllWinnableAmount(
+            betAmount: Double,
+            oddsType: OddsType,
+            betList: MutableList<BetInfoListData>
+        ): Double {
+            var allWinnableAmount = 0.0
+            betList.forEach {
+                var realAmount = betAmount
+                var win = 0.0
+                var currentOddsType = oddsType
+                if(it.matchOdd.odds == it.matchOdd.malayOdds){
+                    currentOddsType = OddsType.EU
+                }
+                when (currentOddsType) {
+                    OddsType.MYS -> {
+                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
+                            realAmount = betAmount * Math.abs(
+                                getOdds(
+                                    it.matchOdd,
+                                    oddsType
+                                )
+                            )
+                            win = betAmount
+                        } else {
+                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                        }
+
+                    }
+                    OddsType.IDN -> {
+                        if (getOdds(it.matchOdd, currentOddsType) < 0) {
+                            realAmount = betAmount * Math.abs(
+                                getOdds(
+                                    it.matchOdd,
+                                    currentOddsType
+                                )
+                            )
+                            win = betAmount
+                        } else {
+                            win = betAmount * getOdds(it.matchOdd, currentOddsType)
+                        }
+                    }
+                    OddsType.EU -> {
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsType)-1)
+
+                    }
+                    else -> {
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsType)-1)
+                    }
+                }
+
+
+                allWinnableAmount += win
             }
             return allWinnableAmount
         }
