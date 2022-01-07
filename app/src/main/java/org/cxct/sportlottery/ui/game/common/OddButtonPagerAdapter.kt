@@ -214,6 +214,24 @@ class OddButtonPagerAdapter(
         
         return splitMap
     }
+    /**
+     * 有些playCateCode後面會給： 要特別做處理
+     * */
+    private fun Map<String, List<Odd?>?>.refactorPlayCode(): Map<String, List<Odd?>?>  {
+        return try {
+            var oddsMap = mutableMapOf<String, List<Odd?>?>()
+            val rgzMap = this.filter { (key, value) -> key.contains(":") }
+            if (rgzMap.isNotEmpty()) {
+                oddsMap = this.filter { !it.key.contains(":") }.toMutableMap()
+                oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
+                oddsMap
+            } else this
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            this
+        }
+    }
 
 
     private fun Map<String, List<Odd?>?>.filterPlayCateSpanned(
