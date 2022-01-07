@@ -36,12 +36,13 @@
                 app:layout_constraintTop_toBottomOf="@id/v_toolbar"
                 app:use_controller="false" />
 
+            <!--根據需求，先隱藏賽事動畫-->
             <WebView
+                android:visibility="gone"
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/v_toolbar"
-                android:visibility="gone"/>
+                app:layout_constraintTop_toBottomOf="@id/v_toolbar"/>
 
         </FrameLayout>
 
@@ -65,7 +66,9 @@
             app:layout_constraintEnd_toStartOf="@+id/iv_animation"
             />
 
+        <!--根據需求，先隱藏賽事動畫-->
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_animation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
