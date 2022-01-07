@@ -652,24 +652,24 @@ class OddButtonPagerViewHolder private constructor(
         }
     }
 
-    private fun PlayCateMapItem.isOUType(): Boolean {
-        return this.playCateCode.contains(PlayCate.OU.value) && !this.isCombination()
+    private fun String.isOUType(): Boolean {
+        return this.contains(PlayCate.OU.value) && !this.isCombination()
     }
 
-    private fun PlayCateMapItem.isOEType(): Boolean {
-        return (this.playCateCode.contains(PlayCate.OE.value) || this.playCateCode.contains(PlayCate.Q_OE.value)) && !this.isCombination()
+    private fun String.isOEType(): Boolean {
+        return (this.contains(PlayCate.OE.value) || this.contains(PlayCate.Q_OE.value)) && !this.isCombination()
     }
 
-    private fun PlayCateMapItem.isBTSType(): Boolean {
-        return this.playCateCode.contains(PlayCate.BTS.value) && !this.isCombination()
+    private fun String.isBTSType(): Boolean {
+        return this.contains(PlayCate.BTS.value) && !this.isCombination()
     }
 
-    private fun PlayCateMapItem.isCombination(): Boolean {
-        return this.playCateCode.contains(PlayCate.SINGLE_OU.value) || this.playCateCode.contains(PlayCate.SINGLE_BTS.value)
+    private fun String.isCombination(): Boolean {
+        return this.contains(PlayCate.SINGLE_OU.value) || this.contains(PlayCate.SINGLE_BTS.value)
     }
 
-    private fun PlayCateMapItem.isNOGALType(): Boolean {
-        return this.playCateCode.contains(PlayCate.NGOAL.value) && !this.isCombination()
+    private fun String.isNOGALType(): Boolean {
+        return this.contains(PlayCate.NGOAL.value) && !this.isCombination()
     }
 
     /**
