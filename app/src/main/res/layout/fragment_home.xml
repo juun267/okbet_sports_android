@@ -59,15 +59,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:layout_marginTop="9dp"
+                                android:layout_marginTop="10dp"
                                 android:alpha="0.25"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
                                 android:textColor="@android:color/white"
-                                android:textSize="@dimen/textSize23sp"
+                                android:textSize="@dimen/textSize16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:text="FOOTBALL" />
+                                android:text="@string/goal_buster" />
 
                             <ImageView
                                 android:id="@+id/iv_first_game"
@@ -80,41 +80,36 @@
                                 tools:src="@drawable/ic_game_football" />
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:alpha="0.25"
-                                android:maxLines="1"
-                                android:text="@string/top_game"
-                                android:textColor="@android:color/white"
-                                android:textSize="@dimen/textSize12sp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/label_en_first_game" />
-
-                            <TextView
                                 android:id="@+id/label_first_game"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:layout_marginBottom="9dp"
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
-                                android:textSize="@dimen/textSize20sp"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent" />
+                                android:textSize="@dimen/textSize16sp"
+                                app:layout_constraintVertical_bias="1"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintBottom_toTopOf="@+id/tv_first_game_count"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/label_en_first_game"
+                                app:layout_constraintWidth_default="wrap"
+                                tools:text="足球" />
 
                             <TextView
                                 android:id="@+id/tv_first_game_count"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginHorizontal="10dp"
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
-                                android:textSize="@dimen/textSize22sp"
-                                app:layout_constraintBottom_toBottomOf="@id/label_first_game"
+                                android:textSize="@dimen/textSize16sp"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toEndOf="@id/label_first_game"
-                                app:layout_constraintTop_toTopOf="@id/label_first_game"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintWidth_default="wrap"
                                 tools:text="644" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -135,15 +130,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:layout_marginTop="9dp"
+                                android:layout_marginTop="10dp"
                                 android:alpha="0.25"
                                 android:includeFontPadding="false"
                                 android:maxLines="1"
                                 android:textColor="@android:color/white"
-                                android:textSize="@dimen/textSize23sp"
+                                android:textSize="@dimen/textSize16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                tools:text="BASKETBALL" />
+                                android:text="@string/top_games"/>
 
                             <ImageView
                                 android:id="@+id/iv_second_game"
@@ -163,20 +158,25 @@
                                 android:layout_height="wrap_content"
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
-                                android:textSize="@dimen/textSize20sp"
+                                android:textSize="@dimen/textSize16sp"
+                                app:layout_constraintWidth_default="wrap"
                                 app:layout_constraintBottom_toTopOf="@id/tv_second_game_count"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="@id/tv_second_game_count" />
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintStart_toStartOf="@id/tv_second_game_count"
+                                tools:text="籃球" />
 
                             <TextView
                                 android:id="@+id/tv_second_game_count"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginBottom="6dp"
+                                android:layout_marginHorizontal="10dp"
+                                android:layout_marginBottom="10dp"
                                 android:includeFontPadding="false"
                                 android:textColor="@android:color/white"
-                                android:textSize="@dimen/textSize20sp"
+                                app:layout_constraintHorizontal_bias="0"
+                                app:layout_constraintWidth_default="wrap"
+                                android:textSize="@dimen/textSize16sp"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -202,7 +202,7 @@
                                 android:layout_height="wrap_content"
                                 android:divider="@drawable/divider_horizontal_6dp"
                                 android:orientation="horizontal"
-                                android:showDividers="middle|end"></LinearLayout>
+                                android:showDividers="middle|end"/>
 
                             <org.cxct.sportlottery.ui.game.home.HomeGameCard
                                 android:id="@+id/card_game_soon"

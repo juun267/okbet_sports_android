@@ -90,7 +90,7 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:textColor="@color/colorBlackLight"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/textSize14sp"
                     android:textStyle="bold" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
@@ -114,7 +114,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -137,7 +137,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -160,7 +160,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -182,7 +182,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -206,7 +206,7 @@
                     android:inputType="numberPassword"
                     android:maxLines="1"
                     android:maxLength="4"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -228,7 +228,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -250,7 +250,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="phone"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -280,7 +280,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                 </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
                 <!--                <org.cxct.sportlottery.ui.login.LoginEditText-->
@@ -336,7 +336,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -358,7 +358,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -380,7 +380,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -402,7 +402,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -424,7 +424,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -446,7 +446,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/textSize14sp" />
 
             </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
@@ -475,7 +475,7 @@
                         android:imeOptions="actionNext"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/textSize14sp" />
 
                 </org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes>
 
