@@ -104,6 +104,7 @@ class OddButtonPagerAdapter(
     override fun onBindViewHolder(holder: OddButtonPagerViewHolder, position: Int) {
         holder.bind(
             matchInfo,
+            playCateNameMap,
             playCateMappingList,
             listOf(
                 Pair(
