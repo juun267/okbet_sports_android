@@ -64,6 +64,7 @@ import org.cxct.sportlottery.util.MatchOddUtil.applyHKDiscount
 import org.cxct.sportlottery.util.TimeUtil.DMY_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.HM_FORMAT
 import org.cxct.sportlottery.util.TimeUtil.getTodayTimeRangeParams
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -1138,7 +1139,8 @@ class GameViewModel(
                         map.value?.updateOddSelectState()
                     }
 
-                    matchOdd.setupPlayCate()
+//                    matchOdd.setupPlayCate()
+                    matchOdd.refactorPlayCode()
                     matchOdd.sortOdds()
 
                     if (!getPlayCateCodeList().isNullOrEmpty())
@@ -1874,12 +1876,33 @@ class GameViewModel(
     }
 
     /**
+     * 有些playCateCode後面會給： 要特別做處理
+     * */
+    private fun MatchOdd.refactorPlayCode() {
+        try {
+            val oddsMap: MutableMap<String, MutableList<Odd?>?>
+
+            val rgzMap = this.oddsMap.filter { (key, value) -> key.contains(":") }
+            if(rgzMap.isNotEmpty()){
+                oddsMap = this.oddsMap.filter { !it.key.contains(":") }.toMutableMap()
+                oddsMap[rgzMap.iterator().next().key] = rgzMap.iterator().next().value
+
+                this.oddsMap.clear()
+                this.oddsMap.putAll(oddsMap)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
      * 根據賽事的oddsSort將盤口重新排序
      */
     private fun MatchOdd.sortOdds() {
         val sortOrder = this.oddsSort?.split(",")
         val oddsMap = this.oddsMap.toSortedMap(compareBy<String> {
-            val oddsIndex = sortOrder?.indexOf(it)
+            val oddsIndex = sortOrder?.indexOf(it.split(":")[0])
             oddsIndex
         }.thenBy { it })
 
