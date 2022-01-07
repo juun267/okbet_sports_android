@@ -948,9 +948,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 checkMinimumLimit(data, quota)
                                 //比照以往計算
                                 var win = quota * getOdds(data, oddsType)
-                                if (oddsType == OddsType.EU) {
+                                //if (oddsType == OddsType.EU) {
                                     win -= (quota * data.num)
-                                }
+                                //}
                                 itemView.tv_win_quota.text = TextUtil.format(win)
                             }
 
