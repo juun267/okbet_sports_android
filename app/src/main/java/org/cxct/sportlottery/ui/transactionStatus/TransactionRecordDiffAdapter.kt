@@ -24,6 +24,7 @@ import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setPlayContent
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
 class TransactionRecordDiffAdapter :
@@ -98,26 +99,6 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        private fun setSpannedString(
-            playName: String?,
-            spread: String?,
-            formatForOdd: String,
-            oddsType: String
-        ): Spanned {
-            val playNameStr =
-                if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
-            val spreadStr =
-                if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
-
-            return HtmlCompat.fromHtml(
-                playNameStr +
-                        spreadStr +
-                        "<font color=#666666>@ </font> " +
-                        "<font color=#B73A20>$formatForOdd </font> " +
-                        "<font color=#666666>${oddsType}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-        }
-
         fun bind(data: Row, oddsType: OddsType) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
@@ -133,7 +114,7 @@ class TransactionRecordDiffAdapter :
                     else -> "(" + context.getString(OddsType.EU.res) + ")"
                 }
 
-                play_content.text = setSpannedString(
+                play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
                     TextUtil.formatForOdd(matchOdds.odds),
@@ -181,26 +162,6 @@ class TransactionRecordDiffAdapter :
             }
         }
 
-        private fun setSpannedString(
-            playName: String?,
-            spread: String?,
-            formatForOdd: String,
-            oddsType: String
-        ): Spanned {
-            val playNameStr =
-                if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
-            val spreadStr =
-                if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
-
-            return HtmlCompat.fromHtml(
-                playNameStr +
-                        spreadStr +
-                        "<font color=#666666>@ </font> " +
-                        "<font color=#B73A20>$formatForOdd </font> " +
-                        "<font color=#666666>${oddsType}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-        }
-
         fun bind(data: Row, oddsType: OddsType) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
@@ -223,7 +184,7 @@ class TransactionRecordDiffAdapter :
                     else -> "(" + context.getString(OddsType.EU.res) + ")"
                 }
 
-                play_content.text = setSpannedString(
+                play_content.setPlayContent(
                     matchOdds.playName,
                     matchOdds.spread,
                     TextUtil.formatForOdd(matchOdds.odds),

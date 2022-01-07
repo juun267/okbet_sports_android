@@ -3,11 +3,13 @@ package org.cxct.sportlottery.util
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.text.Editable
+import android.text.Spanned
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.databinding.BindingAdapter
 import org.cxct.sportlottery.MultiLanguagesApplication
 import org.cxct.sportlottery.R
@@ -381,13 +383,30 @@ fun TextView.setOddTypeString(oddsType: OddsType?) {
     }
 }
 
-fun TextView.getOddTypeString(oddsType: String?) {
-    apply {
-        text = when (oddsType) {
-            OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
-            OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
-            OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
-            else -> " (${context.getString(OddsType.EU.res)})"
-        }
+fun TextView.setPlayContent(
+    playName: String?,
+    spread: String?,
+    formatForOdd: String?,
+    oddsType: String
+): Spanned {
+    val playNameStr =
+        if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
+
+    val spreadStr =
+        if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
+
+    val oddStr =  when (oddsType) {
+        OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+        OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+        OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+        else -> " (${context.getString(OddsType.EU.res)})"
     }
+
+    return HtmlCompat.fromHtml(
+        playNameStr +
+                spreadStr +
+                "<font color=#666666>@ </font> " +
+                "<font color=#B73A20>$formatForOdd </font> " +
+                "<font color=#666666>${oddStr}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+    )
 }
