@@ -173,10 +173,13 @@ class OddButtonPagerAdapter(
         return splitMap
     }
 
+    /**
+     * FT: NOGAL(下個進球) 玩法需特殊處理
+     * */
     private fun Map<String, List<Odd?>?>.reorganizePlay(): Map<String, List<Odd?>?> {
-        //FT: NOGAL(下個進球) 玩法需特殊處理
-        //TN: 1X2_SEG(X)_GAMES (独赢盘||局 {S}) 玩法需特殊處理 共1~5盤
+
         var splitMap = mutableMapOf<String, List<Odd?>?>()
+
         when(matchInfo?.gameType){
             GameType.FT.key -> {
                 splitMap = this.toMutableMap()
