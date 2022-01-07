@@ -1138,7 +1138,8 @@ class GameViewModel(
                         map.value?.updateOddSelectState()
                     }
 
-                    matchOdd.setupPlayCate()
+//                    matchOdd.setupPlayCate()
+                    matchOdd.refactorPlayCode()
                     matchOdd.sortOdds()
 
                     if (!getPlayCateCodeList().isNullOrEmpty())
