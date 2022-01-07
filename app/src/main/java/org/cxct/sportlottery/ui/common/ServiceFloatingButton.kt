@@ -35,12 +35,17 @@ class ServiceFloatingButton @JvmOverloads constructor(
     }
 
     fun setView(activity: AppCompatActivity) {
+        //根據需求先隱藏，確定不用可拔除ServiceFloatingButton元件
+        visibility = View.GONE
+
+        /*
         if (sConfigData?.customerServiceUrl.isNullOrBlank() && sConfigData?.customerServiceUrl2.isNullOrBlank()) {
             visibility = View.GONE
         } else {
             visibility = View.VISIBLE
             setupClickEvent(activity)
         }
+        */
     }
 
     private fun setupClickEvent(activity: AppCompatActivity) {
