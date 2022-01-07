@@ -866,5 +866,7 @@
     <string name="appearance">外观</string>
     <string name="day_mode">日间模式</string>
     <string name="night_mode">夜间模式</string>
+    <string name="goal_buster">GOAL BUSTER</string>
+    <string name="top_games">TOP GAMES</string>
 
 </resources>

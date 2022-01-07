@@ -705,7 +705,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun setupFirstGame(sportMenu: SportMenu) {
-        label_en_first_game.text = sportMenu.sportEnName
+        label_en_first_game.text = context?.getString(R.string.goal_buster)
         label_first_game.text = sportMenu.sportName
         sportMenu.icon?.let { iv_first_game.setImageResource(sportMenu.icon) }
         tv_first_game_count.text = sportMenu.gameCount.toString()
@@ -725,7 +725,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun setupSecondGame(sportMenu: SportMenu) {
-        label_en_second_game.text = sportMenu.sportEnName
+        label_en_second_game.text = context?.getString(R.string.top_games)
         label_second_game.text = sportMenu.sportName
         sportMenu.icon?.let { iv_second_game.setImageResource(sportMenu.icon) }
         tv_second_game_count.text = sportMenu.gameCount.toString()

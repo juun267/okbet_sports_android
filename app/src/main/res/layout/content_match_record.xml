@@ -4,16 +4,16 @@
     android:id="@+id/ll_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="org.cxct.sportlottery.ui.transactionStatus.TransactionRecordDiffAdapter">
 
     <LinearLayout
         android:id="@+id/ll_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBlue"
-        android:orientation="vertical"
         android:minHeight="76dp"
+        android:orientation="vertical"
         android:paddingHorizontal="16dp"
         android:paddingVertical="9dp">
 
@@ -75,32 +75,31 @@
             <TextView
                 android:id="@+id/content_play"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
+                android:layout_weight="1"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize14sp"
+                android:textStyle="bold"
                 tools:text="篮球 让球" />
 
             <TextView
                 android:id="@+id/tv_score"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="@dimen/textSize12sp"
                 android:textColor="@color/colorGrayLight"
-                tools:text="(5-26)"/>
+                android:textSize="@dimen/textSize12sp"
+                tools:text="(5-26)" />
 
         </LinearLayout>
 
-            <!--playName spread @ odd (oddsType)-->
-            <TextView
-                android:id="@+id/play_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize13sp"
-                tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
-
+        <!--playName spread @ odd (oddsType)-->
+        <TextView
+            android:id="@+id/play_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/textSize13sp"
+            tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
 
         <LinearLayout
             android:layout_width="match_parent"

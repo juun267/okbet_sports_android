@@ -7,8 +7,7 @@
     tools:context=".ui.feedback.FeedbackMainActivity">
 
 
-    <include
-        layout="@layout/view_base_tool_bar_no_drawer"/>
+    <include layout="@layout/view_base_tool_bar_no_drawer" />
 
     <LinearLayout
         android:id="@+id/ll_tab"
@@ -40,31 +39,30 @@
                 <RadioButton
                     android:id="@+id/btn_sugession"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/effect_select_bg_white_transparent"
-                    android:maxLines="1"
-                    android:padding="6dp"
-                    android:autoSizeTextType="uniform"
-                    app:autoSizeMaxTextSize="@dimen/textSize16sp"
-                    app:autoSizeMinTextSize="@dimen/textSize8sp"
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
+                    android:maxLines="1"
+                    android:minHeight="30dp"
+                    android:padding="6dp"
+                    android:text="@string/feedback_tabName_problem"
                     android:textColor="@color/color_select_primary_white"
-                    android:textSize="@dimen/textSize16sp"
-                    android:text="@string/feedback_tabName_problem" />
+                    android:textSize="@dimen/textSize16sp" />
 
                 <RadioButton
                     android:id="@+id/btn_record"
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@drawable/effect_select_bg_white_transparent"
                     android:button="@null"
                     android:gravity="center"
+                    android:minHeight="30dp"
                     android:text="@string/feedback_tabName_record"
                     android:textColor="@color/color_select_primary_white"
                     android:textSize="@dimen/textSize16sp" />

@@ -42,7 +42,9 @@
                 app:layout_constraintTop_toBottomOf="@id/view_notification"
                 tools:layout="@layout/fragment_transaction_status" />
 
+            <!--根據需求先隱藏，確定不用可刪-->
             <org.cxct.sportlottery.ui.common.ServiceFloatingButton
+                android:visibility="gone"
                 android:id="@+id/btn_floating_service"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
