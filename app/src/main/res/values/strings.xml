@@ -28,8 +28,8 @@
     <string name="version_name">版本 %s</string>
     <string name="btn_pass">跳过</string>
     <string name="login_account">登录账号</string>
-    <string name="please_input_account">请输入您的会员账号</string>
-    <string name="please_input_password">请输入您的登录密码</string>
+    <string name="please_input_account">(请输入您的会员账号)</string>
+    <string name="please_input_password">(请输入您的登录密码)</string>
     <string name="login_password">登录密码</string>
     <string name="remember_password">记住密码</string>
     <string name="forget_password_question">忘记密码?</string>
@@ -255,7 +255,7 @@
     <string name="help_center">帮助中心</string>
     <string name="fund_detail">资金明细</string>
     <string name="feedback">建议反馈</string>
-    <string name="promotion">优惠活动</string>
+    <string name="promotion">人工申请活动</string>
     <string name="need_improve">需完善</string>
     <string name="profile_info">个人资讯</string>
     <string name="avatar">头像</string>

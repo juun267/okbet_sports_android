@@ -28,8 +28,8 @@
     <string name="version_name">Version %s</string>
     <string name="btn_pass">Skip</string>
     <string name="login_account">Account</string>
-    <string name="please_input_account">your member account</string>
-    <string name="please_input_password">your login password</string>
+    <string name="please_input_account">(your member account)</string>
+    <string name="please_input_password">(your login password)</string>
     <string name="login_password">Password</string>
     <string name="remember_password">Save this password</string>
     <string name="forget_password_question">Forgot password？</string>
@@ -255,7 +255,7 @@
     <string name="help_center">Help</string>
     <string name="fund_detail">Fund Details</string>
     <string name="feedback">Feedback</string>
-    <string name="promotion">Promotion Activity</string>
+    <string name="promotion">Routine events</string>
     <string name="need_improve">Need to be completed</string>
     <string name="profile_info">Your Info</string>
     <string name="avatar">Profile photo</string>
