@@ -10,7 +10,7 @@
 
     <View
         android:id="@+id/odd_btn_row1"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toStartOf="@id/odd_btn_row2"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/odd_btn_row2"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/odd_btn_row1_type"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="47dp"
         android:ellipsize="end"
         android:gravity="center"
@@ -55,7 +55,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row1_home"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row1"
@@ -65,7 +65,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row1_away"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row1"
@@ -75,7 +75,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row1_draw"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row1"
@@ -85,7 +85,7 @@
 
     <TextView
         android:id="@+id/odd_btn_row2_type"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="47dp"
         android:ellipsize="end"
         android:gravity="center"
@@ -102,7 +102,7 @@
 
     <TextView
         android:id="@+id/odd_btn_row2_half"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="@dimen/textSize12sp"
@@ -114,7 +114,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row2_home"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row2"
@@ -124,7 +124,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row2_away"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row2"
@@ -134,7 +134,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/odd_btn_row2_draw"
-        android:layout_width="64dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@id/odd_btn_row2"

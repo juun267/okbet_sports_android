@@ -424,7 +424,6 @@
         android:id="@+id/league_odd_btn_pager_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/league_odd_btn_indicator_main"
         app:layout_constraintEnd_toEndOf="@id/league_odd_button_border"
