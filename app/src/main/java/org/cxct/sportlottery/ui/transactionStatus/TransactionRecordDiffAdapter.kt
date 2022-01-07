@@ -1,8 +1,10 @@
 package org.cxct.sportlottery.ui.transactionStatus
 
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -10,15 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.content_last_total_record.view.*
 import kotlinx.android.synthetic.main.content_match_record.view.*
 import kotlinx.android.synthetic.main.content_outright_record.view.content_bet_amount
-import kotlinx.android.synthetic.main.content_outright_record.view.content_odds
 import kotlinx.android.synthetic.main.content_outright_record.view.content_order_no
 import kotlinx.android.synthetic.main.content_outright_record.view.content_play
 import kotlinx.android.synthetic.main.content_outright_record.view.content_time_type
 import kotlinx.android.synthetic.main.content_outright_record.view.content_winnable_amount
-import kotlinx.android.synthetic.main.content_outright_record.view.spread_name
 import kotlinx.android.synthetic.main.content_outright_record.view.title_league_name
-import kotlinx.android.synthetic.main.content_outright_record.view.content_odds_type
-import kotlinx.android.synthetic.main.content_parlay_match.view.*
 import kotlinx.android.synthetic.main.content_parlay_record.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.list.Row
@@ -28,7 +26,8 @@ import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
 
 //TODO 20210719當前api缺少總金額,待後端修正後進行確認
-class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
+class TransactionRecordDiffAdapter :
+    ListAdapter<DataItem, RecyclerView.ViewHolder>(TransactionRecordDiffCallBack()) {
     var isLastPage: Boolean = false
     var totalAmount: Double = 0.0
     var oddsType: OddsType = OddsType.EU
@@ -99,31 +98,68 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
             }
         }
 
+        private fun setSpannedString(
+            playName: String?,
+            spread: String?,
+            formatForOdd: String,
+            oddsType: String
+        ): Spanned {
+            val playNameStr =
+                if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
+            val spreadStr =
+                if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
+
+            return HtmlCompat.fromHtml(
+                playNameStr +
+                        spreadStr +
+                        "<font color=#666666>@ </font> " +
+                        "<font color=#B73A20>$formatForOdd </font> " +
+                        "<font color=#666666>${oddsType}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        }
+
         fun bind(data: Row, oddsType: OddsType) {
             val matchOdds = data.matchOdds[0]
             itemView.apply {
                 title_league_name.text = matchOdds.leagueName
                 title_home_name.text = matchOdds.homeName
-                title_spread.text = matchOdds.spread
+//                title_spread.text = matchOdds.spread
                 title_away_name.text = matchOdds.awayName
 
-                content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
-                spread_name.text = matchOdds.playName
-                content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
-                content_odds_type.text = when (matchOdds.oddsType) {
-                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
-                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
-                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
-                    else -> "("+context.getString(OddsType.EU.res)+")"
+                val oddsTypeStr = when (matchOdds.oddsType) {
+                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+                    else -> "(" + context.getString(OddsType.EU.res) + ")"
                 }
+
+                play_content.text = setSpannedString(
+                    matchOdds.playName,
+                    matchOdds.spread,
+                    TextUtil.formatForOdd(matchOdds.odds),
+                    oddsTypeStr
+                )
+
+                content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
+//                spread_name.text = matchOdds.playName
+//                content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
+//                content_odds_type.text = when (matchOdds.oddsType) {
+//                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
+//                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
+//                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
+//                    else -> "("+context.getString(OddsType.EU.res)+")"
+//                }
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
                 content_time_type.text = getTimeFormatFromDouble(data.addTime)
-                when(data.gameType) {
+                when (data.gameType) {
                     GameType.FT.key, GameType.BK.key -> {
-                        if(matchOdds.rtScore?.isNotEmpty() == true)
-                            tv_score.text = String.format(context.getString(R.string.brackets), matchOdds.rtScore)
+                        if (matchOdds.rtScore?.isNotEmpty() == true)
+                            tv_score.text = String.format(
+                                context.getString(R.string.brackets),
+                                matchOdds.rtScore
+                            )
                     }
                 }
             }
@@ -139,9 +175,30 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_outright_record, viewGroup, false)
+                val view =
+                    layoutInflater.inflate(R.layout.content_outright_record, viewGroup, false)
                 return OutrightRecordViewHolder(view)
             }
+        }
+
+        private fun setSpannedString(
+            playName: String?,
+            spread: String?,
+            formatForOdd: String,
+            oddsType: String
+        ): Spanned {
+            val playNameStr =
+                if (!playName.isNullOrEmpty()) "<font color=#333333>${playName} </font> " else ""
+            val spreadStr =
+                if (!spread.isNullOrEmpty()) "<font color=#B73A20>$spread</font> " else ""
+
+            return HtmlCompat.fromHtml(
+                playNameStr +
+                        spreadStr +
+                        "<font color=#666666>@ </font> " +
+                        "<font color=#B73A20>$formatForOdd </font> " +
+                        "<font color=#666666>${oddsType}</font>", HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
         }
 
         fun bind(data: Row, oddsType: OddsType) {
@@ -150,14 +207,29 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                 title_league_name.text = "${matchOdds.leagueName} - ${matchOdds.playCateName}"
 
                 content_play.text = "${getGameTypeName(data.gameType)} ${matchOdds.playCateName}"
-                spread_name.text = matchOdds.spread
-                content_odds.text  = TextUtil.formatForOdd(matchOdds.odds)
-                content_odds_type.text = when (matchOdds.oddsType) {
-                    OddsType.HK.code -> "("+context.getString(OddsType.HK.res)+")"
-                    OddsType.MYS.code -> "("+context.getString(OddsType.MYS.res)+")"
-                    OddsType.IDN.code -> "("+context.getString(OddsType.IDN.res)+")"
-                    else -> "("+context.getString(OddsType.EU.res)+")"
+//                spread_name.text = matchOdds.spread
+//                content_odds.text = TextUtil.formatForOdd(matchOdds.odds)
+//                content_odds_type.text = when (matchOdds.oddsType) {
+//                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+//                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+//                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+//                    else -> "(" + context.getString(OddsType.EU.res) + ")"
+//                }
+
+                val oddsTypeStr = when (matchOdds.oddsType) {
+                    OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+                    OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+                    OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+                    else -> "(" + context.getString(OddsType.EU.res) + ")"
                 }
+
+                play_content.text = setSpannedString(
+                    matchOdds.playName,
+                    matchOdds.spread,
+                    TextUtil.formatForOdd(matchOdds.odds),
+                    oddsTypeStr
+                )
+
                 content_bet_amount.text = TextUtil.format(data.totalAmount)
                 content_winnable_amount.text = TextUtil.format(data.winnable)
                 content_order_no.text = data.orderNo
@@ -175,14 +247,16 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
         companion object {
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
-                val view = layoutInflater.inflate(R.layout.content_last_total_record, viewGroup, false)
+                val view =
+                    layoutInflater.inflate(R.layout.content_last_total_record, viewGroup, false)
                 return LastTotalViewHolder(view)
             }
         }
 
         fun bind(totalAmount: Double) {
             itemView.apply {
-                last_total_amount.text = "${TextUtil.format(totalAmount)} ${context.getString(R.string.currency)}"
+                last_total_amount.text =
+                    "${TextUtil.format(totalAmount)} ${context.getString(R.string.currency)}"
             }
         }
     }
@@ -203,8 +277,13 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
                 title_parlay_type.text = getParlayShowName(data.parlayType)
                 rv_parlay_match.apply {
                     adapter = contentParlayMatchAdapter
-                    layoutManager = LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
-                    contentParlayMatchAdapter.setupMatchData(getGameTypeName(data.gameType), oddsType, data.matchOdds)
+                    layoutManager =
+                        LinearLayoutManager(itemView.context, RecyclerView.VERTICAL, false)
+                    contentParlayMatchAdapter.setupMatchData(
+                        getGameTypeName(data.gameType),
+                        oddsType,
+                        data.matchOdds
+                    )
 
                 }
 
@@ -227,7 +306,10 @@ class TransactionRecordDiffAdapter : ListAdapter<DataItem, RecyclerView.ViewHold
     class NoDataViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup) =
-                NoDataViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.itemview_game_no_record, parent, false))
+                NoDataViewHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.itemview_game_no_record, parent, false)
+                )
         }
     }
 

@@ -40,9 +40,9 @@
             android:id="@+id/content_play"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold"
             tools:text="篮球 让球" />
 
         <LinearLayout
@@ -51,38 +51,12 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/spread_name"
+                android:id="@+id/play_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize13sp"
-                tools:text="密尔沃基雄鹿" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp"
-                android:textColor="@color/colorGray"
-                android:textSize="13sp"
-                android:text="\@" />
-
-            <TextView
-                android:id="@+id/content_odds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorRedDark"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                tools:text="1.860" />
-            <TextView
-                android:id="@+id/content_odds_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorGray"
-                android:textSize="13sp"
-                android:layout_marginLeft="8dp"
-                tools:text="(印尼盘)" />
+                tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
 
         </LinearLayout>
 
