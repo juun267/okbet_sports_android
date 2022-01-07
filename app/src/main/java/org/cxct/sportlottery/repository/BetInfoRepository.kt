@@ -235,6 +235,7 @@ class BetInfoRepository(val androidContext: Context) {
     fun addInBetInfo() {
         _showBetInfoSingle.postValue(Event(false))
     }
+
     /**
      * 點擊賠率按鈕加入投注清單, 並產生串關注單
      */
@@ -252,7 +253,7 @@ class BetInfoRepository(val androidContext: Context) {
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
         this.oddsType = oddsType!!
-        if (betList.size >= BET_INFO_MAX_COUNT){
+        if (betList.size >= BET_INFO_MAX_COUNT) {
             _showBetUpperLimit.postValue(Event(true))
             return
         }
@@ -386,45 +387,49 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.min?.toBigDecimal()
         )
         var parlayBetLimit = 9999
-        parlayBetLimitMap.map {
-            parlayBetLimit = it.value.max.toInt()
-        }
-
-        var maxBet = 9999
-        val maxBetMoney = GameConfigManager.maxBetMoney
-        val maxCpBetMoney = GameConfigManager.maxCpBetMoney
-        val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney
-
-        maxBet = when (matchType) {
-            MatchType.PARLAY -> maxParlayBetMoney?.let { if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-
-            MatchType.OUTRIGHT -> maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-
-            else -> maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-        }
-
-        //[Martin]為馬來盤＆印度計算投注上限
-        if(oddsType == OddsType.MYS){
-            if(matchOddList[0].malayOdds < 0 && oddsList.size <= 1){
-                if (maxBetMoney != null) {
-                    var myMax = (maxBetMoney.div(abs(matchOddList[0].malayOdds)))!!.toInt()
-                    maxBet = if (myMax < playQuota?.max!!) myMax else playQuota?.max
-                }
-            }
-        }else if(oddsType == OddsType.IDN){
-            if(matchOddList[0].indoOdds < 0 && oddsList.size <= 1){
-                var indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds)))!!.toInt())-1
-                if (maxBetMoney != null) {
-                    maxBet  = if (maxBetMoney < indoMax) maxBetMoney else indoMax
-                }
-            }
-        }
-
 
         return parlayBetLimitMap.map {
+            parlayBetLimit = it.value.max.toInt()
+            var maxBet = 9999
+            val maxBetMoney = GameConfigManager.maxBetMoney ?: 9999999
+            val maxCpBetMoney = GameConfigManager.maxCpBetMoney
+            val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney ?: 9999999
+
+            when (matchType) {
+                MatchType.PARLAY -> {
+                    if (isParlayBet) {
+                        maxBet = if (maxParlayBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                    } else {
+                        maxBet = if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                    }
+                }
+                MatchType.OUTRIGHT -> maxBet =
+                    maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
+                        ?: parlayBetLimit
+
+                else -> maxBet =
+                    maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                        ?: parlayBetLimit
+            }
+
+            //[Martin]為馬來盤＆印度計算投注上限
+            if (oddsType == OddsType.MYS) {
+                if (matchOddList[0].malayOdds < 0 && oddsList.size <= 1) {
+                    if (maxBetMoney != null) {
+                        var myMax = (maxBetMoney.div(abs(matchOddList[0].malayOdds)))!!.toInt()
+                        maxBet = if (myMax < playQuota?.max!!) myMax else playQuota?.max
+                    }
+                }
+            } else if (oddsType == OddsType.IDN) {
+                if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
+                    var indoMax = ((playQuota?.max?.toDouble()
+                        ?.plus(abs(matchOddList[0].indoOdds)))!!.toInt()) - 1
+                    if (maxBetMoney != null) {
+                        maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
+                    }
+                }
+            }
+
             ParlayOdd(
                 parlayType = it.key,
                 max = maxBet,
@@ -433,8 +438,8 @@ class BetInfoRepository(val androidContext: Context) {
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
                 //Martin
-                malayOdds = if(oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].malayOdds,
-                indoOdds = if(oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].indoOdds
+                malayOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].malayOdds,
+                indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].indoOdds
             )
         }
     }
