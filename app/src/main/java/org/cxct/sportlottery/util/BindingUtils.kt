@@ -380,3 +380,14 @@ fun TextView.setOddTypeString(oddsType: OddsType?) {
         text = " (${context.getString((oddsType ?: OddsType.EU).res)})"
     }
 }
+
+fun TextView.getOddTypeString(oddsType: String?) {
+    apply {
+        text = when (oddsType) {
+            OddsType.HK.code -> "(" + context.getString(OddsType.HK.res) + ")"
+            OddsType.MYS.code -> "(" + context.getString(OddsType.MYS.res) + ")"
+            OddsType.IDN.code -> "(" + context.getString(OddsType.IDN.res) + ")"
+            else -> " (${context.getString(OddsType.EU.res)})"
+        }
+    }
+}
