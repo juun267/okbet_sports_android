@@ -8,6 +8,7 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import cn.jpush.android.api.JPushInterface
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_login.*
 import org.cxct.sportlottery.BuildConfig
@@ -171,10 +172,10 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
         val password = binding.eetPassword.text.toString()
         val validCodeIdentity = viewModel.validCodeResult.value?.validCodeData?.identity
         val validCode = binding.eetVerificationCode.text.toString()
-//        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
-        val deviceSn =
-            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
-        Timber.d("UUID = $deviceSn")
+        val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+//        val deviceSn =
+//            getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
+//        Timber.d("UUID = $deviceSn")
 
         val loginRequest = LoginRequest(
             account = account,
