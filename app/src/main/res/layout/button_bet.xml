@@ -82,6 +82,10 @@
         android:text="@string/btn_login"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize14sp"
+        android:visibility="visible"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="gone" />
