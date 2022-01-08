@@ -64,8 +64,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { LoginViewModel(get(), get(), get(), get()) }
-        viewModel { RegisterViewModel(get(), get(), get(), get()) }
+        viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
+        viewModel { RegisterViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { BetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
