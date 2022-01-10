@@ -234,14 +234,14 @@ class AccountHistoryNextAdapter(
             binding.matchOdd = first
 
             first?.let { it ->
-                //val odds = getOdds(first, first.oddsType.toString())
-                binding.tvOdd.setOddFormat(first.odds)
-                binding.tvOddsType.text = when (first.oddsType) {
-                    OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
-                    OddsType.IDN.code -> "(" + itemView.context.getString(OddsType.IDN.res) + ")"
-                    OddsType.HK.code -> "(" + itemView.context.getString(OddsType.HK.res) + ")"
-                    else -> "(" + itemView.context.getString(OddsType.EU.res) + ")"
-                }?.let { it }
+
+                binding.tvContent.setPlayContent(
+                    first.playName,
+                    first.spread,
+                    first.odds?.let { odd -> TextUtil.formatForOdd(odd) },
+                    binding.tvContent.context.getString(oddsType.res)
+                )
+
                 val scoreList = mutableListOf<String>()
                 it.playCateMatchResultList?.map { scoreData ->
                     scoreList.add(
@@ -255,14 +255,13 @@ class AccountHistoryNextAdapter(
                     )
                 }
 
-                when(row.gameType) {
+                when (row.gameType) {
                     GameType.FT.key, GameType.BK.key -> {
                         if (first.rtScore?.isNotEmpty() == true)
                             binding.tvScore.text = String.format(
                                 binding.tvScore.context.getString(R.string.brackets),
                                 first.rtScore
                             )
-
                     }
                 }
                 binding.listScore.apply {
@@ -397,6 +396,7 @@ class AccountHistoryNextAdapter(
                 scrollToTopListener.onClick()
             }
         }
+
         companion object {
             fun from(parent: ViewGroup) =
                 BackToTopViewHolder(

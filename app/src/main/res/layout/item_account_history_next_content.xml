@@ -38,8 +38,6 @@
                 android:text="@{matchOdd.leagueName}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/textSize12sp"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="@dimen/textSize8sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="NBA季后赛" />
@@ -107,9 +105,11 @@
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:layout_constraintEnd_toStartOf="@id/tv_play_name"
                 app:gameType="@{row.gameType}"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="篮球" />
@@ -118,33 +118,30 @@
                 android:id="@+id/tv_play_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:gravity="center"
                 android:text="@{matchOdd.playCateName}"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
                 android:textStyle="bold"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:layout_constraintEnd_toStartOf="@+id/list_score"
                 app:layout_constraintStart_toEndOf="@id/tv_game_type"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="让球" />
 
+            <!--playName spread @ odd (oddsType)-->
             <TextView
-                android:id="@+id/tv_team_name"
+                android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="200dp"
                 android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:text="@{matchOdd.playName}"
+                android:maxWidth="200dp"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="@dimen/textSize8sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintTop_toBottomOf="@+id/tv_play_name"
-                tools:text="菲尼克斯太阳" />
+                tools:text="密尔沃基雄鹿 6.5 \@ 1.860 (印尼盘)" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -171,65 +168,6 @@
                 app:layout_constraintTop_toBottomOf="@id/list_score"
                 tools:text="(5-26)" />
 
-            <TextView
-                android:id="@+id/tv_spread"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="6dp"
-                android:gravity="center"
-                android:text="@{matchOdd.spread}"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_name"
-                app:layout_constraintStart_toEndOf="@id/tv_team_name"
-                tools:text="5.5" />
-
-            <TextView
-                android:id="@+id/tv_at"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:text="@string/at"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
-                app:layout_constraintStart_toEndOf="@+id/tv_spread"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_name" />
-
-            <TextView
-                android:id="@+id/tv_odd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:textColor="@color/colorRedDark"
-                android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
-                app:layout_constraintStart_toEndOf="@+id/tv_at"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_name"
-                tools:text="1.860" />
-
-            <TextView
-                android:id="@+id/tv_odds_type"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="4dp"
-                android:gravity="center"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_team_name"
-                app:layout_constraintStart_toEndOf="@+id/tv_odd"
-                app:layout_constraintTop_toTopOf="@+id/tv_team_name"
-                tools:text="(香港盤)" />
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -252,8 +190,6 @@
                 android:text="@string/bet_info_list_bet_quota"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize12sp"
-                app:autoSizeMaxTextSize="@dimen/textSize12sp"
-                app:autoSizeMinTextSize="@dimen/textSize8sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
