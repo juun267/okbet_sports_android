@@ -8,7 +8,8 @@
     android:orientation="vertical"
     tools:context=".ui.menu.MenuFragment"
     tools:layout_gravity="end"
-    tools:layout_width="300dp">
+    tools:layout_width="300dp"
+    tools:ignore="SpUsage" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -48,7 +49,7 @@
             app:layout_constraintEnd_toStartOf="@id/btn_close"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
             app:layout_constraintTop_toTopOf="@+id/iv_head"
-            tools:text="Player001" />
+            tools:text="Player001"/>
 
         <TextView
             android:id="@+id/tv_money"
@@ -56,14 +57,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:letterSpacing="0.1"
-            android:text="₱0.00"
             android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/iv_head"
             app:layout_constraintEnd_toStartOf="@id/btn_close"
             app:layout_constraintStart_toEndOf="@+id/iv_head"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:text="₱0.00" />
 
         <ImageView
             android:id="@+id/btn_close"
@@ -101,20 +102,20 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_rounded_rectangle_oval_gray"
-                    android:layout_marginStart="14dp">
+                    android:background="@drawable/bg_rounded_rectangle_oval_gray">
 
                     <TextView
                         android:id="@+id/tv_recharge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:drawablePadding="10dp"
                         android:gravity="center"
                         android:maxLines="1"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="9dp"
-                        android:drawablePadding="10dp"
                         android:text="@string/recharge"
                         android:textColor="@color/colorGrayDark"
                         android:textSize="@dimen/textSize14sp"
@@ -134,31 +135,30 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_rounded_rectangle_oval_gray"
                     android:layout_marginEnd="14dp"
-                    >
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_rounded_rectangle_oval_gray">
 
-                <TextView
-                    android:id="@+id/tv_withdraw"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/bg_rounded_rectangle_oval_gray"
-                    android:drawablePadding="10dp"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="9dp"
-                    android:text="@string/withdraw"
-                    android:textColor="@color/colorGrayDark"
-                    android:textSize="@dimen/textSize14sp"
-                    android:textStyle="bold"
-                    app:autoSizeMaxTextSize="@dimen/textSize14sp"
-                    app:autoSizeMinTextSize="4dp"
-                    app:autoSizeTextType="uniform"
-                    app:drawableStartCompat="@drawable/ic_profile_center_withdraw"
-                    app:drawableTint="@color/colorBlue" />
+                    <TextView
+                        android:id="@+id/tv_withdraw"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_rounded_rectangle_oval_gray"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="9dp"
+                        android:text="@string/withdraw"
+                        android:textColor="@color/colorGrayDark"
+                        android:textSize="@dimen/textSize14sp"
+                        android:textStyle="bold"
+                        app:autoSizeMaxTextSize="@dimen/textSize14sp"
+                        app:autoSizeMinTextSize="4dp"
+                        app:autoSizeTextType="uniform"
+                        app:drawableStartCompat="@drawable/ic_profile_center_withdraw"
+                        app:drawableTint="@color/colorBlue" />
                 </FrameLayout>
             </LinearLayout>
 

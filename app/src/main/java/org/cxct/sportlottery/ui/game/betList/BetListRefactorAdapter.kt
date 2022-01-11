@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -459,7 +460,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     tv_error_message.text = String.format(
                         context.getString(R.string.bet_info_list_minimum_limit_amount),
                         min,
-                        context.getString(R.string.currency)
+                        sConfigData?.systemCurrency
                     )
                 }
             }
@@ -979,7 +980,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 tv_error_message.text = String.format(
                     context.getString(R.string.bet_info_list_minimum_limit_amount),
                     itemData.min,
-                    context.getString(R.string.currency)
+                    sConfigData?.systemCurrency
                 )
             }
         }

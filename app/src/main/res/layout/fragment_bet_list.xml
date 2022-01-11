@@ -94,10 +94,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="@string/currency"
                     android:textColor="@color/colorWhite6"
                     app:layout_constraintStart_toEndOf="@+id/tv_balance"
-                    app:layout_constraintTop_toTopOf="@+id/tv_balance" />
+                    app:layout_constraintTop_toTopOf="@+id/tv_balance"
+                    tools:text="PHP"/>
 
                 <ImageView
                     android:id="@+id/btn_delete_all"

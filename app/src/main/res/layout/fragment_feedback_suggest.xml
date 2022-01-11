@@ -54,10 +54,11 @@
                     android:textSize="@dimen/textSize12sp" />
 
                 <TextView
+                    android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/feedback_description_money"
+                    tools:text="@string/feedback_description_money"
                     android:textColor="@color/colorRed"
                     android:textSize="@dimen/textSize12sp" />
 

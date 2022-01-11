@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doAfterTextChanged
 import kotlinx.android.synthetic.main.button_bet.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 
 
 /**
@@ -70,6 +71,7 @@ class BetButton @JvmOverloads constructor(
 
     private fun init() {
         inflate(context, R.layout.button_bet, this)
+        tv_currency_type.text = sConfigData?.systemCurrency
         setupQuotaListener()
     }
 

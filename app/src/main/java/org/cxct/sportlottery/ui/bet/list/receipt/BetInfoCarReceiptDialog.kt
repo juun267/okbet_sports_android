@@ -16,6 +16,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -141,8 +142,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
     }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text =
-            getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
+        tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
     }
 
 }

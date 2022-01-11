@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.bet.settledDetailList.MatchOdd
 import org.cxct.sportlottery.network.bet.settledDetailList.Other
 import org.cxct.sportlottery.network.bet.settledDetailList.Row
 import org.cxct.sportlottery.network.common.GameType
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
@@ -293,6 +294,7 @@ class AccountHistoryNextAdapter(
         fun bind(data: Other?) {
             binding.other = data
             binding.executePendingBindings()
+            binding.tvCurrencyType.text = sConfigData?.systemCurrency
         }
 
         companion object {
