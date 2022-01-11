@@ -152,6 +152,21 @@
             tools:itemCount="2"
             tools:listitem="@layout/content_bet_info_item" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/ll_cant_parlay_warn"
+            android:layout_below="@+id/fl_title">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_line"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.3" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
             android:id="@+id/ll_cant_parlay_warn"
             android:layout_width="match_parent"
@@ -304,22 +319,22 @@
         <LinearLayout
             android:id="@+id/ll_bet"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:background="#FFF"
             android:orientation="horizontal">
 
             <org.cxct.sportlottery.ui.bet.list.FastBetSettingButton
                 android:id="@+id/button_fast_bet"
-                android:layout_width="47dp"
-                android:layout_height="match_parent"
+                android:layout_width="49dp"
+                android:layout_height="48dp"
                 android:layout_marginEnd="1dp" />
 
             <org.cxct.sportlottery.ui.bet.list.BetButton
                 android:id="@+id/btn_bet"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
         </LinearLayout>
 
         <!-- 選項關閉提示 -->

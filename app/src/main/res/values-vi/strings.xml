@@ -883,4 +883,6 @@
     <string name="appearance">ngoại hình</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
+    <string name="bet_slip">Đơn cược</string>
+    <string name="fast_bet_open_desc">Kích Hoạt Cược Nhanh</string>
 </resources>
