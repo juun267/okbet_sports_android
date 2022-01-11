@@ -89,11 +89,11 @@ class VpRecommendAdapter(
             when (holder) {
                 is ViewHolderHdpOu -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
-                    holder.bind(data)
+                    holder.bind(data, playCateNameMap)
                 }
                 is ViewHolderEPS -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
-                    holder.bind(data)
+                    holder.bind(data, playCateNameMap)
                 }
                 is ViewHolderRecOutright -> {
                     val data = dataList.first()
@@ -126,24 +126,20 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean) {
+        fun bind(data: OddBean, playCateNameMap: Map<String?, Map<String?, String?>?>?) {
             when (data.playTypeCode) {
                 PlayCate.EPS.value -> {
                     itemView.apply {
-                        tv_play_type_eps.text = matchOdd.playCateMappingList?.find {
-                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+
+                        tv_play_type_eps.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                         setupOddsButton(btn_odd_eps, data.playTypeCode, data.oddList[0])
                     }
                 }
                 else -> {
                     itemView.apply {
-                        val playTypeStr = matchOdd.playCateMappingList?.find {
-                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
-                        tv_play_type.text = playTypeStr
+                        tv_play_type.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                         if (data.oddList.isNotEmpty()) {
                             odd_btn_home.visibility = View.VISIBLE
@@ -381,11 +377,10 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean) {
+        fun bind(data: OddBean, playCateNameMap: Map<String?, Map<String?, String?>?>?) {
             itemView.apply {
-                tv_play_type_eps.text = matchOdd.playCateMappingList?.find {
-                    it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+
+                tv_play_type_eps.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                 tv_title_eps.text = data.oddList.getOrNull(0)?.name
 
