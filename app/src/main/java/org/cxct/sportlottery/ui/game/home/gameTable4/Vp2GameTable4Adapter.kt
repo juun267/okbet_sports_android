@@ -364,8 +364,6 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                     else -> context.getText(R.string.ou_hdp_1x2_title) //TODO Cheryl 其他球種沒文件，只能參考小金去做顯示
                 }
 
-//                Log.e(">>>", "${data.matchInfo?.homeName}, ${data.matchInfo?.awayName}, oddListHDP = $oddListHDP, oddList1x2 = $oddList1x2")
-
                 btn_match_odd1.apply {
                     isSelected = when (gameType) {
                         GameType.FT.key, GameType.BK.key -> {
