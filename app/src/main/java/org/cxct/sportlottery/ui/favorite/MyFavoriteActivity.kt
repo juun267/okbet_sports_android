@@ -222,10 +222,14 @@ class MyFavoriteActivity : BaseBottomNavActivity<MyFavoriteViewModel>(MyFavorite
 
         viewModel.showBetInfoSingle.observe(this) {
             it?.getContentIfNotHandled()?.let {
-                BetInfoCarDialog().show(
-                    supportFragmentManager,
-                    BetInfoCarDialog::class.java.simpleName
-                )
+                if(viewModel.getIsFastBetOpened()){
+                    BetInfoCarDialog().show(
+                        supportFragmentManager,
+                        BetInfoCarDialog::class.java.simpleName
+                    )
+                }else{
+                    showBetListPage()
+                }
             }
         }
 

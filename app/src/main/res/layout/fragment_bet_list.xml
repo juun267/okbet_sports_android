@@ -200,8 +200,7 @@
             android:paddingStart="16dp"
             android:paddingTop="13dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="13dp"
-            />
+            android:paddingBottom="13dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_total_info"
@@ -302,18 +301,33 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
-        <org.cxct.sportlottery.ui.bet.list.BetButton
-            android:id="@+id/btn_bet"
+        <LinearLayout
+            android:id="@+id/ll_bet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:background="#FFF"
+            android:orientation="horizontal">
+
+            <org.cxct.sportlottery.ui.bet.list.FastBetSettingButton
+                android:id="@+id/button_fast_bet"
+                android:layout_width="47dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="1dp" />
+
+            <org.cxct.sportlottery.ui.bet.list.BetButton
+                android:id="@+id/btn_bet"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <!-- 選項關閉提示 -->
         <LinearLayout
             android:id="@+id/ll_odds_close_warn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/btn_bet"
+            android:layout_above="@+id/ll_bet"
             android:background="@color/colorWhite"
             android:gravity="center"
             android:orientation="vertical"
@@ -349,12 +363,12 @@
             android:id="@+id/kv_keyboard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/ll_bet"
             android:background="@color/colorWhite"
             android:focusable="true"
-            android:layout_above="@+id/btn_bet"
             android:focusableInTouchMode="true"
             android:keyBackground="@drawable/bg_frame_6dp_white"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
     </RelativeLayout>
 </layout>

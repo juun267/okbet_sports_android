@@ -77,7 +77,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="46dp"
+            android:background="#FFF"
             android:orientation="horizontal">
+
+            <org.cxct.sportlottery.ui.bet.list.FastBetSettingButton
+                android:id="@+id/button_fast_bet"
+                android:layout_width="46dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="1dp"
+                android:onClick="@{() -> dialog.showSettingDialog()}"/>
 
             <TextView
                 android:id="@+id/tv_add_to_bet_info"

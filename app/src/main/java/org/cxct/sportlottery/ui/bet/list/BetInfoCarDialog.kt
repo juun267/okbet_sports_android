@@ -14,6 +14,7 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.button_bet.view.*
+import kotlinx.android.synthetic.main.button_fast_bet_setting.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
@@ -142,7 +143,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         initSocketObserver()
         getCurrentMoney()
     }
-
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
@@ -546,6 +546,15 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     fun addToBetInfoList() {
         viewModel.addInBetInfo()
+    }
+
+    fun showSettingDialog() {
+        fragmentManager?.let { it ->
+            FastBetSettingDialog().show(
+                it,
+                FastBetSettingDialog::class.java.simpleName
+            )
+        }
     }
 
 

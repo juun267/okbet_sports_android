@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
+import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.bet.list.FastBetSettingDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -131,6 +133,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnView() {
         binding.btnBet.apply {
             tv_quota.text = TextUtil.formatBetQuota(0)
+        }
+
+        binding.buttonFastBet.apply {
+            cl_fast_bet.setOnClickListener { _ ->
+                fragmentManager?.let { it ->
+                    FastBetSettingDialog().show(
+                        it,
+                        FastBetSettingDialog::class.java.simpleName
+                    )
+                }
+            }
         }
     }
 
