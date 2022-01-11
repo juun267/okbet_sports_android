@@ -193,7 +193,8 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         data.isOutright,
                         data.toMatchOdd(),
                         data.playCateMappingList,
-                        data.dynamicMarkets
+                        data.dynamicMarkets,
+                        data.playCateNameMap
                     )
 
                 data.vpRecommendAdapter?.oddsType = oddsType
