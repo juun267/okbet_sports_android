@@ -559,8 +559,6 @@
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">Winning amount: </string>
     <string name="bet_list_win_quota">Est. Winnings：</string>
-<!--    <string name="bet_info_list_rmb">RMB</string>-->
-<!--    <string name="bet_info_list_rmb">PHP</string>-->
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Bet</string>
     <string name="bet_info_list_odds_change">Accept changes and place bets</string>
@@ -586,8 +584,6 @@
     <string name="bet_info_add_to_bet_info">Add to betslip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds，concede points or score has changed</string>
     <string name="bet_info_all_bet">Total Bets</string>
-<!--    <string name="bet_info_current_rmb">%s RMB</string>-->
-<!--    <string name="bet_info_current_rmb">%s PHP</string>-->
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
     <string name="bet_list_single">Single bet</string>
