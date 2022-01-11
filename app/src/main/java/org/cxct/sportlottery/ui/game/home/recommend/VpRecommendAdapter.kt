@@ -109,12 +109,18 @@ class VpRecommendAdapter(
     private fun List<OddBean>.filterPlayCateSpanned(gameType: String?): List<OddBean> {
         val spannedList = mutableListOf<OddBean>()
         this.forEach { oddBean ->
-            val playCateMapItem = playCateMappingList?.find {
-                it.gameType == gameType && it.playCateCode == oddBean.playTypeCode
-            }
+            val playCateNum =
+                when { //根據IOS給的規則判斷顯示數量
+                    oddBean.playTypeCode.contains(PlayCate.HDP.value) || oddBean.playTypeCode.contains(PlayCate.OU.value) || oddBean.playTypeCode.contains(
+                        PlayCate.CORNER_OU.value
+                    ) -> 2
 
+                    oddBean.playTypeCode.contains(PlayCate.SINGLE.value) || oddBean.playTypeCode.contains(PlayCate.NGOAL.value) -> 3
+
+                    else -> 3
+                }
             spannedList.add(OddBean(oddBean.playTypeCode, oddBean.oddList.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
+                index < playCateNum
             }))
         }
         return spannedList
