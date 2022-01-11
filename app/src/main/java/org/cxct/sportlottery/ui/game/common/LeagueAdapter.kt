@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,14 @@ import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val PAYLOAD_MATCH_STATUS = "payload_match_status"
+
 
     enum class ItemType {
         ITEM, NO_DATA
@@ -28,11 +33,12 @@ class LeagueAdapter(private val matchType: MatchType) :
     var data = mutableListOf<LeagueOdd>()
         set(value) {
             field = value
+            Log.e("Martin", "datadata")
             notifyDataSetChanged()
         }
 
     var discount: Float = 1.0F
-        set (value) {
+        set(value) {
             if (field == value) return
 
             data.forEach { leagueOdd ->
@@ -96,11 +102,41 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
     }
 
+    fun updateMatchStatus(position: Int) {
+        //items.get(position).setTitle(newTitle)
+        notifyItemChanged(position, PAYLOAD_MATCH_STATUS)
+    }
+
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: List<Any>
+    ) {
+        Log.e("Martin","payloads="+payloads)
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            for (payload in payloads) {
+                if (payload == PAYLOAD_MATCH_STATUS) {
+                    //(holder as ItemViewHolder).leagueOddAdapter.data[]
+                    val leagueOdds = (holder as ItemViewHolder).leagueOddAdapter.data
+
+                    leagueOdds.forEachIndexed { index, leagueOdd ->
+                        leagueOdd.matchInfo?.awayScore = 1000
+                        //leagueAdapter.notifyItemChanged(index)
+                    }
+                    (holder as ItemViewHolder).leagueOddAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
                 val item = data[position]
-
+                Log.e("Martin", "onBindViewHolder")
                 holder.bind(
                     item,
                     matchType,
@@ -236,7 +272,10 @@ class LeagueAdapter(private val matchType: MatchType) :
     }
 }
 
-class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit, val refreshListener: (item: LeagueOdd) -> Unit, ) {
+class LeagueListener(
+    val clickListenerLeague: (item: LeagueOdd) -> Unit,
+    val refreshListener: (item: LeagueOdd) -> Unit
+) {
     fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
     fun onRefresh(item: LeagueOdd) = refreshListener(item)
 }
