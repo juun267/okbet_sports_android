@@ -357,14 +357,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             itemView.apply {
                 gameType = data.matchInfo?.gameType
 
-                tv_play_type.text = when (gameType) {
-                    GameType.FT.key, GameType.BK.key -> context.getText(R.string.ou_hdp_hdp_title)
-                    GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> context.getText(R.string.ou_hdp_1x2_title)
-                    GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> context.getText(R.string.ou_hdp_1x2_title)
-                    else -> context.getText(R.string.ou_hdp_1x2_title) //TODO Cheryl 其他球種沒文件，只能參考小金去做顯示
-                }
-
-//                Log.e(">>>", "${data.matchInfo?.homeName}, ${data.matchInfo?.awayName}, oddListHDP = $oddListHDP, oddList1x2 = $oddList1x2")
+                //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
+                tv_play_type.text = data.playCateNameMap?.get(data.oddsSort)?.get(LanguageManager.getSelectLanguage(context).key)
 
                 btn_match_odd1.apply {
                     isSelected = when (gameType) {
