@@ -312,6 +312,34 @@ class VpRecommendAdapter(
                     }
                 }
 
+                rec_champ_btn_pre5.apply {
+                    if (data.oddList.size < 5|| data.oddList.getOrNull(4) == null) {
+                        visibility = View.GONE
+                        return
+                    }
+
+                    setupOdd(data.oddList.getOrNull(4), oddsType)
+
+                    tv_name.apply {
+                        text = data.oddList.getOrNull(4)?.getSpreadName(context)
+                        visibility = View.VISIBLE
+                    }
+
+                    tv_spread.text = ""
+
+                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(4))
+
+                    isSelected = data.oddList.getOrNull(4)?.isSelected ?: false
+
+                    setOnClickListener {
+                        data.oddList.getOrNull(4)?.let { odd ->
+                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                this.matchInfo?.gameType = sportCode
+                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                        }
+                    }
+                }
+
                 rec_champ_more.apply {
                     setOnClickListener {
                         onClickMoreListener?.onClickMore(data.playTypeCode, matchOdd)

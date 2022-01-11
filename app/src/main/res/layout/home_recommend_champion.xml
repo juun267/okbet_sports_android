@@ -53,6 +53,15 @@
         android:layout_marginEnd="16dp"
         app:ob_hide_item_flag="true" />
 
+    <org.cxct.sportlottery.ui.game.widget.OddsButton
+        android:id="@+id/rec_champ_btn_pre5"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:ob_hide_item_flag="true" />
+
     <LinearLayout
         android:id="@+id/rec_champ_more"
         android:layout_width="match_parent"
