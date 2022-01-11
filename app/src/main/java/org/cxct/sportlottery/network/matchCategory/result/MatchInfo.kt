@@ -11,6 +11,8 @@ data class MatchInfo(
     val awayName: String?,
     @Json(name = "endTime")
     val endTime: Long?,
+    @Json(name = "eps")
+    val eps: Int?,
     @Json(name = "homeName")
     val homeName: String?,
     @Json(name = "id")
@@ -23,14 +25,20 @@ data class MatchInfo(
     val leagueName: String?,
     @Json(name = "msg")
     val msg: String?,
+    @Json(name = "liveVideo")
+    val liveVideo: Int?,
     @Json(name = "name")
     val name: String?,
     @Json(name = "playCateNum")
     override var playCateNum: Int?,
+    @Json(name = "spt")
+    val spt: Int?,
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")
-    val status: Int?
+    val status: Int?,
+    @Json(name = "trackerId")
+    val trackerId: String?
 ) : MatchInfo {
 
     override val gameType: String? = null
