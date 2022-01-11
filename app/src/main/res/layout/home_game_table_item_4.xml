@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/tv_game_score_home"
-        android:layout_width="35dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:paddingStart="0dp"
         android:paddingEnd="10dp"
@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_home"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_game_name_home"
-        tools:text="63"
+        tools:text="634"
         tools:visibility="visible" />
 
     <TextView
@@ -97,7 +97,7 @@
 
     <TextView
         android:id="@+id/tv_game_score_away"
-        android:layout_width="35dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:paddingStart="0dp"
         android:paddingEnd="10dp"
@@ -284,7 +284,7 @@
         android:id="@+id/iv_play"
         android:layout_width="14dp"
         android:layout_height="14dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="7dp"
         android:src="@drawable/ic_live_player"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/iv_match_price"

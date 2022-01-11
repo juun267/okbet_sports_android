@@ -218,6 +218,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 tv_point.text = "$homePoint–$awayPoint"
                             }
                             GameType.VB.key, GameType.TT.key-> {
+                                tv_game_total_score_home_center.visibility = View.VISIBLE
+                                tv_game_score_home_center.visibility = View.VISIBLE
+                                tv_game_total_score_away_center.visibility = View.VISIBLE
+                                tv_game_score_away_center.visibility = View.VISIBLE
+
                                 tv_match_status.visibility = View.VISIBLE
 
                                 tv_match_status.text = "${data.matchInfo.statusName18n} / ${data.matchInfo.spt}" ?: ""
