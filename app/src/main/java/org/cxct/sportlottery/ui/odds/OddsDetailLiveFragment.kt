@@ -180,8 +180,8 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     viewModel.updateMatchBetList(
                         matchType = MatchType.IN_PLAY,
                         gameType = args.gameType,
-                        playCateCode = oddsDetail.gameType,
-                        playCateName = oddsDetail.name,
+                        playCateCode = oddsDetail?.gameType ?: "",
+                        playCateName = oddsDetail?.name ?: "",
                         matchInfo = matchOdd.matchInfo,
                         odd = odd,
                         subscribeChannelType = ChannelType.EVENT
