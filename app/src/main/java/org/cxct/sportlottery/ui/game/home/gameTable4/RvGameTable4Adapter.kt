@@ -56,7 +56,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var discount: Float = 1.0F
         set(newDiscount) {
             mDataList.forEach { gameEntity ->
-                gameEntity.matchOdds?.forEach { matchOdd ->
+                gameEntity.matchOdds.forEach { matchOdd ->
                     matchOdd.oddsMap.forEach { (key, value) ->
                         value?.forEach { odd ->
                             odd?.updateDiscount(field, newDiscount)
