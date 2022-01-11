@@ -353,6 +353,9 @@ class VpRecommendAdapter(
                 LanguageManager.Language.ZH -> {
                     this.zh
                 }
+                LanguageManager.Language.VI -> {
+                    this.vi
+                }
                 else -> {
                     this.en
                 }
@@ -363,6 +366,9 @@ class VpRecommendAdapter(
             return when (LanguageManager.getSelectLanguage(context)) {
                 LanguageManager.Language.ZH -> {
                     this.nameMap?.get("zh")
+                }
+                LanguageManager.Language.VI -> {
+                    this.nameMap?.get("vi")
                 }
                 else -> this.nameMap?.get("en")
             }
