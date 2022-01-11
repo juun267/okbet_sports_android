@@ -30,7 +30,6 @@ class VpRecommendAdapter(
     val dataList: List<OddBean>,
     private val isOutright: Int?,
     val matchOdd: MatchOdd,
-    @Deprecated("playCateMappingList之後需移除改用playCateNameMap的翻譯") val playCateMappingList: List<PlayCateMapItem>?,
     val dynamicMarkets: Map<String, DynamicMarket>?,
     val playCateNameMap: Map<String?, Map<String?, String?>?>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

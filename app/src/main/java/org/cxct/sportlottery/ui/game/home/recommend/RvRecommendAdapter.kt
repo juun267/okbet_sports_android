@@ -192,7 +192,6 @@ class RvRecommendAdapter : RecyclerView.Adapter<RvRecommendAdapter.ItemViewHolde
                         data.oddBeans,
                         data.isOutright,
                         data.toMatchOdd(),
-                        data.playCateMappingList,
                         data.dynamicMarkets,
                         data.playCateNameMap
                     )
