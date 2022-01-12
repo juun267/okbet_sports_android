@@ -264,14 +264,14 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private fun showStrongTeam() {
             itemView.apply {
                 tv_game_name_home.apply {
-                    setTextTypeFace(if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                    setTextTypeFace(if (oddList?.getOrNull(0)?.spread?.contains("-") == true)
                             Typeface.BOLD
                         else
                             Typeface.NORMAL
                     )
                 }
                 tv_game_name_away.apply {
-                    setTextTypeFace(if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                    setTextTypeFace(if (oddList?.getOrNull(1)?.spread?.contains("-") == true)
                             Typeface.BOLD
                         else
                             Typeface.NORMAL
