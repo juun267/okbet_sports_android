@@ -26,6 +26,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -237,7 +238,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
         val winnableAmount = list.sumByDouble {
             var currentOddsType = oddsType
-            if(it.matchOdd.odds == it.matchOdd.malayOdds){
+            if(it.matchOdd.odds == it.matchOdd.malayOdds || it.matchType == MatchType.PARLAY){
                 currentOddsType = OddsType.EU
             }
             getWinnable(it.betAmount, getOddsNew(it.matchOdd, it.singleBetOddsType),currentOddsType)

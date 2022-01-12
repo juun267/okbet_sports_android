@@ -244,7 +244,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 var realAmount = quota
                 var win = 0.0
                 var currentOddsType = oddsType
-                if(matchOdd?.odds == matchOdd?.malayOdds){
+                if(matchOdd?.odds == matchOdd?.malayOdds || betInfoListData?.matchType == MatchType.PARLAY){
                     currentOddsType = OddsType.EU
                 }
                 when (currentOddsType) {
@@ -328,7 +328,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
-                    betInfoListData = list[0]
+                    betInfoListData = list.getOrNull(0)
 
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)
@@ -338,13 +338,18 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     var realAmount = 0.00
                     var win = 0.0
                     var currentOddsType = oddsType
-                    if(matchOdd?.odds == matchOdd?.malayOdds){
+                    if(matchOdd?.odds == matchOdd?.malayOdds || betInfoListData?.matchType == MatchType.PARLAY){
                         currentOddsType = OddsType.EU
                     }
                     when (currentOddsType) {
                         OddsType.MYS -> {
                             if (getOdds(matchOdd, currentOddsType) < 0) {
-                                realAmount = betAmount * abs(getOdds(matchOdd, currentOddsType))
+                                realAmount = betAmount * kotlin.math.abs(
+                                    getOdds(
+                                        matchOdd,
+                                        currentOddsType
+                                    )
+                                )
                                 tvRealAmount.text = toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
@@ -355,7 +360,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                         }
                         OddsType.IDN -> {
                             if (getOdds(matchOdd, currentOddsType) < 0) {
-                                realAmount = betAmount * abs(getOdds(matchOdd, currentOddsType))
+                                realAmount = betAmount * kotlin.math.abs(
+                                    getOdds(
+                                        matchOdd,
+                                        currentOddsType
+                                    )
+                                )
                                 tvRealAmount.text = toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
@@ -534,7 +544,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         betInfoListData?.let { betInfoData ->
             //[Martin] 判斷馬來盤與歐洲盤賠率是否一樣 若相同 則該項玩法是不支持馬來盤or印尼下注的 則將oddsType
-            var currentOddsType = if(betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds){
+            val currentOddsType = if(betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds || betInfoData.matchType == MatchType.PARLAY){
                 OddsType.EU
             }else{
                 oddsType
