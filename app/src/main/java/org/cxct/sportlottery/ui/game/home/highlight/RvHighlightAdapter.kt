@@ -132,7 +132,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     override fun onBindViewHolder(holder: ViewHolderHdpOu, position: Int) {
         try {
             val data = dataList[position]
-            val lastData = dataList[if (position - 1 < 0) 0 else position - 1]
+            var lastIndex = if (position > 0) position - 1 else 0
+            val lastData = dataList[lastIndex]
             holder.bind(data,lastData)
         } catch (e: Exception) {
             e.printStackTrace()
