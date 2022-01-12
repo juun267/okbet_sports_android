@@ -28,7 +28,6 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
-import org.cxct.sportlottery.ui.bet.list.INPLAY
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes

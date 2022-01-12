@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:minHeight="48dp"
     android:layout_gravity="bottom"
+    android:minHeight="48dp"
     tools:ignore="SpUsage,HardcodedText">
 
 
@@ -13,18 +13,18 @@
         android:id="@+id/cl_bet"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/selector_button_radius_0_bet"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@color/colorBlue">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/tv_bet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bet_info_list_bet"
+            android:textAllCaps="true"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize13sp"
-            android:textAllCaps="true"
             app:layout_constraintBottom_toTopOf="@+id/tv_quota"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,29 +64,29 @@
         android:id="@+id/tv_accept_odds_change"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBlue"
+        android:background="@drawable/selector_button_radius_0_bet"
         android:gravity="center"
         android:text="@string/bet_info_accept_odds_change"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorBlue"
         android:textSize="@dimen/textSize13sp"
         android:visibility="gone" />
 
 
     <TextView
         android:id="@+id/tv_login"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/colorBlue"
         android:gravity="center"
         android:text="@string/btn_login"
+        android:textAllCaps="true"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize14sp"
         android:visibility="visible"
-        android:textAllCaps="true"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

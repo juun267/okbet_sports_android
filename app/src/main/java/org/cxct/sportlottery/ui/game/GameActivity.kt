@@ -33,8 +33,8 @@ import org.cxct.sportlottery.network.message.MessageListResult
 import org.cxct.sportlottery.network.sport.SportMenuResult
 import org.cxct.sportlottery.ui.MarqueeAdapter
 import org.cxct.sportlottery.ui.base.BaseBottomNavActivity
-import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 import org.cxct.sportlottery.ui.game.betList.BetListFragment
+import org.cxct.sportlottery.ui.game.betList.FastBetFragment
 import org.cxct.sportlottery.ui.game.betList.receipt.BetReceiptFragment
 import org.cxct.sportlottery.ui.game.filter.LeagueFilterFragmentDirections
 import org.cxct.sportlottery.ui.game.hall.GameV3FragmentDirections
@@ -249,6 +249,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 R.anim.push_bottom_to_top_enter,
                 R.anim.pop_bottom_to_top_exit
             )
+
         val betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
                 override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
@@ -268,6 +269,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 }
 
             })
+
         transaction
             .add(R.id.fl_bet_list, betListFragment)
             .addToBackStack(BetListFragment::class.java.simpleName)
@@ -593,15 +595,29 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             it?.getContentIfNotHandled()?.let {
                 //[Martin]
                 if(viewModel.getIsFastBetOpened()){
-                    BetInfoCarDialog().show(
-                        supportFragmentManager,
-                        BetInfoCarDialog::class.java.simpleName
-                    )
+                    showFastBetFragment()
                 }else{
                     showBetListPage()
                 }
             }
         }
+    }
+
+    private fun showFastBetFragment(){
+        val transaction = supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit,
+                R.anim.push_bottom_to_top_enter,
+                R.anim.pop_bottom_to_top_exit
+            )
+
+        val betListFragment = FastBetFragment()
+
+        transaction
+            .add(R.id.fl_bet_list, betListFragment)
+            .addToBackStack(BetListFragment::class.java.simpleName)
+            .commit()
     }
 
     private fun initServiceButton() {
