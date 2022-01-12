@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingBottom="8dp"
     tools:context=".ui.game.home.recommend.VpRecommendAdapter"
     tools:ignore="spUsage">
 
