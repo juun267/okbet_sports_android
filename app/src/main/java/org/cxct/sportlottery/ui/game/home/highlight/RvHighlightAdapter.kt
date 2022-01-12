@@ -185,37 +185,46 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         }
 
         private fun setTitle(data: MatchOdd, lastData: MatchOdd) {
-            itemView.apply {
-                when {
-                    bindingAdapterPosition == 0 -> {
-                        tv_game_type.isVisible = true
-                        tv_play_type_highlight.isVisible = true
-                        tv_play_type_highlight.text =
-                            data.playCateNameMap?.get(data.oddsMap.iterator().next().key)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+            try {
+                itemView.apply {
+                    when {
+                        bindingAdapterPosition == 0 -> {
+                            ll_highlight_type.visibility = View.VISIBLE
+                            tv_game_type.isVisible = true
+                            tv_play_type_highlight.isVisible = true
+                            tv_play_type_highlight.text =
+                                data.playCateNameMap?.get(data.oddsSort)
+                                    ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                        }
+                        TimeUtil.isTimeToday(data.matchInfo?.startTime) && !TimeUtil.isTimeToday(
+                            lastData.matchInfo?.startTime
+                        ) -> {
+                            ll_highlight_type.visibility = View.VISIBLE
+
+                            tv_game_type.isVisible = true
+                            tv_play_type_highlight.visibility = View.INVISIBLE
+                        }
+                        !TimeUtil.isTimeToday(data.matchInfo?.startTime) && TimeUtil.isTimeToday(
+                            lastData.matchInfo?.startTime
+                        ) -> {
+                            ll_highlight_type.visibility = View.VISIBLE
+
+                            tv_game_type.isVisible = true
+                            tv_play_type_highlight.visibility = View.INVISIBLE
+                        }
+                        else -> {
+                            ll_highlight_type.visibility = View.GONE
+                        }
                     }
-                    TimeUtil.isTimeToday(data.matchInfo?.startTime) && !TimeUtil.isTimeToday(
-                        lastData.matchInfo?.startTime
-                    ) -> {
-                        tv_game_type.isVisible = true
-                        tv_play_type_highlight.visibility = View.INVISIBLE
-                    }
-                    !TimeUtil.isTimeToday(data.matchInfo?.startTime) && TimeUtil.isTimeToday(
-                        lastData.matchInfo?.startTime
-                    ) -> {
-                        tv_game_type.isVisible = true
-                        tv_play_type_highlight.visibility = View.INVISIBLE
-                    }
-                    else -> {
-                        ll_highlight_type.visibility = View.GONE
+
+                    tv_game_type.text = if (TimeUtil.isTimeToday(data.matchInfo?.startTime)) {
+                        resources.getString(R.string.home_tab_today)
+                    } else {
+                        "${resources.getString(TimeUtil.setupDayOfWeekAndToday(data.matchInfo?.startTime))} ${data.matchInfo?.startDateDisplay}"
                     }
                 }
-
-                tv_game_type.text = if (TimeUtil.isTimeToday(data.matchInfo?.startTime)) {
-                    resources.getString(R.string.home_tab_today)
-                } else {
-                    "${resources.getString(TimeUtil.setupDayOfWeekAndToday(data.matchInfo?.startTime))} ${data.matchInfo?.startDateDisplay}"
-                }
-
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
