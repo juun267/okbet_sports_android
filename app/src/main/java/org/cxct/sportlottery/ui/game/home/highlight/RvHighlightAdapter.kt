@@ -311,97 +311,83 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         }
 
         private fun setupOddButton(data: MatchOdd) {
-            itemView.apply {
-                gameType = data.matchInfo?.gameType
+            try {
+                itemView.apply {
+                    gameType = data.matchInfo?.gameType
 
-                val playCateStr = when (gameType) {
-                    GameType.FT.key, GameType.BK.key, GameType.IH.key, GameType.RB.key, GameType.AFT.key -> context.getText(
-                        R.string.ou_hdp_hdp_title
-                    )
-                    GameType.TN.key, GameType.VB.key, GameType.BX.key, GameType.CK.key -> context.getText(
-                        R.string.ou_hdp_1x2_title
-                    )
-                    else -> ""
-                }.toString()
+                    val playCateName = data.oddsSort ?: ""
 
-                btn_match_odd1.apply {
-                    isSelected = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            oddListHDP?.get(0)?.isSelected ?: false
-                        }
-                        GameType.TN.key, GameType.VB.key -> {
-                            oddList1x2?.get(0)?.isSelected ?: false
-                        }
-                        else -> {
+
+                    val playCateStr = data.playCateNameMap?.get(playCateName)
+                        ?.get(LanguageManager.getSelectLanguage(context).key)
+
+                    btn_match_odd1.apply {
+                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             false
+                        } else {
+                            oddList?.get(0)?.isSelected ?: false
                         }
-                    }
 
-                    betStatus = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddListHDP?.get(0)?.status ?: BetStatus.LOCKED.code
-                            }
+                        betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            BetStatus.DEACTIVATED.code
+                        } else {
+                            oddList?.get(0)?.status ?: BetStatus.LOCKED.code
                         }
-                        GameType.TN.key, GameType.VB.key -> {
-                            if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddList1x2?.get(0)?.status ?: BetStatus.LOCKED.code
-                            }
-                        }
-                        else -> {
-                            null
-                        }
-                    }
 
-                    this@ViewHolderHdpOu.setupOddState(
-                        this, when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                oddListHDP?.get(0)
-                            }
-                            GameType.TN.key, GameType.VB.key -> {
-                                oddList1x2?.get(0)
-                            }
-                            else -> {
-                                null
-                            }
-                        }
-                    )
+                        if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.get(0))
 
-                    when {
-                        oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(0), oddsType,"disable")
-                        }
-                        oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(0), oddsType,"disable")
-                        }
-                    }
+                            setupOdd(
+                                oddList?.get(0),
+                                oddsType,
+                                "disable"
+                            ) //TODO Bill 這裡要看球種顯示 1/2 不能用disable
 
-                    setOnClickListener {
-                        when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
-                                    oddListHDP?.get(0)?.let { odd ->
+                            setOnClickListener {
+                                if (oddList != null && oddList?.size ?: 0 >= 2) {
+                                    oddList?.get(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            PlayCate.HDP.value,
+                                            playCateName,
                                             playCateStr
                                         )
                                     }
                                 }
                             }
+                        }
 
-                            GameType.TN.key, GameType.VB.key -> {
-                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
-                                    oddList1x2?.get(0)?.let { odd ->
+                    }
+
+                    btn_match_odd2.apply {
+                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            false
+                        } else {
+                            oddList?.get(1)?.isSelected ?: false
+                        }
+
+                        betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            BetStatus.DEACTIVATED.code
+                        } else {
+                            oddList?.get(1)?.status ?: BetStatus.LOCKED.code
+                        }
+
+                        if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.get(1))
+
+                            setupOdd(
+                                oddList?.get(1),
+                                oddsType,
+                                "disable"
+                            )  //TODO Bill 這裡要看球種顯示 1/2 不能用disable
+
+                            setOnClickListener {
+                                if (oddList != null && oddList?.size ?: 0 >= 2) {
+                                    oddList?.get(1)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            PlayCate.SINGLE.value,
+                                            playCateName,
                                             playCateStr
                                         )
                                     }
@@ -410,93 +396,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                         }
                     }
                 }
-
-                btn_match_odd2.apply {
-                    isSelected = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            oddListHDP?.get(1)?.isSelected ?: false
-                        }
-                        GameType.TN.key, GameType.VB.key -> {
-                            oddList1x2?.get(1)?.isSelected ?: false
-                        }
-                        else -> {
-                            false
-                        }
-                    }
-
-                    betStatus = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddListHDP?.get(1)?.status ?: BetStatus.LOCKED.code
-                            }
-                        }
-                        GameType.TN.key, GameType.VB.key -> {
-                            if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddList1x2?.get(1)?.status ?: BetStatus.LOCKED.code
-                            }
-                        }
-                        else -> {
-                            null
-                        }
-                    }
-
-                    this@ViewHolderHdpOu.setupOddState(
-                        this, when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                oddListHDP?.get(1)
-                            }
-                            GameType.TN.key, GameType.VB.key -> {
-                                oddList1x2?.get(1)
-                            }
-                            else -> {
-                                null
-                            }
-                        }
-                    )
-
-                    when {
-                        oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(1), oddsType,"disable")
-                        }
-                        oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(1), oddsType,"disable")
-                        }
-                    }
-
-                    setOnClickListener {
-                        when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
-                                    oddListHDP?.get(1)?.let { odd ->
-                                        onClickOddListener?.onClickBet(
-                                            data,
-                                            odd,
-                                            PlayCate.HDP.value,
-                                            playCateStr
-                                        )
-                                    }
-                                }
-                            }
-
-                            GameType.TN.key, GameType.VB.key -> {
-                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
-                                    oddList1x2?.get(1)?.let { odd ->
-                                        onClickOddListener?.onClickBet(
-                                            data,
-                                            odd,
-                                            PlayCate.SINGLE.value,
-                                            playCateStr
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
