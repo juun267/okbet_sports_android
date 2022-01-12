@@ -26,4 +26,5 @@ data class MatchOddsItem(
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     override val oddsSort: String? = null
+
 }

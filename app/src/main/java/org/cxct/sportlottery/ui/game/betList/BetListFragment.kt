@@ -71,7 +71,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                binding.llDeleteAll.visibility = View.GONE
+//                binding.llDeleteAll.visibility = View.GONE
             }
 
             override fun onAnimationRepeat(animation: Animation?) {
@@ -240,7 +240,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             if(it.matchOdd.odds == it.matchOdd.malayOdds){
                 currentOddsType = OddsType.EU
             }
-            getWinnable(it.betAmount, getOddsNew(it.matchOdd, it.singleBetOddsType),currentOddsType)
+            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType),currentOddsType)
         } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType),OddsType.EU) }
 
         binding.apply {
@@ -357,7 +357,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
-                if (list.isEmptyBetList()) return@let
+                //注單列表沒東西時關閉fragment
+               // if (list.isEmptyBetList()) return@let
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
 

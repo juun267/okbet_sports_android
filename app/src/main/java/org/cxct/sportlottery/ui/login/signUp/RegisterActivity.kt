@@ -363,8 +363,9 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
             val smsCode = binding.eetSmsValidCode.text.toString()
             val validCode = binding.eetVerificationCode.text.toString()
             val agreementChecked = binding.cbAgreement.isChecked
-            val deviceSn = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
-            Timber.d("UUID = $deviceSn")
+            val deviceSn = JPushInterface.getRegistrationID(applicationContext)
+//            val deviceSn = getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, "") ?: ""
+//            Timber.d("UUID = $deviceSn")
 
             viewModel.registerSubmit(
                 inviteCode,
@@ -582,7 +583,7 @@ class RegisterActivity : BaseActivity<RegisterViewModel>(RegisterViewModel::clas
                 }
             }
             startIndexOfLink = this.text.toString().indexOf(link.first, startIndexOfLink + 1)
-//      if(startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
+            if(startIndexOfLink == -1) continue // todo if you want to verify your texts contains links text
             spannableString.setSpan(
                 clickableSpan, startIndexOfLink, startIndexOfLink + link.first.length,
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE

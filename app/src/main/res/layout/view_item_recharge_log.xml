@@ -43,7 +43,7 @@
         android:gravity="center"
         android:minWidth="72dp"
         android:textColor="@color/colorBlackLight"
-        android:textSize="12sp"
+        android:textSize="@dimen/textSize12sp"
         tools:text="1,000,000.00" />
 
     <TextView
@@ -54,7 +54,7 @@
         android:gravity="center"
         android:minWidth="60dp"
         android:textColor="@color/colorBlackLight"
-        android:textSize="12sp"
+        android:textSize="@dimen/textSize12sp"
         tools:text="@string/recharge_channel_alipay" />
 
     <TextView

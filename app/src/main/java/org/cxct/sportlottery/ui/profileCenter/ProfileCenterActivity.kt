@@ -211,18 +211,17 @@ class ProfileCenterActivity :
 
         //優惠活動
         btn_promotion.setOnClickListener {
-            val testFlag = viewModel.userInfo.value?.testFlag
-            if (testFlag == TestFlag.NORMAL.index)
-                JumpUtil.toInternalWeb(
-                    this,
-                    Constants.getPromotionUrl(
-                        viewModel.token,
-                        LanguageManager.getSelectLanguage(this@ProfileCenterActivity)
-                    ),
-                    getString(R.string.promotion)
-                )
-            else
-                ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+            when(viewModel.userInfo.value?.testFlag) {
+                TestFlag.NORMAL.index -> {
+                    toProfileCenter()
+                }
+                TestFlag.TEST.index -> { // TODO 20220108 新增內部測試人員選項 by Hewie
+                    toProfileCenter()
+                }
+                else -> { // TODO 20220108 沒有遊客的話，要確認一下文案是否正確 by Hewie
+                    ToastUtil.showToastInCenter(this, getString(R.string.message_guest_no_permission))
+                }
+            }
         }
 
         //幫助中心
@@ -234,6 +233,18 @@ class ProfileCenterActivity :
         btn_feedback.setOnClickListener {
             startActivity(Intent(this, FeedbackMainActivity::class.java))
         }
+    }
+
+    // TODO 跳轉Promotion 20220108新增 by Hewie
+    private fun toProfileCenter() {
+        JumpUtil.toInternalWeb(
+            this,
+            Constants.getPromotionUrl(
+                viewModel.token,
+                LanguageManager.getSelectLanguage(this@ProfileCenterActivity)
+            ),
+            getString(R.string.promotion)
+        )
     }
 
     private fun initBottomNav() {

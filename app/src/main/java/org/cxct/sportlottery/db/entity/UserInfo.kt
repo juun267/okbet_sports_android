@@ -51,7 +51,7 @@ data class UserInfo(
     val wechat: String? = null,
 
     @ColumnInfo(name = "update_pay_pw")
-    val updatePayPw: Int? = null,
+    val updatePayPw: Int? = 1,
 
     @ColumnInfo(name = "setted")
     val setted: Int? = null, //是否设置过昵称 0单标未设置过 1代表设置过

@@ -28,8 +28,8 @@
     <string name="version_name">版本 %s</string>
     <string name="btn_pass">跳过</string>
     <string name="login_account">登录账号</string>
-    <string name="please_input_account">请输入您的会员账号</string>
-    <string name="please_input_password">请输入您的登录密码</string>
+    <string name="please_input_account">(请输入您的会员账号)</string>
+    <string name="please_input_password">(请输入您的登录密码)</string>
     <string name="login_password">登录密码</string>
     <string name="remember_password">记住密码</string>
     <string name="forget_password_question">忘记密码?</string>
@@ -217,7 +217,7 @@
     <string name="CK">板球</string>
     <string name="BB">棒球</string>
     <string name="RB">橄榄球</string>
-    <string name="AFT">美足</string>
+    <string name="AFT">美式足球</string>
     <string name="MR">赛车</string>
     <string name="GF">高尔夫球</string>
     <string name="section">节</string>
@@ -255,7 +255,7 @@
     <string name="help_center">帮助中心</string>
     <string name="fund_detail">资金明细</string>
     <string name="feedback">建议反馈</string>
-    <string name="promotion">优惠活动</string>
+    <string name="promotion">人工申请活动</string>
     <string name="need_improve">需完善</string>
     <string name="profile_info">个人资讯</string>
     <string name="avatar">头像</string>
@@ -843,7 +843,7 @@
     <string name="cricket">板球</string>
     <string name="baseball">棒球</string>
     <string name="rugby_football">橄榄球</string>
-    <string name="america_football">美足</string>
+    <string name="america_football">美式足球</string>
     <string name="motor_racing">赛车</string>
     <string name="golf">高尔夫球</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -866,5 +866,7 @@
     <string name="appearance">外观</string>
     <string name="day_mode">日间模式</string>
     <string name="night_mode">夜间模式</string>
+    <string name="goal_buster">GOAL BUSTER</string>
+    <string name="top_games">TOP GAMES</string>
 
 </resources>

@@ -65,7 +65,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorGrayText"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         tools:text="Label" />
 
@@ -78,7 +78,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorSilverLight"
-                        android:textSize="12sp"
+                        android:textSize="@dimen/textSize12sp"
                         tools:text="Label2" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -89,7 +89,7 @@
                         android:gravity="center"
                         android:includeFontPadding="false"
                         android:textColor="@color/colorGrayText"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/textSize14sp"
                         android:textStyle="bold"
                         tools:text="" />
 
@@ -107,9 +107,9 @@
                         android:id="@+id/text_field_boxes_editTextLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="0dp"
                         android:layout_below="@+id/text_field_boxes_label_space"
-                        android:layout_gravity="bottom">
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="0dp">
 
                         <RelativeLayout
                             android:id="@+id/text_field_boxes_input_layout"
@@ -124,10 +124,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="bottom|end"
-                            android:gravity="center"
                             android:layout_marginRight="4dp"
                             android:layout_marginBottom="0dp"
                             android:background="@android:color/transparent"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <androidx.appcompat.widget.AppCompatImageButton

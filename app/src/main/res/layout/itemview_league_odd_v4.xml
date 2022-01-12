@@ -29,15 +29,15 @@
     <View
         android:id="@+id/league_odd_match_border_row1"
         android:layout_width="0dp"
-        android:layout_height="53dp"
+        android:layout_height="60dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
 
-    <LinearLayout
+       <LinearLayout
         android:id="@+id/linear_layout"
         android:layout_width="0dp"
-        android:layout_height="47dp"
+        android:layout_height="45dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
@@ -108,8 +108,7 @@
     <View
         android:id="@+id/league_odd_match_border_row2"
         android:layout_width="0dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="5dp"
+        android:layout_height="60dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row1" />
@@ -117,7 +116,7 @@
     <View
         android:id="@+id/league_odd_match_border_row3"
         android:layout_width="0dp"
-        android:layout_height="66dp"
+        android:layout_height="60dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row2" />
@@ -201,7 +200,7 @@
         app:layout_constraintStart_toEndOf="@id/league_odd_match_score_home"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row1"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="俄罗斯\n俄罗斯" />
+        tools:text="俄罗斯" />
 
     <TextView
         android:id="@+id/league_odd_match_total_score_home_bottom"
@@ -240,7 +239,7 @@
         app:layout_constraintStart_toEndOf="@id/league_odd_match_score_home_bottom"
         app:layout_constraintTop_toTopOf="@+id/league_odd_match_total_score_home_bottom"
         tools:text="0"
-        tools:visibility="visible" />
+        tools:visibility="g" />
 
     <TextView
         android:id="@+id/league_odd_match_cards_away"
@@ -424,7 +423,6 @@
         android:id="@+id/league_odd_btn_pager_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/league_odd_btn_indicator_main"
         app:layout_constraintEnd_toEndOf="@id/league_odd_button_border"

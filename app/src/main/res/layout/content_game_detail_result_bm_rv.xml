@@ -86,24 +86,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:text="@string/fourth"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/textSize12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="@string/fifth"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/textSize12sp" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
                         android:text="@string/score"
                         android:textColor="@color/colorGray"
                         android:textSize="@dimen/textSize12sp" />
@@ -134,157 +116,105 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+
+            <TextView
+                android:id="@+id/tv_home_name"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="4"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_home_name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:paddingStart="10dp"
-                    android:paddingTop="6dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
-
-                <TextView
-                    android:id="@+id/tv_home_first"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="@color/colorWhite6" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_home_first"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="6"
-                android:gravity="center">
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="0" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_home_second"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
+            <TextView
+                android:id="@+id/tv_home_second"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="0" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_home_third"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
+            <TextView
+                android:id="@+id/tv_home_third"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="0" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_home_fourth"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
+            <TextView
+                android:id="@+id/tv_home_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_home_fifth"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
-
-                <TextView
-                    android:id="@+id/tv_home_score"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
-
-                <TextView
-                    android:id="@+id/tv_home_round"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="" />
-
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/tv_home_round"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="" />
 
         </LinearLayout>
 
@@ -297,157 +227,104 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_away_name"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="4"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_away_name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:paddingStart="10dp"
-                    android:paddingTop="6dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
-
-                <TextView
-                    android:id="@+id/tv_away_first"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="@color/colorWhite6" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_away_first"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="6"
-                android:gravity="center">
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="0" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_away_second"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
+            <TextView
+                android:id="@+id/tv_away_second"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="0" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_away_third"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
+            <TextView
+                android:id="@+id/tv_away_third"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="0" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_away_fourth"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="0" />
+            <TextView
+                android:id="@+id/tv_away_score"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="" />
 
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite6" />
 
-                <TextView
-                    android:id="@+id/tv_away_fifth"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
-
-                <TextView
-                    android:id="@+id/tv_away_score"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="" />
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorWhite6" />
-
-                <TextView
-                    android:id="@+id/tv_away_round"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize14sp"
-                    tools:text="" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tv_away_round"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/textSize14sp"
+                tools:text="" />
 
 
         </LinearLayout>
