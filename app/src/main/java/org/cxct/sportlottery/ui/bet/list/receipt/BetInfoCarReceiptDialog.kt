@@ -66,7 +66,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 val matchOdd = matchOdds?.firstOrNull()
 
                 var currentOddsTypes = oddsType
-                if (matchType == MatchType.PARLAY) {
+                if (matchType == MatchType.PARLAY || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT) {
                     currentOddsTypes = OddsType.EU
                 }
                 matchOdd?.apply {
@@ -111,7 +111,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
             result.receipt?.singleBets?.firstOrNull()?.let { betResult ->
                 betResult.matchOdds?.firstOrNull()?.let { matchOdd ->
                     var currentOddsTypes = oddType
-                    if (betResult.matchType == MatchType.PARLAY) {
+                    if (betResult.matchType == MatchType.PARLAY || betResult.matchType == MatchType.OUTRIGHT || betResult.matchType == MatchType.OTHER_OUTRIGHT) {
                         currentOddsTypes = OddsType.EU
                     }
                     tv_play_content.text = setSpannedString(
