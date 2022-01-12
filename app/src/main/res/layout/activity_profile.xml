@@ -136,7 +136,7 @@
                     android:contentDescription="@null"
                     android:src="@drawable/ic_arrow_right_gray" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"/>
 
@@ -297,7 +297,7 @@
                     android:contentDescription="@null"
                     android:src="@drawable/ic_arrow_right_gray" />
 
-                <Space
+                <androidx.legacy.widget.Space
                     android:layout_width="10dp"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -353,7 +353,7 @@
                         android:contentDescription="@null"
                         android:src="@drawable/ic_arrow_right_gray" />
 
-                    <Space
+                    <androidx.legacy.widget.Space
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -412,7 +412,7 @@
                         android:contentDescription="@null"
                         android:src="@drawable/ic_arrow_right_gray" />
 
-                    <Space
+                    <androidx.legacy.widget.Space
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -471,7 +471,7 @@
                         android:contentDescription="@null"
                         android:src="@drawable/ic_arrow_right_gray" />
 
-                    <Space
+                    <androidx.legacy.widget.Space
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -530,7 +530,7 @@
                         android:contentDescription="@null"
                         android:src="@drawable/ic_arrow_right_gray" />
 
-                    <Space
+                    <androidx.legacy.widget.Space
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -571,7 +571,7 @@
                         android:contentDescription="@null"
                         android:src="@drawable/ic_arrow_right_gray" />
 
-                    <Space
+                    <androidx.legacy.widget.Space
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"/>
             </LinearLayout>

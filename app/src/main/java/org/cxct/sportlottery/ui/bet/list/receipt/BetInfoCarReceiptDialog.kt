@@ -46,8 +46,8 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
                     tv_league.text = leagueName
-                    tv_team_home.text = homeName
-                    tv_team_away.text = awayName
+                    val teamNamesStr = if (homeName?.length ?:0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
+                    tv_team_names.text = teamNamesStr
                     tv_match_type.text = playCateName
                 }
 
@@ -60,9 +60,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
                 tv_receipt_status.setSingleReceiptStatusTips(status)
 
                 if (matchType == MatchType.OUTRIGHT) {
-                    tv_team_home.visibility = View.GONE
-                    tv_verse.visibility = View.GONE
-                    tv_team_away.visibility = View.GONE
+                    tv_team_names.visibility = View.GONE
                 }
 
                 val matchOdd = matchOdds?.firstOrNull()

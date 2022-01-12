@@ -28,8 +28,8 @@
     <string name="version_name">phiên bản</string>
     <string name="btn_pass">bỏ qua</string>
     <string name="login_account">Đăng nhập tài khoản</string>
-    <string name="please_input_account">Vui lòng nhập tài khoản hội viên của bạn</string>
-    <string name="please_input_password">Vui lòng nhập mật khẩu đăng nhập của bạn</string>
+    <string name="please_input_account">(Vui lòng nhập tài khoản hội viên của bạn)</string>
+    <string name="please_input_password">(Vui lòng nhập mật khẩu đăng nhập của bạn)</string>
     <string name="login_password">Đăng nhập mật khẩu</string>
     <string name="remember_password">Nhớ mật khẩu</string>
     <string name="forget_password_question">quên mật khẩu ?</string>
@@ -245,7 +245,7 @@
     <string name="help_center">Trung tâm trợ giúp</string>
     <string name="fund_detail">Chi tiết quỹ</string>
     <string name="feedback">Ý kiến phản hồi</string>
-    <string name="promotion">Khuyến mại</string>
+    <string name="promotion">thủ công đăng ký khuyến mãi</string>
     <string name="need_improve">Cần được hoàn thiện</string>
     <string name="profile_info">Thông tin cá nhân</string>
     <string name="avatar">Ảnh đại diện</string>
@@ -881,4 +881,6 @@
     <string name="parlay_10_block_rule">10 xâu 1013 là kết hợp 10 đơn cược từ các sự kiện khác nhau, 45 xâu 2x1, 120 xâu 3x1, 210 xâu 4x1, 252 xâu 5x1, 210 xâu 6x1, 120 xâu 7x1, 45 xâu 8x1, 10 xâu 9x1 và 1 xâu 10x1. Cần có ít nhất 2 lựa chọn thắng cược để đảm bảo tiền thưởng, không cùng loại bóng và cách chơi của giải vô địch không thể tiến hành cá cược xiên.</string>
     <string name="message_source_change">Hệ thống nhận dữ liệu sự kiện mới nhất và sẽ tự động quay lại trang chủ ngay lập tức</string>
     <string name="appearance">ngoại hình</string>
+    <string name="goal_buster">GOAL BUSTER</string>
+    <string name="top_games">TOP GAMES</string>
 </resources>

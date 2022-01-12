@@ -19,7 +19,8 @@ class LoginViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    protected val userInfoRepository: UserInfoRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
     val loginFormState: LiveData<LoginFormState>
         get() = _loginFormState
@@ -63,6 +64,8 @@ class LoginViewModel(
             doNetwork(androidContext) {
                 loginRepository.login(loginRequest)
             }?.let { result ->
+                // TODO 20220108 更新UserInfo by Hewie
+                userInfoRepository.getUserInfo()
 //                result.loginData?.discount = 0.4f //後台修復中 測試用
                 _loginResult.postValue(result)
             }

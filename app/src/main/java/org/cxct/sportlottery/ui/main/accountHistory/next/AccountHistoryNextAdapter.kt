@@ -195,17 +195,15 @@ class AccountHistoryNextAdapter(
             binding.row = row
             binding.matchOdd = first
 
-            first?.let {
-                //val odds = getOdds(first, first.oddsType.toString())
-                binding.tvOdd.setOddFormat(first.odds)
-                binding.tvOddsType.text = when (first.oddsType) {
-                    OddsType.MYS.code -> "(" + itemView.context.getString(OddsType.MYS.res) + ")"
-                    OddsType.IDN.code -> "(" + itemView.context.getString(OddsType.IDN.res) + ")"
-                    OddsType.HK.code -> "(" + itemView.context.getString(OddsType.HK.res) + ")"
-                    else -> "(" + itemView.context.getString(OddsType.EU.res) + ")"
-                }?.let { it }
+            first?.apply {
+                binding.playContent.setPlayContent(
+                    playName,
+                    spread,
+                    odds?.let { TextUtil.formatForOdd(it) },
+                    oddsType.code
+                )
+                binding.tvTeamNames.text = "$homeName v $awayName"
             }
-
             binding.executePendingBindings() //加上這句之後數據每次丟進來時才能夠即時更新
         }
 

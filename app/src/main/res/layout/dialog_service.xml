@@ -91,7 +91,7 @@
             app:layout_constraintBottom_toBottomOf="@id/frame_service1"
             app:layout_constraintEnd_toStartOf="@id/iv_service1_go"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="@dimen/textSize12sp"
             />
 
         <View
@@ -161,7 +161,7 @@
             app:layout_constraintBottom_toBottomOf="@id/frame_service2"
             app:layout_constraintEnd_toStartOf="@id/iv_service1_go"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
+            android:textSize="@dimen/textSize12sp"
             />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

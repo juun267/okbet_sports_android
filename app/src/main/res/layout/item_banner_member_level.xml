@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_value"
             android:textColor="@color/colorGray"
-            android:textSize="12sp" />
+            android:textSize="@dimen/textSize12sp" />
     </LinearLayout>
 
     <ImageView

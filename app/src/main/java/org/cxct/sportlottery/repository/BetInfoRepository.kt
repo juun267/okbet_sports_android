@@ -235,6 +235,7 @@ class BetInfoRepository(val androidContext: Context) {
     fun addInBetInfo() {
         _showBetInfoSingle.postValue(Event(false))
     }
+
     /**
      * 點擊賠率按鈕加入投注清單, 並產生串關注單
      */
@@ -388,30 +389,36 @@ class BetInfoRepository(val androidContext: Context) {
             playQuota?.min?.toBigDecimal()
         )
         var parlayBetLimit = 9999
-        parlayBetLimitMap.map {
+
+        return parlayBetLimitMap.map {
             parlayBetLimit = it.value.max.toInt()
-        }
+            var maxBet = 9999
+            val maxBetMoney = GameConfigManager.maxBetMoney ?: 9999999
+            val maxCpBetMoney = GameConfigManager.maxCpBetMoney
+            val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney ?: 9999999
 
-        var maxBet = 9999
-        val maxBetMoney = GameConfigManager.maxBetMoney
-        val maxCpBetMoney = GameConfigManager.maxCpBetMoney
-        val maxParlayBetMoney = GameConfigManager.maxParlayBetMoney
+            when (matchType) {
+                MatchType.PARLAY -> {
+                    if (isParlayBet) {
+                        maxBet =
+                            if (maxParlayBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                    } else {
+                        maxBet = if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit
+                    }
+                }
+                MatchType.OUTRIGHT -> maxBet =
+                    maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
+                        ?: parlayBetLimit
 
-        maxBet = when (matchType) {
-            MatchType.PARLAY -> maxParlayBetMoney?.let { if (maxParlayBetMoney < parlayBetLimit) maxParlayBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-
-            MatchType.OUTRIGHT -> maxCpBetMoney?.let { if (maxCpBetMoney < parlayBetLimit) maxCpBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-
-            else -> maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
-                ?: parlayBetLimit
-        }
+                else -> maxBet =
+                    maxBetMoney.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                        ?: parlayBetLimit
+            }
 
         //[Martin]為馬來盤＆印度計算投注上限
         if (oddsType == OddsType.MYS) {
             if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
-                val myMax = ((maxBetMoney?.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0)))?:0).toInt()
+                val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
                 maxBet = if (myMax < (playQuota?.max ?: 0)) myMax else (playQuota?.max ?: 0)
             }
         } else if (oddsType == OddsType.IDN) {
@@ -419,20 +426,16 @@ class BetInfoRepository(val androidContext: Context) {
                 //印度賠付額上限
                 val indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)))?.toInt())?.minus(1)?: 0
                 //印度使用者投注上限
-                val indoUserMax = (maxBetMoney?.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0))?:0).toInt()
+                val indoUserMax = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
                 maxBet = if (indoUserMax < indoMax) indoUserMax else indoMax
             }
-        }else if(oddsType == OddsType.IDN){
-            if(matchOddList[0].indoOdds < 0 && oddsList.size <= 1){
-                val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds)))?: 0).toInt())-1
-                if (maxBetMoney != null) {
-                    maxBet  = if (maxBetMoney < indoMax) maxBetMoney else indoMax
-                }
+        }else if(oddsType == OddsType.IDN) {
+            if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
+                val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
+                maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
             }
         }
 
-
-        return parlayBetLimitMap.map {
             ParlayOdd(
                 parlayType = it.key,
                 max = maxBet,

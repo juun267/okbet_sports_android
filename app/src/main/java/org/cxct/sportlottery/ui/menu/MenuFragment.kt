@@ -233,11 +233,15 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
                 TestFlag.NORMAL.index -> {
                     startActivity(Intent(context, ProfileCenterActivity::class.java))
                 }
+                TestFlag.TEST.index -> {
+                    startActivity(Intent(context, ProfileCenterActivity::class.java))
+                }
                 null -> { //尚未登入
                     startActivity(Intent(context, LoginActivity::class.java))
                 }
-                else -> { //遊客
-                    ToastUtil.showToastInCenter(context, getString(R.string.message_guest_no_permission))
+                else -> { //遊客 TODO 20221208 拿掉遊客選項，預設以外行為需要另外定義(先預設登入) by Hewie
+                    startActivity(Intent(context, LoginActivity::class.java))
+                    //ToastUtil.showToastInCenter(context, getString(R.string.message_guest_no_permission))
                 }
             }
             mDownMenuListener?.onClick(menu_profile_center)

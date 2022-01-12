@@ -64,7 +64,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             it.oddsMap.forEach { odd ->
                 odds[odd.key] = odd.value?.toMutableList()
             }
-            MatchOdd(matchInfo, odds)
+            MatchOdd(it.betPlayCateNameMap, it.playCateNameMap, matchInfo, odds)
         } ?: listOf()
         notifyDataSetChanged()
     }

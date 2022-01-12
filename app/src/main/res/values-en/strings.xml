@@ -28,8 +28,8 @@
     <string name="version_name">Version %s</string>
     <string name="btn_pass">Skip</string>
     <string name="login_account">Account</string>
-    <string name="please_input_account">your member account</string>
-    <string name="please_input_password">your login password</string>
+    <string name="please_input_account">(your member account)</string>
+    <string name="please_input_password">(your login password)</string>
     <string name="login_password">Password</string>
     <string name="remember_password">Save this password</string>
     <string name="forget_password_question">Forgot password？</string>
@@ -98,7 +98,7 @@
     <string name="desc_agreement">I\'m of legal age and totally agree</string>
     <string name="btn_agreement">Account Opening Agreement</string>
     <string name="have_account">Already have an account？</string>
-    <string name="btn_login">Log in</string>
+    <string name="btn_login">Login</string>
     <string name="btn_register">Sign Up</string>
     <string name="no_announcement">No announcement</string>
     <string name="lottery">Lottery</string>
@@ -255,7 +255,7 @@
     <string name="help_center">Help</string>
     <string name="fund_detail">Fund Details</string>
     <string name="feedback">Feedback</string>
-    <string name="promotion">Promotion Activity</string>
+    <string name="promotion">Routine events</string>
     <string name="need_improve">Need to be completed</string>
     <string name="profile_info">Your Info</string>
     <string name="avatar">Profile photo</string>
@@ -650,7 +650,7 @@
     <string name="finance_log_selector_until">To</string>
     <string name="finance_list_no_record">No content available at the moment</string>
     <string name="feedback_detail">Feedback details</string>
-    <string name="feedback_tabName_problem">Questions and Suggestions</string>
+    <string name="feedback_tabName_problem">Suggestions</string>
     <string name="feedback_tabName_record">Feedback history</string>
     <string name="feedback_description">If you have a good suggestion for the game or platform or find a Bug to submit, the official customer service will reply within 48 hours. We will timely fix bugs or refer to your feedback to continuously optimize our products and services. (If there are many people who give feedback on the same suggestion or Bug, the bonus will be given to the first person who gives feedback. Remember to give feedback as soon as you find any problem.)</string>
     <string name="feedback_description_money">If the suggestion is adopted or the Bug is verified, the maximum reward is PHP 3000 (or other equivalent currency).</string>
@@ -853,4 +853,6 @@
     <string name="identity_work">Occupation</string>
     <string name="message_source_change">The system receives the latest event data and will automatically return to the homepage immediately</string>
     <string name="appearance">appearance</string>
+    <string name="goal_buster">GOAL BUSTER</string>
+    <string name="top_games">TOP GAMES</string>
 </resources>

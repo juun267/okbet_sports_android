@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/layoutNotification"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvSpecialEvent"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:drawablePadding="10dp"
+        android:gravity="start|center_vertical"
+        android:minHeight="48dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/match_type_row_in_play"
+        android:textColor="@color/colorBlackLight"
+        app:drawableStartCompat="@drawable/ic_small_champ" />
+</LinearLayout>

@@ -360,7 +360,7 @@
                 tools:text="14-15  15-14"
                 tools:visibility="visible" />
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:id="@+id/space"
                 android:layout_width="16dp"
                 android:layout_height="wrap_content"

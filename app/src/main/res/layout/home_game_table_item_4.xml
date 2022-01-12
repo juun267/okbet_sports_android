@@ -49,17 +49,18 @@
     <TextView
         android:id="@+id/tv_game_name_home"
         android:layout_width="0dp"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:minHeight="38dp"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toStartOf="@id/tv_game_total_score_home_center"
         app:layout_constraintStart_toEndOf="@id/tv_game_score_home"
         app:layout_constraintTop_toBottomOf="@id/tv_game_type"
-        tools:text="皇家馬德里" />
+        tools:text="皇家馬德里asdfasdfasdfaasdf" />
 
     <TextView
         android:id="@+id/tv_game_total_score_home_center"
@@ -109,17 +110,18 @@
     <TextView
         android:id="@+id/tv_game_name_away"
         android:layout_width="0dp"
-        android:layout_height="38dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:minHeight="38dp"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/textSize14sp"
         app:layout_constraintEnd_toStartOf="@id/tv_game_total_score_away_center"
         app:layout_constraintStart_toEndOf="@id/tv_game_score_away"
         app:layout_constraintTop_toBottomOf="@id/tv_game_name_home"
-        tools:text="利物浦" />
+        tools:text="利物浦asdfasdfasdf" />
 
     <TextView
         android:id="@+id/tv_game_total_score_away_center"
@@ -164,7 +166,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/btn_match_odd1"
-        android:layout_width="78dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
@@ -173,7 +175,7 @@
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/btn_match_odd2"
-        android:layout_width="78dp"
+        android:layout_width="70dp"
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
         app:layout_constraintEnd_toEndOf="parent"
@@ -190,6 +192,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table_match_info_border"
         tools:text="5–3"
         tools:visibility="visible" />
 
@@ -204,6 +207,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_score"
+        app:layout_constraintTop_toBottomOf="@+id/table_match_info_border"
         tools:text="15–30"
         tools:visibility="visible" />
 
@@ -217,6 +221,7 @@
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_point"
+        app:layout_constraintTop_toBottomOf="@+id/table_match_info_border"
         tools:text="@string/second_session" />
 
     <TextView
@@ -229,6 +234,7 @@
         android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_match_status"
+        app:layout_constraintTop_toBottomOf="@+id/table_match_info_border"
         tools:text="90:31" />
 
     <ImageView
@@ -239,9 +245,9 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_inplay_v4"
-        app:layout_constraintBottom_toBottomOf="@id/tv_match_time"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/tv_match_time"
-        app:layout_constraintTop_toTopOf="@id/tv_match_time" />
+        app:layout_constraintTop_toTopOf="@+id/tv_match_play_type_count" />
 
     <ImageView
         android:id="@+id/iv_match_price"
@@ -263,8 +269,7 @@
         android:src="@drawable/ic_live_player"
         app:layout_constraintBottom_toBottomOf="@id/tv_match_play_type_count"
         app:layout_constraintStart_toEndOf="@id/iv_match_price"
-        app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count"
-        />
+        app:layout_constraintTop_toTopOf="@id/tv_match_play_type_count" />
 
     <TextView
         android:id="@+id/tv_match_play_type_count"
@@ -278,6 +283,7 @@
         app:drawableRightCompat="@drawable/ic_iconarrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_play"
+        app:layout_constraintTop_toBottomOf="@+id/table_match_info_border"
         tools:text="54" />
 
     <ImageView
@@ -285,10 +291,10 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_icon_chart"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_star"
         app:layout_constraintTop_toTopOf="@+id/btn_star"

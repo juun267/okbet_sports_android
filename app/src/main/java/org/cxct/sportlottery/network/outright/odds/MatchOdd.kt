@@ -27,8 +27,14 @@ data class MatchOdd(
     @Json(name = "quickPlayCateList")
     override val quickPlayCateList: @RawValue MutableList<QuickPlayCate>? = mutableListOf(), //(新)赛事可玩的快捷玩法列表
     @Json(name = "oddsSort")
-    override val oddsSort: String? = null
-) : MatchOdd, Parcelable {
+    override val oddsSort: String? = null,
+    @Json(name = "betPlayCateNameMap")
+    override val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf(),
+    @Json(name = "playCateNameMap")
+    override val playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf(),
+    ) : MatchOdd,
+
+    Parcelable {
     @IgnoredOnParcel
     override val oddsEps: Odds? = null
 

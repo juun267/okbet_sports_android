@@ -51,6 +51,7 @@ open class ThirdGameActivity : WebActivity() {
     private fun checkLogin(): Boolean {
         return when (mUserInfo?.testFlag) {
             TestFlag.NORMAL.index -> true
+            TestFlag.TEST.index -> true // TODO 20221208 增加了內部測試選項
             TestFlag.GUEST.index -> {
                 ToastUtil.showToastInCenter(this, resources.getString(R.string.message_guest_no_permission))
                 false

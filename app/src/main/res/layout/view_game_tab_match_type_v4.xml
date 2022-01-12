@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite1">
@@ -10,12 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:overScrollMode="never"
-        app:tabRippleColor="@null"
         app:layout_constraintTop_toTopOf="parent"
         app:tabGravity="fill"
         app:tabIndicatorHeight="0dp"
         app:tabMinWidth="54dp"
-        app:tabMode="scrollable">
+        app:tabMode="scrollable"
+        app:tabRippleColor="@null"
+        tools:layout="@layout/home_cate_tab">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_all"

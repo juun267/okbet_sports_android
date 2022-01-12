@@ -26,7 +26,8 @@ class RegisterViewModel(
     private val androidContext: Context,
     loginRepository: LoginRepository,
     betInfoRepository: BetInfoRepository,
-    infoCenterRepository: InfoCenterRepository
+    infoCenterRepository: InfoCenterRepository,
+    protected val userInfoRepository: UserInfoRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
     val registerResult: LiveData<LoginResult>
         get() = _registerResult
@@ -519,6 +520,8 @@ class RegisterViewModel(
             doNetwork(androidContext) {
                 loginRepository.register(registerRequest)
             }?.let { result ->
+                // TODO 20220108 更新UserInfo by Hewie
+                userInfoRepository.getUserInfo()
                 _registerResult.postValue(result)
             }
         }

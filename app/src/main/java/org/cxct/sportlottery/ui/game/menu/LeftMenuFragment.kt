@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_left_menu.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
@@ -33,8 +34,9 @@ import org.cxct.sportlottery.ui.withdraw.BankActivity
 import org.cxct.sportlottery.ui.withdraw.WithdrawActivity
 import org.cxct.sportlottery.util.JumpUtil
 import org.cxct.sportlottery.util.LanguageManager
+import org.cxct.sportlottery.util.listener.OnClickListener
 
-class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
+class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class), OnClickListener {
     private var newAdapter =
         LeftMenuItemNewAdapter(
             sConfigData?.thirdOpen == FLAG_OPEN,
@@ -111,6 +113,19 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
 
     //提示
     private var snackBarMyFavoriteNotify: Snackbar? = null
+    var specialList: MutableList<MenuItemData> = mutableListOf()
+
+    override fun onItemClick(position: Int) {
+        super.onItemClick(position)
+        viewModel.navSpecialEntrance(
+            MatchType.OTHER,
+            null,
+            specialList[position].gameType,
+            specialList[position].title
+        )
+        dismiss()
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -287,6 +302,23 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
     }
 
     fun initObserve() {
+        viewModel.sportCouponMenuResult.observe(this.viewLifecycleOwner) {
+            it.peekContent().let { data ->
+                specialList.clear()
+                data.sportCouponMenuData.forEachIndexed { index, sportCouponMenuData ->
+                    var list = MenuItemData(
+                        0,
+                        sportCouponMenuData.couponName,
+                        sportCouponMenuData.couponCode,
+                        0
+                    )
+                    specialList.add(list)
+                }
+                newAdapter.addSpecialEvent(specialList, this)
+            }
+
+        }
+
         viewModel.favorSportList.observe(this.viewLifecycleOwner) {
             updateMenuSport(it)
             updateFavorSport(it)
@@ -488,7 +520,7 @@ class LeftMenuFragment : BaseDialog<GameViewModel>(GameViewModel::class) {
             else -> GameType.FT
         }
 
-        when{
+        when {
             sportType == GameType.GF -> { //GF 只有冠軍
                 viewModel.navSpecialEntrance(
                     MatchType.OUTRIGHT,

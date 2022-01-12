@@ -3,6 +3,7 @@ package org.cxct.sportlottery
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import cn.jiguang.analytics.android.api.JAnalyticsInterface
 import cn.jpush.android.api.JPushInterface
 import com.github.jokar.multilanguages.library.MultiLanguage
 import org.cxct.sportlottery.db.SportRoomDatabase
@@ -63,8 +64,8 @@ class MultiLanguagesApplication : Application() {
         viewModel { SplashViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { MoneyRechViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
         viewModel { MainViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
-        viewModel { LoginViewModel(get(), get(), get(), get()) }
-        viewModel { RegisterViewModel(get(), get(), get(), get()) }
+        viewModel { LoginViewModel(get(), get(), get(), get(), get()) }
+        viewModel { RegisterViewModel(get(), get(), get(), get(), get()) }
         viewModel { SettlementViewModel(get(), get(), get(), get(), get(), get(), get()) }
         viewModel { BetRecordViewModel(get(), get(), get(), get(), get(), get()) }
         viewModel { InfoCenterViewModel(get(), get(), get(), get(), get(), get()) }
@@ -168,8 +169,13 @@ class MultiLanguagesApplication : Application() {
 
     //極光推播
     private fun initJPush() {
-        JPushInterface.setDebugMode(true) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
+        JPushInterface.setDebugMode(false) //参数为 true 表示打开调试模式，可看到 sdk 的日志。
         JPushInterface.init(this)
+
+        //参数为 true 表示打开调试模式，可看到 sdk 的日志。
+        JAnalyticsInterface.init(this);
+        JAnalyticsInterface.initCrashHandler(this);
+        JAnalyticsInterface.setDebugMode(false);
     }
 
     private fun setupDeviceCode() {

@@ -39,7 +39,7 @@
                 android:textSize="@dimen/textSize13sp"
                 tools:text="06-22" />
 
-            <Space
+            <androidx.legacy.widget.Space
                 android:layout_width="4dp"
                 android:layout_height="wrap_content" />
 
@@ -117,7 +117,7 @@
                 android:layout_marginEnd="6dp"
                 android:text="\@"
                 android:textColor="@color/colorGray"
-                android:textSize="13sp" />
+                android:textSize="@dimen/textSize13sp" />
 
             <TextView
                 android:id="@+id/content_odds"
@@ -125,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textColor="@color/colorRedDark"
-                android:textSize="13sp"
+                android:textSize="@dimen/textSize13sp"
                 tools:text="1.860" />
 
             <TextView
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGray"
-                android:textSize="13sp"
+                android:textSize="@dimen/textSize13sp"
                 android:layout_marginLeft="8dp"
                 tools:text="(印尼盘)" />
 

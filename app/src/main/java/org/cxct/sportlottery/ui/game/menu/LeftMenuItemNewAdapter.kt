@@ -4,12 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.zhy.adapter.recyclerview.CommonAdapter
+import com.zhy.adapter.recyclerview.MultiItemTypeAdapter
+import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.content_left_menu_item.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_footer.view.*
 import kotlinx.android.synthetic.main.content_left_menu_item_header.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
+import org.cxct.sportlottery.util.listener.OnClickListener
 
 class LeftMenuItemNewAdapter(
     private val isShowMemberLevel: Boolean,
@@ -23,6 +28,8 @@ class LeftMenuItemNewAdapter(
     }
 
     var dataList: List<MenuItemData> = listOf()
+    var specialList:List<MenuItemData> = listOf()
+    lateinit var listener: OnClickListener
     var selectedNumber = 0
     var isLogin = false
         set(value) {
@@ -47,6 +54,12 @@ class LeftMenuItemNewAdapter(
         notifyDataSetChanged()
     }
 
+    fun addSpecialEvent(newDataList: MutableList<MenuItemData>,listener: OnClickListener){
+        this.specialList = newDataList
+        this.listener = listener
+        notifyDataSetChanged()
+    }
+
     override fun getItemViewType(position: Int): Int {
         return when (position) {
             0 -> ItemType.HEADER.ordinal
@@ -66,7 +79,7 @@ class LeftMenuItemNewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is HeaderViewHolder -> {
-                holder.bind(isShowMemberLevel, isLogin, headerSelectedListener)
+                holder.bind(isShowMemberLevel, isLogin, headerSelectedListener,specialList,listener)
             }
 
             is FooterViewHolder -> {
@@ -134,6 +147,7 @@ class LeftMenuItemNewAdapter(
     }
 
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        lateinit var adapter: CommonAdapter<MenuItemData>
 
         companion object {
             fun from(parent: ViewGroup): HeaderViewHolder {
@@ -147,7 +161,9 @@ class LeftMenuItemNewAdapter(
         fun bind(
             isShowMemberLevel: Boolean,
             isLogin: Boolean,
-            headerSelectedListener: HeaderSelectedListener
+            headerSelectedListener: HeaderSelectedListener,
+            specialList:List<MenuItemData>,
+            listener: OnClickListener
         ) {
             itemView.apply {
                 divider_login.isVisible = isLogin
@@ -173,6 +189,46 @@ class LeftMenuItemNewAdapter(
                 ct_premium_odds.setOnClickListener {
                     headerSelectedListener.premiumOddsSelected()
                 }
+                rvLefSpecial.layoutManager =
+                    LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                rvLefSpecial.isNestedScrollingEnabled = false
+                if(specialList.isNotEmpty()){
+                    adapter = object : CommonAdapter<MenuItemData>(
+                        context,
+                        R.layout.item_left_special_item,
+                        specialList
+                    ) {
+
+                        override fun convert(
+                            holder: ViewHolder,
+                            t: MenuItemData,
+                            position: Int
+                        ) {
+                            holder.setText(R.id.tvSpecialEvent, t.title)
+                        }
+
+                    }
+                    rvLefSpecial.adapter = adapter
+
+                    adapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+                        override fun onItemClick(
+                            view: View,
+                            holder: RecyclerView.ViewHolder,
+                            position: Int
+                        ) {
+                            listener.onItemClick(position)
+                        }
+
+                        override fun onItemLongClick(
+                            view: View,
+                            holder: RecyclerView.ViewHolder,
+                            position: Int
+                        ): Boolean {
+                            return false
+                        }
+                    })
+                }
+
             }
         }
     }
