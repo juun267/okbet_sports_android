@@ -498,7 +498,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         ) {
             var timeMillis = startTime * 1000L
 
-            mTimerMap[adapterPosition]?.cancel()
+            mTimerMap[bindingAdapterPosition]?.cancel()
             stopTimer()
 
             timer = Timer()
@@ -507,7 +507,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     when {
                         timeMillis < 0 -> {
                             timeMillis = 0
-                            mTimerMap[adapterPosition]?.cancel()
+                            mTimerMap[bindingAdapterPosition]?.cancel()
                         }
                         isDecrease -> timeMillis -= 1000
                         !isDecrease -> timeMillis += 1000
@@ -518,7 +518,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 }
             }, 1000L, 1000L)
 
-            mTimerMap[adapterPosition] = timer
+            mTimerMap[bindingAdapterPosition] = timer
         }
 
         fun stopTimer() {
