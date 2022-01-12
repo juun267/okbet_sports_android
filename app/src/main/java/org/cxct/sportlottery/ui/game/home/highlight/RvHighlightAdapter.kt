@@ -152,8 +152,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
         private var gameType: String? = null
 
-        private var oddListHDP: MutableList<Odd?>? = null
-        private var oddList1x2: MutableList<Odd?>? = null
+        private var oddList: MutableList<Odd?>? = null
+
 
         private var timer: Timer? = null
 
@@ -227,25 +227,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             itemView.apply {
                 gameType = data.matchInfo?.gameType
 
-                oddListHDP = when (gameType) {
-                    GameType.TN.key -> {
-                        data.oddsMap[PlayCate.SET_HDP.value]
-                    }
-                    GameType.BK.key -> {
-                        data.oddsMap[PlayCate.HDP_INCL_OT.value]
-                    }
-                    else -> {
-                        data.oddsMap[PlayCate.HDP.value]
-                    }
-                }
-
-                oddList1x2 = when (gameType) {
-                    GameType.BK.key -> {
-                        data.oddsMap[PlayCate.SINGLE_OT.value]
-                    }
-                    else -> {
-                        data.oddsMap[PlayCate.SINGLE.value]
-                    }
+                oddList = if(data.oddsMap.isNotEmpty()) {
+                    data.oddsMap.iterator().next().value
+                }else{
+                    mutableListOf()
                 }
             }
         }
