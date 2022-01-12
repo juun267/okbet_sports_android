@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
@@ -147,7 +148,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
         private var timer: Timer? = null
 
-        fun bind(data: MatchOdd) {
+        fun bind(data: MatchOdd, lastData: MatchOdd) {
+            setTitle(data,lastData)
             setMatchType(data)
             setupOddList(data)
             setupMatchInfo(data)
@@ -170,6 +172,41 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
             itemView.btn_chart.setOnClickListener {
                 onClickStatisticsListener?.onClickStatistics(data.matchInfo?.id)
+            }
+        }
+
+        private fun setTitle(data: MatchOdd, lastData: MatchOdd) {
+            itemView.apply {
+                when {
+                    bindingAdapterPosition == 0 -> {
+                        tv_game_type.isVisible = true
+                        tv_play_type_highlight.isVisible = true
+                        tv_play_type_highlight.text =
+                            data.playCateNameMap?.get(data.oddsMap.iterator().next().key)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                    }
+                    TimeUtil.isTimeToday(data.matchInfo?.startTime) && !TimeUtil.isTimeToday(
+                        lastData.matchInfo?.startTime
+                    ) -> {
+                        tv_game_type.isVisible = true
+                        tv_play_type_highlight.visibility = View.INVISIBLE
+                    }
+                    !TimeUtil.isTimeToday(data.matchInfo?.startTime) && TimeUtil.isTimeToday(
+                        lastData.matchInfo?.startTime
+                    ) -> {
+                        tv_game_type.isVisible = true
+                        tv_play_type_highlight.visibility = View.INVISIBLE
+                    }
+                    else -> {
+                        ll_highlight_type.visibility = View.GONE
+                    }
+                }
+
+                tv_game_type.text = if (TimeUtil.isTimeToday(data.matchInfo?.startTime)) {
+                    resources.getString(R.string.home_tab_today)
+                } else {
+                    "${resources.getString(TimeUtil.setupDayOfWeekAndToday(data.matchInfo?.startTime))} ${data.matchInfo?.startDateDisplay}"
+                }
+
             }
         }
 
