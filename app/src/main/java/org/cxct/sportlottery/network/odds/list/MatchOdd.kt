@@ -54,3 +54,7 @@ data class MatchOdd(
         }
     }
 }
+
+enum class TimeCounting(val value: Int) {
+    STOP(1), CONTINUE(0)
+}

@@ -71,7 +71,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-                binding.llDeleteAll.visibility = View.GONE
+//                binding.llDeleteAll.visibility = View.GONE
             }
 
             override fun onAnimationRepeat(animation: Animation?) {
@@ -357,7 +357,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         viewModel.betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
-                if (list.isEmptyBetList()) return@let
+                //注單列表沒東西時關閉fragment
+               // if (list.isEmptyBetList()) return@let
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
 
