@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.*
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
@@ -260,27 +261,26 @@ class VpRecommendAdapter(
                 rec_champ_btn_pre3.apply {
                     if (data.oddList.size < 3 || data.oddList.getOrNull(2) == null) {
                         visibility = View.GONE
-                        return
-                    }
+                    }else{
+                        setupOdd(data.oddList.getOrNull(2), oddsType)
 
-                    setupOdd(data.oddList.getOrNull(2), oddsType)
+                        tv_name.apply {
+                            text = data.oddList.getOrNull(2)?.getSpreadName(context)
+                            visibility = View.VISIBLE
+                        }
 
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(2)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
+                        tv_spread.text = ""
 
-                    tv_spread.text = ""
+                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(2))
 
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(2))
+                        isSelected = data.oddList.getOrNull(2)?.isSelected ?: false
 
-                    isSelected = data.oddList.getOrNull(2)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(2)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                        setOnClickListener {
+                            data.oddList.getOrNull(2)?.let { odd ->
+                                onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                    this.matchInfo?.gameType = sportCode
+                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                            }
                         }
                     }
                 }
@@ -288,60 +288,59 @@ class VpRecommendAdapter(
                 rec_champ_btn_pre4.apply {
                     if (data.oddList.size < 4|| data.oddList.getOrNull(3) == null) {
                         visibility = View.GONE
-                        return
-                    }
+                    }else{
+                        setupOdd(data.oddList.getOrNull(3), oddsType)
 
-                    setupOdd(data.oddList.getOrNull(3), oddsType)
+                        tv_name.apply {
+                            text = data.oddList.getOrNull(3)?.getSpreadName(context)
+                            visibility = View.VISIBLE
+                        }
 
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(3)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
+                        tv_spread.text = ""
 
-                    tv_spread.text = ""
+                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(3))
 
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(3))
+                        isSelected = data.oddList.getOrNull(3)?.isSelected ?: false
 
-                    isSelected = data.oddList.getOrNull(3)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(3)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                        setOnClickListener {
+                            data.oddList.getOrNull(3)?.let { odd ->
+                                onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                    this.matchInfo?.gameType = sportCode
+                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                            }
                         }
                     }
                 }
 
                 rec_champ_btn_pre5.apply {
-                    if (data.oddList.size < 5|| data.oddList.getOrNull(4) == null) {
+                    if (data.oddList.size < 5 || data.oddList.getOrNull(4) == null) {
                         visibility = View.GONE
-                        return
-                    }
+                    } else {
+                        setupOdd(data.oddList.getOrNull(4), oddsType)
 
-                    setupOdd(data.oddList.getOrNull(4), oddsType)
+                        tv_name.apply {
+                            text = data.oddList.getOrNull(4)?.getSpreadName(context)
+                            visibility = View.VISIBLE
+                        }
 
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(4)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
+                        tv_spread.text = ""
 
-                    tv_spread.text = ""
+                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(4))
 
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(4))
+                        isSelected = data.oddList.getOrNull(4)?.isSelected ?: false
 
-                    isSelected = data.oddList.getOrNull(4)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(4)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                        setOnClickListener {
+                            data.oddList.getOrNull(4)?.let { odd ->
+                                onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                    this.matchInfo?.gameType = sportCode
+                                }, odd, PlayCate.UNCHECK.value, data.playTypeCode)
+                            }
                         }
                     }
                 }
 
                 rec_champ_more.apply {
+                    isVisible = data.oddList.size > 5
                     setOnClickListener {
                         onClickMoreListener?.onClickMore(data.playTypeCode, matchOdd)
                     }
