@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.common.RechType
 import org.cxct.sportlottery.network.money.MoneyAddRequest
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.config.RechCfg
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.util.ArithUtil
@@ -131,6 +132,8 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
         updateMoneyRange()
         getBankType(0)
         refreshFieldTitle()
+
+        tv_currency_type.text = sConfigData?.systemCurrency
     }
 
     private fun refreshFieldTitle(){
@@ -144,35 +147,35 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun initObserve() {
 
         //充值金額訊息
-        viewModel.rechargeAmountMsg.observe(viewLifecycleOwner, {
+        viewModel.rechargeAmountMsg.observe(viewLifecycleOwner) {
             et_recharge_amount.setError(it)
-        })
+        }
         //微信
-        viewModel.wxErrorMsg.observe(viewLifecycleOwner, {
+        viewModel.wxErrorMsg.observe(viewLifecycleOwner) {
             et_wx_id.setError(it)
-        })
+        }
         //認證姓名
-        viewModel.nameErrorMsg.observe(viewLifecycleOwner, {
+        viewModel.nameErrorMsg.observe(viewLifecycleOwner) {
             et_name.setError(it)
-        })
+        }
         //銀行卡號
-        viewModel.bankIDErrorMsg.observe(viewLifecycleOwner, {
+        viewModel.bankIDErrorMsg.observe(viewLifecycleOwner) {
             et_bank_account.setError(it)
-        })
+        }
         //暱稱
-        viewModel.nickNameErrorMsg.observe(viewLifecycleOwner, {
+        viewModel.nickNameErrorMsg.observe(viewLifecycleOwner) {
             et_nickname.setError(it)
-        })
-        viewModel.userMoney.observe(viewLifecycleOwner,  {
-            txv_wallet_money.text = String.format(getString(R.string.finance_rmb), ArithUtil.toMoneyFormat(it))
-        })
+        }
+        viewModel.userMoney.observe(viewLifecycleOwner) {
+            txv_wallet_money.text = "${ArithUtil.toMoneyFormat(it)} ${sConfigData?.systemCurrency}"
+        }
 
-        viewModel.transferPayResult.observe(viewLifecycleOwner,  {
+        viewModel.transferPayResult.observe(viewLifecycleOwner) {
             if (it.success) {
                 resetEvent()
                 getBankType(0)
             }
-        })
+        }
     }
 
     private fun setPayBankBottomSheet() {
@@ -530,7 +533,7 @@ class TransferPayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel:
     private fun updateMoneyRange() {
         et_recharge_amount.setHint(
             String.format(
-                getString(R.string.edt_hint_deposit_money),
+                "${getString(R.string.edt_hint_deposit_money)} ${sConfigData?.systemCurrency}",
                 TextUtil.formatBetQuota(ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.minMoney ?: 0.00).toInt()),
                 TextUtil.formatBetQuota(ArithUtil.toMoneyFormatForHint(mSelectRechCfgs?.maxMoney ?: 999999.00).toInt())
             )

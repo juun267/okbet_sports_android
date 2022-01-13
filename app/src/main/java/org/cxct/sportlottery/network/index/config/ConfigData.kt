@@ -83,5 +83,7 @@ data class ConfigData(
     val liveUrl: String?,
     val analysisUrl: String?,
     val referUrl: String?,
-    val presetBetAmount: List<Int>? //前台预设下注金额配置
+    val presetBetAmount: List<Int>?, //前台预设下注金额配置
+    val systemCurrencySign: String?,
+    val systemCurrency: String? = "PHP"
 )

@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.TransferType
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
@@ -63,6 +64,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             getAllIsShow = true
         }
         block_tab.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
+        tv_currency_type.text = sConfigData?.systemCurrency
     }
 
     private fun initEvent() {
