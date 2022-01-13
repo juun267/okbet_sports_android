@@ -16,6 +16,7 @@ interface MatchInfo {
     var homePoints: Int?
     var awayPoints: Int?
     var playCateNum: Int?
+    var stopped:Int?
 
     //FT
     var homeCards: Int?

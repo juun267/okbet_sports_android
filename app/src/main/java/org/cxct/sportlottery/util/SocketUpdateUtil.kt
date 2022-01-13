@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
+import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
@@ -22,37 +23,27 @@ object SocketUpdateUtil {
 
     fun updateMatchStatus(
         gameType: String?,
-        matchOddList: MutableList<MatchOdd>,
+        matchOddList: MutableList<MatchOdd> = arrayListOf(),
         matchStatusChangeEvent: MatchStatusChangeEvent,
         context: Context?
     ): Boolean {
         var isNeedRefresh = false
 
         matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+            var removeIndex :Int = -1
 
             matchOddList.forEach { matchOdd ->
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
-                    if (matchStatusCO.status == 100) {
-                        val matchOddIterator = matchOddList.iterator()
-                        while (matchOddIterator.hasNext()) {
-                            val item = matchOddIterator.next()
-                            if (item == matchOdd)
-                                matchOddIterator.remove()
-                        }
-                        isNeedRefresh = true
-                    }
-
                     if (matchStatusCO.status != matchOdd.matchInfo?.socketMatchStatus) {
                         matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
                         isNeedRefresh = true
                     }
-
-                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
-                        val statusValue =
-                            matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
-                                ?: matchStatusCO.statusName
+                    val statusValue =
+                        matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
+                            ?: matchStatusCO.statusName
+                    if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
@@ -96,7 +87,19 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                         isNeedRefresh = true
                     }
+                    if (matchStatusCO.status == 100) {
+                        //跑完forEach再去刪除 不然會Crash
+                        matchOddList.forEachIndexed { index, item ->
+                            if (item == matchOdd){
+                                removeIndex = index
+                            }
+                        }
+                        isNeedRefresh = true
+                    }
                 }
+            }
+            if(removeIndex != -1){
+                matchOddList.removeAt(removeIndex)
             }
         }
 
@@ -106,6 +109,7 @@ object SocketUpdateUtil {
     fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
+        //[Martin] 沒有做暫停計時功能 有時間要做
         matchClockEvent.matchClockCO?.let { matchClockCO ->
 
             if (matchClockCO.matchId != null && matchClockCO.matchId == matchOdd.matchInfo?.id) {
@@ -123,6 +127,7 @@ object SocketUpdateUtil {
                 isNeedRefresh = when {
                     (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) -> {
                         matchOdd.matchInfo?.leagueTime = leagueTime
+                        matchOdd.matchInfo?.stopped = matchClockCO.stopped
                         true
                     }
                     else -> false

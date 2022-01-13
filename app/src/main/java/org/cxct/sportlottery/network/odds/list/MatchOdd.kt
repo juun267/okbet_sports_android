@@ -40,6 +40,7 @@ data class MatchOdd(
 
     var isExpand = false
     var leagueTime: Int? = null
+    var stopped:Int? = 0
 
     var positionButtonPage = 0
 

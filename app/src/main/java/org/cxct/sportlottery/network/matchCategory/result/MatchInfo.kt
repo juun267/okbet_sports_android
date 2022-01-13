@@ -30,7 +30,7 @@ data class MatchInfo(
     @Json(name = "startTime")
     val startTime: Long?,
     @Json(name = "status")
-    val status: Int?
+    val status: Int?, override var stopped: Int?
 ) : MatchInfo {
 
     override val gameType: String? = null

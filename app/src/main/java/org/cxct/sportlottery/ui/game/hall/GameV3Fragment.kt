@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -48,9 +49,7 @@ import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.GameViewModel
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
-import org.cxct.sportlottery.ui.game.common.LeagueListener
-import org.cxct.sportlottery.ui.game.common.LeagueOddListener
+import org.cxct.sportlottery.ui.game.common.*
 import org.cxct.sportlottery.ui.game.hall.adapter.*
 import org.cxct.sportlottery.ui.main.MainActivity
 import org.cxct.sportlottery.ui.main.entity.ThirdGameCategory
@@ -467,6 +466,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             addItemDecoration(
                 SpaceItemDecoration(context, R.dimen.item_spacing_league)
             )
+            setHasFixedSize(true)
+            setItemViewCacheSize(20)
         }
 
 //        view.sv_game.setOnScrollChangeListener { _, _, _, _, _ ->
@@ -644,11 +645,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                     game_list.apply {
                         adapter = leagueAdapter.apply {
+                            updateType = null
                             data = leagueOdds.onEach { leagueOdd ->
                                 leagueOdd.gameType = gameType
                             }.toMutableList()
                         }
                     }
+                    game_list.itemAnimator = null
                     setNoDataView(leagueAdapter.data)
                     leagueOdds.forEach { leagueOdd ->
                         subscribeChannelHall(leagueOdd)
@@ -1023,8 +1026,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueListPin.indexOf(it.id)
         }
     }
-
+    var timerHandler: Handler? = null
     private fun initSocketObserver() {
+        timerHandler = Handler()
+        val timerRunnable: Runnable = object : Runnable {
+            override fun run() {
+                leagueAdapter.notifyDataSetChanged()
+                timerHandler!!.postDelayed(this, 3000)
+            }
+        }
+        timerHandler!!.postDelayed(timerRunnable, 1000)
+
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 when (game_list.adapter) {
@@ -1043,8 +1055,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 if (leagueOdd.matchOdds.isNullOrEmpty()) {
                                     leagueAdapter.data.remove(leagueOdd)
                                 }
-                                //leagueAdapter.updateMatchStatus(index)
                                 //leagueAdapter.notifyItemChanged(index)
+                                //leagueAdapter.updateBySocket(index, PAYLOAD_SCORE_CHANGE)
                             }
                         }
                     }
@@ -1066,8 +1078,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     )
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code) {
-
                                 //leagueAdapter.notifyItemChanged(index)
+                                leagueAdapter.updateBySocket(index, PAYLOAD_CLOCK_CHANGE)
                             }
                         }
                     }
@@ -1093,6 +1105,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
                                 //leagueAdapter.notifyItemChanged(index)
+                                //leagueAdapter.updateBySocket(index, PAYLOAD_ODDS_CHANGE)
                             }
                         }
                     }
@@ -1127,6 +1140,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                                 } && leagueOdd.unfold == FoldState.UNFOLD.code) {
                                 //leagueAdapter.notifyItemChanged(index)
+                                //leagueAdapter.updateBySocket(index, PAYLOAD_ODDS_CHANGE)
+
                             }
                         }
                     }
@@ -1161,7 +1176,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 } &&
                                 leagueOdd.unfold == FoldState.UNFOLD.code
                             ) {
-                                leagueAdapter.notifyItemChanged(index)
+                                //leagueAdapter.notifyItemChanged(index)
+                                //leagueAdapter.updateBySocket(index, null)
                             }
                         }
                     }
@@ -1177,7 +1193,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                     )
                                 } == true &&
                                 !epsLeagueOddsItem.isClose) {
-
                                 epsListAdapter.notifyItemChanged(index)
                             }
                         }
