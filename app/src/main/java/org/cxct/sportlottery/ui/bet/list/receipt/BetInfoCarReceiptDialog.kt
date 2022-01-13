@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.v
 import kotlinx.android.synthetic.main.item_match_receipt.view.*
 import kotlinx.android.synthetic.main.view_match_receipt_bet.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.bet.Odd
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
@@ -67,16 +68,17 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
                 val matchOdd = matchOdds?.firstOrNull()
 
-                var currentOddsType = oddsType
-                if(matchOdd?.odds == matchOdd?.malayOdds){
-                    currentOddsType = OddsType.EU
+                var currentOddsTypes = oddsType
+                if (matchOdd?.odds == matchOdd?.malayOdds || matchType == MatchType.OUTRIGHT || matchType == MatchType.OTHER_OUTRIGHT) {
+                    currentOddsTypes = OddsType.EU
                 }
+
                 tv_play_content.text = setPlayContent(
                     needShowSpread(matchOdd?.playCateCode) && (matchType != MatchType.OUTRIGHT),
                     matchOdd?.playName,
                     matchOdd?.spread,
                     TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
-                    tv_play_content.context.getString(currentOddsType?.res ?: OddsType.EU.res)
+                    tv_play_content.context.getString(currentOddsTypes?.res ?: OddsType.EU.res)
                 )
             }
         }
@@ -110,16 +112,16 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
             result.receipt?.singleBets?.firstOrNull()?.let { betResult ->
                 betResult.matchOdds?.firstOrNull()?.let { matchOdd ->
-                    var currentOddsType = oddType
-                    if(matchOdd.odds == matchOdd.malayOdds){
-                        currentOddsType = OddsType.EU
+                    var currentOddsTypes = oddType
+                    if (matchOdd.odds == matchOdd.malayOdds || betResult.matchType == MatchType.OUTRIGHT || betResult.matchType == MatchType.OTHER_OUTRIGHT) {
+                        currentOddsTypes = OddsType.EU
                     }
                     tv_play_content.text = setPlayContent(
                         needShowSpread(matchOdd.playCateCode) && (betResult.matchType != MatchType.OUTRIGHT),
                         matchOdd.playName,
                         matchOdd.spread,
-                        TextUtil.formatForOdd(getOdds(matchOdd, currentOddsType)),
-                        tv_play_content.context.getString(currentOddsType.res)
+                        TextUtil.formatForOdd(getOdds(matchOdd, currentOddsTypes)),
+                        getString(currentOddsTypes.res)
                     )
 
                 }
