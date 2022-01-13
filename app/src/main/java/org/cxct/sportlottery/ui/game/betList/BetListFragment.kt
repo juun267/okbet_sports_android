@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
+import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
 import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
@@ -30,6 +31,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.bet.list.FastBetSettingDialog
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -72,6 +74,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
             override fun onAnimationEnd(animation: Animation?) {
 //                binding.llDeleteAll.visibility = View.GONE
+                binding.apply {
+                    llDeleteAll.visibility = View.GONE
+                }
             }
 
             override fun onAnimationRepeat(animation: Animation?) {
@@ -115,7 +120,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.adapter = null
     }
 
-    private fun initDiscount () {
+    private fun initDiscount() {
         discount = viewModel.userInfo.value?.discount ?: 1.0F
     }
 
@@ -131,6 +136,17 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initBtnView() {
         binding.btnBet.apply {
             tv_quota.text = TextUtil.formatBetQuota(0)
+        }
+
+        binding.buttonFastBetSetting.apply {
+            cl_fast_bet.setOnClickListener { _ ->
+                fragmentManager?.let { it ->
+                    FastBetSettingDialog().show(
+                        it,
+                        FastBetSettingDialog::class.java.simpleName
+                    )
+                }
+            }
         }
     }
 
@@ -157,11 +173,18 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         rv_bet_list.layoutManager = layoutManager
         betListRefactorAdapter?.setHasStableIds(true)
         rv_bet_list.adapter = betListRefactorAdapter
-        rv_bet_list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL).apply {
-            ContextCompat.getDrawable(context ?: requireContext(), R.drawable.divider_color_white8)?.let {
-                setDrawable(it)
-            }
-        })
+        rv_bet_list.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                LinearLayoutManager.VERTICAL
+            ).apply {
+                ContextCompat.getDrawable(
+                    context ?: requireContext(),
+                    R.drawable.divider_color_white8
+                )?.let {
+                    setDrawable(it)
+                }
+            })
     }
 
     private fun initToolBar() {
@@ -173,37 +196,38 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initAdapter() {
-        betListRefactorAdapter = BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
-            override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
-                viewModel.removeBetInfoItem(oddsId)
-            }
+        betListRefactorAdapter =
+            BetListRefactorAdapter(object : BetListRefactorAdapter.OnItemClickListener {
+                override fun onDeleteClick(oddsId: String, currentItemCount: Int) {
+                    viewModel.removeBetInfoItem(oddsId)
+                }
 
-            override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
-                keyboard?.showKeyboard(editText)
-            }
+                override fun onShowKeyboard(editText: EditText, matchOdd: MatchOdd) {
+                    keyboard?.showKeyboard(editText)
+                }
 
-            override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
-                keyboard?.showKeyboard(editText)
-            }
+                override fun onShowParlayKeyboard(editText: EditText, parlayOdd: ParlayOdd?) {
+                    keyboard?.showKeyboard(editText)
+                }
 
-            override fun onHideKeyBoard() {
-                keyboard?.hideKeyboard()
-            }
+                override fun onHideKeyBoard() {
+                    keyboard?.hideKeyboard()
+                }
 
-            override fun saveOddsHasChanged(matchOdd: MatchOdd) {
-                viewModel.saveOddsHasChanged(matchOdd)
-            }
+                override fun saveOddsHasChanged(matchOdd: MatchOdd) {
+                    viewModel.saveOddsHasChanged(matchOdd)
+                }
 
-            override fun refreshBetInfoTotal() {
-                checkAllAmountCanBet()
-                refreshAllAmount()
-                btn_bet.isOddsChanged = false //輸入金額的行為視為接受當前賠率
-            }
+                override fun refreshBetInfoTotal() {
+                    checkAllAmountCanBet()
+                    refreshAllAmount()
+                    btn_bet.isOddsChanged = false //輸入金額的行為視為接受當前賠率
+                }
 
-            override fun showParlayRule(parlayType: String, parlayRule: String) {
-                showParlayDescription(parlayType, parlayRule)
-            }
-        })
+                override fun showParlayRule(parlayType: String, parlayRule: String) {
+                    showParlayDescription(parlayType, parlayRule)
+                }
+            })
     }
 
     private fun checkAllAmountCanBet() {
@@ -227,7 +251,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun refreshAllAmount(newBetList: List<BetInfoListData>? = null) {
         val originalList = newBetList ?: getCurrentBetList()
         val list =
-            (newBetList ?: getCurrentBetList()).filter { it.matchOdd.status == BetStatus.ACTIVATED.code }//過濾不能投注的
+            (newBetList
+                ?: getCurrentBetList()).filter { it.matchOdd.status == BetStatus.ACTIVATED.code }//過濾不能投注的
 
         val parlayList =
             if (originalList.size == list.size) getCurrentParlayList() else mutableListOf()//單注有不能投注的單則串關不做顯示也不能投注
@@ -235,14 +260,15 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val totalBetAmount =
             list.sumByDouble { it.realAmount } + (parlayList.sumByDouble { it.betAmount * it.num })
         val betCount =
-            list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
+            list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }
+                .sumBy { it.num }
         val winnableAmount = list.sumByDouble {
             var currentOddsType = oddsType
-            if(it.matchOdd.odds == it.matchOdd.malayOdds){
+            if (it.matchOdd.odds == it.matchOdd.malayOdds) {
                 currentOddsType = OddsType.EU
             }
-            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType),currentOddsType)
-        } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType),OddsType.EU) }
+            getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)
+        } + parlayList.sumByDouble { getWinnable(it.betAmount, getOdds(it, oddsType), OddsType.EU) }
 
         binding.apply {
             tvAllBetCount.text = betCount.toString()
@@ -262,28 +288,28 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 //        }
 
         var winnable = 0.0
-            when (oddsType) {
-                OddsType.MYS -> {
-                    winnable = if (odds < 0) {
-                        betAmount
-                    } else {
-                        betAmount * odds
-                    }
-                }
-                OddsType.IDN -> {
-                    winnable = if (odds < 0) {
-                        betAmount
-                    } else {
-                        betAmount * odds
-                    }
-                }
-                OddsType.EU -> {
-                    winnable = betAmount * (odds - 1)
-                }
-                else -> {
-                    winnable = betAmount * odds
+        when (oddsType) {
+            OddsType.MYS -> {
+                winnable = if (odds < 0) {
+                    betAmount
+                } else {
+                    betAmount * odds
                 }
             }
+            OddsType.IDN -> {
+                winnable = if (odds < 0) {
+                    betAmount
+                } else {
+                    betAmount * odds
+                }
+            }
+            OddsType.EU -> {
+                winnable = betAmount * (odds - 1)
+            }
+            else -> {
+                winnable = betAmount * odds
+            }
+        }
 
         return winnable
     }
@@ -318,7 +344,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 llDeleteAll.visibility = View.VISIBLE
                 btnDeleteAllConfirm.startAnimation(enterAnimation)
             }
-            btnDeleteAllCancel.setOnClickListener { btnDeleteAllConfirm.startAnimation(exitAnimation) }
+            btnDeleteAllCancel.setOnClickListener {
+                btnDeleteAllConfirm.startAnimation(exitAnimation)
+            }
 
             btnDeleteAllConfirm.setOnClickListener {
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
@@ -328,7 +356,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
     private fun initKeyBoard() {
-        keyboard = KeyBoardUtil(binding.kvKeyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
+        keyboard =
+            KeyBoardUtil(binding.kvKeyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
     }
 
     private fun initObserver() {
@@ -359,7 +388,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(viewLifecycleOwner) {
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
-               // if (list.isEmptyBetList()) return@let
+                cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
+
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list
 
@@ -484,7 +514,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val betList = getCurrentBetList()
         val betListFilter = betList.filter { it.matchOdd.status == BetStatus.ACTIVATED.code }
 
-        val parlayList = if (betList.size == betListFilter.size) getCurrentParlayList() else mutableListOf()
+        val parlayList =
+            if (betList.size == betListFilter.size) getCurrentParlayList() else mutableListOf()
 
         val tempParlayList = mutableListOf<ParlayOdd>()
         parlayList.forEach {
@@ -515,6 +546,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         if (isLogin) {
             tv_balance.visibility = View.VISIBLE
             tv_balance_currency.visibility = View.VISIBLE
+            tv_balance_currency.text = sConfigData?.systemCurrency
         } else {
             tv_balance.visibility = View.GONE
             tv_balance_currency.visibility = View.GONE
@@ -552,7 +584,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             setCancelable(false)
             setCanceledOnTouchOutside(false)
             view.apply {
-                tv_parlay_type.text = getParlayStringRes(parlayType)?.let { context.getString(it) } ?: ""
+                tv_parlay_type.text =
+                    getParlayStringRes(parlayType)?.let { context.getString(it) } ?: ""
                 tv_parlay_rule.text = parlayRule
             }
             btn_close.setOnClickListener {
@@ -595,7 +628,8 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
      * @如果資料只有一筆，也不用顯示
      */
     private fun showHideCantParlayWarn(show: Boolean) {
-        ll_cant_parlay_warn.visibility = if (show && betListRefactorAdapter?.betList?.size ?: 0 > 1) View.VISIBLE else View.GONE
+        ll_cant_parlay_warn.visibility =
+            if (show && betListRefactorAdapter?.betList?.size ?: 0 > 1) View.VISIBLE else View.GONE
     }
 
     private fun subscribeChannel(list: MutableList<BetInfoListData>) {

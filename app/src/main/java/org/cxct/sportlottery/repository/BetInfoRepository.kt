@@ -16,6 +16,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
+import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.Event
 import org.cxct.sportlottery.util.GameConfigManager
@@ -94,6 +95,12 @@ class BetInfoRepository(val androidContext: Context) {
         get() = _hasBetPlatClose
     private val _hasBetPlatClose = MutableLiveData<Boolean>()
 
+    private val gameFastBetOpenedSharedPreferences by lazy {
+        androidContext.getSharedPreferences(
+            GameViewModel.GameFastBetOpenedSP,
+            Context.MODE_PRIVATE
+        )
+    }
 
     @Deprecated("串關邏輯修改,使用addInBetOrderParlay")
     fun addInBetInfoParlay() {
@@ -610,5 +617,14 @@ class BetInfoRepository(val androidContext: Context) {
         }
         _showOddsCloseWarn.postValue(hasPlatClose)
         _hasBetPlatClose.postValue(hasBetPlatClose)
+    }
+
+    fun setFastBetOpened(isOpen: Boolean) {
+        val editor = gameFastBetOpenedSharedPreferences.edit()
+        editor.putBoolean("isOpen", isOpen).apply()
+    }
+
+    fun getIsFastBetOpened(): Boolean{
+        return gameFastBetOpenedSharedPreferences.getBoolean("isOpen", true)
     }
 }
