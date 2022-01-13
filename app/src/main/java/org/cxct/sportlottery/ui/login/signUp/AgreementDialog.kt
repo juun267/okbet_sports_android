@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.dialog_agreement.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseDialog
 
+@Deprecated("no usage")
 class AgreementDialog : BaseDialog<RegisterViewModel>(RegisterViewModel::class) {
 
     init {

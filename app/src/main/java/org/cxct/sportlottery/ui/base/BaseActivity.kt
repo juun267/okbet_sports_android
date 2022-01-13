@@ -11,9 +11,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder
+import com.bigkoo.pickerview.view.OptionsPickerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.view.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_custom.*
 import kotlinx.android.synthetic.main.layout_loading.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.BaseResult
@@ -23,10 +25,11 @@ import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.common.StatusSheetAdapter
 import org.cxct.sportlottery.ui.common.StatusSheetData
 import org.cxct.sportlottery.ui.game.GameActivity
-import org.cxct.sportlottery.ui.main.MainActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.reflect.KClass
+import org.cxct.sportlottery.ui.main.MainActivity
+
 
 abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActivity() {
 
@@ -34,6 +37,7 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     private var mPromptDialog: CustomAlertDialog? = null
     private var mTokenPromptDialog: CustomAlertDialog? = null
     private var mOnNetworkExceptionListener: View.OnClickListener? = null
+    private var mPickerView: OptionsPickerView<String>? = null
 
     val viewModel: T by viewModel(clazz = clazz)
 
@@ -106,7 +110,10 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
     open fun loading(message: String?) {
         if (loadingView == null) {
             loadingView = layoutInflater.inflate(R.layout.layout_loading, null)
-            val params = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+            val params = RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
+            )
             addContentView(loadingView, params)
         } else {
             loadingView?.rl_loading?.visibility = View.VISIBLE
@@ -247,27 +254,33 @@ abstract class BaseActivity<T : BaseViewModel>(clazz: KClass<T>) : AppCompatActi
         itemClickListener: StatusSheetAdapter.ItemCheckedListener,
         isShowSelectAll: Boolean = false,
     ) {
-        bottomSheetView.apply {
-            sheet_tv_title.text = title
+        val strList: ArrayList<String?> = arrayListOf()
+        dataList.forEach { strList.add(it.showName) }
 
-            checkbox_select_all.visibility = if (isShowSelectAll) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        val defaultPosition = checkDefaultPosition(dataList, defaultData)
 
-            sheet_rv_more.adapter =
-                StatusSheetAdapter(itemClickListener).apply {
-                    this.dataList = dataList
-                    this.defaultCheckedCode = defaultData.code
-                }
+        mPickerView = OptionsPickerBuilder(this) { options1, _, _, _ ->
+            itemClickListener.onChecked(true, dataList[options1])
+        }
+            .setItemVisibleCount(4)
+            .setBgColor(resources.getColor(R.color.colorSilver2))
+            .build()
+        mPickerView?.setPicker(strList)
+        mPickerView?.setSelectOptions(defaultPosition)
+        mPickerView?.show()
+    }
 
-            sheet_tv_close.setOnClickListener {
-                bottomSheet.dismiss()
+    private fun checkDefaultPosition(
+        dataList: List<StatusSheetData>,
+        defaultData: StatusSheetData
+    ): Int {
+        var defaultPosition = 0
+        dataList.forEachIndexed { position, statusSheetData ->
+            if (statusSheetData.code == defaultData.code) {
+                defaultPosition = position
             }
         }
-        bottomSheet.setContentView(bottomSheetView)
-        bottomSheet.show()
+        return defaultPosition
     }
 
     protected fun safelyUpdateLayout(runnable: Runnable) {

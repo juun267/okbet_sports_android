@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.fragment_bet_receipt.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.TextUtil
@@ -71,6 +72,7 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
     }
 
     private fun initView() {
+        tv_currency.text = sConfigData?.systemCurrency
         setupTotalValue()
 
         initButton()
@@ -94,9 +96,9 @@ class BetReceiptFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         tv_all_bet_count.text = betCount.toString()
         (context ?: requireContext()).apply {
-            tv_total_bet_amount.text = "${TextUtil.formatMoney(betResultData?.totalStake?: 0.0)} ${getString(R.string.currency)}"
+            tv_total_bet_amount.text = "${TextUtil.formatMoney(betResultData?.totalStake?: 0.0)} ${sConfigData?.systemCurrency}"
             tv_total_winnable_amount.text =
-                "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${getString(R.string.currency)}"
+                "${TextUtil.formatMoney(betResultData?.totalWinnable ?: 0.0)} ${sConfigData?.systemCurrency}"
         }
     }
 
