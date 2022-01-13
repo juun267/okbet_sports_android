@@ -35,6 +35,7 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
+import kotlin.math.abs
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -123,9 +124,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentOddsType = oddsType
-
-        if(betList?.getOrNull(position)?.matchOdd?.odds == betList?.getOrNull(position)?.matchOdd?.malayOdds){
-            currentOddsType = OddsType.EU
+        betList?.getOrNull(position)?.apply {
+            if(matchOdd.odds == matchOdd.malayOdds
+                || matchType == MatchType.OUTRIGHT
+                || matchType == MatchType.OTHER_OUTRIGHT){
+                currentOddsType = OddsType.EU
+            }
         }
 
         when (holder) {
@@ -350,7 +354,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked && betListSize > 1) View.VISIBLE else View.GONE
                 var currentOddsType = oddsType
-                if(itemData.matchOdd.odds == itemData.matchOdd.malayOdds){
+                if(itemData.matchOdd.odds == itemData.matchOdd.malayOdds
+                    || itemData.matchType == MatchType.OUTRIGHT
+                    || itemData.matchType == MatchType.OTHER_OUTRIGHT){
                     currentOddsType = OddsType.EU
                 }
                 setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
@@ -716,7 +722,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 var realAmount = betAmount
                 var win = 0.0
                 var currentOddsType = oddsType
-                if(it.matchOdd.odds == it.matchOdd.malayOdds){
+                if(it.matchOdd.odds == it.matchOdd.malayOdds
+                    || it.matchType == MatchType.OUTRIGHT
+                    || it.matchType == MatchType.OTHER_OUTRIGHT){
                     currentOddsType = OddsType.EU
                 }
                 when (currentOddsType) {
@@ -810,7 +818,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         if (firstItem && !hasBetClosed) {
                             visibility = View.VISIBLE
 
-                            val itemOdd = TextUtil.formatForOdd(getOdds(data, oddsType))
+                            val currentOddsType = OddsType.EU //串關需以歐洲盤賠率顯示
+                            val itemOdd = TextUtil.formatForOdd(getOdds(data, currentOddsType))
                             text = itemOdd
                         } else
                             visibility = View.GONE
