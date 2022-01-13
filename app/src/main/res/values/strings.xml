@@ -864,5 +864,8 @@
     <string name="night_mode">夜间模式</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
+    <string name="bet_slip">投注单</string>
+    <string name="fast_bet_open_desc">开启快捷投注</string>
+    <string name="bet_list_empty">投注单是空的</string>
 
 </resources>

@@ -577,7 +577,7 @@
     <string name="bet_info_bet_balance_insufficient">Balance is not enough</string>
     <string name="bet_info_different_game_type">Different ball species can not be linked for parlay</string>
     <string name="bet_info_input_quota">Enter the amount</string>
-    <string name="bet_info_check_maximum_limit">Show maximum limits</string>
+    <string name="bet_info_check_maximum_limit">MAX BET</string>
     <string name="bet_info_bet_quota">bet amount</string>
     <string name="bet_info_win_quota">Winning amount:</string>
     <string name="bet_info_accept_odds_change">Accept changes and place bets</string>
@@ -851,4 +851,7 @@
     <string name="appearance">appearance</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
+    <string name="bet_slip">Bet slip</string>
+    <string name="fast_bet_open_desc">Enable Quick Bet</string>
+    <string name="bet_list_empty">Your Bet Slip is currently empty.</string>
 </resources>

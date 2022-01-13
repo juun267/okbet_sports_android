@@ -56,7 +56,6 @@ import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 
 
 /**

@@ -1,26 +1,20 @@
-package org.cxct.sportlottery.ui.bet.list
+package org.cxct.sportlottery.ui.game.betList
 
-
-import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.view_bet_info_close_message.*
-import kotlinx.android.synthetic.main.view_bet_info_keyboard.kv_keyboard
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.databinding.DialogBottomSheetBetinfoItemBinding
+import org.cxct.sportlottery.databinding.FragmentBottomSheetBetinfoItemBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
 import org.cxct.sportlottery.enum.SpreadState
@@ -30,29 +24,20 @@ import org.cxct.sportlottery.network.bet.info.ParlayOdd
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.repository.sConfigData
-import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
+import org.cxct.sportlottery.ui.base.BaseSocketFragment
+import org.cxct.sportlottery.ui.bet.list.*
 import org.cxct.sportlottery.ui.bet.list.receipt.BetInfoCarReceiptDialog
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
-import org.cxct.sportlottery.util.ArithUtil.toMoneyFormat
-import java.lang.Math.abs
 
-
-/**
- * @author Kevin
- * @create 2021/7/8
- * @description
- */
 const val INPLAY: Int = 1
 
-@SuppressLint("SetTextI18n", "ClickableViewAccessibility")
-class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewModel::class) {
+class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
-
-    private lateinit var binding: DialogBottomSheetBetinfoItemBinding
+    private lateinit var binding: FragmentBottomSheetBetinfoItemBinding
 
     private var discount = 1.0F
 
@@ -107,11 +92,6 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
         }
 
-    init {
-        setStyle(STYLE_NORMAL, R.style.LightBackgroundBottomSheet)
-    }
-
-
     private val keyboard: KeyBoardUtil by lazy {
         KeyBoardUtil(kv_keyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
     }
@@ -121,10 +101,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DialogBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
+        binding = FragmentBottomSheetBetinfoItemBinding.inflate(inflater, container, false)
         binding.apply {
-            lifecycleOwner = this@BetInfoCarDialog.viewLifecycleOwner
-            dialog = this@BetInfoCarDialog
+//            lifecycleOwner = this@FastBetFragment.viewLifecycleOwner
+//            dialog = this@BetInfoCarDialog
         }.executePendingBindings()
         return binding.root
     }
@@ -143,13 +123,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         getCurrentMoney()
     }
 
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        OddSpannableString.clearHandler()
-    }
-
-    private fun initDiscount () {
+    private fun initDiscount() {
         discount = viewModel.userInfo.value?.discount ?: 1.0F
     }
 
@@ -158,6 +132,11 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             viewModel.removeBetInfoSingle()
             dismiss()
         }
+    }
+
+    private fun dismiss() {
+        activity?.onBackPressed()
+        OddSpannableString.clearHandler()
     }
 
 
@@ -187,6 +166,14 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
             isCanSendOut = false
         }
+
+        tv_add_to_bet_info.setOnClickListener {
+            addToBetInfoList()
+        }
+
+        button_fast_bet_setting.setOnClickListener {
+            showSettingDialog()
+        }
     }
 
 
@@ -213,11 +200,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     private fun initEditText() {
 
         et_bet.afterTextChanged {
-            button_bet.tv_quota.text = TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
+            button_bet.tv_quota.text =
+                TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
                 button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
-                tvRealAmount.text = toMoneyFormat(0.0)
+                tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
                 tv_check_maximum_limit.visibility = View.VISIBLE
                 ll_bet_quota_detail.visibility = View.GONE
                 ll_win_quota_detail.visibility = View.GONE
@@ -244,41 +232,42 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 var realAmount = quota
                 var win = 0.0
                 var currentOddsType = oddsType
-                if(matchOdd?.odds == matchOdd?.malayOdds
+                if (matchOdd?.odds == matchOdd?.malayOdds
                     || betInfoListData?.matchType == MatchType.OUTRIGHT
-                    || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT){
+                    || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT
+                ) {
                     currentOddsType = OddsType.EU
                 }
                 when (currentOddsType) {
                     OddsType.MYS -> {
                         if (getOdds(matchOdd, currentOddsType) < 0) {
                             realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
-                            tvRealAmount.text = toMoneyFormat(realAmount)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = quota
                         } else {
                             win = quota * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = toMoneyFormat(realAmount)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                         }
 
                     }
                     OddsType.IDN -> {
                         if (getOdds(matchOdd, currentOddsType) < 0) {
                             realAmount = quota * kotlin.math.abs(getOdds(matchOdd, currentOddsType))
-                            tvRealAmount.text = toMoneyFormat(realAmount)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = quota
                         } else {
                             win = quota * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = toMoneyFormat(realAmount)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                         }
                     }
                     OddsType.EU -> {
-                        win = quota * (getOdds(matchOdd, currentOddsType)-1)
-                        tvRealAmount.text = toMoneyFormat(realAmount)
+                        win = quota * (getOdds(matchOdd, currentOddsType) - 1)
+                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
 
                     }
                     else -> {
                         win = quota * getOdds(matchOdd, currentOddsType)
-                        tvRealAmount.text = toMoneyFormat(realAmount)
+                        tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                     }
                 }
                 button_bet.tv_quota.text = TextUtil.format(realAmount)
@@ -303,7 +292,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
         betInfoListData?.parlayOdds?.min?.let { min ->
             if (quota < min) {
                 tv_error_message.text = String.format(
-                    (context ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
+                    (context
+                        ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
                     min,
                     sConfigData?.systemCurrency
                 )
@@ -331,6 +321,9 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
                     betInfoListData = list.getOrNull(0)
+                    if (list.size > 1) {
+                        dismiss()
+                    }
 
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)
@@ -340,9 +333,10 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                     var realAmount = 0.00
                     var win = 0.0
                     var currentOddsType = oddsType
-                    if(matchOdd?.odds == matchOdd?.malayOdds
+                    if (matchOdd?.odds == matchOdd?.malayOdds
                         || betInfoListData?.matchType == MatchType.OUTRIGHT
-                        || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT){
+                        || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT
+                    ) {
                         currentOddsType = OddsType.EU
                     }
                     when (currentOddsType) {
@@ -354,11 +348,11 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                                         currentOddsType
                                     )
                                 )
-                                tvRealAmount.text = toMoneyFormat(realAmount)
+                                tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
                                 win = betAmount * getOdds(matchOdd, currentOddsType)
-                                tvRealAmount.text = toMoneyFormat(betAmount)
+                                tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                             }
 
                         }
@@ -370,25 +364,27 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                                         currentOddsType
                                     )
                                 )
-                                tvRealAmount.text = toMoneyFormat(realAmount)
+                                tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                                 win = betAmount
                             } else {
                                 win = betAmount * getOdds(matchOdd, currentOddsType)
-                                tvRealAmount.text = toMoneyFormat(betAmount)
+                                tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                             }
                         }
                         OddsType.EU -> {
                             win = betAmount * (getOdds(matchOdd, currentOddsType) - 1)
-                            tvRealAmount.text = toMoneyFormat(betAmount)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
 
                         }
                         else -> {
                             win = betAmount * getOdds(matchOdd, currentOddsType)
-                            tvRealAmount.text = toMoneyFormat(betAmount)
+                            tvRealAmount.text = ArithUtil.toMoneyFormat(betAmount)
                         }
                     }
 
                     tv_win_quota.text = TextUtil.format(win)
+                } else {
+                    dismiss()
                 }
             }
         }
@@ -496,8 +492,9 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
 
     private fun setupData(matchOdd: MatchOdd) {
-        tv_match.text = if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
-        else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
+        tv_match.text =
+            if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
+            else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
 
         val nameOneLine = { inputStr: String ->
             inputStr.replace("\n", "-")
@@ -548,11 +545,12 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
         betInfoListData?.let { betInfoData ->
             //[Martin] 判斷馬來盤與歐洲盤賠率是否一樣 若相同 則該項玩法是不支持馬來盤or印尼下注的 則將oddsType
-            val currentOddsType = if(betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds
+            val currentOddsType = if (betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds
                 || betInfoData.matchType == MatchType.OUTRIGHT
-                || betInfoData.matchType == MatchType.OTHER_OUTRIGHT){
+                || betInfoData.matchType == MatchType.OTHER_OUTRIGHT
+            ) {
                 OddsType.EU
-            }else{
+            } else {
                 oddsType
             }
             betInfoData.singleBetOddsType = currentOddsType
@@ -562,6 +560,16 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
 
     fun addToBetInfoList() {
         viewModel.addInBetInfo()
+//        dismiss()
+    }
+
+    fun showSettingDialog() {
+        fragmentManager?.let { it ->
+            FastBetSettingDialog().show(
+                it,
+                FastBetSettingDialog::class.java.simpleName
+            )
+        }
     }
 
 
@@ -596,19 +604,5 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
             }
         }
     }
-
-
-    companion object {
-
-        @JvmStatic
-        fun launch(): Boolean {
-            val currentActivity = (AppManager.currentActivity() as FragmentActivity)
-            BetInfoCarDialog().run {
-                showNow(currentActivity.supportFragmentManager, BetInfoCarDialog::class.java.simpleName)
-            }
-            return false
-        }
-    }
-
 
 }

@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -46,7 +45,6 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.network.sport.SportMenuData
 import org.cxct.sportlottery.network.sport.SportMenuResult
-import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuData
 import org.cxct.sportlottery.network.sport.coupon.SportCouponMenuResult
 import org.cxct.sportlottery.network.sport.query.Play
 import org.cxct.sportlottery.network.sport.query.SportQueryData
@@ -88,6 +86,7 @@ class GameViewModel(
 ) {
     companion object {
         const val GameLiveSP = "GameLiveSharedPreferences"
+        const val GameFastBetOpenedSP = "GameFastBetOpenedSharedPreferences"
     }
 
     val token = loginRepository.token
@@ -2116,6 +2115,14 @@ class GameViewModel(
                 withdrawRepository.checkBankCardPermissions()
             }
         }
+    }
+
+    fun setFastBetOpened(isOpen: Boolean){
+        betInfoRepository.setFastBetOpened(isOpen)
+    }
+
+    fun getIsFastBetOpened(): Boolean{
+        return betInfoRepository.getIsFastBetOpened()
     }
 
 }
