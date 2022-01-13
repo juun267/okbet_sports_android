@@ -7,6 +7,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     FT("FT", R.string.soccer),
     BK("BK", R.string.basketball),
     TN("TN", R.string.tennis),
+    VB("VB", R.string.volleyball),
     BM("BM", R.string.badminton),
     TT("TT", R.string.ping_pong),
     IH("IH", R.string.ice_hockey),
@@ -15,10 +16,9 @@ enum class GameType(val key: String, @StringRes val string: Int) {
     CK("CK", R.string.cricket),
     BB("BB", R.string.baseball),
     RB("RB", R.string.rugby_football),
+    AFT("AFT",R.string.AFT),
     MR("MR", R.string.motor_racing),
     GF("GF", R.string.golf),
-    VB("VB", R.string.volleyball),
-    AFT("AFT",R.string.AFT),
     OTHER("OTHER",R.string.other);
 
     companion object {
@@ -27,6 +27,7 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 FT.key -> FT
                 BK.key -> BK
                 TN.key -> TN
+                VB.key -> VB
                 BM.key -> BM
                 TT.key -> TT
                 IH.key -> IH
@@ -35,10 +36,9 @@ enum class GameType(val key: String, @StringRes val string: Int) {
                 CK.key -> CK
                 BB.key -> BB
                 RB.key -> RB
+                AFT.key -> AFT
                 MR.key -> MR
                 GF.key -> GF
-                VB.key -> VB
-                AFT.key -> AFT
                 else -> null
             }
         }

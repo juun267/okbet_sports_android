@@ -14,4 +14,5 @@ interface MatchOdd {
     val quickPlayCateList: MutableList<QuickPlayCate>?
     val oddsEps: Odds?
     var playCateMappingList: List<PlayCateMapItem>?
+
 }

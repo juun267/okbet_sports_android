@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.home_highlight_item.view.*
 import org.cxct.sportlottery.R
@@ -25,6 +25,7 @@ import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
@@ -54,6 +55,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 id = it.matchInfo?.id ?: "",
                 playCateNum = it.matchInfo?.playCateNum ?: 0,
                 startTime = it.matchInfo?.startTime,
+                eps = it.matchInfo?.eps,
+                spt = it.matchInfo?.spt,
+                liveVideo = it.matchInfo?.liveVideo,
                 status = it.matchInfo?.status ?: -1).apply {
                 gameType = sportCode
                 startDateDisplay = TimeUtil.timeFormat(it.matchInfo?.startTime, "MM/dd")
@@ -64,7 +68,15 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             it.oddsMap.forEach { odd ->
                 odds[odd.key] = odd.value?.toMutableList()
             }
-            MatchOdd(it.betPlayCateNameMap, it.playCateNameMap, matchInfo, odds)
+            MatchOdd(
+                it.betPlayCateNameMap,
+                it.playCateNameMap,
+                matchInfo,
+                odds,
+                it.dynamicMarkets,
+                it.quickPlayCateList,
+                it.oddsSort
+            )
         } ?: listOf()
         notifyDataSetChanged()
     }
@@ -120,7 +132,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
     override fun onBindViewHolder(holder: ViewHolderHdpOu, position: Int) {
         try {
             val data = dataList[position]
-            holder.bind(data)
+            var lastIndex = if (position > 0) position - 1 else 0
+            val lastData = dataList[lastIndex]
+            holder.bind(data,lastData)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -138,12 +152,13 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
 
         private var gameType: String? = null
 
-        private var oddListHDP: MutableList<Odd?>? = null
-        private var oddList1x2: MutableList<Odd?>? = null
+        private var oddList: MutableList<Odd?>? = null
+
 
         private var timer: Timer? = null
 
-        fun bind(data: MatchOdd) {
+        fun bind(data: MatchOdd, lastData: MatchOdd) {
+            setTitle(data,lastData)
             setMatchType(data)
             setupOddList(data)
             setupMatchInfo(data)
@@ -169,6 +184,50 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             }
         }
 
+        private fun setTitle(data: MatchOdd, lastData: MatchOdd) {
+            try {
+                itemView.apply {
+                    when {
+                        bindingAdapterPosition == 0 -> {
+                            ll_highlight_type.visibility = View.VISIBLE
+                            tv_game_type.isVisible = true
+                            tv_play_type_highlight.isVisible = true
+                            tv_play_type_highlight.text =
+                                data.playCateNameMap?.get(data.oddsSort)
+                                    ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                        }
+                        TimeUtil.isTimeToday(data.matchInfo?.startTime) && !TimeUtil.isTimeToday(
+                            lastData.matchInfo?.startTime
+                        ) -> {
+                            ll_highlight_type.visibility = View.VISIBLE
+
+                            tv_game_type.isVisible = true
+                            tv_play_type_highlight.visibility = View.INVISIBLE
+                        }
+                        !TimeUtil.isTimeToday(data.matchInfo?.startTime) && TimeUtil.isTimeToday(
+                            lastData.matchInfo?.startTime
+                        ) -> {
+                            ll_highlight_type.visibility = View.VISIBLE
+
+                            tv_game_type.isVisible = true
+                            tv_play_type_highlight.visibility = View.INVISIBLE
+                        }
+                        else -> {
+                            ll_highlight_type.visibility = View.GONE
+                        }
+                    }
+
+                    tv_game_type.text = if (TimeUtil.isTimeToday(data.matchInfo?.startTime)) {
+                        resources.getString(R.string.home_tab_today)
+                    } else {
+                        "${resources.getString(TimeUtil.setupDayOfWeekAndToday(data.matchInfo?.startTime))} ${data.matchInfo?.startDateDisplay}"
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
         private fun setMatchType(data: MatchOdd) {
             matchType = if(data.matchInfo?.isAtStart == true) MatchType.AT_START else  MatchType.TODAY
         }
@@ -177,25 +236,10 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
             itemView.apply {
                 gameType = data.matchInfo?.gameType
 
-                oddListHDP = when (gameType) {
-                    GameType.TN.key -> {
-                        data.oddsMap[PlayCate.SET_HDP.value]
-                    }
-                    GameType.BK.key -> {
-                        data.oddsMap[PlayCate.HDP_INCL_OT.value]
-                    }
-                    else -> {
-                        data.oddsMap[PlayCate.HDP.value]
-                    }
-                }
-
-                oddList1x2 = when (gameType) {
-                    GameType.BK.key -> {
-                        data.oddsMap[PlayCate.SINGLE_OT.value]
-                    }
-                    else -> {
-                        data.oddsMap[PlayCate.SINGLE.value]
-                    }
+                oddList = if(data.oddsMap.isNotEmpty()) {
+                    data.oddsMap.iterator().next().value
+                }else{
+                    mutableListOf()
                 }
             }
         }
@@ -220,14 +264,14 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         private fun showStrongTeam() {
             itemView.apply {
                 tv_game_name_home.apply {
-                    setTextTypeFace(if (oddListHDP?.getOrNull(0)?.spread?.contains("-") == true)
+                    setTextTypeFace(if (oddList?.getOrNull(0)?.spread?.contains("-") == true)
                             Typeface.BOLD
                         else
                             Typeface.NORMAL
                     )
                 }
                 tv_game_name_away.apply {
-                    setTextTypeFace(if (oddListHDP?.getOrNull(1)?.spread?.contains("-") == true)
+                    setTextTypeFace(if (oddList?.getOrNull(1)?.spread?.contains("-") == true)
                             Typeface.BOLD
                         else
                             Typeface.NORMAL
@@ -267,97 +311,83 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         }
 
         private fun setupOddButton(data: MatchOdd) {
-            itemView.apply {
-                gameType = data.matchInfo?.gameType
+            try {
+                itemView.apply {
+                    gameType = data.matchInfo?.gameType
 
-                val playCateStr = when (gameType) {
-                    GameType.FT.key, GameType.BK.key, GameType.IH.key, GameType.RB.key, GameType.AFT.key -> context.getText(
-                        R.string.ou_hdp_hdp_title
-                    )
-                    GameType.TN.key, GameType.VB.key, GameType.BX.key, GameType.CK.key -> context.getText(
-                        R.string.ou_hdp_1x2_title
-                    )
-                    else -> ""
-                }.toString()
+                    val playCateName = data.oddsSort ?: ""
 
-                btn_match_odd1.apply {
-                    isSelected = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            oddListHDP?.get(0)?.isSelected ?: false
-                        }
-                        GameType.TN.key, GameType.VB.key -> {
-                            oddList1x2?.get(0)?.isSelected ?: false
-                        }
-                        else -> {
+
+                    val playCateStr = data.playCateNameMap?.get(playCateName)
+                        ?.get(LanguageManager.getSelectLanguage(context).key)
+
+                    btn_match_odd1.apply {
+                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             false
+                        } else {
+                            oddList?.get(0)?.isSelected ?: false
                         }
-                    }
 
-                    betStatus = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddListHDP?.get(0)?.status ?: BetStatus.LOCKED.code
-                            }
+                        betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            BetStatus.DEACTIVATED.code
+                        } else {
+                            oddList?.get(0)?.status ?: BetStatus.LOCKED.code
                         }
-                        GameType.TN.key, GameType.VB.key -> {
-                            if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddList1x2?.get(0)?.status ?: BetStatus.LOCKED.code
-                            }
-                        }
-                        else -> {
-                            null
-                        }
-                    }
 
-                    this@ViewHolderHdpOu.setupOddState(
-                        this, when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                oddListHDP?.get(0)
-                            }
-                            GameType.TN.key, GameType.VB.key -> {
-                                oddList1x2?.get(0)
-                            }
-                            else -> {
-                                null
-                            }
-                        }
-                    )
+                        if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.get(0))
 
-                    when {
-                        oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(0), oddsType,"disable")
-                        }
-                        oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(0), oddsType,"disable")
-                        }
-                    }
+                            setupOdd(
+                                oddList?.get(0),
+                                oddsType,
+                                "disable"
+                            ) //TODO Bill 這裡要看球種顯示 1/2 不能用disable
 
-                    setOnClickListener {
-                        when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
-                                    oddListHDP?.get(0)?.let { odd ->
+                            setOnClickListener {
+                                if (oddList != null && oddList?.size ?: 0 >= 2) {
+                                    oddList?.get(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            PlayCate.HDP.value,
+                                            playCateName,
                                             playCateStr
                                         )
                                     }
                                 }
                             }
+                        }
 
-                            GameType.TN.key, GameType.VB.key -> {
-                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
-                                    oddList1x2?.get(0)?.let { odd ->
+                    }
+
+                    btn_match_odd2.apply {
+                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            false
+                        } else {
+                            oddList?.get(1)?.isSelected ?: false
+                        }
+
+                        betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            BetStatus.DEACTIVATED.code
+                        } else {
+                            oddList?.get(1)?.status ?: BetStatus.LOCKED.code
+                        }
+
+                        if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.get(1))
+
+                            setupOdd(
+                                oddList?.get(1),
+                                oddsType,
+                                "disable"
+                            )  //TODO Bill 這裡要看球種顯示 1/2 不能用disable
+
+                            setOnClickListener {
+                                if (oddList != null && oddList?.size ?: 0 >= 2) {
+                                    oddList?.get(1)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            PlayCate.SINGLE.value,
+                                            playCateName,
                                             playCateStr
                                         )
                                     }
@@ -366,93 +396,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                         }
                     }
                 }
-
-                btn_match_odd2.apply {
-                    isSelected = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            oddListHDP?.get(1)?.isSelected ?: false
-                        }
-                        GameType.TN.key, GameType.VB.key -> {
-                            oddList1x2?.get(1)?.isSelected ?: false
-                        }
-                        else -> {
-                            false
-                        }
-                    }
-
-                    betStatus = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> {
-                            if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddListHDP?.get(1)?.status ?: BetStatus.LOCKED.code
-                            }
-                        }
-                        GameType.TN.key, GameType.VB.key -> {
-                            if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
-                                BetStatus.LOCKED.code
-                            } else {
-                                oddList1x2?.get(1)?.status ?: BetStatus.LOCKED.code
-                            }
-                        }
-                        else -> {
-                            null
-                        }
-                    }
-
-                    this@ViewHolderHdpOu.setupOddState(
-                        this, when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                oddListHDP?.get(1)
-                            }
-                            GameType.TN.key, GameType.VB.key -> {
-                                oddList1x2?.get(1)
-                            }
-                            else -> {
-                                null
-                            }
-                        }
-                    )
-
-                    when {
-                        oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
-                            setupOdd(oddListHDP?.get(1), oddsType,"disable")
-                        }
-                        oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
-                            setupOdd(oddList1x2?.get(1), oddsType,"disable")
-                        }
-                    }
-
-                    setOnClickListener {
-                        when (gameType) {
-                            GameType.FT.key, GameType.BK.key -> {
-                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
-                                    oddListHDP?.get(1)?.let { odd ->
-                                        onClickOddListener?.onClickBet(
-                                            data,
-                                            odd,
-                                            PlayCate.HDP.value,
-                                            playCateStr
-                                        )
-                                    }
-                                }
-                            }
-
-                            GameType.TN.key, GameType.VB.key -> {
-                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
-                                    oddList1x2?.get(1)?.let { odd ->
-                                        onClickOddListener?.onClickBet(
-                                            data,
-                                            odd,
-                                            PlayCate.SINGLE.value,
-                                            playCateStr
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
@@ -463,7 +408,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
         ) {
             var timeMillis = startTime * 1000L
 
-            mTimerMap[adapterPosition]?.cancel()
+            mTimerMap[bindingAdapterPosition]?.cancel()
             stopTimer()
 
             timer = Timer()
@@ -472,7 +417,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                     when {
                         timeMillis < 0 -> {
                             timeMillis = 0
-                            mTimerMap[adapterPosition]?.cancel()
+                            mTimerMap[bindingAdapterPosition]?.cancel()
                         }
                         isDecrease -> timeMillis -= 1000
                         !isDecrease -> timeMillis += 1000
@@ -483,7 +428,7 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 }
             }, 1000L, 1000L)
 
-            mTimerMap[adapterPosition] = timer
+            mTimerMap[bindingAdapterPosition] = timer
         }
 
         fun stopTimer() {

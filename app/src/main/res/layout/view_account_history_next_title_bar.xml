@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:paddingBottom="10dp"
-    tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextFragment"
+    tools:context="org.cxct.sportlottery.ui.main.accountHistory.next.AccountHistoryNextAdapter"
     tools:ignore="SpUsage">
 
     <ImageView

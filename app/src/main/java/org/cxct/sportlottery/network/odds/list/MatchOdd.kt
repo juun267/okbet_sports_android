@@ -36,6 +36,7 @@ data class MatchOdd(
 
     override val oddsEps: Odds? = null
 
+    @Deprecated("之後翻譯都要改用playCateNameMap")
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var isExpand = false
@@ -52,4 +53,8 @@ data class MatchOdd(
             }
         }
     }
+}
+
+enum class TimeCounting(val value: Int) {
+    STOP(1), CONTINUE(0)
 }

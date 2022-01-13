@@ -303,7 +303,7 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
                 tv_error_message.text = String.format(
                     (context ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
                     min,
-                    context?.getString(R.string.currency)
+                    sConfigData?.systemCurrency
                 )
                 tv_error_message.visibility = View.VISIBLE
                 button_bet.amountCanBet = false
@@ -476,8 +476,8 @@ class BetInfoCarDialog : BaseSocketBottomSheetFragment<GameViewModel>(GameViewMo
     }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text =
-            getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
+        tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
+
     }
 
 

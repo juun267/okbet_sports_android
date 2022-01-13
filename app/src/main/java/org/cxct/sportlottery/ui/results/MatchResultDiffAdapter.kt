@@ -46,7 +46,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when (viewType) {
-            //TODO Bill BB、MR、GF 還不確定版型
             ListType.TITLE.ordinal -> MatchTitleViewHolder.from(parent)
             ListType.MATCH.ordinal -> MatchViewHolder.from(parent)
             ListType.FIRST_ITEM_FT.ordinal -> FtDetailFirstItemViewHolder.from(parent)
@@ -206,8 +205,11 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_second_half.visibility = View.VISIBLE
                         tv_end_game.visibility = View.VISIBLE
                         tv_full_game.visibility = View.GONE
+
+                        tv_end_game.text = context.getString(R.string.full_game)
                     }
-                    GameType.TN.key, GameType.VB.key -> {
+                    GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
+                    GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key -> {
                         tv_first_half.visibility = View.GONE
                         tv_second_half.visibility = View.GONE
                         tv_end_game.visibility = View.VISIBLE
@@ -302,7 +304,8 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         tv_end_game_score.visibility = View.VISIBLE
                         tv_full_game_score.visibility = View.GONE
                     }
-                    GameType.TN.key, GameType.VB.key -> { //賽果
+                    GameType.TN.key, GameType.VB.key, GameType.BM.key,GameType.BX.key,
+                    GameType.CB.key, GameType.CK.key, GameType.BB.key, GameType.RB.key  -> { //賽果
                         tv_first_half_score.visibility = View.GONE
                         tv_second_half_score.visibility = View.GONE
                         tv_end_game_score.visibility = View.VISIBLE
@@ -339,7 +342,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                         ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
                     val fullGame = matchStatusList.find { it.status == StatusType.OVER_TIME.code }
                         ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
-
                     tv_first_half_score.text =
                         firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                     tv_second_half_score.text =
@@ -666,8 +668,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             val firstPlat = matchStatus?.find { it.status == StatusType.FIRST_PLAT.code }
             val secondPlat = matchStatus?.find { it.status == StatusType.SECOND_PLAT.code }
             val thirdPlat = matchStatus?.find { it.status == StatusType.THIRD_PLAT.code }
-            val fourthPlat = matchStatus?.find { it.status == StatusType.FOURTH_PLAT.code }
-            val fifthPlat = matchStatus?.find { it.status == StatusType.FIFTH_PLAT.code }
             val finalPlat = matchStatus?.find { it.status == StatusType.END_GAME.code }
             var homeRound = 0
             var awayRound = 0
@@ -698,18 +698,6 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                     tv_away_third.text = it.awayScore?.apply { awayRound += this }.toString()
                 }
 
-                //第四
-                fourthPlat?.let {
-                    tv_home_fourth.text = it.homeScore?.apply { homeRound += this }.toString()
-                    tv_away_fourth.text = it.awayScore?.apply { awayRound += this }.toString()
-                }
-
-                //第五
-                fifthPlat?.let {
-                    tv_home_fifth.text = it.homeScore?.apply { homeRound += this }.toString()
-                    tv_away_fifth.text = it.awayScore?.apply { awayRound += this }.toString()
-                }
-
                 //終局
                 tv_home_score.text = homeRound.toString()
                 tv_away_score.text = awayRound.toString()
@@ -730,7 +718,7 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
             fun from(viewGroup: ViewGroup): RecyclerView.ViewHolder {
                 val layoutInflater = LayoutInflater.from(viewGroup.context)
                 val view = layoutInflater.inflate(
-                    R.layout.content_game_detail_result_bm_rv,
+                    R.layout.content_game_detail_result_vb_rv,
                     viewGroup,
                     false
                 )

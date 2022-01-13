@@ -25,7 +25,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textColor="@color/colorGray"
-                android:textSize="@dimen/textSize14sp"
+                android:textSize="@dimen/textSize12sp"
                 tools:text="让球" />
         </LinearLayout>
 
@@ -45,7 +45,7 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="6dp"
             android:textColor="@color/colorGray"
-            android:textSize="@dimen/textSize14sp"
+            android:textSize="@dimen/textSize12sp"
             tools:text="RS巴西体育工会" />
     </LinearLayout>
 

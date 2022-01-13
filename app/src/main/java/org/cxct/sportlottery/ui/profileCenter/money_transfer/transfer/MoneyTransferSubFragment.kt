@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_money_transfer_sub.*
 import kotlinx.android.synthetic.main.view_account_balance_2.view.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.common.CustomAlertDialog
 import org.cxct.sportlottery.ui.profileCenter.money_transfer.MoneyTransferViewModel
@@ -42,7 +43,7 @@ class MoneyTransferSubFragment : BaseSocketFragment<MoneyTransferViewModel>(Mone
         moveAnim(isPlatReversed)
         out_account.selectedText = getString(R.string.plat_money)
         in_account.selectedText = gameDataArg.gameData.showName
-
+        layout_balance.tv_currency_type.text = sConfigData?.systemCurrency
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.OUT_PLAT, gameDataArg.gameData.showName)
         viewModel.filterSubList(MoneyTransferViewModel.PLAT.IN_PLAT, getString(R.string.plat_money))
     }

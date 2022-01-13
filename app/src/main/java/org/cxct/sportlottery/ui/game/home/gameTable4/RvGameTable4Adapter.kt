@@ -56,7 +56,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var discount: Float = 1.0F
         set(newDiscount) {
             mDataList.forEach { gameEntity ->
-                gameEntity.matchOdds?.forEach { matchOdd ->
+                gameEntity.matchOdds.forEach { matchOdd ->
                     matchOdd.oddsMap.forEach { (key, value) ->
                         value?.forEach { odd ->
                             odd?.updateDiscount(field, newDiscount)
@@ -235,7 +235,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 indicator_view.setupWithViewPager2(view_pager)
                 indicator_view.apply {
                     visibility = if (data.matchOdds!!.size <= 1) {
-                        View.INVISIBLE
+                        View.GONE
                     } else {
                         View.VISIBLE
                     }

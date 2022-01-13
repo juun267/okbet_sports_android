@@ -46,4 +46,5 @@ data class MatchOdd(
 
     @IgnoredOnParcel
     var startTime: String = ""
+
 }

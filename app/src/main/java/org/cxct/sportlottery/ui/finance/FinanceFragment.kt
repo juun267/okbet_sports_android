@@ -57,6 +57,8 @@ class FinanceFragment : BaseSocketFragment<FinanceViewModel>(FinanceViewModel::c
                 )
             )
         }
+
+        view.tv_currency_type.text = sConfigData?.systemCurrency
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
