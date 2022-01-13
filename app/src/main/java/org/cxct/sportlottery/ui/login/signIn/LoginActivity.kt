@@ -95,17 +95,22 @@ class LoginActivity : BaseActivity<LoginViewModel>(LoginViewModel::class) {
             binding.eetPassword.setSelection(binding.eetPassword.text.toString().length)
         }
         //避免自動記住密碼被人看到，把顯示密碼按鈕功能隱藏，直到密碼被重新編輯才顯示
-        binding.etPassword.endIconImageButton.visibility = View.GONE
+        if(binding.eetPassword.text.toString().isNotEmpty()) {
+            binding.etPassword.endIconImageButton.visibility = View.GONE
+        }else{
+            binding.etPassword.endIconImageButton.visibility = View.VISIBLE
+        }
 //        binding.etPassword.setOnFocusChangeListener { v, hasFocus ->
 //            if (!hasFocus)
 //                checkInputData()
 //        }
         binding.etPassword.setSimpleTextChangeWatcher(object : SimpleTextChangedWatcher {
             override fun onTextChanged(theNewText: String?, isError: Boolean) {
-                if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
-                    binding.etPassword.endIconImageButton.visibility = View.VISIBLE
-                    binding.eetPassword.setText(null)
-                }
+                    if (binding.etPassword.endIconImageButton.visibility == View.GONE) {
+                        binding.etPassword.endIconImageButton.visibility = View.VISIBLE
+                        binding.eetPassword.setText(null)
+                    }
+
             }
         })
 //        et_password.eyeVisibility = View.GONE
