@@ -77,7 +77,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 data.matchOdds.forEach {
                     it.matchInfo?.gameType = data.code
                 }
-                var gameEntity = GameEntity(data.code, data.name, data.num, data.matchOdds)
+                var gameEntity = GameEntity(data.code, data.name, data.num, data.matchOdds, data.playCateNameMap)
                 dataList.add(gameEntity)
             } else {
                 otherMatch = OtherMatch(data.code, data.name, data.num)
@@ -85,7 +85,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
         if(!otherMatchList.isNullOrEmpty()){
-            var otherGameEntity = GameEntity(null, null, 0, emptyList(), otherMatchList)
+            var otherGameEntity = GameEntity(null, null, 0, emptyList(), mutableMapOf(), otherMatchList)
             dataList.add(otherGameEntity)
         }
         mDataList = dataList
@@ -223,7 +223,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 if (data.vpTableAdapter == null)
                     data.vpTableAdapter =
-                        Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType)
+                        Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType, data.playCateNameMap)
 
                 data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener

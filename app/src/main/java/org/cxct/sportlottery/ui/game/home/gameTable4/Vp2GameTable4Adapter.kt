@@ -31,7 +31,12 @@ import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
 
-class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType, val matchType: MatchType) :
+class Vp2GameTable4Adapter(
+    val dataList: List<MatchOdd>,
+    val oddsType: OddsType,
+    val matchType: MatchType,
+    val playCateNameMap: Map<String?, Map<String?, String?>?>? //主頁的翻譯要取外層的playCateNameMap，odds為{}時內層的playCateNameMap會是空的
+) :
     RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 
     var onClickOddListener: OnClickOddListener? = null
