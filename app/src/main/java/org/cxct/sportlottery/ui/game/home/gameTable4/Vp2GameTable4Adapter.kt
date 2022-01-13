@@ -26,6 +26,7 @@ import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
@@ -217,6 +218,11 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                                 tv_point.text = "$homePoint–$awayPoint"
                             }
                             GameType.VB.key, GameType.TT.key-> {
+                                tv_game_total_score_home_center.visibility = View.VISIBLE
+                                tv_game_score_home_center.visibility = View.VISIBLE
+                                tv_game_total_score_away_center.visibility = View.VISIBLE
+                                tv_game_score_away_center.visibility = View.VISIBLE
+
                                 tv_match_status.visibility = View.VISIBLE
 
                                 tv_match_status.text = "${data.matchInfo.statusName18n} / ${data.matchInfo.spt}" ?: ""
@@ -357,12 +363,8 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
             itemView.apply {
                 gameType = data.matchInfo?.gameType
 
-                tv_play_type.text = when (gameType) {
-                    GameType.FT.key, GameType.BK.key -> context.getText(R.string.ou_hdp_hdp_title)
-                    GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> context.getText(R.string.ou_hdp_1x2_title)
-                    GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> context.getText(R.string.ou_hdp_1x2_title)
-                    else -> context.getText(R.string.ou_hdp_1x2_title) //TODO Cheryl 其他球種沒文件，只能參考小金去做顯示
-                }
+                //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
+                tv_play_type.text = data.playCateNameMap?.get(data.oddsSort)?.get(LanguageManager.getSelectLanguage(context).key)
 
                 btn_match_odd1.apply {
                     isSelected = when (gameType) {
@@ -594,8 +596,9 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
 
                     //跟進h5 獨贏盤客隊以2表示
                     tv_name.text = when (gameType) {
-                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> "2"
+                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.BM.key -> "2"
                         GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> "2"
+                        GameType.CK.key -> "X"
                         else -> ""
                     }
 
@@ -630,6 +633,142 @@ class Vp2GameTable4Adapter(val dataList: List<MatchOdd>, val oddsType: OddsType,
                             GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key  -> {
                                 if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
                                     oddList1x2?.getOrNull(1)?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            PlayCate.SINGLE.value,
+                                            itemView.tv_play_type.text.toString()
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                btn_match_odd3.apply {
+                    isVisible = gameType == GameType.CK.key
+
+                    isSelected = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
+                            oddListHDP?.getOrNull(2)?.isSelected ?: false
+                        }
+                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key-> {//1x2 獨贏盤 -> {
+                            oddList1x2?.getOrNull(2)?.isSelected ?: false
+                        }
+                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> {//1x2 獨贏盤
+                            oddList1x2?.getOrNull(2)?.isSelected ?: false
+                        }
+                        else -> {
+                            false
+                        }
+                    }
+
+                    betStatus = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> {
+                            if (oddListHDP == null || oddListHDP?.size ?: 0 < 2) {
+                                BetStatus.DEACTIVATED.code
+                            } else {
+                                oddListHDP?.getOrNull(2)?.status ?: BetStatus.LOCKED.code
+                            }
+                        }
+                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key-> {//1x2 獨贏盤
+                            if (oddList1x2 == null || oddList1x2?.size ?: 0 < 2) {
+                                BetStatus.DEACTIVATED.code
+                            } else {
+                                oddList1x2?.getOrNull(2)?.status ?: BetStatus.LOCKED.code
+                            }
+                        }
+
+                        //下面球種類別沒文件，後端、h5無解，參考小金，待修正
+                        GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> {
+                            if (oddList1x2?.size ?: 0 < 2 || oddListHDP?.size ?: 0 < 2) {
+                                BetStatus.DEACTIVATED.code
+                            } else {
+                                oddListHDP?.getOrNull(2)?.status ?: oddList1x2?.getOrNull(2)?.status ?: BetStatus.LOCKED.code
+                            }
+                        }
+
+                        GameType.GF.key -> { //高爾夫只有冠軍，不會顯示在首頁
+                            null
+                        }
+
+                        else -> {
+                            null
+                        }
+                    }
+
+                    this@ViewHolderHdpOu.setupOddState(
+                        this, when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
+                                oddListHDP?.getOrNull(2)
+                            }
+                            GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key-> {
+                                oddList1x2?.getOrNull(2)
+                            }
+                            GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> {
+                                oddList1x2?.getOrNull(2)
+                            }
+                            else -> {
+                                null
+                            }
+                        }
+                    )
+                    when {
+                        oddListHDP != null && oddListHDP?.size ?: 0 >= 2 -> {
+                            setupOdd(oddListHDP?.getOrNull(2), oddsType)
+                        }
+
+                        oddList1x2 != null && oddList1x2?.size ?: 0 >= 2 -> {
+                            setupOdd(oddList1x2?.getOrNull(2), oddsType)
+                        }
+                    }
+
+                    tv_name.visibility = when (gameType) {
+                        GameType.FT.key, GameType.BK.key -> View.GONE
+                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> View.VISIBLE
+                        GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> View.VISIBLE
+                        else -> View.GONE
+                    }
+
+                    //跟進h5 獨贏盤客隊以2表示
+                    tv_name.text = when (gameType) {
+                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> "2"
+                        GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> "2"
+                        else -> ""
+                    }
+
+                    setOnClickListener {
+                        when (gameType) {
+                            GameType.FT.key, GameType.BK.key -> {
+                                if (oddListHDP != null && oddListHDP?.size ?: 0 >= 2) {
+                                    oddListHDP?.getOrNull(2)?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            PlayCate.HDP.value,
+                                            itemView.tv_play_type.text.toString()
+                                        )
+                                    }
+                                }
+                            }
+
+                            GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key  -> {
+                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
+                                    oddList1x2?.getOrNull(2)?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            PlayCate.SINGLE.value,
+                                            itemView.tv_play_type.text.toString()
+                                        )
+                                    }
+                                }
+                            }
+
+                            GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key  -> {
+                                if (oddList1x2 != null && oddList1x2?.size ?: 0 >= 2) {
+                                    oddList1x2?.getOrNull(2)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
