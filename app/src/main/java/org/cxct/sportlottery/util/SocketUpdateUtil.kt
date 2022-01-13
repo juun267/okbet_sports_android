@@ -44,6 +44,7 @@ object SocketUpdateUtil {
                         matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
                             ?: matchStatusCO.statusName
                     if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
+
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
@@ -124,14 +125,19 @@ object SocketUpdateUtil {
                     else -> null
                 }
 
-                isNeedRefresh = when {
-                    (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) -> {
-                        matchOdd.matchInfo?.leagueTime = leagueTime
-                        matchOdd.matchInfo?.stopped = matchClockCO.stopped
-                        true
-                    }
-                    else -> false
+
+                if (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) {
+                    matchOdd.matchInfo?.leagueTime = leagueTime
+                    isNeedRefresh = true
                 }
+
+
+                if (matchClockCO.stopped != matchOdd.matchInfo?.stopped) {
+                    matchOdd.matchInfo?.stopped = matchClockCO.stopped
+                    isNeedRefresh = true
+
+                }
+
             }
         }
 
@@ -594,7 +600,7 @@ object SocketUpdateUtil {
                                 }
 
                                 false -> {
-                                    if(oddTypeMap.key == oddsMapEntrySocket.key)
+                                    if (oddTypeMap.key == oddsMapEntrySocket.key)
                                         odds.add(oddSocket)
 
                                     isNeedRefresh = true
@@ -665,7 +671,7 @@ object SocketUpdateUtil {
                     isNeedRefresh = true
                 }
 
-                if (odd?.spread != oddSocket.spread){
+                if (odd?.spread != oddSocket.spread) {
                     odd?.spread = oddSocket.spread
 
                     isNeedRefresh = true

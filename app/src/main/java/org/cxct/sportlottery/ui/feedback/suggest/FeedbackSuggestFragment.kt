@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_feedback_suggest.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.ui.feedback.FeedbackViewModel
 
@@ -23,7 +24,12 @@ class FeedbackSuggestFragment : BaseFragment<FeedbackViewModel>(FeedbackViewMode
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         initButton()
+    }
+
+    private fun initView() {
+        tv_description.text = String.format(getString(R.string.feedback_description_money), sConfigData?.systemCurrency)
     }
 
     private fun initButton() {

@@ -14,6 +14,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.money.MoneyPayWayData
 import org.cxct.sportlottery.network.money.OnlineType
 import org.cxct.sportlottery.network.money.config.RechCfg
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseFragment
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager
@@ -84,7 +85,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
         } else {
             cv_pay_bank.visibility = View.VISIBLE
         }
-
+        tv_currency_type.text = sConfigData?.systemCurrency
         tv_pay_gap_subtitle.text =
             if (mMoneyPayWay?.onlineType == OnlineType.WY.type) getString(R.string.title_pay_channel)
             else getString(R.string.title_pay_gap)
@@ -202,7 +203,7 @@ class OnlinePayFragment : BaseFragment<MoneyRechViewModel>(MoneyRechViewModel::c
 
     private fun getAmountLimitHint(): String {
         return String.format(
-            getString(R.string.edt_hint_deposit_money),
+            "${getString(R.string.edt_hint_deposit_money)} ${sConfigData?.systemCurrency}",
             TextUtil.formatBetQuota(mSelectRechCfgs?.minMoney?.toLong() ?: 0),
             TextUtil.formatBetQuota(mSelectRechCfgs?.maxMoney?.toLong() ?: 999999)
         )

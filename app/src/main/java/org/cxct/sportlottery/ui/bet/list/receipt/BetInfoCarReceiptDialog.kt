@@ -2,9 +2,11 @@ package org.cxct.sportlottery.ui.bet.list.receipt
 
 import android.os.Bundle
 import android.text.Spanned
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item_receipt.*
@@ -16,6 +18,7 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate.Companion.needShowSpread
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketBottomSheetFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.ui.menu.OddsType
@@ -43,9 +46,9 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         view.apply {
             result.receipt?.singleBets?.firstOrNull()?.apply {
                 matchOdds?.firstOrNull()?.apply {
-                    tv_play_content.text = playName
                     tv_league.text = leagueName
-                    val teamNamesStr = if (homeName?.length ?:0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
+                    val teamNamesStr =
+                        if (homeName?.length ?: 0 > 15) "$homeName v\n$awayName" else "$homeName v $awayName"
                     tv_team_names.text = teamNamesStr
                     tv_match_type.text = playCateName
                 }
@@ -64,15 +67,17 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
                 val matchOdd = matchOdds?.firstOrNull()
 
-                matchOdd?.apply {
-                    tv_play_content.text = setSpannedString(
-                        needShowSpread(matchOdd.playCateCode) && (matchType != MatchType.OUTRIGHT),
-                        matchOdd.playName,
-                        matchOdd.spread,
-                        TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
-                        tv_play_content.context.getString(oddsType?.res ?: OddsType.EU.res)
-                    )
+                var currentOddsType = oddsType
+                if(matchOdd?.odds == matchOdd?.malayOdds){
+                    currentOddsType = OddsType.EU
                 }
+                tv_play_content.text = setPlayContent(
+                    needShowSpread(matchOdd?.playCateCode) && (matchType != MatchType.OUTRIGHT),
+                    matchOdd?.playName,
+                    matchOdd?.spread,
+                    TextUtil.formatForOdd(getOdds(matchOdd, oddsType ?: OddsType.EU)),
+                    tv_play_content.context.getString(currentOddsType?.res ?: OddsType.EU.res)
+                )
             }
         }
     }
@@ -102,16 +107,19 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
         }
 
         viewModel.oddsType.observe(viewLifecycleOwner) { oddType ->
-            val matchOdd = result.receipt?.singleBets?.firstOrNull()?.matchOdds?.firstOrNull()
-//            tv_play_content.setOddFormat(getOdds(matchOdd, it))
+
             result.receipt?.singleBets?.firstOrNull()?.let { betResult ->
                 betResult.matchOdds?.firstOrNull()?.let { matchOdd ->
-                    tv_play_content.text = setSpannedString(
+                    var currentOddsType = oddType
+                    if(matchOdd.odds == matchOdd.malayOdds){
+                        currentOddsType = OddsType.EU
+                    }
+                    tv_play_content.text = setPlayContent(
                         needShowSpread(matchOdd.playCateCode) && (betResult.matchType != MatchType.OUTRIGHT),
                         matchOdd.playName,
                         matchOdd.spread,
-                        TextUtil.formatForOdd(getOdds(matchOdd, oddType)),
-                        tv_play_content.context.getString(oddType.res)
+                        TextUtil.formatForOdd(getOdds(matchOdd, currentOddsType)),
+                        tv_play_content.context.getString(currentOddsType.res)
                     )
 
                 }
@@ -120,7 +128,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
 
     }
 
-    private fun setSpannedString(
+    private fun setPlayContent(
         isShowSpread: Boolean,
         playName: String?,
         spread: String?,
@@ -141,8 +149,7 @@ class BetInfoCarReceiptDialog(val result: BetAddResult) :
     }
 
     private fun setupCurrentMoney(money: Double) {
-        tv_current_money.text =
-            getString(R.string.bet_info_current_rmb, TextUtil.formatMoney(money))
+        tv_current_money.text = "${TextUtil.formatMoney(money)} ${sConfigData?.systemCurrency}"
     }
 
 }

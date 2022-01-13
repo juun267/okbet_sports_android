@@ -26,6 +26,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.odds.list.TimeCounting
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
@@ -107,6 +108,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                 val matchInfoList = currentList.mapNotNull {
                     it.matchInfo
                 }
+                val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
                 when (payload) {
                     PAYLOAD_SCORE_CHANGE -> {
                         (holder as ViewHolderHdpOu).setupMatchInfo(
@@ -115,10 +117,10 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                             matchInfoList,
                             leagueOddListener
                         )
-                        (holder as ViewHolderHdpOu).setupMatchTime(item, matchType, isTimerEnable)
+                        (holder as ViewHolderHdpOu).setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
                     }
                     PAYLOAD_CLOCK_CHANGE -> {
-                        (holder as ViewHolderHdpOu).setupMatchTime(item, matchType, isTimerEnable)
+                        (holder as ViewHolderHdpOu).setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
                     }
 //                    PAYLOAD_ODDS_CHANGE -> {
 //                        (holder as ViewHolderHdpOu).setupOddsButton(item, oddsType, leagueOddListener)
@@ -135,6 +137,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             it.matchInfo
         }
         var viewHolder = holder as ViewHolderHdpOu
+        val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
+
         if(updateType == PAYLOAD_SCORE_CHANGE){
             viewHolder.setupMatchInfo(
                 item,
@@ -142,13 +146,14 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                 matchInfoList,
                 leagueOddListener
             )
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable)
+
+            viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
         }else if(updateType == PAYLOAD_CLOCK_CHANGE ){
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable)
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable)
+            viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
+            viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
         }else if(updateType == PAYLOAD_ODDS_CHANGE){
             viewHolder.setupOddsButton(item, oddsType, leagueOddListener)
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable)
+            viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
         } else{
             when (holder) {
                 is ViewHolderHdpOu -> {
@@ -196,11 +201,13 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
-            matchInfoList: List<MatchInfo>
-        ) {
+            matchInfoList: List<MatchInfo>,
+
+            ) {
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
 
-            setupMatchTime(item, matchType, isTimerEnable)
+            val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
+            setupMatchTime(item, matchType, isTimerEnable, isTimerPause)
 
             setupOddsButton(item, oddsType, leagueOddListener)
 
@@ -462,6 +469,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             item: MatchOdd,
             matchType: MatchType,
             isTimerEnable: Boolean,
+            isTimerPause: Boolean
         ) {
             when {
                 item.matchInfo?.isInPlay == true -> {
@@ -486,6 +494,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
                         updateTimer(
                             isTimerEnable,
+                            isTimerPause,
                             item.matchInfo.leagueTime ?: 0,
                             item.matchInfo.gameType == GameType.BK.key
                         )
@@ -510,6 +519,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     item.matchInfo.remainTime?.let { remainTime ->
                         updateTimer(
                             isTimerEnable,
+                            isTimerPause,
                             (remainTime / 1000).toInt(),
                             true
                         )
@@ -536,6 +546,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
                                 updateTimer(
                                     isTimerEnable,
+                                    isTimerPause,
                                     item.matchInfo.leagueTime ?: 0,
                                     item.matchInfo.gameType == GameType.BK.key
                                 )
@@ -560,6 +571,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                             item.matchInfo?.remainTime?.let { remainTime ->
                                 updateTimer(
                                     isTimerEnable,
+                                    isTimerPause,
                                     (remainTime / 1000).toInt(),
                                     true
                                 )
@@ -1051,41 +1063,50 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
         private var timer: Timer? = null
 
-        fun updateTimer(isTimerEnable: Boolean, startTime: Int, isDecrease: Boolean) {
+        fun updateTimer(
+            isTimerEnable: Boolean,
+            isTimerPause: Boolean,
+            startTime: Int,
+            isDecrease: Boolean
+        ) {
             when (isTimerEnable) {
-                true -> {
-                    stopTimer()
-                    var timeMillis = startTime * 1000L
-
-                    Handler(Looper.getMainLooper()).post {
-                        listener?.onTimerUpdate(timeMillis)
-                    }
-
-                    timer = Timer()
-                    timer?.schedule(object : TimerTask() {
-                        override fun run() {
-                            when (isDecrease) {
-                                true -> {
-                                    timeMillis -= 1000
-                                }
-                                false -> {
-                                    timeMillis += 1000
-                                }
-                            }
-
-                            if (timeMillis > 0) {
-                                Handler(Looper.getMainLooper()).post {
-                                    listener?.onTimerUpdate(timeMillis)
-                                }
-                            }
-                        }
-                    }, 1000L, 1000L)
-                }
-
                 false -> {
                     stopTimer()
                 }
+
+                true -> {
+                    startTimer(isTimerPause, startTime, isDecrease)
+                }
+
             }
+        }
+
+        private fun startTimer(isTimerPause: Boolean, startTime: Int, isDecrease: Boolean) {
+            var timeMillis = startTime * 1000L
+
+            Handler(Looper.getMainLooper()).post {
+                listener?.onTimerUpdate(timeMillis)
+            }
+
+            timer = Timer()
+            timer?.schedule(object : TimerTask() {
+                override fun run() {
+                    when (isDecrease) {
+                        true -> {
+                            if (!isTimerPause) timeMillis -= 1000
+                        }
+                        false -> {
+                            if (!isTimerPause) timeMillis += 1000
+                        }
+                    }
+
+                    if (timeMillis > 0) {
+                        Handler(Looper.getMainLooper()).post {
+                            listener?.onTimerUpdate(timeMillis)
+                        }
+                    }
+                }
+            }, 1000L, 1000L)
         }
 
 

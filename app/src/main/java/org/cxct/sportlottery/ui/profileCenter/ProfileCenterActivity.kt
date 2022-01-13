@@ -89,6 +89,7 @@ class ProfileCenterActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_center)
 
+        initView()
         setupHeadButton()
         setupEditNickname()
         setupBalance()
@@ -100,6 +101,10 @@ class ProfileCenterActivity :
         initServiceButton()
         getUserInfo()
         initObserve()
+    }
+
+    private fun initView() {
+        tv_currency_type.text = sConfigData?.systemCurrency
     }
 
     override fun onResume() {

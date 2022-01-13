@@ -46,7 +46,6 @@ data class MatchInfo(
     val spt: Int? = null,
     @Json(name = "trackerId")
     val trackerId: String? = null,//动画映射id
-    override var stopped: Int? = 0,
 
     ) : Parcelable, MatchInfo {
     //Live
@@ -56,6 +55,7 @@ data class MatchInfo(
     override var statusName18n: String? = null //状态名称
     override var leagueTime: Int? = null
     override var socketMatchStatus: Int? = null //赛事阶段状态id
+    override var stopped: Int? = null//賽事是否暫停倒數计时 1:是 ，0：否
 
     //At Start
     var isAtStart: Boolean? = false

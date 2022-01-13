@@ -28,11 +28,6 @@
     <!--game hall-->
     <string name="match_type_row_btn_double">1 X 2</string>
 
-    <!--  Withdraw  -->
-    <string name="currency">PHP</string>
-<!--    <string name="finance_rmb">%s RMB</string>-->
-    <string name="finance_rmb">%s PHP</string>
-
     <!--keyboard-->
     <string name="keyboard_code_delete">-5</string>
     <string name="keyboard_code_insert_dot">-48</string>

@@ -6,7 +6,7 @@ import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.Odds
-import org.cxct.sportlottery.ui.bet.list.INPLAY
+import org.cxct.sportlottery.ui.game.betList.INPLAY
 import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
