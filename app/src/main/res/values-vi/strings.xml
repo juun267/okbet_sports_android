@@ -381,7 +381,7 @@
     <string name="title_account">Tài khoản：</string>
     <string name="title_address">Địa chỉ：</string>
     <string name="title_deposit_money">Số tiền nạp</string>
-    <string name="edt_hint_deposit_money">số tiền giới hạn %1$s～%2$s</string>
+    <string name="edt_hint_deposit_money">Giới hạn %1$s～%2$s</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
     <string name="edt_hint_real_name">Họ tên phải khớp với tài khoản ngân hàng</string>
@@ -434,7 +434,7 @@
     <string name="title_currency">Thỏa thuận / Loại tiền</string>
     <string name="title_choose_currency">chọn thỏa thuận / Loại tiền</string>
     <string name="txv_recharge_count">Số tiền cần nạp</string>
-    <string name="edt_hint_crypto_pay_count">số tiền giới hạn %1$s～%2$s</string>
+    <string name="edt_hint_crypto_pay_count">Giới hạn %1$s～%2$s</string>
     <string name="hint_rate">・Tỷ giá：%1$s</string>
     <string name="title_transaction_id">ID giao dịch chuỗi khối</string>
     <string name="hint_transaction_id">ID blockchain của bạn</string>

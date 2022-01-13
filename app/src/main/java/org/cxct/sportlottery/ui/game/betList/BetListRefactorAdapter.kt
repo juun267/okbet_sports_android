@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -135,7 +134,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     currentOddsType,
                     itemCount,
                     onItemClickListener,
-                    betList?.size ?: 0
+                    betList?.size ?: 0,
+                    position
                 )
             }
             is BatchSingleViewHolder -> {
@@ -199,7 +199,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             oddsType: OddsType,
             itemCount: Int,
             onItemClickListener: OnItemClickListener,
-            betListSize: Int
+            betListSize: Int,
+            position: Int
         ) {
             itemView.apply {
                 setupBetAmountInput(
@@ -214,6 +215,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 setupDeleteButton(itemData, itemCount, onItemClickListener)
 
                 setupMaximumLimitView(itemData, onItemClickListener)
+
+//                bottom_view.visibility = if(position == betListSize -1) View.GONE else View.VISIBLE
             }
         }
 
