@@ -369,7 +369,7 @@ class Vp2GameTable4Adapter(
                 gameType = data.matchInfo?.gameType
 
                 //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
-                tv_play_type.text = data.playCateNameMap?.get(data.oddsSort)?.get(LanguageManager.getSelectLanguage(context).key)
+                tv_play_type.text = playCateNameMap?.get(data.oddsSort)?.get(LanguageManager.getSelectLanguage(context).key)
 
                 btn_match_odd1.apply {
                     isSelected = when (gameType) {
