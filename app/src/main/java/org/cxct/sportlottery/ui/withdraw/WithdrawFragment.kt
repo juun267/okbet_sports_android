@@ -22,6 +22,7 @@ import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
+import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
@@ -34,6 +35,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private lateinit var bankCardBottomSheet: BottomSheetDialog
     private lateinit var bankCardAdapter: BankCardAdapter
     private var withdrawBankCardData: BankCardList? = null
+    private val zero = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -54,6 +56,7 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     private fun setupData() {
         viewModel.apply {
             getMoneyConfigs()
+            getUwCheck()
         }
     }
 
@@ -63,6 +66,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
             getAllIsShow = true
         }
         block_tab.visibility = View.GONE // 預設先隱藏 等待卡片資料讀取完畢後再顯示
+
+        btn_info.setOnClickListener {
+            context?.let { context -> CommissionInfoDialog(context).show() }
+        }
+
+        tv_detail.setOnClickListener {
+            startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
+        }
     }
 
     private fun initEvent() {
@@ -151,6 +162,23 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initObserve(view: View) {
+        viewModel.needCheck.observe(this.viewLifecycleOwner, Observer {
+            ll_commission.visibility = if(it) View.VISIBLE else View.GONE
+        })
+
+        viewModel.deductMoney.observe(this.viewLifecycleOwner, Observer {
+            tv_commission.apply {
+                text = if(it.isNaN()) "0" else TextUtil.formatCommissionMoney(zero.minus(it ?: 0.0))
+
+                setTextColor(
+                    ContextCompat.getColor(
+                        context,
+                        if (zero.minus(it ?: 0.0) > 0) R.color.colorGreen else R.color.colorRed
+                    )
+                )
+            }
+        })
+
         viewModel.loading.observe(this.viewLifecycleOwner, Observer {
             if (it)
                 loading()
@@ -333,6 +361,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
 
     private fun getBankCardTailNo(data: BankCardList?): String {
         return String.format(getString(R.string.selected_bank_card), data?.bankName ?: "", data?.cardNo ?: "")
+    }
+
+    private fun showCommissionDialog(){
+
     }
 }
 

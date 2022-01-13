@@ -140,9 +140,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/now_balance"
-            android:textStyle="bold"
             android:textColor="@color/colorBlackLight"
-            android:textSize="@dimen/textSize14sp" />
+            android:textSize="@dimen/textSize14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_balance"
@@ -187,9 +187,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="start|center_vertical"
                 android:text="@string/select_bank"
-                android:textStyle="bold"
                 android:textColor="@color/colorBlackLight"
-                android:textSize="@dimen/textSize13sp" />
+                android:textSize="@dimen/textSize13sp"
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="1dp"
@@ -220,7 +220,7 @@
                 android:layout_width="10dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="11dp"
-                android:src="@drawable/ic_arrow_down_gray"/>
+                android:src="@drawable/ic_arrow_down_gray" />
         </LinearLayout>
         <!-- 提款金額 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
@@ -256,6 +256,73 @@
             android:text="@string/withdraw_crypto_fee_hint"
             android:textColor="@color/colorRed"
             android:textSize="@dimen/textSize12sp" />
+        <!-- 扣除金额 -->
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/ll_commission"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/effect_edittext_bg"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="12dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:textColor="@color/colorBlackLight"
+                android:textSize="@dimen/textSize13sp"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                app:autoSizeMaxTextSize="13dp"
+                app:autoSizeMinTextSize="6dp"
+                app:autoSizeTextType="uniform"
+                android:text="@string/withdraw_uw_check" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@color/colorWhite6" />
+
+            <TextView
+                android:id="@+id/tv_commission"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:layout_weight="1"
+                android:textColor="@color/colorRedDark"
+                android:textSize="@dimen/textSize12sp" />
+
+            <TextView
+                android:id="@+id/tv_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/bg_radius_4_button_withdraw_commission_blue"
+                android:gravity="center"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:text="@string/commission_detail"
+                android:textColor="@color/colorBlue"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/btn_info"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:contentDescription="@null"
+                android:gravity="center"
+                android:src="@drawable/icon_info" />
+
+
+        </LinearLayout>
         <!-- 提款密碼 -->
         <org.cxct.sportlottery.ui.login.LoginEditText
             android:id="@+id/et_withdrawal_password"
@@ -265,17 +332,18 @@
             app:cvHint="@string/hint_four_number_password"
             app:cvInputType="numberPassword"
             app:cvTitle="@string/withdraw_password" />
+
         <TextView
             android:id="@+id/btn_withdraw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_radius_20_button_dusk"
             android:letterSpacing="0.2"
             android:paddingVertical="9dp"
-            android:layout_marginTop="10dp"
-            android:textAlignment="center"
             android:text="@string/submit"
-            android:background="@drawable/bg_radius_20_button_dusk"
+            android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16sp" />
     </LinearLayout>

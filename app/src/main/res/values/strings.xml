@@ -507,6 +507,7 @@
     <string name="select_bank">选择银行</string>
     <string name="withdraw_amount">提款金额</string>
     <string name="withdraw_password">提款密码</string>
+    <string name="withdraw_uw_check">扣除金额</string>
     <string name="withdraw_all">全部提取</string>
     <string name="withdraw_handling_fee_hint">・手续费率：%1$s%% 须支付手续费：%2$sPHP</string>
     <string name="withdraw_crypto_exchange_rate_hint">・汇率：%1$s</string>
@@ -868,5 +869,16 @@
     <string name="night_mode">夜间模式</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
+    <string name="commission_detail">详情</string>
+    <string name="commission_desc_1">当有效打码未达成时，为防止非常态性提款，需扣除未完成打码量的20%，做为提前提款手续费</string>
+    <string name="commission_desc_2">当达成有效打码后，则不另收手续费</string>
+    <string name="notice">提示说明</string>
+    <string name="commission_check_time">检查时间 :</string>
+    <string name="commission_deducted_amount">扣除金额</string>
+    <string name="commission_required_size">要求打码量</string>
+    <string name="commission_amount_of_coding_completed">已完成打码量</string>
+    <string name="commission_check_type">检查</string>
+    <string name="commission_not_completed">未完成</string>
+    <string name="commission_total_deducted_amount">加总扣除金额 :</string>
 
 </resources>

@@ -883,4 +883,16 @@
     <string name="appearance">ngoại hình</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
+    <string name="withdraw_uw_check">Số dư khấu trừ</string>
+    <string name="commission_detail">Chi tiết</string>
+    <string name="commission_desc_1">Khi mã cược hiệu lực thành công để ngăn chặn việc rút tiền bất thường, cần phải khấu trừ 20% số tiền cược hiệu lực chưa hoàn thành làm phí rút tiền trước hạn</string>
+    <string name="commission_desc_2">Sau khi cược có hiệu lực, sẽ không tính thêm phí xử lý</string>
+    <string name="notice">Thuyết minh</string>
+    <string name="commission_check_time">Kiểm tra thời gian :</string>
+    <string name="commission_deducted_amount">扣除金额</string>
+    <string name="commission_required_size">要求打码量</string>
+    <string name="commission_amount_of_coding_completed">已完成打码量</string>
+    <string name="commission_check_type">检查</string>
+    <string name="commission_not_completed">未完成</string>
+    <string name="commission_total_deducted_amount">加总扣除金额 :</string>
 </resources>

@@ -64,6 +64,9 @@
             android:name=".ui.withdraw.WithdrawActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.withdraw.WithdrawCommissionDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.withdraw.BankActivity"
             android:screenOrientation="portrait" />
         <activity
