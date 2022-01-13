@@ -239,7 +239,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             list.count { it.betAmount > 0 } + parlayList.filter { it.betAmount > 0 }.sumBy { it.num }
         val winnableAmount = list.sumByDouble {
             var currentOddsType = oddsType
-            if(it.matchOdd.odds == it.matchOdd.malayOdds || it.matchType == MatchType.PARLAY){
+            if(it.matchOdd.odds == it.matchOdd.malayOdds
+                || it.matchType == MatchType.OUTRIGHT
+                || it.matchType == MatchType.OTHER_OUTRIGHT){
                 currentOddsType = OddsType.EU
             }
             getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType),currentOddsType)

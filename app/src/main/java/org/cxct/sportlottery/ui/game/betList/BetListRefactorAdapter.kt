@@ -125,9 +125,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentOddsType = oddsType
-
-        if(betList?.getOrNull(position)?.matchOdd?.odds == betList?.getOrNull(position)?.matchOdd?.malayOdds){
-            currentOddsType = OddsType.EU
+        betList?.getOrNull(position)?.apply {
+            if(matchOdd.odds == matchOdd.malayOdds
+                || matchType == MatchType.OUTRIGHT
+                || matchType == MatchType.OTHER_OUTRIGHT){
+                currentOddsType = OddsType.EU
+            }
         }
 
         when (holder) {
@@ -352,7 +355,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 v_point.visibility = if (itemData.pointMarked && betListSize > 1) View.VISIBLE else View.GONE
                 var currentOddsType = oddsType
-                if(itemData.matchOdd.odds == itemData.matchOdd.malayOdds || itemData.matchType == MatchType.PARLAY){
+                if(itemData.matchOdd.odds == itemData.matchOdd.malayOdds
+                    || itemData.matchType == MatchType.OUTRIGHT
+                    || itemData.matchType == MatchType.OTHER_OUTRIGHT){
                     currentOddsType = OddsType.EU
                 }
                 setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
@@ -718,7 +723,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 var realAmount = betAmount
                 var win = 0.0
                 var currentOddsType = oddsType
-                if(it.matchOdd.odds == it.matchOdd.malayOdds){
+                if(it.matchOdd.odds == it.matchOdd.malayOdds
+                    || it.matchType == MatchType.OUTRIGHT
+                    || it.matchType == MatchType.OTHER_OUTRIGHT){
                     currentOddsType = OddsType.EU
                 }
                 when (currentOddsType) {
