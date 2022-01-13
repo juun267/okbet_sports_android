@@ -1083,7 +1083,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
         private fun startTimer(isTimerPause: Boolean, startTime: Int, isDecrease: Boolean) {
             var timeMillis = startTime * 1000L
-
+            stopTimer()
             Handler(Looper.getMainLooper()).post {
                 listener?.onTimerUpdate(timeMillis)
             }
