@@ -248,6 +248,7 @@ class SettlementViewModel(
             GameType.MR.key -> ListType.FIRST_ITEM_MR
             GameType.GF.key -> ListType.FIRST_ITEM_GF
             GameType.AFT.key -> ListType.FIRST_ITEM_AFT
+            GameType.BM.key -> ListType.FIRST_ITEM_BM
             else -> ListType.DETAIL
         }
     }
