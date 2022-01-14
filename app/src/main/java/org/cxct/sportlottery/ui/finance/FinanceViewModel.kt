@@ -225,6 +225,8 @@ class FinanceViewModel(
                 }
 
                 it.displayMoney = TextUtil.formatMoney(it.applyMoney ?: 0.0)
+
+                it.withdrawDeductMoney = TextUtil.formatMoney(it.deductMoney ?: 0.0)
             }
 
             result?.rows?.let {

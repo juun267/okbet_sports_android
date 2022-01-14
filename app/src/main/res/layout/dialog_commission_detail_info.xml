@@ -15,22 +15,13 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="詳細说明"
+            android:text="@string/commission_detail_title"
             android:textSize="@dimen/textSize16sp"
             android:textColor="@color/colorBlack"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <ImageView
-            android:layout_width="@dimen/textSize16sp"
-            android:layout_height="@dimen/textSize16sp"
-            android:src="@drawable/icon_info"
-            app:layout_constraintTop_toTopOf="@+id/tv_title"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_title"
-            app:layout_constraintEnd_toStartOf="@+id/tv_title"
-            android:layout_marginEnd="10dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,7 +63,7 @@
                     android:id="@+id/tv_desc_1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="本公司為防止非常態性提款，存款後須達成有效打碼後方可正常提款"
+                    android:text="@string/commission_detail_desc_1"
                     android:textSize="12sp"
                     android:textColor="@color/colorBlackLight"
                     app:layout_constraintStart_toEndOf="@+id/guideline"
@@ -94,7 +85,7 @@
                     android:id="@+id/tv_desc_2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="當未達有效打碼時，提款需扣除未完成打碼量的20%，做為提前提款手續費，計算方式為  未完成打碼量 x 20%扣除比例 = 扣除金額"
+                    android:text="@string/commission_detail_desc_2"
                     android:textSize="12sp"
                     android:textColor="@color/colorBlackLight"
                     app:layout_constraintStart_toEndOf="@+id/guideline"
@@ -116,7 +107,7 @@
                     android:id="@+id/tv_desc_3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="當第一筆充值未提款前，充值第二筆，則兩筆的「要求打碼量」、「已完成打碼量」將會進行加總，此時需同時完成第一筆與第二筆的要求打碼量，提款才不會產生扣除金額"
+                    android:text="@string/commission_detail_desc_3"
                     android:textSize="12sp"
                     android:textColor="@color/colorBlackLight"
                     app:layout_constraintStart_toEndOf="@+id/guideline"
@@ -138,7 +129,7 @@
                     android:id="@+id/tv_desc_4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="提款後已完成打碼量將重新計算，不可累計"
+                    android:text="@string/commission_detail_desc_4"
                     android:textSize="12sp"
                     android:textColor="@color/colorBlackLight"
                     app:layout_constraintStart_toEndOf="@+id/guideline"
@@ -168,7 +159,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="[情况一]"
+                    android:text="@string/commission_detail_desc_5"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -176,7 +167,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第一筆 充值1000 已完成打碼2000 —> 此時進行提款"
+                    android:text="@string/commission_detail_desc_6"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -184,7 +175,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第二筆 充值2000 已完成打碼1000 —> 此時尚需打碼1000方可不產生提款扣除金額"
+                    android:text="@string/commission_detail_desc_7"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -192,7 +183,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="因第一筆已提款，將不列入計算，只以第二筆充值計算"
+                    android:text="@string/commission_detail_desc_8"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -200,7 +191,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="充值2000-已完成打碼1000=10000 未完成打碼"
+                    android:text="@string/commission_detail_desc_9"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -208,7 +199,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="此時提款需扣除金額  未完成打碼1000 x 20%扣除比例 = 200扣除金額"
+                    android:text="@string/commission_detail_desc_10"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -216,7 +207,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="[情況二]"
+                    android:text="@string/commission_detail_desc_11"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -224,7 +215,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第一筆 充值1000 已完成打碼2000 —> 此時不提款，進行第二筆充值"
+                    android:text="@string/commission_detail_desc_12"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -232,7 +223,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第二筆 充值2000 已完成打碼1000 —> 此時提款不會被收取扣除金額"
+                    android:text="@string/commission_detail_desc_13"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -240,7 +231,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="因兩筆充值會一起計算，所以會依以下計算方式確認已達成有效打碼"
+                    android:text="@string/commission_detail_desc_14"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -248,7 +239,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="充值(1000+2000)-已完成打碼(2000+1000)=0 未完成打碼"
+                    android:text="@string/commission_detail_desc_15"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -256,7 +247,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="此時將不會產生扣除金額"
+                    android:text="@string/commission_detail_desc_16"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -264,7 +255,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="[情況三]"
+                    android:text="@string/commission_detail_desc_17"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -272,7 +263,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第一筆 充值1000 已完成打碼500 —> 此時不提款，進行第二筆充值"
+                    android:text="@string/commission_detail_desc_18"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -280,7 +271,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第二筆 充值2000 已完成打碼1000 —> 此時尚需打碼1500方可不產生提款扣除金額"
+                    android:text="@string/commission_detail_desc_19"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -288,7 +279,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="因兩筆充值會一起計算，所以會依以下計算方式確認已達成有效打碼"
+                    android:text="@string/commission_detail_desc_20"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -296,7 +287,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="充值(1000+2000)-已完成打碼(500+1000)=1500 未完成打碼"
+                    android:text="@string/commission_detail_desc_21"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -304,7 +295,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="此時提款需扣除金額  未完成打碼1500 x 20%扣除比例 = 300扣除金額"
+                    android:text="@string/commission_detail_desc_22"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"
                     />
@@ -321,10 +312,11 @@
         android:background="#E2E2E2"/>
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/btn_close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="确认"
+        android:text="@string/btn_confirm"
         android:textSize="@dimen/textSize14sp"
         android:textColor="@color/colorBlue"
         android:gravity="center"

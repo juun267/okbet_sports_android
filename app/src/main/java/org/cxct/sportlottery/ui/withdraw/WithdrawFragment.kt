@@ -162,6 +162,13 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
     }
 
     private fun initObserve(view: View) {
+        viewModel.commissionCheckList.observe(this.viewLifecycleOwner, {
+            tv_detail.apply {
+                isEnabled = it.isNotEmpty()
+                isSelected = it.isNotEmpty()
+            }
+        })
+
         viewModel.needCheck.observe(this.viewLifecycleOwner, Observer {
             ll_commission.visibility = if(it) View.VISIBLE else View.GONE
         })

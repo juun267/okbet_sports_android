@@ -120,6 +120,27 @@
             tools:text="-50 RMB" />
 
         <TextView
+            android:id="@+id/wd_log_detail_commission_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/log_detail_commission"
+            android:textColor="@color/colorGrayDark"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_handle_fee" />
+
+        <TextView
+            android:id="@+id/wd_log_detail_commission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlackLight"
+            android:textSize="@dimen/textSize14sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/wd_log_detail_commission_subtitle"
+            app:layout_constraintStart_toEndOf="@id/wd_log_detail_commission_subtitle"
+            tools:text="-600 RMB" />
+
+        <TextView
             android:id="@+id/wd_log_detail_status_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -128,7 +149,7 @@
             android:text="@string/log_detail_status_sub"
             android:textColor="@color/colorGrayDark"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_handle_fee_subtitle" />
+            app:layout_constraintTop_toBottomOf="@id/wd_log_detail_commission_subtitle" />
 
         <TextView
             android:id="@+id/wd_log_detail_status"

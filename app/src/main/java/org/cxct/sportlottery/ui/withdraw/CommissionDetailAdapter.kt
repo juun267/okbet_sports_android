@@ -56,35 +56,26 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
                     setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.colorRed else R.color.colorBlackLight))
                 }
 
-//                tvRequiredValidBetsMoney.text = TextUtil.formatCommissionMoney(data.validCheckAmount?.toLong()?.toDouble() ?: 0)
-//                tvSuccessedBetsMoney.text = TextUtil.formatCommissionMoney(data.finishValidAmount?.toLong()?.toDouble() ?: 0)
                 when(data.isPass){
                     1 ->{
                         tvCheckStatus.apply {
-                            text = "Thành công"
+                            text = this.context.getString(R.string.complete)
                             setTextColor(ContextCompat.getColor(context, R.color.colorGreen))
                         }
                     }
                     else ->{
                         tvCheckStatus.apply {
-                            text = "Không thành công"
+                            text = this.context.getString(R.string.commission_not_completed)
                             setTextColor(ContextCompat.getColor(context, R.color.colorRed))
                         }
                     }
                 }
-//                checkTextViewColor(tvDeductMoney, tvRequiredValidBetsMoney, tvSuccessedBetsMoney)
             }
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
-//    private fun checkTextViewColor(tvDeductMoney: TextView, tvRequiredValidBetsMoney: TextView, tvSuccessedBetsMoney: TextView){
-//        tvDeductMoney.setTextColor(ContextCompat.getColor(tvDeductMoney.context, if(ArithUtil.noCommaMoneyFormat(tvDeductMoney.text.toString()).toDouble() < 0) R.color.skinTextWinRed else R.color.skinTextDarkForWhite))
-//        tvRequiredValidBetsMoney.setTextColor(ContextCompat.getColor(tvRequiredValidBetsMoney.context, if(ArithUtil.noCommaMoneyFormat(tvRequiredValidBetsMoney.text.toString()).toDouble() < 0) R.color.skinTextWinRed else R.color.skinTextDarkForWhite))
-//        tvSuccessedBetsMoney.setTextColor(ContextCompat.getColor(tvSuccessedBetsMoney.context, if(ArithUtil.noCommaMoneyFormat(tvSuccessedBetsMoney.text.toString()).toDouble() < 0) R.color.skinTextWinRed else R.color.skinTextDarkForWhite))
-//    }
 
     override fun getItemCount(): Int {
         return mDataList.size

@@ -258,7 +258,7 @@
             android:textSize="@dimen/textSize12sp" />
         <!-- 扣除金额 -->
         <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/ll_commission"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -274,16 +274,11 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:maxLines="1"
+                android:gravity="start|center_vertical"
+                android:text="@string/commission_deducted_amount"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize13sp"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                app:autoSizeMaxTextSize="13dp"
-                app:autoSizeMinTextSize="6dp"
-                app:autoSizeTextType="uniform"
-                android:text="@string/withdraw_uw_check" />
+                android:textStyle="bold" />
 
             <View
                 android:layout_width="1dp"
@@ -301,16 +296,17 @@
                 android:textSize="@dimen/textSize12sp" />
 
             <TextView
+                android:enabled="false"
                 android:id="@+id/tv_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/bg_radius_4_button_withdraw_commission_blue"
+                android:background="@drawable/selector_commission_detail_button"
                 android:gravity="center"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp"
                 android:text="@string/commission_detail"
-                android:textColor="@color/colorBlue"
+                android:textColor="@color/selector_blue_light_gray"
                 android:textSize="12dp" />
 
             <ImageView

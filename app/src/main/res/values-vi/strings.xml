@@ -889,10 +889,36 @@
     <string name="commission_desc_2">Sau khi cược có hiệu lực, sẽ không tính thêm phí xử lý</string>
     <string name="notice">Thuyết minh</string>
     <string name="commission_check_time">Kiểm tra thời gian :</string>
-    <string name="commission_deducted_amount">扣除金额</string>
-    <string name="commission_required_size">要求打码量</string>
-    <string name="commission_amount_of_coding_completed">已完成打码量</string>
-    <string name="commission_check_type">检查</string>
+    <string name="commission_deducted_amount">Số dư khấu trừ</string>
+    <string name="commission_required_size">Số cược hiệu lực bắt buộc</string>
+    <string name="commission_amount_of_coding_completed">Cược hiệu lực đã thành công</string>
+    <string name="commission_check_type">Kiểm tra</string>
     <string name="commission_not_completed">未完成</string>
-    <string name="commission_total_deducted_amount">加总扣除金额 :</string>
+    <string name="commission_total_deducted_amount">Tổng số khấu trừ :</string>
+    <string name="log_detail_commission">Số dư khấu trừ：</string>
+    <string name="commission_deducted_amount_detail">Chi tiết số tiền khấu trừ</string>
+    <string name="commission_detail_title">Thuyết minh</string>
+    <string name="commission_detail_desc_1">Công ty chúng tôi ngăn chặn việc rút tiền bất thường. Sau khi gửi tiền, cược hiệu lực phải hợp lệ đạt trước khi rút tiền</string>
+    <string name="commission_detail_desc_2">Khi cược hiệu lực không đạt, cần phải khấu trừ 20% số tiền cược hiệu lực chưa hoàn thành làm phí rút tiền sớm trước hạn. Phương thức tính là số tiền cược hiệu lực chưa hoàn thành x tỷ lệ khấu trừ 20% = số tiền khấu trừ</string>
+    <string name="commission_detail_desc_3">Khi lần nạp đầu tiên chưa rút tiền và lần nạp tiền thứ hai, được thực hiện「số cược hiệu lực yêu cầu」 và「số cược hiệu lực đã hoàn thành」 của hai lần nạp sẽ được cộng lại. Lúc này cược hiệu lực yêu cầu bạn cần hoàn thành khoản thứ nhất và khoản thứ hai cùng lúc, để việc rút tiền không phát sinh số tiền bị trừ.</string>
+    <string name="commission_detail_desc_4">Số tiền cược hiệu lực sau khi rút tiền đã thành công sẽ được tính toán lại và không thể cộng dồn</string>
+    <string name="commission_detail_desc_5">[Tình huống thứ nhất]</string>
+    <string name="commission_detail_desc_6">Khoản thứ nhất nạp 1000 cược hiệu lực đã thành công 2000 -> bây giờ tiến hành rút tiền</string>
+    <string name="commission_detail_desc_7">Khoản thứ hai nạp 2000 cược hiệu lực đã thành công 1000 -> bây giờ bạn cần cược hiệu lực 1000 để tránh phát sinh bị trừ số tiền rút</string>
+    <string name="commission_detail_desc_8">Do lần nạp đầu tiên đã rút tiền nên sẽ không được tính, chỉ tính lần nạp tiền thứ hai</string>
+    <string name="commission_detail_desc_9">Nạp tiền 2000 cược hiệu lực đã thành công 1000 = 10000 cược hiệu lực chưa thành công</string>
+    <string name="commission_detail_desc_10">Tại thời điểm này, số tiền được khấu trừ khi rút tiền cược hiệu lực chưa thành công 1000 x 20% tỷ lệ khấu trừ = 200 số tiền khấu trừ</string>
+    <string name="commission_detail_desc_11">[Tình huống thứ 2]</string>
+    <string name="commission_detail_desc_12">Khoản thứ nhất nạp 1000 cược hiệu lực đã thành công 2000 -> lúc này không rút tiền hãy tiến hành nạp khoản thứ 2</string>
+    <string name="commission_detail_desc_13">Khoản thứ hai nạp 2000 cược hiệu lực đã thành công 1000 -> Lúc này việc rút tiền sẽ không bị khấu trừ</string>
+    <string name="commission_detail_desc_14">Vì hai khoản nạp tiền sẽ được tính cùng, nên phương pháp tính toán sau sẽ được xác nhận rằng cược hiệu lực đã hợp lệ</string>
+    <string name="commission_detail_desc_15">Nạp tiền (1000 + 2000) - cược hiệu lực đã thành công (2000 + 1000) = 0 cược hiệu lực không thành công</string>
+    <string name="commission_detail_desc_16">Lúc này sẽ không phát sinh số tiền bị khấu trừ</string>
+    <string name="commission_detail_desc_17">[Tình huống thứ 3]</string>
+    <string name="commission_detail_desc_18">Khoản thứ nhất nạp 1000 cược hiệu lực đã thành công 500 -> lúc này không rút tiền, tiến hành nạp khoản thứ 2</string>
+    <string name="commission_detail_desc_19">Khoản thứ hai nạp 2000 cược hiệu lực đã thành công 1000 -> Lúc này bạn cần nạp thêm 1500 để tránh phát sinh việc rút tiền bị khấu trừ</string>
+    <string name="commission_detail_desc_20">Vì hai khoản nạp tiền sẽ được tính cùng, nên phương pháp tính toán sau sẽ được xác nhận rằng cược hiệu lực đã hợp lệ</string>
+    <string name="commission_detail_desc_21">Nạp tiền (1000 + 2000) - cược hiệu lực thành công (500 + 1000) = 1500 cược hiệu lực không thành công</string>
+    <string name="commission_detail_desc_22">Tại thời điểm này số tiền rút cần được khấu trừ, cược hiệu lực không thành công 1500 x 20% tỷ lệ khấu trừ = 300 số tiền khấu trừ</string>
+    <string name="commissiom_completed">完成</string>
 </resources>

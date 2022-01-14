@@ -189,7 +189,7 @@
         android:id="@+id/tv_check_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/commission_not_completed"
+        android:text="@string/commissiom_completed"
         android:textColor="#EA524D"
         android:textSize="14dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_check"
