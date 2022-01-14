@@ -739,21 +739,22 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     val rows = leagueListResult.rows ?: listOf()
 
 
-                    var tempItem: MutableList<Item> = mutableListOf()
+                    val tempItem: MutableList<Item> = mutableListOf()
 
                     when (args.matchType) {
                         MatchType.OTHER -> {
-                            viewModel.specialMenuData!!.items!!.forEach { it ->
-                                var item = Item(
-                                    code = it.code!!,
-                                    name = it.name!!,
-                                    num = it.num!!,
+                            viewModel.specialMenuData?.items?.forEach { it ->
+                                val item = Item(
+                                    code = it.code ?:"",
+                                    name = it.name?: "",
+                                    num = it.num ?: 0,
                                     play = null,
-                                    sortNum = it.sortNum!!,
+                                    sortNum = it.sortNum ?: 0,
                                 )
                                 item.isSelected = it.isSelected
                                 tempItem.add(item)
                             }
+
                             updateSportType(tempItem)
                             viewModel.getGameHallList(
                                 matchType = args.matchType,
@@ -884,7 +885,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             }
                         }
                         matchOdd.quickPlayCateList?.forEach { quickPlayCate ->
-                            quickPlayCate.quickOdds?.forEach { map ->
+                            quickPlayCate.quickOdds.forEach { map ->
                                 map.value?.forEach { odd ->
                                     odd?.isSelected = it.any { betInfoListData ->
                                         betInfoListData.matchOdd.oddsId == odd?.id
@@ -1420,6 +1421,13 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         when {
                             game_bg_layer2.isVisible -> R.drawable.golf_108
                             game_bg_layer3.isVisible -> R.drawable.golf_132
+                            else -> null
+                        }
+                    }
+                    GameType.IH.key -> {
+                        when {
+                            game_bg_layer2.isVisible -> R.drawable.icehockey_100
+                            game_bg_layer3.isVisible -> R.drawable.icehockey_140
                             else -> null
                         }
                     }
