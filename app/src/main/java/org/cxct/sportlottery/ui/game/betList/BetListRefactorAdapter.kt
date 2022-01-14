@@ -373,15 +373,33 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 }
 
-                //玩法名稱
+                //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
                 val nameOneLine = { inputStr: String ->
                     inputStr.replace("\n", "-")
                 }
-                tv_name.text = when (itemData.matchOdd.inplay) {
-                    INPLAY -> {
-                        "${itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""}  (${itemData.matchOdd.homeScore} - ${itemData.matchOdd.awayScore})"
+                when{
+                    itemData.betPlayCateNameMap.isNullOrEmpty() -> {
+                        tv_name.text = when (itemData.matchOdd.inplay) {
+                            INPLAY -> {
+                                context.getString(
+                                    R.string.bet_info_in_play_score,
+                                    itemData.matchOdd.playCateName,
+                                    itemData.matchOdd.homeScore.toString(),
+                                    itemData.matchOdd.awayScore.toString()
+                                )
+                            }
+                            else -> itemData.matchOdd.playCateName
+                        }
                     }
-                    else -> nameOneLine(itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key)?:"")
+
+                    else ->{
+                        tv_name.text = when (itemData.matchOdd.inplay) {
+                            INPLAY -> {
+                                "${itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""}  (${itemData.matchOdd.homeScore} - ${itemData.matchOdd.awayScore})"
+                            }
+                            else -> nameOneLine(itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key)?:"")
+                        }
+                    }
                 }
 
                 if (itemData.betAmount > 0) {
