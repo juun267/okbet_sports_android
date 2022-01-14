@@ -389,7 +389,11 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                 "disable"
                             )
 
-                            setupOddName4Home("2" , playCateName)
+                            //板球才會有三個賠率
+                            if(data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2)
+                                setupOddName4Home("X" , playCateName)
+                            else
+                                setupOddName4Home("2" , playCateName)
 
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
@@ -406,6 +410,49 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             }
                         }
                     }
+
+                    btn_match_odd3.apply {
+                        isVisible =  data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2
+
+                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            false
+                        } else {
+                            oddList?.getOrNull(2)?.isSelected ?: false
+                        }
+
+                        betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            BetStatus.DEACTIVATED.code
+                        } else {
+                            oddList?.getOrNull(2)?.status ?: BetStatus.LOCKED.code
+                        }
+
+                        if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(2))
+
+                            setupOdd(
+                                oddList?.getOrNull(2),
+                                oddsType,
+                                "disable"
+                            )
+
+                            setupOddName4Home("2" , playCateName)
+
+                            setOnClickListener {
+                                if (oddList != null && oddList?.size ?: 0 >= 2) {
+                                    oddList?.getOrNull(2)?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            playCateName.toString(),
+                                            playCateStr,
+                                            data.betPlayCateNameMap
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
