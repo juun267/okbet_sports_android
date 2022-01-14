@@ -33,6 +33,7 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
 import org.cxct.sportlottery.util.ArithUtil
+import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
 import kotlin.math.abs
@@ -361,6 +362,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
 
+                //隊伍名稱
                 tv_match.text = when {
                     itemData.matchType == MatchType.OUTRIGHT -> itemData.outrightMatchInfo?.name
                     itemData.matchOdd.awayName?.length?.let {
@@ -370,19 +372,34 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     } ?: 0 > 21 -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}\n${itemData.matchOdd.awayName}"
                     else -> "${itemData.matchOdd.homeName}${context.getString(R.string.verse_)}${itemData.matchOdd.awayName}"
                 }
-                tv_name.text = when {
-                    //TODO Bill 沒給翻譯！！！應該要後端處裡好放playCateName裡面
-                    itemData.matchOdd.playCode == PlayCate.NGOAL.value -> "第${itemData.matchOdd.awayScore.plus(itemData.matchOdd.homeScore).plus(1)}个进球"
 
-                    itemData.matchOdd.inplay == INPLAY -> {
-                        context.getString(
-                            R.string.bet_info_in_play_score,
-                            itemData.matchOdd.playCateName,
-                            itemData.matchOdd.homeScore.toString(),
-                            itemData.matchOdd.awayScore.toString()
-                        )
+                //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
+                val nameOneLine = { inputStr: String ->
+                    inputStr.replace("\n", "-")
+                }
+                when{
+                    itemData.betPlayCateNameMap.isNullOrEmpty() -> {
+                        tv_name.text = when (itemData.matchOdd.inplay) {
+                            INPLAY -> {
+                                context.getString(
+                                    R.string.bet_info_in_play_score,
+                                    itemData.matchOdd.playCateName,
+                                    itemData.matchOdd.homeScore.toString(),
+                                    itemData.matchOdd.awayScore.toString()
+                                )
+                            }
+                            else -> itemData.matchOdd.playCateName
+                        }
                     }
-                    else -> itemData.matchOdd.playCateName
+
+                    else ->{
+                        tv_name.text = when (itemData.matchOdd.inplay) {
+                            INPLAY -> {
+                                "${itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""}  (${itemData.matchOdd.homeScore} - ${itemData.matchOdd.awayScore})"
+                            }
+                            else -> nameOneLine(itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key)?:"")
+                        }
+                    }
                 }
 
                 if (itemData.betAmount > 0) {

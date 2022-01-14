@@ -127,7 +127,9 @@ abstract class BaseOddButtonViewModel(
         matchInfo: MatchInfo,
         odd: org.cxct.sportlottery.network.odds.Odd,
         subscribeChannelType: ChannelType,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         playCateMenuCode: String? = null
+
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
@@ -144,7 +146,8 @@ abstract class BaseOddButtonViewModel(
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
                     playCateMenuCode = playCateMenuCode,
-                    oddsType = loginRepository.mOddsType.value
+                    oddsType = loginRepository.mOddsType.value,
+                    betPlayCateNameMap = betPlayCateNameMap
                 )
             }
         } else {
@@ -185,7 +188,8 @@ abstract class BaseOddButtonViewModel(
                     matchInfo = matchOdd.matchInfo,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
-                    oddsType = loginRepository.mOddsType.value
+                    oddsType = loginRepository.mOddsType.value,
+                    betPlayCateNameMap = matchOdd.betPlayCateNameMap
                 )
             }
         } else {
@@ -695,7 +699,8 @@ abstract class BaseOddButtonViewModel(
                             matchType,
                             gameType,
                             mutableListOf(betInfoListData.matchOdd)
-                        ).first()
+                        ).first(),
+                        betInfoListData.betPlayCateNameMap
                     )
 
                     newBetInfoListData.matchType = betInfoListData.matchType

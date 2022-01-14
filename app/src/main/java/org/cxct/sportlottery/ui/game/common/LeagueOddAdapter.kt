@@ -723,7 +723,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                                     matchInfo,
                                     odd,
                                     playCateCode,
-                                    playCateName
+                                    playCateName,
+                                    item.betPlayCateNameMap
                                 )
                             }
                     }
@@ -878,7 +879,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                             matchInfo,
                             odd,
                             playCateCode,
-                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
+                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName,
+                            item.betPlayCateNameMap
                         )
                     }
                 }
@@ -980,7 +982,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                                     matchInfo,
                                     odd,
                                     playCateCode,
-                                    playCateName
+                                    playCateName,
+                                    item.betPlayCateNameMap
                                 )
                             }
                     }
@@ -1033,7 +1036,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                             matchInfo,
                             odd,
                             playCateCode,
-                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName
+                            item.quickPlayCateList?.find { it.isSelected }?.name ?: playCateName,
+                            item.betPlayCateNameMap
                         )
                     }
                 }
@@ -1137,7 +1141,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
 class LeagueOddListener(
     val clickListenerPlayType: (matchId: String?, matchInfoList: List<MatchInfo>) -> Unit,
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String) -> Unit,
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) -> Unit,
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
@@ -1151,7 +1155,8 @@ class LeagueOddListener(
         odd: Odd,
         playCateCode: String,
         playCateName: String = "",
-    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName)
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
 
     fun onClickQuickCateTab(matchId: String?) = clickListenerQuickCateTab(matchId)
 

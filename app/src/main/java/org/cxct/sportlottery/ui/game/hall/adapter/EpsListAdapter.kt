@@ -127,10 +127,24 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
         private fun filterEpsOddsList(matchOddsItem: List<MatchOddsItem>?): MutableList<EpsOdds> {
             val epsOddsList = mutableListOf<EpsOdds>()
             matchOddsItem?.forEach {
-                epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = null, isTitle = true))
+                epsOddsList.add(
+                    EpsOdds(
+                        betPlayCateNameMap = it.betPlayCateNameMap,
+                        matchInfo = it.matchInfo,
+                        epsItem = null,
+                        isTitle = true
+                    )
+                )
 
                 it.oddsEps?.eps?.forEach { EPSItem ->
-                    epsOddsList.add(EpsOdds(matchInfo = it.matchInfo, epsItem = EPSItem, isTitle = false))
+                    epsOddsList.add(
+                        EpsOdds(
+                            betPlayCateNameMap = it.betPlayCateNameMap,
+                            matchInfo = it.matchInfo,
+                            epsItem = EPSItem,
+                            isTitle = false
+                        )
+                    )
                 }
             }
             return epsOddsList
@@ -190,11 +204,11 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
     class EpsOddListener(
         val clickListenerLeague: (item: EpsLeagueOddsItem) -> Unit,
-        val clickListenerBet: (odd: Odd, matchInfo: MatchInfo) -> Unit,
+        val clickListenerBet: (odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) -> Unit,
         val clickBetListenerInfo: (matchInfo: MatchInfo) -> Unit
     ) {
         fun onClickLeague(item: EpsLeagueOddsItem) = clickListenerLeague(item)
-        fun onClickBet(odd: Odd, matchInfo: MatchInfo) = clickListenerBet(odd, matchInfo)
+        fun onClickBet(odd: Odd, matchInfo: MatchInfo, betPlayCateNameMap: Map<String?, Map<String?, String?>?>?) = clickListenerBet(odd, matchInfo, betPlayCateNameMap)
         fun onClickInfo(matchInfo: MatchInfo) = clickBetListenerInfo(matchInfo)
     }
 }
