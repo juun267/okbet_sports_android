@@ -436,13 +436,17 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 item.matchInfo?.isAtStart == true -> {
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
-                            if (timeMillis > 0) {
+                            if (timeMillis > 1000) {
+                                val min = TimeUtil.longToMinute(timeMillis)
                                 itemView.league_odd_match_time.text = String.format(
                                     itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                    if (TimeUtil.longToMmSs(timeMillis) == "0") 1 else TimeUtil.longToMmSs(timeMillis)
+                                    min
                                 )
                             } else {
-                                leagueOddListener?.onRefresh(item.matchInfo.id)
+                                if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
+                                    leagueOddListener?.onRefresh(item.matchInfo.id)
+                                    item.matchInfo.hasRefreshed = true
+                                }
                             }
                             item.matchInfo.remainTime = timeMillis
 
@@ -493,13 +497,19 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                             listener = object : TimerListener {
                                 override fun onTimerUpdate(timeMillis: Long) {
-                                    if (timeMillis > 0) {
+                                    if (timeMillis > 1000) {
+                                        val min = TimeUtil.longToMinute(timeMillis)
                                         itemView.league_odd_match_time.text = String.format(
                                             itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                            if (TimeUtil.longToMmSs(timeMillis) == "0") 1 else TimeUtil.longToMmSs(timeMillis)
+                                            min
                                         )
                                     } else {
-                                        item.matchInfo?.id?.let { leagueOddListener?.onRefresh(it) }
+                                        item.matchInfo?.id?.let {
+                                            if (item.matchInfo.hasRefreshed != true) { //避免持續重複刷新
+                                                leagueOddListener?.onRefresh(item.matchInfo.id)
+                                                item.matchInfo.hasRefreshed = true
+                                            }
+                                        }
                                     }
                                     item.matchInfo?.remainTime = timeMillis
                                 }

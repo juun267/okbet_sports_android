@@ -72,10 +72,25 @@ object TimeUtil {
     fun longToMinute(time: Long): String {
         return try {
             val min = time / 1000 / 60
-            String.format("%02d", min)
+            String.format("%d", min)
         } catch (e: Exception) {
             e.printStackTrace()
             "--:--"
+        }
+    }
+
+    /**
+     * 時間(TimeInMillis) 轉換成 minute 格式 (倒數)
+     * @param time: TimeInMillis
+     * @return :String
+     */
+    fun longToCountDownMin(time: Long): String {
+        return try {
+            val min = time / 1000 / 60 + 60000 //倒數60秒顯示為1分鐘，因此加1分鐘
+            String.format("%d", min)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "-"
         }
     }
 
