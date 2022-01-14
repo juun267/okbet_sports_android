@@ -119,6 +119,16 @@ class OddsButton @JvmOverloads constructor(
 
     }
 
+    //主頁精選oddsButton的判斷
+    fun setupOddName4Home(name: String?, gameType: String? = null) {
+        tv_name.apply {
+            if (gameType?.contains("1X2") == true) {
+                isVisible = true
+                text = name
+            } else isVisible = false
+        }
+    }
+
     fun setupOddForEPS(odd: Odd?, oddsType: OddsType) {
         tv_name.apply {
             text = odd?.extInfo?.toDoubleOrNull()?.let { TextUtil.formatForOdd(it) } ?: odd?.extInfo //低賠率會返回在extInfo
