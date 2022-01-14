@@ -370,10 +370,10 @@ class OddButtonPagerViewHolder private constructor(
             playCateMappingList.isNullOrEmpty() || betPlayCateNameMap.isNullOrEmpty()  ||
             odds == null || odds.first == null || odds.second.isNullOrEmpty()
         ) {
-            oddBtnType.visibility = View.GONE
-            oddBtnHome.visibility = View.GONE
-            oddBtnAway.visibility = View.GONE
-            oddBtnDraw.visibility = View.GONE
+            oddBtnType.visibility = View.INVISIBLE
+            oddBtnHome.visibility = View.INVISIBLE
+            oddBtnAway.visibility = View.INVISIBLE
+            oddBtnDraw.visibility = View.INVISIBLE
             return
         }
 
@@ -559,7 +559,7 @@ class OddButtonPagerViewHolder private constructor(
             oddBtnDraw.apply drawButtonSettings@{
                 when {
                     (odds.second?.size ?: 0 < 3) -> {
-                        visibility = View.GONE
+                        visibility = View.INVISIBLE
                         return@drawButtonSettings
                     }
                     odds.second?.all { odd -> odd == null } == true -> {
@@ -723,7 +723,7 @@ class OddButtonPagerViewHolder private constructor(
         ): OddButtonPagerViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater
-                .inflate(R.layout.itemview_odd_btn_2x2_v4, parent, false)
+                .inflate(R.layout.itemview_odd_btn_2x2_v5, parent, false)
 
             return OddButtonPagerViewHolder(view, oddStateRefreshListener)
         }
