@@ -256,7 +256,8 @@ class BetInfoRepository(val androidContext: Context) {
         odd: Odd,
         subscribeChannelType: ChannelType,
         playCateMenuCode: String? = null,
-        oddsType: OddsType?
+        oddsType: OddsType?,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
         this.oddsType = oddsType!!
@@ -282,7 +283,8 @@ class BetInfoRepository(val androidContext: Context) {
         betInfoMatchOdd?.let {
             val data = BetInfoListData(
                 betInfoMatchOdd,
-                getParlayOdd(matchType, gameType, mutableListOf(it)).first()
+                getParlayOdd(matchType, gameType, mutableListOf(it)).first(),
+                betPlayCateNameMap
             ).apply {
                 this.matchType = matchType
                 this.subscribeChannelType = subscribeChannelType
@@ -551,7 +553,8 @@ class BetInfoRepository(val androidContext: Context) {
                             matchType,
                             gameType,
                             mutableListOf(betInfoListData.matchOdd)
-                        ).first()
+                        ).first(),
+                        betInfoListData.betPlayCateNameMap
                     )
                     newBetInfoListData.matchType = betInfoListData.matchType
                     newBetInfoListData.input = betInfoListData.input
