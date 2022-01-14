@@ -358,7 +358,7 @@ class Vp2GameTable4Adapter(
                     if (data.oddsSort?.split(",")?.size ?: 0 > 0) data.oddsSort?.split(",")
                         ?.getOrNull(0) else data.oddsSort
 
-                tv_play_type.text = data.playCateNameMap?.get(data.oddsSort)
+                tv_play_type.text = playCateNameMap?.get(data.oddsSort)
                     ?.get(LanguageManager.getSelectLanguage(context).key)
 
                 btn_match_odd1.apply {
