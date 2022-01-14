@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.withdraw
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
                     mNavController.navigate(action)
                 },
                 addListener = {
-                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, if (it.bankTransfer) TransferType.BANK else TransferType.CRYPTO, it)
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, if (it.bankTransfer) TransferType.BANK else if (it.cryptoTransfer) TransferType.CRYPTO else TransferType.E_WALLET, it)
                     mNavController.navigate(action)
                 }
             )
@@ -90,12 +91,11 @@ class BankListFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
         viewModel.addMoneyCardSwitch.observe(this.viewLifecycleOwner, Observer {
             mBankListAdapter.transferAddSwitch = it
             tv_no_bank_card.text = it.run {
-                when {
-                    cryptoTransfer && bankTransfer -> getString(R.string.bind_credit_card_not_yet)
-                    cryptoTransfer -> getString(R.string.add_crypto_card)
-                    bankTransfer -> getString(R.string.add_credit_or_e_wallet)
-                    else -> getString(R.string.add_new)
-                }
+                val stringList = arrayListOf<String>()
+                if(bankTransfer) stringList.add(getString(R.string.bank_list_bank))
+                if(cryptoTransfer) stringList.add(getString(R.string.bank_list_crypto))
+                if(walletTransfer) stringList.add(getString(R.string.bank_list_e_wallet))
+                getString(R.string.bank_list_not_bink, stringList.joinToString("/"))
             }
         })
     }

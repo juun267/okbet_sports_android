@@ -203,11 +203,26 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
         //Tab 顯示判斷
         viewModel.withdrawSystemOperation.observe(this.viewLifecycleOwner, Observer {
-            isShow ->
-            if (isShow.getContentIfNotHandled() == true)
-                block_tab.visibility = View.VISIBLE
-            else
+            list ->
+
+            if(list.isNullOrEmpty() || list.size == 1){
                 block_tab.visibility = View.GONE
+            }else{
+                block_tab.visibility = View.VISIBLE
+
+                tab_bank_card.visibility = if(list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
+                tab_crypto.visibility = if(list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
+                tab_wallet.visibility = if(list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
+
+                view_crypto.visibility = tab_crypto.visibility
+                view_wallet.visibility = tab_wallet.visibility
+
+//                when(list.first()){
+//                    TransferType.CRYPTO.type -> tab_crypto.performClick()
+//                    TransferType.E_WALLET.type -> tab_wallet.performClick()
+//                    else -> tab_bank_card.performClick()
+//                }
+            }
         })
 
         //資金設定
