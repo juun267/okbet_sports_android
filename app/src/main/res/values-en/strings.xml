@@ -391,7 +391,7 @@
     <string name="title_account">Account：</string>
     <string name="title_address">Address：</string>
     <string name="title_deposit_money">Top-up amount</string>
-<!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
+    <!--    <string name="edt_hint_deposit_money">Limit %1$s～%2$s RMB</string>-->
     <string name="edt_hint_deposit_money">Limit %1$s～%2$s PHP</string>
     <string name="title_real_name">Verified name</string>
     <string name="title_nick_name">Your nickname</string>
@@ -559,7 +559,7 @@
     <string name="bet_receipt_bet_quota">Stake：</string>
     <string name="bet_info_list_win_quota">Winning amount: </string>
     <string name="bet_list_win_quota">Est. Winnings：</string>
-<!--    <string name="bet_info_list_rmb">RMB</string>-->
+    <!--    <string name="bet_info_list_rmb">RMB</string>-->
     <string name="bet_info_list_rmb">PHP</string>
     <string name="bet_info_list_add_more">More selection</string>
     <string name="bet_info_list_bet">Bet</string>
@@ -586,7 +586,7 @@
     <string name="bet_info_add_to_bet_info">Add to betslip</string>
     <string name="bet_info_odd_content_changed">One or more options for odds，concede points or score has changed</string>
     <string name="bet_info_all_bet">Total Bets</string>
-<!--    <string name="bet_info_current_rmb">%s RMB</string>-->
+    <!--    <string name="bet_info_current_rmb">%s RMB</string>-->
     <string name="bet_info_current_rmb">%s PHP</string>
     <string name="bet_list_delete_all">Delete all</string>
     <string name="bet_list_single_warn">(Fill all individual options with the same amount of bet)</string>
@@ -856,40 +856,39 @@
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">Details</string>
-    <string name="commission_desc_1">When the valid amount is not reached, we need to reduce the 20% unfinished valid amount to be the withdrawal fee and avoid the abnormal deposit.</string>
+    <string name="commission_desc_1">When the valid amount is not reached, we need to deduct a certain percentage of the recharge amount to be the withdrawal fee and avoid the abnormal deposit.</string>
     <string name="commission_desc_2">When the valid amount is reached, then we won\'t charge the handing fee.</string>
     <string name="commission_check_time">Check time :</string>
     <string name="commission_deducted_amount">Deduction</string>
     <string name="commission_required_size">Requested amount</string>
     <string name="commission_amount_of_coding_completed">Finished valid amount</string>
     <string name="commission_check_type">Check</string>
-    <string name="commission_not_completed">未完成</string>
+    <string name="commission_not_completed">Undone</string>
     <string name="commission_total_deducted_amount">Total deduction :</string>
     <string name="log_detail_commission">Deduction：</string>
     <string name="commission_deducted_amount_detail">Deduction details</string>
     <string name="commission_detail_title">Instruction</string>
-    <string name="commission_detail_desc_1">To avoid abnormal withdrawal, you must reach the valid amount, then you can withdraw.</string>
-    <string name="commission_detail_desc_2">When the valid amount is not reached, we need to reduce the 20% unfinished valid amount to be the withdrawal fee. The calculation formula is valid amount multiply 20% deduction ratio = deduction amount.</string>
-    <string name="commission_detail_desc_3">When the recharge twice, if the first-time recharge is not withdrawn, then the "Request amount" and "Finished amount" will add up. You need to complete the first and second valid amounts requested at the same time to no deduction.</string>
-    <string name="commission_detail_desc_4">The finished valid amount will reset when you withdraw. </string>
-    <string name="commission_detail_desc_5">[Situation 1]</string>
+    <string name="commission_detail_desc_1">The company avoids abnormal withdrawal, the user must reach the valid amount before withdrawal.</string>
+    <string name="commission_detail_desc_2">When the valid amount is not reached, we need to deduct the amount to be the withdrawal fee. The calculation formula is valid amount multiply deduction ratio = deduction amount.</string>
+    <string name="commission_detail_desc_3">When the first recharge is not withdrawn, and the user recharges a second time, then the two "Request amounts” will add up. At this time, the user needs to complete the first and second valid amounts at the same time and the withdrawal will not result in the deduction of the amount.</string>
+    <string name="commission_detail_desc_4">The finished valid amount will recalculate when you withdraw.</string>
+    <string name="commission_detail_desc_5">Situation 1</string>
     <string name="commission_detail_desc_6">The first trade is top up 1,000 and complete valid amount 2,000. ->  The user withdraws money now.</string>
     <string name="commission_detail_desc_7">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,000 to no deduction.</string>
     <string name="commission_detail_desc_8">Because the first trade has withdrawn, it won\'t calculate, the system just calculates the second trade only.</string>
-    <string name="commission_detail_desc_9">Recharge 2,000 and complete valid amount 1,000. =   1,000 is unfinished.</string>
-    <string name="commission_detail_desc_10">The deduction is a valid amount multiply 20% deduction ratio = 200 deduction amount.</string>
-    <string name="commission_detail_desc_11">[Situation 2]</string>
-    <string name="commission_detail_desc_12">The first trade is top up 1,000 and complete valid amount 2,000. ->The user has not withdrawn and recharges the second trade. </string>
-    <string name="commission_detail_desc_13">The second trade is top up 2,000 and complete valid amount 1,000. -> The deduction will not be charged. </string>
-    <string name="commission_detail_desc_14">The valid amount of 2 trades will be calculated together by the formula following as below. </string>
-    <string name="commission_detail_desc_15">Recharge (1000+2000) - Finished valid amount (2000+1000) = 0 Unfinished valid amount</string>
-    <string name="commission_detail_desc_16">Have no deduction will be made at this time. </string>
-    <string name="commission_detail_desc_17">[Situation 3]</string>
-    <string name="commission_detail_desc_18">The first trade is top up 1,000 and complete valid amount 500. >The user has not withdrawn and recharges the second trade. </string>
+    <string name="commission_detail_desc_11">Situation 2</string>
+    <string name="commission_detail_desc_12">The first trade is top up 1,000 and complete valid amount 1,000. ->The user has not withdrawn and recharges the second trade.</string>
+    <string name="commission_detail_desc_13">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,000 to no deduction.</string>
+    <string name="commission_detail_desc_14">Although the first trade is completed the valid amount, the second trade is the unfinished valid amount, then calculated by formula follow as.  </string>
+    <string name="commission_detail_desc_15">Recharge amount (2,000) - finished valid amount (1,000) = 1,000</string>
+    <string name="commission_detail_desc_16">The second trade still needs to reach 1,000 to withdraw.</string>
+    <string name="commission_detail_desc_17">Situation 3</string>
+    <string name="commission_detail_desc_18">The first trade is top up 1,000 and complete valid amount 500. ->The user has not withdrawn and recharges the second trade.</string>
     <string name="commission_detail_desc_19">The second trade is top up 2,000 and complete valid amount 1,000.  -> The user must complete a valid amount of 1,500 to no deduction.</string>
-    <string name="commission_detail_desc_20">The valid amount of 2 trades will be calculated together by the formula following as below. </string>
-    <string name="commission_detail_desc_21">Recharge (1000+2000) - Finished valid amount (500+1000) = 300 deduction.</string>
-    <string name="commission_detail_desc_22">The deduction is a valid amount (1,500) multiply 20% deduction ratio = 300 deduction amount.</string>
-    <string name="commissiom_completed">完成</string>
-    <string name="notice">Instruction</string>
+    <string name="commission_detail_desc_20">Because two trades are unfinished both, so calculate by formula follow as</string>
+    <string name="commission_detail_desc_21">Recharge amount (1,000+2,000 ) - finished valid amount (500+1,000) = 1,500</string>
+    <string name="commission_detail_desc_22">The valid amount needs 1,500 to withdraw.</string>
+    <string name="commissiom_completed">Finish</string>
+    <string name="notice">Tips</string>
+    <string name="commission_example">i.g.</string>
 </resources>

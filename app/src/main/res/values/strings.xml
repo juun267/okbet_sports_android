@@ -870,8 +870,8 @@
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
     <string name="commission_detail">详情</string>
-    <string name="commission_desc_1">当有效打码未达成时，为防止非常态性提款，需扣除未完成打码量的20%，做为提前提款手续费</string>
-    <string name="commission_desc_2">当达成有效打码后，则不另收手续费</string>
+    <string name="commission_desc_1">当有效打码未达成时，为防止非常态性提款，需扣除一定比例的充值金额，做为提前提款手续费。</string>
+    <string name="commission_desc_2">当达成有效打码后，则不另收手续费。</string>
     <string name="notice">提示说明</string>
     <string name="commission_check_time">检查时间 :</string>
     <string name="commission_deducted_amount">扣除金额</string>
@@ -882,29 +882,28 @@
     <string name="commission_total_deducted_amount">加总扣除金额 :</string>
     <string name="log_detail_commission">扣除金额：</string>
     <string name="commission_deducted_amount_detail">扣除金额明细</string>
-    <string name="commission_detail_title">詳細说明</string>
+    <string name="commission_detail_title">详细说明</string>
     <string name="commission_detail_desc_1">本公司为防止非常态性提款，存款后须达成有效打码后方可正常提款</string>
-    <string name="commission_detail_desc_2">当未达有效打码时，提款需扣除未完成打码量的20%，做为提前提款手续费，计算方式为 未完成打码量 x 20%扣除比例 = 扣除金额</string>
-    <string name="commission_detail_desc_3">当第一笔充值未提款前，充值第二笔，则两笔的「要求打码量」、「已完成打码量」将会进行加总，此时需同时完成第一笔与第二笔的要求打码量，提款才不会产生扣除金额</string>
-    <string name="commission_detail_desc_4">提款后已完成打码量将重新计算，不可累计</string>
+    <string name="commission_detail_desc_2">当未达有效打码时，提款将产生扣除金额，做为提前提款手续费，计算方式为：充值金额 x 扣除比例 = 扣除金额</string>
+    <string name="commission_detail_desc_3">当第一笔充值未提款前，充值第二笔，则两笔的「要求打码量」将会进行加总。此时需同时完成第一笔与第二笔的要求打码量，提款才不会产生扣除金额</string>
+    <string name="commission_detail_desc_4">提款后已完成打码量将重新计算，不可累计。 </string>
     <string name="commission_detail_desc_5">[情况一]</string>
     <string name="commission_detail_desc_6">第一笔 充值1000 已完成打码2000 —> 此时进行提款</string>
     <string name="commission_detail_desc_7">第二笔 充值2000 已完成打码1000 —> 此时尚需打码1000方可不产生提款扣除金额</string>
-    <string name="commission_detail_desc_8">因第一笔已提款，将不列入计算，只以第二笔充值计算</string>
-    <string name="commission_detail_desc_9">充值2000-已完成打码1000=10000 未完成打码</string>
-    <string name="commission_detail_desc_10">此时提款需扣除金额 未完成打码1000 x 20%扣除比例 = 200扣除金额</string>
+    <string name="commission_detail_desc_8">因第一笔已提款，将不列入计算，只以第二笔充值2000计算扣除金额</string>
     <string name="commission_detail_desc_11">[情况二]</string>
-    <string name="commission_detail_desc_12">第一笔 充值1000 已完成打码2000 —> 此时不提款，进行第二笔充值</string>
-    <string name="commission_detail_desc_13">第二笔 充值2000 已完成打码1000 —> 此时提款不会被收取扣除金额</string>
-    <string name="commission_detail_desc_14">因两笔充值会一起计算，所以会依以下计算方式确认已达成有效打码</string>
-    <string name="commission_detail_desc_15">充值(1000+2000)-已完成打码(2000+1000)=0 未完成打码</string>
-    <string name="commission_detail_desc_16">此时将不会产生扣除金额</string>
+    <string name="commission_detail_desc_12">第一笔 充值1000 已完成打码1000 —> 此时不提款，进行第二笔充值</string>
+    <string name="commission_detail_desc_13">第二笔 充值2000 已完成打码1000 —> 此时尚需打码1000方可不产生提款扣除金额</string>
+    <string name="commission_detail_desc_14">虽第一笔完成打码，但因第二笔未达成打码要求，所以依下列公式</string>
+    <string name="commission_detail_desc_15">充值2000-已完成打码1000=1000</string>
+    <string name="commission_detail_desc_16">得出第二笔尚需达成1000打码后，方能进行提款</string>
     <string name="commission_detail_desc_17">[情况三]</string>
     <string name="commission_detail_desc_18">第一笔 充值1000 已完成打码500 —> 此时不提款，进行第二笔充值</string>
     <string name="commission_detail_desc_19">第二笔 充值2000 已完成打码1000 —> 此时尚需打码1500方可不产生提款扣除金额</string>
-    <string name="commission_detail_desc_20">因两笔充值会一起计算，所以会依以下计算方式确认已达成有效打码</string>
-    <string name="commission_detail_desc_21">充值(1000+2000)-已完成打码(500+1000)=1500 未完成打码</string>
-    <string name="commission_detail_desc_22">此时提款需扣除金额 未完成打码1500 x 20%扣除比例 = 300扣除金额</string>
+    <string name="commission_detail_desc_20">因两笔皆未完成打码，所以依下列公式</string>
+    <string name="commission_detail_desc_21">充值(1000+2000)-已完成打码(500+1000)=1500</string>
+    <string name="commission_detail_desc_22">得出尚需达成1500打码后，方能进行提款</string>
     <string name="commissiom_completed">完成</string>
+    <string name="commission_example">范例</string>
 
 </resources>

@@ -151,7 +151,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="EX."
+                    android:text="@string/commission_example"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 
@@ -184,22 +184,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/commission_detail_desc_8"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/colorBlackLight"/>
-
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/commission_detail_desc_9"
-                    android:textSize="@dimen/textSize12sp"
-                    android:textColor="@color/colorBlackLight"/>
-
-                <TextView
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/commission_detail_desc_10"
                     android:textSize="@dimen/textSize12sp"
                     android:textColor="@color/colorBlackLight"/>
 

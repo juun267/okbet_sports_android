@@ -59,7 +59,7 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
                 when(data.isPass){
                     1 ->{
                         tvCheckStatus.apply {
-                            text = this.context.getString(R.string.complete)
+                            text = this.context.getString(R.string.commissiom_completed)
                             setTextColor(ContextCompat.getColor(context, R.color.colorGreen))
                         }
                     }
