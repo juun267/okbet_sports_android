@@ -8,6 +8,7 @@ interface OnClickOddListener {
         matchOdd: MatchOdd,
         odd: Odd,
         playCateCode: String,
-        playCateName: String? = null
+        playCateName: String? = null,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     )
 }

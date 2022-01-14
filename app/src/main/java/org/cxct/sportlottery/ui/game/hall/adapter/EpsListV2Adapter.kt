@@ -54,7 +54,7 @@ class EpsListV2Adapter :
                 isSelected = item.epsItem?.isSelected ?: false
                 setOnClickListener {
                     item.epsItem?.let { Odd ->
-                        item.matchInfo?.let { matchInfo -> clickListener.onClickBet(Odd, matchInfo) }
+                        item.matchInfo?.let { matchInfo -> clickListener.onClickBet(Odd, matchInfo,item.betPlayCateNameMap) }
                     }
                 }
                 setupOddForEPS(item.epsItem, oddsType)
