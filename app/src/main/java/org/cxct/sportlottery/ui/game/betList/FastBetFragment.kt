@@ -484,22 +484,21 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
 
-    private fun setupData(matchOdd: MatchOdd) {
+    private fun setupData(matchOdd: MatchOdd, betPlayCateNameMap: Map<String?, Map<String?, String?>?>? ) {
+        //隊伍名稱
         tv_match.text = if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
         else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
 
+        //玩法名稱
         val nameOneLine = { inputStr: String ->
             inputStr.replace("\n", "-")
         }
-
         tv_name.text = if (matchOdd.inplay == INPLAY) {
-            getString(
-                R.string.bet_info_in_play_score,
-                nameOneLine(matchOdd.playCateName),
-                matchOdd.homeScore.toString(),
-                matchOdd.awayScore.toString()
-            )
-        } else nameOneLine(matchOdd.playCateName)
+            "${betPlayCateNameMap?.get(matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""} (${matchOdd.homeScore} - ${matchOdd.awayScore})"
+        } else nameOneLine(
+            betPlayCateNameMap?.get(matchOdd.playCode)
+                ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+        )
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
             cl_item_background.setBackgroundColor(
