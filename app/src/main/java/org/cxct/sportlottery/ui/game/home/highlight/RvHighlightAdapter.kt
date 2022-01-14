@@ -348,6 +348,8 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                 "disable"
                             ) //TODO Bill 這裡要看球種顯示 1/2 不能用disable
 
+                            setupOddName4Home("1" , playCateName)
+
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
                                     oddList?.getOrNull(0)?.let { odd ->
@@ -385,7 +387,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                                 oddList?.getOrNull(1),
                                 oddsType,
                                 "disable"
-                            )  //TODO Bill 這裡要看球種顯示 1/2 不能用disable
+                            )
+
+                            setupOddName4Home("2" , playCateName)
 
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
