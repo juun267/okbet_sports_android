@@ -110,7 +110,7 @@ class BetInfoRepository(val androidContext: Context) {
             return
         }
 
-        val gameType = GameType.getGameType(betList[0].matchOdd.gameType)
+        val gameType = GameType.getGameType(betList.getOrNull(0)?.matchOdd?.gameType)
 
         gameType?.let {
             val parlayMatchOddList = betList.map { betInfoListData ->
@@ -260,7 +260,9 @@ class BetInfoRepository(val androidContext: Context) {
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ) {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-        this.oddsType = oddsType!!
+        oddsType?.let {
+            this.oddsType = it
+        }
         if (betList.size >= BET_INFO_MAX_COUNT) {
             _showBetUpperLimit.postValue(Event(true))
             return
@@ -418,31 +420,30 @@ class BetInfoRepository(val androidContext: Context) {
                         ?: parlayBetLimit
 
                 else -> maxBet =
-                    maxBetMoney?.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
+                    maxBetMoney.let { if (maxBetMoney < parlayBetLimit) maxBetMoney else parlayBetLimit }
                         ?: parlayBetLimit
             }
 
-            //[Martin]為馬來盤＆印度計算投注上限
-            if (oddsType == OddsType.MYS) {
-                if (matchOddList[0].malayOdds < 0 && oddsList.size <= 1) {
-                    if (maxBetMoney != null) {
-                        var myMax = (maxBetMoney.div(abs(matchOddList[0].malayOdds)))!!.toInt()
-                        maxBet = if (myMax < playQuota?.max!!) myMax else playQuota?.max
-                    }
-                }
-            } else if (oddsType == OddsType.IDN) {
-                if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
-                    //印度賠付額上限
-                    var indoMax = ((playQuota?.max?.toDouble()
-                        ?.plus(abs(matchOddList[0].indoOdds)))!!.toInt()) - 1
-                    //印度使用者投注上限
-                    if (maxBetMoney != null) {
-                        var indoUserMax = maxBetMoney?.div(abs(matchOddList[0].indoOdds)).toInt()
-                        maxBet = if (indoUserMax < indoMax) indoUserMax else indoMax
-
-                    }
-                }
+        //[Martin]為馬來盤＆印度計算投注上限
+        if (oddsType == OddsType.MYS) {
+            if ((matchOddList.getOrNull(0)?.malayOdds ?: 0.0) < 0.0 && oddsList.size <= 1) {
+                val myMax = (maxBetMoney.div(abs(matchOddList.getOrNull(0)?.malayOdds ?: 0.0))).toInt()
+                maxBet = if (myMax < (playQuota?.max ?: 0)) myMax else (playQuota?.max ?: 0)
             }
+        } else if (oddsType == OddsType.IDN) {
+            if (matchOddList.getOrNull(0)?.indoOdds ?: 0.0 < 0.0 && oddsList.size <= 1) {
+                //印度賠付額上限
+                val indoMax = ((playQuota?.max?.toDouble()?.plus(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)))?.toInt())?.minus(1)?: 0
+                //印度使用者投注上限
+                val indoUserMax = maxBetMoney.div(abs(matchOddList.getOrNull(0)?.indoOdds ?: 0.0)).toInt()
+                maxBet = if (indoUserMax < indoMax) indoUserMax else indoMax
+            }
+        }else if(oddsType == OddsType.IDN) {
+            if (matchOddList[0].indoOdds < 0 && oddsList.size <= 1) {
+                val indoMax = (((playQuota?.max?.toDouble()?.plus(abs(matchOddList[0].indoOdds))) ?: 0).toInt()) - 1
+                maxBet = if (maxBetMoney < indoMax) maxBetMoney else indoMax
+            }
+        }
 
             ParlayOdd(
                 parlayType = it.key,
@@ -452,8 +453,8 @@ class BetInfoRepository(val androidContext: Context) {
                 odds = it.value.odds.toDouble(),
                 hkOdds = it.value.hdOdds.toDouble(),
                 //Martin
-                malayOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].malayOdds,
-                indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList[0].indoOdds
+                malayOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(0)?.malayOdds?:0.0,
+                indoOdds = if (oddsList.size > 1) it.value.odds.toDouble() else matchOddList.getOrNull(0)?.indoOdds?:0.0
             )
         }
     }

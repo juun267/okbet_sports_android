@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
@@ -34,7 +32,8 @@ import java.util.*
 class Vp2GameTable4Adapter(
     val dataList: List<MatchOdd>,
     val oddsType: OddsType,
-    val matchType: MatchType
+    val matchType: MatchType,
+    val playCateNameMap: Map<String?, Map<String?, String?>?>? //主頁的翻譯要取外層的playCateNameMap，odds為{}時內層的playCateNameMap會是空的
 ) :
     RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 

@@ -32,7 +32,9 @@ import org.cxct.sportlottery.ui.login.afterTextChanged
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.*
+
 const val INPLAY: Int = 1
+
 class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private lateinit var binding: FragmentBottomSheetBetinfoItemBinding
@@ -124,7 +126,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         getCurrentMoney()
     }
 
-    private fun initDiscount () {
+    private fun initDiscount() {
         discount = viewModel.userInfo.value?.discount ?: 1.0F
     }
 
@@ -135,7 +137,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun dismiss(){
+    private fun dismiss() {
         activity?.onBackPressed()
         OddSpannableString.clearHandler()
     }
@@ -201,7 +203,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initEditText() {
 
         et_bet.afterTextChanged {
-            button_bet.tv_quota.text = TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
+            button_bet.tv_quota.text =
+                TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
                 button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
@@ -232,7 +235,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 var realAmount = quota
                 var win = 0.0
                 var currentOddsType = oddsType
-                if(matchOdd?.odds == matchOdd?.malayOdds){
+                if (matchOdd?.odds == matchOdd?.malayOdds
+                    || betInfoListData?.matchType == MatchType.OUTRIGHT
+                    || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT
+                ) {
                     currentOddsType = OddsType.EU
                 }
                 when (currentOddsType) {
@@ -258,7 +264,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         }
                     }
                     OddsType.EU -> {
-                        win = quota * (getOdds(matchOdd, currentOddsType) -1)
+                        win = quota * (getOdds(matchOdd, currentOddsType) - 1)
                         tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
 
                     }
@@ -289,7 +295,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         betInfoListData?.parlayOdds?.min?.let { min ->
             if (quota < min) {
                 tv_error_message.text = String.format(
-                    (context ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
+                    (context
+                        ?: requireContext()).getString(R.string.bet_info_list_minimum_limit_amount),
                     min,
                     sConfigData?.systemCurrency
                 )
@@ -316,10 +323,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let { list ->
                 if (list.isNotEmpty()) {
-                    if(list.size > 1){
+                    betInfoListData = list.getOrNull(0)
+                    if (list.size > 1) {
                         dismiss()
                     }
-                    betInfoListData = list[0]
 
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)
@@ -329,13 +336,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     var realAmount = 0.00
                     var win = 0.0
                     var currentOddsType = oddsType
-                    if(matchOdd?.odds == matchOdd?.malayOdds){
+                    if (matchOdd?.odds == matchOdd?.malayOdds
+                        || betInfoListData?.matchType == MatchType.OUTRIGHT
+                        || betInfoListData?.matchType == MatchType.OTHER_OUTRIGHT
+                    ) {
                         currentOddsType = OddsType.EU
                     }
                     when (currentOddsType) {
                         OddsType.MYS -> {
                             if (getOdds(matchOdd, currentOddsType) < 0) {
-                                realAmount = betAmount * Math.abs(
+                                realAmount = betAmount * kotlin.math.abs(
                                     getOdds(
                                         matchOdd,
                                         currentOddsType
@@ -351,7 +361,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         }
                         OddsType.IDN -> {
                             if (getOdds(matchOdd, currentOddsType) < 0) {
-                                realAmount = betAmount * Math.abs(
+                                realAmount = betAmount * kotlin.math.abs(
                                     getOdds(
                                         matchOdd,
                                         currentOddsType
@@ -376,7 +386,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     }
 
                     tv_win_quota.text = TextUtil.format(win)
-                }else{
+                } else {
                     dismiss()
                 }
             }
@@ -536,9 +546,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
         betInfoListData?.let { betInfoData ->
             //[Martin] 判斷馬來盤與歐洲盤賠率是否一樣 若相同 則該項玩法是不支持馬來盤or印尼下注的 則將oddsType
-            var currentOddsType = if(betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds){
+            val currentOddsType = if (betInfoData.matchOdd.odds == betInfoData.matchOdd.malayOdds
+                || betInfoData.matchType == MatchType.OUTRIGHT
+                || betInfoData.matchType == MatchType.OTHER_OUTRIGHT
+            ) {
                 OddsType.EU
-            }else{
+            } else {
                 oddsType
             }
             betInfoData.singleBetOddsType = currentOddsType

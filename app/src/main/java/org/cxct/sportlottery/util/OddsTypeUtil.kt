@@ -3,6 +3,7 @@ package org.cxct.sportlottery.util
 
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.menu.OddsType
 
