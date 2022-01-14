@@ -51,7 +51,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="58dp"
         android:gravity="center">
 
         <org.cxct.sportlottery.ui.game.widget.OddsButton
@@ -72,7 +72,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="58dp"
         android:gravity="center">
         <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_row1_away"
@@ -95,7 +95,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="58dp"
         android:gravity="center">
         <org.cxct.sportlottery.ui.game.widget.OddsButton
             android:id="@+id/odd_btn_row1_draw"

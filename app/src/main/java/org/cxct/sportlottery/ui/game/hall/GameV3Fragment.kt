@@ -468,7 +468,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SpaceItemDecoration(context, R.dimen.item_spacing_league)
             )
             setHasFixedSize(true)
-            setItemViewCacheSize(10)
+            //setItemViewCacheSize(10)
         }
 
 //        view.sv_game.setOnScrollChangeListener { _, _, _, _, _ ->
@@ -873,7 +873,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
-                //[Martin]aaaaa
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.values.forEach { oddList ->
@@ -1027,18 +1026,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueListPin.indexOf(it.id)
         }
     }
-    var timerHandler: Handler? = null
     private fun initSocketObserver() {
-//        timerHandler = Handler()
-//        val timerRunnable: Runnable = object : Runnable {
-//            override fun run() {
-//                leagueAdapter.notifyDataSetChanged()
-//                Log.e("Martin","3333")
-//                timerHandler!!.postDelayed(this, 3000)
-//            }
-//        }
-//        timerHandler!!.postDelayed(timerRunnable, 1000)
-
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 when (game_list.adapter) {
