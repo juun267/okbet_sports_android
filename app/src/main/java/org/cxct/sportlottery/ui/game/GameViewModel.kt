@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -444,12 +445,9 @@ class GameViewModel(
             result?.let {
                 it.sportMenuData?.sortSport()
                 it.updateSportSelectState(
-                    specialEntrance.value?.matchType,
-                    specialEntrance.value?.gameType?.key
-                ).run {
-                    _specialEntrance.value = null
-                }
-
+                    matchType,
+                    lastSportTypeHashMap[matchType?.postValue]
+                )
             }
             _curMatchType.value = matchType
         }
@@ -495,26 +493,17 @@ class GameViewModel(
                     )
                 )
             }?.let { result ->
-                specialMenuData = result?.sportQueryData
-                if (specialMenuData?.items!!.isNotEmpty()) {
+                specialMenuData = result.sportQueryData
+                if (specialMenuData?.items?.isNotEmpty() == true) {
                     getLeagueList(
-                        specialMenuData?.items!![0].code!!,
+                        specialMenuData?.items?.getOrNull(0)?.code ?: "",
                         code,
                         null,
                         isIncrement = false
                     )
-//                    getOddsList(
-//                        specialMenuData?.items!![0].code!!,
-//                        code,
-//                        null,
-//                        leagueIdList = null,
-//                        isIncrement = false
-//                    )
                 }
             }
-            specialMenuData?.updateSportSelectState(null)
-            //_sportMenuResult.postValue()
-            //checkLastSportType(matchType, sportQueryData)
+            specialMenuData?.updateSportSelectState(specialMenuData?.items?.getOrNull(0)?.code)
         }
     }
 
@@ -856,10 +845,6 @@ class GameViewModel(
                 lastSportTypeHashMap[matchType.postValue]
             )
 
-        var sportItem = getSportSelected(matchType)
-//        if(nowMatchType == MatchType.OTHER||nowMatchType == MatchType.OTHER_OUTRIGHT||nowMatchType == MatchType.OTHER_EPS){
-//            sportItem = specialMenuData!!.items?.find { it.isSelected } as
-//        }
         val sportCode = getSportSelectedCode(nowMatchType)
 
         sportCode?.let { code ->
