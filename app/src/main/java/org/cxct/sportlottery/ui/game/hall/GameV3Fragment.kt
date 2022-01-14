@@ -190,8 +190,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchInfo, odd, playCateCode, playCateName ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName)
+                { matchInfo, odd, playCateCode, playCateName ,betPlayCateNameMap ->
+                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
                 { matchId ->
                     matchId?.let {
@@ -218,16 +218,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             {
                 subscribeChannelHall(it)
             },
-            { odd, betMatchInfo ->
+            { odd, betMatchInfo ,betPlayCateNameMap ->
                 addOddsDialog(
                     betMatchInfo,
                     odd,
                     PlayCate.EPS.value,
-                    getString(R.string.game_tab_price_boosts_odd)
+                    getString(R.string.game_tab_price_boosts_odd),
+                    betPlayCateNameMap
                 )
-            }, { matchInfo ->
-                setEpsBottomSheet(matchInfo)
-            })
+            }) { matchInfo ->
+            setEpsBottomSheet(matchInfo)
+        }
         )
     }
 
@@ -1558,7 +1559,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
-        playCateName: String
+        playCateName: String,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
     ) {
         //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
 //        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
@@ -1577,6 +1579,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     matchInfo,
                     odd,
                     ChannelType.HALL,
+                    betPlayCateNameMap,
                     getPlayCateMenuCode()
                 )
             }
