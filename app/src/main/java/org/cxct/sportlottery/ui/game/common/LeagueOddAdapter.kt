@@ -210,8 +210,10 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause)
 
             setupOddsButton(item, oddsType, leagueOddListener)
-
-            setupQuickCategory(item, oddsType, leagueOddListener)
+            if(!itemView.hasTransientState()){
+                setupQuickCategory(item, oddsType, leagueOddListener)
+                itemView.setHasTransientState(true)
+            }
         }
 
         fun setupMatchInfo(
@@ -750,7 +752,6 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             oddsType: OddsType,
             leagueOddListener: LeagueOddListener?
         ) {
-
             itemView.league_odd_quick_cate_border.visibility =
                 if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.GONE

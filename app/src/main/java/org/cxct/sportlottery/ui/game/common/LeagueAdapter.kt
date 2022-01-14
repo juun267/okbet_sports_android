@@ -92,7 +92,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                             )
                         )
                         setHasFixedSize(true)
-                        setItemViewCacheSize(20)
+                        //setItemViewCacheSize(20)
                         isNestedScrollingEnabled = false
                         adapter = leagueOddAdapter
                     }

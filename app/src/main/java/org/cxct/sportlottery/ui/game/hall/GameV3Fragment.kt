@@ -467,7 +467,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SpaceItemDecoration(context, R.dimen.item_spacing_league)
             )
             setHasFixedSize(true)
-            setItemViewCacheSize(20)
+            //setItemViewCacheSize(20)
         }
 
 //        view.sv_game.setOnScrollChangeListener { _, _, _, _, _ ->
@@ -1031,7 +1031,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         timerHandler = Handler()
         val timerRunnable: Runnable = object : Runnable {
             override fun run() {
-                leagueAdapter.notifyDataSetChanged()
+                //leagueAdapter.notifyDataSetChanged()
                 timerHandler!!.postDelayed(this, 3000)
             }
         }
