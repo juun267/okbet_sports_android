@@ -43,6 +43,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         set(value) {
             field = value
             field?.let {
+                betPlayCateNameMap = it.betPlayCateNameMap
                 matchOdd = it.matchOdd
                 parlayOdd = it.parlayOdds
             }
@@ -52,7 +53,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         set(value) {
             field = value
             matchOdd?.let {
-                setupData(it)
+                setupData(it, betPlayCateNameMap)
             }
         }
 
@@ -61,9 +62,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         set(value) {
             field = value
             field?.let {
-                setupData(it)
+                setupData(it, betPlayCateNameMap)
             }
         }
+
+    private var betPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null
 
     private var parlayOdd: ParlayOdd? = null
         set(value) {
@@ -430,7 +433,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it?.let { globalStopEvent ->
                 if (matchOdd?.producerId == null || matchOdd?.producerId == globalStopEvent.producerId) {
                     matchOdd?.status = BetStatus.LOCKED.code
-                    matchOdd?.let { setupData(it) }
+                    matchOdd?.let { setupData(it, betPlayCateNameMap) }
                 }
             }
         }
