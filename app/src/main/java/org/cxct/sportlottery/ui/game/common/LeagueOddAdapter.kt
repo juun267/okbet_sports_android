@@ -130,7 +130,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
         }
     }
 
-
+    //[Martin] 我知道寫得很醜 但是socket更新太頻繁 只能用判斷式來判斷部分刷新
+    //不要每次一有socket來 就重建整個View
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = currentList[position]
         val matchInfoList = currentList.mapNotNull {
@@ -139,7 +140,21 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
         var viewHolder = holder as ViewHolderHdpOu
         val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
 
-        if(updateType == PAYLOAD_SCORE_CHANGE){
+        if(!viewHolder.itemView.hasTransientState()){
+            when (holder) {
+                is ViewHolderHdpOu -> {
+                    holder.stopTimer()
+                    holder.bind(
+                        matchType,
+                        item,
+                        leagueOddListener,
+                        isTimerEnable,
+                        oddsType,
+                        matchInfoList
+                    )
+                }
+            }
+        } else if(updateType == PAYLOAD_SCORE_CHANGE){
             viewHolder.setupMatchInfo(
                 item,
                 matchType,
@@ -149,7 +164,6 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
             viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
         }else if(updateType == PAYLOAD_CLOCK_CHANGE ){
-            viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
             viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
         }else if(updateType == PAYLOAD_ODDS_CHANGE){
             viewHolder.setupOddsButton(item, oddsType, leagueOddListener)
@@ -185,6 +199,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
         updateType = null
+        Log.e("Martin","onViewRecycled="+updateType)
         when (holder) {
             is ViewHolderTimer -> holder.stopTimer()
         }
