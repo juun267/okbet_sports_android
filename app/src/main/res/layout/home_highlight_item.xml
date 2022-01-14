@@ -178,7 +178,7 @@
             android:contentDescription="@null"
             app:tint="@color/colorGray"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_icon_chart" />
+            android:src="@drawable/icon_chart" />
 
         <ImageView
             android:id="@+id/btn_star"
