@@ -142,7 +142,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
         if(!viewHolder.itemView.hasTransientState()){
             when (holder) {
-                is ViewHolderHdpOu -> {
+                        is ViewHolderHdpOu -> {
                     holder.stopTimer()
                     holder.bind(
                         matchType,
@@ -164,6 +164,12 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
             viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
         }else if(updateType == PAYLOAD_CLOCK_CHANGE ){
+            viewHolder.setupMatchInfo(
+                item,
+                matchType,
+                matchInfoList,
+                leagueOddListener
+            )
             viewHolder.setupMatchTime(item, matchType, isTimerEnable,isTimerPause)
         }else if(updateType == PAYLOAD_ODDS_CHANGE){
             viewHolder.setupOddsButton(item, oddsType, leagueOddListener)
@@ -199,7 +205,6 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
         super.onViewRecycled(holder)
         updateType = null
-        Log.e("Martin","onViewRecycled="+updateType)
         when (holder) {
             is ViewHolderTimer -> holder.stopTimer()
         }
@@ -225,10 +230,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause)
 
             setupOddsButton(item, oddsType, leagueOddListener)
-            if(!itemView.hasTransientState()){
-                setupQuickCategory(item, oddsType, leagueOddListener)
-                itemView.setHasTransientState(true)
-            }
+            setupQuickCategory(item, oddsType, leagueOddListener)
+            itemView.setHasTransientState(true)
         }
 
         fun setupMatchInfo(
@@ -754,7 +757,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                 visibility = if (item.oddsMap.size > 2) {
                     View.VISIBLE
                 } else {
-                    View.GONE
+                    View.VISIBLE
                 }
 
                 setupWithViewPager2(itemView.league_odd_btn_pager_main)
@@ -776,7 +779,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
 
             itemView.league_odd_quick_cate_divider.visibility =
                 if (item.quickPlayCateList.isNullOrEmpty()) {
-                    View.GONE
+                    View.INVISIBLE
                 } else {
                     View.VISIBLE
                 }
@@ -792,7 +795,6 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     leagueOddListener?.onClickQuickCateClose()
                 }
             }
-
             itemView.league_odd_quick_cate_tabs.apply {
                 visibility = if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.GONE
@@ -804,7 +806,6 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     val inflater =
                         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                     val rb = inflater.inflate(R.layout.custom_radio_button, null) as RadioButton
-
                     addView(rb.apply {
                         text = it.nameMap?.get(LanguageManager.getSelectLanguage(context).key)
                             ?: it.name
