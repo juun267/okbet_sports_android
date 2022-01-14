@@ -207,30 +207,48 @@ class WithdrawRepository(
                         val eWalletBind = checkEWalletSystem(result.bankCardList)
 
                         promptMessageId = when {
-                            bankBind && cryptoBind && eWalletBind -> {
-                                -1
-                            }
-                            bankBind && !cryptoBind && !eWalletBind -> {
-                                R.string.please_setting_crypto_ewallet
-                            }
-                            !bankBind && cryptoBind && !eWalletBind -> {
-                                R.string.please_setting_bank_card_ewallet
-                            }
-                            !bankBind && !cryptoBind && eWalletBind -> {
-                                R.string.please_setting_bank_card_crypto
-                            }
-                            bankBind && cryptoBind && !eWalletBind -> {
-                                R.string.please_setting_ewallet
-                            }
-                            bankBind && !cryptoBind && eWalletBind -> {
-                                R.string.please_setting_crypto
-                            }
-                            !bankBind && cryptoBind && eWalletBind -> {
+                            mWithdrawOperation?.bankSystem == true && !bankBind ->{
                                 R.string.please_setting_bank_card
                             }
-                            else -> {
-                                R.string.please_setting_money_card
+
+                            mWithdrawOperation?.bankSystem == false && mWithdrawOperation?.cryptoSystem == true && !cryptoBind ->{
+                                R.string.please_setting_crypto
                             }
+
+                            mWithdrawOperation?.bankSystem == false && mWithdrawOperation?.cryptoSystem == false && mWithdrawOperation?.eWalletSystem == true && !eWalletBind ->{
+                                R.string.please_setting_ewallet
+                            }
+                            else ->{
+                                -1
+                            }
+
+//                            bankBind && cryptoBind && eWalletBind -> {
+//                                -1
+//                            }
+//                            ((mWithdrawOperation?.bankSystem == true && mWithdrawOperation?.cryptoSystem == true && mWithdrawOperation?.eWalletSystem == true) && (bankBind || cryptoBind || eWalletBind)) -> {
+//                                -1
+//                            }
+//                            bankBind && !cryptoBind && !eWalletBind -> {
+//                                R.string.please_setting_crypto_ewallet
+//                            }
+//                            !bankBind && cryptoBind && !eWalletBind -> {
+//                                R.string.please_setting_bank_card_ewallet
+//                            }
+//                            !bankBind && !cryptoBind && eWalletBind -> {
+//                                R.string.please_setting_bank_card_crypto
+//                            }
+//                            bankBind && cryptoBind && !eWalletBind -> {
+//                                R.string.please_setting_ewallet
+//                            }
+//                            bankBind && !cryptoBind && eWalletBind -> {
+//                                R.string.please_setting_crypto
+//                            }
+//                            !bankBind && cryptoBind && eWalletBind -> {
+//                                R.string.please_setting_bank_card
+//                            }
+//                            else -> {
+//                                R.string.please_setting_money_card
+//                            }
                         }
                     }
                     _needToBindBankCard.value = Event(promptMessageId)
