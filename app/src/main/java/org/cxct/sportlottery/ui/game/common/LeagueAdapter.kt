@@ -92,7 +92,7 @@ class LeagueAdapter(private val matchType: MatchType) :
                             )
                         )
                         setHasFixedSize(true)
-                        setItemViewCacheSize(20)
+                        setItemViewCacheSize(10)
                         isNestedScrollingEnabled = false
                         adapter = leagueOddAdapter
                     }
@@ -138,7 +138,6 @@ class LeagueAdapter(private val matchType: MatchType) :
         when (holder) {
             is ItemViewHolder -> {
                 updateType = null
-//                Log.e("Martin","FUCK??")
 //                holder.itemView.league_odd_list.adapter = null
             }
         }
