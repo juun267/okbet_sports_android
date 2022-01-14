@@ -93,7 +93,8 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         playCateName = oddsDetail?.name ?: "",
                         matchInfo = matchOdd.matchInfo,
                         odd = odd,
-                        subscribeChannelType = ChannelType.EVENT
+                        subscribeChannelType = ChannelType.EVENT,
+                        betPlayCateNameMap = matchOdd.betPlayCateNameMap
                     )
                 }
             }
