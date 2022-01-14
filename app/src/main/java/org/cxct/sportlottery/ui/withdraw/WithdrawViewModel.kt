@@ -495,7 +495,9 @@ class WithdrawViewModel(
     fun getWithdrawHint() {
         val limit = getWithdrawAmountLimit()
         _withdrawAmountHint.value = String.format(
-            androidContext.getString(R.string.hint_please_enter_withdraw_amount), limit.min.toLong(), limit.max.toLong()
+            androidContext.getString(R.string.hint_please_enter_withdraw_amount),
+            limit.min.toLong(), limit.max.toLong(),
+            sConfigData?.systemCurrency
         )
     }
 
@@ -538,7 +540,8 @@ class WithdrawViewModel(
                 _withdrawRateHint.value = String.format(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
                     ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
-                    ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0))
+                    ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0)),
+                    sConfigData?.systemCurrency
                 )
             }
             TransferType.CRYPTO -> {
@@ -547,11 +550,13 @@ class WithdrawViewModel(
                     val withdrawNeedAmount = if (withdrawAmount != 0.0 && withdrawAmount != null) cardConfig?.let { withdrawAmount.times(it.exchangeRate ?: 0.0) } ?: 0.0 else 0.0
                     _withdrawCryptoAmountHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_amount_hint),
-                        ArithUtil.toMoneyFormat(withdrawNeedAmount)
+                        ArithUtil.toMoneyFormat(withdrawNeedAmount),
+                        sConfigData?.systemCurrency
                     )
                     _withdrawCryptoFeeHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_fee_hint),
-                        ArithUtil.toMoneyFormat(fee)
+                        ArithUtil.toMoneyFormat(fee),
+                        sConfigData?.systemCurrency
                     )
                     _withdrawRateHint.value = String.format(
                         androidContext.getString(R.string.withdraw_crypto_exchange_rate_hint),

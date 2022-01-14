@@ -99,6 +99,7 @@ class RegisterViewModel(
     private val _loginForGuestResult = MutableLiveData<LoginResult>()
     private val _agreementChecked = MutableLiveData<Boolean?>()
 
+    @Deprecated("沒在用")
     fun getAgreementContent(context: Context): Spanned {
         //TODO 添加多國語系 開戶協議 檔案路徑 mapping
         val path = when (LanguageManager.getSelectLanguage(context)) {

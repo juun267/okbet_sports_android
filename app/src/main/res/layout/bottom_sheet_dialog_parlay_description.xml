@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="228dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlackLight"
+        android:background="@color/colorSilverLight"
         android:gravity="center_vertical">
 
         <ImageView
@@ -18,7 +19,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_question_mark_white" />
+            android:src="@drawable/icon_questionmark_w" />
 
         <TextView
             android:id="@+id/tv_parlay_type"
@@ -27,7 +28,7 @@
             android:layout_marginTop="13dp"
             android:layout_marginBottom="13dp"
             android:layout_weight="1"
-            android:textColor="@color/colorWhite6"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize16sp"
             tools:text="3串4" />
 
@@ -36,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:padding="16dp"
-            android:src="@drawable/ic_close_gray" />
+            android:src="@drawable/ic_close_dark_gray"/>
     </LinearLayout>
 
     <ScrollView
@@ -52,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="12dp"
+            android:textColor="@color/colorBlackLight"
             tools:text="3串4是由3个不同赛事组成的4个不同投注\n3个2串1以及1个3串1\n至少2个选项获胜以确保派彩\n不同球种及冠军玩法不能进行串关投注" />
 
     </ScrollView>

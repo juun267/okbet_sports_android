@@ -56,7 +56,6 @@ import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
-import org.cxct.sportlottery.ui.bet.list.BetInfoCarDialog
 
 
 /**
@@ -299,12 +298,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
             GameConfigManager.getTitleBarBackground(selectItem.code)?.let {
                 highlight_titleBar.setBackgroundResource(it)
-            }
-
-            tv_play_type_highlight.text = when (GameType.getGameType(selectItem.code)) {
-                GameType.FT, GameType.BK, GameType.IH, GameType.RB, GameType.AFT -> getText(R.string.ou_hdp_hdp_title)
-                GameType.TN, GameType.VB, GameType.BX, GameType.CK -> getText(R.string.ou_hdp_1x2_title)
-                else -> ""
             }
 
             unsubscribeHighlightHallChannel() //先取消訂閱當前的精選賽事
@@ -1168,7 +1161,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun updateHighlightVisibility(show: Boolean) {
         highlight_bar.isVisible = show
-        ll_highlight_type.isVisible = show
         highlight_titleBar.isVisible = show
     }
 

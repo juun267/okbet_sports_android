@@ -8,7 +8,8 @@
     android:paddingStart="25dp"
     android:background="@color/colorWhite"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:context=".ui.profileCenter.money_transfer.transfer.MoneyTransferSubFragment">
 
     <TextView
         android:layout_width="wrap_content"
@@ -30,11 +31,12 @@
         />
 
     <TextView
+        android:id="@+id/tv_currency_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/bet_info_list_rmb"
         android:layout_marginStart="8dp"
         android:textColor="@color/colorBlueDark"
+        tools:text="PHP"
         android:textSize="@dimen/textSize16sp" />
 
     <ImageView

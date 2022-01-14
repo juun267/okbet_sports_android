@@ -36,10 +36,12 @@ data class MatchOdd(
 
     override val oddsEps: Odds? = null
 
+    @Deprecated("之後翻譯都要改用playCateNameMap")
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var isExpand = false
     var leagueTime: Int? = null
+    var stopped:Int? = 0
 
     var positionButtonPage = 0
 

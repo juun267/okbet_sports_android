@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_withdraw_commission_detail.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
 
@@ -40,6 +41,8 @@ class WithdrawCommissionDetailActivity :
         btn_info.setOnClickListener {
             CommissionDetailInfoDialog(this).show()
         }
+
+        tv_currency.text = sConfigData?.systemCurrency
     }
 
     private fun setupBackButton() {

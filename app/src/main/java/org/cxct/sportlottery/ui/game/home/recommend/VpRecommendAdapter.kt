@@ -1,10 +1,10 @@
 package org.cxct.sportlottery.ui.game.home.recommend
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.moshi.*
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
@@ -31,8 +31,8 @@ class VpRecommendAdapter(
     val dataList: List<OddBean>,
     private val isOutright: Int?,
     val matchOdd: MatchOdd,
-    val playCateMappingList: List<PlayCateMapItem>?,
-    val dynamicMarkets: Map<String, DynamicMarket>?
+    val dynamicMarkets: Map<String, DynamicMarket>?,
+    val playCateNameMap: Map<String?, Map<String?, String?>?>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -88,11 +88,11 @@ class VpRecommendAdapter(
             when (holder) {
                 is ViewHolderHdpOu -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
-                    holder.bind(data)
+                    holder.bind(data, playCateNameMap)
                 }
                 is ViewHolderEPS -> {
                     val data = dataList.filterPlayCateSpanned(sportCode)[position]
-                    holder.bind(data)
+                    holder.bind(data, playCateNameMap)
                 }
                 is ViewHolderRecOutright -> {
                     val data = dataList.first()
@@ -109,12 +109,18 @@ class VpRecommendAdapter(
     private fun List<OddBean>.filterPlayCateSpanned(gameType: String?): List<OddBean> {
         val spannedList = mutableListOf<OddBean>()
         this.forEach { oddBean ->
-            val playCateMapItem = playCateMappingList?.find {
-                it.gameType == gameType && it.playCateCode == oddBean.playTypeCode
-            }
+            val playCateNum =
+                when { //根據IOS給的規則判斷顯示數量
+                    oddBean.playTypeCode.contains(PlayCate.HDP.value) || oddBean.playTypeCode.contains(PlayCate.OU.value) || oddBean.playTypeCode.contains(
+                        PlayCate.CORNER_OU.value
+                    ) -> 2
 
+                    oddBean.playTypeCode.contains(PlayCate.SINGLE.value) || oddBean.playTypeCode.contains(PlayCate.NGOAL.value) -> 3
+
+                    else -> 3
+                }
             spannedList.add(OddBean(oddBean.playTypeCode, oddBean.oddList.filterIndexed { index, _ ->
-                index < playCateMapItem?.playCateNum ?: 0
+                index < playCateNum
             }))
         }
         return spannedList
@@ -125,24 +131,20 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean) {
+        fun bind(data: OddBean, playCateNameMap: Map<String?, Map<String?, String?>?>?) {
             when (data.playTypeCode) {
                 PlayCate.EPS.value -> {
                     itemView.apply {
-                        tv_play_type_eps.text = matchOdd.playCateMappingList?.find {
-                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+
+                        tv_play_type_eps.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                         setupOddsButton(btn_odd_eps, data.playTypeCode, data.oddList[0])
                     }
                 }
                 else -> {
                     itemView.apply {
-                        val playTypeStr = matchOdd.playCateMappingList?.find {
-                            it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                        }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
 
-                        tv_play_type.text = playTypeStr
+                        tv_play_type.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                         if (data.oddList.isNotEmpty()) {
                             odd_btn_home.visibility = View.VISIBLE
@@ -259,27 +261,26 @@ class VpRecommendAdapter(
                 rec_champ_btn_pre3.apply {
                     if (data.oddList.size < 3 || data.oddList.getOrNull(2) == null) {
                         visibility = View.GONE
-                        return
-                    }
+                    }else{
+                        setupOdd(data.oddList.getOrNull(2), oddsType)
 
-                    setupOdd(data.oddList.getOrNull(2), oddsType)
+                        tv_name.apply {
+                            text = data.oddList.getOrNull(2)?.getSpreadName(context)
+                            visibility = View.VISIBLE
+                        }
 
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(2)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
+                        tv_spread.text = ""
 
-                    tv_spread.text = ""
+                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(2))
 
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(2))
+                        isSelected = data.oddList.getOrNull(2)?.isSelected ?: false
 
-                    isSelected = data.oddList.getOrNull(2)?.isSelected ?: false
-
-                    setOnClickListener {
-                        data.oddList.getOrNull(2)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                        setOnClickListener {
+                            data.oddList.getOrNull(2)?.let { odd ->
+                                onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                    this.matchInfo?.gameType = sportCode
+                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                            }
                         }
                     }
                 }
@@ -287,32 +288,59 @@ class VpRecommendAdapter(
                 rec_champ_btn_pre4.apply {
                     if (data.oddList.size < 4|| data.oddList.getOrNull(3) == null) {
                         visibility = View.GONE
-                        return
+                    }else{
+                        setupOdd(data.oddList.getOrNull(3), oddsType)
+
+                        tv_name.apply {
+                            text = data.oddList.getOrNull(3)?.getSpreadName(context)
+                            visibility = View.VISIBLE
+                        }
+
+                        tv_spread.text = ""
+
+                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(3))
+
+                        isSelected = data.oddList.getOrNull(3)?.isSelected ?: false
+
+                        setOnClickListener {
+                            data.oddList.getOrNull(3)?.let { odd ->
+                                onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                    this.matchInfo?.gameType = sportCode
+                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                            }
+                        }
                     }
+                }
 
-                    setupOdd(data.oddList.getOrNull(3), oddsType)
+                rec_champ_btn_pre5.apply {
+                    if (data.oddList.size < 5 || data.oddList.getOrNull(4) == null) {
+                        visibility = View.GONE
+                    } else {
+                        setupOdd(data.oddList.getOrNull(4), oddsType)
 
-                    tv_name.apply {
-                        text = data.oddList.getOrNull(3)?.getSpreadName(context)
-                        visibility = View.VISIBLE
-                    }
+                        tv_name.apply {
+                            text = data.oddList.getOrNull(4)?.getSpreadName(context)
+                            visibility = View.VISIBLE
+                        }
 
-                    tv_spread.text = ""
+                        tv_spread.text = ""
 
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(3))
+                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(4))
 
-                    isSelected = data.oddList.getOrNull(3)?.isSelected ?: false
+                        isSelected = data.oddList.getOrNull(4)?.isSelected ?: false
 
-                    setOnClickListener {
-                        data.oddList.getOrNull(3)?.let { odd ->
-                            onClickOutrightOddListener?.onClickBet(matchOdd.apply {
-                                this.matchInfo?.gameType = sportCode
-                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                        setOnClickListener {
+                            data.oddList.getOrNull(4)?.let { odd ->
+                                onClickOutrightOddListener?.onClickBet(matchOdd.apply {
+                                    this.matchInfo?.gameType = sportCode
+                                }, odd, PlayCate.UNCHECK.value, data.playTypeCode)
+                            }
                         }
                     }
                 }
 
                 rec_champ_more.apply {
+                    isVisible = data.oddList.size > 5
                     setOnClickListener {
                         onClickMoreListener?.onClickMore(data.playTypeCode, matchOdd)
                     }
@@ -325,6 +353,9 @@ class VpRecommendAdapter(
                 LanguageManager.Language.ZH -> {
                     this.zh
                 }
+                LanguageManager.Language.VI -> {
+                    this.vi
+                }
                 else -> {
                     this.en
                 }
@@ -336,6 +367,9 @@ class VpRecommendAdapter(
                 LanguageManager.Language.ZH -> {
                     this.nameMap?.get("zh")
                 }
+                LanguageManager.Language.VI -> {
+                    this.nameMap?.get("vi")
+                }
                 else -> this.nameMap?.get("en")
             }
         }
@@ -346,11 +380,10 @@ class VpRecommendAdapter(
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
     ) : OddStateViewHolder(itemView) {
 
-        fun bind(data: OddBean) {
+        fun bind(data: OddBean, playCateNameMap: Map<String?, Map<String?, String?>?>?) {
             itemView.apply {
-                tv_play_type_eps.text = matchOdd.playCateMappingList?.find {
-                    it.gameType == sportCode && it.playCateCode == data.playTypeCode
-                }?.getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+
+                tv_play_type_eps.text = playCateNameMap?.get(data.playTypeCode)?.get(LanguageManager.getSelectLanguage(context).key)
 
                 tv_title_eps.text = data.oddList.getOrNull(0)?.name
 

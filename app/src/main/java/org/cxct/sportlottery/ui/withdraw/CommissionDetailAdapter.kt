@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
@@ -70,6 +71,12 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
                         }
                     }
                 }
+
+                sConfigData?.systemCurrency.let {
+                    tvVnd.text = it
+                    tvRequiredValidBetsVnd.text = it
+                    tvSuccessedBetsVnd.text = it
+                }
             }
 
         } catch (e: Exception) {
@@ -100,6 +107,9 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
     class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var tvId: TextView = itemView.findViewById(R.id.tv_id)
         var tvStatus: TextView = itemView.findViewById(R.id.tv_status)
+        var tvVnd: TextView = itemView.findViewById(R.id.tv_vnd)
+        var tvRequiredValidBetsVnd: TextView = itemView.findViewById(R.id.tv_required_valid_bets_vnd)
+        var tvSuccessedBetsVnd: TextView = itemView.findViewById(R.id.tv_successed_bets_vnd)
         var tvDeductMoney: TextView = itemView.findViewById(R.id.tv_deduct_money)
         var tvTime: TextView = itemView.findViewById(R.id.tv_time)
         var tvRequiredValidBetsMoney: TextView = itemView.findViewById(R.id.tv_required_valid_bets_money)

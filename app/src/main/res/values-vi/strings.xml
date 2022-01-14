@@ -177,8 +177,8 @@
     <string name="daily_bet_range">giá trị cược hiệu lực mỗi ngày</string>
     <string name="title_rebates_rate">Số % hoàn lãi</string>
     <string name="daily_rebates">hoàn lợi nhuận tối đa trong một ngày</string>
-    <string name="hint_recharge_growth">Nạp tiền vào %d để nhận được %d tăng điểm</string>
-    <string name="hint_bet_growth">Cá cược %d nhân dân tệ để nhận %d điểm</string>
+    <string name="hint_recharge_growth">Nạp tiền vào %d %s nhận được %d tăng điểm</string>
+    <string name="hint_bet_growth">Cá cược %d %s dân tệ để nhận %d điểm</string>
     <string name="contact_us">liên hệ chúng tôi</string>
     <string name="game_rule">Luật trò chơi</string>
     <string name="sport_bet_rule">Quy luật cá cược thể thao</string>
@@ -245,7 +245,7 @@
     <string name="help_center">Trung tâm trợ giúp</string>
     <string name="fund_detail">Chi tiết quỹ</string>
     <string name="feedback">Ý kiến phản hồi</string>
-    <string name="promotion">thủ công đăng ký khuyến mãi</string>
+    <string name="promotion">Khuyến mại</string>
     <string name="need_improve">Cần được hoàn thiện</string>
     <string name="profile_info">Thông tin cá nhân</string>
     <string name="avatar">Ảnh đại diện</string>
@@ -381,7 +381,7 @@
     <string name="title_account">Tài khoản：</string>
     <string name="title_address">Địa chỉ：</string>
     <string name="title_deposit_money">Số tiền nạp</string>
-    <string name="edt_hint_deposit_money">số tiền giới hạn %1$s～%2$s PHP</string>
+    <string name="edt_hint_deposit_money">số tiền giới hạn %1$s～%2$s</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
     <string name="edt_hint_real_name">Họ tên phải khớp với tài khoản ngân hàng</string>
@@ -439,10 +439,10 @@
     <string name="title_transaction_id">ID giao dịch chuỗi khối</string>
     <string name="hint_transaction_id">ID blockchain của bạn</string>
     <string name="hint_fee_rate">・Phí xử lý：%1$s</string>
-    <string name="hint_fee_amount">・Số tiền phí xử lý：%1$s PHP</string>
+    <string name="hint_fee_amount">・Số tiền phí xử lý：%1$s %s</string>
     <string name="hint_feeback_rate">・Hoàn lại：%1$s</string>
-    <string name="hint_feeback_amount">・Số tiền hoàn lại： %1$s PHP</string>
-    <string name="txv_recharge_money">・Số tiền nạp %1$s PHP</string>
+    <string name="hint_feeback_amount">・Số tiền hoàn lại： %1$s %s</string>
+    <string name="txv_recharge_money">・Số tiền nạp %1$s %s</string>
     <string name="title_recharge_account">Tài khoản nạp tiền</string>
     <string name="title_choose_recharge_account">Chọn một tài khoản nạp tiền</string>
     <string name="title_recharge_address">Địa chỉ gửi tiền：</string>
@@ -497,11 +497,11 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s nhân dân tệ</string>
+    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s %s</string>
     <string name="withdraw_crypto_exchange_rate_hint">・Tỷ giá：%1$s</string>
-    <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s PHP</string>
-    <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s PHP</string>
-    <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s PHP</string>
+    <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s %s</string>
+    <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s %s</string>
+    <string name="hint_please_enter_withdraw_amount">số tiền giới hạn %1$s~%2$s %s</string>
     <string name="hint_four_number_password">Vui lòng nhập mật khẩu rút tiền</string>
     <string name="hint_please_enter_withdraw_password">Mật khẩu rút tiền</string>
     <string name="add_new">Thêm mới</string>
@@ -549,8 +549,6 @@
     <string name="bet_receipt_bet_quota">Số tiền đặt cược : </string>
     <string name="bet_info_list_win_quota">Số tiền có thể thắng : </string>
     <string name="bet_list_win_quota">Số tiền có thể thắng:</string>
-<!--    <string name="bet_info_list_rmb">RMB</string>-->
-    <string name="bet_info_list_rmb">PHP</string>
     <string name="bet_info_list_add_more">Thêm nhiều lựa chọn</string>
     <string name="bet_info_list_bet">Cá cược</string>
     <string name="bet_info_list_odds_change">Chấp nhận các thay đổi và đặt cược</string>
@@ -569,14 +567,12 @@
     <string name="bet_info_bet_balance_insufficient">Số dư không đủ</string>
     <string name="bet_info_different_game_type">không cùng loại bóng không thể tiến hành cược xiên</string>
     <string name="bet_info_input_quota">Nhập số tiền</string>
-    <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số\ntiền</string>
+    <string name="bet_info_check_maximum_limit">Xem giới hạn tối đa số tiền</string>
     <string name="bet_info_bet_quota">Số tiền đặt cược</string>
     <string name="bet_info_win_quota">Số tiền có thể thắng</string>
     <string name="bet_info_accept_odds_change">Chấp nhận các thay đổi và đặt cược</string>
     <string name="bet_info_add_to_bet_info">Thêm vào đơn cá cược</string>
     <string name="bet_info_odd_content_changed">Tỷ lệ cược của một hoặc nhiều lựa chọn, điểm chấp hoặc điểm số đã được thay đổi</string>
-<!--    <string name="bet_info_current_rmb">%s RMB</string>-->
-    <string name="bet_info_current_rmb">%s PHP</string>
     <string name="bet_info_all_bet">Tất cả các cược</string>
     <string name="bet_list_delete_all">Xóa tất cả</string>
     <string name="bet_list_single_warn">(Có thể sử dụng cùng số tiền đặt cược để thực hiện tất cả các lựa chọn riêng lẻ)</string>
@@ -642,7 +638,7 @@
     <string name="feedback_tabName_problem">Câu hỏi và gợi ý</string>
     <string name="feedback_tabName_record">Lịch sử phản hồi</string>
     <string name="feedback_description">Nếu bạn có đề xuất tốt cho sảnh trò chơi hoặc tìm thấy lỗi (BUG) có thể gửi cho dịch vụ khách hàng sẽ trả lời trong vòng 48 giờ. Chúng tôi sẽ nhanh chóng chỉnh sửa BUG hoặc tham khảo phản hồi của bạn để liên tục tối ưu hóa các sản phẩm và dịch vụ của chúng tôi. (Nếu có nhiều phản hồi cho cùng một đề xuất hoặc BUG, ​​tiền thưởng sẽ được gửi đến người phản hồi đầu tiên, hãy nhớ phản hồi ngay khi bạn phát hiện ra vấn đề)</string>
-    <string name="feedback_description_money">Nếu ý kiến đóng góp được thông qua hoặc lỗi được xác minh, phần thưởng tối đa là 3000 PHP (hoặc đơn vị tiền tệ tương đương khác).</string>
+    <string name="feedback_description_money">Nếu ý kiến đóng góp được thông qua hoặc lỗi được xác minh, phần thưởng tối đa là 3000 %s (hoặc đơn vị tiền tệ tương đương khác).</string>
     <string name="feedback_submit_succeed">phản hồi được gửi thành công</string>
     <string name="all_status">Tất cả các trạng thái</string>
     <string name="feedback_last_reply_time">Lần phản hồi cuối cùng</string>
@@ -920,4 +916,7 @@
     <string name="commission_detail_desc_22">Số tiền hợp lệ cần 1.500 để rút.</string>
     <string name="commissiom_completed">Hoàn thành</string>
     <string name="commission_example">i.g.</string>
+    <string name="bet_slip">Đơn cược</string>
+    <string name="fast_bet_open_desc">Kích Hoạt Cược Nhanh</string>
+    <string name="bet_list_empty">Hiện không có vé cược</string>
 </resources>

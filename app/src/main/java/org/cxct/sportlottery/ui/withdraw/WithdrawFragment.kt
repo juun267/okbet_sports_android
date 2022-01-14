@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.TransferType
+import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
 import org.cxct.sportlottery.ui.login.signIn.LoginActivity
@@ -74,6 +75,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         tv_detail.setOnClickListener {
             startActivity(Intent(activity, WithdrawCommissionDetailActivity::class.java))
         }
+
+        tv_currency_type.text = sConfigData?.systemCurrency
     }
 
     private fun initEvent() {
