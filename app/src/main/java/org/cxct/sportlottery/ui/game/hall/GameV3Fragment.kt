@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -182,7 +181,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 navOddsDetail(it, matchInfoList)
                             }
                         }
-                        MatchType.OTHER ->{
+                        MatchType.OTHER -> {
                             matchId?.let {
                                 navOddsDetail(it, matchInfoList)
                             }
@@ -209,6 +208,14 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 },
                 { matchId ->
                     navStatistics(matchId)
+                },
+                { matchId ->
+                    loading()
+                    viewModel.refreshGame(
+                        args.matchType,
+                        listOf(),
+                        listOf(matchId)
+                    )
                 }
             )
         }
@@ -483,16 +490,18 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             if (leagueOddAdapter.data.isNotEmpty()) {
                                 for (j in leagueOddAdapter.data.indices) {
                                     val vMatchOddItem = rvLeague.getChildAt(j)
-                                    if (vMatchOddItem.getLocalVisibleRect(this)) {
-                                        subscribeChannelHallSingleMatchOdds(
-                                            leagueAdapter.data[i],
-                                            leagueOddAdapter.data[j]
-                                        )
-                                    } else {
-                                        unSubscribeChannelHallSingleMatchOdds(
-                                            leagueAdapter.data[i],
-                                            leagueOddAdapter.data[j]
-                                        )
+                                    vMatchOddItem.post {
+                                        if (vMatchOddItem.getLocalVisibleRect(this)) {
+                                            subscribeChannelHallSingleMatchOdds(
+                                                leagueAdapter.data[i],
+                                                leagueOddAdapter.data[j]
+                                            )
+                                        } else {
+                                            unSubscribeChannelHallSingleMatchOdds(
+                                                leagueAdapter.data[i],
+                                                leagueOddAdapter.data[j]
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -751,7 +760,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                                 matchType = args.matchType,
                                 isReloadDate = true,
                                 isReloadPlayCate = true,
-                                isLastSportType = true)
+                                isLastSportType = true
+                            )
                         }
                         else -> {
                             game_list.apply {

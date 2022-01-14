@@ -465,51 +465,6 @@ class BetInfoRepository(val androidContext: Context) {
         hasChanged?.matchOdd?.oddState = OddState.SAME.state
     }
 
-    //TODO review 待刪除
-    /*fun notifyBetInfoChanged() {
-        val updateBetInfoList = _betInfoList.value?.peekContent()
-
-        if (updateBetInfoList.isNullOrEmpty()) return
-
-        when (_isParlayPage.value) {
-            true -> {
-                val gameType = GameType.getGameType(updateBetInfoList[0].matchOdd.gameType)
-                gameType?.let {
-                    matchOddList.value?.let {
-                        _parlayList.value =
-                            getParlayOdd(MatchType.PARLAY, gameType, it).toMutableList()
-                    }
-                }
-            }
-
-            false -> {
-                val newList = mutableListOf<BetInfoListData>()
-                updateBetInfoList.forEach { betInfoListData ->
-                    betInfoListData.matchType?.let { matchType ->
-                        val gameType = GameType.getGameType(betInfoListData.matchOdd.gameType)
-                        gameType?.let {
-                            val newBetInfoListData = BetInfoListData(
-                                betInfoListData.matchOdd,
-                                getParlayOdd(
-                                    matchType,
-                                    gameType,
-                                    mutableListOf(betInfoListData.matchOdd)
-                                ).first()
-                            )
-                            newBetInfoListData.matchType = betInfoListData.matchType
-                            newBetInfoListData.input = betInfoListData.input
-                            newBetInfoListData.betAmount = betInfoListData.betAmount
-                            newBetInfoListData.pointMarked = betInfoListData.pointMarked
-                            newList.add(newBetInfoListData)
-                        }
-                    }
-                }
-                checkBetInfoContent(newList)
-                _betInfoList.value = Event(newList)
-            }
-        }
-    }*/
-
     fun notifyBetInfoChanged() {
         val updateBetInfoList = _betInfoList.value?.peekContent()
 

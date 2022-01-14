@@ -36,7 +36,7 @@ data class MatchOdd(
 
     override val oddsEps: Odds? = null
 
-    @Deprecated("之後翻譯都要改用playCateNameMap")
+    @Deprecated("之後翻譯都要改用playCateNameMap，下注顯示用betPlayCateNameMap")
     override var playCateMappingList: List<PlayCateMapItem>? = null
 
     var isExpand = false
@@ -47,7 +47,7 @@ data class MatchOdd(
     fun sortOddsMap() {
         this.oddsMap.forEach { (_, value) ->
             if (value?.size!! > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
-                value?.sortBy {
+                value.sortBy {
                     it?.marketSort
                 }
             }

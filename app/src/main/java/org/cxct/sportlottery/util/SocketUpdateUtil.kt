@@ -5,10 +5,7 @@ import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState
-import org.cxct.sportlottery.network.common.GameType
-import org.cxct.sportlottery.network.common.MatchOdd
-import org.cxct.sportlottery.network.common.PlayCate
-import org.cxct.sportlottery.network.common.QuickPlayCate
+import org.cxct.sportlottery.network.common.*
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.service.global_stop.GlobalStopEvent
 import org.cxct.sportlottery.network.service.match_clock.MatchClockEvent
@@ -35,7 +32,7 @@ object SocketUpdateUtil {
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
-                    if (matchStatusCO.status == 100) {
+                    if (matchStatusCO.status == GameMatchStatus.FINISH.value) {
                         val matchOddIterator = matchOddList.iterator()
                         while (matchOddIterator.hasNext()) {
                             val item = matchOddIterator.next()

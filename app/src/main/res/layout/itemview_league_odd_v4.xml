@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
 
-       <LinearLayout
+    <LinearLayout
         android:id="@+id/linear_layout"
         android:layout_width="0dp"
         android:layout_height="45dp"

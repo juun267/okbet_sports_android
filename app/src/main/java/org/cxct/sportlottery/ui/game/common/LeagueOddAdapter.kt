@@ -120,17 +120,28 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             leagueOddListener: LeagueOddListener?,
             isTimerEnable: Boolean,
             oddsType: OddsType,
-            matchInfoList: List<MatchInfo>,
+            matchInfoList: List<MatchInfo>
+        ) {
+            setUpVisibility(item, matchType)
 
-            ) {
             setupMatchInfo(item, matchType, matchInfoList, leagueOddListener)
 
             val isTimerPause = item.matchInfo?.stopped == TimeCounting.STOP.value
-            setupMatchTime(item, matchType, isTimerEnable, isTimerPause)
+            setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
 
             setupOddsButton(item, oddsType, leagueOddListener)
 
             setupQuickCategory(item, oddsType, leagueOddListener)
+        }
+
+        private fun setUpVisibility(item: MatchOdd, matchType: MatchType) {
+
+            val socketStatus = item.matchInfo?.socketMatchStatus
+
+            if (matchType == MatchType.AT_START && socketStatus != null) { //有status事件代表遊戲已開始，不會歸類在'即將'
+                itemView.visibility = View.GONE
+            }
+
         }
 
         private fun setupMatchInfo(
@@ -388,7 +399,8 @@ class LeagueOddAdapter(private val matchType: MatchType) :
             item: MatchOdd,
             matchType: MatchType,
             isTimerEnable: Boolean,
-            isTimerPause: Boolean
+            isTimerPause: Boolean,
+            leagueOddListener: LeagueOddListener?
         ) {
             when {
                 item.matchInfo?.isInPlay == true -> {
@@ -424,11 +436,16 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 item.matchInfo?.isAtStart == true -> {
                     listener = object : TimerListener {
                         override fun onTimerUpdate(timeMillis: Long) {
-                            itemView.league_odd_match_time.text = String.format(
-                                itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                TimeUtil.longToMinute(timeMillis)
-                            )
+                            if (timeMillis > 0) {
+                                itemView.league_odd_match_time.text = String.format(
+                                    itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                    if (TimeUtil.longToMmSs(timeMillis) == "0") 1 else TimeUtil.longToMmSs(timeMillis)
+                                )
+                            } else {
+                                leagueOddListener?.onRefresh(item.matchInfo.id)
+                            }
                             item.matchInfo.remainTime = timeMillis
+
                         }
                     }
 
@@ -476,10 +493,14 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                             }
                             listener = object : TimerListener {
                                 override fun onTimerUpdate(timeMillis: Long) {
-                                    itemView.league_odd_match_time.text = String.format(
-                                        itemView.context.resources.getString(R.string.at_start_remain_minute),
-                                        TimeUtil.longToMmSs(timeMillis)
-                                    )
+                                    if (timeMillis > 0) {
+                                        itemView.league_odd_match_time.text = String.format(
+                                            itemView.context.resources.getString(R.string.at_start_remain_minute),
+                                            if (TimeUtil.longToMmSs(timeMillis) == "0") 1 else TimeUtil.longToMmSs(timeMillis)
+                                        )
+                                    } else {
+                                        item.matchInfo?.id?.let { leagueOddListener?.onRefresh(it) }
+                                    }
                                     item.matchInfo?.remainTime = timeMillis
                                 }
                             }
@@ -609,7 +630,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         item.matchInfo,
                         item.oddsSort,
                         item.playCateNameMap,
-                        item.playCateMappingList
+                        item.betPlayCateNameMap
                     ).apply {
 
                         this.odds = item.oddsMap
@@ -617,12 +638,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         this.oddsType = oddsType
 
                         this.listener =
-                            OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                            OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                                 leagueOddListener?.onClickBet(
                                     matchInfo,
                                     odd,
                                     playCateCode,
-                                    playCateName
+                                    betPlayCateName
                                 )
                             }
                     }
@@ -773,7 +794,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 OddButtonPairAdapter(item.matchInfo).apply {
                     this.oddsType = oddsType
 
-                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
                             odd,
@@ -866,7 +887,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         item.matchInfo,
                         item.oddsSort,
                         item.playCateNameMap,
-                        item.playCateMappingList
+                        item.betPlayCateNameMap
                     ).apply {
 
                         this.odds = item.quickPlayCateList?.find { it.isSelected }?.quickOdds
@@ -875,12 +896,12 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                         this.oddsType = oddsType
 
                         this.listener =
-                            OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                            OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                                 leagueOddListener?.onClickBet(
                                     matchInfo,
                                     odd,
                                     playCateCode,
-                                    playCateName
+                                    betPlayCateName
                                 )
                             }
                     }
@@ -928,7 +949,7 @@ class LeagueOddAdapter(private val matchType: MatchType) :
                 OddButtonEpsAdapter(item.matchInfo).apply {
                     this.oddsType = oddsType
 
-                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName ->
+                    listener = OddButtonListener { matchInfo, odd, playCateCode, playCateName, betPlayCateName ->
                         leagueOddListener?.onClickBet(
                             matchInfo,
                             odd,
@@ -1038,7 +1059,8 @@ class LeagueOddListener(
     val clickListenerQuickCateTab: (matchId: String?) -> Unit,
     val clickListenerQuickCateClose: () -> Unit,
     val clickListenerFavorite: (matchId: String?) -> Unit,
-    val clickListenerStatistics: (matchId: String?) -> Unit
+    val clickListenerStatistics: (matchId: String?) -> Unit,
+    val refreshListener: (matchId: String) -> Unit,
 ) {
     fun onClickPlayType(matchId: String?, matchInfoList: List<MatchInfo>) =
         clickListenerPlayType(matchId, matchInfoList)
@@ -1057,4 +1079,6 @@ class LeagueOddListener(
     fun onClickFavorite(matchId: String?) = clickListenerFavorite(matchId)
 
     fun onClickStatistics(matchId: String?) = clickListenerStatistics(matchId)
+
+    fun onRefresh(matchId: String) = refreshListener(matchId)
 }
