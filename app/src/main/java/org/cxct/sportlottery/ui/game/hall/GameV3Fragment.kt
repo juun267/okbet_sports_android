@@ -190,8 +190,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchInfo, odd, playCateCode, playCateName ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName)
+                { matchInfo, odd, playCateCode, playCateName ,betPlayCateNameMap ->
+                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
                 { matchId ->
                     matchId?.let {
@@ -218,16 +218,17 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             {
                 subscribeChannelHall(it)
             },
-            { odd, betMatchInfo ->
+            { odd, betMatchInfo ,betPlayCateNameMap ->
                 addOddsDialog(
                     betMatchInfo,
                     odd,
                     PlayCate.EPS.value,
-                    getString(R.string.game_tab_price_boosts_odd)
+                    getString(R.string.game_tab_price_boosts_odd),
+                    betPlayCateNameMap
                 )
-            }, { matchInfo ->
-                setEpsBottomSheet(matchInfo)
-            })
+            }) { matchInfo ->
+            setEpsBottomSheet(matchInfo)
+        }
         )
     }
 
@@ -467,7 +468,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SpaceItemDecoration(context, R.dimen.item_spacing_league)
             )
             setHasFixedSize(true)
-            setItemViewCacheSize(10)
+            //setItemViewCacheSize(10)
         }
 
 //        view.sv_game.setOnScrollChangeListener { _, _, _, _, _ ->
@@ -872,7 +873,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
             it.peekContent().let {
                 val leagueOdds = leagueAdapter.data
-                //[Martin]aaaaa
                 leagueOdds.forEach { leagueOdd ->
                     leagueOdd.matchOdds.forEach { matchOdd ->
                         matchOdd.oddsMap.values.forEach { oddList ->
@@ -1026,18 +1026,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueListPin.indexOf(it.id)
         }
     }
-    var timerHandler: Handler? = null
     private fun initSocketObserver() {
-//        timerHandler = Handler()
-//        val timerRunnable: Runnable = object : Runnable {
-//            override fun run() {
-//                leagueAdapter.notifyDataSetChanged()
-//                Log.e("Martin","3333")
-//                timerHandler!!.postDelayed(this, 3000)
-//            }
-//        }
-//        timerHandler!!.postDelayed(timerRunnable, 1000)
-
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
                 when (game_list.adapter) {
@@ -1570,7 +1559,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
-        playCateName: String
+        playCateName: String,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
     ) {
         //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
 //        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
@@ -1589,6 +1579,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     matchInfo,
                     odd,
                     ChannelType.HALL,
+                    betPlayCateNameMap,
                     getPlayCateMenuCode()
                 )
             }
