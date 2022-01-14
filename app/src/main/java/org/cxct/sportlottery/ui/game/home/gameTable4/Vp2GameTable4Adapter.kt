@@ -380,6 +380,8 @@ class Vp2GameTable4Adapter(
 
                         setupOdd(oddList?.getOrNull(0), oddsType)
 
+                        setupOddName4Home("1" , playCateName)
+
                         setOnClickListener {
                             if (oddList != null && oddList?.size ?: 0 >= 2) {
                                 oddList?.getOrNull(0)?.let { odd ->
@@ -394,19 +396,6 @@ class Vp2GameTable4Adapter(
                             }
 
                         }
-                    }
-
-                    tv_name.visibility = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> View.GONE
-                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> View.VISIBLE //1x2 獨贏盤
-                        else -> View.GONE
-                    }
-
-                    //跟進h5 獨贏盤 主隊以1表示
-                    tv_name.text = when (gameType) {
-                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> "1"
-                        GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> "1"
-                        else -> ""
                     }
                 }
 
@@ -429,6 +418,11 @@ class Vp2GameTable4Adapter(
 
                         setupOdd(oddList?.getOrNull(1), oddsType)
 
+                        if(data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2)
+                            setupOddName4Home("X" , playCateName)
+                        else
+                            setupOddName4Home("2" , playCateName)
+
                         setOnClickListener {
                             if (oddList != null && oddList?.size ?: 0 >= 2) {
                                 oddList?.getOrNull(1)?.let { odd ->
@@ -445,21 +439,11 @@ class Vp2GameTable4Adapter(
                         }
                     }
 
-                    tv_name.visibility = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> View.GONE
-                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> View.VISIBLE //1x2 獨贏盤
-                        else -> View.GONE
-                    }
-
-                    //跟進h5 獨贏盤 主隊以1表示
-                    tv_name.text = when (gameType) {
-                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> "1"
-                        GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> "1"
-                        else -> ""
-                    }
                 }
 
                 btn_match_odd3.apply {
+                    isVisible =  data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2
+
                     isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                         false
                     } else {
@@ -478,6 +462,8 @@ class Vp2GameTable4Adapter(
 
                         setupOdd(oddList?.getOrNull(2), oddsType)
 
+                        setupOddName4Home("2" , playCateName)
+
                         setOnClickListener {
                             if (oddList != null && oddList?.size ?: 0 >= 2) {
                                 oddList?.getOrNull(2)?.let { odd ->
@@ -494,18 +480,6 @@ class Vp2GameTable4Adapter(
                         }
                     }
 
-                    tv_name.visibility = when (gameType) {
-                        GameType.FT.key, GameType.BK.key -> View.GONE
-                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> View.VISIBLE //1x2 獨贏盤
-                        else -> View.GONE
-                    }
-
-                    //跟進h5 獨贏盤 主隊以1表示
-                    tv_name.text = when (gameType) {
-                        GameType.TN.key, GameType.VB.key, GameType.TT.key, GameType.CK.key, GameType.BM.key -> "1"
-                        GameType.IH.key, GameType.BX.key, GameType.CB.key, GameType.BB.key, GameType.RB.key, GameType.MR.key, GameType.AFT.key -> "1"
-                        else -> ""
-                    }
                 }
             }
         }
