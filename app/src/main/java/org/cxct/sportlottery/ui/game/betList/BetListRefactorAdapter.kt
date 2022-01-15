@@ -3,7 +3,6 @@ package org.cxct.sportlottery.ui.game.betList
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,12 +34,12 @@ import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlay
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.getOdds
-import kotlin.math.abs
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { Bet, Parlay, ParlayFirst }
+    enum class BetViewType {SINGLE, PARLAY, NULL}
 
     var betList: MutableList<BetInfoListData>? = mutableListOf()
         set(value) {
@@ -59,6 +58,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         super.onViewRecycled(holder)
         when (holder is BetInfoChangeViewHolder) {
             true -> holder.clearHandler()
+        }
+    }
+
+    var mSelectedPosition: Int = -1
+
+    var mBetView = BetViewType.NULL
+
+    var onSelectedPositionListener: OnSelectedPositionListener = object:OnSelectedPositionListener{
+        override fun onSelectChange(position: Int, betViewType: BetViewType) {
+            if(mSelectedPosition != position || mBetView != betViewType){
+                mSelectedPosition = position
+                mBetView = betViewType
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -139,7 +152,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     currentOddsType,
                     itemCount,
                     onItemClickListener,
-                    betList?.size ?: 0
+                    betList?.size ?: 0,
+                    mSelectedPosition,
+                    onSelectedPositionListener
                 )
             }
             is BatchSingleViewHolder -> {
@@ -157,7 +172,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         moreOptionCollapse = !moreOptionCollapse
                         needScrollToBottom = true
                         notifyDataSetChanged()
-                    }
+                    },
+                    mSelectedPosition,
+                    mBetView,
+                    onSelectedPositionListener
                 )
             }
             is BatchParlayConnectViewHolder -> {
@@ -165,7 +183,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
                     currentOddsType,
                     hasBetClosed,
-                    onItemClickListener
+                    onItemClickListener,
+                    mSelectedPosition,
+                    mBetView,
+                    onSelectedPositionListener
                 )
             }
         }
@@ -203,14 +224,19 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             oddsType: OddsType,
             itemCount: Int,
             onItemClickListener: OnItemClickListener,
-            betListSize: Int
+            betListSize: Int,
+            mSelectedPosition: Int,
+            onSelectedPositionListener: OnSelectedPositionListener
         ) {
+
             itemView.apply {
                 setupBetAmountInput(
                     itemData,
                     oddsType,
                     onItemClickListener,
-                    betListSize
+                    betListSize,
+                    mSelectedPosition,
+                    onSelectedPositionListener
                 )
 
                 setupOddStatus(itemData)
@@ -226,7 +252,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemData: BetInfoListData,
             oddsType: OddsType,
             onItemClickListener: OnItemClickListener,
-            betListSize: Int
+            betListSize: Int,
+            mSelectedPosition: Int,
+            onSelectedPositionListener: OnSelectedPositionListener,
         ) {
             itemView.apply {
                 et_bet.apply {
@@ -339,9 +367,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 et_bet.addTextChangedListener(tw)
                 et_bet.tag = tw
                 //TODO check on touch listener
+                et_bet.isSelected = mSelectedPosition == bindingAdapterPosition
+
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
                     onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd)
+                    onSelectedPositionListener.onSelectChange(bindingAdapterPosition,BetViewType.SINGLE)
                 }
             }
         }
@@ -553,7 +584,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             moreOptionCollapse: Boolean,
             onItemClickListener: OnItemClickListener,
             notifyAllBet: () -> Unit,
-            clickMoreOption: () -> Unit
+            clickMoreOption: () -> Unit,
+            mSelectedPosition: Int,
+            mBetView: BetViewType,
+            onSelectedPositionListener: OnSelectedPositionListener
         ) {
             itemView.apply {
                 when (parlayListSize) {
@@ -567,7 +601,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 oddsType,
                                 hasBetClosed,
                                 true,
-                                onItemClickListener
+                                onItemClickListener,
+                                mSelectedPosition,
+                                mBetView,
+                                onSelectedPositionListener
                             )
                         }else {
                             item_first_connect.visibility = View.GONE
@@ -578,7 +615,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             itemData,
                             oddsType,
                             onItemClickListener,
-                            notifyAllBet
+                            notifyAllBet,
+                            mSelectedPosition,
+                            mBetView,
+                            onSelectedPositionListener
                         )
                     }
                     else -> {
@@ -590,14 +630,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                             oddsType,
                             hasBetClosed,
                             true,
-                            onItemClickListener
+                            onItemClickListener,
+                            mSelectedPosition,
+                            mBetView,
+                            onSelectedPositionListener
                         )
                         setupSingleItem(
                             betList,
                             itemData,
                             oddsType,
                             onItemClickListener,
-                            notifyAllBet
+                            notifyAllBet,
+                            mSelectedPosition,
+                            mBetView,
+                            onSelectedPositionListener
                         )
 
                         setupClickMoreItem(itemView.ll_more_option, moreOptionCollapse, clickMoreOption)
@@ -612,7 +658,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemData: ParlayOdd?,
             oddsType: OddsType,
             onItemClickListener: OnItemClickListener,
-            notifyAllBet: () -> Unit
+            notifyAllBet: () -> Unit,
+            mSelectedPosition: Int,
+            mBetView: BetViewType,
+            onSelectedPositionListener: OnSelectedPositionListener
         ) {
             itemView.item_first_single.apply {
                 et_bet.apply {
@@ -689,10 +738,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     addTextChangedListener(tw)
                     tag = tw
                 }
+                et_bet.isSelected = mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.SINGLE
+
                 et_container.setOnClickListener {
                     et_bet.isFocusable = true
                     et_bet.setSelection(et_bet.text.length)
                     onItemClickListener.onShowParlayKeyboard(et_bet, itemData)
+                    onSelectedPositionListener.onSelectChange(
+                        bindingAdapterPosition,
+                        BetViewType.SINGLE
+                    )
                 }
             }
         }
@@ -784,14 +839,20 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemData: ParlayOdd?,
             oddsType: OddsType,
             hasBetClosed: Boolean,
-            onItemClickListener: OnItemClickListener
+            onItemClickListener: OnItemClickListener,
+            mSelectedPosition: Int,
+            mBetView: BetViewType,
+            onSelectedPositionListener: OnSelectedPositionListener
         ) {
             setupParlayItem(
                 itemData,
                 oddsType,
                 hasBetClosed,
                 false,
-                onItemClickListener
+                onItemClickListener,
+                mSelectedPosition,
+                mBetView,
+                onSelectedPositionListener
             )
         }
     }
@@ -802,7 +863,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             oddsType: OddsType,
             hasBetClosed: Boolean,
             firstItem: Boolean = false,
-            onItemClickListener: OnItemClickListener
+            onItemClickListener: OnItemClickListener,
+            mSelectedPosition: Int,
+            mBetView: BetViewType,
+            onSelectedPositionListener: OnSelectedPositionListener
         ) {
             itemView.apply {
                 ll_winnable.visibility = View.GONE
@@ -829,9 +893,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     tv_com_count.text = data.num.toString()
 
-                    setupBetAmountInput(data, oddsType, onItemClickListener)
+                    setupBetAmountInput(data, oddsType, onItemClickListener, mSelectedPosition, mBetView, onSelectedPositionListener)
 
-                    setupMaximumLimitView(data, onItemClickListener)
+                    setupMaximumLimitView(data, onItemClickListener, mSelectedPosition, mBetView, onSelectedPositionListener)
 
                     setupParlayRuleButton(data, onItemClickListener)
 
@@ -899,7 +963,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupBetAmountInput(
             data: ParlayOdd,
             oddsType: OddsType,
-            onItemClickListener: OnItemClickListener
+            onItemClickListener: OnItemClickListener,
+            mSelectedPosition: Int,
+            mBetView: BetViewType,
+            onSelectedPositionListener: OnSelectedPositionListener
         ) {
             itemView.apply {
                 et_bet.apply {
@@ -976,9 +1043,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     addTextChangedListener(tw)
                     tag = tw
                 }
+                et_bet.isSelected = mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
+
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
                     onItemClickListener.onShowParlayKeyboard(et_bet, data)
+                    onSelectedPositionListener.onSelectChange(
+                        bindingAdapterPosition,
+                        BetViewType.PARLAY
+                    )
                 }
             }
         }
@@ -1009,7 +1082,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
         private fun setupMaximumLimitView(
             itemData: ParlayOdd,
-            onItemClickListener: OnItemClickListener
+            onItemClickListener: OnItemClickListener,
+            mSelectedPosition: Int,
+            mBetView: BetViewType,
+            onSelectedPositionListener: OnSelectedPositionListener
         ) {
             itemView.apply {
                 tv_bet_maximum_limit.text = TextUtil.formatBetQuota(itemData.max)
@@ -1018,6 +1094,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     ll_bet_quota_detail.visibility = View.VISIBLE
                 }
 
+                et_bet.isSelected = mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
+
                 ll_bet_quota_detail.setOnClickListener {
                     et_bet.apply {
                         setText(itemData.max.toString())
@@ -1025,6 +1103,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setSelection(text.length)
                     }
                     onItemClickListener.onShowParlayKeyboard(et_bet, itemData)
+                    onSelectedPositionListener.onSelectChange(
+                        bindingAdapterPosition,
+                        BetViewType.PARLAY
+                    )
                 }
             }
         }
@@ -1047,5 +1129,9 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun saveOddsHasChanged(matchOdd: MatchOdd)
         fun refreshBetInfoTotal()
         fun showParlayRule(parlayType: String, parlayRule: String)
+    }
+
+    interface OnSelectedPositionListener{
+        fun onSelectChange(position: Int, single: BetViewType)
     }
 }
