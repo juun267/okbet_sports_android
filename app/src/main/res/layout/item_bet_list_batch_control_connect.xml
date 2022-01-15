@@ -96,7 +96,7 @@
                 android:paddingStart="10dp"
                 android:textColor="@color/colorBlackLight"
                 android:textColorHint="@color/colorSilverLight"
-                android:textSize="@dimen/textSize16sp"
+                android:textSize="@dimen/textSize14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_parlay_type"
                 app:layout_constraintWidth_percent="0.442" />

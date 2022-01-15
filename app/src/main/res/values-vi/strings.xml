@@ -382,6 +382,7 @@
     <string name="title_address">Địa chỉ：</string>
     <string name="title_deposit_money">Số tiền nạp</string>
     <string name="edt_hint_deposit_money">Giới hạn %1$s～%2$s</string>
+    <string name="edt_hint_deposit_money_new">Giới hạn %1$s-%2$s</string>
     <string name="title_real_name">Xác nhận họ tên</string>
     <string name="title_nick_name">Tên</string>
     <string name="edt_hint_real_name">Họ tên phải khớp với tài khoản ngân hàng</string>

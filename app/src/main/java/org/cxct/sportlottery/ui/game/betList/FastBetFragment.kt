@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.betList
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -178,7 +179,7 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initQuota() {
         tv_check_maximum_limit.setOnClickListener {
             it.visibility = View.GONE
-            ll_bet_quota_detail.visibility = View.VISIBLE
+            ll_bet_quota_detail.visibility = View.GONE
         }
 
         ll_bet_quota_detail.setOnClickListener {
@@ -196,16 +197,15 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun initEditText() {
-
         et_bet.afterTextChanged {
             button_bet.tv_quota.text = TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
 
             if (it.isEmpty()) {
                 button_bet.tv_quota.text = TextUtil.formatBetQuota(0)
                 tvRealAmount.text = ArithUtil.toMoneyFormat(0.0)
-                tv_check_maximum_limit.visibility = View.VISIBLE
+                tv_check_maximum_limit.visibility = View.GONE
                 ll_bet_quota_detail.visibility = View.GONE
-                ll_win_quota_detail.visibility = View.GONE
+                ll_win_quota_detail.visibility = View.VISIBLE
 
             } else {
 
@@ -281,6 +281,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private fun getLimitHint(context: Context, min: Int, max: Int): String {
+        return String.format(
+            "${context.getString(R.string.edt_hint_deposit_money_new)}",
+            TextUtil.formatBetQuota(min),
+            TextUtil.formatBetQuota(max)
+        )
+    }
 
     private fun checkMinQuota(quota: Double) {
         betInfoListData?.parlayOdds?.min?.let { min ->
@@ -317,6 +324,14 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                         dismiss()
                     }
                     betInfoListData = list[0]
+
+                    et_bet.apply {
+                        hint = getLimitHint(
+                            context,
+                            betInfoListData?.parlayOdds?.min ?: 0,
+                            betInfoListData?.parlayOdds?.max ?: 9999
+                        )
+                    }
 
                     val betAmount = betInfoListData?.betAmount ?: 0.0
 //                    var win = betAmount * getOdds(matchOdd, oddsType)
