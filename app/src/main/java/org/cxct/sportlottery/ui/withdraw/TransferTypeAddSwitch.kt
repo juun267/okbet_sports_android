@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class TransferTypeAddSwitch(val bankTransfer: Boolean, val cryptoTransfer: Boolean) : Parcelable
+data class TransferTypeAddSwitch(val bankTransfer: Boolean, val cryptoTransfer: Boolean, val walletTransfer: Boolean) : Parcelable

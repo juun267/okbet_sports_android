@@ -109,8 +109,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         }
                     }
                 },
-                { matchInfo, odd, playCateCode, playCateName ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName)
+                { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
                 { matchId ->
                     viewModel.getQuickList(matchId)
@@ -531,6 +531,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         odd: Odd,
         playCateCode: String,
         playCateName: String,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -546,7 +547,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             playCateName,
             matchInfo,
             odd,
-            ChannelType.HALL
+            ChannelType.HALL,
+            betPlayCateNameMap
         )//TODO 訂閱HALL需傳入CateMenuCode
     }
 

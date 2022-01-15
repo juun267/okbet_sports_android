@@ -156,8 +156,8 @@ class WithdrawViewModel(
     private var _addCryptoCardList = MutableLiveData<List<Detail>>()
 
     //判斷Tab是不是要顯示
-    private var _withdrawTabIsShow = MutableLiveData<Event<Boolean>>()
-    val withdrawSystemOperation: LiveData<Event<Boolean>>
+    private var _withdrawTabIsShow = MutableLiveData<List<String>>()
+    val withdrawSystemOperation: LiveData<List<String>>
         get() = _withdrawTabIsShow
 
     private var _needCheck = MutableLiveData<Boolean>()
@@ -377,11 +377,11 @@ class WithdrawViewModel(
                     getWithdrawCardList()
                     //判斷Tab要不要顯示
                     val withdrawConfig = moneyRechCfgData.uwTypes
-                    val bankWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
-                    val cryptoWithdrawSystemOperation = withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
-                    val operation = bankWithdrawSystemOperation && cryptoWithdrawSystemOperation
-                    _withdrawTabIsShow.value = Event(operation)
-
+                    val tabList: ArrayList<String> = arrayListOf()
+                    if(withdrawConfig.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.CRYPTO.type)
+                    if(withdrawConfig.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.BANK.type)
+                    if(withdrawConfig.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN) tabList.add(TransferType.E_WALLET.type)
+                    _withdrawTabIsShow.postValue(tabList)
                 }
             }
         }
@@ -594,12 +594,17 @@ class WithdrawViewModel(
         val cryptoCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
         val cryptoWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
 
+        val eWalletCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.E_WALLET.type } == true
+        val eWalletWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
+
         val bankCardExist = bankCardExistence && bankWithdrawSwitch
         val cryptoCardExist = cryptoCardExistence && cryptoWithdrawSwitch
+        val eWalletCardExist = eWalletCardExistence && eWalletWithdrawSwitch
 
         val moneyCardExistSet = mutableSetOf<MoneyCardExist>().apply {
             add(MoneyCardExist(TransferType.BANK, bankCardExist))
             add(MoneyCardExist(TransferType.CRYPTO, cryptoCardExist))
+            add(MoneyCardExist(TransferType.E_WALLET, eWalletCardExist))
         }
 
         _moneyCardExist.value = moneyCardExistSet
@@ -611,17 +616,11 @@ class WithdrawViewModel(
     fun checkBankCardCount() {
         var showAddCryptoCard = false //是否顯示虛擬幣
         val showAddBankCard: Boolean // 是否顯示銀行卡
+        val showAddEWalletCard: Boolean // 是否顯示eWallet
 
         //虛擬幣是否可以被提款或新增卡片
         val cryptoOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
-
-        val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
-        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK || it.transferType == TransferType.E_WALLET }
-        //銀行卡是否可以被提款或新增卡片
-        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type || it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
-
         val cryptoCardLimitList = checkCryptoCanBind()
-
         run breaking@{
             if (!cryptoOpen) {
                 showAddCryptoCard = false
@@ -637,13 +636,29 @@ class WithdrawViewModel(
             }
         }
 
+        //銀行卡是否可以被提款或新增卡片
+        val bankCardCountLimit = uwBankType?.detailList?.first()?.countLimit
+        val bankCardCount = bankCardList.value?.count { it.transferType == TransferType.BANK}
+        val bankOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.BANK.type}?.open == MoneyRechCfg.Switch.ON.code
         showAddBankCard = when {
             !bankOpen -> false
             bankCardCountLimit == null -> true
             bankCardCount == null -> true
             else -> bankCardCount < bankCardCountLimit
         }
-        _addMoneyCardSwitch.value = TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard)
+        
+        //E-wallet是否可以被提款或新增卡片
+        val eWalletOpen = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
+        val eWalletCardCountLimit = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.detailList?.first()?.countLimit
+        val eWalletCardCount = bankCardList.value?.count { it.transferType == TransferType.E_WALLET }
+        showAddEWalletCard = when{
+            !eWalletOpen -> false
+            eWalletCardCountLimit == null -> true
+            eWalletCardCount == null -> true
+            else -> eWalletCardCount < eWalletCardCountLimit
+        }
+
+        _addMoneyCardSwitch.value = TransferTypeAddSwitch(showAddBankCard, showAddCryptoCard, showAddEWalletCard)
     }
 
     data class CryptoCardCountLimit(val channel: String, var count: Int, var canBind: Boolean? = null)

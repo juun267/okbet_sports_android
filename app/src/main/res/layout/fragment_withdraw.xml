@@ -46,6 +46,7 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
+                    android:id="@+id/view_crypto"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="@color/colorWhite" />
@@ -64,6 +65,7 @@
                     android:textSize="@dimen/textSize14sp" />
 
                 <View
+                    android:id="@+id/view_wallet"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="@color/colorWhite" />

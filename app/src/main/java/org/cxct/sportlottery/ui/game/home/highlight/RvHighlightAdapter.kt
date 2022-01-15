@@ -192,8 +192,12 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                             ll_highlight_type.visibility = View.VISIBLE
                             tv_game_type.isVisible = true
                             tv_play_type_highlight.isVisible = true
+
+                            val playCate = if(data.oddsSort?.split(",")?.size?:0 > 0) data.oddsSort?.split(",")
+                                ?.getOrNull(0) else data.oddsSort
+
                             tv_play_type_highlight.text =
-                                data.playCateNameMap?.get(data.oddsSort)
+                                data.playCateNameMap?.get(playCate)
                                     ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
                         }
                         TimeUtil.isTimeToday(data.matchInfo?.startTime) && !TimeUtil.isTimeToday(
@@ -315,8 +319,9 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                 itemView.apply {
                     gameType = data.matchInfo?.gameType
 
-                    val playCateName = data.oddsSort ?: ""
-
+                    val playCateName =
+                        if (data.oddsSort?.split(",")?.size ?: 0 > 0) data.oddsSort?.split(",")
+                            ?.getOrNull(0) else data.oddsSort
 
                     val playCateStr = data.playCateNameMap?.get(playCateName)
                         ?.get(LanguageManager.getSelectLanguage(context).key)
@@ -325,32 +330,35 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                         isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             false
                         } else {
-                            oddList?.get(0)?.isSelected ?: false
+                            oddList?.getOrNull(0)?.isSelected ?: false
                         }
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code
                         } else {
-                            oddList?.get(0)?.status ?: BetStatus.LOCKED.code
+                            oddList?.getOrNull(0)?.status ?: BetStatus.LOCKED.code
                         }
 
                         if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                            this@ViewHolderHdpOu.setupOddState(this, oddList?.get(0))
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(0))
 
                             setupOdd(
-                                oddList?.get(0),
+                                oddList?.getOrNull(0),
                                 oddsType,
                                 "disable"
                             ) //TODO Bill 這裡要看球種顯示 1/2 不能用disable
 
+                            setupOddName4Home("1" , playCateName)
+
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                    oddList?.get(0)?.let { odd ->
+                                    oddList?.getOrNull(0)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateName,
-                                            playCateStr
+                                            playCateName.toString(),
+                                            playCateStr,
+                                            data.betPlayCateNameMap
                                         )
                                     }
                                 }
@@ -363,38 +371,88 @@ class RvHighlightAdapter : RecyclerView.Adapter<RvHighlightAdapter.ViewHolderHdp
                         isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             false
                         } else {
-                            oddList?.get(1)?.isSelected ?: false
+                            oddList?.getOrNull(1)?.isSelected ?: false
                         }
 
                         betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
                             BetStatus.DEACTIVATED.code
                         } else {
-                            oddList?.get(1)?.status ?: BetStatus.LOCKED.code
+                            oddList?.getOrNull(1)?.status ?: BetStatus.LOCKED.code
                         }
 
                         if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                            this@ViewHolderHdpOu.setupOddState(this, oddList?.get(1))
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(1))
 
                             setupOdd(
-                                oddList?.get(1),
+                                oddList?.getOrNull(1),
                                 oddsType,
                                 "disable"
-                            )  //TODO Bill 這裡要看球種顯示 1/2 不能用disable
+                            )
+
+                            //板球才會有三個賠率
+                            if(data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2)
+                                setupOddName4Home("X" , playCateName)
+                            else
+                                setupOddName4Home("2" , playCateName)
 
                             setOnClickListener {
                                 if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                    oddList?.get(1)?.let { odd ->
+                                    oddList?.getOrNull(1)?.let { odd ->
                                         onClickOddListener?.onClickBet(
                                             data,
                                             odd,
-                                            playCateName,
-                                            playCateStr
+                                            playCateName.toString(),
+                                            playCateStr,
+                                            data.betPlayCateNameMap
                                         )
                                     }
                                 }
                             }
                         }
                     }
+
+                    btn_match_odd3.apply {
+                        isVisible =  data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2
+
+                        isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            false
+                        } else {
+                            oddList?.getOrNull(2)?.isSelected ?: false
+                        }
+
+                        betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
+                            BetStatus.DEACTIVATED.code
+                        } else {
+                            oddList?.getOrNull(2)?.status ?: BetStatus.LOCKED.code
+                        }
+
+                        if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
+                            this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(2))
+
+                            setupOdd(
+                                oddList?.getOrNull(2),
+                                oddsType,
+                                "disable"
+                            )
+
+                            setupOddName4Home("2" , playCateName)
+
+                            setOnClickListener {
+                                if (oddList != null && oddList?.size ?: 0 >= 2) {
+                                    oddList?.getOrNull(2)?.let { odd ->
+                                        onClickOddListener?.onClickBet(
+                                            data,
+                                            odd,
+                                            playCateName.toString(),
+                                            playCateStr,
+                                            data.betPlayCateNameMap
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
