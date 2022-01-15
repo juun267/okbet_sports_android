@@ -2,6 +2,7 @@ package org.cxct.sportlottery.ui.withdraw
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -127,11 +128,10 @@ class BankCardFragment : BaseFragment<WithdrawViewModel>(WithdrawViewModel::clas
 
 
         mAddSwitch?.apply {
-
             tab_bank_card.visibility = if (bankTransfer) View.VISIBLE else View.GONE
             tab_crypto.visibility = if (cryptoTransfer) View.VISIBLE else View.GONE
-            tab_e_wallet.visibility = if (bankTransfer) View.VISIBLE else View.GONE
-            block_transfer_type.visibility = if (!(bankTransfer && cryptoTransfer)) View.GONE else View.VISIBLE
+            tab_e_wallet.visibility = if (walletTransfer) View.VISIBLE else View.GONE
+            block_transfer_type.visibility = if (!(bankTransfer && cryptoTransfer && walletTransfer) && (bankTransfer xor cryptoTransfer xor walletTransfer)) View.GONE else View.VISIBLE
         }
     }
 

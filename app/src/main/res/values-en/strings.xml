@@ -494,9 +494,12 @@
     <string name="please_setting_withdraw_password">Please set the withdrawal password</string>
     <string name="please_complete_profile_info">Complete personal Information</string>
     <string name="please_setting_bank_card">Please set up your bank card first</string>
+    <string name="please_setting_bank_card_crypto">Please set up your bank card / virtual currency first</string>
+    <string name="please_setting_bank_card_ewallet">Please set up your bank card / eWallet first</string>
     <string name="please_setting_ewallet">Please set up your eWallet first</string>
     <string name="please_setting_crypto">Please set up virtual currency first</string>
-    <string name="please_setting_money_card">Please set bank card/virtual currency first</string>
+    <string name="please_setting_crypto_ewallet">Please set up virtual currency / eWallet first</string>
+    <string name="please_setting_money_card">Please set bank card / virtual currency / eWallet first</string>
     <string name="go_to_setting">To set up</string>
     <string name="message_withdraw_maintain">The withdrawal system is being upgraded，Please waiting</string>
     <string name="text_money_get_success">Withdrawal successful, please wait for customer service personnel check</string>
@@ -854,4 +857,8 @@
     <string name="bet_slip">Bet slip</string>
     <string name="fast_bet_open_desc">Enable Quick Bet</string>
     <string name="bet_list_empty">Your Bet Slip is currently empty.</string>
+    <string name="bank_list_not_bink">You do not have a %1$s bound</string>
+    <string name="bank_list_add">Add %1$s</string>
+    <string name="bank_list_bank">bank card</string>
+    <string name="bank_list_crypto">virtual currency</string>
 </resources>
