@@ -45,6 +45,10 @@ class BankActivity : BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::cl
                     val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
                     mNavController.navigate(action)
                 }
+                TransferType.E_WALLET -> {
+                    val action = BankListFragmentDirections.actionBankListFragmentToBankCardFragment(null, modifyType, null)
+                    mNavController.navigate(action)
+                }
             }
         }
     }
