@@ -360,14 +360,14 @@ class OddButtonPagerViewHolder private constructor(
         oddBtnAway: OddsButton,
         oddBtnDraw: OddsButton,
         matchInfo: MatchInfo?,
-        PlayCateNameMap: Map<String?, Map<String?, String?>?>?,
+        playCateNameMap: Map<String?, Map<String?, String?>?>?,
         playCateMappingList: List<PlayCateMapItem>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?
     ) {
         if (matchInfo == null ||
-            playCateMappingList.isNullOrEmpty() || PlayCateNameMap.isNullOrEmpty()  ||
+            playCateMappingList.isNullOrEmpty() || playCateNameMap.isNullOrEmpty()  ||
             odds == null || odds.first == null || odds.second.isNullOrEmpty()
         ) {
             oddBtnType.visibility = View.INVISIBLE
@@ -385,7 +385,7 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-            val playCateName = PlayCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
+            val playCateName = playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
 
             val playCateCode = odds.first ?: ""
 
