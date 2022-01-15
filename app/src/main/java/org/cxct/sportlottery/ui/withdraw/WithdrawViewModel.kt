@@ -563,12 +563,17 @@ class WithdrawViewModel(
         val cryptoCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.CRYPTO.type } == true
         val cryptoWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.CRYPTO.type }?.open == MoneyRechCfg.Switch.ON.code
 
+        val eWalletCardExistence = result.bankCardList?.any { card -> card.uwType == TransferType.E_WALLET.type } == true
+        val eWalletWithdrawSwitch = rechargeConfigs.value?.uwTypes?.find { it.type == TransferType.E_WALLET.type }?.open == MoneyRechCfg.Switch.ON.code
+
         val bankCardExist = bankCardExistence && bankWithdrawSwitch
         val cryptoCardExist = cryptoCardExistence && cryptoWithdrawSwitch
+        val eWalletCardExist = eWalletCardExistence && eWalletWithdrawSwitch
 
         val moneyCardExistSet = mutableSetOf<MoneyCardExist>().apply {
             add(MoneyCardExist(TransferType.BANK, bankCardExist))
             add(MoneyCardExist(TransferType.CRYPTO, cryptoCardExist))
+            add(MoneyCardExist(TransferType.E_WALLET, eWalletCardExist))
         }
 
         _moneyCardExist.value = moneyCardExistSet

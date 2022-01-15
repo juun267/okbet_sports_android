@@ -14,7 +14,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
+import kotlinx.android.synthetic.main.fragment_withdraw.et_withdrawal_password
+import kotlinx.android.synthetic.main.fragment_withdraw.tab_bank_card
+import kotlinx.android.synthetic.main.fragment_withdraw.tab_crypto
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
@@ -186,7 +190,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.moneyCardExist.observe(this.viewLifecycleOwner, Observer { moneyCardSet ->
             val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
             val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
-            
+            val eWalletCardExist = moneyCardSet.find { it.transferType == TransferType.E_WALLET }?.exist
+
             when {
                 bankCardExist == true -> {
                     tab_bank_card.isChecked = true
@@ -195,6 +200,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                 cryptoCardExist == true -> {
                     tab_crypto.isChecked = true
                     viewModel.setDealType(TransferType.CRYPTO)
+                }
+                eWalletCardExist == true -> {
+                    tab_e_wallet.isChecked = true
+                    viewModel.setDealType(TransferType.E_WALLET)
                 }
                 else -> {
                     jumpToMoneyCardSetting()

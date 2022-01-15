@@ -1,6 +1,5 @@
 package org.cxct.sportlottery.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.Flow
@@ -206,49 +205,59 @@ class WithdrawRepository(
                         val cryptoBind = checkCryptoSystem(result.bankCardList)
                         val eWalletBind = checkEWalletSystem(result.bankCardList)
 
+                        val booleanMap: MutableMap<String, Boolean> = linkedMapOf()
+                        if (mWithdrawOperation?.bankSystem == true) {
+                            booleanMap[TransferType.BANK.type] = bankBind
+                        }
+                        if (mWithdrawOperation?.cryptoSystem == true) {
+                            booleanMap[TransferType.CRYPTO.type] = cryptoBind
+                        }
+                        if (mWithdrawOperation?.eWalletSystem == true) {
+                            booleanMap[TransferType.E_WALLET.type] = eWalletBind
+                        }
+
                         promptMessageId = when {
-                            mWithdrawOperation?.bankSystem == true && !bankBind ->{
+                            booleanMap.containsValue(true) -> -1
+
+                            booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_money_card
+                            }
+
+                            booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && !booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_bank_card_crypto
+                            }
+
+                            !booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_crypto_ewallet
+                            }
+
+                            booleanMap.containsKey(TransferType.BANK.type) && !booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_bank_card_ewallet
+                            }
+
+                            booleanMap.containsKey(TransferType.BANK.type) && !booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && !booleanMap.containsKey(TransferType.E_WALLET.type) -> {
                                 R.string.please_setting_bank_card
                             }
 
-                            mWithdrawOperation?.bankSystem == false && mWithdrawOperation?.cryptoSystem == true && !cryptoBind ->{
+                            !booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && !booleanMap.containsKey(TransferType.E_WALLET.type) -> {
                                 R.string.please_setting_crypto
                             }
 
-                            mWithdrawOperation?.bankSystem == false && mWithdrawOperation?.cryptoSystem == false && mWithdrawOperation?.eWalletSystem == true && !eWalletBind ->{
+                            else -> {
                                 R.string.please_setting_ewallet
                             }
-                            else ->{
-                                -1
-                            }
-
-//                            bankBind && cryptoBind && eWalletBind -> {
-//                                -1
-//                            }
-//                            ((mWithdrawOperation?.bankSystem == true && mWithdrawOperation?.cryptoSystem == true && mWithdrawOperation?.eWalletSystem == true) && (bankBind || cryptoBind || eWalletBind)) -> {
-//                                -1
-//                            }
-//                            bankBind && !cryptoBind && !eWalletBind -> {
-//                                R.string.please_setting_crypto_ewallet
-//                            }
-//                            !bankBind && cryptoBind && !eWalletBind -> {
-//                                R.string.please_setting_bank_card_ewallet
-//                            }
-//                            !bankBind && !cryptoBind && eWalletBind -> {
-//                                R.string.please_setting_bank_card_crypto
-//                            }
-//                            bankBind && cryptoBind && !eWalletBind -> {
-//                                R.string.please_setting_ewallet
-//                            }
-//                            bankBind && !cryptoBind && eWalletBind -> {
-//                                R.string.please_setting_crypto
-//                            }
-//                            !bankBind && cryptoBind && eWalletBind -> {
-//                                R.string.please_setting_bank_card
-//                            }
-//                            else -> {
-//                                R.string.please_setting_money_card
-//                            }
                         }
                     }
                     _needToBindBankCard.value = Event(promptMessageId)
