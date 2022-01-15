@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -1222,14 +1221,14 @@ class GameViewModel(
                 _oddsListGameHallResult.postValue(
                     Event(
                         _oddsListGameHallResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it)
+                            ?.updateQuickPlayCate(matchId, it ,it.playCateNameMap)
                     )
                 )
 
                 _oddsListResult.postValue(
                     Event(
                         _oddsListResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it)
+                            ?.updateQuickPlayCate(matchId, it,it.playCateNameMap)
                     )
                 )
             }
@@ -1906,7 +1905,8 @@ class GameViewModel(
 
     private fun OddsListResult.updateQuickPlayCate(
         matchId: String,
-        quickListData: QuickListData
+        quickListData: QuickListData,
+        quickPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ): OddsListResult {
         this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
@@ -1932,6 +1932,7 @@ class GameViewModel(
                         quickOddsApi?.toMutableFormat() ?: mutableMapOf()
                     )
                 }
+                matchOdd.quickPlayCateNameMap = quickPlayCateNameMap
             }
         }
         return this
