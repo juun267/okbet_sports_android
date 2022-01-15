@@ -45,6 +45,8 @@ data class MatchOdd(
 
     var positionButtonPage = 0
 
+    var quickPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
+
     fun sortOddsMap() {
         this.oddsMap.forEach { (_, value) ->
             if (value?.size!! > 3 && value.first()?.marketSort != 0 && (value.first()?.odds != value.first()?.malayOdds)) {
