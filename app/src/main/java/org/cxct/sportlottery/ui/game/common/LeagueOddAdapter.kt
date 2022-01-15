@@ -993,7 +993,7 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     OddButtonPagerAdapter(
                         item.matchInfo,
                         item.oddsSort,
-                        item.playCateNameMap,
+                        item.quickPlayCateNameMap,
                         item.playCateMappingList
                     ).apply {
 
