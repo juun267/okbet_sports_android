@@ -42,7 +42,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/effect_select_bg_white_transparent"
                     android:button="@null"
-                    android:checked="true"
                     android:gravity="center"
                     android:text="@string/bank_card"
                     android:textColor="@color/color_select_primary_white"

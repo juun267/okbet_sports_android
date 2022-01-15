@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             notifyDataSetChanged()
         }
 
-    var transferAddSwitch = TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false)
+    var transferAddSwitch = TransferTypeAddSwitch(bankTransfer = false, cryptoTransfer = false, walletTransfer = false)
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -61,7 +62,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
     }
 
     override fun getItemCount(): Int {
-        return if (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer) {
+        return if (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer || transferAddSwitch.walletTransfer) {
             bankList.size + 1
         } else {
             bankList.size
@@ -73,7 +74,7 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             bankList.isEmpty() -> {
                 CardType.NO_CARD_ADD.ordinal
             }
-            position == bankList.size && (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer) -> {
+            position == bankList.size && (transferAddSwitch.bankTransfer || transferAddSwitch.cryptoTransfer || transferAddSwitch.walletTransfer) -> {
                 CardType.ADD.ordinal
             }
             else -> {
@@ -173,12 +174,11 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
             itemView.apply {
 
                 tv_add_more_card.text = transferAddSwitch.run {
-                    when {
-                        cryptoTransfer && bankTransfer -> context.getString(R.string.add_credit_or_virtual)
-                        cryptoTransfer -> context.getString(R.string.add_crypto_card)
-                        bankTransfer -> context.getString(R.string.add_credit_or_e_wallet)
-                        else -> context.getString(R.string.add_new)
-                    }
+                    val stringList = arrayListOf<String>()
+                    if(bankTransfer) stringList.add(context.getString(R.string.bank_list_bank))
+                    if(cryptoTransfer) stringList.add(context.getString(R.string.bank_list_crypto))
+                    if(walletTransfer) stringList.add(context.getString(R.string.bank_list_e_wallet))
+                    context.getString(R.string.bank_list_add, stringList.joinToString("/"))
                 }
                 cv_add.setOnClickListener {
                     mBankListClickListener.onAdd(transferAddSwitch)
@@ -200,12 +200,11 @@ class BankListAdapter(private val mBankListClickListener: BankListClickListener)
         fun bind(transferAddSwitch: TransferTypeAddSwitch, mBankListClickListener: BankListClickListener) {
             itemView.apply {
                 tv_add_card.text = transferAddSwitch.run {
-                    when {
-                        cryptoTransfer && bankTransfer -> context.getString(R.string.add_credit_or_virtual)
-                        cryptoTransfer -> context.getString(R.string.add_crypto_card)
-                        bankTransfer -> context.getString(R.string.add_credit_or_e_wallet)
-                        else -> context.getString(R.string.add_new)
-                    }
+                    val stringList = arrayListOf<String>()
+                    if(bankTransfer) stringList.add(context.getString(R.string.bank_list_bank))
+                    if(cryptoTransfer) stringList.add(context.getString(R.string.bank_list_crypto))
+                    if(walletTransfer) stringList.add(context.getString(R.string.bank_list_e_wallet))
+                    context.getString(R.string.bank_list_add, stringList.joinToString("/"))
                 }
             }
             itemView.cv_add_no_card.setOnClickListener {

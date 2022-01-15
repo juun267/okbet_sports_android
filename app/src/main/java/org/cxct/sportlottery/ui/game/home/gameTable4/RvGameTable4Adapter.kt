@@ -3,44 +3,28 @@ package org.cxct.sportlottery.ui.game.home.gameTable4
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.zhy.adapter.recyclerview.CommonAdapter
 import com.zhy.adapter.recyclerview.base.ViewHolder
 import kotlinx.android.synthetic.main.home_game_table_4.view.*
 import kotlinx.android.synthetic.main.home_sport_table_4.view.*
-import kotlinx.android.synthetic.main.item_home_sport.view.*
-import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
-import org.cxct.sportlottery.ui.feedback.record.FeedbackListDetailAdapter
-import org.cxct.sportlottery.ui.game.betList.BetInfoChangeViewHolder
-import org.cxct.sportlottery.ui.game.common.LeagueAdapter
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
 import org.cxct.sportlottery.ui.game.home.OnClickStatisticsListener
 import org.cxct.sportlottery.ui.menu.OddsType
-import org.cxct.sportlottery.ui.vip.ContentViewHolder
-import org.cxct.sportlottery.ui.vip.ThirdRebatesAdapter
-import org.cxct.sportlottery.ui.vip.TitleViewHolder
 import org.cxct.sportlottery.util.GameConfigManager.getGameIcon
 import org.cxct.sportlottery.util.GameConfigManager.getTitleBarBackground
-import org.cxct.sportlottery.util.GridItemDecoration
-import org.cxct.sportlottery.util.MatchOddUtil.applyDiscount
 import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.updateEPSDiscount
 import org.cxct.sportlottery.util.RecyclerViewGridDecoration
 
 class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -77,7 +61,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 data.matchOdds.forEach {
                     it.matchInfo?.gameType = data.code
                 }
-                var gameEntity = GameEntity(data.code, data.name, data.num, data.matchOdds)
+                var gameEntity = GameEntity(data.code, data.name, data.num, data.matchOdds, data.playCateNameMap)
                 dataList.add(gameEntity)
             } else {
                 otherMatch = OtherMatch(data.code, data.name, data.num)
@@ -85,7 +69,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
         if(!otherMatchList.isNullOrEmpty()){
-            var otherGameEntity = GameEntity(null, null, 0, emptyList(), otherMatchList)
+            var otherGameEntity = GameEntity(null, null, 0, emptyList(), mutableMapOf(), otherMatchList)
             dataList.add(otherGameEntity)
         }
         mDataList = dataList
@@ -223,7 +207,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
                 if (data.vpTableAdapter == null)
                     data.vpTableAdapter =
-                        Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType)
+                        Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType, data.playCateNameMap)
 
                 data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener

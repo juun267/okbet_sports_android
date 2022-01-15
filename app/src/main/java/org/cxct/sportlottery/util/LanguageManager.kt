@@ -53,7 +53,7 @@ object LanguageManager {
 
     fun getLanguageString(context: Context?): String {
         return when (getSelectLanguage(context)) {
-            Language.ZH -> "cn"
+            Language.ZH -> "zh"
             Language.VI -> "vi"
             else -> "en"
         }

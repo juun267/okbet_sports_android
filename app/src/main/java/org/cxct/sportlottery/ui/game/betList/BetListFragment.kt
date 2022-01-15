@@ -27,6 +27,7 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -264,7 +265,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 .sumBy { it.num }
         val winnableAmount = list.sumByDouble {
             var currentOddsType = oddsType
-            if (it.matchOdd.odds == it.matchOdd.malayOdds) {
+            if(it.matchOdd.odds == it.matchOdd.malayOdds
+                || it.matchType == MatchType.OUTRIGHT
+                || it.matchType == MatchType.OTHER_OUTRIGHT){
                 currentOddsType = OddsType.EU
             }
             getWinnable(it.betAmount, getOddsNew(it.matchOdd, currentOddsType), currentOddsType)

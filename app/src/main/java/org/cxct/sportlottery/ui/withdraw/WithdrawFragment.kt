@@ -14,7 +14,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.content_common_bottom_sheet_item.view.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_bank_card.*
 import kotlinx.android.synthetic.main.edittext_login.view.*
+import kotlinx.android.synthetic.main.fragment_bank_card.*
 import kotlinx.android.synthetic.main.fragment_withdraw.*
+import kotlinx.android.synthetic.main.fragment_withdraw.et_withdrawal_password
+import kotlinx.android.synthetic.main.fragment_withdraw.tab_bank_card
+import kotlinx.android.synthetic.main.fragment_withdraw.tab_crypto
 import kotlinx.android.synthetic.main.fragment_withdraw.view.*
 import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
@@ -186,7 +190,8 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         viewModel.moneyCardExist.observe(this.viewLifecycleOwner, Observer { moneyCardSet ->
             val bankCardExist = moneyCardSet.find { it.transferType == TransferType.BANK }?.exist
             val cryptoCardExist = moneyCardSet.find { it.transferType == TransferType.CRYPTO }?.exist
-            
+            val eWalletCardExist = moneyCardSet.find { it.transferType == TransferType.E_WALLET }?.exist
+
             when {
                 bankCardExist == true -> {
                     tab_bank_card.isChecked = true
@@ -196,6 +201,10 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
                     tab_crypto.isChecked = true
                     viewModel.setDealType(TransferType.CRYPTO)
                 }
+                eWalletCardExist == true -> {
+                    tab_e_wallet.isChecked = true
+                    viewModel.setDealType(TransferType.E_WALLET)
+                }
                 else -> {
                     jumpToMoneyCardSetting()
                 }
@@ -203,11 +212,26 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         })
         //Tab 顯示判斷
         viewModel.withdrawSystemOperation.observe(this.viewLifecycleOwner, Observer {
-            isShow ->
-            if (isShow.getContentIfNotHandled() == true)
-                block_tab.visibility = View.VISIBLE
-            else
+            list ->
+
+            if(list.isNullOrEmpty() || list.size == 1){
                 block_tab.visibility = View.GONE
+            }else{
+                block_tab.visibility = View.VISIBLE
+
+                tab_bank_card.visibility = if(list.contains(TransferType.BANK.type)) View.VISIBLE else View.GONE
+                tab_crypto.visibility = if(list.contains(TransferType.CRYPTO.type)) View.VISIBLE else View.GONE
+                tab_wallet.visibility = if(list.contains(TransferType.E_WALLET.type)) View.VISIBLE else View.GONE
+
+                view_crypto.visibility = tab_crypto.visibility
+                view_wallet.visibility = tab_wallet.visibility
+
+//                when(list.first()){
+//                    TransferType.CRYPTO.type -> tab_crypto.performClick()
+//                    TransferType.E_WALLET.type -> tab_wallet.performClick()
+//                    else -> tab_bank_card.performClick()
+//                }
+            }
         })
 
         //資金設定

@@ -9,13 +9,17 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.db.dao.UserInfoDao
 import org.cxct.sportlottery.db.entity.UserInfo
 import org.cxct.sportlottery.network.OneBoSportApi
+import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.bank.my.BankMyResult
 import org.cxct.sportlottery.network.money.config.MoneyRechCfgResult
 import org.cxct.sportlottery.network.money.config.TransferType
 import org.cxct.sportlottery.util.Event
 import retrofit2.Response
 
-class WithdrawRepository(private val userInfoDao: UserInfoDao,private val userInfoRepository: UserInfoRepository) {
+class WithdrawRepository(
+    private val userInfoDao: UserInfoDao,
+    private val userInfoRepository: UserInfoRepository
+) {
 
     private val userInfoFlow: Flow<UserInfo?>
         get() = userInfoDao.getUserInfo().map {
@@ -55,19 +59,32 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao,private val userIn
 
     private var mWithdrawOperation: SystemOperation? = null
 
-    data class SystemOperation(val bankSystem: Boolean, val cryptoSystem: Boolean)
+    data class SystemOperation(
+        val bankSystem: Boolean,
+        val cryptoSystem: Boolean,
+        val eWalletSystem: Boolean
+    )
 
     suspend fun checkWithdrawSystem(): Response<MoneyRechCfgResult> {
         val response = OneBoSportApi.moneyService.getRechCfg()
         if (response.isSuccessful) {
             val withdrawConfig = response.body()?.rechCfg?.uwTypes
 
-            val bankWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
-            val cryptoWithdrawSystemOperation = withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
+            val bankWithdrawSystemOperation =
+                withdrawConfig?.find { it.type == TransferType.BANK.type }?.open.toString() == FLAG_OPEN
+            val cryptoWithdrawSystemOperation =
+                withdrawConfig?.find { it.type == TransferType.CRYPTO.type }?.open.toString() == FLAG_OPEN
+            val eWalletWithdrawSystemOperation =
+                withdrawConfig?.find { it.type == TransferType.E_WALLET.type }?.open.toString() == FLAG_OPEN
 
-            mWithdrawOperation = SystemOperation(bankWithdrawSystemOperation, cryptoWithdrawSystemOperation)
+            mWithdrawOperation = SystemOperation(
+                bankWithdrawSystemOperation,
+                cryptoWithdrawSystemOperation,
+                eWalletWithdrawSystemOperation
+            )
 
-            val operation = bankWithdrawSystemOperation || cryptoWithdrawSystemOperation
+            val operation =
+                bankWithdrawSystemOperation || cryptoWithdrawSystemOperation || eWalletWithdrawSystemOperation
             _withdrawSystemOperation.value = Event(operation)
 
             if (operation) {
@@ -97,12 +114,12 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao,private val userIn
 
     //提款判斷權限
     private suspend fun withdrawCheckPermissions() {
-        this.checkNeedUpdatePassWord()?.let { _needToUpdateWithdrawPassword.value = Event(it) }
+        this.checkNeedUpdatePassWord().let { _needToUpdateWithdrawPassword.value = Event(it) }
     }
 
     //提款設置判斷權限, 判斷需不需要更新提現密碼 -> 個人資料是否完善
     suspend fun settingCheckPermissions() {
-        this.checkNeedUpdatePassWord()?.let {
+        this.checkNeedUpdatePassWord().let {
             if (it) {
                 _settingNeedToUpdateWithdrawPassword.value = Event(it)
             } else {
@@ -152,25 +169,153 @@ class WithdrawRepository(private val userInfoDao: UserInfoDao,private val userIn
         if (response.isSuccessful) {
             response.body()?.let { result ->
                 if (result.success) {
-                    val promptMessageId: Int = if (result.bankCardList.isNullOrEmpty()) {
-                        when {
-                            mWithdrawOperation?.bankSystem ?: false && mWithdrawOperation?.cryptoSystem ?: false -> {
+                    var promptMessageId: Int = -1
+                    if (result.bankCardList.isNullOrEmpty()) {
+                        promptMessageId = when {
+                            mWithdrawOperation?.bankSystem ?: false && mWithdrawOperation?.cryptoSystem ?: false && mWithdrawOperation?.eWalletSystem ?: false -> {
                                 R.string.please_setting_money_card
                             }
-                            mWithdrawOperation?.cryptoSystem == true -> {
+                            mWithdrawOperation?.bankSystem ?: false && mWithdrawOperation?.cryptoSystem ?: false && !(mWithdrawOperation?.eWalletSystem
+                                ?: false) -> {
+                                R.string.please_setting_bank_card_crypto
+                            }
+                            !(mWithdrawOperation?.bankSystem
+                                ?: false) && mWithdrawOperation?.cryptoSystem ?: false && mWithdrawOperation?.eWalletSystem ?: false -> {
+                                R.string.please_setting_crypto_ewallet
+                            }
+                            mWithdrawOperation?.bankSystem ?: false && !(mWithdrawOperation?.cryptoSystem
+                                ?: false) && mWithdrawOperation?.eWalletSystem ?: false -> {
+                                R.string.please_setting_bank_card_ewallet
+                            }
+                            mWithdrawOperation?.bankSystem ?: false && !(mWithdrawOperation?.cryptoSystem
+                                ?: false) && !(mWithdrawOperation?.eWalletSystem ?: false) -> {
+                                R.string.please_setting_bank_card
+                            }
+                            !(mWithdrawOperation?.bankSystem
+                                ?: false) && mWithdrawOperation?.cryptoSystem ?: false && !(mWithdrawOperation?.eWalletSystem
+                                ?: false) -> {
                                 R.string.please_setting_crypto
                             }
                             else -> {
-                                R.string.please_setting_bank_card
+                                R.string.please_setting_ewallet
                             }
                         }
-                    } else
-                        -1
+                    } else {
+                        val bankBind = checkBankSystem(result.bankCardList)
+                        val cryptoBind = checkCryptoSystem(result.bankCardList)
+                        val eWalletBind = checkEWalletSystem(result.bankCardList)
+
+                        val booleanMap: MutableMap<String, Boolean> = linkedMapOf()
+                        if (mWithdrawOperation?.bankSystem == true) {
+                            booleanMap[TransferType.BANK.type] = bankBind
+                        }
+                        if (mWithdrawOperation?.cryptoSystem == true) {
+                            booleanMap[TransferType.CRYPTO.type] = cryptoBind
+                        }
+                        if (mWithdrawOperation?.eWalletSystem == true) {
+                            booleanMap[TransferType.E_WALLET.type] = eWalletBind
+                        }
+
+                        promptMessageId = when {
+                            booleanMap.containsValue(true) -> -1
+
+                            booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_money_card
+                            }
+
+                            booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && !booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_bank_card_crypto
+                            }
+
+                            !booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_crypto_ewallet
+                            }
+
+                            booleanMap.containsKey(TransferType.BANK.type) && !booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_bank_card_ewallet
+                            }
+
+                            booleanMap.containsKey(TransferType.BANK.type) && !booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && !booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_bank_card
+                            }
+
+                            !booleanMap.containsKey(TransferType.BANK.type) && booleanMap.containsKey(
+                                TransferType.CRYPTO.type
+                            ) && !booleanMap.containsKey(TransferType.E_WALLET.type) -> {
+                                R.string.please_setting_crypto
+                            }
+
+                            else -> {
+                                R.string.please_setting_ewallet
+                            }
+                        }
+                    }
                     _needToBindBankCard.value = Event(promptMessageId)
                 }
             }
         }
         return response
+    }
+
+    private fun checkBankSystem(bankCardList: List<BankCardList>): Boolean {
+        var hasBinding = false
+        if (mWithdrawOperation?.bankSystem == true) {
+            kotlin.run {
+                bankCardList.forEach {
+                    if (it.uwType == TransferType.BANK.type) {
+                        hasBinding = true
+                        return@run
+                    }
+                }
+            }
+        } else {
+            return true
+        }
+        return hasBinding
+    }
+
+    private fun checkCryptoSystem(bankCardList: List<BankCardList>): Boolean {
+        var hasBinding = false
+        if (mWithdrawOperation?.cryptoSystem == true) {
+            kotlin.run {
+                bankCardList.forEach {
+                    if (it.uwType == TransferType.CRYPTO.type) {
+                        hasBinding = true
+                        return@run
+                    }
+                }
+            }
+        } else {
+            return true
+        }
+        return hasBinding
+    }
+
+    private fun checkEWalletSystem(bankCardList: List<BankCardList>): Boolean {
+        var hasBinding = false
+        if (mWithdrawOperation?.eWalletSystem == true) {
+            kotlin.run {
+                bankCardList.forEach {
+                    if (it.uwType == TransferType.E_WALLET.type) {
+                        hasBinding = true
+                        return@run
+                    }
+                }
+            }
+        } else {
+            return true
+        }
+        return hasBinding
     }
 
 }

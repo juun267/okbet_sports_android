@@ -121,7 +121,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 ) == it?.userLevelConfigList?.firstOrNull()?.id
             ) {
                 GameConfigManager.maxBetMoney =
-                    it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 99999
+                    it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 9999999
                 GameConfigManager.maxParlayBetMoney =
                     it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
                 GameConfigManager.maxCpBetMoney =
