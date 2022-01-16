@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.withdraw
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,13 +22,14 @@ import org.cxct.sportlottery.network.money.config.Detail
 import org.cxct.sportlottery.network.money.config.UwType
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddRequest
 import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
+import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.min
 
 
@@ -155,6 +157,18 @@ class WithdrawViewModel(
     val withdrawSystemOperation: LiveData<List<String>>
         get() = _withdrawTabIsShow
 
+    private var _needCheck = MutableLiveData<Boolean>()
+    val needCheck: LiveData<Boolean>
+        get() = _needCheck
+
+    private var _commissionCheckList = MutableLiveData<List<CheckList>>()
+    val commissionCheckList: LiveData<List<CheckList>>
+        get() = _commissionCheckList
+
+    private var _deductMoney = MutableLiveData<Double>()
+    val deductMoney: LiveData<Double>
+        get() = _deductMoney
+
     private var uwBankType: UwType? = null
 
     //資金卡片config
@@ -217,6 +231,20 @@ class WithdrawViewModel(
                     cardList.add(bankCard.apply { transferType = TransferType.values().find { it.type == bankCard.uwType } ?: TransferType.BANK })
                 }
                 _bankCardList.value = cardList
+                hideLoading()
+            }
+        }
+    }
+
+    fun getUwCheck(){
+        viewModelScope.launch {
+            loading()
+            doNetwork(androidContext) {
+                OneBoSportApi.withdrawService.getWithdrawUwCheck()
+            }?.let { result ->
+                _needCheck.postValue(result.t?.needCheck ?: false)
+                _deductMoney.postValue(result.t?.total?.deductMoney ?: 0.0)
+                _commissionCheckList.postValue(result.t?.checkList ?: listOf())
                 hideLoading()
             }
         }
@@ -510,8 +538,8 @@ class WithdrawViewModel(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
                     ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0)),
-                    sConfigData?.systemCurrency
-                )
+
+                ) + sConfigData?.systemCurrency
             }
             TransferType.CRYPTO -> {
                 withdrawCard?.let {

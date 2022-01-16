@@ -42,6 +42,10 @@ object TextUtil : DecimalFormatUtil() {
         return doNumberFormat(any, "###,###,###,###")
     }
 
+    fun formatCommissionMoney(any: Any): String {
+        return doNumberFormat(any, "###,###,###,###")
+    }
+
     fun formatBetQuotaMoney(any: Any): String {
         return doNumberFormat(any, "###,###,###,###0.000")
     }

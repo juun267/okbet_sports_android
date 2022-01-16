@@ -52,36 +52,39 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
 
     private fun initObserver() {
 
-        viewModel.loading.observe(viewLifecycleOwner, {
+        viewModel.loading.observe(viewLifecycleOwner) {
             if (it) loading() else hideLoading()
-        })
+        }
 
-        viewModel.betDetailResult.observe(viewLifecycleOwner, {
+        viewModel.betDetailResult.observe(viewLifecycleOwner) {
             if (it.success) {
-                rvAdapter.addFooterAndSubmitList(it.other, viewModel.detailDataList, viewModel.isDetailLastPage)
-                rv_account_history.scrollToPosition(0)
+                rvAdapter.addFooterAndSubmitList(
+                    it.other,
+                    viewModel.detailDataList,
+                    viewModel.isDetailLastPage
+                )
             } else {
                 Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             rvAdapter.oddsType = it
-        })
+        }
 
-        viewModel.selectedDate.observe(viewLifecycleOwner, {
+        viewModel.selectedDate.observe(viewLifecycleOwner) {
             it.getContentIfNotHandled()?.apply {
                 rvAdapter.nowSelectedDate = this
                 viewModel.searchDetail(date = this)
             }
-        })
+        }
 
-        viewModel.selectedSport.observe(viewLifecycleOwner, {
+        viewModel.selectedSport.observe(viewLifecycleOwner) {
             rvAdapter.nowSelectedSport = it.peekContent()
             it.getContentIfNotHandled()?.apply {
                 viewModel.searchDetail(gameType = this)
             }
-        })
+        }
 
     }
 
@@ -91,6 +94,26 @@ class AccountHistoryNextFragment : BaseFragment<AccountHistoryViewModel>(Account
             addOnScrollListener(recyclerViewOnScrollListener)
         }
 
+        rvAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() { //submitList 資料更改後，滑至頂
+            override fun onChanged() {
+                rv_account_history.scrollToPosition(0)
+            }
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                rv_account_history.scrollToPosition(0)
+            }
+            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+                rv_account_history.scrollToPosition(0)
+            }
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                rv_account_history.scrollToPosition(0)
+            }
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int) {
+                rv_account_history.scrollToPosition(0)
+            }
+            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+                rv_account_history.scrollToPosition(0)
+            }
+        })
     }
 
 }

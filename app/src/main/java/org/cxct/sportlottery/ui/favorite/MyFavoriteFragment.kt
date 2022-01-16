@@ -124,7 +124,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 },
                 { matchId ->
                     navStatistics(matchId)
-                }
+                },
+                {}
             )
         }
     }

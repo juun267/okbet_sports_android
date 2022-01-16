@@ -501,7 +501,7 @@
     <string name="withdraw_amount">Số tiền rút</string>
     <string name="withdraw_password">Mật khẩu rút tiền</string>
     <string name="withdraw_all">TẤT CẢ CÁC</string>
-    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s %s</string>
+    <string name="withdraw_handling_fee_hint">・Tỷ lệ phí xử lý ：%1$s%% Phí xử lý phải trả：%2$s</string>
     <string name="withdraw_crypto_exchange_rate_hint">・Tỷ giá：%1$s</string>
     <string name="withdraw_crypto_amount_hint">・Số tiền rút：%1$s %s</string>
     <string name="withdraw_crypto_fee_hint">・Phí rút tiền：%1$s %s</string>
@@ -883,6 +883,43 @@
     <string name="appearance">ngoại hình</string>
     <string name="goal_buster">GOAL BUSTER</string>
     <string name="top_games">TOP GAMES</string>
+    <string name="withdraw_uw_check">Số dư khấu trừ</string>
+    <string name="commission_detail">Chi tiết</string>
+    <string name="commission_desc_1">Khi chưa đến số tiền hợp lệ, chúng ta cần trích một tỷ lệ nhất định trên số tiền nạp để làm phí rút tiền, tránh trường hợp nạp tiền bất thường.</string>
+    <string name="commission_desc_2">Khi đạt đến số tiền hợp lệ, chúng tôi sẽ không tính phí chuyển nhượng.</string>
+    <string name="notice">Lời khuyên</string>
+    <string name="commission_check_time">Kiểm tra thời gian :</string>
+    <string name="commission_deducted_amount">Số dư khấu trừ</string>
+    <string name="commission_required_size">Số cược hiệu lực bắt buộc</string>
+    <string name="commission_amount_of_coding_completed">Cược hiệu lực đã thành công</string>
+    <string name="commission_check_type">Kiểm tra</string>
+    <string name="commission_not_completed">Hoàn tác</string>
+    <string name="commission_total_deducted_amount">Tổng số khấu trừ :</string>
+    <string name="log_detail_commission">Số dư khấu trừ：</string>
+    <string name="commission_deducted_amount_detail">Chi tiết số tiền khấu trừ</string>
+    <string name="commission_detail_title">Hướng dẫn</string>
+    <string name="commission_detail_desc_1">Công ty tránh rút tiền bất thường, người dùng phải đạt đủ số tiền hợp lệ trước khi rút.</string>
+    <string name="commission_detail_desc_2">Khi không đạt được số tiền hợp lệ, chúng tôi cần phải trừ số tiền để làm phí rút tiền. Công thức tính là số tiền hợp lệ nhân tỷ lệ khấu trừ = số tiền khấu trừ.</string>
+    <string name="commission_detail_desc_3">Khi lần nạp đầu tiên không được rút và người dùng nạp lần thứ hai, thì hai "Số tiền yêu cầu" sẽ cộng lại. Lúc này, người dùng cần hoàn thành đồng thời số tiền hợp lệ thứ nhất và thứ hai và rút tiền sẽ không dẫn đến việc khấu trừ số tiền.</string>
+    <string name="commission_detail_desc_4">Số tiền hợp lệ đã hoàn thành sẽ được tính toán lại khi bạn rút tiền.</string>
+    <string name="commission_detail_desc_5">Tình huống 1</string>
+    <string name="commission_detail_desc_6">Giao dịch đầu tiên là nạp 1.000 và hoàn thành số tiền hợp lệ 2.000. -> Người dùng rút tiền ngay bây giờ.</string>
+    <string name="commission_detail_desc_7">Giao dịch thứ hai là nạp 2.000 và hoàn thành số tiền hợp lệ 1.000. -> Người dùng phải hoàn thành số tiền hợp lệ 1.000 để không bị khấu trừ.</string>
+    <string name="commission_detail_desc_8">Bởi vì giao dịch đầu tiên đã rút tiền, nó sẽ không tính toán, hệ thống chỉ tính toán giao dịch thứ hai mà thôi.</string>
+    <string name="commission_detail_desc_11">Tình huống 2</string>
+    <string name="commission_detail_desc_12">Giao dịch đầu tiên là nạp 1.000 và hoàn thành số tiền hợp lệ 1.000. -> Người dùng chưa rút tiền và nạp tiền lần giao dịch thứ hai.</string>
+    <string name="commission_detail_desc_13">Giao dịch thứ hai là nạp 2.000 và hoàn thành số tiền hợp lệ 1.000. -> Người dùng phải hoàn thành số tiền hợp lệ 1.000 để không bị khấu trừ.</string>
+    <string name="commission_detail_desc_14">Mặc dù giao dịch đầu tiên đã hoàn thành số tiền hợp lệ, giao dịch thứ hai là số tiền hợp lệ chưa hoàn thành, sau đó được tính theo công thức như sau.</string>
+    <string name="commission_detail_desc_15">Số tiền nạp (2.000) - số tiền hợp lệ đã hoàn thành (1.000) = 1.000</string>
+    <string name="commission_detail_desc_16">Giao dịch thứ hai vẫn cần đạt 1.000 để rút.</string>
+    <string name="commission_detail_desc_17">Tình huống 3</string>
+    <string name="commission_detail_desc_18">Giao dịch đầu tiên là nạp 1.000 và hoàn thành số tiền hợp lệ 500. -> Người dùng chưa rút và nạp tiền vào giao dịch thứ hai.</string>
+    <string name="commission_detail_desc_19">Giao dịch thứ hai là nạp 2.000 và hoàn thành số tiền hợp lệ 1.000. -> Người dùng phải hoàn thành số tiền hợp lệ là 1.500 để không bị khấu trừ.</string>
+    <string name="commission_detail_desc_20">Bởi vì cả hai giao dịch đều chưa hoàn thành, vì vậy hãy tính toán theo công thức như sau</string>
+    <string name="commission_detail_desc_21">Số tiền nạp (1.000 + 2.000) - số tiền hợp lệ đã hoàn thành (500 + 1.000) = 1.500</string>
+    <string name="commission_detail_desc_22">Số tiền hợp lệ cần 1.500 để rút.</string>
+    <string name="commissiom_completed">Hoàn thành</string>
+    <string name="commission_example">i.g.</string>
     <string name="bet_slip">Đơn cược</string>
     <string name="fast_bet_open_desc">Kích Hoạt Cược Nhanh</string>
     <string name="bet_list_empty">Hiện không có vé cược</string>

@@ -45,9 +45,13 @@ class WithdrawLogDetailDialog : BaseDialog<FinanceViewModel>(FinanceViewModel::c
                 wd_log_detail_status.text = it.withdrawState ?: ""
                 wd_log_detail_review_time.text = it.operatorDateAndTime ?: ""
                 wd_log_detail_reason.text = it.reason ?: ""
-
+3
                 it.displayMoney?.let { nonNullDisplayMoney ->
                     wd_log_detail_amount.text = "$nonNullDisplayMoney ${sConfigData?.systemCurrency}"
+                }
+
+                it.withdrawDeductMoney?.let { nonNullDeductMoney ->
+                    wd_log_detail_commission.text = "$nonNullDeductMoney ${sConfigData?.systemCurrency}"
                 }
 
                 (it.fee ?: 0.0).let { fee ->

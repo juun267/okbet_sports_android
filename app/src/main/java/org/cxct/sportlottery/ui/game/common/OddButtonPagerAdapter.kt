@@ -29,7 +29,7 @@ class OddButtonPagerAdapter(
     private val matchInfo: MatchInfo?,
     private val oddsSort: String?,
     private val playCateNameMap: Map<String?, Map<String?, String?>?>?,
-    private val playCateMappingList: List<PlayCateMapItem>?
+    private val betPlayCateNameMap: Map<String?, Map<String?, String?>?>? //遊戲名稱顯示用playCateNameMap，下注顯示用betPlayCateNameMap
 ) :
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()
@@ -104,7 +104,7 @@ class OddButtonPagerAdapter(
         holder.bind(
             matchInfo,
             playCateNameMap,
-            playCateMappingList,
+            betPlayCateNameMap,
             listOf(
                 Pair(
                     data[position].getOrNull(0)?.first,
@@ -311,8 +311,8 @@ class OddButtonPagerViewHolder private constructor(
 
     fun bind(
         matchInfo: MatchInfo?,
+        playCateNameMap: Map<String?, Map<String?, String?>?>?,
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
-        playCateMappingList: List<PlayCateMapItem>?,
         odds: List<Pair<String?, List<Odd?>?>>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?,
@@ -323,9 +323,9 @@ class OddButtonPagerViewHolder private constructor(
             itemView.odd_btn_row1_away,
             itemView.odd_btn_row1_draw,
             matchInfo,
+            playCateNameMap,
             betPlayCateNameMap,
-            playCateMappingList,
-            odds?.get(0), oddsType, oddButtonListener
+            odds?.getOrNull(0), oddsType, oddButtonListener
         )
 
         setupOddsButton(
@@ -334,9 +334,9 @@ class OddButtonPagerViewHolder private constructor(
             itemView.odd_btn_row2_away,
             itemView.odd_btn_row2_draw,
             matchInfo,
+            playCateNameMap,
             betPlayCateNameMap,
-            playCateMappingList,
-            odds?.get(1), oddsType, oddButtonListener
+            odds?.getOrNull(1), oddsType, oddButtonListener
         )
     }
 
@@ -360,14 +360,14 @@ class OddButtonPagerViewHolder private constructor(
         oddBtnAway: OddsButton,
         oddBtnDraw: OddsButton,
         matchInfo: MatchInfo?,
+        playCateNameMap: Map<String?, Map<String?, String?>?>?,
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
-        playCateMappingList: List<PlayCateMapItem>?,
         odds: Pair<String?, List<Odd?>?>?,
         oddsType: OddsType,
         oddButtonListener: OddButtonListener?
     ) {
         if (matchInfo == null ||
-            playCateMappingList.isNullOrEmpty() || betPlayCateNameMap.isNullOrEmpty()  ||
+            betPlayCateNameMap.isNullOrEmpty() || playCateNameMap.isNullOrEmpty()  ||
             odds == null || odds.first == null || odds.second.isNullOrEmpty()
         ) {
             oddBtnType.visibility = View.INVISIBLE
@@ -385,7 +385,8 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-            val playCateName = betPlayCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
+        val playCateName = playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
+        val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
 
             val playCateCode = odds.first ?: ""
 
@@ -464,7 +465,8 @@ class OddButtonPagerViewHolder private constructor(
                             matchInfo,
                             odd,
                             odds.first ?: "",
-                            playCateName
+                            playCateName,
+                            betPlayCateName
                         )
                     }
                 }
@@ -550,7 +552,8 @@ class OddButtonPagerViewHolder private constructor(
                             matchInfo,
                             odd,
                             odds.first ?: "",
-                            playCateName
+                            playCateName,
+                            betPlayCateName
                         )
                     }
                 }
@@ -623,6 +626,7 @@ class OddButtonPagerViewHolder private constructor(
                             odd,
                             odds.first ?: "",
                             playCateName,
+                            betPlayCateName
                         )
                     }
                 }
@@ -731,13 +735,14 @@ class OddButtonPagerViewHolder private constructor(
 }
 
 class OddButtonListener(
-    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd,playCateCode: String, playCateName: String) -> Unit
+    val clickListenerBet: (matchInfo: MatchInfo?, odd: Odd, playCateCode: String, playCateName: String, betPlayCateName: String) -> Unit
 ) {
 
     fun onClickBet(
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
-        playCateName: String = ""
-    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName)
+        playCateName: String = "",
+        betPlayCateName: String = "",
+    ) = clickListenerBet(matchInfo, odd, playCateCode, playCateName, betPlayCateName)
 }

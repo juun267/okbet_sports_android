@@ -100,8 +100,12 @@ class GameOutrightMoreFragment : BaseSocketFragment<GameViewModel>(GameViewModel
             setOnClickListener {
                 showBottomSheetDialog(
                     getString(R.string.bottom_sheet_title_play_type),
-                    args.matchOdd.oddsMap.keys.map {
-                        StatusSheetData(it, args.matchOdd.dynamicMarkets[it]?.getTranslate())
+                    args.matchOdd.oddsMap.keys.mapNotNull {
+                        var dynamicMarkets = args.matchOdd.dynamicMarkets[it]
+                        if (dynamicMarkets != null) StatusSheetData(
+                            it,
+                            args.matchOdd.dynamicMarkets[it]?.getTranslate()
+                        ) else null
                     },
                     StatusSheetData(
                         oddsKey,
