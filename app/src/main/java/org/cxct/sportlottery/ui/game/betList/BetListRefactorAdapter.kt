@@ -33,10 +33,7 @@ import org.cxct.sportlottery.ui.bet.list.BetInfoListData
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayRuleStringRes
 import org.cxct.sportlottery.ui.transactionStatus.ParlayType.Companion.getParlayStringRes
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.LanguageManager
-import org.cxct.sportlottery.util.TextUtil
-import org.cxct.sportlottery.util.getOdds
+import org.cxct.sportlottery.util.*
 
 class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -267,6 +264,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     if (tag is TextWatcher) {
                         removeTextChangedListener(tag as TextWatcher)
                     }
+                    filters = arrayOf(MoneyInputFilter())
                 }
                 onFocusChangeListener = null
 
@@ -751,6 +749,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         removeTextChangedListener(tag as TextWatcher)
                     }
                     onFocusChangeListener = null
+                    filters = arrayOf(MoneyInputFilter())
                 }
 
                 if (et_bet.text.isNullOrEmpty())
@@ -1025,6 +1024,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     isEnabled = !hasBetClosed
                     isFocusable = !hasBetClosed
                     isFocusableInTouchMode = !hasBetClosed
+                    filters = arrayOf(MoneyInputFilter())
                 }
 
                 et_clickable.isEnabled = !hasBetClosed //EditText的click事件

@@ -3,18 +3,21 @@ package org.cxct.sportlottery.ui.game.betList
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
+import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
+import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import kotlinx.android.synthetic.main.view_bet_info_close_message.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBottomSheetBetinfoItemBinding
@@ -24,7 +27,9 @@ import org.cxct.sportlottery.enum.SpreadState
 import org.cxct.sportlottery.network.bet.add.betReceipt.BetAddResult
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.network.error.BetAddErrorParser
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
@@ -41,6 +46,9 @@ const val INPLAY: Int = 1
 class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private lateinit var binding: FragmentBottomSheetBetinfoItemBinding
+
+    //提示
+    private var snackBarNotify: Snackbar? = null
 
     private var discount = 1.0F
 
@@ -99,7 +107,18 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
 
     private val keyboard: KeyBoardUtil by lazy {
-        KeyBoardUtil(kv_keyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
+        KeyBoardUtil(
+            kv_keyboard,
+            null,
+            sConfigData?.presetBetAmount ?: mutableListOf(),
+            isLogin ?: false,
+            GameConfigManager.maxBetMoney?.toLong(),
+            object : KeyBoardUtil.NeedLoginNoticeListener {
+                override fun showLoginNotice() {
+                    setSnackBarNotify(isLogin = false)
+                }
+            }
+        )
     }
 
     override fun onCreateView(
@@ -503,16 +522,20 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     }
 
 
-    private fun setupData(matchOdd: MatchOdd, betPlayCateNameMap: Map<String?, Map<String?, String?>?>? ) {
+    private fun setupData(
+        matchOdd: MatchOdd,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
+    ) {
         //隊伍名稱
-        tv_match.text = if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
-        else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
+        tv_match.text =
+            if (betInfoListData?.matchType == MatchType.OUTRIGHT) betInfoListData?.outrightMatchInfo?.name
+            else "${matchOdd.homeName}${getString(R.string.verse_)}${matchOdd.awayName}"
 
         //玩法名稱 目前詳細玩法裡面是沒有給betPlayCateNameMap，所以顯示邏輯沿用舊版
         val nameOneLine = { inputStr: String ->
             inputStr.replace("\n", "-")
         }
-        when{
+        when {
             betPlayCateNameMap.isNullOrEmpty() -> {
                 tv_name.text = if (matchOdd.inplay == INPLAY) {
                     getString(
@@ -523,9 +546,12 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                     )
                 } else nameOneLine(matchOdd.playCateName)
             }
-            else ->{
+            else -> {
                 tv_name.text = if (matchOdd.inplay == INPLAY) {
-                    "${betPlayCateNameMap?.get(matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""} (${matchOdd.homeScore} - ${matchOdd.awayScore})"
+                    "${
+                        betPlayCateNameMap?.get(matchOdd.playCode)
+                            ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                    } (${matchOdd.homeScore} - ${matchOdd.awayScore})"
                 } else nameOneLine(
                     betPlayCateNameMap?.get(matchOdd.playCode)
                         ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
@@ -635,6 +661,61 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 errorData?.let { viewModel.updateMatchOdd(it, betAddError) }
             }
         }
+    }
+
+    private fun setSnackBarNotify(
+        myFavoriteNotifyType: Int? = null,
+        isGameClose: Boolean? = false,
+        gameType: GameType? = null,
+        isLogin: Boolean? = true
+    ) {
+        val title = when {
+            isLogin == false -> getString(R.string.login_notify)
+            isGameClose == true -> String.format(
+                getString(R.string.message_no_sport_game),
+                getString(gameType?.string ?: 0)
+            )
+            else -> {
+                when (myFavoriteNotifyType) {
+
+                    MyFavoriteNotifyType.SPORT_ADD.code -> getString(R.string.myfavorite_notify_league_add)
+
+                    MyFavoriteNotifyType.SPORT_REMOVE.code -> getString(R.string.myfavorite_notify_league_remove)
+
+                    else -> ""
+                }
+            }
+        }
+
+        val layout =
+            if (isLogin == true) R.layout.snackbar_my_favorite_notify else R.layout.snackbar_login_notify
+
+        snackBarNotify = activity?.let {
+            Snackbar.make(
+                this@FastBetFragment.requireView(),
+                title,
+                Snackbar.LENGTH_LONG
+            ).apply {
+                val snackView: View = layoutInflater.inflate(
+                    layout,
+                    activity?.findViewById(android.R.id.content),
+                    false
+                )
+                if (isLogin == true)
+                    snackView.txv_title.text = title
+                else snackView.tv_notify.text = title
+
+                (this.view as Snackbar.SnackbarLayout).apply {
+                    findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                        visibility = View.INVISIBLE
+                    }
+                    background.alpha = 0
+                    addView(snackView, 0)
+                    setPadding(0, 0, 0, 0)
+                }
+            }
+        }
+        snackBarNotify?.show()
     }
 
 }

@@ -2,32 +2,36 @@ package org.cxct.sportlottery.ui.game.betList
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.EditText
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_parlay_description.*
 import kotlinx.android.synthetic.main.button_bet.view.*
 import kotlinx.android.synthetic.main.button_fast_bet_setting.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.fragment_bet_list.*
-import kotlinx.android.synthetic.main.view_bet_info_keyboard.*
+import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
+import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.databinding.FragmentBetListBinding
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.network.bet.add.betReceipt.Receipt
 import org.cxct.sportlottery.network.bet.info.MatchOdd
 import org.cxct.sportlottery.network.bet.info.ParlayOdd
+import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
+import org.cxct.sportlottery.network.common.MyFavoriteNotifyType
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
@@ -86,6 +90,9 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    //提示
+    private var snackBarNotify: Snackbar? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -131,7 +138,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         initRecyclerView()
         initToolBar()
 
-        initKeyBoard()
+        initKeyBoard(viewModel.getLoginBoolean())
     }
 
     private fun initBtnView() {
@@ -358,9 +365,13 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
     }
 
-    private fun initKeyBoard() {
+    private fun initKeyBoard(loginBoolean: Boolean) {
         keyboard =
-            KeyBoardUtil(binding.kvKeyboard, null, sConfigData?.presetBetAmount ?: mutableListOf())
+            KeyBoardUtil(binding.kvKeyboard, null, sConfigData?.presetBetAmount ?: mutableListOf(), loginBoolean, GameConfigManager.maxBetMoney?.toLong(), object : KeyBoardUtil.NeedLoginNoticeListener{
+                override fun showLoginNotice() {
+                    setSnackBarNotify(isLogin = false)
+                }
+            })
     }
 
     private fun initObserver() {
@@ -368,6 +379,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         viewModel.isLogin.observe(this.viewLifecycleOwner) {
             setupUserBalanceView(it)
             setupBetButtonType(it)
+            initKeyBoard(it)
         }
 
         viewModel.userMoney.observe(viewLifecycleOwner) {
@@ -541,6 +553,61 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         } else {
             false
         }
+    }
+
+    private fun setSnackBarNotify(
+        myFavoriteNotifyType: Int? = null,
+        isGameClose: Boolean? = false,
+        gameType: GameType? = null,
+        isLogin: Boolean? = true
+    ) {
+        val title = when {
+            isLogin == false -> getString(R.string.login_notify)
+            isGameClose == true -> String.format(
+                getString(R.string.message_no_sport_game),
+                getString(gameType?.string ?: 0)
+            )
+            else -> {
+                when (myFavoriteNotifyType) {
+
+                    MyFavoriteNotifyType.SPORT_ADD.code -> getString(R.string.myfavorite_notify_league_add)
+
+                    MyFavoriteNotifyType.SPORT_REMOVE.code -> getString(R.string.myfavorite_notify_league_remove)
+
+                    else -> ""
+                }
+            }
+        }
+
+        val layout =
+            if (isLogin == true) R.layout.snackbar_my_favorite_notify else R.layout.snackbar_login_notify
+
+        snackBarNotify = activity?.let {
+            Snackbar.make(
+                this@BetListFragment.requireView(),
+                title,
+                Snackbar.LENGTH_LONG
+            ).apply {
+                val snackView: View = layoutInflater.inflate(
+                    layout,
+                    activity?.findViewById(android.R.id.content),
+                    false
+                )
+                if (isLogin == true)
+                    snackView.txv_title.text = title
+                else snackView.tv_notify.text = title
+
+                (this.view as Snackbar.SnackbarLayout).apply {
+                    findViewById<TextView>(com.google.android.material.R.id.snackbar_text).apply {
+                        visibility = View.INVISIBLE
+                    }
+                    background.alpha = 0
+                    addView(snackView, 0)
+                    setPadding(0, 0, 0, 0)
+                }
+            }
+        }
+        snackBarNotify?.show()
     }
 
     /**
