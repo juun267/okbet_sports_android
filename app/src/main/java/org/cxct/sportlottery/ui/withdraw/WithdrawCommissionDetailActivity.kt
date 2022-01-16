@@ -54,7 +54,7 @@ class WithdrawCommissionDetailActivity :
     }
 
     private fun initObserve() {
-        viewModel.deductMoney.observe(this, {
+        viewModel.deductMoney.observe(this) {
             tv_total.apply {
                 text = TextUtil.formatCommissionMoney(zero.minus(it ?: 0.0))
                 setTextColor(
@@ -64,18 +64,18 @@ class WithdrawCommissionDetailActivity :
                     )
                 )
             }
-        })
+        }
 
-        viewModel.commissionCheckList.observe(this, {
+        viewModel.commissionCheckList.observe(this) {
             commissionDetailAdapter.setData(it)
-        })
+        }
 
-        viewModel.loading.observe(this, {
+        viewModel.loading.observe(this) {
             if (it)
                 loading()
             else
                 hideLoading()
-        })
+        }
     }
 
     private fun setupData() {
