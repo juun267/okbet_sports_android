@@ -803,6 +803,8 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
                     View.VISIBLE
                 }
 
+            itemView.scroll_view_rg.isVisible = !item.quickPlayCateList.isNullOrEmpty()
+
             itemView.league_odd_quick_cate_divider.visibility =
                 if (item.quickPlayCateList.isNullOrEmpty()) {
                     View.INVISIBLE
