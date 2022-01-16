@@ -132,7 +132,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 },
                 { matchId ->
                     navStatistics(matchId)
-                }
+                },
+                {}
             )
         }
     }
