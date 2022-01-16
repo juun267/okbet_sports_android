@@ -60,6 +60,7 @@ data class MatchInfo(
     //At Start
     var isAtStart: Boolean? = false
     var remainTime: Long? = null
+    var hasRefreshed: Boolean? = false
 
     //Other
     var startDateDisplay: String? = null

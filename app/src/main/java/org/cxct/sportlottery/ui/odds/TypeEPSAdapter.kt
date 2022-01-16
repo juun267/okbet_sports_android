@@ -18,30 +18,46 @@ import org.cxct.sportlottery.ui.menu.OddsType
  * @create 2021/7/30
  * @description
  */
-class TypeEPSAdapter(
-    private var oddsDetail: OddsDetailListData,
-    private val onOddClickListener: OnOddClickListener,
-    private val oddsType: OddsType
-) : RecyclerView.Adapter<TypeEPSAdapter.ViewHolder>() {
+class TypeEPSAdapter : RecyclerView.Adapter<TypeEPSAdapter.ViewHolder>() {
+
+    private var oddsDetail: OddsDetailListData? = null
+    private var onOddClickListener: OnOddClickListener? = null
+    private var oddsType: OddsType? = null
+
+    fun setData(
+        oddsDetail: OddsDetailListData,
+        onOddClickListener: OnOddClickListener,
+        oddsType: OddsType
+    ) {
+        this.oddsDetail = oddsDetail
+        this.onOddClickListener = onOddClickListener
+        this.oddsType = oddsType
+    }
 
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
             override fun refreshOddButton(odd: Odd) {
-                notifyItemChanged(oddsDetail.oddArrayList.indexOf(oddsDetail.oddArrayList.find { o -> o == odd }))
+                oddsDetail?.oddArrayList?.apply {
+                    notifyItemChanged(indexOf(oddsDetail?.oddArrayList?.find { o -> o == odd }))
+                }
             }
         }
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.content_type_eps_item, parent, false))
+        ViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.content_type_eps_item, parent, false)
+        )
 
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bindModel(oddsDetail.oddArrayList[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) =
+        holder.bindModel(oddsDetail?.oddArrayList?.getOrNull(position))
 
 
-    override fun getItemCount(): Int = oddsDetail.oddArrayList.size
+    override fun getItemCount(): Int = oddsDetail?.oddArrayList?.size ?: 0
 
 
     inner class ViewHolder(view: View) : OddStateViewHolder(view) {
@@ -54,10 +70,15 @@ class TypeEPSAdapter(
             tvName.text = odd?.name
 
             btnOdds?.apply {
-                setupOddForEPS(odd, oddsType)
+                oddsType?.let { setupOddForEPS(odd, it) }
                 setupOddState(this, odd)
                 setOnClickListener {
-                    odd?.let { o -> onOddClickListener.getBetInfoList(o, oddsDetail) }
+                    odd?.let { odd ->
+                        onOddClickListener?.getBetInfoList(
+                            odd,
+                            oddsDetail
+                        )
+                    }
                 }
             }
         }
