@@ -847,27 +847,19 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             outrightCountryAdapter.data = it
         }
 
+
+        //KK要求，當球類沒有資料時，自動選取第一個有賽事的球種
         viewModel.isNoHistory.observe(this.viewLifecycleOwner) {
             if (it) {
+                unSubscribeChannelHallAll()
                 hideLoading()
-                setNoDataView(leagueAdapter.data)
+                viewModel.switchMatchType(args.matchType)
             }
-
             game_no_record.apply {
                 setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-
-                visibility = if (it) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
-                }
-            }
-
-            game_no_record_bg.visibility = if (it) {
-                View.VISIBLE
-            } else {
                 View.GONE
             }
+            game_no_record_bg.isVisible = false
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
