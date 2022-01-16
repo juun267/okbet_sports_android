@@ -25,10 +25,7 @@ import org.cxct.sportlottery.network.withdraw.add.WithdrawAddResult
 import org.cxct.sportlottery.network.withdraw.uwcheck.CheckList
 import org.cxct.sportlottery.repository.*
 import org.cxct.sportlottery.ui.base.BaseSocketViewModel
-import org.cxct.sportlottery.util.ArithUtil
-import org.cxct.sportlottery.util.Event
-import org.cxct.sportlottery.util.MD5Util
-import org.cxct.sportlottery.util.VerifyConstUtil
+import org.cxct.sportlottery.util.*
 import java.math.RoundingMode
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -727,13 +724,5 @@ class WithdrawViewModel(
 
     private fun hideLoading() {
         _loading.postValue(false)
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    fun getNowTime(): String? {
-        val dateFormatter: DateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
-        dateFormatter.isLenient = false
-        val today = Date()
-        return dateFormatter.format(today)
     }
 }

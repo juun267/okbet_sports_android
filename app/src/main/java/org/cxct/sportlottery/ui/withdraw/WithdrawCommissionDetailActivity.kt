@@ -8,6 +8,8 @@ import org.cxct.sportlottery.R
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketActivity
 import org.cxct.sportlottery.util.TextUtil
+import org.cxct.sportlottery.util.TimeUtil
+import java.util.*
 
 class WithdrawCommissionDetailActivity :
     BaseSocketActivity<WithdrawViewModel>(WithdrawViewModel::class) {
@@ -27,7 +29,7 @@ class WithdrawCommissionDetailActivity :
     }
 
     private fun initView() {
-        tv_time.text = viewModel.getNowTime()
+        tv_time.text = TimeUtil.dateToFormat(Date())
 
         btn_back.setOnClickListener {
             finish()

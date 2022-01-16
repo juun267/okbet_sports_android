@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
+    tools:context="org.cxct.sportlottery.ui.withdraw.CommissionDetailAdapter"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -63,7 +64,7 @@
             android:layout_weight="1"
             android:textColor="#9A9A9A"
             android:textSize="@dimen/textSize14sp"
-            tools:text="30-08-2021 15:30:45" />
+            tools:text="2022-01-16 15:30:45" />
 
         <ImageView
             android:id="@+id/btn_info"
