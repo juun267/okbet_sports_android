@@ -1233,7 +1233,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         }
-
+        //TODo Bill 禮拜一詳細測試
+        /**
+         *  比對 GameType 相同 和 leagueIdList 是當前頁面有的 -> viewModel.refreshGame(args.matchType,listOf(it.league.id),listOf())
+         *  如果是 GameType不同 但是 leagueIdList是目前沒有的(代表可能有新的聯賽進來) -> getSportMenu(args.matchType)更新 sport Menu + switchSportType(args.matchType, it)
+         *  如果 GameType 是非當前頁面的 就取 -> getSportMenu(args.matchType)更新sport Menu
+         * */
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
                 //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
@@ -1241,8 +1246,34 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
                 val nowGameType =
                     GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+                //判斷當前的 leagueIdList 是不是在 當前頁面
+                val hasLeagueIdList = leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
+
+                when {
+                    //GameType 相同 和 leagueIdList 是當前頁面有的
+                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNotEmpty() -> {
+                        viewModel.refreshGame(
+                            args.matchType,
+                            leagueChangeEvent.leagueIdList,
+                            listOf()
+                        )
+                    }
+                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNullOrEmpty() -> {
+                        unSubscribeChannelHallAll()
+                        viewModel.getSportMenu(args.matchType)
+                        viewModel.switchSportType(args.matchType, nowGameType ?: "FT")
+                    }
+                    nowGameType != leagueChangeEvent.gameType -> {
+                        viewModel.getSportMenu(args.matchType)
+                    }
+                    else -> {
+                        viewModel.getSportMenu(args.matchType)
+                    }
+                }
+
+
                 if (nowGameType == leagueChangeEvent.gameType) {
-                    viewModel.refreshGame(args.matchType)
+//                    viewModel.refreshGame(args.matchType)
                     when (game_list.adapter) {
                         is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
                             leagueChangeEvent.leagueIdList?.let { leagueIdList ->
@@ -1256,6 +1287,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 }
+
+
             }
         }
     }
