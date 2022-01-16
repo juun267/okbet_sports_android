@@ -144,6 +144,17 @@ class AccountHistoryAdapter(private val clickListener: ItemClickListener,
                     StatusSheetData(GameType.BK.key, context?.getString(GameType.BK.string)),
                     StatusSheetData(GameType.TN.key, context?.getString(GameType.TN.string)),
                     StatusSheetData(GameType.VB.key, context?.getString(GameType.VB.string)),
+                    StatusSheetData(GameType.TT.key, context?.getString(GameType.TT.string)),
+                    StatusSheetData(GameType.IH.key, context?.getString(GameType.IH.string)),
+                    StatusSheetData(GameType.BX.key, context?.getString(GameType.BX.string)),
+                    StatusSheetData(GameType.CB.key, context?.getString(GameType.CB.string)),
+                    StatusSheetData(GameType.CK.key, context?.getString(GameType.CK.string)),
+                    StatusSheetData(GameType.BB.key, context?.getString(GameType.BB.string)),
+                    StatusSheetData(GameType.RB.key, context?.getString(GameType.RB.string)),
+                    StatusSheetData(GameType.MR.key, context?.getString(GameType.MR.string)),
+                    StatusSheetData(GameType.GF.key, context?.getString(GameType.GF.string)),
+                    StatusSheetData(GameType.AFT.key, context?.getString(GameType.AFT.string)),
+                    StatusSheetData(GameType.BM.key, context?.getString(GameType.BM.string)),
                 )
 
                 iv_back.setOnClickListener {

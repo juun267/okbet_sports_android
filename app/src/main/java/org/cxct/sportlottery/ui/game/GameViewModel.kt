@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -1222,14 +1221,14 @@ class GameViewModel(
                 _oddsListGameHallResult.postValue(
                     Event(
                         _oddsListGameHallResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it)
+                            ?.updateQuickPlayCate(matchId, it ,it.playCateNameMap)
                     )
                 )
 
                 _oddsListResult.postValue(
                     Event(
                         _oddsListResult.value?.peekContent()
-                            ?.updateQuickPlayCate(matchId, it)
+                            ?.updateQuickPlayCate(matchId, it,it.playCateNameMap)
                     )
                 )
             }
@@ -1670,31 +1669,31 @@ class GameViewModel(
 
     private fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
         MatchType.IN_PLAY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }?.code
         }
         MatchType.TODAY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }?.code
         }
         MatchType.EARLY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
         }
         MatchType.PARLAY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
         }
         MatchType.OUTRIGHT -> {
-            sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find { it.isSelected }?.code
         }
         MatchType.AT_START -> {
-            sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }?.code
         }
         MatchType.EPS -> {
-            sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER -> {
-            specialMenuData!!.items?.find { it.isSelected }!!.code
+            specialMenuData!!.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER_OUTRIGHT -> {
-            specialMenuData!!.items?.find { it.isSelected }!!.code
+            specialMenuData!!.items?.find { it.isSelected }?.code
         }
         else -> {
             null
@@ -1906,7 +1905,8 @@ class GameViewModel(
 
     private fun OddsListResult.updateQuickPlayCate(
         matchId: String,
-        quickListData: QuickListData
+        quickListData: QuickListData,
+        quickPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ): OddsListResult {
         this.oddsListData?.leagueOdds?.forEach { leagueOdd ->
             leagueOdd.matchOdds.forEach { matchOdd ->
@@ -1932,6 +1932,7 @@ class GameViewModel(
                         quickOddsApi?.toMutableFormat() ?: mutableMapOf()
                     )
                 }
+                matchOdd.quickPlayCateNameMap = quickPlayCateNameMap
             }
         }
         return this

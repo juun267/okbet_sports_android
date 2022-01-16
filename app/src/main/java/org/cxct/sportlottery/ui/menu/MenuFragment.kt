@@ -59,9 +59,16 @@ class MenuFragment : BaseSocketFragment<MainViewModel>(MainViewModel::class) {
 
         setupCloseBtn()
         initObserve()
+        initSocketObserver()
         initEvent()
         setupVersion()
         getOddsType()
+    }
+
+    private fun initSocketObserver() {
+        receiver.userMoney.observe(viewLifecycleOwner) {
+            viewModel.updateMoney(it)
+        }
     }
 
     private fun setupCloseBtn() {

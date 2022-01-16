@@ -22,12 +22,12 @@ object MatchOddUtil {
         playName: String?,
         matchInfo: MatchInfo,
         odd: Odd
-    ): org.cxct.sportlottery.network.bet.info.MatchOdd? {
+    ): MatchOdd? {
         matchInfo.id.let { matchId ->
             odd.id?.let { oddsId ->
                 odd.odds?.let { odds ->
                     odd.hkOdds?.let { hkOdds ->
-                        return org.cxct.sportlottery.network.bet.info.MatchOdd(
+                        return MatchOdd(
                             awayName = matchInfo.awayName,
                             homeName = matchInfo.homeName,
                             inplay = if (matchType == MatchType.IN_PLAY) INPLAY else 0,
@@ -50,7 +50,7 @@ object MatchOddUtil {
                             status = odd.status,
                             gameType = gameType,
                             homeScore = matchInfo.homeScore ?: 0,
-                            awayScore = matchInfo.awayScore ?: 0
+                            awayScore = matchInfo.awayScore ?: 0,
                         ).apply {
                             extInfo = odd.extInfo
                         }

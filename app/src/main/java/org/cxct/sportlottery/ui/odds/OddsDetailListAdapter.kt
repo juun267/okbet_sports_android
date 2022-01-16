@@ -941,17 +941,23 @@ class OddsDetailListAdapter(private val onOddClickListener: OnOddClickListener) 
             return gameTitleContentBuilder
         }
 
+        private val epsAdapter by lazy { TypeEPSAdapter() }
+
         private fun forEPS(oddsDetail: OddsDetailListData) {
             val vpEps = itemView.findViewById<ViewPager2>(R.id.vp_eps)
 
             vpEps?.apply {
-                adapter = TypeEPSAdapter(
+                adapter = epsAdapter
+                epsAdapter.setData(
                     oddsDetail,
                     onOddClickListener,
                     oddsType
                 )
                 getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
-                OverScrollDecoratorHelper.setUpOverScroll(getChildAt(0) as RecyclerView, OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL)
+                OverScrollDecoratorHelper.setUpOverScroll(
+                    getChildAt(0) as RecyclerView,
+                    OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL
+                )
             }
 
             itemView.findViewById<IndicatorView>(R.id.idv_eps).setupWithViewPager2(vpEps)
