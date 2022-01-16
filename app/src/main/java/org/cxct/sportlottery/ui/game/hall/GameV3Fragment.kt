@@ -857,16 +857,40 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         //KK要求，當球類沒有資料時，自動選取第一個有賽事的球種
         viewModel.isNoHistory.observe(this.viewLifecycleOwner) {
-            if (it) {
-                unSubscribeChannelHallAll()
-                hideLoading()
-                viewModel.switchMatchType(args.matchType)
+
+            //判斷當前MatchType是否有玩法數量
+            val hasGame = when (args.matchType) {
+                MatchType.IN_PLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.inPlay?.num ?: 0 > 0
+                MatchType.TODAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.today?.num ?: 0 > 0
+                MatchType.EARLY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.early?.num ?: 0 > 0
+                MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
+                MatchType.OUTRIGHT -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.outright?.num ?: 0 > 0
+                MatchType.EPS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.eps?.num ?: 0 > 0
+                else -> false
             }
-            game_no_record.apply {
-                setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                View.GONE
+
+            hideLoading()
+            when {
+                //當前MatchType有玩法數量，只是目前的球種沒有
+                it && hasGame -> {
+                    unSubscribeChannelHallAll()
+                    viewModel.switchMatchType(args.matchType)
+                    game_no_record.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        View.GONE
+                    }
+                    game_no_record_bg.isVisible = false
+                }
+                it && !hasGame -> {
+                    game_no_record.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        isVisible = true
+                    }
+                    game_no_record_bg.apply {
+                        isVisible = true
+                    }
+                }
             }
-            game_no_record_bg.isVisible = false
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
