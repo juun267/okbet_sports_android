@@ -35,42 +35,40 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.isLogin.observe(this, {
+        viewModel.isLogin.observe(this) {
             updateUiWithLogin(it)
-        })
+        }
 
-        viewModel.oddsType.observe(this, {
+        viewModel.oddsType.observe(this) {
             updateOddsType(it)
-        })
+        }
 
-        viewModel.thirdGameCategory.observe(this, {
-            it.getContentIfNotHandled().let { thirdGameCategory ->
-                navOneSportPage(thirdGameCategory)
-            }
-        })
+        viewModel.thirdGameCategory.observe(this) {
+            navOneSportPage(it.getContentIfNotHandled())
+        }
 
-        viewModel.intentClass.observe(this, {
+        viewModel.intentClass.observe(this) {
             it.getContentIfNotHandled()?.let { clazz ->
                 startActivity(Intent(this, clazz))
             }
-        })
+        }
 
-        viewModel.showShoppingCart.observe(this, {
+        viewModel.showShoppingCart.observe(this) {
             if (it) {
                 showBetListPage()
             }
-        })
+        }
 
-        viewModel.betInfoList.observe(this, {
+        viewModel.betInfoList.observe(this) {
             updateBetListCount(it.peekContent().size)
-        })
+        }
 
-        viewModel.notifyLogin.observe(this, {
+        viewModel.notifyLogin.observe(this) {
             showLoginNotify()
-        })
+        }
 
         //TODO 不是通用的不應該放在這邊, 只要在需要顯示的頁面實作就好了
-        viewModel.notifyMyFavorite.observe(this, {
+        viewModel.notifyMyFavorite.observe(this) {
             it.getContentIfNotHandled()?.let { result ->
                 when (result.type) {
                     FavoriteType.LEAGUE -> {
@@ -93,7 +91,7 @@ abstract class BaseBottomNavActivity<T : BaseBottomNavViewModel>(clazz: KClass<T
                     }
                 }
             }
-        })
+        }
 
     }
 }
