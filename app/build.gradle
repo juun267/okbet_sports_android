@@ -22,7 +22,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0.57"
+        versionName "1.0.58"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -85,7 +85,7 @@ android {
             buildConfigField "String", "SYSTEM_CURREMCY_SIGN", "\"₱\""
             manifestPlaceholders = [
                     JPUSH_PKGNAME          : applicationId,
-                    JPUSH_APPKEY           : "774e6735e1eae46b4b10260f", //JPush上注册的包名对应的appkey.
+                    JPUSH_APPKEY           : "2efc0f50829574b4db4b1dc8", //JPush上注册的包名对应的appkey.
                     JPUSH_CHANNEL          : "developer-default", //暂时填写默认值即可.
                     NETWORK_SECURITY_CONFIG: "@xml/test_network_security_config"
             ]

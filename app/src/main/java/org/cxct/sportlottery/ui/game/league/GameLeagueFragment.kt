@@ -113,8 +113,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                         }
                     }
                 },
-                { matchInfo, odd, playCateCode, playCateName ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName)
+                { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                     hideKeyboard()
                 },
                 { matchId ->
@@ -604,7 +604,8 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         matchInfo: MatchInfo?,
         odd: Odd,
         playCateCode: String,
-        playCateName: String
+        playCateName: String,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
     ) {
         matchInfo?.let {
             viewModel.updateMatchBetList(
@@ -615,6 +616,7 @@ class GameLeagueFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
                 matchInfo,
                 odd,
                 ChannelType.HALL,
+                betPlayCateNameMap,
                 getPlayCateMenuCode()
             )
         }

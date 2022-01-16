@@ -245,7 +245,7 @@
     <string name="help_center">Trung tâm trợ giúp</string>
     <string name="fund_detail">Chi tiết quỹ</string>
     <string name="feedback">Ý kiến phản hồi</string>
-    <string name="promotion">thủ công đăng ký khuyến mãi</string>
+    <string name="promotion">Khuyến mại</string>
     <string name="need_improve">Cần được hoàn thiện</string>
     <string name="profile_info">Thông tin cá nhân</string>
     <string name="avatar">Ảnh đại diện</string>
@@ -483,9 +483,12 @@
     <string name="please_setting_withdraw_password">Vui lòng thiết mật khẩu rút tiền</string>
     <string name="please_complete_profile_info">thông tin cá nhân đã được hoàn thiện</string>
     <string name="please_setting_bank_card">Vui lòng thiết lập thẻ ngân hàng</string>
+    <string name="please_setting_bank_card_crypto">Vui lòng thiết lập thẻ ngân hàng / tiền ảo</string>
+    <string name="please_setting_bank_card_ewallet">Vui lòng thiết lập thẻ ngân hàng / eWallet</string>
     <string name="please_setting_ewallet">Vui lòng thiết lập eWallet</string>
     <string name="please_setting_crypto">Vui lòng thiết lập tiền ảo</string>
-    <string name="please_setting_money_card">Vui lòng thiết lập thẻ ngân hàng / tiền ảo</string>
+    <string name="please_setting_crypto_ewallet">Vui lòng thiết lập tiền ảo / eWallet</string>
+    <string name="please_setting_money_card">Vui lòng thiết lập thẻ ngân hàng / tiền ảo / eWallet</string>
     <string name="go_to_setting">Đi tới cài đặt</string>
     <string name="message_withdraw_maintain">Hệ thống rút tiền đang được nâng cấp, vui lòng đợi</string>
     <string name="text_money_get_success">Rút tiền thành công vui lòng đợi nhân viên CSKH kiểm duyệt</string>
@@ -882,4 +885,8 @@
     <string name="bet_slip">Đơn cược</string>
     <string name="fast_bet_open_desc">Kích Hoạt Cược Nhanh</string>
     <string name="bet_list_empty">Hiện không có vé cược</string>
+    <string name="bank_list_not_bink">Bạn chưa mặc %1$s</string>
+    <string name="bank_list_add">Thêm %1$s</string>
+    <string name="bank_list_bank">thẻ ngân hàng</string>
+    <string name="bank_list_crypto">tiền ảo mới</string>
 </resources>

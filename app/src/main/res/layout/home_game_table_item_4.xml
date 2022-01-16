@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:minHeight="148dp"
     android:paddingStart="20dp"
-    android:paddingEnd="16dp"
+    android:paddingEnd="12dp"
     tools:context=".ui.game.home.gameTable4.Vp2GameTable4Adapter"
     tools:ignore="spUsage,contentDescription"
     tools:maxHeight="148dp">
@@ -17,7 +17,7 @@
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
-        app:layout_constraintEnd_toStartOf="@id/btn_match_odd1"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintStart_toStartOf="@id/tv_game_score_home"
         app:layout_constraintTop_toTopOf="@id/tv_game_name_home" />
 
@@ -168,33 +168,37 @@
         app:layout_constraintStart_toStartOf="@id/btn_match_odd1"
         app:layout_constraintTop_toTopOf="@id/tv_game_type" />
 
+
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/btn_match_odd1"
-        android:layout_width="70dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
         app:layout_constraintEnd_toStartOf="@id/btn_match_odd2"
         app:layout_constraintTop_toTopOf="@id/tv_game_name_home" />
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/btn_match_odd2"
-        android:layout_width="70dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toEndOf="@+id/btn_match_odd1"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
         app:layout_constraintEnd_toStartOf="@+id/btn_match_odd3"
         app:layout_constraintTop_toTopOf="@id/tv_game_name_home" />
 
     <org.cxct.sportlottery.ui.game.widget.OddsButton
         android:id="@+id/btn_match_odd3"
-        android:layout_width="70dp"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/btn_match_odd2"
         app:layout_constraintBottom_toBottomOf="@id/tv_game_name_away"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_game_name_home"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tv_score"
@@ -216,8 +220,8 @@
         android:id="@+id/tv_point"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
         android:paddingEnd="4dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize12sp"
@@ -232,8 +236,8 @@
         android:id="@+id/tv_match_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
         android:paddingEnd="4dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize12sp"
@@ -246,8 +250,8 @@
         android:id="@+id/tv_match_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
         android:paddingEnd="0dp"
         android:textColor="@color/colorRedDark"
         android:textSize="@dimen/textSize12sp"
@@ -295,9 +299,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="8dp"
         android:drawablePadding="6dp"
-        android:layout_marginTop="5dp"
         android:textColor="@color/colorGray"
         android:textSize="@dimen/textSize12sp"
         app:drawableRightCompat="@drawable/ic_iconarrow"
@@ -314,7 +318,7 @@
         android:layout_marginBottom="8dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_icon_chart"
+        android:src="@drawable/icon_chart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_star"
         app:layout_constraintTop_toTopOf="@+id/btn_star"
@@ -325,11 +329,17 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:contentDescription="@null"
         android:scaleType="centerCrop"
         android:src="@drawable/selector_star_v4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.common
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +14,11 @@ import org.cxct.sportlottery.network.common.FoldState
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
+import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.ui.common.DividerItemDecorator
 import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
+import org.cxct.sportlottery.util.SocketUpdateUtil
 import org.cxct.sportlottery.util.SvgUtil
 
 class LeagueAdapter(private val matchType: MatchType) :
@@ -25,6 +28,8 @@ class LeagueAdapter(private val matchType: MatchType) :
         ITEM, NO_DATA
     }
 
+    var updateType: String? = null
+
     var data = mutableListOf<LeagueOdd>()
         set(value) {
             field = value
@@ -32,7 +37,7 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
 
     var discount: Float = 1.0F
-        set (value) {
+        set(value) {
             if (field == value) return
 
             data.forEach { leagueOdd ->
@@ -74,7 +79,6 @@ class LeagueAdapter(private val matchType: MatchType) :
         return when (viewType) {
             ItemType.ITEM.ordinal -> {
                 ItemViewHolder.from(matchType, parent).apply {
-
                     this.itemView.league_odd_list.apply {
                         this.layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -87,7 +91,12 @@ class LeagueAdapter(private val matchType: MatchType) :
                                 )
                             )
                         )
+                        setHasFixedSize(true)
+                        //setItemViewCacheSize(10)
+                        isNestedScrollingEnabled = false
+                        //adapter = leagueOddAdapter
                     }
+                    this.itemView.league_odd_list.itemAnimator = null
                 }
             }
             else -> {
@@ -96,17 +105,22 @@ class LeagueAdapter(private val matchType: MatchType) :
         }
     }
 
+    fun updateBySocket(position: Int, type: String?) {
+        this.updateType = type
+        notifyItemChanged(position)
+    }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ItemViewHolder -> {
                 val item = data[position]
-
                 holder.bind(
                     item,
                     matchType,
                     leagueListener,
                     leagueOddListener,
-                    oddsType
+                    oddsType,
+                    updateType
                 )
             }
         }
@@ -123,6 +137,7 @@ class LeagueAdapter(private val matchType: MatchType) :
 
         when (holder) {
             is ItemViewHolder -> {
+                updateType = null
                 holder.itemView.league_odd_list.adapter = null
             }
         }
@@ -130,17 +145,19 @@ class LeagueAdapter(private val matchType: MatchType) :
 
     class ItemViewHolder private constructor(matchType: MatchType, itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-
-        val leagueOddAdapter by lazy {
-            LeagueOddAdapter(matchType)
-        }
+//        val leagueOddAdapter by lazy {
+//            LeagueOddAdapter(matchType, emptyList())
+//        }
+        //lateinit var leagueOddAdapter:LeagueOddAdapter
+        var leagueOddAdapter = LeagueOddAdapter(matchType, mutableListOf<MatchOdd>())
 
         fun bind(
             item: LeagueOdd,
             matchType: MatchType,
             leagueListener: LeagueListener?,
             leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType
+            oddsType: OddsType,
+            updateType: String?
         ) {
             itemView.league_text.text = item.league.name
 
@@ -149,29 +166,52 @@ class LeagueAdapter(private val matchType: MatchType) :
                 itemView.iv_country.setImageDrawable(countryIcon)
             }
 
-            setupLeagueOddList(item, leagueOddListener, oddsType)
+            setupLeagueOddList(item, leagueOddListener, oddsType, updateType)
             setupLeagueOddExpand(item, matchType, leagueListener)
         }
 
         private fun setupLeagueOddList(
             item: LeagueOdd,
             leagueOddListener: LeagueOddListener?,
-            oddsType: OddsType
+            oddsType: OddsType,
+            updateType: String?
         ) {
-            itemView.league_odd_list.apply {
-                adapter = leagueOddAdapter.apply {
-                    data = if (item.searchMatchOdds.isNotEmpty()) {
-                        item.searchMatchOdds
-                    } else {
-                        item.matchOdds
-                    }.onEach {
-                        it.matchInfo?.gameType = item.gameType?.key
-                    }
 
+//            itemView.league_odd_list.apply {
+//                adapter = leagueOddAdapter.apply {
+//                    this.leagueOddListener = leagueOddListener
+//                    this.oddsType = oddsType
+//                }
+//            }
+            if (itemView.league_odd_list.adapter == null) {
+                itemView.league_odd_list.apply {
+                    adapter = leagueOddAdapter.apply {
+                        this.leagueOddListener = leagueOddListener
+                        this.oddsType = oddsType
+                    }
+                }
+            } else {
+                (itemView.league_odd_list.adapter as LeagueOddAdapter).apply {
                     this.leagueOddListener = leagueOddListener
                     this.oddsType = oddsType
                 }
             }
+
+
+//            itemView.league_odd_list.adapter.apply {
+//                this.leagueOddListener = leagueOddListener
+//            }
+            var leagueData = if (item.searchMatchOdds.isNotEmpty()) {
+                item.searchMatchOdds
+            } else {
+                item.matchOdds
+            }.onEach {
+                it.matchInfo?.gameType = item.gameType?.key
+            }
+            (itemView.league_odd_list.adapter as LeagueOddAdapter).submitList(
+                leagueData,
+                updateType
+            )
         }
 
         private fun setupLeagueOddExpand(
@@ -236,7 +276,10 @@ class LeagueAdapter(private val matchType: MatchType) :
     }
 }
 
-class LeagueListener(val clickListenerLeague: (item: LeagueOdd) -> Unit, val refreshListener: (item: LeagueOdd) -> Unit, ) {
+class LeagueListener(
+    val clickListenerLeague: (item: LeagueOdd) -> Unit,
+    val refreshListener: (item: LeagueOdd) -> Unit
+) {
     fun onClickLeague(item: LeagueOdd) = clickListenerLeague(item)
     fun onRefresh(item: LeagueOdd) = refreshListener(item)
 }

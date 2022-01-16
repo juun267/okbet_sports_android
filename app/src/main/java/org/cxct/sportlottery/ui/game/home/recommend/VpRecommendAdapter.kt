@@ -32,7 +32,8 @@ class VpRecommendAdapter(
     private val isOutright: Int?,
     val matchOdd: MatchOdd,
     val dynamicMarkets: Map<String, DynamicMarket>?,
-    val playCateNameMap: Map<String?, Map<String?, String?>?>?
+    val playCateNameMap: Map<String?, Map<String?, String?>?>?,
+    val betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     enum class ItemType {
@@ -183,7 +184,7 @@ class VpRecommendAdapter(
                     odd?.let {
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
-                        }, odd, playCateCode, playCateName)
+                        }, odd, playCateCode, playCateName ,betPlayCateNameMap)
                     }
                 }
             }
@@ -225,7 +226,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(0)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
                         }
                     }
                 }
@@ -253,7 +254,7 @@ class VpRecommendAdapter(
                         data.oddList.getOrNull(1)?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd, PlayCate.UNCHECK.value ,data.playTypeCode)
+                            }, odd, PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
                         }
                     }
                 }
@@ -279,7 +280,7 @@ class VpRecommendAdapter(
                             data.oddList.getOrNull(2)?.let { odd ->
                                 onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                     this.matchInfo?.gameType = sportCode
-                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
                             }
                         }
                     }
@@ -306,7 +307,7 @@ class VpRecommendAdapter(
                             data.oddList.getOrNull(3)?.let { odd ->
                                 onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                     this.matchInfo?.gameType = sportCode
-                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode)
+                                }, odd,PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
                             }
                         }
                     }
@@ -333,7 +334,7 @@ class VpRecommendAdapter(
                             data.oddList.getOrNull(4)?.let { odd ->
                                 onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                     this.matchInfo?.gameType = sportCode
-                                }, odd, PlayCate.UNCHECK.value, data.playTypeCode)
+                                }, odd, PlayCate.UNCHECK.value, data.playTypeCode, betPlayCateNameMap)
                             }
                         }
                     }
@@ -401,7 +402,7 @@ class VpRecommendAdapter(
                     odd?.let {
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
-                        }, odd, PlayCate.UNCHECK.value ,playCateName)
+                        }, odd, PlayCate.UNCHECK.value ,playCateName, betPlayCateNameMap)
                     }
                 }
             }

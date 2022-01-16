@@ -109,8 +109,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                         }
                     }
                 },
-                { matchInfo, odd, playCateCode, playCateName ->
-                    addOddsDialog(matchInfo, odd, playCateCode, playCateName)
+                { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
+                    addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
                 { matchId ->
                     viewModel.getQuickList(matchId)
@@ -467,6 +467,17 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             GameType.BK.key -> getString(GameType.BK.string)
             GameType.TN.key -> getString(GameType.TN.string)
             GameType.VB.key -> getString(GameType.VB.string)
+            GameType.BM.key -> getString(GameType.BM.string)
+            GameType.TT.key -> getString(GameType.TT.string)
+            GameType.BX.key -> getString(GameType.BX.string)
+            GameType.CB.key -> getString(GameType.CB.string)
+            GameType.CK.key -> getString(GameType.CK.string)
+            GameType.BB.key -> getString(GameType.BB.string)
+            GameType.RB.key -> getString(GameType.RB.string)
+            GameType.AFT.key -> getString(GameType.AFT.string)
+            GameType.IH.key -> getString(GameType.IH.string)
+            GameType.MR.key -> getString(GameType.MR.string)
+            GameType.GF.key -> getString(GameType.GF.string)
             else -> ""
         }
 
@@ -486,6 +497,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
                 GameType.BB.key -> R.drawable.baseball_100
                 GameType.RB.key -> R.drawable.rugby_100
                 GameType.AFT.key -> R.drawable.amfootball_100
+                GameType.IH.key -> R.drawable.icehockey_100
                 GameType.MR.key -> R.drawable.rancing_100
                 GameType.GF.key -> R.drawable.golf_108
                 else -> null
@@ -520,6 +532,7 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
         odd: Odd,
         playCateCode: String,
         playCateName: String,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
@@ -535,7 +548,8 @@ class MyFavoriteFragment : BaseSocketFragment<MyFavoriteViewModel>(MyFavoriteVie
             playCateName,
             matchInfo,
             odd,
-            ChannelType.HALL
+            ChannelType.HALL,
+            betPlayCateNameMap
         )//TODO 訂閱HALL需傳入CateMenuCode
     }
 

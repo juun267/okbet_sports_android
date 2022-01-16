@@ -41,9 +41,9 @@ class BetRecordDetailDialog(val data: Row) : BaseDialog<BetRecordViewModel>(BetR
 
         initRv()
 
-        viewModel.oddsType.observe(viewLifecycleOwner, {
+        viewModel.oddsType.observe(viewLifecycleOwner) {
             rvAdapter.oddsType = it
-        })
+        }
 
     }
 

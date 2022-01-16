@@ -20,13 +20,14 @@ object SocketUpdateUtil {
 
     fun updateMatchStatus(
         gameType: String?,
-        matchOddList: MutableList<MatchOdd>,
+        matchOddList: MutableList<MatchOdd> = arrayListOf(),
         matchStatusChangeEvent: MatchStatusChangeEvent,
         context: Context?
     ): Boolean {
         var isNeedRefresh = false
 
         matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
+            var removeIndex :Int = -1
 
             matchOddList.forEach { matchOdd ->
 
@@ -46,15 +47,11 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.socketMatchStatus = matchStatusCO.status
                         isNeedRefresh = true
                     }
+                    val statusValue =
+                        matchStatusCO.statusNameI18n?.get(LanguageManager.getSelectLanguage(context).key)
+                            ?: matchStatusCO.statusName
+                    if (statusValue != null && statusValue != matchOdd.matchInfo?.statusName18n) {
 
-                    if (matchStatusCO.statusName != null && matchStatusCO.statusName != matchOdd.matchInfo?.statusName18n) {
-                        val statusValue =
-                            matchStatusCO.statusNameI18n?.get(
-                                LanguageManager.getSelectLanguage(
-                                    context
-                                ).key
-                            )
-                                ?: matchStatusCO.statusName
                         matchOdd.matchInfo?.statusName18n = statusValue
                         isNeedRefresh = true
                     }
@@ -98,7 +95,19 @@ object SocketUpdateUtil {
                         matchOdd.matchInfo?.awayCards = matchStatusCO.awayCards
                         isNeedRefresh = true
                     }
+                    if (matchStatusCO.status == 100) {
+                        //跑完forEach再去刪除 不然會Crash
+                        matchOddList.forEachIndexed { index, item ->
+                            if (item == matchOdd){
+                                removeIndex = index
+                            }
+                        }
+                        isNeedRefresh = true
+                    }
                 }
+            }
+            if(removeIndex != -1){
+                matchOddList.removeAt(removeIndex)
             }
         }
 
@@ -108,6 +117,7 @@ object SocketUpdateUtil {
     fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
+        //[Martin] 沒有做暫停計時功能 有時間要做
         matchClockEvent.matchClockCO?.let { matchClockCO ->
 
             if (matchClockCO.matchId != null && matchClockCO.matchId == matchOdd.matchInfo?.id) {
@@ -122,6 +132,7 @@ object SocketUpdateUtil {
                     else -> null
                 }
 
+
                 if (leagueTime != null && leagueTime != matchOdd.matchInfo?.leagueTime) {
                     matchOdd.matchInfo?.leagueTime = leagueTime
                     isNeedRefresh = true
@@ -131,6 +142,7 @@ object SocketUpdateUtil {
                 if (matchClockCO.stopped != matchOdd.matchInfo?.stopped) {
                     matchOdd.matchInfo?.stopped = matchClockCO.stopped
                     isNeedRefresh = true
+
                 }
 
             }

@@ -41,8 +41,11 @@ data class MatchOdd(
 
     var isExpand = false
     var leagueTime: Int? = null
+    var stopped:Int? = 0
 
     var positionButtonPage = 0
+
+    var quickPlayCateNameMap: Map<String?, Map<String?, String?>?>? = null //足球快捷玩法的翻譯
 
     fun sortOddsMap() {
         this.oddsMap.forEach { (_, value) ->

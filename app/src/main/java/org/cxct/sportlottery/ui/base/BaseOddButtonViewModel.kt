@@ -52,6 +52,7 @@ abstract class BaseOddButtonViewModel(
     infoCenterRepository: InfoCenterRepository
 ) : BaseViewModel(loginRepository, betInfoRepository, infoCenterRepository) {
 
+    @Deprecated("之後API都會給翻譯")
     protected val playCateMappingList by lazy {
         val json = LocalJsonUtil.getLocalJson(
             MultiLanguagesApplication.appContext,
@@ -126,7 +127,9 @@ abstract class BaseOddButtonViewModel(
         matchInfo: MatchInfo,
         odd: org.cxct.sportlottery.network.odds.Odd,
         subscribeChannelType: ChannelType,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?,
         playCateMenuCode: String? = null
+
     ) {
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
@@ -143,7 +146,8 @@ abstract class BaseOddButtonViewModel(
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
                     playCateMenuCode = playCateMenuCode,
-                    oddsType = loginRepository.mOddsType.value
+                    oddsType = loginRepository.mOddsType.value,
+                    betPlayCateNameMap = betPlayCateNameMap
                 )
             }
         } else {
@@ -184,7 +188,8 @@ abstract class BaseOddButtonViewModel(
                     matchInfo = matchOdd.matchInfo,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
-                    oddsType = loginRepository.mOddsType.value
+                    oddsType = loginRepository.mOddsType.value,
+                    betPlayCateNameMap = matchOdd.betPlayCateNameMap
                 )
             }
         } else {
@@ -324,14 +329,14 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            if(it.matchOdd.odds == it.matchOdd.malayOdds){
+            if(it.matchOdd.odds == it.matchOdd.malayOdds  || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT){
                 currentOddsTypes = OddsType.EU
             }
             matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
         }
         //若有串關 則改為EU
         currentOddsTypes = if(normalBetList.size == 1){
-            normalBetList[0].singleBetOddsType
+            normalBetList.getOrNull(0)?.singleBetOddsType ?: OddsType.EU
         }else{
             OddsType.EU
         }
@@ -447,7 +452,7 @@ abstract class BaseOddButtonViewModel(
         betInfoRepository.clear()
     }
 
-    fun getBetInfoListForParlay() {
+    private fun getBetInfoListForParlay() {
         betInfoRepository.addInBetInfoParlay()
     }
 
@@ -694,7 +699,8 @@ abstract class BaseOddButtonViewModel(
                             matchType,
                             gameType,
                             mutableListOf(betInfoListData.matchOdd)
-                        ).first()
+                        ).first(),
+                        betInfoListData.betPlayCateNameMap
                     )
 
                     newBetInfoListData.matchType = betInfoListData.matchType

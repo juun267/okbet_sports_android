@@ -83,9 +83,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             matchOdd: MatchOdd,
             odd: Odd,
             playCateCode: String,
-            playCateName: String?
+            playCateName: String?,
+            betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
         ) {
-            addOddsDialog(matchOdd, odd, playCateCode, playCateName)
+            addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
         }
     }
 
@@ -157,9 +158,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 matchOdd: MatchOdd,
                 odd: Odd,
                 playCateCode: String,
-                playCateName: String?
+                playCateName: String?,
+                betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
             ) {
-                addOddsDialog(matchOdd, odd, playCateCode, playCateName)
+                addOddsDialog(matchOdd, odd, playCateCode, playCateName, betPlayCateNameMap)
             }
         }
         mRvGameTable4Adapter.onClickMatchListener = object : OnSelectItemListener<MatchOdd> {
@@ -224,7 +226,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 matchOdd: MatchOdd,
                 odd: Odd,
                 playCateCode: String,
-                playCateName: String?
+                playCateName: String?,
+                betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
             ) {
                 GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
                     //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
@@ -373,7 +376,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         matchOdd: MatchOdd,
         odd: Odd,
         playCateCode: String,
-        playCateName: String?
+        playCateName: String?,
+        betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ) {
         //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
 //        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
@@ -389,6 +393,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                     matchInfo,
                     odd,
                     ChannelType.HALL,
+                    betPlayCateNameMap,
                     if (mSelectMatchType == MatchType.IN_PLAY) MenuCode.HOME_INPLAY_MOBILE.code else MenuCode.HOME_ATSTART_MOBILE.code
                 )
             }
