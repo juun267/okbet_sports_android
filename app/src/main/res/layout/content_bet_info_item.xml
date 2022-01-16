@@ -13,11 +13,13 @@
             type="org.cxct.sportlottery.network.bet.info.ParlayOdd" />
 
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
         android:orientation="vertical">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_item_background"
             android:layout_width="match_parent"
@@ -73,9 +75,9 @@
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize15sp"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/iv_close"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/iv_close"
                 tools:text="俄罗斯 -0.5/1 ＠ 0.890 (歐洲盤)" />
 
 
@@ -87,8 +89,8 @@
                 android:layout_marginTop="4dp"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize13sp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_odds_content"
                 tools:text="纽卡斯尔 v 切尔西" />
 
@@ -136,21 +138,21 @@
                 app:layout_constraintWidth_percent="0.442" />
 
             <LinearLayout
+                android:id="@+id/llActualBet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginLeft="8dp"
-                android:id="@+id/llActualBet"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/et_clickable"
                 app:layout_constraintStart_toEndOf="@+id/et_clickable"
-                app:layout_constraintTop_toTopOf="@+id/et_clickable"
-                app:layout_constraintBottom_toBottomOf="@+id/et_clickable">
+                app:layout_constraintTop_toTopOf="@+id/et_clickable">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/actual_bet"
                     android:textColor="@color/colorGray"
-                    android:textSize="@dimen/textSize12sp"
-                    />
+                    android:textSize="@dimen/textSize12sp" />
 
                 <TextView
                     android:id="@+id/tvRealAmount"
@@ -168,9 +170,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:textSize="@dimen/textSize13sp"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/colorRed"
+                android:textSize="@dimen/textSize13sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/et_bet"
@@ -186,7 +188,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-
 
 
 </layout>

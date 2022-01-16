@@ -15,7 +15,10 @@ import org.cxct.sportlottery.ui.common.KeyBoardCode
 class KeyBoardUtil(
     private val keyboardView: CustomKeyBoardView,
     private val parent: View?,
-    private val presetBetAmount: List<Int>
+    private val presetBetAmount: List<Int>,
+    private val isLogin: Boolean,
+    private val maxBetMoney: Long?,
+    private val needLoginNoticeListener: NeedLoginNoticeListener
 ) : OnKeyboardActionListener {
 
 
@@ -99,6 +102,14 @@ class KeyBoardUtil(
 
             KeyBoardCode.PLUS_100.code -> plus(presetBetAmount[2].toLong())
 
+            KeyBoardCode.MAX.code -> {
+                if(isLogin){
+                    plus(maxBetMoney ?: 0)
+                }else{
+                    needLoginNoticeListener.showLoginNotice()
+                }
+            }
+
             KeyBoardCode.INSERT_0.code -> {
                 if (editable.isNotEmpty()) {
                     editable.insert(start, primaryCode.toChar().toString())
@@ -131,6 +142,10 @@ class KeyBoardUtil(
         } else input.toLong() + count
         mEditText.setText(tran.toString())
         mEditText.setSelection(mEditText.text.length)
+    }
+
+    interface NeedLoginNoticeListener{
+        fun showLoginNotice()
     }
 
 
