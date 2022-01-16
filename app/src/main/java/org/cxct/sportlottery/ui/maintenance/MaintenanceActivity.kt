@@ -32,7 +32,7 @@ class MaintenanceActivity : BaseSocketActivity<MaintenanceViewModel>(Maintenance
             tv_maintenance_time.text = it?.configData?.maintainInfo
             tv_customer_service.text = String.format(
                 getString(R.string.if_there_is_any_question_please_consult),
-                it?.configData?.customerServiceUrl
+                ""
             )
         }
     }

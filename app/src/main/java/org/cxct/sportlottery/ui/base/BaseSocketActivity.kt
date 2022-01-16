@@ -54,9 +54,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         super.onCreate(savedInstanceState)
 
         receiver.sysMaintenance.observe(this, Observer {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+            if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
+                startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
+            }
         })
 
         receiver.serviceConnectStatus.observe(this, Observer { status ->
