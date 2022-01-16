@@ -75,6 +75,7 @@ class AccountHistoryNextAdapter(
 
             withContext(Dispatchers.Main) { //update in main ui thread
                 submitList(items)
+                scrollToTopListener.onClick()
             }
         }
     }
@@ -315,7 +316,18 @@ class AccountHistoryNextAdapter(
                 StatusSheetData(GameType.FT.key, itemView.context.getString(GameType.FT.string)),
                 StatusSheetData(GameType.BK.key, itemView.context.getString(GameType.BK.string)),
                 StatusSheetData(GameType.TN.key, itemView.context.getString(GameType.TN.string)),
-                StatusSheetData(GameType.VB.key, itemView.context.getString(GameType.VB.string))
+                StatusSheetData(GameType.VB.key, itemView.context.getString(GameType.VB.string)),
+                StatusSheetData(GameType.TT.key, itemView.context.getString(GameType.TT.string)),
+                StatusSheetData(GameType.IH.key, itemView.context.getString(GameType.IH.string)),
+                StatusSheetData(GameType.BX.key, itemView.context.getString(GameType.BX.string)),
+                StatusSheetData(GameType.CB.key, itemView.context.getString(GameType.CB.string)),
+                StatusSheetData(GameType.CK.key, itemView.context.getString(GameType.CK.string)),
+                StatusSheetData(GameType.BB.key, itemView.context.getString(GameType.BB.string)),
+                StatusSheetData(GameType.RB.key, itemView.context.getString(GameType.RB.string)),
+                StatusSheetData(GameType.MR.key, itemView.context.getString(GameType.MR.string)),
+                StatusSheetData(GameType.GF.key, itemView.context.getString(GameType.GF.string)),
+                StatusSheetData(GameType.AFT.key, itemView.context.getString(GameType.AFT.string)),
+                StatusSheetData(GameType.BM.key, itemView.context.getString(GameType.BM.string))
             )
         }
         private val dateString by lazy {
