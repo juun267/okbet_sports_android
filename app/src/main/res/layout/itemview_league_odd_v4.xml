@@ -67,7 +67,8 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGray"
                 android:textSize="@dimen/textSize12sp"
-                tools:text="" />
+                android:layout_marginStart="2dp"
+                tools:text="00:43" />
 
             <ImageView
                 android:id="@+id/league_odd_match_remain_time_icon"
