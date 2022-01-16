@@ -1669,31 +1669,31 @@ class GameViewModel(
 
     private fun getSportSelectedCode(matchType: MatchType): String? = when (matchType) {
         MatchType.IN_PLAY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.inPlay?.items?.find { it.isSelected }?.code
         }
         MatchType.TODAY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.today?.items?.find { it.isSelected }?.code
         }
         MatchType.EARLY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.early?.items?.find { it.isSelected }?.code
         }
         MatchType.PARLAY -> {
-            sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.parlay?.items?.find { it.isSelected }?.code
         }
         MatchType.OUTRIGHT -> {
-            sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.outright?.items?.find { it.isSelected }?.code
         }
         MatchType.AT_START -> {
-            sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.atStart?.items?.find { it.isSelected }?.code
         }
         MatchType.EPS -> {
-            sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }!!.code
+            sportMenuResult.value?.sportMenuData?.menu?.eps?.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER -> {
-            specialMenuData!!.items?.find { it.isSelected }!!.code
+            specialMenuData!!.items?.find { it.isSelected }?.code
         }
         MatchType.OTHER_OUTRIGHT -> {
-            specialMenuData!!.items?.find { it.isSelected }!!.code
+            specialMenuData!!.items?.find { it.isSelected }?.code
         }
         else -> {
             null
