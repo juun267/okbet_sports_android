@@ -541,8 +541,8 @@ class WithdrawViewModel(
                     androidContext.getString(R.string.withdraw_handling_fee_hint),
                     ArithUtil.toMoneyFormat(cardConfig?.feeRate?.times(100)),
                     ArithUtil.toMoneyFormat((cardConfig?.feeRate)?.times(withdrawAmount ?: 0.0)),
-                    sConfigData?.systemCurrency
-                )
+
+                ) + sConfigData?.systemCurrency
             }
             TransferType.CRYPTO -> {
                 withdrawCard?.let {
