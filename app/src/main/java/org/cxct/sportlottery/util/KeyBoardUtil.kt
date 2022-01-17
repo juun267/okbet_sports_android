@@ -4,6 +4,7 @@ package org.cxct.sportlottery.util
 import android.inputmethodservice.Keyboard
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener
 import android.text.InputType
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import org.cxct.sportlottery.R
@@ -18,7 +19,7 @@ class KeyBoardUtil(
     private val presetBetAmount: List<Int>,
     private val isLogin: Boolean,
     private val maxBetMoney: Long?,
-    private val needLoginNoticeListener: NeedLoginNoticeListener
+    private val keyBoardViewListener: KeyBoardViewListener
 ) : OnKeyboardActionListener {
 
 
@@ -48,7 +49,7 @@ class KeyBoardUtil(
     private var isShow = false
 
 
-    fun showKeyboard(editText: EditText) {
+    fun showKeyboard(editText: EditText, position: Int?) {
         this.mEditText = editText
 
         //InputType.TYPE_NULL 禁止彈出系統鍵盤
@@ -61,6 +62,8 @@ class KeyBoardUtil(
         parent?.visibility = View.VISIBLE
 
         isShow = true
+
+        keyBoardViewListener.showOrHideKeyBoardBackground(true, position)
     }
 
 
@@ -70,11 +73,14 @@ class KeyBoardUtil(
         if (isShow) mEditText.isFocusable = false
 
         isShow = false
+
+        keyBoardViewListener.showOrHideKeyBoardBackground(false, null)
     }
 
 
     override fun onPress(primaryCode: Int) {}
-    override fun onRelease(primaryCode: Int) {}
+    override fun onRelease(primaryCode: Int) {
+    }
     override fun onText(text: CharSequence?) {}
     override fun swipeLeft() {}
     override fun swipeRight() {}
@@ -106,7 +112,7 @@ class KeyBoardUtil(
                 if(isLogin){
                     plus(maxBetMoney ?: 0)
                 }else{
-                    needLoginNoticeListener.showLoginNotice()
+                    keyBoardViewListener.showLoginNotice()
                 }
             }
 
@@ -134,7 +140,6 @@ class KeyBoardUtil(
         }
     }
 
-
     private fun plus(count: Long) {
         val input = if (mEditText.text.toString() == "") "0" else mEditText.text.toString()
         val tran = if (input.contains(".")) {
@@ -144,8 +149,10 @@ class KeyBoardUtil(
         mEditText.setSelection(mEditText.text.length)
     }
 
-    interface NeedLoginNoticeListener{
+    interface KeyBoardViewListener{
         fun showLoginNotice()
+
+        fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?)
     }
 
 

@@ -16,6 +16,13 @@ import kotlinx.android.synthetic.main.content_bet_info_item.*
 import kotlinx.android.synthetic.main.content_bet_info_item.view.*
 import kotlinx.android.synthetic.main.content_bet_info_item_quota_detail.*
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.*
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.button_bet
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.button_fast_bet_setting
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.kv_keyboard
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_add_to_bet_info
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_current_money
+import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_odd_content_changed
+import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import kotlinx.android.synthetic.main.view_bet_info_close_message.*
@@ -113,9 +120,13 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             sConfigData?.presetBetAmount ?: mutableListOf(),
             isLogin ?: false,
             GameConfigManager.maxBetMoney?.toLong(),
-            object : KeyBoardUtil.NeedLoginNoticeListener {
+            object : KeyBoardUtil.KeyBoardViewListener {
                 override fun showLoginNotice() {
                     setSnackBarNotify(isLogin = false)
+                }
+
+                override fun showOrHideKeyBoardBackground(isShow: Boolean, position: Int?) {
+                    ll_keyboard_bg.visibility = if(isShow) View.VISIBLE else View.GONE
                 }
             }
         )
@@ -168,7 +179,10 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
     private fun initKeyBoard() {
         et_bet.setOnTouchListener { view, event ->
             if (event.action == MotionEvent.ACTION_UP) {
-                if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(view as EditText)
+                if (matchOdd?.status == BetStatus.ACTIVATED.code) keyboard.showKeyboard(
+                    view as EditText,
+                    null
+                )
             }
             false
         }
@@ -176,6 +190,8 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
 
 
     private fun initBetButton() {
+        ll_root.setOnClickListener {  }
+
         button_bet.apply {
             tv_login.setOnClickListener {
                 requireContext().startActivity(Intent(requireContext(), LoginActivity::class.java))
@@ -217,12 +233,16 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 isFocusable = true
                 setSelection(text.length)
             }
-            keyboard.showKeyboard(et_bet)
+            keyboard.showKeyboard(et_bet, null)
         }
     }
 
 
     private fun initEditText() {
+        et_bet.apply {
+            filters = arrayOf(MoneyInputFilter())
+        }
+
         et_bet.afterTextChanged {
             button_bet.tv_quota.text =
                 TextUtil.formatMoney(if (it.isEmpty()) 0.0 else (it.toDoubleOrNull() ?: 0.0))
@@ -717,5 +737,6 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         }
         snackBarNotify?.show()
     }
+
 
 }

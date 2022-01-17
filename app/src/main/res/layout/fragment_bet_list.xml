@@ -161,15 +161,50 @@
                 android:layout_below="@+id/fl_title"
                 android:background="@color/colorGrayGallery" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_bet_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_above="@+id/ll_cant_parlay_warn"
                 android:layout_below="@+id/gray_view"
-                android:overScrollMode="never"
-                tools:itemCount="2"
-                tools:listitem="@layout/content_bet_info_item" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_bet_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:overScrollMode="never"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/content_bet_info_item"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@+id/ll_keyboard_bg"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_keyboard_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@color/colorWhite"
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    android:visibility="gone">
+
+                    <org.cxct.sportlottery.ui.common.CustomKeyBoardView
+                        android:id="@+id/kv_keyboard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:background="@color/colorWhite"
+                        android:keyBackground="@drawable/bg_frame_6dp_white"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_no_data"
@@ -417,20 +452,6 @@
                     android:textSize="@dimen/textSize12sp" />
             </LinearLayout>
 
-            <org.cxct.sportlottery.ui.common.CustomKeyBoardView
-                android:id="@+id/kv_keyboard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/ll_bet"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="6dp"
-                android:background="@color/colorWhite"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:keyBackground="@drawable/bg_frame_6dp_white"
-                android:paddingBottom="6dp"
-                android:visibility="gone"
-                tools:visibility="visible" />
         </RelativeLayout>
 
     </LinearLayout>

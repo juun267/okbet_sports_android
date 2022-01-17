@@ -54,7 +54,6 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
         }
     }
 
-
     private fun setDrawable(canvas: Canvas, key: Keyboard.Key, res: Int) {
         val drawable = ContextCompat.getDrawable(context, res)
         drawable?.setBounds(key.x, key.y, key.x + key.width, key.y + key.height)
