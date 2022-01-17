@@ -2,7 +2,6 @@ package org.cxct.sportlottery.ui.game.hall
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,7 +20,6 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_eps.*
 import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.fragment_game_v3.view.*
-import kotlinx.android.synthetic.main.itemview_league_v4.view.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.*
 import kotlinx.android.synthetic.main.view_game_tab_odd_v4.view.*
 import kotlinx.android.synthetic.main.view_game_toolbar_v4.*
@@ -34,7 +32,6 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.odds.eps.EpsLeagueOddsItem
 import org.cxct.sportlottery.network.odds.list.LeagueOdd
-import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.outright.season.Season
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
 import org.cxct.sportlottery.network.sport.Item
@@ -188,7 +185,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 },
-                { matchInfo, odd, playCateCode, playCateName ,betPlayCateNameMap ->
+                { matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap ->
                     addOddsDialog(matchInfo, odd, playCateCode, playCateName, betPlayCateNameMap)
                 },
                 { matchId ->
@@ -224,7 +221,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             {
                 subscribeChannelHall(it)
             },
-            { odd, betMatchInfo ,betPlayCateNameMap ->
+            { odd, betMatchInfo, betPlayCateNameMap ->
                 addOddsDialog(
                     betMatchInfo,
                     odd,
@@ -474,41 +471,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 SpaceItemDecoration(context, R.dimen.item_spacing_league)
             )
             setHasFixedSize(true)
-            //setItemViewCacheSize(10)
         }
-
-//        view.sv_game.setOnScrollChangeListener { _, _, _, _, _ ->
-//            Rect().apply {
-//                view.sv_game.getHitRect(this)
-//                view.game_list.adapter?.let {
-//                    if (leagueAdapter.data.isNotEmpty()) {
-//                        for (i in 0 until leagueAdapter.data.size) {
-//                            val vLeagueItem = view.game_list.findViewHolderForAdapterPosition(i)
-//                            val leagueOddAdapter =
-//                                (vLeagueItem as LeagueAdapter.ItemViewHolder).leagueOddAdapter
-//                            val rvLeague = vLeagueItem.itemView.league_odd_list
-//
-//                            if (leagueOddAdapter.data.isNotEmpty()) {
-//                                for (j in leagueOddAdapter.data.indices) {
-//                                    val vMatchOddItem = rvLeague.getChildAt(j)
-//                                    if (vMatchOddItem.getLocalVisibleRect(this)) {
-//                                        subscribeChannelHallSingleMatchOdds(
-//                                            leagueAdapter.data[i],
-//                                            leagueOddAdapter.data[j]
-//                                        )
-//                                    } else {
-//                                        unSubscribeChannelHallSingleMatchOdds(
-//                                            leagueAdapter.data[i],
-//                                            leagueOddAdapter.data[j]
-//                                        )
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -636,6 +599,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 is EpsListAdapter -> {
                     epsListAdapter.discount = userInfo?.discount ?: 1.0F
+                    Log.e(">>>", "notifyDataSetChanged() discount")
                 }
             }
         }
@@ -750,8 +714,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         MatchType.OTHER -> {
                             viewModel.specialMenuData?.items?.forEach { it ->
                                 val item = Item(
-                                    code = it.code ?:"",
-                                    name = it.name?: "",
+                                    code = it.code ?: "",
+                                    name = it.name ?: "",
                                     num = it.num ?: 0,
                                     play = null,
                                     sortNum = it.sortNum ?: 0,
@@ -808,8 +772,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val newLeagueOddsItem =
                             EpsLeagueOddsItem(
                                 date = oddsEpsListData.date,
-                                league = null,
-                                matchOdds = null
+                                leagueOdds = null,
                             )
                         epsLeagueOddsItemList.add(newLeagueOddsItem)
 
@@ -817,8 +780,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                             epsLeagueOddsItemList.add(
                                 EpsLeagueOddsItem(
                                     date = 0,
-                                    league = leagueOdds?.league,
-                                    matchOdds = leagueOdds?.matchOdds
+                                    leagueOdds = leagueOdds
                                 ).apply {
                                     isClose = !(indexDate == 0 && indexLeague == 0)
                                 }
@@ -923,7 +885,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val epsOdds = epsListAdapter.dataList
 
                 epsOdds.forEach { epsLeagueOddsItem ->
-                    epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                    epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                         matchOddsItem.oddsEps?.eps?.forEach { odd ->
                             odd?.isSelected = it.any { betInfoListData ->
                                 betInfoListData.matchOdd.oddsId == odd?.id
@@ -1049,6 +1011,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             leagueListPin.indexOf(it.id)
         }
     }
+
     private fun initSocketObserver() {
         receiver.matchStatusChange.observe(this.viewLifecycleOwner) {
             it?.let { matchStatusChangeEvent ->
@@ -1127,7 +1090,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val epsOdds = epsListAdapter.dataList
 
                         epsOdds.forEachIndexed { index, leagueOdd ->
-                            if (leagueOdd.matchOdds?.any { matchOdd ->
+                            if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateMatchOdds(
                                         context, matchOdd, oddsChangeEvent
                                     )
@@ -1162,7 +1125,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val epsOdds = epsListAdapter.dataList
 
                         epsOdds.forEachIndexed { index, leagueOdd ->
-                            if (leagueOdd.matchOdds?.any { matchOdd ->
+                            if (leagueOdd.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(matchOdd, matchOddsLockEvent)
                                 } == true && !leagueOdd.isClose) {
                                 epsListAdapter.notifyItemChanged(index)
@@ -1199,7 +1162,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         val epsOdds = epsListAdapter.dataList
 
                         epsOdds.forEachIndexed { index, epsLeagueOddsItem ->
-                            if (epsLeagueOddsItem.matchOdds?.any { matchOdd ->
+                            if (epsLeagueOddsItem.leagueOdds?.matchOdds?.any { matchOdd ->
                                     SocketUpdateUtil.updateOddStatus(
                                         matchOdd,
                                         globalStopEvent
@@ -1247,7 +1210,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 val nowGameType =
                     GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
                 //判斷當前的 leagueIdList 是不是在 當前頁面
-                val hasLeagueIdList = leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
+                val hasLeagueIdList =
+                    leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
 
                 when {
                     //GameType 相同 和 leagueIdList 是當前頁面有的
@@ -1852,7 +1816,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         val gameType =
             GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)
 
-        epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+        epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
             when (epsLeagueOddsItem.isClose) {
                 true -> {
                     unSubscribeChannelHall(

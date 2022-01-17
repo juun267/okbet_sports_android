@@ -5,13 +5,9 @@ import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.Odd
-import org.cxct.sportlottery.network.odds.eps.Odds
+import org.cxct.sportlottery.network.odds.eps.EpsOdd
 import org.cxct.sportlottery.ui.game.betList.INPLAY
-import org.cxct.sportlottery.util.MatchOddUtil.convertToMYOdds
-import org.cxct.sportlottery.util.MatchOddUtil.updateDiscount
-import org.cxct.sportlottery.util.MatchOddUtil.updateOddsDiscount
 import java.math.RoundingMode
-import java.text.DecimalFormat
 
 object MatchOddUtil {
     fun transfer(
@@ -71,7 +67,7 @@ object MatchOddUtil {
         }
     }
 
-    fun Odds.updateEpsDiscount(discount: Float, newDiscount: Float) {
+    fun EpsOdd.updateEpsDiscount(discount: Float, newDiscount: Float) {
         this.eps?.forEach { odd ->
             odd?.updateEPSDiscount(discount, newDiscount)
         }

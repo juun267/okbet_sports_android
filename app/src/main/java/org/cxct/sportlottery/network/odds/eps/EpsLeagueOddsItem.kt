@@ -8,10 +8,8 @@ import org.cxct.sportlottery.network.odds.League
 data class EpsLeagueOddsItem(
     @Json(name = "date")
     var date: Long = 0,
-    @Json(name = "league")
-    val league: League?,
-    @Json(name = "matchOdds")
-    val matchOdds: List<MatchOddsItem>?
+    @Json(name = "leagueOdds")
+    val leagueOdds: LeagueOdds?
 ){
     var isClose = true
 }

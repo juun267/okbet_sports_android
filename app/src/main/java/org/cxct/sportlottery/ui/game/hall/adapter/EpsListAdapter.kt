@@ -33,7 +33,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
     var discount: Float = 1.0F
         set(value) {
             dataList.forEach { epsLeagueOddsItem ->
-                epsLeagueOddsItem.matchOdds?.forEach { matchOddsItem ->
+                epsLeagueOddsItem.leagueOdds?.matchOdds?.forEach { matchOddsItem ->
                     matchOddsItem.oddsEps?.updateEpsDiscount(field, value)
                 }
             }
@@ -97,11 +97,11 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                     epsOddListener.clickListenerLeague(item)
                 }
 
-                item.league?.name?.let {
+                item.leagueOdds?.league?.name?.let {
                     tv_league_title.text = it
                 }
 
-                item.league?.categoryIcon?.let { iconSvg ->
+                item.leagueOdds?.league?.categoryIcon?.let { iconSvg ->
                     if (iconSvg.isNotEmpty()){
                         val countryIcon = SvgUtil.getSvgDrawable(context, iconSvg)
                         iv_country.setImageDrawable(countryIcon)
@@ -118,7 +118,7 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
 
             itemView.rv_league_odd_list.apply {
                 adapter = epsListV2Adapter.apply {
-                    dataList = filterEpsOddsList(item.matchOdds)
+                    dataList = filterEpsOddsList(item.leagueOdds?.matchOdds)
                     oddsType = mOddsType
                 }
             }
@@ -136,12 +136,12 @@ class EpsListAdapter(private val epsOddListener: EpsOddListener): RecyclerView.A
                     )
                 )
 
-                it.oddsEps?.eps?.forEach { EPSItem ->
+                it.oddsEps?.eps?.forEach { epsItem ->
                     epsOddsList.add(
                         EpsOdds(
                             betPlayCateNameMap = it.betPlayCateNameMap,
                             matchInfo = it.matchInfo,
-                            epsItem = EPSItem,
+                            epsItem = epsItem,
                             isTitle = false
                         )
                     )
