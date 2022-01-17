@@ -1,7 +1,6 @@
 package org.cxct.sportlottery.util
 
 import android.content.Context
-import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.enum.OddState

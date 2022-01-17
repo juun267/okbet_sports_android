@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 import org.cxct.sportlottery.network.odds.Odd
 
 @JsonClass(generateAdapter = true)
-data class Odds(
+data class EpsOdd(
     @Json(name = "EPS")
     val eps: List<Odd?>?
 )
