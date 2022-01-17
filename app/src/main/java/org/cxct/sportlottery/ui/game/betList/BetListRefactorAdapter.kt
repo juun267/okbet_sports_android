@@ -5,6 +5,7 @@ import android.content.Context
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -917,7 +918,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     }
                     else -> {
-                        win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsType))
                     }
                 }
 

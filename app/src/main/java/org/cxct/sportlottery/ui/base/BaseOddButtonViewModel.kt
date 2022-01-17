@@ -274,6 +274,8 @@ abstract class BaseOddButtonViewModel(
                                 name = null,
                                 odds = odd.odds,
                                 hkOdds = odd.hkOdds,
+                                malayOdds = odd.malayOdds,
+                                indoOdds = odd.indoOdds,
                                 producerId = odd.producerId,
                                 spread = odd.spread,
                                 status = odd.status,
@@ -691,6 +693,8 @@ abstract class BaseOddButtonViewModel(
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             newItem.odds.let { odds -> oldItem.odds = odds ?: 0.0 }
                             newItem.hkOdds.let { hkOdds -> oldItem.hkOdds = hkOdds ?: 0.0 }
+                            newItem.indoOdds.let { indoOdds -> oldItem.indoOdds = indoOdds ?: 0.0 }
+                            newItem.malayOdds.let { malayOdds -> oldItem.malayOdds = malayOdds ?: 0.0 }
                             newItem.spread.let { spread -> oldItem.spread = spread ?: "" }
                         }
 
