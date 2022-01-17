@@ -599,7 +599,6 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
                 is EpsListAdapter -> {
                     epsListAdapter.discount = userInfo?.discount ?: 1.0F
-                    Log.e(">>>", "notifyDataSetChanged() discount")
                 }
             }
         }
