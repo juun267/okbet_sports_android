@@ -71,9 +71,12 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"
-                else -> getBaseUrl()+"sports-rule/#/us/responsibility"
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility"+context.getString(
+                    R.string.app_name)
             }
 
         } catch (e: UnsupportedEncodingException) {
