@@ -37,7 +37,7 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.content_news_tab_rv, parent, false)
-        view.minimumWidth = parent.measuredWidth / 3 //三等分
+        view.minimumWidth = parent.measuredWidth //2022/1/17 新的公告UI調整
         return ViewHolder(view)
     }
 
