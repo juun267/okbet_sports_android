@@ -244,8 +244,10 @@ class LeagueOddAdapter(private val matchType: MatchType, private var itemData: L
             setupMatchTime(item, matchType, isTimerEnable, isTimerPause, leagueOddListener)
 
             setupOddsButton(item, oddsType, leagueOddListener)
-            setupQuickCategory(item, oddsType, leagueOddListener)
-            itemView.setHasTransientState(true)
+            if(!itemView.hasTransientState()){
+                setupQuickCategory(item, oddsType, leagueOddListener)
+                itemView.setHasTransientState(true)
+            }
         }
 
         private fun setUpVisibility(item: MatchOdd, matchType: MatchType) {

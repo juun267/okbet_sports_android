@@ -857,16 +857,41 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         //KK要求，當球類沒有資料時，自動選取第一個有賽事的球種
         viewModel.isNoHistory.observe(this.viewLifecycleOwner) {
-            if (it) {
-                unSubscribeChannelHallAll()
-                hideLoading()
-                viewModel.switchMatchType(args.matchType)
+
+            //判斷當前MatchType是否有玩法數量
+            val hasGame = when (args.matchType) {
+                MatchType.IN_PLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.inPlay?.num ?: 0 > 0
+                MatchType.AT_START -> viewModel.sportMenuResult.value?.sportMenuData?.atStart?.num ?: 0 > 0
+                MatchType.TODAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.today?.num ?: 0 > 0
+                MatchType.EARLY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.early?.num ?: 0 > 0
+                MatchType.PARLAY -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.parlay?.num ?: 0 > 0
+                MatchType.OUTRIGHT -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.outright?.num ?: 0 > 0
+                MatchType.EPS -> viewModel.sportMenuResult.value?.sportMenuData?.menu?.eps?.num ?: 0 > 0
+                else -> false
             }
-            game_no_record.apply {
-                setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
-                View.GONE
+
+            hideLoading()
+            when {
+                //當前MatchType有玩法數量，只是目前的球種沒有
+                it && hasGame -> {
+                    unSubscribeChannelHallAll()
+                    viewModel.switchMatchType(args.matchType)
+                    game_no_record.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        View.GONE
+                    }
+                    game_no_record_bg.isVisible = false
+                }
+                it && !hasGame -> {
+                    game_no_record.apply {
+                        setBackgroundColor(ContextCompat.getColor(context, R.color.colorWhite))
+                        isVisible = true
+                    }
+                    game_no_record_bg.apply {
+                        isVisible = true
+                    }
+                }
             }
-            game_no_record_bg.isVisible = false
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
@@ -1209,7 +1234,12 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 }
             }
         }
-
+        //TODo Bill 禮拜一詳細測試
+        /**
+         *  比對 GameType 相同 和 leagueIdList 是當前頁面有的 -> viewModel.refreshGame(args.matchType,listOf(it.league.id),listOf())
+         *  如果是 GameType不同 但是 leagueIdList是目前沒有的(代表可能有新的聯賽進來) -> getSportMenu(args.matchType)更新 sport Menu + switchSportType(args.matchType, it)
+         *  如果 GameType 是非當前頁面的 就取 -> getSportMenu(args.matchType)更新sport Menu
+         * */
         receiver.leagueChange.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { leagueChangeEvent ->
                 //收到事件之后, 重新调用/api/front/sport/query用以加载上方球类选单
@@ -1217,8 +1247,34 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 //收到的gameType与用户当前页面所选球种相同, 则需额外调用/match/odds/simple/list & /match/odds/eps/list
                 val nowGameType =
                     GameType.getGameType(gameTypeAdapter.dataSport.find { item -> item.isSelected }?.code)?.key
+                //判斷當前的 leagueIdList 是不是在 當前頁面
+                val hasLeagueIdList = leagueAdapter.data.filter { leagueOdd -> leagueOdd.league.id == leagueChangeEvent.leagueIdList?.firstOrNull() }
+
+                when {
+                    //GameType 相同 和 leagueIdList 是當前頁面有的
+                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNotEmpty() -> {
+                        viewModel.refreshGame(
+                            args.matchType,
+                            leagueChangeEvent.leagueIdList,
+                            listOf()
+                        )
+                    }
+                    nowGameType == leagueChangeEvent.gameType && hasLeagueIdList.isNullOrEmpty() -> {
+                        unSubscribeChannelHallAll()
+                        viewModel.getSportMenu(args.matchType)
+                        viewModel.switchSportType(args.matchType, nowGameType ?: "FT")
+                    }
+                    nowGameType != leagueChangeEvent.gameType -> {
+                        viewModel.getSportMenu(args.matchType)
+                    }
+                    else -> {
+                        viewModel.getSportMenu(args.matchType)
+                    }
+                }
+
+
                 if (nowGameType == leagueChangeEvent.gameType) {
-                    viewModel.refreshGame(args.matchType)
+//                    viewModel.refreshGame(args.matchType)
                     when (game_list.adapter) {
                         is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
                             leagueChangeEvent.leagueIdList?.let { leagueIdList ->
@@ -1232,6 +1288,8 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         }
                     }
                 }
+
+
             }
         }
     }

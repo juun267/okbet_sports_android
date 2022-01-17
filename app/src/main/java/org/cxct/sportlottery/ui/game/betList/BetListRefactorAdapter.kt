@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -968,7 +969,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     }
                     else -> {
-                        win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsType))
                     }
                 }
 
@@ -1203,9 +1204,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 checkMinimumLimit(data, quota)
                                 //比照以往計算
                                 var win = quota * getOdds(data, oddsType)
-                                //if (oddsType == OddsType.EU) {
-                                win -= (quota * data.num)
-                                //}
+                                win -= (quota * (data.num-1))
                                 itemView.tv_win_quota.text = TextUtil.format(win)
                             }
 

@@ -281,7 +281,10 @@ class GameViewModel(
     val sportMenuList: LiveData<Event<List<SportMenu>>>
         get() = _sportMenuList
 
-    //    private var sportMenuList: List<SportMenu>? = null
+    private val _sportSortList = MutableLiveData<Event<List<SportMenu>>>()
+    val sportSortList: LiveData<Event<List<SportMenu>>>
+        get() = _sportSortList
+
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
 
@@ -420,7 +423,8 @@ class GameViewModel(
                                 )
                             }
                     }
-                _sportMenuList.postValue(Event(sportCardList))
+                _sportSortList.postValue(Event(sportCardList))
+                getSportMenu()
             }
         }
     }
@@ -430,7 +434,7 @@ class GameViewModel(
         getSportMenu(null)
     }
 
-    private fun getSportMenu(matchType: MatchType?) {
+    fun getSportMenu(matchType: MatchType?) {
         _isLoading.value = true
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -543,8 +547,7 @@ class GameViewModel(
             )
         )
 
-
-        _sportMenuList.value?.peekContent()?.let { list ->
+        _sportSortList.value?.peekContent()?.let { list ->
             list.forEach { sportMenu ->
                 sportMenu.apply {
                     gameCount =
@@ -781,6 +784,33 @@ class GameViewModel(
         if (matchType == MatchType.OTHER) {
             getLeagueList(
                 item.code,
+                currentSpecialCode,
+                getCurrentTimeRangeParams(),
+                isIncrement = false
+            )
+            //getGameHallList(matchType, true, isReloadPlayCate = true)
+
+        } else {
+            getGameHallList(matchType, true, isReloadPlayCate = true)
+        }
+        getMatchCategoryQuery(matchType)
+        filterLeague(listOf())
+    }
+
+    fun switchSportType(matchType: MatchType, gameType: String) {
+        if (matchType == MatchType.OTHER) {
+            specialMenuData?.updateSportSelectState(gameType)
+        } else {
+            _sportMenuResult.value?.updateSportSelectState(matchType, gameType)
+        }
+        _curChildMatchType.value = null
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
+        recordSportType(matchType, gameType)
+        if (matchType == MatchType.OTHER) {
+            getLeagueList(
+                gameType,
                 currentSpecialCode,
                 getCurrentTimeRangeParams(),
                 isIncrement = false
