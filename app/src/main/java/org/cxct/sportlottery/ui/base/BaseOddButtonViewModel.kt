@@ -141,6 +141,7 @@ abstract class BaseOddButtonViewModel(
         if (odd.odds == odd.malayOdds) {
             currentOddsType = OddsType.EU
         }
+
         if (betItem == null) {
             matchInfo.let {
                 betInfoRepository.addInBetInfo(
@@ -154,7 +155,7 @@ abstract class BaseOddButtonViewModel(
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
                     playCateMenuCode = playCateMenuCode,
-                    oddsType = loginRepository.mOddsType.value,
+                    oddsType = currentOddsType,
                     betPlayCateNameMap = betPlayCateNameMap
                 )
             }
@@ -202,7 +203,7 @@ abstract class BaseOddButtonViewModel(
                     matchInfo = it,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
-                    oddsType = loginRepository.mOddsType.value,
+                    oddsType = currentOddsType,
                     betPlayCateNameMap = matchOdd.betPlayCateNameMap
                 )
             }
@@ -596,7 +597,7 @@ abstract class BaseOddButtonViewModel(
         }
 
         this.quickPlayCateList?.forEach { quickPlayCate ->
-            quickPlayCate.quickOdds?.forEach {
+            quickPlayCate.quickOdds.forEach {
                 it.value?.filterNotNull()?.forEach { odd ->
                     it.value?.let { oddList ->
                         odd.status = when {
