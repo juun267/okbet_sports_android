@@ -281,7 +281,10 @@ class GameViewModel(
     val sportMenuList: LiveData<Event<List<SportMenu>>>
         get() = _sportMenuList
 
-    //    private var sportMenuList: List<SportMenu>? = null
+    private val _sportSortList = MutableLiveData<Event<List<SportMenu>>>()
+    val sportSortList: LiveData<Event<List<SportMenu>>>
+        get() = _sportSortList
+
     var sportQueryData: SportQueryData? = null
     var specialMenuData: SportQueryData? = null
 
@@ -420,7 +423,8 @@ class GameViewModel(
                                 )
                             }
                     }
-                _sportMenuList.postValue(Event(sportCardList))
+                _sportSortList.postValue(Event(sportCardList))
+                getSportMenu()
             }
         }
     }
@@ -543,8 +547,7 @@ class GameViewModel(
             )
         )
 
-
-        _sportMenuList.value?.peekContent()?.let { list ->
+        _sportSortList.value?.peekContent()?.let { list ->
             list.forEach { sportMenu ->
                 sportMenu.apply {
                     gameCount =

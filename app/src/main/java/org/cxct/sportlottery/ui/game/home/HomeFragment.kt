@@ -580,6 +580,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         viewModel.sportMenuList.observe(viewLifecycleOwner) {
+            hideLoading()
             it.peekContent().let { list ->
                 if (block_game.size != list.size) {
                     block_game.removeAllViews()
