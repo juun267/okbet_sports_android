@@ -430,7 +430,7 @@ class GameViewModel(
         getSportMenu(null)
     }
 
-    private fun getSportMenu(matchType: MatchType?) {
+    fun getSportMenu(matchType: MatchType?) {
         _isLoading.value = true
         viewModelScope.launch {
             val result = doNetwork(androidContext) {
@@ -781,6 +781,33 @@ class GameViewModel(
         if (matchType == MatchType.OTHER) {
             getLeagueList(
                 item.code,
+                currentSpecialCode,
+                getCurrentTimeRangeParams(),
+                isIncrement = false
+            )
+            //getGameHallList(matchType, true, isReloadPlayCate = true)
+
+        } else {
+            getGameHallList(matchType, true, isReloadPlayCate = true)
+        }
+        getMatchCategoryQuery(matchType)
+        filterLeague(listOf())
+    }
+
+    fun switchSportType(matchType: MatchType, gameType: String) {
+        if (matchType == MatchType.OTHER) {
+            specialMenuData?.updateSportSelectState(gameType)
+        } else {
+            _sportMenuResult.value?.updateSportSelectState(matchType, gameType)
+        }
+        _curChildMatchType.value = null
+        _oddsListGameHallResult.value = Event(null)
+        _oddsListResult.value = Event(null)
+
+        recordSportType(matchType, gameType)
+        if (matchType == MatchType.OTHER) {
+            getLeagueList(
+                gameType,
                 currentSpecialCode,
                 getCurrentTimeRangeParams(),
                 isIncrement = false

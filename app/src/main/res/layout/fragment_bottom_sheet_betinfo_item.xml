@@ -35,10 +35,10 @@
             android:id="@+id/tv_current_money"
             android:layout_width="match_parent"
             android:layout_height="24dp"
-            android:background="@color/colorBlackLight"
+            android:background="@color/colorWhite"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/activity_horizontal_margin"
-            android:textColor="@color/colorWhite6"
+            android:textColor="@color/colorBlackLight"
             android:textSize="@dimen/textSize12sp"
             tools:text="9,875,241.000 RMB" />
 
