@@ -12,6 +12,7 @@ import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.TextUtil
 import org.cxct.sportlottery.util.TimeUtil
+import org.cxct.sportlottery.util.setMoneyFormat
 
 class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.ItemViewHolder>() {
 
@@ -39,21 +40,21 @@ class CommissionDetailAdapter: RecyclerView.Adapter<CommissionDetailAdapter.Item
             val zero = 0.0
             viewHolder.run {
                 tvId.text = data.orderNo
-                tvDeductMoney.text = TextUtil.formatCommissionMoney(zero.minus(data.deductMoney ?: 0))
+                tvDeductMoney.setMoneyFormat(zero.minus(data.deductMoney ?: 0))
                 tvTime.text = TimeUtil.stampToDateHMS(data.addTime?.toLong() ?: 0)
 
                 tvRequiredValidBetsMoney.apply {
-                    text = TextUtil.formatCommissionMoney(data.validCheckAmount?.toLong()?.toDouble() ?: 0)
+                    setMoneyFormat(data.validCheckAmount?.toLong()?.toDouble() ?: 0.0)
                     setTextColor(ContextCompat.getColor(context, if(data.validCheckAmount ?: 0.0 < 0.0) R.color.colorRed else R.color.colorBlackLight))
                 }
 
                 tvSuccessedBetsMoney.apply {
-                    text = TextUtil.formatCommissionMoney(data.finishValidAmount?.toLong()?.toDouble() ?: 0)
+                    setMoneyFormat(data.finishValidAmount?.toLong()?.toDouble() ?: 0.0)
                     setTextColor(ContextCompat.getColor(context, if(data.finishValidAmount ?: 0.0 < 0.0) R.color.colorRed else R.color.colorBlackLight))
                 }
 
                 tvDeductMoney.apply {
-                    text = TextUtil.formatCommissionMoney(zero.minus(data.deductMoney ?: 0))
+                    setMoneyFormat(zero.minus(data.deductMoney ?: 0))
                     setTextColor(ContextCompat.getColor(context, if(zero.minus(data.deductMoney ?: 0) < 0.0) R.color.colorRed else R.color.colorBlackLight))
                 }
 
