@@ -34,16 +34,17 @@ class OddButtonPagerAdapter(
     RecyclerView.Adapter<OddButtonPagerViewHolder>() {
     var odds: Map<String, List<Odd?>?> = mapOf()
         set(value) {
-            field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay().filterPlayCateSpanned().sortPlayCate()
+            field = value.refactorPlayCode().sortOdds().splitPlayCate().reorganizePlay()
+                .filterPlayCateSpanned().sortPlayCate()
             val gameList =
-                field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.get(0) != null }
+                field.filterValues { !it.isNullOrEmpty() }.filter { it.value?.getOrNull(0) != null }
                     .plus(field.filterValues { !it.isNullOrEmpty() }
-                        .filter { it.value?.get(0) == null }).map { it.key }.run {
+                        .filter { it.value?.getOrNull(0) == null }).map { it.key }.run {
                         val gameListFilter: MutableList<String>
-                        if (this.size > 8) {
-                            gameListFilter = this.take(8) as MutableList<String> //只取前面8比資料
+                        if (this.size > sizeCount(matchInfo?.gameType)) {
+                            gameListFilter = this.take(sizeCount(matchInfo?.gameType)) as MutableList<String> //只取前面8比資料
                         } else {
-                            val count = 8 - this.size
+                            val count = if (sizeCount(matchInfo?.gameType) > this.size) sizeCount(matchInfo?.gameType) - this.size else 0
                             gameListFilter = this.take(this.size + 1).toMutableList()
                             for (i in 1..count) {
                                 gameListFilter.add("EmptyData${i}")
@@ -65,6 +66,24 @@ class OddButtonPagerAdapter(
                 }
             }
         }
+
+    val sizeCount = { gameType: String? ->
+         when (gameType) {
+            GameType.BM.key -> 4
+            GameType.TT.key -> 4
+            GameType.IH.key -> 4
+            GameType.BX.key -> 2
+            GameType.CB.key -> 6
+            GameType.CK.key -> 4
+            GameType.RB.key -> 4
+            GameType.AFT.key -> 6
+            GameType.BK.key -> 8
+            GameType.VB.key -> 4
+            GameType.FT.key -> 8
+            GameType.TN.key -> 6
+            else -> 8
+        }
+    }
 
     var oddsType: OddsType = OddsType.EU
         set(value) {
@@ -179,27 +198,28 @@ class OddButtonPagerAdapter(
 
         var splitMap = mutableMapOf<String, List<Odd?>?>()
 
-        when(matchInfo?.gameType){
+        when (matchInfo?.gameType) {
             GameType.FT.key -> {
                 splitMap = this.toMutableMap()
                 splitMap.forEach { oddsMap ->
-                    if(oddsMap.key.contains("${PlayCate.NGOAL.value}:")){
+                    if (oddsMap.key.contains("${PlayCate.NGOAL.value}:")) {
                         splitMap[oddsMap.key]?.forEach {
-                            it?.nextScore = oddsMap.key.split("${PlayCate.NGOAL.value }:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
+                            it?.nextScore =
+                                oddsMap.key.split("${PlayCate.NGOAL.value}:")[1] //nextScore 下個進球的分數會放在Key值的冒號後面
                         }
                     }
                 }
             }
             else -> return this
         }
-        
+
         return splitMap
     }
 
     /**
      * 有些playCateCode後面會給： 要特別做處理
      * */
-    private fun Map<String, List<Odd?>?>.refactorPlayCode(): Map<String, List<Odd?>?>  {
+    private fun Map<String, List<Odd?>?>.refactorPlayCode(): Map<String, List<Odd?>?> {
         return try {
             var oddsMap = mutableMapOf<String, List<Odd?>?>()
             val rgzMap = this.filter { (key, value) -> key.contains(":") }
@@ -367,7 +387,7 @@ class OddButtonPagerViewHolder private constructor(
         oddButtonListener: OddButtonListener?
     ) {
         if (matchInfo == null ||
-            betPlayCateNameMap.isNullOrEmpty() || playCateNameMap.isNullOrEmpty()  ||
+            betPlayCateNameMap.isNullOrEmpty() || playCateNameMap.isNullOrEmpty() ||
             odds == null || odds.first == null || odds.second.isNullOrEmpty()
         ) {
             oddBtnType.visibility = View.INVISIBLE
@@ -377,7 +397,9 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-        if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString().contains("EmptyData")) {
+        if (matchInfo.status == null || matchInfo.status == 2 || odds.first.toString()
+                .contains("EmptyData")
+        ) {
             oddBtnType.text = "-"
             oddBtnHome.betStatus = BetStatus.DEACTIVATED.code
             oddBtnAway.betStatus = BetStatus.DEACTIVATED.code
@@ -385,251 +407,259 @@ class OddButtonPagerViewHolder private constructor(
             return
         }
 
-        val playCateName = playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
-        val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context)).replace(": "," ").replace("||","\n")
+        val playCateName =
+            playCateNameMap[odds.first].getPlayCateName(LanguageManager.getSelectLanguage(itemView.context))
+                .replace(": ", " ").replace("||", "\n")
+        val betPlayCateName = betPlayCateNameMap[odds.first].getPlayCateName(
+            LanguageManager.getSelectLanguage(itemView.context)
+        ).replace(": ", " ").replace("||", "\n")
 
-            val playCateCode = odds.first ?: ""
+        val playCateCode = odds.first ?: ""
 
-            oddBtnType.text = when {
-                (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
-                    ?: true) -> itemView.resources.getString(R.string.unknown_data)
+        oddBtnType.text = when {
+            (odds.second?.all { odd -> odd == null || odd.status == BetStatus.DEACTIVATED.code }
+                ?: true) -> itemView.resources.getString(R.string.unknown_data)
 
-                else -> playCateName.updatePlayCateColor()
-            }
+            else -> playCateName.updatePlayCateColor()
+        }
 
-            oddBtnHome.apply homeButtonSettings@{
-                when {
-                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
-                        betStatus = BetStatus.DEACTIVATED.code
-                        return@homeButtonSettings
-                    }
-                    (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds ?: 0.0 <= 0.0) -> {
-                        betStatus = BetStatus.LOCKED.code
-                        return@homeButtonSettings
-                    }
-                    else -> {
-                        betStatus = odds.second?.getOrNull(0)?.status
-                    }
+        oddBtnHome.apply homeButtonSettings@{
+            when {
+                (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
+                    betStatus = BetStatus.DEACTIVATED.code
+                    return@homeButtonSettings
                 }
-
-                tv_name.apply {
-                    visibility = when {
-                        playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
-                        else -> {
-                            when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                                true -> View.INVISIBLE
-                                false -> View.GONE
-                            }
-                        }
-                    }
-
-                    text = when {
-                        playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                            (odds.second?.getOrNull(0)?.nameMap?.get(
-                                LanguageManager.getSelectLanguage(
-                                    context
-                                ).key
-                            ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
-                        }
-                        playCateCode.isNOGALType() -> {
-                            "第" + odds.second?.getOrNull(0)?.nextScore.toString()
-                        }
-                        else -> ""
-                    }
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(0)?.odds ?: 0.0 <= 0.0) -> {
+                    betStatus = BetStatus.LOCKED.code
+                    return@homeButtonSettings
                 }
-
-                tv_spread.apply {
-                    visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
-                        true -> View.VISIBLE
-                        false -> {
-                            when {
-                                playCateCode.isOUType() -> View.INVISIBLE
-                                else -> View.GONE
-                            }
-                        }
-                    }
-
-                    text = odds.second?.getOrNull(0)?.spread ?: ""
-                }
-
-                tv_odds.text = getOddByType(odds.second?.getOrNull(0), oddsType)
-                tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(0), oddsType))
-
-                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
-
-                isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
-
-                setOnClickListener {
-                    odds.second?.getOrNull(0)?.let { odd ->
-                        oddButtonListener?.onClickBet(
-                            matchInfo,
-                            odd,
-                            odds.first ?: "",
-                            playCateName,
-                            betPlayCateName
-                        )
-                    }
+                else -> {
+                    betStatus = odds.second?.getOrNull(0)?.status
                 }
             }
 
-            oddBtnAway.apply awayButtonSettings@{
-                when {
-                    (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
-                        betStatus = BetStatus.DEACTIVATED.code
-                        return@awayButtonSettings
-                    }
-                    (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds ?: 0.0 <= 0.0) -> {
-                        betStatus = BetStatus.LOCKED.code
-                        return@awayButtonSettings
-                    }
+            tv_name.apply {
+                visibility = when {
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
                     else -> {
-                        betStatus = odds.second?.getOrNull(1)?.status
+                        when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
+                            true -> View.INVISIBLE
+                            false -> View.GONE
+                        }
                     }
                 }
 
-                tv_name.apply {
-                    visibility = when {
-                        playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
-                        else -> {
-                            when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                                true -> View.INVISIBLE
-                                false -> View.GONE
-                            }
-                        }
+                text = when {
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
+                        (odds.second?.getOrNull(0)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds.second?.getOrNull(0)?.name)?.abridgeOddsName()
                     }
+                    playCateCode.isNOGALType() -> {
+                        "第" + odds.second?.getOrNull(0)?.nextScore.toString()
+                    }
+                    else -> ""
+                }
+            }
 
-                    text = when {
-                        playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
-                            (odds.second?.getOrNull(1)?.nameMap?.get(
-                                LanguageManager.getSelectLanguage(
-                                    context
-                                ).key
-                            ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(0)?.spread.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> View.GONE
                         }
-                        playCateCode.isNOGALType() -> {
-                            "第" + odds.second?.getOrNull(1)?.nextScore.toString()
-                        }
-                        else -> ""
                     }
                 }
 
-                tv_spread.apply {
-                    visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
-                        true -> View.VISIBLE
-                        false -> {
-                            when {
-                                playCateCode.isOUType() -> View.INVISIBLE
-                                else -> View.GONE
-                            }
+                text = odds.second?.getOrNull(0)?.spread ?: ""
+            }
+
+            tv_odds.text = getOddByType(odds.second?.getOrNull(0), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(0), oddsType))
+
+            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(0))
+
+            isSelected = odds.second?.getOrNull(0)?.isSelected ?: false
+
+            setOnClickListener {
+                odds.second?.getOrNull(0)?.let { odd ->
+                    oddButtonListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        odds.first ?: "",
+                        playCateName,
+                        betPlayCateName
+                    )
+                }
+            }
+        }
+
+        oddBtnAway.apply awayButtonSettings@{
+            when {
+                (odds.second == null || odds.second?.all { odd -> odd == null } == true) -> {
+                    betStatus = BetStatus.DEACTIVATED.code
+                    return@awayButtonSettings
+                }
+                (odds.second?.size ?: 0 < 2 || odds.second?.getOrNull(1)?.odds ?: 0.0 <= 0.0) -> {
+                    betStatus = BetStatus.LOCKED.code
+                    return@awayButtonSettings
+                }
+                else -> {
+                    betStatus = odds.second?.getOrNull(1)?.status
+                }
+            }
+
+            tv_name.apply {
+                visibility = when {
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() || playCateCode.isNOGALType() -> View.VISIBLE
+                    else -> {
+                        when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
+                            true -> View.INVISIBLE
+                            false -> View.GONE
                         }
                     }
-
-                    text = odds.second?.getOrNull(1)?.spread ?: ""
                 }
 
-                tv_odds.text = getOddByType(odds.second?.getOrNull(1), oddsType)
-                tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(1), oddsType))
+                text = when {
+                    playCateCode.isOUType() || playCateCode.isOEType() || playCateCode.isBTSType() -> {
+                        (odds.second?.getOrNull(1)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(
+                                context
+                            ).key
+                        ) ?: odds.second?.getOrNull(1)?.name)?.abridgeOddsName()
+                    }
+                    playCateCode.isNOGALType() -> {
+                        "第" + odds.second?.getOrNull(1)?.nextScore.toString()
+                    }
+                    else -> ""
+                }
+            }
 
-                if(getOdds(odds.second?.getOrNull(1), oddsType) < 0.0){
-                    tv_odds.setTextColor(ContextCompat.getColorStateList(
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(1)?.spread.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> View.GONE
+                        }
+                    }
+                }
+
+                text = odds.second?.getOrNull(1)?.spread ?: ""
+            }
+
+            tv_odds.text = getOddByType(odds.second?.getOrNull(1), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(1), oddsType))
+
+            if (getOdds(odds.second?.getOrNull(1), oddsType) < 0.0) {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
                         context,
                         R.color.selector_button_odd_bottom_text_red
-                    ))
-                } else {
-                    tv_odds.setTextColor(ContextCompat.getColorStateList(
+                    )
+                )
+            } else {
+                tv_odds.setTextColor(
+                    ContextCompat.getColorStateList(
                         context,
                         R.color.selector_button_odd_bottom_text
-                    ))
+                    )
+                )
+            }
+
+            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
+
+            isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
+
+            setOnClickListener {
+                odds.second?.getOrNull(1)?.let { odd ->
+                    oddButtonListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        odds.first ?: "",
+                        playCateName,
+                        betPlayCateName
+                    )
                 }
+            }
+        }
 
-                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(1))
-
-                isSelected = odds.second?.getOrNull(1)?.isSelected ?: false
-
-                setOnClickListener {
-                    odds.second?.getOrNull(1)?.let { odd ->
-                        oddButtonListener?.onClickBet(
-                            matchInfo,
-                            odd,
-                            odds.first ?: "",
-                            playCateName,
-                            betPlayCateName
-                        )
-                    }
+        oddBtnDraw.apply drawButtonSettings@{
+            when {
+                (odds.second?.size ?: 0 < 3) -> {
+                    visibility = View.INVISIBLE
+                    return@drawButtonSettings
+                }
+                odds.second?.all { odd -> odd == null } == true -> {
+                    betStatus = BetStatus.DEACTIVATED.code
+                    return@drawButtonSettings
+                }
+                (odds.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
+                    betStatus = BetStatus.LOCKED.code
+                    return@drawButtonSettings
+                }
+                else -> {
+                    betStatus = odds.second?.getOrNull(2)?.status
                 }
             }
 
-            oddBtnDraw.apply drawButtonSettings@{
-                when {
-                    (odds.second?.size ?: 0 < 3) -> {
-                        visibility = View.INVISIBLE
-                        return@drawButtonSettings
-                    }
-                    odds.second?.all { odd -> odd == null } == true -> {
-                        betStatus = BetStatus.DEACTIVATED.code
-                        return@drawButtonSettings
-                    }
-                    (odds.second?.getOrNull(2)?.odds ?: 0.0 <= 0.0) -> {
-                        betStatus = BetStatus.LOCKED.code
-                        return@drawButtonSettings
-                    }
-                    else -> {
-                        betStatus = odds.second?.getOrNull(2)?.status
-                    }
-                }
-                
-                tv_name.apply {
-                    visibility = View.VISIBLE
+            tv_name.apply {
+                visibility = View.VISIBLE
 
-                    text = when {
-                        playCateCode.isNOGALType() -> "无"
-                        playCateCode.isCombination() -> {
-                            (odds.second?.getOrNull(2)?.nameMap?.get(
-                                LanguageManager.getSelectLanguage(context).key
-                            ) ?: odds.second?.getOrNull(2)?.name)?.split("-")?.firstOrNull() ?: ""
-                        }
-                        !playCateCode.isCombination() -> {
-                            odds.second?.getOrNull(2)?.nameMap?.get(
-                                LanguageManager.getSelectLanguage(context).key
-                            ) ?: odds.second?.getOrNull(2)?.name
-                        }
-                        else -> ""
+                text = when {
+                    playCateCode.isNOGALType() -> "无"
+                    playCateCode.isCombination() -> {
+                        (odds.second?.getOrNull(2)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds.second?.getOrNull(2)?.name)?.split("-")?.firstOrNull() ?: ""
                     }
+                    !playCateCode.isCombination() -> {
+                        odds.second?.getOrNull(2)?.nameMap?.get(
+                            LanguageManager.getSelectLanguage(context).key
+                        ) ?: odds.second?.getOrNull(2)?.name
+                    }
+                    else -> ""
                 }
+            }
 
-                tv_spread.apply {
-                    visibility = when(!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()){
-                        true -> View.VISIBLE
-                        false -> {
-                            when {
-                                playCateCode.isOUType() -> View.INVISIBLE
-                                else -> View.GONE
-                            }
+            tv_spread.apply {
+                visibility = when (!odds.second?.getOrNull(2)?.spread.isNullOrEmpty()) {
+                    true -> View.VISIBLE
+                    false -> {
+                        when {
+                            playCateCode.isOUType() -> View.INVISIBLE
+                            else -> View.GONE
                         }
                     }
-
-                    text = odds.second?.getOrNull(2)?.spread ?: ""
-
                 }
 
-                tv_odds.text = getOddByType(odds.second?.getOrNull(2), oddsType)
-                tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
+                text = odds.second?.getOrNull(2)?.spread ?: ""
 
-                this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
+            }
 
-                isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
+            tv_odds.text = getOddByType(odds.second?.getOrNull(2), oddsType)
+            tv_odds.setTextColor(oddColorStateList(odds.second?.getOrNull(2), oddsType))
 
-                setOnClickListener {
-                    odds.second?.getOrNull(2)?.let { odd ->
-                        oddButtonListener?.onClickBet(
-                            matchInfo,
-                            odd,
-                            odds.first ?: "",
-                            playCateName,
-                            betPlayCateName
-                        )
-                    }
+            this@OddButtonPagerViewHolder.setupOddState(this, odds.second?.getOrNull(2))
+
+            isSelected = odds.second?.getOrNull(2)?.isSelected ?: false
+
+            setOnClickListener {
+                odds.second?.getOrNull(2)?.let { odd ->
+                    oddButtonListener?.onClickBet(
+                        matchInfo,
+                        odd,
+                        odds.first ?: "",
+                        playCateName,
+                        betPlayCateName
+                    )
                 }
+            }
         }
     }
 
@@ -695,7 +725,7 @@ class OddButtonPagerViewHolder private constructor(
     /**
      * 後端回傳文字需保留完整文字, 文字顯示縮減由前端自行處理
      */
-    private fun String.abridgeOddsName(): String{
+    private fun String.abridgeOddsName(): String {
         return this.replace("Over", "O").replace("Under", "U")
     }
 

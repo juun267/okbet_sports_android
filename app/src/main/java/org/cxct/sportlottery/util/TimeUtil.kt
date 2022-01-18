@@ -5,6 +5,7 @@ import android.util.Log
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.common.TimeRangeParams
 import timber.log.Timber
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,6 +81,21 @@ object TimeUtil {
     }
 
     /**
+     * 時間轉換成日期格式
+     * @param time: TimeInMillis
+     * @return :String
+     */
+    fun dateToFormat(time: Date, format: String = YMD_HMS_FORMAT): String {
+        return try {
+            val dateFormatter: DateFormat = SimpleDateFormat(format)
+            dateFormatter.isLenient = false
+            return dateFormatter.format(time)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "-"
+        }
+    }
+    /**
      * 時間(TimeInMillis) 轉換成 minute 格式 (倒數)
      * @param time: TimeInMillis
      * @return :String
@@ -148,7 +164,7 @@ object TimeUtil {
      */
     fun setupDayOfWeek(todayMillis: Long?): Int {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = todayMillis ?:0
+        calendar.timeInMillis = todayMillis ?: 0
 
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.SUNDAY -> R.string.sunday
@@ -164,7 +180,7 @@ object TimeUtil {
 
     fun setupDayOfWeekVi(todayMillis: Long?): Int {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = todayMillis ?:0
+        calendar.timeInMillis = todayMillis ?: 0
 
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.SUNDAY -> R.string.sunday2
@@ -183,7 +199,7 @@ object TimeUtil {
      */
     fun setupDayOfWeekAndToday(todayMillis: Long?): Int {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = todayMillis ?:0
+        calendar.timeInMillis = todayMillis ?: 0
 
         val todayTimeMillis = Calendar.getInstance().timeInMillis
 
@@ -209,7 +225,7 @@ object TimeUtil {
      */
     fun setupDayOfWeek(date: String?): Int {
         val calendar = Calendar.getInstance()
-        calendar.timeInMillis = dateToTimeStamp(date = date) ?:0
+        calendar.timeInMillis = dateToTimeStamp(date = date) ?: 0
 
         return when (calendar.get(Calendar.DAY_OF_WEEK)) {
             Calendar.SUNDAY -> R.string.sunday
@@ -248,7 +264,7 @@ object TimeUtil {
         }
     }
 
-    fun getMinusDateTimeStamp(minusDays: Int ?= 0): TimeRangeParams {
+    fun getMinusDateTimeStamp(minusDays: Int? = 0): TimeRangeParams {
         val cPair = getCalendarForDates(minusDays)
         val minusDayTimeStamp = cPair.first.timeInMillis
         val todayTimeStamp = cPair.second.timeInMillis
@@ -329,7 +345,10 @@ object TimeUtil {
         return Pair(minusDaysCalendar, todayCalendar)
     }
 
-    fun getDayDateTimeRangeParams(date: String, locale: Locale = Locale.getDefault()): TimeRangeParams {
+    fun getDayDateTimeRangeParams(
+        date: String,
+        locale: Locale = Locale.getDefault()
+    ): TimeRangeParams {
         //指定日期 00:00:00 ~ 23:59:59:59
         //date : yyyy-MM-dd
         return object : TimeRangeParams {
@@ -473,7 +492,7 @@ object TimeUtil {
         return timeFormat(timeMillis ?: 0, YMD_FORMAT) == timeFormat(todayTimeMillis, YMD_FORMAT)
     }
 
-    fun isTimeAtStart(timeStamp: Long?): Boolean{
+    fun isTimeAtStart(timeStamp: Long?): Boolean {
         return (getRemainTime(timeStamp) < 60 * 60 * 1000L) && getRemainTime(timeStamp) > 0
     }
 

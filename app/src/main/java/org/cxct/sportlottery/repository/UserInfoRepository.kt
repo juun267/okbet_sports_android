@@ -50,7 +50,7 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao,private val androi
             val userInfo = transform(it)
 //            OLD_DISCOUNT = it.discount ?: 1f
                 userInfoDao.upsert(userInfo)
-                GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999
+                GameConfigManager.maxBetMoney = userInfoData.maxBetMoney ?: 9999999
                 GameConfigManager.maxCpBetMoney = userInfoData.maxCpBetMoney ?: 9999
                 GameConfigManager.maxParlayBetMoney = userInfoData.maxParlayBetMoney ?: 9999
 

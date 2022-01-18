@@ -71,9 +71,12 @@ object Constants {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"
-                else -> getBaseUrl()+"sports-rule/#/us/responsibility"
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility"+context.getString(
+                    R.string.app_name)
             }
 
         } catch (e: UnsupportedEncodingException) {
@@ -245,6 +248,7 @@ object Constants {
     //withdraw
     const val WITHDRAW_ADD = "/api/front/userwithdraw/add"
     const val WITHDRAW_LIST = "/api/front/userwithdraw/list"
+    const val WITHDRAW_UW_CHECK = "/api/front/userwithdraw/getUwCheck"
 
     //feedback
     const val FEEDBACK_QUERYLIST = "/api/front/feedback/querylist"

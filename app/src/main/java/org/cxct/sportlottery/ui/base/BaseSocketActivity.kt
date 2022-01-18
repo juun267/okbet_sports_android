@@ -54,9 +54,11 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
         super.onCreate(savedInstanceState)
 
         receiver.sysMaintenance.observe(this, Observer {
-            startActivity(Intent(this, MaintenanceActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            })
+            if ((it?.status ?: 0) == MaintenanceActivity.MaintainType.FIXING.value) {
+                startActivity(Intent(this, MaintenanceActivity::class.java).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                })
+            }
         })
 
         receiver.serviceConnectStatus.observe(this, Observer { status ->
@@ -121,7 +123,7 @@ abstract class BaseSocketActivity<T : BaseSocketViewModel>(clazz: KClass<T>) :
                 ) == it?.userLevelConfigList?.firstOrNull()?.id
             ) {
                 GameConfigManager.maxBetMoney =
-                    it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 99999
+                    it.userLevelConfigList.firstOrNull()?.maxBetMoney ?: 9999999
                 GameConfigManager.maxParlayBetMoney =
                     it.userLevelConfigList.firstOrNull()?.maxParlayBetMoney ?: 99999
                 GameConfigManager.maxCpBetMoney =

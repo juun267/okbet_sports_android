@@ -392,6 +392,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             it.peekContent().let { list ->
                 //注單列表沒東西時關閉fragment
                 cl_no_data.visibility = if (list.size == 0) View.VISIBLE else View.GONE
+                gray_view.visibility = if (list.size == 0) View.GONE else View.VISIBLE
 
                 tv_bet_list_count.text = list.size.toString()
                 betListRefactorAdapter?.betList = list

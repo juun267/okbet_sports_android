@@ -685,8 +685,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
     }
 
     private fun queryData() {
+        loading()
         getSportList()
-        getSportMenu()
     }
 
     private fun getSportList() {
@@ -695,11 +695,6 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
 
     private fun getAnnouncement() {
         viewModel.getAnnouncement()
-    }
-
-    private fun getSportMenu() {
-        loading()
-        viewModel.getSportMenu()
     }
 
     private fun updateSelectTabState(matchType: MatchType?) {

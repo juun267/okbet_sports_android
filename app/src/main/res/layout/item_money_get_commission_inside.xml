@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_radius_6_button_white"
+    tools:context="org.cxct.sportlottery.ui.withdraw.CommissionDetailAdapter"
+    tools:ignore="SpUsage"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="20298404571893939403" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="@string/commission_deducted_amount"
+        android:textColor="@color/colorGray"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_id"
+        app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+
+    <TextView
+        android:id="@+id/tv_deduct_money"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="right|center_vertical"
+        android:maxLines="1"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_status"
+        app:layout_constraintEnd_toStartOf="@+id/tv_vnd"
+        app:layout_constraintStart_toEndOf="@+id/tv_status"
+        app:layout_constraintTop_toTopOf="@+id/tv_status"
+        tools:text="0" />
+
+    <TextView
+        android:id="@+id/tv_vnd"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textColor="#9A9A9A"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_status"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_status" />
+
+    <!--     第二行     -->
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:textColor="#9A9A9A"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_id"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_id"
+        app:layout_constraintTop_toTopOf="@+id/tv_id"
+        tools:text="05-09-2021 15:30:45" />
+
+    <!--     第三行     -->
+
+    <TextView
+        android:id="@+id/tv_required_valid_bets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/commission_required_size"
+        android:textColor="@color/colorGray"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_status"
+        app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+
+    <TextView
+        android:id="@+id/tv_required_valid_bets_money"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="end|center_vertical"
+        android:maxLines="1"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_required_valid_bets"
+        app:layout_constraintEnd_toStartOf="@+id/tv_required_valid_bets_vnd"
+        app:layout_constraintStart_toEndOf="@+id/tv_required_valid_bets"
+        app:layout_constraintTop_toTopOf="@+id/tv_required_valid_bets"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="1000" />
+
+    <TextView
+        android:id="@+id/tv_required_valid_bets_vnd"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textColor="#9A9A9A"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_required_valid_bets"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_required_valid_bets" />
+
+    <!--     第四行     -->
+
+    <TextView
+        android:id="@+id/tv_successed_bets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/commission_amount_of_coding_completed"
+        android:textColor="@color/colorGray"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_required_valid_bets"
+        app:layout_constraintTop_toBottomOf="@+id/tv_required_valid_bets" />
+
+    <TextView
+        android:id="@+id/tv_successed_bets_money"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="end|center_vertical"
+        android:maxLines="1"
+        android:textColor="@color/colorBlackLight"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_successed_bets"
+        app:layout_constraintEnd_toStartOf="@+id/tv_successed_bets_vnd"
+        app:layout_constraintStart_toEndOf="@+id/tv_successed_bets"
+        app:layout_constraintTop_toTopOf="@+id/tv_successed_bets"
+        tools:text="1000" />
+
+    <TextView
+        android:id="@+id/tv_successed_bets_vnd"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textColor="#9A9A9A"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_successed_bets"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_successed_bets" />
+
+    <!--     第五行     -->
+
+    <TextView
+        android:id="@+id/tv_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/commission_check_type"
+        android:textColor="@color/colorGray"
+        android:textSize="14dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_successed_bets"
+        app:layout_constraintTop_toBottomOf="@+id/tv_successed_bets" />
+
+    <TextView
+        android:id="@+id/tv_check_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/commissiom_completed"
+        android:textColor="#EA524D"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_check"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_check" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_line_75"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
