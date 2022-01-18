@@ -1270,25 +1270,7 @@ class GameV3Fragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         viewModel.getSportMenu(args.matchType)
                     }
                 }
-
-
-                if (nowGameType == leagueChangeEvent.gameType) {
-//                    viewModel.refreshGame(args.matchType)
-                    when (game_list.adapter) {
-                        is LeagueAdapter, is CountryAdapter, is OutrightCountryAdapter -> {
-                            leagueChangeEvent.leagueIdList?.let { leagueIdList ->
-                                viewModel.getGameHallList(
-                                    args.matchType,
-                                    isReloadDate = false,
-                                    leagueIdList = leagueIdList,
-                                    isIncrement = true
-                                )
-                            }
-                        }
-                    }
-                }
-
-
+                
             }
         }
     }
