@@ -81,36 +81,10 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
     }
 
     private fun switchRvTabArrow() {
-        val firstItemPosition = mRvTabManager.findFirstVisibleItemPosition()
-        val lastItemPosition = mRvTabManager.findLastVisibleItemPosition()
-        val lastIndex = mRvTabManager.itemCount - 1
-
-        img_arrow_left.visibility = if (firstItemPosition == 0) View.INVISIBLE else View.VISIBLE
-        img_arrow_right.visibility = if (lastItemPosition == lastIndex) View.INVISIBLE else View.VISIBLE
-    }
-
-    private fun switchRvContentArrow() {
-        val visiblePosition = mRvContentManager.findFirstVisibleItemPosition()
-        val lastIndex = mRvContentManager.itemCount - 1
-
-        when {
-            mRvContentManager.itemCount <= 1 -> {
-                content_arrow_left.visibility = View.INVISIBLE
-                content_arrow_right.visibility = View.INVISIBLE
-            }
-            visiblePosition == 0 -> {
-                content_arrow_left.visibility = View.INVISIBLE
-                content_arrow_right.visibility = View.VISIBLE
-            }
-            visiblePosition == lastIndex -> {
-                content_arrow_left.visibility = View.VISIBLE
-                content_arrow_right.visibility = View.INVISIBLE
-            }
-            else -> {
-                content_arrow_left.visibility = View.VISIBLE
-                content_arrow_right.visibility = View.VISIBLE
-            }
-        }
+        img_arrow_left.visibility =
+            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
+        img_arrow_right.visibility =
+            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
     }
 
 }
