@@ -17,7 +17,7 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
     private var mOnSelectItemListener: OnSelectItemListener<TabEntity>? = null
 
     //消息类型：1：游戏公告，2：会员福利，3：转账须知，4：劲爆推荐，5：导航网，6：其他
-    private val mDataList by lazy {
+    val mDataList by lazy {
         val showTabEntity = mutableListOf<TabEntity>()
         val allTabEntity = mutableListOf(
             TabEntity(1, context?.getString(R.string.game_announcement)),
@@ -37,7 +37,7 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.content_news_tab_rv, parent, false)
-        view.minimumWidth = parent.measuredWidth / 3 //三等分
+        view.minimumWidth = parent.measuredWidth //2022/1/17 新的公告UI調整
         return ViewHolder(view)
     }
 
@@ -70,12 +70,6 @@ class NewsTabAdapter(val context: Context?, private val mMessageList: List<Row>?
         fun bind(data: TabEntity) {
             itemView.apply {
                 txv_tab.text = data.title
-                itemView.setOnClickListener { selectItem(layoutPosition) }
-                itemView.isSelected = mSelectedPosition == layoutPosition //選中改變背景
-
-                //被選中時字體加粗
-                val typeface = if (itemView.isSelected) Typeface.BOLD else Typeface.NORMAL
-                txv_tab.setTypeface(null, typeface)
             }
         }
     }
