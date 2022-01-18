@@ -17,23 +17,26 @@ import org.cxct.sportlottery.ui.main.MainViewModel
 
 class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewModel>(MainViewModel::class) {
 
-    private val mRvTabManager by lazy { LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) }
+    private val mRvTabManager by lazy { context?.let { LoopingLayoutManager(it, LinearLayoutManager.HORIZONTAL, false) } }
     private val mNewsTabAdapter by lazy { NewsTabAdapter(context, mMessageList) }
     private val mRvContentManager by lazy { LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false) }
     private val mNewsContentAdapter by lazy { NewsContentAdapter() }
+
+    var tabPosition = 0
 
     init {
         setStyle(R.style.CustomDialogStyle)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_event_msg, container, false)
+        return inflater.inflate(R.layout.dialog_event_msg_v5, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupCloseBtn()
         initRecyclerView()
+        switchRvTabArrow()
     }
 
     private fun setupCloseBtn() {
@@ -42,41 +45,54 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
 
     private fun initRecyclerView() {
         //Tab RecycleView
-        rv_tab.layoutManager = mRvTabManager
-        rv_tab.adapter = mNewsTabAdapter
-        mNewsTabAdapter.setOnSelectItemListener(object : OnSelectItemListener<NewsTabAdapter.TabEntity> {
+
+        if (mNewsTabAdapter.mDataList.size > 1) {
+            rv_tab.layoutManager = mRvTabManager
+            rv_tab.adapter = mNewsTabAdapter
+
+            rv_tab.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    val currentPosition =
+                        (recyclerView.getChildAt(0).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
+
+                    if (tabPosition != currentPosition) {
+                        tabPosition = currentPosition
+                        val selectMsgType = mNewsTabAdapter.mDataList[currentPosition].msgType
+                        val dataList = mMessageList?.filter { it.msgType == selectMsgType }
+                        mNewsContentAdapter.setData(dataList)
+                    }
+                }
+            })
+            PagerSnapHelper().attachToRecyclerView(rv_tab)
+        } else {
+            rv_tab.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_tab.adapter = mNewsTabAdapter
+        }
+
+        mNewsTabAdapter.setOnSelectItemListener(object :
+            OnSelectItemListener<NewsTabAdapter.TabEntity> {
             override fun onClick(select: NewsTabAdapter.TabEntity) {
                 val dataList = mMessageList?.filter { it.msgType == select.msgType }
                 mNewsContentAdapter.setData(dataList)
-                switchRvContentArrow()
             }
         })
-        rv_tab.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    switchRvTabArrow()
-                }
-            }
-        })
-        PagerSnapHelper().attachToRecyclerView(rv_tab)
+
 
         //Content RecycleView
         rv_content.layoutManager = mRvContentManager
         rv_content.adapter = mNewsContentAdapter
-        rv_content.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    switchRvContentArrow()
-                }
-            }
-        })
-        PagerSnapHelper().attachToRecyclerView(rv_content)
+
+        //RecyclerView Indicator
+        val pagerSnapHelper = PagerSnapHelper()
+        pagerSnapHelper.attachToRecyclerView(rv_content)
+        indicator_view.attachToRecyclerView(rv_content,pagerSnapHelper)
+        mNewsContentAdapter.registerAdapterDataObserver(indicator_view.adapterDataObserver)
 
         //default show first
         rv_content.post {
             mNewsTabAdapter.selectItem(0)
             switchRvTabArrow()
-            switchRvContentArrow()
         }
     }
 
