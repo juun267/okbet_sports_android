@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.item_listview_bank_card.view.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.bank.my.BankCardList
 import org.cxct.sportlottery.network.money.config.TransferType
+import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
@@ -81,6 +82,14 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         }
 
         tv_currency_type.text = sConfigData?.systemCurrency
+        
+        if(sConfigData?.enableMinRemainingBalance == FLAG_OPEN ){
+            cl_notification.visibility = View.VISIBLE
+            tv_notification_1.text = getString(R.string.initial_withdrawal_needs_credited, sConfigData?.minRechMoney)
+            tv_notification_2.text = getString(R.string.make_sure_valid_account, sConfigData?.minRemainingBalance)
+        }else{
+            cl_notification.visibility = View.GONE
+        }
     }
 
     private fun initEvent() {

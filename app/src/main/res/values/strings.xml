@@ -913,5 +913,9 @@
     <string name="bank_list_bank">银行卡</string>
     <string name="bank_list_crypto">虚拟币</string>
     <string name="bank_list_e_wallet">eWallet</string>
+    <string name="e_address">地址</string>
+    <string name="hint_e_address">(请输入联系地址)</string>
+    <string name="initial_withdrawal_needs_credited">初次提款需入帐：%1$s元。</string>
+    <string name="make_sure_valid_account">初次提款会暂时扣留%1$s元，以确保您是有效账户。此款项于 30 天后会返还。</string>
 
 </resources>
