@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.dialog_event_msg.*
+import com.bekawestberg.loopinglayout.library.LoopingLayoutManager
+import kotlinx.android.synthetic.main.dialog_event_msg_v5.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.message.Row
