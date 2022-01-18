@@ -116,7 +116,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
         //TODO 實名制頁面
-        ll_identity.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
+        //ll_identity.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {

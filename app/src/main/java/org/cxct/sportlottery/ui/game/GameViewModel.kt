@@ -925,8 +925,7 @@ class GameViewModel(
                     )
                 }
                 MatchType.EPS -> {
-                    val time = TimeUtil.timeFormat(TimeUtil.getNowTimeStamp(), TimeUtil.YMD_FORMAT)
-                    getEpsList(code, startTime = time)
+                    getEpsList(code, startTime = TimeUtil.getTodayStartTimeStamp())
                 }
                 MatchType.OTHER -> {
                     getOddsList(
@@ -1340,7 +1339,7 @@ class GameViewModel(
     private fun getEpsList(
         gameType: String,
         matchType: String = MatchType.EPS.postValue,
-        startTime: String
+        startTime: Long
     ) {
         viewModelScope.launch {
             val result = doNetwork(androidContext) {

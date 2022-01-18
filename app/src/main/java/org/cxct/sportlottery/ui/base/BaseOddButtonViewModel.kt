@@ -88,7 +88,8 @@ abstract class BaseOddButtonViewModel(
         get() = betInfoRepository.betParlaySuccess
 
     private val deviceId by lazy {
-        androidContext.getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE).getString(UUID, null) ?: ""
+        androidContext.getSharedPreferences(UUID_DEVICE_CODE, Context.MODE_PRIVATE)
+            .getString(UUID, null) ?: ""
     }
 
     fun getMoney() {
@@ -134,6 +135,10 @@ abstract class BaseOddButtonViewModel(
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
+        var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+        if (odd.odds == odd.malayOdds) {
+            currentOddsType = OddsType.EU
+        }
         if (betItem == null) {
             matchInfo.let {
                 betInfoRepository.addInBetInfo(
@@ -141,7 +146,8 @@ abstract class BaseOddButtonViewModel(
                     gameType = gameType,
                     playCateCode = playCateCode,
                     playCateName = playCateName,
-                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
+                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                        ?: odd.name ?: "",
                     matchInfo = matchInfo,
                     odd = odd,
                     subscribeChannelType = subscribeChannelType,
@@ -176,6 +182,11 @@ abstract class BaseOddButtonViewModel(
         val betItem = betInfoRepository.betInfoList.value?.peekContent()
             ?.find { it.matchOdd.oddsId == odd.id }
 
+        var currentOddsType = loginRepository.mOddsType.value
+        if (odd.odds == odd.malayOdds) {
+            currentOddsType = OddsType.EU
+        }
+
         if (betItem == null) {
             matchOdd.matchInfo?.let {
                 betInfoRepository.addInBetInfo(
@@ -184,7 +195,8 @@ abstract class BaseOddButtonViewModel(
                     playCateCode = playCateCode,
                     playCateName = outrightCateName
                         ?: "",
-                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key) ?: odd.name ?: "",
+                    playName = odd.nameMap?.get(LanguageManager.getSelectLanguage(androidContext).key)
+                        ?: odd.name ?: "",
                     matchInfo = matchOdd.matchInfo,
                     odd = odd,
                     subscribeChannelType = ChannelType.HALL,
@@ -242,7 +254,8 @@ abstract class BaseOddButtonViewModel(
 
     fun updateLockMatchOdd(matchOddsLock: MatchOddsLockEvent) {
         betInfoRepository.betInfoList.value?.peekContent()
-            ?.find { it.matchOdd.matchId == matchOddsLock.matchId }?.matchOdd?.status = BetStatus.LOCKED.code
+            ?.find { it.matchOdd.matchId == matchOddsLock.matchId }?.matchOdd?.status =
+            BetStatus.LOCKED.code
 
         betInfoRepository.notifyBetInfoChanged()
     }
@@ -331,15 +344,22 @@ abstract class BaseOddButtonViewModel(
         //一般注單
         val matchList: MutableList<Odd> = mutableListOf()
         normalBetList.forEach {
-            if(it.matchOdd.odds == it.matchOdd.malayOdds  || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT){
+            if (it.matchOdd.odds == it.matchOdd.malayOdds || it.matchType == MatchType.OUTRIGHT || it.matchType == MatchType.OTHER_OUTRIGHT) {
                 currentOddsTypes = OddsType.EU
             }
-            matchList.add(Odd(it.matchOdd.oddsId, getOdds(it.matchOdd, currentOddsTypes), it.betAmount,currentOddsTypes.code))
+            matchList.add(
+                Odd(
+                    it.matchOdd.oddsId,
+                    getOdds(it.matchOdd, currentOddsTypes),
+                    it.betAmount,
+                    currentOddsTypes.code
+                )
+            )
         }
         //若有串關 則改為EU
-        currentOddsTypes = if(normalBetList.size == 1){
+        currentOddsTypes = if (normalBetList.size == 1) {
             normalBetList.getOrNull(0)?.singleBetOddsType ?: OddsType.EU
-        }else{
+        } else {
             OddsType.EU
         }
         //串關注單
@@ -403,7 +423,7 @@ abstract class BaseOddButtonViewModel(
                     getOdds(betInfoListData.matchOdd, betInfoListData.singleBetOddsType),
                     stake,
                     betInfoListData.singleBetOddsType.code
-                    )
+                )
             ),
             listOf(Stake(parlayType ?: "", stake)),
             1,
@@ -415,7 +435,11 @@ abstract class BaseOddButtonViewModel(
             val result = getBetApi(request)
             _betAddResult.postValue(Event(result))
             result?.receipt?.singleBets?.firstOrNull()?.matchType = betInfoListData.matchType
-            result?.receipt?.singleBets?.firstOrNull()?.oddsType = oddsType.value
+            var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+            if (betInfoListData.matchOdd.odds == betInfoListData.matchOdd.malayOdds) {
+                currentOddsType = OddsType.EU
+            }
+            result?.receipt?.singleBets?.firstOrNull()?.oddsType = currentOddsType
 
             Event(result).getContentIfNotHandled()?.success?.let {
                 if (it) {
@@ -476,7 +500,7 @@ abstract class BaseOddButtonViewModel(
                     .toDouble() else newOdd.hkOdds ?: 0.0
             newIndoOdds =
                 if (newOdd.hkOdds ?: 0.0 < 1) ArithUtil.oddIdfFormat(-1 / newOdd.hkOdds!!)
-                .toDouble() else newOdd.hkOdds ?: 0.0
+                    .toDouble() else newOdd.hkOdds ?: 0.0
         }
 
         val odds = when (loginRepository.mOddsType.value) {
@@ -650,11 +674,13 @@ abstract class BaseOddButtonViewModel(
                         newItem.status.let { status -> oldItem.status = status }
 
                         //賠率為啟用狀態時才去判斷是否有賠率變化
+                        var currentOddsType = loginRepository.mOddsType.value ?: OddsType.HK
+                        if (it.odds == it.malayOdds) currentOddsType = OddsType.EU
                         if (oldItem.status == BetStatus.ACTIVATED.code) {
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.HK
+                                    currentOddsType
                                 ), newItem
                             )
 
@@ -714,6 +740,11 @@ abstract class BaseOddButtonViewModel(
 
                     val newMatchOdd = newBetInfoListData.matchOdd
 
+                    var currentOddsType = loginRepository.mOddsType.value
+                    if (newMatchOdd.odds == newMatchOdd.malayOdds) {
+                        currentOddsType = OddsType.EU
+                    }
+
                     for (newItem in updateList) {
                         try {
                             newItem.let {
@@ -721,7 +752,7 @@ abstract class BaseOddButtonViewModel(
                                     newMatchOdd.oddState = getOddState(
                                         getOdds(
                                             newMatchOdd,
-                                            loginRepository.mOddsType.value ?: OddsType.HK
+                                            currentOddsType ?: OddsType.HK
                                         ), newItem
                                     )
 
@@ -776,12 +807,17 @@ abstract class BaseOddButtonViewModel(
 
             try {
                 newItem.let {
+                    var currentOddsType = loginRepository.mOddsType.value
+                    if (it.odds == it.malayOdds) {
+                        currentOddsType = OddsType.EU
+                    }
+
                     if (it.id == oldItem.oddsId) {
                         if (betAddError == BetAddError.ODDS_HAVE_CHANGED) {
                             oldItem.oddState = getOddState(
                                 getOdds(
                                     oldItem,
-                                    loginRepository.mOddsType.value ?: OddsType.HK
+                                    currentOddsType ?: OddsType.HK
                                 ), newItem
                             )
 

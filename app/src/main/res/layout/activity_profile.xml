@@ -537,7 +537,8 @@
 
             </LinearLayout>
 
-            <!--  實名制  -->
+            <!--  實名制，先隱藏入口  -->
+            <!--
             <LinearLayout
                 android:id="@+id/ll_identity"
                 android:layout_width="match_parent"
@@ -575,7 +576,7 @@
                         android:layout_width="10dp"
                         android:layout_height="wrap_content"/>
             </LinearLayout>
-
+    -->
         </LinearLayout>
 
     </ScrollView>
