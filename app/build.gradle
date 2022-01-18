@@ -304,6 +304,9 @@ dependencies {
     //CircleIndicator
     implementation 'me.relex:circleindicator:2.1.6'
 
+    //LoopingSnapHelper
+    implementation 'com.github.beksomega:loopinglayout:0.4.1'
+
 }
 
 multiLanguages {
