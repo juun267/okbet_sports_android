@@ -61,6 +61,11 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
                 }
             }
         }
+
+        img_arrow_left.visibility =
+            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
+        img_arrow_right.visibility =
+            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
     }
 
     private fun setupCloseBtn() {
