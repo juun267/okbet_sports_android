@@ -507,7 +507,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/ll_identity"
+                android:id="@+id/ll_verified"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -523,12 +523,21 @@
                     android:src="@drawable/ic_identity" />
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp"
                     android:text="@string/identity"
                     android:textColor="@color/colorBlackLight"
+                    android:textSize="@dimen/textSize12sp" />
+
+                <TextView
+                    android:id="@+id/tv_verified"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/not_verify"
+                    android:textColor="@color/colorRed"
                     android:textSize="@dimen/textSize12sp" />
 
                 <ImageView

@@ -905,4 +905,5 @@
     <string name="identity_card">Identity Card</string>
     <string name="passport">Passport</string>
     <string name="face_scan_result">face scan result</string>
+    <string name="not_verify">(Not yet verified)</string>
 </resources>

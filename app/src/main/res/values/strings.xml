@@ -920,5 +920,6 @@
     <string name="identity_card">Identity Card</string>
     <string name="passport">Passport</string>
     <string name="face_scan_result">脸部扫描结果</string>
+    <string name="not_verify">(未驗證)</string>
 
 </resources>

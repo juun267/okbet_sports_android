@@ -115,7 +115,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //微信
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
-        ll_identity.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
+        ll_verified.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {
@@ -135,6 +135,10 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         viewModel.uploadImage(uploadImgRequest)
     }
 
+    enum class VerifiedType(val value: Int) {
+        NOT_YET(0), PASSED(1), VERIFYING(2), VERIFIED_FAILED(3)
+    }
+
     private fun initObserve() {
         viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
@@ -147,12 +151,17 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
         }
 
-        viewModel.userInfo.observe(this, Observer {
+        viewModel.userInfo.observe(this) {
             updateAvatar(it?.iconUrl)
             tv_nickname.text = it?.nickName
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
+            ll_verified.visibility = if (it?.verified == VerifiedType.PASSED.value) View.GONE else View.VISIBLE
+            tv_verified.text = when (it?.verified) {
+                VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> getString(R.string.not_verify)
+                else -> ""
+            }
 
             if (it?.setted == FLAG_NICKNAME_IS_SET) {
                 btn_nickname.isEnabled = false
@@ -163,7 +172,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             }
 
             it?.let { setWithdrawInfo(it) }
-        })
+        }
     }
 
     private fun setWithdrawInfo(userInfo: UserInfo) {
