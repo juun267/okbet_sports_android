@@ -17,7 +17,7 @@ import org.cxct.sportlottery.ui.game.home.recommend.OddBean
 import org.cxct.sportlottery.ui.odds.OddsDetailListData
 
 object SocketUpdateUtil {
-
+    @Synchronized
     fun updateMatchStatus(
         gameType: String?,
         matchOddList: MutableList<MatchOdd> = arrayListOf(),
