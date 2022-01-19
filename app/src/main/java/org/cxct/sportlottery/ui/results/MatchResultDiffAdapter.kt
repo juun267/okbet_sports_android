@@ -328,20 +328,20 @@ class MatchResultDiffAdapter(private val matchItemClickListener: MatchItemClickL
                 val matchInfo = item.matchData?.matchInfo
 
                 matchInfo?.let {
-                    tv_home_name.text = matchInfo.homeName
-                    tv_away_name.text = matchInfo.awayName
-                    tv_time.text = TimeUtil.timeFormat(matchInfo.startTime, "yyyy-MM-dd HH:mm")
+                    tv_home_name.text = it.homeName
+                    tv_away_name.text = it.awayName
+                    tv_time.text = TimeUtil.timeFormat(it.startTime, "yyyy-MM-dd HH:mm")
                 }
 
                 matchStatusList?.let {
-                    val firstHalf = matchStatusList.find { it.status == StatusType.FIRST_HALF.code }
+                    val firstHalf = it.find { it.status == StatusType.FIRST_HALF.code }
                     val secondHalf =
-                        matchStatusList.find { it.status == StatusType.SECOND_HALF.code }
+                        it.find { it.status == StatusType.SECOND_HALF.code }
                     //110: 加時, 有加時先取加時
-                    val endGame = matchStatusList.find { it.status == StatusType.OVER_TIME.code }
-                        ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
-                    val fullGame = matchStatusList.find { it.status == StatusType.OVER_TIME.code }
-                        ?: matchStatusList.find { it.status == StatusType.END_GAME.code }
+                    val endGame = it.find { it.status == StatusType.OVER_TIME.code }
+                        ?: it.find { it.status == StatusType.END_GAME.code }
+                    val fullGame = it.find { it.status == StatusType.OVER_TIME.code }
+                        ?: it.find { it.status == StatusType.END_GAME.code }
                     tv_first_half_score.text =
                         firstHalf?.let { filteredItem -> "${filteredItem.homeScore} - ${filteredItem.awayScore}" }
                     tv_second_half_score.text =
