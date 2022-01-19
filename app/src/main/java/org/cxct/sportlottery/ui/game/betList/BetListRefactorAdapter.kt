@@ -5,6 +5,7 @@ import android.content.Context
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private enum class ViewType { Bet, Parlay, ParlayFirst }
-    enum class BetViewType {SINGLE, PARLAY, NULL}
+    enum class BetViewType { SINGLE, PARLAY, NULL }
 
     var betList: MutableList<BetInfoListData>? = mutableListOf()
         set(value) {
@@ -69,15 +70,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
     var mBetView = BetViewType.NULL
 
-    var onSelectedPositionListener: OnSelectedPositionListener = object:OnSelectedPositionListener{
-        override fun onSelectChange(position: Int, betViewType: BetViewType) {
-            if(mSelectedPosition != position || mBetView != betViewType){
-                mSelectedPosition = position
-                mBetView = betViewType
-                notifyDataSetChanged()
+    var onSelectedPositionListener: OnSelectedPositionListener =
+        object : OnSelectedPositionListener {
+            override fun onSelectChange(position: Int, betViewType: BetViewType) {
+                if (mSelectedPosition != position || mBetView != betViewType) {
+                    mSelectedPosition = position
+                    mBetView = betViewType
+                    notifyDataSetChanged()
+                }
             }
         }
-    }
 
     var hasBetClosed: Boolean = false
 
@@ -142,9 +144,10 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         var currentOddsType = oddsType
         betList?.getOrNull(position)?.apply {
-            if(matchOdd.odds == matchOdd.malayOdds
+            if (matchOdd.odds == matchOdd.malayOdds
                 || matchType == MatchType.OUTRIGHT
-                || matchType == MatchType.OTHER_OUTRIGHT){
+                || matchType == MatchType.OTHER_OUTRIGHT
+            ) {
                 currentOddsType = OddsType.EU
             }
         }
@@ -166,7 +169,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     parlayList?.getOrNull(position - (betList?.size ?: 0)),
                     parlayList?.size ?: 0,
                     betList ?: mutableListOf(),
-                    oddsType,
+                    currentOddsType,
                     hasBetClosed,
                     hasParlayList,
                     moreOptionCollapse,
@@ -225,7 +228,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     class BetInfoItemViewHolder(itemView: View) : BetInfoChangeViewHolder(itemView) {
         fun bind(
             itemData: BetInfoListData,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             itemCount: Int,
             onItemClickListener: OnItemClickListener,
             betListSize: Int,
@@ -236,7 +239,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemView.apply {
                 setupBetAmountInput(
                     itemData,
-                    oddsType,
+                    currentOddsType,
                     onItemClickListener,
                     betListSize,
                     mSelectedPosition,
@@ -256,7 +259,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         @SuppressLint("ClickableViewAccessibility")
         private fun setupBetAmountInput(
             itemData: BetInfoListData,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             onItemClickListener: OnItemClickListener,
             betListSize: Int,
             mSelectedPosition: Int,
@@ -270,7 +273,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 }
                 onFocusChangeListener = null
 
-                setupOddInfo(itemData, oddsType, betListSize)
+                setupOddInfo(itemData, currentOddsType, betListSize)
                 setupMinimumLimitMessage(itemData)
                 onItemClickListener.refreshBetInfoTotal()
 
@@ -315,13 +318,13 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                             var realAmount = itemData.betAmount
                             var win = 0.0
-                            when (oddsType) {
+                            when (currentOddsType) {
                                 OddsType.MYS -> {
-                                    if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                                    if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
                                         realAmount = itemData.betAmount * Math.abs(
                                             getOdds(
                                                 itemData.matchOdd,
-                                                oddsType
+                                                currentOddsType
                                             )
                                         )
                                         tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
@@ -329,7 +332,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     } else {
                                         win = itemData.betAmount * getOdds(
                                             itemData.matchOdd,
-                                            oddsType
+                                            currentOddsType
                                         )
                                         tvRealAmount.text =
                                             ArithUtil.toMoneyFormat(itemData.betAmount)
@@ -337,11 +340,11 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                                 }
                                 OddsType.IDN -> {
-                                    if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                                    if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
                                         realAmount = itemData.betAmount * Math.abs(
                                             getOdds(
                                                 itemData.matchOdd,
-                                                oddsType
+                                                currentOddsType
                                             )
                                         )
                                         tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
@@ -349,7 +352,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                     } else {
                                         win = itemData.betAmount * getOdds(
                                             itemData.matchOdd,
-                                            oddsType
+                                            currentOddsType
                                         )
                                         tvRealAmount.text =
                                             ArithUtil.toMoneyFormat(itemData.betAmount)
@@ -358,13 +361,16 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 OddsType.EU -> {
                                     win = itemData.betAmount * (getOdds(
                                         itemData.matchOdd,
-                                        oddsType
+                                        currentOddsType
                                     ) - 1)
                                     tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
 
                                 }
                                 else -> {
-                                    win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                                    win = itemData.betAmount * getOdds(
+                                        itemData.matchOdd,
+                                        currentOddsType
+                                    )
                                     tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
                                 }
                             }
@@ -402,26 +408,23 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
                     onItemClickListener.onShowKeyboard(et_bet, itemData.matchOdd)
-                    onSelectedPositionListener.onSelectChange(bindingAdapterPosition,BetViewType.SINGLE)
+                    onSelectedPositionListener.onSelectChange(
+                        bindingAdapterPosition,
+                        BetViewType.SINGLE
+                    )
                 }
             }
         }
 
         private fun setupOddInfo(
             itemData: BetInfoListData,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             betListSize: Int
         ) {
             itemView.apply {
                 v_point.visibility =
                     if (itemData.pointMarked && betListSize > 1) View.VISIBLE else View.GONE
-                var currentOddsType = oddsType
 
-                if(itemData.matchOdd.odds == itemData.matchOdd.malayOdds
-                    || itemData.matchType == MatchType.OUTRIGHT
-                    || itemData.matchType == MatchType.OTHER_OUTRIGHT){
-                    currentOddsType = OddsType.EU
-                }
                 setupOddsContent(itemData, oddsType = currentOddsType, tv_odds_content)
 
                 //隊伍名稱
@@ -439,7 +442,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val nameOneLine = { inputStr: String ->
                     inputStr.replace("\n", "-")
                 }
-                when{
+                when {
                     itemData.betPlayCateNameMap.isNullOrEmpty() -> {
                         tv_name.text = when (itemData.matchOdd.inplay) {
                             INPLAY -> {
@@ -454,12 +457,18 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         }
                     }
 
-                    else ->{
+                    else -> {
                         tv_name.text = when (itemData.matchOdd.inplay) {
                             INPLAY -> {
-                                "${itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key) ?: ""}  (${itemData.matchOdd.homeScore} - ${itemData.matchOdd.awayScore})"
+                                "${
+                                    itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
+                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                                }  (${itemData.matchOdd.homeScore} - ${itemData.matchOdd.awayScore})"
                             }
-                            else -> nameOneLine(itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)?.get(LanguageManager.getSelectLanguage(context).key)?:"")
+                            else -> nameOneLine(
+                                itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
+                                    ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
+                            )
                         }
                     }
                 }
@@ -490,45 +499,45 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 var realAmount = itemData.betAmount
                 var win = 0.0
-                when (oddsType) {
+                when (currentOddsType) {
                     OddsType.MYS -> {
-                        if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                        if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
                             realAmount = itemData.betAmount * Math.abs(
                                 getOdds(
                                     itemData.matchOdd,
-                                    oddsType
+                                    currentOddsType
                                 )
                             )
                             tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = itemData.betAmount
                         } else {
-                            win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                            win = itemData.betAmount * getOdds(itemData.matchOdd, currentOddsType)
                             tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
                         }
 
                     }
                     OddsType.IDN -> {
-                        if (getOdds(itemData.matchOdd, oddsType) < 0) {
+                        if (getOdds(itemData.matchOdd, currentOddsType) < 0) {
                             realAmount = itemData.betAmount * Math.abs(
                                 getOdds(
                                     itemData.matchOdd,
-                                    oddsType
+                                    currentOddsType
                                 )
                             )
                             tvRealAmount.text = ArithUtil.toMoneyFormat(realAmount)
                             win = itemData.betAmount
                         } else {
-                            win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                            win = itemData.betAmount * getOdds(itemData.matchOdd, currentOddsType)
                             tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
                         }
                     }
                     OddsType.EU -> {
-                        win = itemData.betAmount * (getOdds(itemData.matchOdd, oddsType) - 1)
+                        win = itemData.betAmount * (getOdds(itemData.matchOdd, currentOddsType) - 1)
                         tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
 
                     }
                     else -> {
-                        win = itemData.betAmount * getOdds(itemData.matchOdd, oddsType)
+                        win = itemData.betAmount * getOdds(itemData.matchOdd, currentOddsType)
                         tvRealAmount.text = ArithUtil.toMoneyFormat(itemData.betAmount)
                     }
                 }
@@ -656,7 +665,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             itemData: ParlayOdd?,
             parlayListSize: Int,
             betList: MutableList<BetInfoListData>,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             hasBetClosed: Boolean,
             hasParlayList: Boolean,
             moreOptionCollapse: Boolean,
@@ -676,7 +685,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                             setupParlayItem(
                                 itemData,
-                                oddsType,
+                                currentOddsType,
                                 hasBetClosed,
                                 true,
                                 onItemClickListener,
@@ -691,7 +700,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupSingleItem(
                             betList,
                             itemData,
-                            oddsType,
+                            currentOddsType,
                             onItemClickListener,
                             notifyAllBet,
                             mSelectedPosition,
@@ -705,7 +714,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                         setupParlayItem(
                             itemData,
-                            oddsType,
+                            currentOddsType,
                             hasBetClosed,
                             true,
                             onItemClickListener,
@@ -716,7 +725,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         setupSingleItem(
                             betList,
                             itemData,
-                            oddsType,
+                            currentOddsType,
                             onItemClickListener,
                             notifyAllBet,
                             mSelectedPosition,
@@ -738,7 +747,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         private fun setupSingleItem(
             betList: MutableList<BetInfoListData>,
             itemData: ParlayOdd?,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             onItemClickListener: OnItemClickListener,
             notifyAllBet: () -> Unit,
             mSelectedPosition: Int,
@@ -766,7 +775,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 tv_winnable_amount.text = TextUtil.formatMoney(
                     getAllWinnableAmount(
                         if (initValue.isNullOrEmpty()) 0.0 else initValue.toDouble(),
-                        oddsType,
+                        currentOddsType,
                         betList
                     )
                 )
@@ -783,7 +792,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                                 if (it.isNullOrEmpty()) 0.0 else it.toString().toDouble()
                             itemData?.allSingleInput = if (it.isNullOrEmpty()) "" else it.toString()
                             val allWinnableAmount =
-                                getAllSingleWinnableAmount(inputValue, oddsType, betList)
+                                getAllSingleWinnableAmount(inputValue, currentOddsType, betList)
                             when (allWinnableAmount > 0) {
                                 true -> {
                                     itemView.apply {
@@ -837,7 +846,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     addTextChangedListener(tw)
                     tag = tw
                 }
-                et_bet.isSelected = mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.SINGLE
+                et_bet.isSelected =
+                    mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.SINGLE
 
                 et_container.setOnClickListener {
                     et_bet.isFocusable = true
@@ -856,38 +866,32 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
          */
         private fun getAllSingleWinnableAmount(
             betAmount: Double,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             betList: MutableList<BetInfoListData>
         ): Double {
             var allWinnableAmount = 0.0
             betList.forEach {
-                allWinnableAmount += getOdds(it.matchOdd, oddsType) * betAmount
+                allWinnableAmount += getOdds(it.matchOdd, currentOddsType) * betAmount
             }
             return allWinnableAmount
         }
 
         private fun getAllWinnableAmount(
             betAmount: Double,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             betList: MutableList<BetInfoListData>
         ): Double {
             var allWinnableAmount = 0.0
             betList.forEach {
                 var realAmount = betAmount
                 var win = 0.0
-                var currentOddsType = oddsType
-                if(it.matchOdd.odds == it.matchOdd.malayOdds
-                    || it.matchType == MatchType.OUTRIGHT
-                    || it.matchType == MatchType.OTHER_OUTRIGHT){
-                    currentOddsType = OddsType.EU
-                }
                 when (currentOddsType) {
                     OddsType.MYS -> {
                         if (getOdds(it.matchOdd, currentOddsType) < 0) {
                             realAmount = betAmount * Math.abs(
                                 getOdds(
                                     it.matchOdd,
-                                    oddsType
+                                    currentOddsType
                                 )
                             )
                             win = betAmount
@@ -914,7 +918,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     }
                     else -> {
-                        win = betAmount * (getOdds(it.matchOdd, currentOddsType) - 1)
+                        win = betAmount * (getOdds(it.matchOdd, currentOddsType))
                     }
                 }
 
@@ -940,7 +944,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     class BatchParlayConnectViewHolder(itemView: View) : BatchParlayViewHolder(itemView) {
         fun bind(
             itemData: ParlayOdd?,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             hasBetClosed: Boolean,
             onItemClickListener: OnItemClickListener,
             mSelectedPosition: Int,
@@ -949,7 +953,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         ) {
             setupParlayItem(
                 itemData,
-                oddsType,
+                currentOddsType,
                 hasBetClosed,
                 false,
                 onItemClickListener,
@@ -963,7 +967,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
     abstract class BatchParlayViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         protected fun setupParlayItem(
             itemData: ParlayOdd?,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             hasBetClosed: Boolean,
             firstItem: Boolean = false,
             onItemClickListener: OnItemClickListener,
@@ -984,10 +988,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     tv_parlay_odd.apply {
                         if (firstItem && !hasBetClosed) {
                             visibility = View.VISIBLE
-
-                            val currentOddsType = OddsType.EU //串關需以歐洲盤賠率顯示
-                            val itemOdd = TextUtil.formatForOdd(getOdds(data, currentOddsType))
-                            text = itemOdd
+                            text = TextUtil.formatForOdd(getOdds(data, currentOddsType))
                         } else
                             visibility = View.GONE
                     }
@@ -997,9 +998,22 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                     tv_com_count.text = data.num.toString()
 
-                    setupBetAmountInput(data, oddsType, onItemClickListener, mSelectedPosition, mBetView, onSelectedPositionListener)
+                    setupBetAmountInput(
+                        data,
+                        currentOddsType,
+                        onItemClickListener,
+                        mSelectedPosition,
+                        mBetView,
+                        onSelectedPositionListener
+                    )
 
-                    setupMaximumLimitView(data, onItemClickListener, mSelectedPosition, mBetView, onSelectedPositionListener)
+                    setupMaximumLimitView(
+                        data,
+                        onItemClickListener,
+                        mSelectedPosition,
+                        mBetView,
+                        onSelectedPositionListener
+                    )
 
                     setupParlayRuleButton(data, onItemClickListener)
 
@@ -1031,7 +1045,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
             }
         }
 
-        private fun setupOddInfo(data: ParlayOdd, oddsType: OddsType) {
+        private fun setupOddInfo(data: ParlayOdd, currentOddsType: OddsType) {
             itemView.apply {
                 if (data.betAmount > 0) {
                     et_bet.setText(TextUtil.formatInputMoney(data.betAmount))
@@ -1055,8 +1069,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                 val quota = data.betAmount
                 //比照以往計算
-                var win = quota * getOdds(data, oddsType)
-                if (oddsType == OddsType.EU) {
+                var win = quota * getOdds(data, currentOddsType)
+                if (currentOddsType == OddsType.EU) {
                     win -= (quota * data.num)
                 }
                 tv_win_quota.text = TextUtil.format(win)
@@ -1066,7 +1080,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         @SuppressLint("ClickableViewAccessibility")
         private fun setupBetAmountInput(
             data: ParlayOdd,
-            oddsType: OddsType,
+            currentOddsType: OddsType,
             onItemClickListener: OnItemClickListener,
             mSelectedPosition: Int,
             mBetView: BetViewType,
@@ -1078,7 +1092,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                         removeTextChangedListener(tag as TextWatcher)
                     }
 
-                    setupOddInfo(data, oddsType)
+                    setupOddInfo(data, currentOddsType)
                     setupMinimumLimitMessage(data)
                     onItemClickListener.refreshBetInfoTotal()
 
@@ -1128,7 +1142,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
 
                                 checkMinimumLimit(data, quota)
                                 //比照以往計算
-                                var win = quota * getOdds(data, oddsType)
+                                var win = quota * getOdds(data, currentOddsType)
                                 //if (oddsType == OddsType.EU) {
                                 win -= (quota * data.num)
                                 //}
@@ -1161,7 +1175,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     addTextChangedListener(tw)
                     tag = tw
                 }
-                et_bet.isSelected = mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
+                et_bet.isSelected =
+                    mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
 
                 et_clickable.setOnClickListener {
                     et_bet.isFocusable = true
@@ -1212,7 +1227,8 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     ll_bet_quota_detail.visibility = View.GONE
                 }
 
-                et_bet.isSelected = mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
+                et_bet.isSelected =
+                    mSelectedPosition == bindingAdapterPosition && mBetView == BetViewType.PARLAY
 
                 ll_bet_quota_detail.setOnClickListener {
                     et_bet.apply {
@@ -1256,7 +1272,7 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
         fun showParlayRule(parlayType: String, parlayRule: String)
     }
 
-    interface OnSelectedPositionListener{
+    interface OnSelectedPositionListener {
         fun onSelectChange(position: Int, single: BetViewType)
     }
 }
