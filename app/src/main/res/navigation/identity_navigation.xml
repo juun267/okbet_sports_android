@@ -3,22 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/identity_navigation"
-    app:startDestination="@id/credentialsFragment">
+    app:startDestination="@id/newCredentialsFragment">
 
     <fragment
-        android:id="@+id/credentialsFragment"
-        android:name="org.cxct.sportlottery.ui.profileCenter.identity.CredentialsFragment"
-        android:label="fragment_credentials"
-        tools:layout="@layout/fragment_credentials">
-        <action android:id="@+id/action_credentialsFragment_to_credentialsDetailFragment"
-            app:destination="@id/credentialsDetailFragment"
+        android:id="@+id/newCredentialsFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.NewCredentialsFragment"
+        android:label="fragment_credentials_new"
+        tools:layout="@layout/fragment_credentials_new">
+        <action
+            android:id="@+id/action_credentialsFragment_to_newCredentialsDetailFragment"
+            app:destination="@id/newCredentialsDetailFragment"
             app:enterAnim="@anim/enter_from_right"
-            app:popExitAnim="@anim/exit_to_right"
-            />
+            app:popExitAnim="@anim/exit_to_right">
+            <argument
+                android:name="transactionId"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
     </fragment>
     <fragment
-        android:id="@+id/credentialsDetailFragment"
-        android:name="org.cxct.sportlottery.CredentialsDetailFragment"
+        android:id="@+id/newCredentialsDetailFragment"
+        android:name="org.cxct.sportlottery.ui.profileCenter.identity.CredentialsDetailFragment"
         android:label="fragment_credentials_detail"
-        tools:layout="@layout/fragment_credentials_detail" />
+        tools:layout="@layout/fragment_credentials_detail">
+        <argument
+            android:name="transactionId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>

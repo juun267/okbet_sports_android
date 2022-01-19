@@ -898,4 +898,11 @@
     <string name="bank_list_add">Add %1$s</string>
     <string name="bank_list_bank">bank card</string>
     <string name="bank_list_crypto">virtual currency</string>
+    <string name="type_of_certificate">type of certificate</string>
+    <string name="take_id_photo">take ID photo</string>
+    <string name="prepare_your_id_photo">Prepare your ID photo</string>
+    <string name="id_description">·Please make sure your ID photo is facing up\n· Make sure your ID photo is clearly visible\n·Avoid flashes or reflections</string>
+    <string name="identity_card">Identity Card</string>
+    <string name="passport">Passport</string>
+    <string name="face_scan_result">face scan result</string>
 </resources>

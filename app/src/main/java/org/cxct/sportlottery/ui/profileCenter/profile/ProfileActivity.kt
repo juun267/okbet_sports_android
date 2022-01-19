@@ -115,8 +115,7 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
         //微信
         ll_wechat.setOnClickListener { putExtraForProfileInfoActivity(ModifyType.WeChat) }
         //實名制
-        //TODO 實名制頁面
-        //ll_identity.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
+        ll_identity.setOnClickListener { startActivity(Intent(this, IdentityActivity::class.java)) }
     }
 
     private fun putExtraForProfileInfoActivity(modifyType: ModifyType) {
@@ -137,13 +136,16 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
     }
 
     private fun initObserve() {
-        viewModel.editIconUrlResult.observe(this, {
+        viewModel.editIconUrlResult.observe(this) {
             val iconUrlResult = it?.getContentIfNotHandled()
             if (iconUrlResult?.success == true)
-                showPromptDialog(getString(R.string.prompt), getString(R.string.save_avatar_success)) {}
+                showPromptDialog(
+                    getString(R.string.prompt),
+                    getString(R.string.save_avatar_success)
+                ) {}
             else
                 iconUrlResult?.msg?.let { msg -> showErrorPromptDialog(msg) {} }
-        })
+        }
 
         viewModel.userInfo.observe(this, Observer {
             updateAvatar(it?.iconUrl)

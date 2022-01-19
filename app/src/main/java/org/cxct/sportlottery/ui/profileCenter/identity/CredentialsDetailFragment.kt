@@ -1,15 +1,27 @@
-package org.cxct.sportlottery
+package org.cxct.sportlottery.ui.profileCenter.identity
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.NonNull
+import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.navigation.fragment.navArgs
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.BitmapImageViewTarget
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.fragment_credentials_detail.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.TimeUtil
@@ -17,6 +29,8 @@ import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import java.util.*
 
 class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+
+    private val args: CredentialsDetailFragmentArgs by navArgs()
 
     private lateinit var dateTimePicker: TimePickerView
 
@@ -29,23 +43,49 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initFakeData()
-
+        viewModel.getCredentialCompleteResult(args.transactionId)
         initObserve()
         setupView()
 
     }
 
     private fun initObserve() {
-        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                if (result.success) {
-                    showPromptDialog(getString(R.string.prompt), resources.getString(R.string.complete)) { activity?.finish() }
-                } else {
-                    showErrorPromptDialog(getString(R.string.promotion), result.msg) {}
+        viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                //TODO Cheryl : resultStatus為失敗的情況處理
+                it.data.extFaceInfo?.apply {
+//                    if (ekycResultFace.equals("Success")) {
+
+                    val requestOptions = RequestOptions()
+                        .override(180)
+                        .centerCrop()
+                        .sizeMultiplier(0.5f)
+                        .placeholder(R.drawable.picture_image_placeholder)
+
+                    Glide.with(img_face_scan.context)
+                        .asBitmap()
+                        .load(faceImg)
+                        .apply(requestOptions)
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                img_face_scan.setImageBitmap(resource)
+                            }
+                            override fun onLoadCleared(placeholder: Drawable?) {
+                            }
+                        })
+                        /*.into(object : BitmapImageViewTarget(img_face_scan) {
+                            override fun setResource(resource: Bitmap?) {
+                                val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(
+                                    context!!.resources, resource
+                                )
+                                circularBitmapDrawable.cornerRadius = 8f
+                                img_face_scan.setImageDrawable(circularBitmapDrawable)
+                            }
+                        })*/
+//                    }
                 }
             }
-        })
+        }
     }
 
     private fun setupView() {

@@ -927,4 +927,20 @@
     <string name="bank_list_add">Thêm %1$s</string>
     <string name="bank_list_bank">thẻ ngân hàng</string>
     <string name="bank_list_crypto">tiền ảo mới</string>
+    <string name="type_of_certificate">loại chứng chỉ</string>
+    <string name="take_id_photo">Chụp ảnh giấy tờ tùy thân</string>
+    <string name="prepare_your_id_photo">Chuẩn bị ảnh ID của bạn</string>
+    <string name="id_description">· Hãy chắc chắn rằng ảnh ID của bạn hướng lên trên\n· Đảm bảo rằng ảnh ID của bạn được hiển thị rõ ràng\n· Tránh nhấp nháy hoặc phản chiếu</string>
+    <string name="identity_card">Identity Card</string>
+    <string name="passport">Passport</string>
+    <string name="face_scan_result">kết quả quét khuôn mặt</string>
+    <string name="identity_id">ID hàomǎ</string>
+    <string name="identity_last_name">Họ</string>
+    <string name="identity_first_name">Tên</string>
+    <string name="identity_other_name">Bí danh</string>
+    <string name="identity_country">Dân tộc</string>
+    <string name="identity_birth">Ngày sinh nhật</string>
+    <string name="identity_marital_status">Tình trạng hôn nhân</string>
+    <string name="identity_sex">Giới tính</string>
+    <string name="identity_work">Công việc</string>
 </resources>

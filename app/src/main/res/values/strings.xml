@@ -913,5 +913,12 @@
     <string name="bank_list_bank">银行卡</string>
     <string name="bank_list_crypto">虚拟币</string>
     <string name="bank_list_e_wallet">eWallet</string>
+    <string name="type_of_certificate">证件类型</string>
+    <string name="take_id_photo">拍摄证件照片</string>
+    <string name="prepare_your_id_photo">注备好您的证件照片</string>
+    <string name="id_description">·请确认您的证件照正确朝上\n·请确认您的证件照清晰可见\n·请避免闪光或是反射</string>
+    <string name="identity_card">Identity Card</string>
+    <string name="passport">Passport</string>
+    <string name="face_scan_result">脸部扫描结果</string>
 
 </resources>
