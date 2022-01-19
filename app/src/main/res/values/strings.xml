@@ -914,4 +914,15 @@
     <string name="bank_list_crypto">虚拟币</string>
     <string name="bank_list_e_wallet">eWallet</string>
 
+    <string name="other_link">其它相关链接</string>
+    <string name="about_us">关于我们</string>
+    <string name="responsible">博彩责任</string>
+    <string name="terms_conditions">规则与条款</string>
+    <string name="privacy_policy">隐私权条款</string>
+    <string name="help">是否需要帮助？</string>
+    <string name="faqs">常见问题</string>
+    <string name="live_chat">在线客服</string>
+    <string name="contact">联系我们</string>
+    <string name="btm_navigation_hint">%1$s is a Registered Trade Mark, brand and\nregistered business name.</string>
+    
 </resources>
