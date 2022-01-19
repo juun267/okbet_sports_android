@@ -238,9 +238,9 @@ class AccountHistoryNextAdapter(
             first?.let { it ->
 
                 binding.tvContent.setPlayContent(
-                    first.playName,
-                    first.spread,
-                    first.odds?.let { odd -> TextUtil.formatForOdd(odd) },
+                    it.playName,
+                    it.spread,
+                    it.odds?.let { odd -> TextUtil.formatForOdd(odd) },
                     binding.tvContent.context.getString(oddsType.res)
                 )
 
@@ -259,10 +259,10 @@ class AccountHistoryNextAdapter(
 
                 when (row.gameType) {
                     GameType.FT.key, GameType.BK.key -> {
-                        if (first.rtScore?.isNotEmpty() == true)
+                        if (it.rtScore?.isNotEmpty() == true)
                             binding.tvScore.text = String.format(
                                 binding.tvScore.context.getString(R.string.brackets),
-                                first.rtScore
+                                it.rtScore
                             )
                     }
                 }

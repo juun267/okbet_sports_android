@@ -36,7 +36,34 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
         super.onViewCreated(view, savedInstanceState)
         setupCloseBtn()
         initRecyclerView()
-        switchRvTabArrow()
+        //switchRvTabArrow() // 2022/01/19 目前H5 是不管有幾個標題都要顯示箭頭
+        setArrowBtn()
+    }
+
+    private fun setArrowBtn() {
+        if(mNewsTabAdapter.mDataList.size > 1){
+            btn_arrow_left.setOnClickListener {
+                val currentPosition =
+                    (rv_tab.getChildAt(0).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
+
+                when(currentPosition){
+                    0 -> rv_tab.smoothScrollToPosition(mNewsTabAdapter.itemCount - 1 )
+                    else -> rv_tab.smoothScrollToPosition(currentPosition - 1)
+                }
+            }
+
+            btn_arrow_right.setOnClickListener {
+                val currentPosition =
+                    (rv_tab.getChildAt(1).layoutParams as RecyclerView.LayoutParams).bindingAdapterPosition
+
+                when(currentPosition){
+                    mNewsTabAdapter.itemCount - 1  -> rv_tab.smoothScrollToPosition(0 )
+                    else -> rv_tab.smoothScrollToPosition(currentPosition + 1)
+                }
+            }
+        } else {
+            //TODO Bill 設置成disable 等UI出色馬
+        }
     }
 
     private fun setupCloseBtn() {
@@ -92,7 +119,7 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
         //default show first
         rv_content.post {
             mNewsTabAdapter.selectItem(0)
-            switchRvTabArrow()
+            //switchRvTabArrow()
         }
     }
 

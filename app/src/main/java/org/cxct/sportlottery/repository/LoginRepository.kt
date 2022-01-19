@@ -294,7 +294,7 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
     @WorkerThread
     private suspend fun updateUserInfo(loginData: LoginData?) {
         loginData?.let {
-            val userInfo = transform(loginData)
+            val userInfo = transform(it)
 
             withContext(Dispatchers.IO) {
                 userInfoDao.upsert(userInfo)
