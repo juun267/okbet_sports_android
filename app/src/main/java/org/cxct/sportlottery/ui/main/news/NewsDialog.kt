@@ -36,7 +36,6 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
         super.onViewCreated(view, savedInstanceState)
         setupCloseBtn()
         initRecyclerView()
-        //switchRvTabArrow() // 2022/01/19 目前H5 是不管有幾個標題都要顯示箭頭
         setArrowBtn()
     }
 
@@ -61,9 +60,12 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
                     else -> rv_tab.smoothScrollToPosition(currentPosition + 1)
                 }
             }
-        } else {
-            //TODO Bill 設置成disable 等UI出色馬
         }
+
+        img_arrow_left.visibility =
+            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
+        img_arrow_right.visibility =
+            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
     }
 
     private fun setupCloseBtn() {
@@ -86,6 +88,7 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
                         tabPosition = currentPosition
                         val selectMsgType = mNewsTabAdapter.mDataList[currentPosition].msgType
                         val dataList = mMessageList?.filter { it.msgType == selectMsgType }
+                        resetRvContentManager(dataList)
                         mNewsContentAdapter.setData(dataList)
                     }
                 }
@@ -101,10 +104,10 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
             OnSelectItemListener<NewsTabAdapter.TabEntity> {
             override fun onClick(select: NewsTabAdapter.TabEntity) {
                 val dataList = mMessageList?.filter { it.msgType == select.msgType }
+                resetRvContentManager(dataList)
                 mNewsContentAdapter.setData(dataList)
             }
         })
-
 
         //Content RecycleView
         rv_content.layoutManager = mRvContentManager
@@ -119,15 +122,17 @@ class NewsDialog(private val mMessageList: List<Row>?) : BaseDialog<MainViewMode
         //default show first
         rv_content.post {
             mNewsTabAdapter.selectItem(0)
-            //switchRvTabArrow()
         }
     }
 
-    private fun switchRvTabArrow() {
-        img_arrow_left.visibility =
-            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
-        img_arrow_right.visibility =
-            if (mNewsTabAdapter.mDataList.size > 1) View.VISIBLE else View.INVISIBLE
+    fun resetRvContentManager(dataList: List<Row>?) {
+        context?.let {
+            rv_content.layoutManager = if (dataList?.size ?: 0 > 1) LoopingLayoutManager(
+                it,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            ) else LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
 }
