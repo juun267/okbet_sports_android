@@ -1,15 +1,13 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.navigation.fragment.navArgs
@@ -18,14 +16,15 @@ import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.fragment_credentials_detail.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.credential.ExtBasicInfo
+import org.cxct.sportlottery.network.interceptor.LogInterceptor.Logger.Companion.DEFAULT
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
+import java.lang.Byte.decode
 import java.util.*
 
 class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
@@ -53,40 +52,38 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 //TODO Cheryl : resultStatus為失敗的情況處理
+                setInfoInText(it.data.extBasicInfo)
+
                 it.data.extFaceInfo?.apply {
 //                    if (ekycResultFace.equals("Success")) {
-
                     val requestOptions = RequestOptions()
                         .override(180)
                         .centerCrop()
                         .sizeMultiplier(0.5f)
                         .placeholder(R.drawable.picture_image_placeholder)
 
+                    val imageByteArray: ByteArray = android.util.Base64.decode(faceImg, android.util.Base64.DEFAULT)
                     Glide.with(img_face_scan.context)
                         .asBitmap()
-                        .load(faceImg)
+                        .load(imageByteArray)
                         .apply(requestOptions)
-                        .into(object : CustomTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                img_face_scan.setImageBitmap(resource)
-                            }
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                            }
-                        })
-                        /*.into(object : BitmapImageViewTarget(img_face_scan) {
-                            override fun setResource(resource: Bitmap?) {
-                                val circularBitmapDrawable = RoundedBitmapDrawableFactory.create(
-                                    context!!.resources, resource
-                                )
-                                circularBitmapDrawable.cornerRadius = 8f
-                                img_face_scan.setImageDrawable(circularBitmapDrawable)
-                            }
-                        })*/
-//                    }
+                        .into(img_face_scan)
                 }
             }
         }
     }
+
+    private fun setInfoInText(result: ExtBasicInfo?) {
+        result?.apply {
+            et_identity_id.setText(certNo)
+            et_identity_last_name.setText(certName)
+            et_identity_first_name.setText(certName)
+            et_identity_id.setText(certNo)
+            et_identity_id.setText(certNo)
+        }
+
+    }
+
 
     private fun setupView() {
         cv_recharge_time.setOnClickListener {

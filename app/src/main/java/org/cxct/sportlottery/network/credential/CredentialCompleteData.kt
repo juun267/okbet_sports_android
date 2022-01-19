@@ -23,6 +23,6 @@ data class CredentialCompleteData(
     @Json(name = "extBasicInfo")
     val extBasicInfo: ExtBasicInfo?, //证件相关信息
 
-    @Json(name = "rsaPubKey")
+    @Json(name = "extFaceInfo")
     val extFaceInfo: ExtFaceInfo?, //面部相关信息
 )
