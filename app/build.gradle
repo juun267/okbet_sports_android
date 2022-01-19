@@ -304,10 +304,17 @@ dependencies {
     //簡易封裝的Adapter
     implementation 'com.zhy:base-rvadapter:3.0.3'
 
+    //CircleIndicator
+    implementation 'me.relex:circleindicator:2.1.6'
+
+    //LoopingSnapHelper
+    implementation 'com.github.beksomega:loopinglayout:0.4.1'
+
     //實名認證影像辨識套件
     implementation 'com.zoloz.android.build:zolozkit:1.0.3'
     implementation "com.squareup.okio:okio:1.7.0@jar"
     implementation "com.alibaba:fastjson:1.1.68.android"
+    
 }
 
 repositories {

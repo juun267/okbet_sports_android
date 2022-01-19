@@ -25,6 +25,7 @@ import java.util.*
 class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RecyclerView(context, attrs, defStyle) {
     private var speedPxSec = 0
     private var mTimer: Timer? = null
+    private var isEmpty: Boolean = true
 
     init {
         initData(attrs)
@@ -55,10 +56,15 @@ class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: 
         }
     }
 
+    fun startAuto(isEmpty: Boolean?) {
+        if (isEmpty != null) this.isEmpty = isEmpty
+        startAuto()
+    }
+
     fun startAuto() {
         stopAuto()
 
-        if (adapter?.itemCount == null || adapter?.itemCount == 0)
+        if (adapter?.itemCount == null || adapter?.itemCount == 0 || isEmpty)
             return
         //每 250L 毫秒執行一次 smoothScrollBy()
         //紀錄: smoothScrollBy() 的時間間隔為 250L，所以 period 設 250L 達到平順滑動的感覺
@@ -72,6 +78,11 @@ class AutoScrollRecyclerView @JvmOverloads constructor(context: Context, attrs: 
                 smoothScrollBy(distance, distance, interpolator)
             }
         }, delay.toLong(), period.toLong()) //在 0 秒後，每隔 250L 毫秒執行一次
+    }
+
+    fun stopAuto(isEmpty: Boolean?) {
+        if (isEmpty != null) this.isEmpty = isEmpty
+        stopAuto()
     }
 
     fun stopAuto() {
