@@ -29,7 +29,7 @@ object SocketUpdateUtil {
         matchStatusChangeEvent.matchStatusCO?.let { matchStatusCO ->
             var removeIndex :Int = -1
 
-            matchOddList.forEach { matchOdd ->
+            matchOddList.forEach lit@{ matchOdd ->
 
                 if (matchStatusCO.matchId != null && matchStatusCO.matchId == matchOdd.matchInfo?.id) {
 
@@ -100,24 +100,24 @@ object SocketUpdateUtil {
                         matchOddList.forEachIndexed { index, item ->
                             if (item == matchOdd){
                                 removeIndex = index
+                                return@forEachIndexed
                             }
                         }
                         isNeedRefresh = true
+                        return@lit
                     }
                 }
-            }
-            if(removeIndex != -1){
-                matchOddList.removeAt(removeIndex)
+                if(removeIndex != -1){
+                    matchOddList.removeAt(removeIndex)
+                }
             }
         }
-
         return isNeedRefresh
     }
 
     fun updateMatchClock(matchOdd: MatchOdd, matchClockEvent: MatchClockEvent): Boolean {
         var isNeedRefresh = false
 
-        //[Martin] 沒有做暫停計時功能 有時間要做
         matchClockEvent.matchClockCO?.let { matchClockCO ->
 
             if (matchClockCO.matchId != null && matchClockCO.matchId == matchOdd.matchInfo?.id) {
