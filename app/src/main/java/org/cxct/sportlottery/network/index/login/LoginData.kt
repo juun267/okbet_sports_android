@@ -51,5 +51,7 @@ data class LoginData(
     @Json(name = "maxParlayBetMoney")
     val maxParlayBetMoney: Int?,
     @Json(name = "discount")
-    var discount: Float? //後台維修 暫時修改做測試 要改回val
+    var discount: Float?, //後台維修 暫時修改做測試 要改回val
+    @Json(name = "verified")
+    var verified: Int?,
 )
