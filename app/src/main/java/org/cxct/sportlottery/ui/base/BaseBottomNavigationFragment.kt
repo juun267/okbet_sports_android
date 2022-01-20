@@ -8,20 +8,23 @@ import org.cxct.sportlottery.network.Constants
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.game.ServiceDialog
 import org.cxct.sportlottery.util.JumpUtil
-import timber.log.Timber
 import kotlin.reflect.KClass
 
 abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KClass<T>) :
     BaseSocketFragment<T>(clazz) {
 
-    fun initBottomNavigation(){
+    fun initBottomNavigation() {
         //底部hint提示
-        txv_btm_hint.text = String.format(getString(R.string.btm_navigation_hint),context?.getString(
-            R.string.app_name
-        ))
-        txv_copyright.text = String.format(getString(R.string.btm_navigation_copyright),context?.getString(
-            R.string.app_name
-        ))
+        txv_btm_hint.text = String.format(
+            getString(R.string.btm_navigation_hint), context?.getString(
+                R.string.app_name
+            )
+        )
+        txv_copyright.text = String.format(
+            getString(R.string.btm_navigation_copyright), context?.getString(
+                R.string.app_name
+            )
+        )
 
         //WinBet平台顯示邏輯
         when (BuildConfig.APPLICATION_ID) {
@@ -35,29 +38,49 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
             }
         }
 
-            //關於我們
+        //關於我們
         btn_about.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getAboutUsUrl(requireContext()), getString(R.string.about_us))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getAboutUsUrl(requireContext()),
+                getString(R.string.about_us)
+            )
         }
 
         //博彩責任
         btn_responsible.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getDutyRuleUrl(requireContext()), getString(R.string.responsible))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getDutyRuleUrl(requireContext()),
+                getString(R.string.responsible)
+            )
         }
 
         //規則與條款
         btn_terms.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getAgreementRuleUrl(requireContext()), getString(R.string.terms_conditions))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getAgreementRuleUrl(requireContext()),
+                getString(R.string.terms_conditions)
+            )
         }
 
         //隱私權條款
         btn_policy.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getPrivacyRuleUrl(requireContext()), getString(R.string.privacy_policy))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getPrivacyRuleUrl(requireContext()),
+                getString(R.string.privacy_policy)
+            )
         }
 
         //常見問題
         cv_faq.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getFAQsUrl(requireContext()), getString(R.string.faqs))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getFAQsUrl(requireContext()),
+                getString(R.string.faqs)
+            )
         }
 
         //在線客服 (取代原有的客服懸浮按鈕)
@@ -79,7 +102,11 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
 
         //聯繫我們
         cv_contact.setOnClickListener {
-            JumpUtil.toInternalWeb(requireContext(), Constants.getContactUrl(requireContext()), getString(R.string.contact))
+            JumpUtil.toInternalWeb(
+                requireContext(),
+                Constants.getContactUrl(requireContext()),
+                getString(R.string.contact)
+            )
         }
 
         //菲律賓憑證 (要外開)
