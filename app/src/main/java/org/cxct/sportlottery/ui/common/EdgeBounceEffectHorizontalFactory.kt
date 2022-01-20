@@ -14,8 +14,9 @@ private const val FLING_TRANSLATION_MAGNITUDE = 0.5f
 
 /**
  * Replace edge effect by a bounce
+ * 記得要把 recyclerView元件的 android:overScrollMode="never" 屬性拿掉，才會有作用
  */
-class BounceEffectHorizontalFactory : RecyclerView.EdgeEffectFactory() {
+class EdgeBounceEffectHorizontalFactory : RecyclerView.EdgeEffectFactory() {
 
     override fun createEdgeEffect(recyclerView: RecyclerView, direction: Int): EdgeEffect {
 

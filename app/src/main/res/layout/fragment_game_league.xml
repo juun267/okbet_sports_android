@@ -44,7 +44,6 @@
                 android:layout_gravity="center_horizontal"
                 android:nestedScrollingEnabled="false"
                 android:orientation="horizontal"
-                android:overScrollMode="never"
                 android:paddingStart="16dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"

@@ -57,23 +57,17 @@
                     android:background="@color/colorWhite8"
                     app:layout_constraintTop_toBottomOf="@+id/live_view_tool_bar" />
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_cat"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_cat"
                     android:layout_width="match_parent"
-                    android:layout_height="62dp"
+                    android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
-                    android:clipToPadding="false"
-                    android:overScrollMode="never"
                     android:paddingHorizontal="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/v_divider"
-                    android:layout_gravity="center"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabMode="scrollable"
-                    app:tabPaddingEnd="6dp"
-                    app:tabPaddingStart="6dp"
-                    app:tabRippleColor="@color/transparent" />
+                    android:paddingVertical="10dp"
+                    tools:listitem="@layout/tab_odds_detail"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_gravity="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"

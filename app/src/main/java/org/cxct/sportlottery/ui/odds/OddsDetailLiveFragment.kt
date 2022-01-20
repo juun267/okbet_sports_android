@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ import org.cxct.sportlottery.network.service.match_status_change.MatchStatusChan
 import org.cxct.sportlottery.repository.FLAG_LIVE
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
+import org.cxct.sportlottery.ui.common.EdgeBounceEffectHorizontalFactory
 import org.cxct.sportlottery.ui.common.SocketLinearManager
 import org.cxct.sportlottery.ui.common.TimerManager
 import org.cxct.sportlottery.ui.component.LiveViewToolbar
@@ -48,11 +50,23 @@ import java.util.*
 
 
 @Suppress("DEPRECATION", "SetTextI18n")
-class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class), TimerManager, Animation.AnimationListener {
+class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class),
+    TimerManager, Animation.AnimationListener {
 
     private val args: OddsDetailLiveFragmentArgs by navArgs()
 
     private var oddsDetailListAdapter: OddsDetailListAdapter? = null
+
+    private val tabCateAdapter: TabCateAdapter by lazy {
+        TabCateAdapter(OnItemSelectedListener {
+            tabCateAdapter.selectedPosition = it
+            viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
+                it
+            )?.code?.let { code ->
+                oddsDetailListAdapter?.notifyDataSetChangedByCode(code)
+            }
+        })
+    }
 
     private var matchId: String? = null
     private var matchOdd: MatchOdd? = null
@@ -170,7 +184,6 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     private fun initUI() {
 //        live_view_tool_bar.gameType = args.gameType //賽事動畫icon用，之後用不到可刪
-
         oddsDetailListAdapter = OddsDetailListAdapter(
             OnOddClickListener { odd, oddsDetail ->
                 matchOdd?.let { matchOdd ->
@@ -205,23 +218,10 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
             layoutManager = SocketLinearManager(context, LinearLayoutManager.VERTICAL, false)
         }
 
-        tab_cat.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.position?.let { t ->
-                    viewModel.oddsDetailResult.value?.peekContent()?.oddsDetailData?.matchOdd?.playCateTypeList?.getOrNull(
-                        t
-                    )?.code?.let {
-                        oddsDetailListAdapter?.notifyDataSetChangedByCode(it)
-                    }
-                }
-            }
-        })
+        rv_cat.apply {
+            adapter = tabCateAdapter
+            edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
+        }
     }
 
     @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
@@ -384,7 +384,11 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         viewModel.matchLiveInfo.observe(this.viewLifecycleOwner) {
             it?.getContentIfNotHandled()?.let { liveStreamInfo ->
-                live_view_tool_bar.startPlayer(matchId, matchOdd?.matchInfo?.trackerId, liveStreamInfo.streamUrl)
+                live_view_tool_bar.startPlayer(
+                    matchId,
+                    matchOdd?.matchInfo?.trackerId,
+                    liveStreamInfo.streamUrl
+                )
             }
         }
     }
@@ -529,23 +533,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
     @SuppressLint("InflateParams")
     private fun OddsDetailResult.setupPlayCateTab() {
-        tab_cat.removeAllTabs()
         val playCateTypeList = this.oddsDetailData?.matchOdd?.playCateTypeList
         if (playCateTypeList?.isNotEmpty() == true) {
-            for (row in playCateTypeList) {
-                val customTabView =
-                    layoutInflater.inflate(R.layout.tab_odds_detail, null).apply {
-                        findViewById<TextView>(R.id.tv_tab).text = row.name
-                    }
-
-                tab_cat.addTab(
-                    tab_cat.newTab().setCustomView(customTabView),
-                    false
-                )
-            }
-            tab_cat.getTabAt(0)?.select()
+            tabCateAdapter.dataList = playCateTypeList
+            tabCateAdapter.selectedPosition = 0
         } else {
-            tab_cat.visibility = View.GONE
+            rv_cat.visibility = View.GONE
         }
     }
 
@@ -622,10 +615,16 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
 
         tv_status_left.visibility = View.VISIBLE
         tv_spt.visibility = View.GONE
-        tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+        tv_status_left.setTextColor(
+            ContextCompat.getColor(
+                tv_status_left.context,
+                R.color.colorSilver
+            )
+        )
 
         event.matchStatusList?.forEachIndexed { index, it ->
-            val spanStatusName = SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
+            val spanStatusName =
+                SpannableString(it.statusNameI18n?.get(getSelectLanguage(context).key))
             val spanScore = SpannableString("${it.homeScore ?: 0}-${it.awayScore ?: 0}  ")
 
             if (index == event.matchStatusList.lastIndex) {
@@ -635,7 +634,12 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
                     spanStatusName.length,
                     Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
-                spanScore.setSpan(StyleSpan(Typeface.BOLD), 0, spanScore.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                spanScore.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    0,
+                    spanScore.length,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
 
             statusBuilder.append(spanStatusName).append(spanScore)
@@ -665,12 +669,29 @@ class OddsDetailLiveFragment : BaseSocketFragment<GameViewModel>(GameViewModel::
         tv_status_right.text = statusBuilder
 
         if (tv_status_left.tag != GameStatus.POSTPONED.code) {
-            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
-            tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorOrangeLight))
-            val statusValue = event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key) ?: event.matchStatusCO?.statusName
+            tv_status_left.setTextColor(
+                ContextCompat.getColor(
+                    tv_status_left.context,
+                    R.color.colorOrangeLight
+                )
+            )
+            tv_spt.setTextColor(
+                ContextCompat.getColor(
+                    tv_status_left.context,
+                    R.color.colorOrangeLight
+                )
+            )
+            val statusValue =
+                event.matchStatusCO?.statusNameI18n?.get(getSelectLanguage(context).key)
+                    ?: event.matchStatusCO?.statusName
             tv_status_left.text = statusValue
         } else {
-            tv_status_left.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
+            tv_status_left.setTextColor(
+                ContextCompat.getColor(
+                    tv_status_left.context,
+                    R.color.colorSilver
+                )
+            )
             tv_spt.setTextColor(ContextCompat.getColor(tv_status_left.context, R.color.colorSilver))
         }
     }
