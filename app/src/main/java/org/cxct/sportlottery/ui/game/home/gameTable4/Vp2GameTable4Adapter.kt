@@ -28,6 +28,7 @@ import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
 import java.util.*
+import kotlin.collections.MutableList as MutableList1
 
 class Vp2GameTable4Adapter(
     val dataList: List<MatchOdd>,
@@ -94,7 +95,7 @@ class Vp2GameTable4Adapter(
 
         private var gameType: String? = null
 
-        private var oddList: MutableList<Odd?>? = null
+        private var oddList: MutableList1<Odd?>? = null
 
         private var timer: Timer? = null
 
@@ -362,124 +363,81 @@ class Vp2GameTable4Adapter(
                     ?.get(LanguageManager.getSelectLanguage(context).key)
 
                 btn_match_odd1.apply {
-                    isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                        false
-                    } else {
-                        oddList?.getOrNull(0)?.isSelected ?: false
+                    if (oddList?.isNullOrEmpty() == true || (oddList?.size ?: 0) < 2) {
+                        isSelected = false
+                        betStatus = BetStatus.DEACTIVATED.code
                     }
+                    else {
+                        oddList?.getOrNull(0).let { oddFirst ->
+                            isSelected = oddFirst?.isSelected ?: false
+                            betStatus = oddFirst?.status ?: BetStatus.LOCKED.code
 
+                            this@ViewHolderHdpOu.setupOddState(this, oddFirst)
 
-                    betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                        BetStatus.DEACTIVATED.code
-                    } else {
-                        oddList?.getOrNull(0)?.status ?: BetStatus.LOCKED.code
-                    }
+                            setupOdd(oddFirst, oddsType)
 
-                    if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                        this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(0))
+                            setupOddName4Home("1" , playCateName)
 
-                        setupOdd(oddList?.getOrNull(0), oddsType)
-
-                        setupOddName4Home("1" , playCateName)
-
-                        setOnClickListener {
-                            if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                oddList?.getOrNull(0)?.let { odd ->
-                                    onClickOddListener?.onClickBet(
-                                        data,
-                                        odd,
-                                        playCateName.toString(),
-                                        itemView.tv_play_type.text.toString(),
-                                        data.betPlayCateNameMap
-                                    )
+                            setOnClickListener {
+                                oddFirst?.let { odd ->
+                                    onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                                 }
                             }
-
                         }
                     }
                 }
 
                 btn_match_odd2.apply {
-                    isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                        false
-                    } else {
-                        oddList?.getOrNull(1)?.isSelected ?: false
+                    if (oddList?.isNullOrEmpty() == true || (oddList?.size ?: 0) < 2) {
+                        isSelected = false
+                        betStatus = BetStatus.DEACTIVATED.code
                     }
+                    else {
+                        oddList?.getOrNull(1).let { oddSecond ->
+                            isSelected = oddSecond?.isSelected ?: false
+                            betStatus = oddSecond?.status ?: BetStatus.LOCKED.code
 
+                            this@ViewHolderHdpOu.setupOddState(this, oddSecond)
 
-                    betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                        BetStatus.DEACTIVATED.code
-                    } else {
-                        oddList?.getOrNull(1)?.status ?: BetStatus.LOCKED.code
-                    }
+                            setupOdd(oddSecond, oddsType)
 
-                    if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                        this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(1))
+                            if(data.matchInfo?.gameType == GameType.CK.key)
+                                setupOddName4Home("X" , playCateName)
+                            else
+                                setupOddName4Home("2" , playCateName)
 
-                        setupOdd(oddList?.getOrNull(1), oddsType)
-
-                        if(data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2)
-                            setupOddName4Home("X" , playCateName)
-                        else
-                            setupOddName4Home("2" , playCateName)
-
-                        setOnClickListener {
-                            if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                oddList?.getOrNull(1)?.let { odd ->
-                                    onClickOddListener?.onClickBet(
-                                        data,
-                                        odd,
-                                        playCateName.toString(),
-                                        itemView.tv_play_type.text.toString(),
-                                        data.betPlayCateNameMap
-                                    )
+                            setOnClickListener {
+                                oddSecond?.let { odd ->
+                                    onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                                 }
                             }
-
                         }
                     }
-
                 }
 
                 btn_match_odd3.apply {
-                    isVisible =  data.matchInfo?.gameType == GameType.CK.key && oddList?.size ?: 0 > 2
-
-                    isSelected = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                        false
-                    } else {
-                        oddList?.getOrNull(2)?.isSelected ?: false
+                    if (oddList?.isNullOrEmpty() == true || (oddList?.size ?: 0) < 3) {
+                        isSelected = false
+                        betStatus = BetStatus.DEACTIVATED.code
                     }
+                    else {
+                        oddList?.getOrNull(2).let { oddThird ->
+                            isSelected = oddThird?.isSelected ?: false
+                            betStatus = oddThird?.status ?: BetStatus.LOCKED.code
 
+                            this@ViewHolderHdpOu.setupOddState(this, oddThird)
 
-                    betStatus = if (oddList.isNullOrEmpty() || oddList?.size ?: 0 < 2) {
-                        BetStatus.DEACTIVATED.code
-                    } else {
-                        oddList?.getOrNull(2)?.status ?: BetStatus.LOCKED.code
-                    }
+                            setupOdd(oddThird, oddsType)
 
-                    if (!oddList.isNullOrEmpty() && oddList?.size ?: 0 >= 2) {
-                        this@ViewHolderHdpOu.setupOddState(this, oddList?.getOrNull(2))
+                            setupOddName4Home("2" , playCateName)
 
-                        setupOdd(oddList?.getOrNull(2), oddsType)
-
-                        setupOddName4Home("2" , playCateName)
-
-                        setOnClickListener {
-                            if (oddList != null && oddList?.size ?: 0 >= 2) {
-                                oddList?.getOrNull(2)?.let { odd ->
-                                    onClickOddListener?.onClickBet(
-                                        data,
-                                        odd,
-                                        playCateName.toString(),
-                                        itemView.tv_play_type.text.toString(),
-                                        data.betPlayCateNameMap
-                                    )
+                            setOnClickListener {
+                                oddThird?.let { odd ->
+                                    onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                                 }
                             }
-
                         }
                     }
-
                 }
             }
         }

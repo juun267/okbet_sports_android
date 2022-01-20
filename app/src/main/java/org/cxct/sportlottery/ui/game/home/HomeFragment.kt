@@ -56,6 +56,7 @@ import org.cxct.sportlottery.ui.statistics.StatisticsActivity
 import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
+import timber.log.Timber
 
 
 /**
@@ -647,7 +648,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
 
         viewModel.betInfoList.observe(this.viewLifecycleOwner) {
-            updateOdds(it.peekContent())
+            //updateOdds(it.peekContent())
         }
 
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
@@ -843,7 +844,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
                 oddsChangeEvent.updateOddsSelectedState()
-
                 when (oddsChangeEvent.getCateMenuCode()) {
                     MenuCode.HOME_INPLAY_MOBILE, MenuCode.HOME_ATSTART_MOBILE -> {
                         //滾球盤、即將開賽盤
@@ -1027,16 +1027,23 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
+        val betInfoListArray = viewModel.betInfoList.value?.peekContent()
+        if (betInfoListArray?.size == 0) {
+            return this
+        }
+
         this.odds?.let { oddTypeSocketMap ->
             oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
                 oddTypeSocketMapEntry.value.onEach { odd ->
                     odd?.isSelected =
-                        viewModel.betInfoList.value?.peekContent()?.any { betInfoListData ->
+                        betInfoListArray?.any { betInfoListData ->
                             betInfoListData.matchOdd.oddsId == odd?.id
                         }
                 }
             }
         }
+
+        Timber.e("Bee@Home2")
 
         return this
     }
@@ -1177,6 +1184,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             oddsIdArray.add(it.matchOdd.oddsId)
         }
 
+        Timber.e("Bee@Home")
+
         //滾球盤、即將開賽盤
         mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
             gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
@@ -1185,9 +1194,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                         odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
                     }
                 }
-                mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
+//                mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
             }
         }
+        mRvGameTable4Adapter.notifyDataSetChanged()
 
         //推薦賽事
         mRecommendAdapter.getData().forEachIndexed { index, entity ->
@@ -1195,9 +1205,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 oddBean.oddList.forEach { odd ->
                     odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
                 }
-                mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
+//                mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
             }
         }
+        mRecommendAdapter.notifyDataSetChanged()
 
         //精選賽事
         mRvHighlightAdapter.getData().forEach { matchOdd ->
