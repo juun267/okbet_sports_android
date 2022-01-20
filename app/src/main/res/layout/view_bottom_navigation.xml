@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="308dp"
+    android:layout_height="wrap_content"
     android:background="@color/color_ffededed">
 
     <androidx.cardview.widget.CardView
@@ -142,7 +143,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
                     android:gravity="center"
                     android:text="@string/privacy_policy"
                     android:textColor="@color/color_999999"
@@ -315,30 +315,47 @@
     </androidx.cardview.widget.CardView>
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/img_pagcor_mark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:layout_marginBottom="14dp"
         android:src="@drawable/ic_pagcor_mark"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintBottom_toTopOf="@+id/txv_btm_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cv_chat" />
+        app:layout_constraintTop_toBottomOf="@+id/cv_chat"
+        tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
+        android:id="@+id/txv_btm_hint"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
         android:layout_marginEnd="17dp"
-        android:layout_marginBottom="14dp"
         android:gravity="center_horizontal"
         android:text="@string/btm_navigation_hint"
         android:textColor="@color/color_999999"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/txv_copyright"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_pagcor_mark"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/txv_copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        android:gravity="center"
+        android:text="@string/btm_navigation_copyright"
+        android:textColor="@color/color_AAAAAA"
+        android:textSize="@dimen/textSize12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txv_btm_hint" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
