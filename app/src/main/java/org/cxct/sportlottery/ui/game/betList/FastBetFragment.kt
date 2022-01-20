@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_add_to
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_current_money
 import kotlinx.android.synthetic.main.dialog_bottom_sheet_betinfo_item.tv_odd_content_changed
 import kotlinx.android.synthetic.main.fragment_bottom_sheet_betinfo_item.*
+import kotlinx.android.synthetic.main.fragment_game_v3.*
 import kotlinx.android.synthetic.main.snackbar_login_notify.view.*
 import kotlinx.android.synthetic.main.snackbar_my_favorite_notify.view.*
 import kotlinx.android.synthetic.main.view_bet_info_close_message.*
@@ -555,9 +556,11 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
         val nameOneLine = { inputStr: String ->
             inputStr.replace("\n", "-")
         }
+
+        val inPlay = System.currentTimeMillis() > matchOdd.startTime ?: 0
         when {
             betPlayCateNameMap.isNullOrEmpty() -> {
-                tv_name.text = if (matchOdd.inplay == INPLAY) {
+                tv_name.text = if (inPlay) {
                     getString(
                         R.string.bet_info_in_play_score,
                         nameOneLine(matchOdd.playCateName),
@@ -567,18 +570,20 @@ class FastBetFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
                 } else nameOneLine(matchOdd.playCateName)
             }
             else -> {
-                tv_name.text = if (matchOdd.inplay == INPLAY) {
-                    "${
+                tv_name.text = if (inPlay) {
+                    getString(
+                        R.string.bet_info_in_play_score,
                         betPlayCateNameMap?.get(matchOdd.playCode)
-                            ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
-                    } (${matchOdd.homeScore} - ${matchOdd.awayScore})"
+                            ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
+                        matchOdd.homeScore.toString(),
+                        matchOdd.awayScore.toString()
+                    )
                 } else nameOneLine(
                     betPlayCateNameMap?.get(matchOdd.playCode)
                         ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
                 )
             }
         }
-
 
         if (matchOdd.status == BetStatus.ACTIVATED.code) {
             cl_item_background.setBackgroundColor(

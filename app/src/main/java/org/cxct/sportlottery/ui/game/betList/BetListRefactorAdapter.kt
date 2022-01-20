@@ -433,10 +433,12 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                 val nameOneLine = { inputStr: String ->
                     inputStr.replace("\n", "-")
                 }
+
+                val inPlay = System.currentTimeMillis() > itemData.matchOdd.startTime ?: 0
                 when {
                     itemData.betPlayCateNameMap.isNullOrEmpty() -> {
-                        tv_name.text = when (itemData.matchOdd.inplay) {
-                            INPLAY -> {
+                        tv_name.text = when (inPlay) {
+                            true -> {
                                 context.getString(
                                     R.string.bet_info_in_play_score,
                                     itemData.matchOdd.playCateName,
@@ -449,12 +451,15 @@ class BetListRefactorAdapter(private val onItemClickListener: OnItemClickListene
                     }
 
                     else -> {
-                        tv_name.text = when (itemData.matchOdd.inplay) {
-                            INPLAY -> {
-                                "${
+                        tv_name.text = when (inPlay) {
+                            true -> {
+                                context.getString(
+                                    R.string.bet_info_in_play_score,
                                     itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
-                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: ""
-                                }  (${itemData.matchOdd.homeScore} - ${itemData.matchOdd.awayScore})"
+                                        ?.get(LanguageManager.getSelectLanguage(context).key) ?: "",
+                                    itemData.matchOdd.homeScore.toString(),
+                                    itemData.matchOdd.awayScore.toString()
+                                )
                             }
                             else -> nameOneLine(
                                 itemData.betPlayCateNameMap?.get(itemData.matchOdd.playCode)
