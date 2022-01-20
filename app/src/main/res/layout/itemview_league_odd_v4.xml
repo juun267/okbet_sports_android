@@ -21,7 +21,9 @@
     <View
         android:id="@+id/league_odd_match_border_row1"
         android:layout_width="176dp"
-        android:layout_height="60dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@+id/linear_layout" />
@@ -32,6 +34,7 @@
         android:layout_height="45dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
+        android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toTopOf="@+id/league_odd_match_border">
@@ -101,7 +104,9 @@
     <View
         android:id="@+id/league_odd_match_border_row2"
         android:layout_width="176dp"
-        android:layout_height="60dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row1" />
@@ -109,7 +114,9 @@
     <View
         android:id="@+id/league_odd_match_border_row3"
         android:layout_width="176dp"
-        android:layout_height="60dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border"
         app:layout_constraintStart_toStartOf="@id/league_odd_match_border"
         app:layout_constraintTop_toBottomOf="@id/league_odd_match_border_row2" />
@@ -293,6 +300,7 @@
         app:layout_constraintEnd_toEndOf="@id/league_odd_match_border_row2"
         app:layout_constraintStart_toEndOf="@id/league_odd_match_score_away"
         app:layout_constraintTop_toTopOf="@id/league_odd_match_border_row2"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="芬兰" />
 
     <TextView
@@ -416,6 +424,7 @@
         android:id="@+id/league_odd_btn_pager_main"
         android:layout_width="0dp"
         android:layout_height="224dp"
+        android:layout_marginTop="6dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@id/league_odd_match_border"
         app:layout_constraintEnd_toEndOf="parent"
