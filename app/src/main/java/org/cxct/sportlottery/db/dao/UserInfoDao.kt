@@ -19,9 +19,6 @@ interface UserInfoDao {
     @Query("SELECT discount FROM user_info_table WHERE user_id = :userId")
     fun getDiscount(userId: Long): Float?
 
-    @Query("SELECT phone FROM user_info_table WHERE user_id = :userId")
-    fun getUserPhone(userId: Long): String?
-
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(vararg userInfo: UserInfo)
 
