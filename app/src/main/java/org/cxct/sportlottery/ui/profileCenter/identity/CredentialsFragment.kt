@@ -65,13 +65,6 @@ open class CredentialsFragment :
 
     }
 
-    override fun onResume() {
-        super.onResume()
-//        if (isComplete) changePage()
-//        else showPromptDialog(getString(R.string.prompt), getString(R.string.verify_failed_please_retry)) {}
-
-    }
-
     private fun changePage(data: CredentialCompleteData) {
         val action =
             CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment(
@@ -107,15 +100,12 @@ open class CredentialsFragment :
         }
 
         viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
+            hideLoading()
             event.getContentIfNotHandled()?.data?.let { data ->
                 val isComplete = data.ekycResult == EkycResultType.SUCCESS.value
                         && data.extFaceInfo?.ekycResultFace == EkycResultType.SUCCESS.value
                         && data.extIdInfo?.ekycResultDoc == EkycResultType.SUCCESS.value
 
-                //測試用
-//                Log.e(">>>", "${data.ekycResult == EkycResultType.SUCCESS.value}, " +
-//                        "${data.extFaceInfo?.ekycResultFace == EkycResultType.SUCCESS.value}, " +
-//                        "${data.extIdInfo?.ekycResultDoc == EkycResultType.SUCCESS.value} ")
                 if (isComplete) changePage(data)
                 else showPromptDialog(getString(R.string.prompt), getString(R.string.verify_failed_please_retry)) {}
             }
@@ -126,6 +116,7 @@ open class CredentialsFragment :
     }
 
     private fun checkResult(transactionId: String?) {
+        loading()
         viewModel.getCredentialCompleteResult(transactionId)
     }
 }

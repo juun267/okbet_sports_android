@@ -1,7 +1,5 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.view.Gravity
@@ -10,38 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.navigation.fragment.navArgs
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.BitmapImageViewTarget
-import kotlinx.android.synthetic.main.fragment_credentials_detail.*
-import kotlinx.android.synthetic.main.fragment_credentials_detail.btn_submit
-import kotlinx.android.synthetic.main.fragment_credentials_detail.cv_recharge_time
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_country
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_first_name
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_id
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_last_name
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_marital_status
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_other_name
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_sex
-import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_work
-import kotlinx.android.synthetic.main.fragment_credentials_detail.img_face_scan
-import kotlinx.android.synthetic.main.fragment_credentials_detail.img_id_card
-import kotlinx.android.synthetic.main.fragment_credentials_detail.tv_birth
 import kotlinx.android.synthetic.main.fragment_credentials_detail_new.*
 import org.cxct.sportlottery.R
-import org.cxct.sportlottery.network.credential.CredentialCompleteData
-import org.cxct.sportlottery.network.credential.ExtBasicInfo
-import org.cxct.sportlottery.network.credential.ExtIdInfo
-import org.cxct.sportlottery.network.interceptor.LogInterceptor.Logger.Companion.DEFAULT
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
-import java.lang.Byte.decode
 import java.util.*
 
 class CredentialsDetailFragment :
@@ -60,36 +37,7 @@ class CredentialsDetailFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.getCredentialCompleteResult(args.transactionId)
-        initObserve()
         setupView()
-
-    }
-
-    private fun initObserve() {
-        /*
-        viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let {
-                //TODO Cheryl : resultStatus為失敗的情況處理
-
-                it.data.extFaceInfo?.apply {
-//                    if (ekycResultFace.equals("Success")) {
-                    val requestOptions = RequestOptions()
-                        .override(180)
-                        .centerCrop()
-                        .sizeMultiplier(0.5f)
-                        .placeholder(R.drawable.picture_image_placeholder)
-
-                    val imageByteArray: ByteArray = android.util.Base64.decode(faceImg, android.util.Base64.DEFAULT)
-                    Glide.with(img_face_scan.context)
-                        .asBitmap()
-                        .load(imageByteArray)
-                        .apply(requestOptions)
-                        .into(img_face_scan)
-                }
-            }
-        }
-        */
     }
 
     private fun setInfoInText() {
@@ -126,13 +74,11 @@ class CredentialsDetailFragment :
         .override(300)
         .centerCrop()
         .sizeMultiplier(0.5f)
-        .placeholder(R.drawable.ic_image_broken)
 
     private val bigPicRequestOptions = RequestOptions()
         .override(1000)
         .centerCrop()
         .sizeMultiplier(0.5f)
-        .placeholder(R.drawable.ic_image_broken)
 
     private fun setCredentialImg() {
         args.data?.extIdInfo?.apply {
