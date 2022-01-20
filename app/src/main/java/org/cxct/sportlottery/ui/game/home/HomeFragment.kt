@@ -1172,17 +1172,19 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     //mapping 下注單裡面項目，更新 賠率按鈕 選擇狀態
     private fun updateOdds(result: List<BetInfoListData>) {
+        val oddsIdArray = mutableListOf<String>()
+        result.forEach {
+            oddsIdArray.add(it.matchOdd.oddsId)
+        }
+
         //滾球盤、即將開賽盤
         mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
             gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
                 matchOdd.oddsMap.values.forEach { oddList ->
                     oddList?.forEach { odd ->
-                        odd?.isSelected = result.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
+                        odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
                     }
                 }
-
                 mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
             }
         }
@@ -1191,11 +1193,8 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRecommendAdapter.getData().forEachIndexed { index, entity ->
             entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
                 oddBean.oddList.forEach { odd ->
-                    odd?.isSelected = result.any { betInfoListData ->
-                        betInfoListData.matchOdd.oddsId == odd?.id
-                    }
+                    odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
                 }
-
                 mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
             }
         }
@@ -1204,20 +1203,10 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         mRvHighlightAdapter.getData().forEach { matchOdd ->
             matchOdd.oddsMap.values.forEach { oddList ->
                 oddList?.forEach { odd ->
-                    odd?.isSelected = result.any { betInfoListData ->
-                        betInfoListData.matchOdd.oddsId == odd?.id
-                    }
+                    odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
                 }
             }
         }
         mRvHighlightAdapter.notifyDataSetChanged()
-    }
-
-    private fun judgeOddState(oldOdd: Double?, newOdd: Double?): OddState {
-        return when {
-            oldOdd ?: 0.0 > newOdd ?: 0.0 -> OddState.SMALLER
-            oldOdd ?: 0.0 < newOdd ?: 0.0 -> OddState.LARGER
-            else -> OddState.SAME
-        }
     }
 }

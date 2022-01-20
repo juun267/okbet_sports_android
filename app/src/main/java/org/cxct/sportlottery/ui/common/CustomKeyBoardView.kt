@@ -1,6 +1,7 @@
 package org.cxct.sportlottery.ui.common
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -19,15 +20,17 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
 
     private var paint: Paint = Paint()
 
+    @SuppressLint("NewApi")
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         try {
             val keys = keyboard.keys
             for (key in keys) {
-                if (key.codes[0] == KeyBoardCode.DOT.code ||
+                if (
                     key.codes[0] == KeyBoardCode.PLUS_10.code ||
                     key.codes[0] == KeyBoardCode.PLUS_50.code ||
                     key.codes[0] == KeyBoardCode.PLUS_100.code ||
+                    key.codes[0] == KeyBoardCode.MAX.code ||
                     key.codes[0] == KEYCODE_DONE
                 ) {
                     setDrawable(canvas, key, R.drawable.bg_keyboard_count)
@@ -38,7 +41,7 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
                 }
                 paint.textAlign = Paint.Align.CENTER
                 paint.textSize = 36f
-                paint.color = Color.WHITE
+                paint.color = context.getColor(R.color.colorBlackLight)
                 if (key.label != null) {
                     canvas.drawText(
                         key.label.toString(), (key.x + key.width / 2).toFloat(), (
@@ -50,7 +53,6 @@ class CustomKeyBoardView(context: Context?, attrs: AttributeSet?) : KeyboardView
             e.printStackTrace()
         }
     }
-
 
     private fun setDrawable(canvas: Canvas, key: Keyboard.Key, res: Int) {
         val drawable = ContextCompat.getDrawable(context, res)

@@ -67,7 +67,7 @@
         android:background="@drawable/selector_button_radius_0_bet"
         android:gravity="center"
         android:text="@string/bet_info_accept_odds_change"
-        android:textColor="@color/colorBlue"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/textSize13sp"
         android:visibility="gone" />
 
