@@ -76,7 +76,7 @@
                     android:background="@color/colorWhite"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
-                    app:layout_constraintTop_toBottomOf="@id/tab_cat"
+                    app:layout_constraintTop_toBottomOf="@id/rv_cat"
                     tools:layout_constraintBottom_toBottomOf="parent"
                     tools:layout_constraintTop_toBottomOf="@id/live_view_tool_bar"
                     tools:listitem="@layout/content_odds_detail_list_item" />

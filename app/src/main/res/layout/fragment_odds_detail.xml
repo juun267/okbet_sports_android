@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.cxct.sportlottery.ui.odds.OddsDetailFragment"
     tools:ignore="SpUsage">
 
     <data>
@@ -49,22 +50,21 @@
                     android:background="@color/colorWhite8"
                     app:layout_constraintTop_toBottomOf="@+id/v_toolbar" />
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_cat"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_cat"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_height="62dp"
-                    android:overScrollMode="never"
-                    android:background="@color/colorWhite"
-                    android:clipToPadding="false"
                     android:paddingHorizontal="10dp"
+                    android:paddingVertical="10dp"
+                    tools:listitem="@layout/tab_odds_detail"
+                    app:layout_constrainedWidth="true"
+                    android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@+id/v_divider"
-                    app:tabIndicatorHeight="0dp"
-                    app:tabMode="scrollable"
-                    app:tabPaddingEnd="6dp"
-                    app:tabPaddingStart="6dp"
-                    app:tabRippleColor="@color/transparent" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_gravity="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_detail"
@@ -73,7 +73,7 @@
                     android:background="@color/colorWhite"
                     android:overScrollMode="never"
                     android:nestedScrollingEnabled="false"
-                    app:layout_constraintTop_toBottomOf="@id/tab_cat"
+                    app:layout_constraintTop_toBottomOf="@id/rv_cat"
                     tools:listitem="@layout/content_odds_detail_list_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
