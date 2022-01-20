@@ -899,7 +899,7 @@
     <string name="bank_list_bank">bank card</string>
     <string name="bank_list_crypto">virtual currency</string>
     <string name="e_address">Address</string>
-    <string name="hint_e_address">(Please enter a contact address)</string>
+    <string name="hint_e_address">Please enter a contact address</string>
     <string name="initial_withdrawal_needs_credited">First-time withdrawal money needs to deposit %1$s.</string>
     <string name="make_sure_valid_account">We will withhold %1$s temporarily when you withdraw money the first time to make sure you are a valid user. This money will return to you in 30 days later.</string>
 </resources>

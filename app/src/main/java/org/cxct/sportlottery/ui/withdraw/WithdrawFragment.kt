@@ -3,11 +3,11 @@ package org.cxct.sportlottery.ui.withdraw
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -28,7 +28,6 @@ import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.login.LoginEditText
-import org.cxct.sportlottery.ui.login.signIn.LoginActivity
 import org.cxct.sportlottery.ui.withdraw.BankActivity.Companion.ModifyBankTypeKey
 import org.cxct.sportlottery.util.ArithUtil
 import org.cxct.sportlottery.util.MoneyManager.getBankIconByBankName
@@ -85,11 +84,24 @@ class WithdrawFragment : BaseSocketFragment<WithdrawViewModel>(WithdrawViewModel
         
         if(sConfigData?.enableMinRemainingBalance == FLAG_OPEN ){
             cl_notification.visibility = View.VISIBLE
+
+            checkNotificationVisiable(tv_notification_1, tv_dot_1, sConfigData?.minRechMoney)
+            checkNotificationVisiable(tv_notification_2, tv_dot_2, sConfigData?.minRemainingBalance)
+
             tv_notification_1.text = getString(R.string.initial_withdrawal_needs_credited, sConfigData?.minRechMoney)
             tv_notification_2.text = getString(R.string.make_sure_valid_account, sConfigData?.minRemainingBalance)
         }else{
             cl_notification.visibility = View.GONE
         }
+    }
+
+    private fun checkNotificationVisiable(
+        textView: TextView,
+        dotView1: TextView,
+        value: String?
+    ) {
+        textView.visibility == if(value.isNullOrBlank()) View.GONE else View.VISIBLE
+        dotView1.visibility == if(value.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 
     private fun initEvent() {
