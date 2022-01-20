@@ -159,6 +159,25 @@ object Constants {
             null
         }
     }
+    //联系我们
+    fun getContactUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/contact-us?platform="+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/contact-us?platform="+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/contact-us?platform"+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
         return "https://download." + serverUrl + "/sportnative/platform/" + BuildConfig.CHANNEL_NAME + "/version-Android.json"
