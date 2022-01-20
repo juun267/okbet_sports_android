@@ -126,9 +126,10 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
 
         rv_cat.apply {
             adapter = tabCateAdapter
+            itemAnimator?.changeDuration = 0
             edgeEffectFactory = EdgeBounceEffectHorizontalFactory()
         }
-        
+
     }
 
 
