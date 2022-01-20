@@ -18,6 +18,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import kotlinx.android.synthetic.main.fragment_credentials_detail.*
+import kotlinx.android.synthetic.main.fragment_credentials_detail.btn_submit
+import kotlinx.android.synthetic.main.fragment_credentials_detail.cv_recharge_time
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_country
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_first_name
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_id
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_last_name
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_marital_status
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_other_name
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_sex
+import kotlinx.android.synthetic.main.fragment_credentials_detail.et_identity_work
+import kotlinx.android.synthetic.main.fragment_credentials_detail.img_face_scan
+import kotlinx.android.synthetic.main.fragment_credentials_detail.img_id_card
+import kotlinx.android.synthetic.main.fragment_credentials_detail.tv_birth
+import kotlinx.android.synthetic.main.fragment_credentials_detail_new.*
 import org.cxct.sportlottery.R
 import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.ExtBasicInfo
@@ -30,7 +44,8 @@ import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import java.lang.Byte.decode
 import java.util.*
 
-class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class CredentialsDetailFragment :
+    BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
     private val args: CredentialsDetailFragmentArgs by navArgs()
 
@@ -40,7 +55,7 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_credentials_detail, container, false)
+        return inflater.inflate(R.layout.fragment_credentials_detail_new, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -93,7 +108,6 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
     private fun setupView() {
 
         setInfoInText()
-
         setCredentialImg()
         setFaceImg()
 
@@ -108,36 +122,51 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         initTimePicker()
     }
 
+    private val smallPicRequestOptions = RequestOptions()
+        .override(300)
+        .centerCrop()
+        .sizeMultiplier(0.5f)
+        .placeholder(R.drawable.ic_image_broken)
+
+    private val bigPicRequestOptions = RequestOptions()
+        .override(1000)
+        .centerCrop()
+        .sizeMultiplier(0.5f)
+        .placeholder(R.drawable.ic_image_broken)
+
     private fun setCredentialImg() {
         args.data?.extIdInfo?.apply {
-            val requestOptions = RequestOptions()
-                .override(180)
-                .centerCrop()
-                .sizeMultiplier(0.5f)
-                .placeholder(R.drawable.picture_image_placeholder)
-
             val imageByteArray: ByteArray = Base64.decode(frontPageImg, Base64.DEFAULT)
+            val backImageByteArray: ByteArray = Base64.decode(backPageImg, Base64.DEFAULT)
+
             Glide.with(img_id_card.context)
                 .asBitmap()
                 .load(imageByteArray)
-                .apply(requestOptions)
+                .apply(smallPicRequestOptions)
                 .into(img_id_card)
+
+            Glide.with(img_id_card_back.context)
+                .asBitmap()
+                .load(backImageByteArray)
+                .apply(smallPicRequestOptions)
+                .into(img_id_card_back)
         }
     }
 
     private fun setFaceImg() {
         args.data?.extFaceInfo?.apply {
-            val requestOptions = RequestOptions()
-                .override(180)
-                .centerCrop()
-                .sizeMultiplier(0.5f)
-                .placeholder(R.drawable.picture_image_placeholder)
-
             val imageByteArray: ByteArray = Base64.decode(faceImg, Base64.DEFAULT)
+
+            Glide.with(img_face_small.context)
+                .asBitmap()
+                .load(imageByteArray)
+                .apply(smallPicRequestOptions)
+                .into(img_face_small)
+
             Glide.with(img_face_scan.context)
                 .asBitmap()
                 .load(imageByteArray)
-                .apply(requestOptions)
+                .apply(bigPicRequestOptions)
                 .into(img_face_scan)
         }
     }
@@ -164,8 +193,18 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
             .setTitleText(resources.getString(R.string.identity_birth))
             .setCancelText(getString(R.string.picker_cancel))
             .setSubmitText(getString(R.string.picker_submit))
-            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
-            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
+            .setSubmitColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.colorGrayLight
+                )
+            )
+            .setCancelColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.colorGrayLight
+                )
+            )
             .isDialog(true)
             .build() as TimePickerView).also { dateTimePicker = it }
 

@@ -19,6 +19,7 @@ import org.cxct.sportlottery.network.credential.DocType
 import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 
 
 open class CredentialsFragment :
@@ -98,8 +99,7 @@ open class CredentialsFragment :
                         }
 
                         override fun onInterrupted(response: ZLZResponse) {
-                            Toast.makeText(context, getString(R.string.verify_failed_please_retry), Toast.LENGTH_SHORT)
-                                .show()
+                            showPromptDialog(getString(R.string.prompt), getString(R.string.verify_failed_please_retry)){}
                         }
                     })
                 }
