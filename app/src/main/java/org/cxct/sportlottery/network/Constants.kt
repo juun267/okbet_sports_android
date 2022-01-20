@@ -105,6 +105,7 @@ object Constants {
         }
     }
 
+    //隐私权政策
     fun getPrivacyRuleUrl(context: Context): String? {
 
         return try {
@@ -123,6 +124,7 @@ object Constants {
         }
     }
 
+    //规则与条款
     fun getAgreementRuleUrl(context: Context): String? {
 
         return try {
@@ -159,6 +161,7 @@ object Constants {
             null
         }
     }
+
     //联系我们
     fun getContactUrl(context: Context): String? {
 
@@ -177,6 +180,7 @@ object Constants {
             null
         }
     }
+
 
     //獲取檢查APP是否有更新版本的URL //輪詢 SERVER_URL_LIST 成功的那組 serverUrl 用來 download .apk
     fun getCheckAppUpdateUrl(serverUrl: String?): String {
