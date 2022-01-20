@@ -86,15 +86,16 @@ object Constants {
         }
     }
 
+    //博彩责任
     fun getDutyRuleUrl(context: Context): String? {
 
         return try {
             when (getSelectLanguage(context)) {
-                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility"+context.getString(
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/responsibility?"+context.getString(
                     R.string.app_name)
-                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility"+context.getString(
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/responsibility?"+context.getString(
                     R.string.app_name)
-                else -> getBaseUrl()+"sports-rule/#/us/responsibility"+context.getString(
+                else -> getBaseUrl()+"sports-rule/#/us/responsibility?"+context.getString(
                     R.string.app_name)
             }
 
