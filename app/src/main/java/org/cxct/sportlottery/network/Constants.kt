@@ -67,6 +67,25 @@ object Constants {
         }
     }
 
+    //關於我們
+    fun getAboutUsUrl(context: Context): String? {
+
+        return try {
+            when (getSelectLanguage(context)) {
+                LanguageManager.Language.ZH -> getBaseUrl()+"sports-rule/#/about-us?"+context.getString(
+                    R.string.app_name)
+                LanguageManager.Language.VI -> getBaseUrl()+"sports-rule/#/vi/about-us?"+context.getString(
+                    R.string.app_name)
+                else -> getBaseUrl()+"sports-rule/#/us/about-us?"+context.getString(
+                    R.string.app_name)
+            }
+
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     fun getDutyRuleUrl(context: Context): String? {
 
         return try {
