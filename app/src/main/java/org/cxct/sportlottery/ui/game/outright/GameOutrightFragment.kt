@@ -18,6 +18,7 @@ import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.outright.odds.MatchOdd
 import org.cxct.sportlottery.network.service.odds_change.OddsChangeEvent
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.game.GameViewModel
 import org.cxct.sportlottery.util.GameConfigManager
@@ -25,7 +26,7 @@ import org.cxct.sportlottery.util.SocketUpdateUtil
 import java.util.*
 
 
-class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class GameOutrightFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
     private val args: GameOutrightFragmentArgs by navArgs()
 
@@ -96,6 +97,7 @@ class GameOutrightFragment : BaseSocketFragment<GameViewModel>(GameViewModel::cl
             initObserve()
             initSocketObserver()
             initView()
+            initBottomNavigation()
 
         } catch (e: Exception) {
             e.printStackTrace()
