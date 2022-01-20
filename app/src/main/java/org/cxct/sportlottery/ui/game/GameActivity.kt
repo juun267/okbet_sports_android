@@ -70,6 +70,8 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         }
     }
 
+    private var betListFragment = BetListFragment()
+
     private val mMarqueeAdapter by lazy { MarqueeAdapter() }
     private val mNavController by lazy { findNavController(R.id.game_container) }
     private val navDestListener by lazy {
@@ -153,6 +155,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
         iv_logo.setImageResource(R.drawable.ic_logo)
         iv_logo.setOnClickListener {
             viewModel.navMainPage(ThirdGameCategory.MAIN)
+            removeBetListFragment()
         }
 
         iv_language.setImageResource(LanguageManager.getLanguageFlag(this))
@@ -250,7 +253,7 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
                 R.anim.pop_bottom_to_top_exit
             )
 
-        val betListFragment =
+        betListFragment =
             BetListFragment.newInstance(object : BetListFragment.BetResultListener {
                 override fun onBetResult(betResultData: Receipt?, betParlayList: List<ParlayOdd>) {
                     supportFragmentManager.beginTransaction()
@@ -727,5 +730,9 @@ class GameActivity : BaseBottomNavActivity<GameViewModel>(GameViewModel::class) 
             tab?.tv_title?.isSelected = false
             tab?.tv_number?.isSelected = false
         }
+    }
+
+    private fun removeBetListFragment(){
+        supportFragmentManager.beginTransaction().remove(betListFragment).commit()
     }
 }

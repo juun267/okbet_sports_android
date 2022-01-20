@@ -109,7 +109,7 @@ abstract class BaseFavoriteViewModel(
                             matchOdd.matchInfo?.isFavorite = true
                             playCateCode?.let {
                                 val oddsMap = matchOdd.oddsMap
-                                    .filter { odds -> odds.key == playCateCode }
+                                    .filter { odds -> odds.key == it }
                                     .toMutableFormat()
 
                                 matchOdd.oddsMap.clear()

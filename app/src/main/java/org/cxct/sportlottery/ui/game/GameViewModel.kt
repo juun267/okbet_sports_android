@@ -2141,4 +2141,8 @@ class GameViewModel(
         return betInfoRepository.getIsFastBetOpened()
     }
 
+    fun getLoginBoolean(): Boolean{
+        return loginRepository.isLogin.value ?: false
+    }
+
 }
