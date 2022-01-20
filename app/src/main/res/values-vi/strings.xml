@@ -944,4 +944,6 @@
     <string name="identity_sex">Giới tính</string>
     <string name="identity_work">Công việc</string>
     <string name="not_verify">(Chưa được xác minh)</string>
+    <string name="verified">(Xác minh)</string>
+    <string name="verify_failed_please_retry">Lỗi xảy ra trong quá trình xác thực. Xin thử lại lần nữa</string>
 </resources>

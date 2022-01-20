@@ -906,4 +906,6 @@
     <string name="passport">Passport</string>
     <string name="face_scan_result">face scan result</string>
     <string name="not_verify">(Not yet verified)</string>
+    <string name="verified">(Verified)</string>
+    <string name="verify_failed_please_retry">Verification failed, please try again</string>
 </resources>

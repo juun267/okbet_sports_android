@@ -1,9 +1,12 @@
 package org.cxct.sportlottery.network.credential
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class ExtFaceInfo (
     /**
@@ -20,4 +23,4 @@ data class ExtFaceInfo (
 
     @Json(name = "faceLivenessResult")
     val faceLivenessResult: String?, //面部活力结果
-)
+): Parcelable

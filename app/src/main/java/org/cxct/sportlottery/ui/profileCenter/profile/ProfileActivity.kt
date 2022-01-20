@@ -157,10 +157,17 @@ class ProfileActivity : BaseSocketActivity<ProfileModel>(ProfileModel::class) {
             tv_member_account.text = it?.userName
             tv_id.text = it?.userId?.toString()
             tv_real_name.text = it?.fullName
-            ll_verified.visibility = if (it?.verified == VerifiedType.PASSED.value) View.GONE else View.VISIBLE
-            tv_verified.text = when (it?.verified) {
-                VerifiedType.NOT_YET.value, VerifiedType.VERIFIED_FAILED.value -> getString(R.string.not_verify)
-                else -> ""
+
+            when (it?.verified) {
+                VerifiedType.PASSED.value -> {
+                    tv_verified.text = getString(R.string.verified)
+                    tv_verified.setTextColor(ContextCompat.getColor(tv_verified.context, R.color.colorBlue))
+                    icon_identity.visibility = View.GONE
+                }
+                else -> {
+                    tv_verified.text = getString(R.string.not_verify)
+                    tv_verified.setTextColor(ContextCompat.getColor(tv_verified.context, R.color.colorRed))
+                }
             }
 
             if (it?.setted == FLAG_NICKNAME_IS_SET) {

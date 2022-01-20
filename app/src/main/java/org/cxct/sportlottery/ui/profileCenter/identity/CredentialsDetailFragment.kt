@@ -3,6 +3,7 @@ package org.cxct.sportlottery.ui.profileCenter.identity
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.BitmapImageViewTarget
 import kotlinx.android.synthetic.main.fragment_credentials_detail.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.credential.CredentialCompleteData
 import org.cxct.sportlottery.network.credential.ExtBasicInfo
+import org.cxct.sportlottery.network.credential.ExtIdInfo
 import org.cxct.sportlottery.network.interceptor.LogInterceptor.Logger.Companion.DEFAULT
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
@@ -42,17 +45,17 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getCredentialCompleteResult(args.transactionId)
+//        viewModel.getCredentialCompleteResult(args.transactionId)
         initObserve()
         setupView()
 
     }
 
     private fun initObserve() {
+        /*
         viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let {
                 //TODO Cheryl : resultStatus為失敗的情況處理
-                setInfoInText(it.data.extBasicInfo)
 
                 it.data.extFaceInfo?.apply {
 //                    if (ekycResultFace.equals("Success")) {
@@ -71,21 +74,29 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
                 }
             }
         }
+        */
     }
 
-    private fun setInfoInText(result: ExtBasicInfo?) {
-        result?.apply {
-            et_identity_id.setText(certNo)
-            et_identity_last_name.setText(certName)
-            et_identity_first_name.setText(certName)
-            et_identity_id.setText(certNo)
-            et_identity_id.setText(certNo)
+    private fun setInfoInText() {
+        args.data?.extIdInfo?.ocrResult?.apply {
+            et_identity_id.setText(idNumber)
+            et_identity_first_name.setText(firstName)
+            et_identity_last_name.setText(lastName)
+            et_identity_other_name.setText(middleName)
+            tv_birth.text = dateOfBirth
+            et_identity_sex.setText(sex)
         }
 
     }
 
 
     private fun setupView() {
+
+        setInfoInText()
+
+        setCredentialImg()
+        setFaceImg()
+
         cv_recharge_time.setOnClickListener {
             dateTimePicker.show()
         }
@@ -95,6 +106,40 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         }
 
         initTimePicker()
+    }
+
+    private fun setCredentialImg() {
+        args.data?.extIdInfo?.apply {
+            val requestOptions = RequestOptions()
+                .override(180)
+                .centerCrop()
+                .sizeMultiplier(0.5f)
+                .placeholder(R.drawable.picture_image_placeholder)
+
+            val imageByteArray: ByteArray = Base64.decode(frontPageImg, Base64.DEFAULT)
+            Glide.with(img_id_card.context)
+                .asBitmap()
+                .load(imageByteArray)
+                .apply(requestOptions)
+                .into(img_id_card)
+        }
+    }
+
+    private fun setFaceImg() {
+        args.data?.extFaceInfo?.apply {
+            val requestOptions = RequestOptions()
+                .override(180)
+                .centerCrop()
+                .sizeMultiplier(0.5f)
+                .placeholder(R.drawable.picture_image_placeholder)
+
+            val imageByteArray: ByteArray = Base64.decode(faceImg, Base64.DEFAULT)
+            Glide.with(img_face_scan.context)
+                .asBitmap()
+                .load(imageByteArray)
+                .apply(requestOptions)
+                .into(img_face_scan)
+        }
     }
 
     private fun initTimePicker() {
@@ -107,7 +152,7 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         ) { date, _ ->
             try {
                 //                    depositDate = date
-                txv_recharge_time.text = TimeUtil.timeFormat(date.time, YMD_FORMAT)
+                tv_birth.text = TimeUtil.timeFormat(date.time, YMD_FORMAT)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -146,7 +191,6 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         et_identity_last_name.setText("WANG")
         et_identity_first_name.setText("QIBIN")
         et_identity_country.setText("CHINA")
-        txv_recharge_time.text = "09.Sep.1987"
         et_identity_marital_status.setText("SINGLE")
         et_identity_sex.setText("MALE")
         et_identity_work.setText("WORKER")

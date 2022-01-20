@@ -1,8 +1,12 @@
 package org.cxct.sportlottery.network.credential
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class CredentialCompleteData(
     @Json(name = "result")
@@ -25,4 +29,16 @@ data class CredentialCompleteData(
 
     @Json(name = "extFaceInfo")
     val extFaceInfo: ExtFaceInfo?, //面部相关信息
-)
+
+    @Json(name = "extIdInfo")
+    val extIdInfo: ExtIdInfo?, //面部相关信息
+): Parcelable
+
+enum class EkycResultType(val value: String) {
+    SUCCESS("Success"),
+    PENDING("Pending"),
+    FAILURE("Failure"),
+    IN_PROCESS("InProcess"),
+    VOID_CANCELLED("VoidCancelled"),
+    VOID_TIMEOUT("VoidTimeout")
+}
