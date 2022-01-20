@@ -16,7 +16,6 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
 
     fun initBottomNavigation(){
         //底部hint提示
-
         txv_btm_hint.text = String.format(getString(R.string.btm_navigation_hint),context?.getString(
             R.string.app_name
         ))
@@ -24,6 +23,7 @@ abstract class BaseBottomNavigationFragment<T : BaseSocketViewModel>(clazz: KCla
             R.string.app_name
         ))
 
+        //WinBet平台顯示邏輯
         when (BuildConfig.APPLICATION_ID) {
             "com.wbettyap.cnapp" -> {
                 img_pagcor_mark.isVisible = false
