@@ -93,7 +93,6 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             }
 
             override fun onAnimationEnd(animation: Animation?) {
-//                binding.llDeleteAll.visibility = View.GONE
                 binding.apply {
                     llDeleteAll.visibility = View.GONE
                 }
@@ -385,6 +384,7 @@ class BetListFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) 
             btnDeleteAllConfirm.setOnClickListener {
                 btnDeleteAllConfirm.startAnimation(exitAnimation)
                 viewModel.removeBetInfoAll()
+                activity?.onBackPressed()
             }
         }
     }
