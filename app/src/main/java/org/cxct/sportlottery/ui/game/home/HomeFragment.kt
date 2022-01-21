@@ -210,12 +210,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         rb_in_play.setOnClickListener {
             mSelectMatchType = MatchType.IN_PLAY
-            refreshTable(mSelectMatchType, mInPlayResult)
+            refreshTable(mInPlayResult)
         }
 
         rb_as_start.setOnClickListener {
             mSelectMatchType = MatchType.AT_START
-            refreshTable(mSelectMatchType, mAtStartResult)
+            refreshTable(mAtStartResult)
         }
     }
 
@@ -337,12 +337,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun refreshTable(selectMatchType: MatchType, result: MatchPreloadResult?) {
+    private fun refreshTable(result: MatchPreloadResult?) {
         //先清除之前訂閱項目
         unsubscribeTableHallChannel()
-        subscribeTableHallChannel(selectMatchType)
+        subscribeTableHallChannel(mSelectMatchType)
 
-        mRvGameTable4Adapter.setData(result?.matchPreloadData, selectMatchType, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
+        mRvGameTable4Adapter.setData(result?.matchPreloadData, mSelectMatchType, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
     }
 
     //TableBar 判斷是否隱藏
@@ -649,7 +649,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
             it?.let { oddsType ->
-                mRvGameTable4Adapter.oddsType = oddsType
+                mRvGameTable4Adapter.notifyOddsTypeChanged(oddsType)
                 mRecommendAdapter.oddsType = oddsType
                 mRvHighlightAdapter.oddsType = oddsType
             }

@@ -32,10 +32,7 @@ import org.koin.core.parameter.emptyParametersHolder
 import java.util.*
 
 class Vp2GameTable4Adapter (
-    val dataList: List<MatchOdd>,
-    val oddsType: OddsType,
     val matchType: MatchType,
-    val playCateNameMap: Map<String?, Map<String?, String?>?>? //主頁的翻譯要取外層的playCateNameMap，odds為{}時內層的playCateNameMap會是空的
 ) :
     RecyclerView.Adapter<Vp2GameTable4Adapter.ViewHolderHdpOu>() {
 
@@ -47,9 +44,12 @@ class Vp2GameTable4Adapter (
 
     var onClickStatisticsListener: OnClickStatisticsListener? = null
 
-    var isLogin: Boolean? = false
-
-    var selectedOdds = mutableListOf<String>()
+    private var isLogin: Boolean = false
+    private var oddsType: OddsType = OddsType.EU
+    private var selectedOdds = mutableListOf<String>()
+    private var dataList: List<MatchOdd> = listOf()
+    //主頁的翻譯要取外層的playCateNameMap，odds為{}時內層的playCateNameMap會是空的
+    private var playCateNameMap: Map<String?, Map<String?, String?>?>? = mapOf()
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -60,6 +60,16 @@ class Vp2GameTable4Adapter (
                 }))
             }
         }
+    }
+
+    fun setData(dataList: List<MatchOdd>, isLogin: Boolean, oddsType: OddsType,
+                playCateNameMap: Map<String?, Map<String?, String?>?>, selectedOdds: MutableList<String>) {
+        this.dataList = dataList
+        this.isLogin = isLogin
+        this.oddsType = oddsType
+        this.playCateNameMap = playCateNameMap
+        this.selectedOdds = selectedOdds
+        this.notifyDataSetChanged()
     }
 
     private val mTimerMap = mutableMapOf<Int, Timer?>()
@@ -96,6 +106,11 @@ class Vp2GameTable4Adapter (
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
         this.selectedOdds = selectedOdds
+        this.notifyDataSetChanged()
+    }
+
+    fun notifyOddsTypeChanged(oddsType: OddsType) {
+        this.oddsType = oddsType
         this.notifyDataSetChanged()
     }
 

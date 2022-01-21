@@ -32,6 +32,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var mDataList = mutableListOf<GameEntity>()
     private var mMatchType: MatchType = MatchType.IN_PLAY
     private var selectedOdds = mutableListOf<String>()
+    private var oddsType: OddsType = OddsType.EU
     var isLogin: Boolean? = false
 
     enum class ItemType {
@@ -94,15 +95,6 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             mDataList[index].vpTableAdapter?.notifyItemChanged(indexMatchOdd)
     }
 
-    var oddsType: OddsType = OddsType.EU
-        set(value) {
-            if (value != field) {
-                field = value
-                stopAllTimer()
-                notifyDataSetChanged()
-            }
-        }
-
     var onClickOddListener: OnClickOddListener? = null
 
     var onClickMatchListener: OnSelectItemListener<MatchOdd>? = null
@@ -119,6 +111,13 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return when (mDataList[position].otherMatch.isNullOrEmpty()) {
             true -> ItemType.ODD_DATA.ordinal
             false -> ItemType.SPORT_GRID_REPAY.ordinal
+        }
+    }
+
+    fun notifyOddsTypeChanged(oddsType: OddsType) {
+        this.oddsType = oddsType
+        mDataList.forEach{
+            it.vpTableAdapter?.notifyOddsTypeChanged(oddsType)
         }
     }
 
@@ -142,17 +141,12 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-//    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-//        val data = mDataList[position]
-//        holder.bind(data, oddsType)
-//    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = mDataList[position]
         when (holder) {
             is ItemViewHolder -> {
                 holder.apply {
-                    bind(data,oddsType)
+                    bind(data)
                 }
             }
             is SportGridViewHolder ->{
@@ -204,7 +198,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
 
-        fun bind(data: GameEntity, oddsType: OddsType) {
+        fun bind(data: GameEntity) {
             itemView.apply {
                 tv_game_name.text = data.name
                 tv_game_num.text = data.num.toString()
@@ -220,13 +214,12 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
 
                 data.matchOdds?.let {
-                    data.vpTableAdapter = Vp2GameTable4Adapter(it, oddsType, mMatchType, data.playCateNameMap)
+                    if (data.vpTableAdapter == null) data.vpTableAdapter = Vp2GameTable4Adapter(mMatchType)
                     data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                     data.vpTableAdapter?.onClickOddListener = onClickOddListener
                     data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                     data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
-                    data.vpTableAdapter?.isLogin = isLogin
-                    data.vpTableAdapter?.selectedOdds = selectedOdds
+                    data.vpTableAdapter?.setData(it, isLogin ?: false, oddsType, data.playCateNameMap ?: mapOf(), selectedOdds)
                     view_pager.adapter = data.vpTableAdapter
 
                     indicator_view.setupWithViewPager2(view_pager)
@@ -238,8 +231,6 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         }
                     }
                 }
-//                if (data.vpTableAdapter == null)
-//                    data.vpTableAdapter = Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType, data.playCateNameMap)
 
                 OverScrollDecoratorHelper.setUpOverScroll(
                     view_pager.getChildAt(0) as RecyclerView,
