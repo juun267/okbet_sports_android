@@ -130,7 +130,7 @@ class VpRecommendAdapter(
 
     fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
         this.selectedOdds = selectedOdds
-        notifyDataSetChanged()
+        this.notifyDataSetChanged()
     }
 
     inner class ViewHolderHdpOu(
@@ -184,12 +184,13 @@ class VpRecommendAdapter(
             oddsButton.apply homeButtonSettings@{
                 setupOdd(odd, oddsType)
                 this@ViewHolderHdpOu.setupOddState(oddsButton, odd)
-                setOnClickListener {
-                    val playCateName = itemView.tv_play_type.text.toString()
+                odd?.let {
+                    this.isSelected = selectedOdds.contains(odd.id ?: "")
+                    it.isSelected = selectedOdds.contains(odd.id ?: "")
 
-                    odd?.let {
-                        this.isSelected = selectedOdds.contains(odd.id ?: "")
-                        it.isSelected = selectedOdds.contains(odd.id ?: "")
+                    setOnClickListener {
+                        val playCateName = itemView.tv_play_type.text.toString()
+
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
                         }, odd, playCateCode, playCateName ,betPlayCateNameMap)
@@ -415,16 +416,17 @@ class VpRecommendAdapter(
             oddsButton.apply {
                 setupOddForEPS(odd, oddsType)
                 setupOddState(oddsButton, odd)
-                setOnClickListener {
-                    val playCateName = itemView.tv_play_type_eps.text.toString()
 
-                    odd?.let {
-                        this.isSelected = selectedOdds.contains(odd.id ?: "")
-                        it.isSelected = selectedOdds.contains(odd.id ?: "")
+                odd?.let {
+                    this.isSelected = selectedOdds.contains(odd.id ?: "")
+                    it.isSelected = selectedOdds.contains(odd.id ?: "")
+
+                    setOnClickListener {
+                        val playCateName = itemView.tv_play_type_eps.text.toString()
 
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
-                        }, odd, PlayCate.UNCHECK.value ,playCateName, betPlayCateNameMap)
+                        }, odd, PlayCate.UNCHECK.value, playCateName, betPlayCateNameMap)
                     }
                 }
             }

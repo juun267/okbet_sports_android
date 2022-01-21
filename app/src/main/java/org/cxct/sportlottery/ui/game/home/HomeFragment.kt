@@ -231,10 +231,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
             ) {
                 GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
-                    //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
-//                    if(viewModel.betInfoList.value?.peekContent()?.size == 0){
-//                        BetInfoCarDialog.launch()
-//                    }
                     viewModel.updateMatchBetListForOutRight(
                         matchType = MatchType.OUTRIGHT,
                         gameType = gameType,
@@ -344,7 +340,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         unsubscribeTableHallChannel()
         subscribeTableHallChannel(selectMatchType)
 
-        mRvGameTable4Adapter.setData(result?.matchPreloadData, selectMatchType, viewModel.betIDList?.value?.peekContent() ?: mutableListOf())
+        mRvGameTable4Adapter.setData(result?.matchPreloadData, selectMatchType, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
     }
 
     //TableBar 判斷是否隱藏
@@ -370,7 +366,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
     private fun refreshHighlight(result: MatchCategoryResult?) {
         val sportCode = mHighlightGameTypeAdapter.dataSport.find { it.isSelected }?.code ?: ""
-        mRvHighlightAdapter.setData(sportCode, result?.t?.odds)
+        mRvHighlightAdapter.setData(sportCode, result?.t?.odds, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
     }
 
     private fun addOddsDialog(
@@ -650,6 +646,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         viewModel.betIDList.observe(this.viewLifecycleOwner) {
             mRvGameTable4Adapter.notifySelectedOddsChanged(it.peekContent())
             mRecommendAdapter.notifySelectedOddsChanged(it.peekContent())
+            mRvHighlightAdapter.notifySelectedOddsChanged(it.peekContent())
         }
 
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
@@ -1126,7 +1123,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun refreshRecommend(result: MatchRecommendResult) {
-        mRecommendAdapter.setData(result, viewModel.betIDList?.value?.peekContent() ?: mutableListOf())
+        mRecommendAdapter.setData(result, viewModel.betIDList.value?.peekContent() ?: mutableListOf())
         updateRecommendVisibility((result.rows?.size ?: 0) > 0)
     }
 

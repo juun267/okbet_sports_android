@@ -214,7 +214,7 @@ class BetInfoRepository(val androidContext: Context) {
         betList.remove(item)
 
         val oddIDStr = oddId ?: ""
-        val oddIDArray = _betIDList?.value?.peekContent() ?: mutableListOf()
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         oddIDArray.remove(oddIDStr)
         _betIDList.postValue(Event(oddIDArray))
 
@@ -227,7 +227,7 @@ class BetInfoRepository(val androidContext: Context) {
     fun removeClosedPlatItem() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
 
-        val oddIDArray = _betIDList?.value?.peekContent() ?: mutableListOf()
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
 
         val needRemoveList =
             betList.filter { it.matchOdd.status == BetStatus.LOCKED.code || it.matchOdd.status == BetStatus.DEACTIVATED.code }
@@ -246,7 +246,7 @@ class BetInfoRepository(val androidContext: Context) {
 
     fun clear() {
         val betList = _betInfoList.value?.peekContent() ?: mutableListOf()
-        val oddIDArray = _betIDList?.value?.peekContent() ?: mutableListOf()
+        val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
         betList.clear()
         oddIDArray.clear()
         _matchOddList.value?.clear()
@@ -313,7 +313,7 @@ class BetInfoRepository(val androidContext: Context) {
                 this.outrightMatchInfo = matchInfo
             }
 
-            val oddIDArray = _betIDList?.value?.peekContent() ?: mutableListOf()
+            val oddIDArray = _betIDList.value?.peekContent() ?: mutableListOf()
             oddIDArray.add(it.oddsId)
             _betIDList.postValue(Event(oddIDArray))
 
