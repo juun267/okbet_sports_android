@@ -2,6 +2,7 @@ package org.cxct.sportlottery.repository
 
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import org.cxct.sportlottery.enum.BetStatus
@@ -322,7 +323,7 @@ class BetInfoRepository(val androidContext: Context) {
             updateBetOrderParlay(betList)
             checkBetInfoContent(betList)
             _betInfoList.postValue(Event(betList))
-            if (betList.size == 1) {
+            if (betList.size == 1 && matchType != MatchType.PARLAY) {
                 _showBetInfoSingle.postValue(Event(true))
             }
         }
