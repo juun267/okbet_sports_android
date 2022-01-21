@@ -1,5 +1,6 @@
 package org.cxct.sportlottery.ui.game.menu
 
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,11 +39,11 @@ class LeftMenuItemNewAdapter(
         }
 
     fun addFooterAndSubmitList(newDataList: MutableList<MenuItemData>) {
-        newDataList.add(0, MenuItemData(0, "", "", 1).apply {
+        newDataList.add(0, MenuItemData(0, "", "", 1, 0, false).apply {
             isHeaderOrFooter = true
         }) //add header
 
-        newDataList.add(MenuItemData(0, "", "", 0).apply {
+        newDataList.add(MenuItemData(0, "", "", 0, 0, false).apply {
             isHeaderOrFooter = true
         }) //add footer
 
@@ -93,7 +94,16 @@ class LeftMenuItemNewAdapter(
                     img_price.setImageResource(item.imgId)
                     txv_price.text = item.title
 
+                    tv_count.text = item.gameCount.toString()
+
                     divider.isVisible = position == selectedNumber - 1
+
+                    if(item.isCurrentSportType){
+                        txv_price.setTypeface(txv_price.typeface, Typeface.BOLD)
+                        tv_count.setTypeface(tv_count.typeface, Typeface.BOLD)
+                        txv_price.isSelected = true
+                        tv_count.isSelected = true
+                    }
 
                     cl_content.setOnClickListener {
                         itemSelectedListener.onSportClick(item.gameType)

@@ -35,13 +35,21 @@
             android:paddingHorizontal="10dp"
             android:singleLine="true"
             android:text="@string/soccer"
-            android:textColor="@color/colorBlackLight"
+            android:textColor="@color/selector_blue_black"
             android:textSize="@dimen/textSize14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_select"
             app:layout_constraintHorizontal_bias="10"
             app:layout_constraintStart_toEndOf="@+id/img_price"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="2964"
+            android:textColor="@color/selector_blue_black"
+            android:textSize="@dimen/textSize14sp"/>
 
         <ImageView
             android:id="@+id/btn_select"
