@@ -344,7 +344,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         unsubscribeTableHallChannel()
         subscribeTableHallChannel(selectMatchType)
 
-        mRvGameTable4Adapter.setData(result?.matchPreloadData, selectMatchType)
+        mRvGameTable4Adapter.setData(result?.matchPreloadData, selectMatchType, viewModel.betIDList?.value?.peekContent() ?: mutableListOf())
     }
 
     //TableBar 判斷是否隱藏
@@ -647,8 +647,9 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             }
         }
 
-        viewModel.betInfoList.observe(this.viewLifecycleOwner) {
-            //updateOdds(it.peekContent())
+        viewModel.betIDList.observe(this.viewLifecycleOwner) {
+            mRvGameTable4Adapter.notifySelectedOddsChanged(it.peekContent())
+            mRecommendAdapter.notifySelectedOddsChanged(it.peekContent())
         }
 
         viewModel.oddsType.observe(this.viewLifecycleOwner) {
@@ -843,7 +844,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
 
         receiver.oddsChange.observe(this.viewLifecycleOwner) {
             it?.let { oddsChangeEvent ->
-                oddsChangeEvent.updateOddsSelectedState()
                 when (oddsChangeEvent.getCateMenuCode()) {
                     MenuCode.HOME_INPLAY_MOBILE, MenuCode.HOME_ATSTART_MOBILE -> {
                         //滾球盤、即將開賽盤
@@ -1026,28 +1026,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         }
     }
 
-    private fun OddsChangeEvent.updateOddsSelectedState(): OddsChangeEvent {
-        val betInfoListArray = viewModel.betInfoList.value?.peekContent()
-        if (betInfoListArray?.size == 0) {
-            return this
-        }
-
-        this.odds?.let { oddTypeSocketMap ->
-            oddTypeSocketMap.mapValues { oddTypeSocketMapEntry ->
-                oddTypeSocketMapEntry.value.onEach { odd ->
-                    odd?.isSelected =
-                        betInfoListArray?.any { betInfoListData ->
-                            betInfoListData.matchOdd.oddsId == odd?.id
-                        }
-                }
-            }
-        }
-
-        Timber.e("Bee@Home2")
-
-        return this
-    }
-
     /**
      * @description channel format : /ws/notify/hall/{platformId}/{gameType}/{cateMenuCode}/{eventId}
      */
@@ -1148,7 +1126,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     }
 
     private fun refreshRecommend(result: MatchRecommendResult) {
-        mRecommendAdapter.setData(result)
+        mRecommendAdapter.setData(result, viewModel.betIDList?.value?.peekContent() ?: mutableListOf())
         updateRecommendVisibility((result.rows?.size ?: 0) > 0)
     }
 
@@ -1175,49 +1153,5 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun updateHighlightVisibility(show: Boolean) {
         highlight_bar.isVisible = show
         highlight_titleBar.isVisible = show
-    }
-
-    //mapping 下注單裡面項目，更新 賠率按鈕 選擇狀態
-    private fun updateOdds(result: List<BetInfoListData>) {
-        val oddsIdArray = mutableListOf<String>()
-        result.forEach {
-            oddsIdArray.add(it.matchOdd.oddsId)
-        }
-
-        Timber.e("Bee@Home")
-
-        //滾球盤、即將開賽盤
-        mRvGameTable4Adapter.getData().forEachIndexed { index, gameEntity ->
-            gameEntity.matchOdds.forEachIndexed { indexMatchOdd, matchOdd ->
-                matchOdd.oddsMap.values.forEach { oddList ->
-                    oddList?.forEach { odd ->
-                        odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
-                    }
-                }
-//                mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
-            }
-        }
-        mRvGameTable4Adapter.notifyDataSetChanged()
-
-        //推薦賽事
-        mRecommendAdapter.getData().forEachIndexed { index, entity ->
-            entity.oddBeans.forEachIndexed { indexOddBean, oddBean ->
-                oddBean.oddList.forEach { odd ->
-                    odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
-                }
-//                mRecommendAdapter.notifySubItemChanged(index, indexOddBean)
-            }
-        }
-        mRecommendAdapter.notifyDataSetChanged()
-
-        //精選賽事
-        mRvHighlightAdapter.getData().forEach { matchOdd ->
-            matchOdd.oddsMap.values.forEach { oddList ->
-                oddList?.forEach { odd ->
-                    odd?.isSelected = oddsIdArray.contains(odd?.id ?: "")
-                }
-            }
-        }
-        mRvHighlightAdapter.notifyDataSetChanged()
     }
 }

@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_login.view.*
+import kotlin.collections.MutableList
 import kotlinx.android.synthetic.main.button_odd_detail.view.*
 import kotlinx.android.synthetic.main.home_game_table_item_4.view.*
 import org.cxct.sportlottery.R
@@ -16,7 +18,6 @@ import org.cxct.sportlottery.enum.BetStatus
 import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.GameType
 import org.cxct.sportlottery.network.common.MatchType
-import org.cxct.sportlottery.network.common.PlayCate
 import org.cxct.sportlottery.network.odds.list.MatchOdd
 import org.cxct.sportlottery.network.odds.Odd
 import org.cxct.sportlottery.ui.game.common.OddStateViewHolder
@@ -27,10 +28,10 @@ import org.cxct.sportlottery.ui.menu.OddsType
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.setTextTypeFace
+import org.koin.core.parameter.emptyParametersHolder
 import java.util.*
-import kotlin.collections.MutableList as MutableList1
 
-class Vp2GameTable4Adapter(
+class Vp2GameTable4Adapter (
     val dataList: List<MatchOdd>,
     val oddsType: OddsType,
     val matchType: MatchType,
@@ -47,6 +48,8 @@ class Vp2GameTable4Adapter(
     var onClickStatisticsListener: OnClickStatisticsListener? = null
 
     var isLogin: Boolean? = false
+
+    var selectedOdds = mutableListOf<String>()
 
     private val mOddStateRefreshListener by lazy {
         object : OddStateViewHolder.OddStateChangeListener {
@@ -91,11 +94,16 @@ class Vp2GameTable4Adapter(
         holder.stopTimer()
     }
 
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        this.selectedOdds = selectedOdds
+        this.notifyDataSetChanged()
+    }
+
     inner class ViewHolderHdpOu(itemView: View) : OddStateViewHolder(itemView) {
 
         private var gameType: String? = null
 
-        private var oddList: MutableList1<Odd?>? = null
+        private var oddList: MutableList<Odd?>? = null
 
         private var timer: Timer? = null
 
@@ -351,7 +359,7 @@ class Vp2GameTable4Adapter(
         }
 
         private fun setupOddButton(data: MatchOdd) {
-            itemView.apply {
+            itemView.apply { this
                 gameType = data.matchInfo?.gameType
 
                 //要取 datas 的matchOdds 下面的 oddsSort 去抓排序裡第一個的翻譯顯示 2022/01/11 與後端Ｍax確認 by Bill
@@ -363,25 +371,31 @@ class Vp2GameTable4Adapter(
                     ?.get(LanguageManager.getSelectLanguage(context).key)
 
                 btn_match_odd1.apply {
+
                     if (oddList?.isNullOrEmpty() == true || (oddList?.size ?: 0) < 2) {
-                        isSelected = false
+                        // 沒有第一個按鈕
+                        //isSelected = false
                         betStatus = BetStatus.DEACTIVATED.code
                     }
                     else {
-                        oddList?.getOrNull(0).let { oddFirst ->
-                            isSelected = oddFirst?.isSelected ?: false
-                            betStatus = oddFirst?.status ?: BetStatus.LOCKED.code
 
-                            this@ViewHolderHdpOu.setupOddState(this, oddFirst)
+                        // 有第一個按鈕
+                        val oddFirst = oddList?.getOrNull(0)
+                        //isSelected = oddFirst?.isSelected ?: false
+                        betStatus = oddFirst?.status ?: BetStatus.LOCKED.code
 
-                            setupOdd(oddFirst, oddsType)
+                        this@ViewHolderHdpOu.setupOddState(this, oddFirst)
 
-                            setupOddName4Home("1" , playCateName)
+                        oddFirst?.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
+                        this.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
 
-                            setOnClickListener {
-                                oddFirst?.let { odd ->
-                                    onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
-                                }
+                        setupOdd(oddFirst, oddsType)
+
+                        setupOddName4Home("1" , playCateName)
+
+                        setOnClickListener {
+                            oddFirst?.let { odd ->
+                                onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                             }
                         }
                     }
@@ -389,27 +403,31 @@ class Vp2GameTable4Adapter(
 
                 btn_match_odd2.apply {
                     if (oddList?.isNullOrEmpty() == true || (oddList?.size ?: 0) < 2) {
+                        // 沒有第二個按鈕
                         isSelected = false
                         betStatus = BetStatus.DEACTIVATED.code
                     }
                     else {
-                        oddList?.getOrNull(1).let { oddSecond ->
-                            isSelected = oddSecond?.isSelected ?: false
-                            betStatus = oddSecond?.status ?: BetStatus.LOCKED.code
+                        // 有第二個按鈕
+                        val oddSecond = oddList?.getOrNull(1)
+                        isSelected = oddSecond?.isSelected ?: false
+                        betStatus = oddSecond?.status ?: BetStatus.LOCKED.code
 
-                            this@ViewHolderHdpOu.setupOddState(this, oddSecond)
+                        this@ViewHolderHdpOu.setupOddState(this, oddSecond)
 
-                            setupOdd(oddSecond, oddsType)
+                        oddSecond?.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
+                        this.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
 
-                            if(data.matchInfo?.gameType == GameType.CK.key)
-                                setupOddName4Home("X" , playCateName)
-                            else
-                                setupOddName4Home("2" , playCateName)
+                        setupOdd(oddSecond, oddsType)
 
-                            setOnClickListener {
-                                oddSecond?.let { odd ->
-                                    onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
-                                }
+                        if(data.matchInfo?.gameType == GameType.CK.key)
+                            setupOddName4Home("X" , playCateName)
+                        else
+                            setupOddName4Home("2" , playCateName)
+
+                        setOnClickListener {
+                            oddSecond?.let { odd ->
+                                onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                             }
                         }
                     }
@@ -417,24 +435,28 @@ class Vp2GameTable4Adapter(
 
                 btn_match_odd3.apply {
                     if (oddList?.isNullOrEmpty() == true || (oddList?.size ?: 0) < 3) {
+                        // 沒有第三個按鈕
                         isSelected = false
                         betStatus = BetStatus.DEACTIVATED.code
                     }
                     else {
-                        oddList?.getOrNull(2).let { oddThird ->
-                            isSelected = oddThird?.isSelected ?: false
-                            betStatus = oddThird?.status ?: BetStatus.LOCKED.code
+                        // 有第三個按鈕
+                        val oddThird = oddList?.getOrNull(2)
+                        isSelected = oddThird?.isSelected ?: false
+                        betStatus = oddThird?.status ?: BetStatus.LOCKED.code
 
-                            this@ViewHolderHdpOu.setupOddState(this, oddThird)
+                        oddThird?.isSelected = selectedOdds.contains(oddThird?.id ?: "")
+                        this@ViewHolderHdpOu.setupOddState(this, oddThird)
 
-                            setupOdd(oddThird, oddsType)
+                        this.isSelected = selectedOdds.contains(oddThird?.id ?: "")
 
-                            setupOddName4Home("2" , playCateName)
+                        setupOdd(oddThird, oddsType)
 
-                            setOnClickListener {
-                                oddThird?.let { odd ->
-                                    onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
-                                }
+                        setupOddName4Home("2" , playCateName)
+
+                        setOnClickListener {
+                            oddThird?.let { odd ->
+                                onClickOddListener?.onClickBet( data, odd, playCateName.toString(), itemView.tv_play_type.text.toString(), data.betPlayCateNameMap )
                             }
                         }
                     }

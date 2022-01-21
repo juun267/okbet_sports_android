@@ -41,6 +41,7 @@ class VpRecommendAdapter(
     }
 
     var oddsType: OddsType = OddsType.EU
+    var selectedOdds: MutableList<String> = mutableListOf()
     var onClickOddListener: OnClickOddListener? = null
     var onClickOutrightOddListener: OnClickOddListener? = null
     var onClickMoreListener: OnClickMoreListener? = null
@@ -127,6 +128,11 @@ class VpRecommendAdapter(
         return spannedList
     }
 
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        this.selectedOdds = selectedOdds
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolderHdpOu(
         itemView: View,
         override val oddStateChangeListener: OddStateChangeListener = mOddStateRefreshListener
@@ -182,6 +188,8 @@ class VpRecommendAdapter(
                     val playCateName = itemView.tv_play_type.text.toString()
 
                     odd?.let {
+                        this.isSelected = selectedOdds.contains(odd.id ?: "")
+                        it.isSelected = selectedOdds.contains(odd.id ?: "")
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
                         }, odd, playCateCode, playCateName ,betPlayCateNameMap)
@@ -203,55 +211,60 @@ class VpRecommendAdapter(
                 tv_play_type_champion.text =
                     dynamicMarkets?.get(data.playTypeCode)?.getTranslate(itemView.context)
 
+                val oddList = data.oddList
                 rec_champ_btn_pre1.apply {
-                    if (data.oddList.isEmpty() || data.oddList.getOrNull(0) == null) {
+                    val oddFirst = oddList.getOrNull(0)
+                    if (oddList.isEmpty() || oddFirst == null) {
                         visibility = View.GONE
                         return
                     }
 
-                    setupOdd(data.oddList.getOrNull(0), oddsType)
+                    setupOdd(oddFirst, oddsType)
 
                     tv_name.apply {
-                        text = data.oddList.getOrNull(0)?.getSpreadName(context)
+                        text = oddFirst?.getSpreadName(context)
                         visibility = View.VISIBLE
                     }
 
                     tv_spread.text = ""
 
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(0))
+                    this@ViewHolderRecOutright.setupOddState(this, oddFirst)
 
-                    isSelected = data.oddList.getOrNull(0)?.isSelected ?: false
+                    this.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
+                    oddFirst?.isSelected = selectedOdds.contains(oddFirst?.id ?: "")
 
                     setOnClickListener {
-                        data.oddList.getOrNull(0)?.let { odd ->
+                        oddFirst.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
-                            }, odd,PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
+                            }, odd, PlayCate.UNCHECK.value, data.playTypeCode, betPlayCateNameMap)
                         }
                     }
                 }
 
                 rec_champ_btn_pre2.apply {
-                    if (data.oddList.size < 2|| data.oddList.getOrNull(1) == null) {
+                    val oddSecond = oddList.getOrNull(1)
+                    if (oddList.size < 2|| oddSecond == null) {
                         visibility = View.GONE
                         return
                     }
 
-                    setupOdd(data.oddList.getOrNull(1), oddsType)
+                    setupOdd(oddSecond, oddsType)
 
                     tv_name.apply {
-                        text = data.oddList.getOrNull(1)?.getSpreadName(context)
+                        text = oddSecond?.getSpreadName(context)
                         visibility = View.VISIBLE
                     }
 
                     tv_spread.text = ""
 
-                    this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(1))
+                    this@ViewHolderRecOutright.setupOddState(this, oddSecond)
 
-                    isSelected = data.oddList.getOrNull(1)?.isSelected ?: false
+                    this.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
+                    oddSecond?.isSelected = selectedOdds.contains(oddSecond?.id ?: "")
 
                     setOnClickListener {
-                        data.oddList.getOrNull(1)?.let { odd ->
+                        oddSecond?.let { odd ->
                             onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                 this.matchInfo?.gameType = sportCode
                             }, odd, PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
@@ -260,24 +273,26 @@ class VpRecommendAdapter(
                 }
 
                 rec_champ_btn_pre3.apply {
-                    if (data.oddList.size < 3 || data.oddList.getOrNull(2) == null) {
+                    val oddThird = oddList.getOrNull(2)
+                    if (oddList.size < 3 || oddThird == null) {
                         visibility = View.GONE
                     }else{
-                        setupOdd(data.oddList.getOrNull(2), oddsType)
+                        setupOdd(oddThird, oddsType)
 
                         tv_name.apply {
-                            text = data.oddList.getOrNull(2)?.getSpreadName(context)
+                            text = oddThird?.getSpreadName(context)
                             visibility = View.VISIBLE
                         }
 
                         tv_spread.text = ""
 
-                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(2))
+                        this@ViewHolderRecOutright.setupOddState(this, oddThird)
 
-                        isSelected = data.oddList.getOrNull(2)?.isSelected ?: false
+                        this.isSelected = selectedOdds.contains(oddThird?.id ?: "")
+                        oddThird?.isSelected = selectedOdds.contains(oddThird?.id ?: "")
 
                         setOnClickListener {
-                            data.oddList.getOrNull(2)?.let { odd ->
+                            oddThird?.let { odd ->
                                 onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                     this.matchInfo?.gameType = sportCode
                                 }, odd,PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
@@ -287,24 +302,26 @@ class VpRecommendAdapter(
                 }
 
                 rec_champ_btn_pre4.apply {
-                    if (data.oddList.size < 4|| data.oddList.getOrNull(3) == null) {
+                    val oddFourth = oddList.getOrNull(3)
+                    if (oddList.size < 4 || oddFourth == null) {
                         visibility = View.GONE
                     }else{
-                        setupOdd(data.oddList.getOrNull(3), oddsType)
+                        setupOdd(oddFourth, oddsType)
 
                         tv_name.apply {
-                            text = data.oddList.getOrNull(3)?.getSpreadName(context)
+                            text = oddFourth?.getSpreadName(context)
                             visibility = View.VISIBLE
                         }
 
                         tv_spread.text = ""
 
-                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(3))
+                        this@ViewHolderRecOutright.setupOddState(this, oddFourth)
 
-                        isSelected = data.oddList.getOrNull(3)?.isSelected ?: false
+                        this.isSelected = selectedOdds.contains(oddFourth?.id ?: "")
+                        oddFourth?.isSelected = selectedOdds.contains(oddFourth?.id ?: "")
 
                         setOnClickListener {
-                            data.oddList.getOrNull(3)?.let { odd ->
+                            oddFourth?.let { odd ->
                                 onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                     this.matchInfo?.gameType = sportCode
                                 }, odd,PlayCate.UNCHECK.value ,data.playTypeCode, betPlayCateNameMap)
@@ -314,24 +331,26 @@ class VpRecommendAdapter(
                 }
 
                 rec_champ_btn_pre5.apply {
-                    if (data.oddList.size < 5 || data.oddList.getOrNull(4) == null) {
+                    val oddFifth = oddList.getOrNull(4)
+                    if (oddList.size < 5 || oddFifth == null) {
                         visibility = View.GONE
                     } else {
-                        setupOdd(data.oddList.getOrNull(4), oddsType)
+                        setupOdd(oddFifth, oddsType)
 
                         tv_name.apply {
-                            text = data.oddList.getOrNull(4)?.getSpreadName(context)
+                            text = oddFifth?.getSpreadName(context)
                             visibility = View.VISIBLE
                         }
 
                         tv_spread.text = ""
 
-                        this@ViewHolderRecOutright.setupOddState(this, data.oddList.getOrNull(4))
+                        this@ViewHolderRecOutright.setupOddState(this, oddFifth)
 
-                        isSelected = data.oddList.getOrNull(4)?.isSelected ?: false
+                        this.isSelected = selectedOdds.contains(oddFifth?.id ?: "")
+                        oddFifth?.isSelected = selectedOdds.contains(oddFifth?.id ?: "")
 
                         setOnClickListener {
-                            data.oddList.getOrNull(4)?.let { odd ->
+                            oddFifth?.let { odd ->
                                 onClickOutrightOddListener?.onClickBet(matchOdd.apply {
                                     this.matchInfo?.gameType = sportCode
                                 }, odd, PlayCate.UNCHECK.value, data.playTypeCode, betPlayCateNameMap)
@@ -400,6 +419,9 @@ class VpRecommendAdapter(
                     val playCateName = itemView.tv_play_type_eps.text.toString()
 
                     odd?.let {
+                        this.isSelected = selectedOdds.contains(odd.id ?: "")
+                        it.isSelected = selectedOdds.contains(odd.id ?: "")
+
                         onClickOddListener?.onClickBet(matchOdd.apply {
                             this.matchInfo?.gameType = sportCode
                         }, odd, PlayCate.UNCHECK.value ,playCateName, betPlayCateNameMap)

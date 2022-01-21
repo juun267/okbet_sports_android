@@ -31,6 +31,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var mDataList = mutableListOf<GameEntity>()
     private var mMatchType: MatchType = MatchType.IN_PLAY
+    private var selectedOdds = mutableListOf<String>()
     var isLogin: Boolean? = false
 
     enum class ItemType {
@@ -52,7 +53,8 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             field = newDiscount
         }
 
-    fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType) {
+    fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType, selectedOdds: MutableList<String>) {
+        this.selectedOdds = selectedOdds
         var otherMatchList: MutableList<OtherMatch> = mutableListOf()
         var otherMatch: OtherMatch
         val dataList: MutableList<GameEntity> = mutableListOf()
@@ -76,6 +78,12 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         mMatchType = matchType
         stopAllTimer()
         notifyDataSetChanged()
+    }
+
+    fun notifySelectedOddsChanged(selectedOdds: MutableList<String>) {
+        mDataList.forEach {
+            it.vpTableAdapter?.notifySelectedOddsChanged(selectedOdds)
+        }
     }
 
     fun getData() = mDataList
@@ -149,7 +157,7 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             is SportGridViewHolder ->{
                 holder.apply {
-                    bind(data,oddsType)
+                    bind(data.otherMatch)
                 }
             }
         }
@@ -206,14 +214,14 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 }
 
                 if (data.vpTableAdapter == null)
-                    data.vpTableAdapter =
-                        Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType, data.playCateNameMap)
+                    data.vpTableAdapter = Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType, data.playCateNameMap)
 
                 data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
                 data.vpTableAdapter?.onClickOddListener = onClickOddListener
                 data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
                 data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
                 data.vpTableAdapter?.isLogin = isLogin
+                data.vpTableAdapter?.selectedOdds = selectedOdds
 
                 view_pager.adapter = data.vpTableAdapter
                 indicator_view.setupWithViewPager2(view_pager)
@@ -235,10 +243,8 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class SportGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         lateinit var adapter: CommonAdapter<OtherMatch>
-
-        fun bind(data: GameEntity, oddsType: OddsType) {
+        init {
             itemView.apply {
                 rvSport.layoutManager =
                     LinearLayoutManager(context!!, RecyclerView.VERTICAL, false)
@@ -254,16 +260,13 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     )
                 )
                 rvSport.isNestedScrollingEnabled = false
-                adapter = object : CommonAdapter<OtherMatch>(
-                    context,
-                    R.layout.item_home_sport,
-                    data.otherMatch
-                ) {
-                    override fun convert(
-                        holder: ViewHolder,
-                        t: OtherMatch,
-                        position: Int
-                    ) {
+            }
+        }
+
+        fun bind(data: List<OtherMatch>?) {
+            itemView.apply {
+                adapter = object : CommonAdapter<OtherMatch>( context, R.layout.item_home_sport, data ) {
+                    override fun convert( holder: ViewHolder, t: OtherMatch, position: Int ) {
                         getGameIcon(t.code)?.let {
                             holder.getView<ImageView>(R.id.ivSportLogo).setImageResource(it)
                         }
