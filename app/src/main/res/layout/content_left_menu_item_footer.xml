@@ -26,7 +26,7 @@
             android:paddingStart="20dp"
             android:text="@string/left_menu_odds_type_setting"
             android:textColor="@color/colorBlackLight"
-            app:drawableStartCompat="@drawable/ic_menu_odds_type" />
+            app:drawableStartCompat="@drawable/ic_setting" />
 
         <TextView
             android:id="@+id/tv_appearance"
@@ -69,6 +69,6 @@
             android:paddingStart="20dp"
             android:text="@string/game_rule"
             android:textColor="@color/colorBlackLight"
-            app:drawableStartCompat="@drawable/ic_menu_game_rule2" />
+            app:drawableStartCompat="@drawable/icon_game_rule" />
 
 </LinearLayout>
