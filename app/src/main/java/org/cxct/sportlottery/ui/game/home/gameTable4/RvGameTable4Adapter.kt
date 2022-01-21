@@ -198,42 +198,49 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        init {
+            itemView.apply {
+                view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
+            }
+        }
 
         fun bind(data: GameEntity, oddsType: OddsType) {
             itemView.apply {
                 tv_game_name.text = data.name
                 tv_game_num.text = data.num.toString()
-                getGameIcon(data.code)?.let {
+                val gameCode = data.code
+                getGameIcon(gameCode)?.let {
                     iv_game_icon.setImageResource(it)
                 }
-                getTitleBarBackground(data.code)?.let {
+                getTitleBarBackground(gameCode)?.let {
                     titleBar.setBackgroundResource(it)
                 }
                 titleBar.setOnClickListener {
                     onClickTotalMatchListener?.onClick(data)
                 }
 
-                if (data.vpTableAdapter == null)
-                    data.vpTableAdapter = Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType, data.playCateNameMap)
+                data.matchOdds?.let {
+                    data.vpTableAdapter = Vp2GameTable4Adapter(it, oddsType, mMatchType, data.playCateNameMap)
+                    data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
+                    data.vpTableAdapter?.onClickOddListener = onClickOddListener
+                    data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
+                    data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
+                    data.vpTableAdapter?.isLogin = isLogin
+                    data.vpTableAdapter?.selectedOdds = selectedOdds
+                    view_pager.adapter = data.vpTableAdapter
 
-                data.vpTableAdapter?.onClickMatchListener = onClickMatchListener
-                data.vpTableAdapter?.onClickOddListener = onClickOddListener
-                data.vpTableAdapter?.onClickFavoriteListener = onClickFavoriteListener
-                data.vpTableAdapter?.onClickStatisticsListener = onClickStatisticsListener
-                data.vpTableAdapter?.isLogin = isLogin
-                data.vpTableAdapter?.selectedOdds = selectedOdds
-
-                view_pager.adapter = data.vpTableAdapter
-                indicator_view.setupWithViewPager2(view_pager)
-                indicator_view.apply {
-                    visibility = if (data.matchOdds!!.size <= 1) {
-                        View.GONE
-                    } else {
-                        View.VISIBLE
+                    indicator_view.setupWithViewPager2(view_pager)
+                    indicator_view.apply {
+                        visibility = if (it.size <= 1) {
+                            View.GONE
+                        } else {
+                            View.VISIBLE
+                        }
                     }
                 }
+//                if (data.vpTableAdapter == null)
+//                    data.vpTableAdapter = Vp2GameTable4Adapter(data.matchOdds!!, oddsType, mMatchType, data.playCateNameMap)
 
-                view_pager.getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER //移除漣漪效果
                 OverScrollDecoratorHelper.setUpOverScroll(
                     view_pager.getChildAt(0) as RecyclerView,
                     OverScrollDecoratorHelper.ORIENTATION_HORIZONTAL

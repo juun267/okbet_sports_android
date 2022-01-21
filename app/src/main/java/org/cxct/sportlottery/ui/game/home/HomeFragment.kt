@@ -98,6 +98,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var slotCount = 0
     private var fishingCount = 0
     private var isCreditAccount = false
+    private var selectedSportType: Item? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -188,7 +189,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 override fun onClick(select: OtherMatch) {
                     scroll_view.smoothScrollTo(0, 0)
                     viewModel.navSpecialEntrance(
-                        MatchType.TODAY,
+                        MatchType.IN_PLAY,
                         GameType.getGameType(select.code)
                     )
                 }
@@ -290,6 +291,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         updateHighlightVisibility(false)
         rv_highlight_sport_type.adapter = mHighlightGameTypeAdapter
         mHighlightGameTypeAdapter.gameTypeListener = GameTypeListener { selectItem ->
+            selectedSportType = selectItem
             highlight_tv_game_name.text = selectItem.name
 
             GameConfigManager.getGameIcon(selectItem.code)?.let {
@@ -376,10 +378,6 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         playCateName: String?,
         betPlayCateNameMap: Map<String?, Map<String?, String?>?>?
     ) {
-        //[Martin]把Dialog畫面提前開啟 體感上會比較順暢
-//        if(viewModel.betInfoList.value?.peekContent()?.size == 0){
-//            BetInfoCarDialog.launch()
-//        }
         GameType.getGameType(matchOdd.matchInfo?.gameType)?.let { gameType ->
             matchOdd.matchInfo?.let { matchInfo ->
                 viewModel.updateMatchBetList(
@@ -1133,9 +1131,16 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         } ?: listOf()
 
         if (mHighlightGameTypeAdapter.dataSport.isNotEmpty()) {
-            //default 選擇第一個
-            mHighlightGameTypeAdapter.dataSport.firstOrNull()?.let {
-                mHighlightGameTypeAdapter.gameTypeListener?.onClick(it)
+            if (selectedSportType != null) {
+                selectedSportType?.let {
+                    mHighlightGameTypeAdapter.gameTypeListener?.onClick(it)
+                }
+            }
+            else {
+                //default 選擇第一個
+                mHighlightGameTypeAdapter.dataSport.firstOrNull()?.let {
+                    mHighlightGameTypeAdapter.gameTypeListener?.onClick(it)
+                }
             }
             updateHighlightVisibility(true)
         } else {
