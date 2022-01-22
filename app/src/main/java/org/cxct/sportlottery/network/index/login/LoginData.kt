@@ -53,5 +53,7 @@ data class LoginData(
     @Json(name = "discount")
     var discount: Float?, //後台維修 暫時修改做測試 要改回va
     @Json(name = "deviceValidateStatus")
-    var deviceValidateStatus: Int?
+    var deviceValidateStatus: Int?,
+    @Json(name = "verified")
+    var verified: Int?,
 )

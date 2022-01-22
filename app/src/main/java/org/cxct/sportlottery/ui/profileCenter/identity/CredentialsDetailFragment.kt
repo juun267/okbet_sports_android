@@ -1,22 +1,30 @@
-package org.cxct.sportlottery
+package org.cxct.sportlottery.ui.profileCenter.identity
 
 import android.os.Bundle
+import android.util.Base64
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.navArgs
 import com.bigkoo.pickerview.builder.TimePickerBuilder
 import com.bigkoo.pickerview.view.TimePickerView
-import kotlinx.android.synthetic.main.fragment_credentials_detail.*
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.fragment_credentials_detail_new.*
+import org.cxct.sportlottery.R
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
 import org.cxct.sportlottery.util.TimeUtil
 import org.cxct.sportlottery.util.TimeUtil.YMD_FORMAT
 import java.util.*
 
-class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+class CredentialsDetailFragment :
+    BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
+
+    private val args: CredentialsDetailFragmentArgs by navArgs()
 
     private lateinit var dateTimePicker: TimePickerView
 
@@ -24,31 +32,33 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_credentials_detail, container, false)
+        return inflater.inflate(R.layout.fragment_credentials_detail_new, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initFakeData()
-
-        initObserve()
         setupView()
+    }
+
+    private fun setInfoInText() {
+        args.data?.extIdInfo?.ocrResult?.apply {
+            et_identity_id.setText(idNumber)
+            et_identity_first_name.setText(firstName)
+            et_identity_last_name.setText(lastName)
+            et_identity_other_name.setText(middleName)
+            tv_birth.text = dateOfBirth
+            et_identity_sex.setText(sex)
+        }
 
     }
 
-    private fun initObserve() {
-        viewModel.uploadVerifyPhotoResult.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                if (result.success) {
-                    showPromptDialog(getString(R.string.prompt), resources.getString(R.string.complete)) { activity?.finish() }
-                } else {
-                    showErrorPromptDialog(getString(R.string.promotion), result.msg) {}
-                }
-            }
-        })
-    }
 
     private fun setupView() {
+
+        setInfoInText()
+        setCredentialImg()
+        setFaceImg()
+
         cv_recharge_time.setOnClickListener {
             dateTimePicker.show()
         }
@@ -58,6 +68,53 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         }
 
         initTimePicker()
+    }
+
+    private val smallPicRequestOptions = RequestOptions()
+        .override(300)
+        .centerCrop()
+        .sizeMultiplier(0.5f)
+
+    private val bigPicRequestOptions = RequestOptions()
+        .override(1000)
+        .centerCrop()
+        .sizeMultiplier(0.5f)
+
+    private fun setCredentialImg() {
+        args.data?.extIdInfo?.apply {
+            val imageByteArray: ByteArray = Base64.decode(frontPageImg, Base64.DEFAULT)
+            val backImageByteArray: ByteArray = Base64.decode(backPageImg, Base64.DEFAULT)
+
+            Glide.with(img_id_card.context)
+                .asBitmap()
+                .load(imageByteArray)
+                .apply(smallPicRequestOptions)
+                .into(img_id_card)
+
+            Glide.with(img_id_card_back.context)
+                .asBitmap()
+                .load(backImageByteArray)
+                .apply(smallPicRequestOptions)
+                .into(img_id_card_back)
+        }
+    }
+
+    private fun setFaceImg() {
+        args.data?.extFaceInfo?.apply {
+            val imageByteArray: ByteArray = Base64.decode(faceImg, Base64.DEFAULT)
+
+            Glide.with(img_face_small.context)
+                .asBitmap()
+                .load(imageByteArray)
+                .apply(smallPicRequestOptions)
+                .into(img_face_small)
+
+            Glide.with(img_face_scan.context)
+                .asBitmap()
+                .load(imageByteArray)
+                .apply(bigPicRequestOptions)
+                .into(img_face_scan)
+        }
     }
 
     private fun initTimePicker() {
@@ -70,7 +127,7 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         ) { date, _ ->
             try {
                 //                    depositDate = date
-                txv_recharge_time.text = TimeUtil.timeFormat(date.time, YMD_FORMAT)
+                tv_birth.text = TimeUtil.timeFormat(date.time, YMD_FORMAT)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -82,8 +139,18 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
             .setTitleText(resources.getString(R.string.identity_birth))
             .setCancelText(getString(R.string.picker_cancel))
             .setSubmitText(getString(R.string.picker_submit))
-            .setSubmitColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
-            .setCancelColor(ContextCompat.getColor(cv_recharge_time.context, R.color.colorGrayLight))
+            .setSubmitColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.colorGrayLight
+                )
+            )
+            .setCancelColor(
+                ContextCompat.getColor(
+                    cv_recharge_time.context,
+                    R.color.colorGrayLight
+                )
+            )
             .isDialog(true)
             .build() as TimePickerView).also { dateTimePicker = it }
 
@@ -109,7 +176,6 @@ class CredentialsDetailFragment : BaseSocketFragment<ProfileCenterViewModel>(Pro
         et_identity_last_name.setText("WANG")
         et_identity_first_name.setText("QIBIN")
         et_identity_country.setText("CHINA")
-        txv_recharge_time.text = "09.Sep.1987"
         et_identity_marital_status.setText("SINGLE")
         et_identity_sex.setText("MALE")
         et_identity_work.setText("WORKER")

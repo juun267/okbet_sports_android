@@ -1,251 +1,122 @@
 package org.cxct.sportlottery.ui.profileCenter.identity
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.ap.zoloz.hummer.api.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.luck.picture.lib.entity.LocalMedia
-import com.luck.picture.lib.listener.OnResultCallbackListener
-import kotlinx.android.synthetic.main.fragment_credentials.*
-import kotlinx.android.synthetic.main.view_upload.view.*
+import kotlinx.android.synthetic.main.fragment_credentials_detail.*
+import kotlinx.android.synthetic.main.fragment_credentials_new.*
 import org.cxct.sportlottery.R
+import org.cxct.sportlottery.network.credential.CredentialCompleteData
+import org.cxct.sportlottery.network.credential.DocType
+import org.cxct.sportlottery.network.credential.EkycResultType
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
-import org.cxct.sportlottery.ui.component.UploadImageView
 import org.cxct.sportlottery.ui.profileCenter.ProfileCenterViewModel
-import org.cxct.sportlottery.ui.profileCenter.profile.RechargePicSelectorDialog
-import org.cxct.sportlottery.util.ToastUtil
-import timber.log.Timber
-import java.io.File
-import java.io.FileNotFoundException
+import org.cxct.sportlottery.ui.profileCenter.profile.ProfileActivity
 
-class CredentialsFragment : BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
-    private var docFile: File? = null
-    private var photoFile: File? = null
 
-    private val mSelectDocMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
-            try {
-                // 图片选择结果回调
-                // LocalMedia 里面返回三种path
-                // 1.media.getPath(); 为原图path
-                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+open class CredentialsFragment :
+    BaseSocketFragment<ProfileCenterViewModel>(ProfileCenterViewModel::class) {
 
-                val media = result?.firstOrNull() //這裡應當只會有一張圖片
-                val path = when {
-                    media?.isCompressed == true -> media.compressPath
-                    media?.isCut == true -> media.cutPath
-                    else -> media?.path
-                }
+//    private var isComplete = false
 
-                val file = File(path!!)
-                if (file.exists())
-                    selectedDocImg(file)
-                else
-                    throw FileNotFoundException()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
-            }
-        }
+    private var transactionId: String? = ""
 
-        override fun onCancel() {
-            Timber.i("PictureSelector Cancel")
-        }
-    }
-    private val mSelectPhotoMediaListener = object : OnResultCallbackListener<LocalMedia> {
-        override fun onResult(result: MutableList<LocalMedia>?) {
-            try {
-                // 图片选择结果回调
-                // LocalMedia 里面返回三种path
-                // 1.media.getPath(); 为原图path
-                // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
-                // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
-                // 如果裁剪并压缩了，已取压缩路径为准，因为是先裁剪后压缩的
+    private var metaInfo: String = ""
 
-                val media = result?.firstOrNull() //這裡應當只會有一張圖片
-                val path = when {
-                    media?.isCompressed == true -> media.compressPath
-                    media?.isCut == true -> media.cutPath
-                    else -> media?.path
-                }
+    private val request by lazy { ZLZRequest() }
 
-                val file = File(path!!)
-                if (file.exists())
-                    selectedPhotoImg(file)
-                else
-                    throw FileNotFoundException()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                ToastUtil.showToastInCenter(activity, getString(R.string.error_reading_file))
-            }
-        }
-
-        override fun onCancel() {
-            Timber.i("PictureSelector Cancel")
-        }
-    }
-
-    private fun selectedDocImg(file: File) {
-        docFile = file
-        setupDocFile()
-        checkSubmitStatus()
-    }
-
-    private fun selectedPhotoImg(file: File) {
-        photoFile = file
-        setupPhotoFile()
-        checkSubmitStatus()
+    private val mNavController by lazy {
+        findNavController()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_credentials, container, false)
+        return inflater.inflate(R.layout.fragment_credentials_new, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initBtn()
         initObserve()
-        setupButton()
-        setupUploadView()
     }
 
-    override fun onStart() {
-        super.onStart()
+    private fun initBtn() {
+        kotlin.run {
+            metaInfo = ZLZFacade.getMetaInfo(activity)
+        }
 
-        setupDocFile()
-        setupPhotoFile()
-        checkSubmitStatus()
+        btn_take_photo.setOnClickListener {
+            if (metaInfo.isNotEmpty()) viewModel.getCredentialInitial(
+                metaInfo,
+                DocType.Passport.value
+            )
+        }
+
+    }
+
+    private fun changePage(data: CredentialCompleteData) {
+        val action =
+            CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment(
+                data
+            )
+        mNavController.navigate(action)
     }
 
     private fun initObserve() {
-        viewModel.docUrlResult.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                if (!result.success) {
-                    hideLoading()
-                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
-                }
-            }
-        })
 
-        viewModel.photoUrlResult.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { result ->
-                hideLoading()
-                if (!result.success)
-                    showErrorPromptDialog(getString(R.string.prompt), result.msg) {}
-                else {
-                    val action = CredentialsFragmentDirections.actionCredentialsFragmentToCredentialsDetailFragment()
-                    findNavController().navigate(action)
+        viewModel.credentialInitialResult.observe(viewLifecycleOwner) { event ->
+            event?.getContentIfNotHandled()?.let {
+                request.apply {
+                    zlzConfig = it.data.clientCfg
+                    bizConfig[ZLZConstants.CONTEXT] = context
+                    bizConfig[ZLZConstants.PUBLIC_KEY] = it.data.rsaPubKey
+                    bizConfig[ZLZConstants.LOCALE] = "en-US"
                 }
-            }
-        })
-    }
+                transactionId = it.data.transactionId
 
-    private fun setupButton() {
-        btn_submit.setOnClickListener {
-            when {
-                docFile == null -> {
-                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
-                }
-                photoFile == null -> {
-                    showErrorPromptDialog(getString(R.string.prompt), getString(R.string.upload_fail)) {}
-                }
-                else -> {
-                    loading()
-                    viewModel.uploadVerifyPhoto(docFile!!, photoFile!!)
+                Handler().postAtFrontOfQueue {
+                    ZLZFacade.getInstance().start(request, object : IZLZCallback {
+                        override fun onCompleted(response: ZLZResponse) {
+                            checkResult(it.data.transactionId)
+                        }
+
+                        override fun onInterrupted(response: ZLZResponse) {
+                            showPromptDialog(getString(R.string.prompt), getString(R.string.verify_failed_please_retry)){}
+                        }
+                    })
                 }
             }
         }
 
-        btn_reset.setOnClickListener {
-            clearMediaFile()
-            view_identity_doc.imgUploaded(false)
-            view_identity_photo.imgUploaded(false)
-            checkSubmitStatus()
-        }
-    }
+        viewModel.credentialCompleteResult.observe(viewLifecycleOwner) { event ->
+            hideLoading()
+            event.getContentIfNotHandled()?.data?.let { data ->
+                val isComplete = data.ekycResult == EkycResultType.SUCCESS.value
+                        && data.extFaceInfo?.ekycResultFace == EkycResultType.SUCCESS.value
+                        && data.extIdInfo?.ekycResultDoc == EkycResultType.SUCCESS.value
 
-    private fun setupUploadView() {
-        activity?.let { activityNotNull ->
-            view_identity_doc.apply {
-                imgUploaded(false)
-                tv_upload_title.text = getString(R.string.upload_title)
-                tv_upload_tips.text = getString(R.string.upload_tips)
-                uploadListener = UploadImageView.UploadListener {
-                    RechargePicSelectorDialog(
-                        activityNotNull,
-                        mSelectDocMediaListener,
-                        RechargePicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
-                }
-            }
-
-            view_identity_photo.apply {
-                imgUploaded(false)
-                tv_upload_title.text = getString(R.string.upload_photo_title)
-                tv_upload_tips.text = getString(R.string.upload_photo_tips)
-                uploadListener = UploadImageView.UploadListener {
-                    RechargePicSelectorDialog(
-                        activityNotNull,
-                        mSelectPhotoMediaListener,
-                        RechargePicSelectorDialog.CropType.RECTANGLE
-                    ).show(parentFragmentManager, CredentialsFragment::class.java.simpleName)
-                }
+                if (isComplete) changePage(data)
+                else showPromptDialog(getString(R.string.prompt), getString(R.string.verify_failed_please_retry)) {}
             }
         }
+
+
+
     }
 
-    private fun setupDocFile() {
-        docFile?.let { file ->
-            view_identity_doc.apply {
-                imgUploaded(true)
-                Glide.with(iv_selected_media.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.iv_selected_media)
-            }
-        }
-    }
-
-    private fun setupPhotoFile() {
-        photoFile?.let { file ->
-            view_identity_photo.apply {
-                imgUploaded(true)
-                Glide.with(iv_selected_media.context).load(file.absolutePath).apply(RequestOptions().placeholder(R.drawable.img_avatar_default)).into(this.iv_selected_media)
-            }
-        }
-    }
-
-    private fun checkSubmitStatus() {
-        btn_submit.isEnabled = docFile != null && photoFile != null
-    }
-
-    private fun clearMediaFile() {
-        docFile = null
-        photoFile = null
-    }
-
-    private fun UploadImageView.imgUploaded(uploaded: Boolean) {
-        when (uploaded) {
-            true -> {
-                bg_upload.visibility = View.INVISIBLE
-                iv_upload.visibility = View.INVISIBLE
-                tv_upload.visibility = View.INVISIBLE
-
-                iv_selected_media.visibility = View.VISIBLE
-            }
-            false -> {
-                bg_upload.visibility = View.VISIBLE
-                iv_upload.visibility = View.VISIBLE
-                tv_upload.visibility = View.VISIBLE
-
-                iv_selected_media.visibility = View.INVISIBLE
-            }
-        }
+    private fun checkResult(transactionId: String?) {
+        loading()
+        viewModel.getCredentialCompleteResult(transactionId)
     }
 }

@@ -237,6 +237,8 @@ object Constants {
     const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
     const val USER_WITHDRAW_INFO = "/api/front/user/setWdUserInfo" //設置提款資料
     const val USER_CREDIT_CIRCLE_HISTORY = "/api/front/user/credit/circle/history"
+    const val USER_BET_LIMIT = "/api/front/user/setPerBetLimit"
+    const val USER_FROZE = "/api/front/user/setFroze"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片
@@ -275,6 +277,11 @@ object Constants {
     const val MATCH_CATEGORY_SPECIAL_MATCH = "/api/front/matchCategory/special/match/query" //查詢主頁精選賽事
     const val MATCH_CATEGORY_SPECIAL_MENU = "/api/front/matchCategory/special/menu/query" //查詢主頁精選賽事菜单
     const val MATCH_CATEGORY_QUERY = "/api/front/matchCategory/query" //(新)查询参赛表
+
+    //credential
+    const val CREDENTIAL_INITIALIZE = "/api/front/realid/initialize"
+    const val CREDENTIAL_RESULT = "/api/front/realid/checkresult"
+
     //timeout
     const val CONNECT_TIMEOUT: Long = 15 * 1000
     const val WRITE_TIMEOUT: Long = 15 * 1000

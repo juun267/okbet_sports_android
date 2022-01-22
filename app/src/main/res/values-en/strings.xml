@@ -898,4 +898,35 @@
     <string name="bank_list_add">Add %1$s</string>
     <string name="bank_list_bank">bank card</string>
     <string name="bank_list_crypto">virtual currency</string>
+    <string name="type_of_certificate">type of certificate</string>
+    <string name="take_id_photo">take ID photo</string>
+    <string name="prepare_your_id_photo">Prepare your ID photo</string>
+    <string name="id_description">·Please make sure your ID photo is facing up\n· Make sure your ID photo is clearly visible\n·Avoid flashes or reflections</string>
+    <string name="identity_card">Identity Card</string>
+    <string name="passport">Passport</string>
+    <string name="face_scan_result">face scan result</string>
+    <string name="not_verify">(Not yet verified)</string>
+    <string name="verified">(Verified)</string>
+    <string name="verify_failed_please_retry">Verification failed, please try again</string>
+    <!--自我禁制-->
+    <string name="selfLimit">Self-exclusion</string>
+    <string name="selfLimit_impotent">Attention</string>
+    <string name="selfLimit_confirm">Confirm</string>
+    <string name="selfLimit_confirm_content">Are you sure you want to apply the self-exclusion？</string>
+    <string name="selfLimit_confirm_done">Application has become effective</string>
+    <string name="selfLimit_confirm_alert">系统提示</string>
+    <string name="selfLimit_confirm_alert_content">此账号已申请自我禁制， 详情请洽我们的客户服务。</string>
+    <string name="selfLimit_froze">Login restrictions</string>
+    <string name="selfLimit_froze_content">In order to protect your rights, you can apply for "self-exclusion" at any time. After you apply for self-exclusion, you will not be able to log in to enjoy the services during the self-exclusion period. The options are as follows:</string>
+    <string name="selfLimit_froze_days">Days</string>
+    <string name="selfLimit_froze_input_days">Please enter number of days</string>
+    <string name="selfLimit_froze_impotent">"· Self-exclusion takes effect immediately after setting\n·We will keep your balance during the set period of self-exclusion.\n·If you apply for self-exclusion in other gaming games, it will not automatically apply to this game.\n·During the self-exclusion period, if you try to open a new account, the account may be frozen after the system detects it.\n·During the self-exclusion period, you can contact customer service to cancel the self-exclusion function.\n·After the self-exclusion expires, your account will be automatically reactivated."</string>
+    <string name="selfLimit_per_bet_limit">Limit Bet</string>
+    <string name="selfLimit_per_bet_limit_content">You can apply for a "limit bet" to limit your bet amount each time. After applying for a limit bet, your total bet will not exceed your set value:</string>
+    <string name="selfLimit_per_bet_limit_highest">Upper limit</string>
+    <string name="selfLimit_per_bet_limit_input_highest">Please enter the limit bet。</string>
+    <string name="selfLimit_per_bet_limit_impotent">·You can modify your limit bet at any time. The modification will be active, after that sending the request. </string>
+    <string name="selfLimit_per_bet_limit_user">‧Current limit Bet: %d</string>
+    <string name="selfLimit_per_bet_limit_user_limit"> (Maximum limited bet:%s-%s)</string>
+    <!--自我禁制-->
 </resources>

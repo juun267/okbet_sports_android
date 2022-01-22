@@ -3,6 +3,7 @@ package org.cxct.sportlottery.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.Json
 import org.cxct.sportlottery.network.common.UserRebate
 
 @Entity(tableName = "user_info_table")
@@ -75,5 +76,11 @@ data class UserInfo(
     val maxCpBetMoney: Int? = null,
 
     @ColumnInfo(name = "discount")
-    val discount: Float? = null
+    val discount: Float? = null,
+
+    @ColumnInfo(name = "verified")
+    val verified: Int?, // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
+
+    @ColumnInfo(name = "perBetLimit")
+    val perBetLimit:Int? = null
 )
