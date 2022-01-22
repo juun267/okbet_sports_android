@@ -944,4 +944,11 @@
     <string name="selfLimit_per_bet_limit_user">‧已设置投注上限：%d</string>
     <string name="selfLimit_per_bet_limit_user_limit"> (最高可设定:%s-%s)</string>
     <!--自我禁制-->
+
+    <!--登入手機驗證-->
+    <string name="login_phone_verify">输入验证码</string>
+    <string name="login_phone_verify_content">欢迎再次回到游戏，为确保账号使用的安全性，请完成手机验证</string>
+    <string name="login_phone_verify_get_code">获取验证码</string>
+    <string name="login_phone_verify_error">验证码输入错误</string>
+    <!--登入手機驗證-->
 </resources>

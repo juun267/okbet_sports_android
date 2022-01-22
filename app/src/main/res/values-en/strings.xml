@@ -929,4 +929,11 @@
     <string name="selfLimit_per_bet_limit_user">‧Current limit Bet: %d</string>
     <string name="selfLimit_per_bet_limit_user_limit"> (Maximum limited bet:%s-%s)</string>
     <!--自我禁制-->
+
+    <!--登入手機驗證-->
+    <string name="login_phone_verify">Enter the verification code.</string>
+    <string name="login_phone_verify_content">Welcome back to game. Please complete verification for account security.</string>
+    <string name="login_phone_verify_get_code">Send code</string>
+    <string name="login_phone_verify_error">You have entered a wrong verification code.</string>
+    <!--登入手機驗證-->
 </resources>

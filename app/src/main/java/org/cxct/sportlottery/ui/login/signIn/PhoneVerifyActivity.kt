@@ -65,14 +65,14 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
         binding.btnSendSms.setOnClickListener(this)
         binding.btnBack.setOnClickListener(this)
         binding.btnSubmit.setOnClickListener(this)
-        GlobalScope.launch(Dispatchers.Main) {
-            withContext(Dispatchers.IO) {
-                var phone = viewModel.getUserPhone()
-                binding.tvPhoneNumber.text = viewModel.getUserPhone()
-                Log.e("Martin","213="+phone)
-
-            }
-        }
+//        GlobalScope.launch(Dispatchers.Main) {
+//            withContext(Dispatchers.IO) {
+//                var phone = viewModel.getUserPhone()
+//                binding.tvPhoneNumber.text = viewModel.getUserPhone()
+//                Log.e("Martin","213="+phone)
+//
+//            }
+//        }
     }
 
     private fun initObserve() {
@@ -86,7 +86,7 @@ class PhoneVerifyActivity : BaseActivity<LoginViewModel>(LoginViewModel::class),
                 else
                     GameActivity.reStart(this)
             }else{
-                binding.etVerificationCode.setError(it.msg,false)
+                binding.etVerificationCode.setError(getString(R.string.login_phone_verify_error),false)
             }
         })
 

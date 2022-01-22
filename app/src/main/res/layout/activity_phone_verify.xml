@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:text="输入验证码"
+                android:text="@string/login_phone_verify"
                 android:textColor="@color/colorBlackLight"
                 android:textSize="@dimen/textSize30sp"
                 android:textStyle="bold"
@@ -70,25 +70,12 @@
                 android:id="@+id/tvVerifySubTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="验证码已经发送到你的手机"
+                android:text="@string/login_phone_verify_content"
                 android:textColor="@color/colorGrayText"
                 android:textSize="@dimen/textSize12sp"
                 android:layout_marginTop="@dimen/margin_12"
                 app:layout_constraintTop_toBottomOf="@+id/tvVerifyTitle"
                 app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/tvPhoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="+86 1234567890"
-                android:textColor="@color/colorGrayText"
-                android:textSize="@dimen/textSize12sp"
-                android:textStyle="bold"
-                android:layout_marginTop="@dimen/margin_12"
-                app:layout_constraintTop_toBottomOf="@+id/tvVerifySubTitle"
-                app:layout_constraintStart_toStartOf="parent" />
-
 
             <LinearLayout
                 android:id="@+id/block_valid_code"
@@ -98,7 +85,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber">
+                app:layout_constraintTop_toBottomOf="@+id/tvVerifySubTitle">
 
                 <org.cxct.sportlottery.widget.boundsEditText.TextFieldBoxes
                     android:id="@+id/et_verification_code"
@@ -135,7 +122,7 @@
                         android:background="@drawable/btn_send_sms_rd8"
                         android:minHeight="46dp"
                         android:textAllCaps="false"
-                        android:text="重新获取"
+                        android:text="@string/login_phone_verify_get_code"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/textSize14sp" />
 
