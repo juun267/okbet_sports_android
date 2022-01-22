@@ -235,6 +235,8 @@ object Constants {
     const val USER_UPDATE_FUND_PWD = "/api/front/user/updatefundpwd" //更新资金密码
     const val USER_WITHDRAW_INFO = "/api/front/user/setWdUserInfo" //設置提款資料
     const val USER_CREDIT_CIRCLE_HISTORY = "/api/front/user/credit/circle/history"
+    const val USER_BET_LIMIT = "/api/front/user/setPerBetLimit"
+    const val USER_FROZE = "/api/front/user/setFroze"
 
     //upload image
     const val UPLOAD_IMG = "/api/upload/image" //上传图片

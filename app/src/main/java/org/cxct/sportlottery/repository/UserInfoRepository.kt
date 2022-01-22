@@ -178,7 +178,8 @@ class UserInfoRepository(private val userInfoDao: UserInfoDao,private val androi
             maxCpBetMoney = userInfoData.maxCpBetMoney,
             maxParlayBetMoney = userInfoData.maxParlayBetMoney,
             discount = userInfoData.discount,
-            verified = userInfoData.verified
+            verified = userInfoData.verified,
+            perBetLimit = userInfoData.perBetLimit
         )
 
 }

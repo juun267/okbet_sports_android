@@ -85,5 +85,8 @@ data class ConfigData(
     val referUrl: String?,
     val presetBetAmount: List<Int>?, //前台预设下注金额配置
     val systemCurrencySign: String?,
-    val systemCurrency: String? = "PHP"
+    val systemCurrency: String? = "PHP",
+    val perBetMaxAmount:String?,
+    val perBetMinAmount:String?,
+    val selfRestraintVerified:String?
 )
