@@ -17,6 +17,7 @@ import org.cxct.sportlottery.interfaces.OnSelectItemListener
 import org.cxct.sportlottery.network.common.MatchType
 import org.cxct.sportlottery.network.match.MatchPreloadData
 import org.cxct.sportlottery.network.odds.list.MatchOdd
+import org.cxct.sportlottery.network.service.match_clock.MatchClockCO
 import org.cxct.sportlottery.ui.component.overScrollView.OverScrollDecoratorHelper
 import org.cxct.sportlottery.ui.game.home.OnClickFavoriteListener
 import org.cxct.sportlottery.ui.game.home.OnClickOddListener
@@ -38,21 +39,6 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     enum class ItemType {
         ODD_DATA, SPORT_GRID_REPAY
     }
-
-    var discount: Float = 1.0F
-        set(newDiscount) {
-            mDataList.forEach { gameEntity ->
-                gameEntity.matchOdds.forEach { matchOdd ->
-                    matchOdd.oddsMap.forEach { (key, value) ->
-                        value?.forEach { odd ->
-                            odd?.updateDiscount(field, newDiscount)
-                        }
-                    }
-                }
-            }
-            notifyDataSetChanged()
-            field = newDiscount
-        }
 
     fun setData(matchPreloadData: MatchPreloadData?, matchType: MatchType, selectedOdds: MutableList<String>) {
         this.selectedOdds = selectedOdds
@@ -77,7 +63,6 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
         mDataList = dataList
         mMatchType = matchType
-        stopAllTimer()
         notifyDataSetChanged()
     }
 
@@ -114,10 +99,30 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
+    fun notifyOddsDiscountChanged(discount: Float) {
+        mDataList.forEach{
+            it.vpTableAdapter?.notifyOddsDiscountChanged(discount)
+        }
+    }
+
     fun notifyOddsTypeChanged(oddsType: OddsType) {
         this.oddsType = oddsType
         mDataList.forEach{
             it.vpTableAdapter?.notifyOddsTypeChanged(oddsType)
+        }
+    }
+
+    fun notifyTimeChanged(diff: Int) {
+        mDataList.forEach{
+            it.vpTableAdapter?.notifyTimeChanged(diff)
+        }
+    }
+
+    fun notifyUpdateTime(matchClockCO: MatchClockCO?) {
+        matchClockCO?.let { matchClock ->
+            mDataList.forEach{
+                it.vpTableAdapter?.notifyUpdateTime(matchClock)
+            }
         }
     }
 
@@ -158,38 +163,6 @@ class RvGameTable4Adapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int = mDataList.size
-
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-        when (holder) {
-            is ItemViewHolder -> {
-                //當 viewHolder 被回收就 stopTimer
-                holder.itemView.apply {
-                    val adapter = view_pager.adapter
-                    if (adapter is Vp2GameTable4Adapter)
-                        adapter.stopAllTimer()
-                }
-            }
-        }
-
-    }
-
-//    override fun onViewRecycled(holder: ItemViewHolder) {
-//        super.onViewRecycled(holder)
-//        //當 viewHolder 被回收就 stopTimer
-//        holder.itemView.apply {
-//            val adapter = view_pager.adapter
-//            if (adapter is Vp2GameTable4Adapter)
-//                adapter.stopAllTimer()
-//        }
-//    }
-
-    fun stopAllTimer() {
-        mDataList.forEach {
-            it.vpTableAdapter?.stopAllTimer()
-            it.vpTableAdapter = null
-        }
-    }
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         init {

@@ -2,6 +2,8 @@ package org.cxct.sportlottery.ui.game.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +59,7 @@ import org.cxct.sportlottery.util.GameConfigManager
 import org.cxct.sportlottery.util.LanguageManager
 import org.cxct.sportlottery.util.SocketUpdateUtil
 import timber.log.Timber
+import java.util.*
 
 
 /**
@@ -99,6 +102,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private var fishingCount = 0
     private var isCreditAccount = false
     private var selectedSportType: Item? = null
+    private var mTimer: Timer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,10 +128,21 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             initEvent()
             initObserve()
             initSocketObserver()
-
+            mTimer = Timer()
+            mTimer?.schedule(object : TimerTask() {
+                override fun run() {
+                    mRvGameTable4Adapter.notifyTimeChanged(1)
+                }
+            }, 1000L, 1000L)
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mTimer?.cancel()
+        mTimer = null
     }
 
     override fun onStart() {
@@ -140,13 +155,12 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         super.onStop()
 
         unSubscribeChannelHallAll()
-        mRvGameTable4Adapter.stopAllTimer()
         mRvHighlightAdapter.stopAllTimer()
     }
 
     private fun initDiscount() {
         val discount = viewModel.userInfo.value?.discount ?: 1.0F
-        mRvGameTable4Adapter.discount = discount
+        mRvGameTable4Adapter.notifyOddsDiscountChanged(discount)
         mRecommendAdapter.discount = discount
         mRvHighlightAdapter.discount = discount
     }
@@ -189,7 +203,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
                 override fun onClick(select: OtherMatch) {
                     scroll_view.smoothScrollTo(0, 0)
                     viewModel.navSpecialEntrance(
-                        MatchType.IN_PLAY,
+                        mSelectMatchType,
                         GameType.getGameType(select.code)
                     )
                 }
@@ -538,7 +552,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
     private fun initObserve() {
         viewModel.userInfo.observe(viewLifecycleOwner) {
             it?.discount?.let { newDiscount ->
-                mRvGameTable4Adapter.discount = newDiscount
+                mRvGameTable4Adapter.notifyOddsDiscountChanged(newDiscount)
                 mRecommendAdapter.discount = newDiscount
                 mRvHighlightAdapter.discount = newDiscount
             }
@@ -819,21 +833,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
         receiver.matchClock.observe(this.viewLifecycleOwner) {
             it?.let { matchClockEvent ->
                 //滾球盤、即將開賽盤
-                val dataList = mRvGameTable4Adapter.getData()
-                dataList.forEachIndexed { index, gameEntity ->
-                    gameEntity.matchOdds.forEachIndexed { indexMatchOdd, updateMatchOdd ->
-                        if (updateMatchOdd.matchInfo?.id == matchClockEvent.matchClockCO?.matchId) {
-                            updateMatchOdd.leagueTime =
-                                when (matchClockEvent.matchClockCO?.gameType) {
-                                    GameType.FT.key -> matchClockEvent.matchClockCO.matchTime
-                                    GameType.BK.key -> matchClockEvent.matchClockCO.remainingTimeInPeriod
-                                    else -> null
-                                }
-
-                            mRvGameTable4Adapter.notifySubItemChanged(index, indexMatchOdd)
-                        }
-                    }
-                }
+                mRvGameTable4Adapter.notifyUpdateTime(matchClockEvent.matchClockCO)
             }
         }
 
