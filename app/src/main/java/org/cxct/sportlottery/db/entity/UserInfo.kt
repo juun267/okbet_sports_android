@@ -79,5 +79,8 @@ data class UserInfo(
     val discount: Float? = null,
 
     @ColumnInfo(name = "verified")
-    val verified: Int? // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
+    val verified: Int?, // 是否通过实名验证,0:未通过 1:已通过 2:验证中 3:验证失败
+
+    @ColumnInfo(name = "perBetLimit")
+    val perBetLimit:Int? = null
 )

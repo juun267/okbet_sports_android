@@ -328,6 +328,6 @@ class LoginRepository(private val androidContext: Context, private val userInfoD
             creditAccount = loginData.creditAccount,
             creditStatus = loginData.creditStatus,
             discount = loginData.discount,
-            verified = loginData.verified
+            verified = loginData.verified,
         )
 }
