@@ -67,6 +67,8 @@ abstract class BaseOddButtonViewModel(
 
     val betInfoList = betInfoRepository.betInfoList
 
+    val betIDList = betInfoRepository.betIDList
+
     val showOddsChangeWarn get() = betInfoRepository.showOddsChangeWarn
 
     val showOddsCloseWarn get() = betInfoRepository.showOddsCloseWarn
