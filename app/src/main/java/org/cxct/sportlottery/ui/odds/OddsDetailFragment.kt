@@ -27,6 +27,7 @@ import org.cxct.sportlottery.network.odds.MatchInfo
 import org.cxct.sportlottery.network.odds.detail.MatchOdd
 import org.cxct.sportlottery.network.odds.detail.OddsDetailResult
 import org.cxct.sportlottery.network.service.match_odds_change.MatchOddsChangeEvent
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.common.SocketLinearManager
@@ -37,7 +38,7 @@ import org.cxct.sportlottery.util.TimeUtil
 
 
 @Suppress("DEPRECATION")
-class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class OddsDetailFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
 
 
     private val args: OddsDetailFragmentArgs by navArgs()
@@ -73,6 +74,7 @@ class OddsDetailFragment : BaseSocketFragment<GameViewModel>(GameViewModel::clas
         initUI()
         observeData()
         initSocketObserver()
+        initBottomNavigation()
     }
 
     override fun onStart() {

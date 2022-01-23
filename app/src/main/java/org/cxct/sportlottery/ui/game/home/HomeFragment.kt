@@ -43,6 +43,7 @@ import org.cxct.sportlottery.network.sport.Item
 import org.cxct.sportlottery.network.sport.SportMenu
 import org.cxct.sportlottery.repository.FLAG_OPEN
 import org.cxct.sportlottery.repository.sConfigData
+import org.cxct.sportlottery.ui.base.BaseBottomNavigationFragment
 import org.cxct.sportlottery.ui.base.BaseSocketFragment
 import org.cxct.sportlottery.ui.base.ChannelType
 import org.cxct.sportlottery.ui.bet.list.BetInfoListData
@@ -75,7 +76,7 @@ import java.util.*
  * 3. 賽事推薦 - 冠軍樣式
  * 4. 賽事推薦 投注
  */
-class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
+class HomeFragment : BaseBottomNavigationFragment<GameViewModel>(GameViewModel::class) {
     private lateinit var homeBinding: FragmentHomeBinding
 
     private val mRvGameTable4Adapter = RvGameTable4Adapter()
@@ -136,6 +137,7 @@ class HomeFragment : BaseSocketFragment<GameViewModel>(GameViewModel::class) {
             initEvent()
             initObserve()
             initSocketObserver()
+            initBottomNavigation()
             mTimer = Timer()
             mTimer?.schedule(object : TimerTask() {
                 override fun run() {
